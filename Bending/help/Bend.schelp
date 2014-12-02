@@ -1,0 +1,62 @@
+CLASS::Bend
+summary::UGen wrapper for code bending
+categories::UGen
+
+DESCRIPTION::
+Opens up enclosed UGen inputs for external modification (code bending). Different class methods are provided for different ways to do this.
+
+CLASSMETHODS::
+
+method::new
+Bend enclosing UGens. 
+code::
+// given a UGen graph:
+(
+{
+Splay.ar(SinOsc.ar({ exprand(300.0, 10000.0) } ! 17, 0, { 1.0.rand } ! 17)) * 0.1	
+}.play
+)
+
+// É all existing UGen inputs can be replaced or modified with an arbitrary function (here with a modulator)
+(
+{
+Bend({ |in|
+	in * LFDNoise3.kr(MouseX.kr(0.1, 200, 1), 0.1, 1)
+}, {
+	Splay.ar(SinOsc.ar({ exprand(300.0, 10000.0) } ! 17, 0, { 1.0.rand } ! 17))
+	
+}) * 0.1
+}.play
+)
+
+::
+argument::bendFunc
+a function 
+argument::ugenFunc
+a function
+
+
+
+EXAMPLES::
+
+code::
+(
+// bend all numerical values by adding controls
+Ndef(\bubbles, {
+	var index = 0;
+	Bend({ |original|
+		[original, original.isNumber, index].postln;
+		if(original.isNumber) {
+			original = NamedControl.kr("bend_"++index, original);
+			index = index + 1;	
+		};
+		original;
+	}, {
+		f = LFSaw.kr(0.4, 0, 24, LFSaw.kr([8,7.23], 0, 3, 80)).midicps; // glissando function
+		CombN.ar(SinOsc.ar(f, 0, 0.04), 0.2, 0.2, 4) // echoing sine wave
+	})
+}).play)
+
+
+Ndef(\bubbles).gui(20);
+::

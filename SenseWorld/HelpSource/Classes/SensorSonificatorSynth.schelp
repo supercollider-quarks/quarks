@@ -1,0 +1,128 @@
+TITLE:: SensorSonificatorSynth
+summary:: A synth for use with SensorSonificator
+categories:: Control
+related:: Classes/SensorSonificator
+
+DESCRIPTION::
+This is a helper class for the link::Classes/SensorSonificator::.
+
+
+CLASSMETHODS::
+
+private:: initClass
+
+METHOD:: synthDescLib
+The SynthDescLib for the different sensor sonificator synthdefs.
+
+returns:: a SynthDescLib
+
+METHOD:: new
+Create a new SensorSonificatorSynth.
+
+ARGUMENT:: def
+The SynthDef to use (a Symbol).
+
+ARGUMENT:: group
+The Group in which to create the Synth.
+
+ARGUMENT:: inbus
+The control input bus to use.
+
+ARGUMENT:: outbus
+The audio output bus to use.
+
+
+METHOD:: loadSynthDefs
+Add all the sonification synthdefs to the server.
+
+ARGUMENT:: s
+A Server - by default the default server.
+
+
+
+INSTANCEMETHODS::
+
+private:: init
+
+METHOD:: play
+Play the SensorSonificatorSynth.
+
+ARGUMENT:: in
+The control input bus.
+
+ARGUMENT:: out
+The audio output bus.
+
+METHOD:: stop
+Stop the SensorSonificatorSynth.
+
+
+
+
+
+METHOD:: set
+Set a control of the synth.
+
+ARGUMENT:: key
+The control to set.
+
+ARGUMENT:: val
+The value to set it to.
+
+
+METHOD:: get
+Get a current control value of the synth.
+
+ARGUMENT:: key
+The control to get.
+
+ARGUMENT:: func
+The Function to perform once the value is received from the server.
+
+
+METHOD:: controlNames
+Control names of the synthdef.
+
+METHOD:: controls
+The controls of the synthdef.
+
+
+METHOD:: inputs
+The inputs that the synthdef has.
+
+METHOD:: outputs
+The outputs the synthdef has.
+
+
+METHOD:: group
+The Group in which the SensorSonificatorSynth plays.
+
+returns:: a Group
+
+METHOD:: synth
+The Synth generating the sound.
+
+returns:: a Synth
+
+
+METHOD:: inbus
+The control rate input bus
+
+returns:: a Bus
+
+METHOD:: outbus
+The audio output bus
+
+returns:: a Bus
+
+METHOD:: synthDef
+The Synthdef used for this synth.
+
+returns:: a SynthDef
+
+
+
+METHOD:: argValues
+The current argument values of the synth.
+
+returns:: an IdentityDictionary

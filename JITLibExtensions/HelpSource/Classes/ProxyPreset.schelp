@@ -1,0 +1,419 @@
+TITLE:: ProxyPreset
+summary:: store and morph between settings of JITLib Proxies.
+categories:: Libraries>JITLib
+related:: Classes/TdefPreset, Classes/PdefPreset, Classes/NdefPreset, Classes/ProxyPresetGui
+
+DESCRIPTION::
+ProxyPreset is the base class for a number of Preset classes for JITLib proxies:  
+It can handle proxies that keep their settings in environments, such as TaskProxies and PatternProxies, and proxies that use nodeMaps, like NodeProxy.
+
+Settings are lists of key - value pairs, like [[key1, val1], [key2, val2], ... [keyN, valN]]. One can switch between these settings, or - if the parameter values in the list are single numbers, one can interpolate and morph between them.
+
+Its subclasses using named proxies are: TdefPreset for Tdef, PdefPreset for Pdef, and NdefPreset for Ndef. Finally, there are also gui classes for all of them: ProxyPresetGui, TdefPresetGui, PdefPresetGui, and NdefPresetGui.
+
+
+code::
+
+(
+	// make an empty Tdef
+a = Tdef(\a);	
+	// give it some param settings
+a.set(\dt, 0.1, \freq, 440, \bend, 4, \bendVar, 4, \sustain, 0.05);
+
+// add specs for the params to the Tdef - see Halo class.
+a.addSpec(\dt, [0.03, 3, \exp]);
+a.addSpec(\bend, [-24, 24, \lin]);
+a.addSpec(\bendVar, [-24, 24, \lin]);
+a.addSpec(\sustain, [0.003, 3, \exp]);
+
+// define what the Tdef does
+Tdef(\a, { |env|
+    loop({
+        (
+			instrument: \pingbend,
+			freq:  env[\freq],
+			bend: env[\bend] + env[\bendVar].rand2,
+			sustain: env[\sustain],
+			pan: 1.0.rand2
+		).play;
+
+		env[\dt].wait;
+    })
+});
+
+Tdef(\a).gui;
+
+	// will be using this SynthDef:
+s.boot;
+SynthDef(\pingbend,
+    { arg out=0, freq=440, bend = 4, sustain=0.05;
+        var env = EnvGen.ar(Env.perc(0.001, sustain, 0.3), doneAction:2);
+		freq = freq * XLine.kr(1, bend.midiratio, sustain);
+        Out.ar(out, SinOsc.ar(freq, 0, env))
+    }).add;
+
+)
+
+	// then make a ProxyPreset for for the Tdef: 
+	// for Tdefs, best use TdefPreset.
+b = TdefPreset(a);
+
+
+// these are the param names for which settings are stored
+// they can be reordered, see ParamGui help file.
+b.namesToStore;
+
+	// add the current state of the envir as a setting
+b.addSet(\ada);
+
+	// make and add 3 random settings
+(
+b.setRand(0.25); b.addSet(\bobo);
+b.setRand(0.25); b.addSet(\coco);
+b.someRand(0.25, 0.5); b.addSet(\dad);
+)
+	// 
+b.getSetNames;
+b.settings.printcsAll;"";
+
+b.setCurr(b.getSetNames.choose.postln);
+b.setTarg(b.getSetNames.choose.postln);
+
+
+// a gui for the NdefPreset
+g = TdefPresetGui(b, 8).moveTo(10, 200);
+
+b.morph(1.0.rand, \ada, \coco);
+
+b.xfadeTo(\coco, 3, { "xfade doneFunc done.".postln; });
+b.xfadeTo(b.getSetNames.choose.postln, exprand(0.3, 10));
+
+// do recursive crossfading
+(
+f = {
+	"next xfade: ".post;
+	b.xfadeTo(b.getSetNames.choose.postln, exprand(0.3, 10), f)
+};
+
+f.value;
+)
+f = nil; // stop
+
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+make a new anonymous ProxyPreset 
+
+ARGUMENT:: proxy
+a TaskProxy or PatternProxy
+
+ARGUMENT:: namesToStore
+which paramNames to store in presets. if none given, inferred from the current proxy settings.
+
+ARGUMENT:: settings
+provide preset settings for the proxy
+
+ARGUMENT:: specs
+provide preset specs for the proxy, mainly for randomizing and morphing.
+if none given here, and object has a halo of specs, those in halo will be used.
+
+ARGUMENT:: morphFuncs
+special functions to provide for morphing between non-numerical settings.
+not used yet.
+
+
+
+INSTANCEMETHODS::
+
+subsection:: instance variables
+
+METHOD:: proxy
+the proxy for which preset contains settings
+
+METHOD:: namesToStore
+the param names for which values will be stored in the settings
+
+METHOD:: settings
+settings stored for the proxy
+
+METHOD:: currSet
+the name of the current setting
+
+METHOD:: targSet
+the name of the target setting used in morphing
+
+METHOD:: specs
+a dict for specs to use for numerical parameter interpolation.
+by default this is synced with the proxy's Halo specs.
+
+METHOD:: morphVal
+the current morph/blend value.
+
+METHOD:: morphTask
+a taskproxy that can crossfade between different settings.
+
+
+METHOD:: morphFuncs
+special functions to provide for morphing between non-numerical settings.
+not used yet.
+
+
+private:: initTask
+private:: getIndex, currIndex, targIndex
+
+subsection:: Methods - settings
+
+private:: prepMorph
+
+subsection:: instance methods
+
+METHOD:: useHalo
+use the proxy's Halo for syncing specs and namesToStore.
+
+METHOD:: checkSpecsMissing
+check if there are specs for all namesToStore.
+if not, posts an invitation to add the missing ones, or a 
+
+METHOD:: specsDialog
+open a dialog window to add specs.
+
+
+METHOD:: addSet
+add a setting by name. if no values are given, take current setting of proxy.
+
+METHOD:: removeSet
+remove a setting by name
+
+METHOD:: addSettings
+add a list of named settings
+
+METHOD:: removeSettings
+remove a list of settings by their names
+
+METHOD:: postSettings
+post current settings as compilestring.
+
+METHOD:: getSetNames
+get the names of all currently stored settings.
+
+METHOD:: setCurr
+set the current setting by name within stored settings.
+
+METHOD:: setTarg
+set the target setting by name within stored settings.
+
+METHOD:: getSet
+get a stored setting by name.
+
+METHOD:: setProxy
+set the proxy's current settings to the setting given by name.
+
+METHOD:: getFromProxy
+get the proxy's current settings as [[key1, val1], ... [keyN, valN]]
+
+METHOD:: currFromProxy
+get the proxy's current settings and store them as \curr.
+
+METHOD:: stepCurr, stepTarg
+step the current and target setting by increment.
+
+
+subsection:: Methods - randomizing settings
+
+strong::Note that randomizing settings only fully works for numerical settings!::
+
+METHOD:: randSet
+create a rand setting, based on an existing one
+
+ARGUMENT:: rand
+how muct to randomize (0.0 to 1.0)
+
+ARGUMENT:: startSet
+which set to randomize - if nil, uses currSet
+
+ARGUMENT:: except
+which keys not to randomize
+
+METHOD:: setRand
+same as randSet, but sets proxy to the random setting.
+
+METHOD:: someRand
+like randSet, but ratio sets how many of the params will be randomized.
+
+
+subsection:: Methods - morphing and crossfading
+
+strong::Note that morphing and crossfading only fully works for numerical settings!::
+
+METHOD:: blend
+blend between two sets given by name. the mapped flag sets whether to blend between mapped or unmapped values; the result is again unmapped.
+
+METHOD:: morph
+morph between two settings with a given blend factor.
+ARGUMENT:: blend
+the blend factor
+ARGUMENT:: name1
+the name of setting 1
+ARGUMENT:: name2
+the name of setting 2
+ARGUMENT:: mapped
+a flag whether to interpolate between mapped values of the params.
+
+METHOD:: xfadeTo
+crossfade to a target setting in the given duration.
+
+
+METHOD:: blendSets
+the lower-level way to do a straight blend between two sets.
+
+METHOD:: mapSet, unmapSet
+utilities to convert single settings between mapped and unmapped values.
+used when blending in mapped mode. 
+
+
+subsection:: Methods - storage
+
+METHOD:: storeToDisk
+get and whether to store settings to disk automatically. default = true.
+
+METHOD:: storePath
+the path where to store and read settings to and from disk.
+
+METHOD:: loadSettings
+load settings from disk at given path. 
+
+METHOD:: writeSettings
+write settings to disk. By default, they go next to the source code file where the Preset was created, and by default, a backup of the previous stored settings is made.
+
+METHOD:: setPath
+set storage name
+
+METHOD:: presetPath
+path where to store presets. currently, this is next to the source code file where the Preset was created.
+
+METHOD:: storeDialog
+open a dialog window for entering a storage name. Intended for use with ProxyPresetGui.
+
+METHOD:: deleteDialog
+open a dialog window for deleting existing settings by name(s). Intended for use with ProxyPresetGui.
+
+
+EXAMPLES::
+
+code::
+	// Same example as above, with some more tests and comments:
+	
+	// will complain about missing specs
+(
+a = Tdef(\a);
+a.set(\dt, 0.1, \freq, 440, \bend, 4, \bendVar, 4, \sustain, 0.05);
+b = ProxyPreset(a);
+)
+	// check if all specs are present:
+b.checkSpecsMissing; 
+	// get a dialog if any are missing:
+b.checkSpecsMissing(dialog: true); 
+
+
+(
+	// or add missing specs by code to the taskproxy's Halo 
+	// see the Halo class.
+a.addSpec(\dt, [0.03, 3, \exp]);
+a.addSpec(\bend, [-24, 24, \lin]);
+a.addSpec(\bendVar, [-24, 24, \lin]);
+a.addSpec(\sustain, [0.003, 3, \exp]);
+);
+)
+// check if again all specs are present:
+b.checkSpecsMissing; // quiet means all fine
+
+
+// the param names for which settings are stored
+b.namesToStore;
+(
+// make a ParamGui to read along changes to the settings
+d = ParamGui(a.envir).moveTo(10, 10);
+// and connect it to the proxy's halo, 
+// so it will use the orderedNames used there
+d.useHalo(a);
+)
+
+a.envir;
+a.controlKeys;
+
+// add a setting with a name
+b.addSet(\ada);
+b.settings;
+
+	// add 3 random settings
+(
+b.setRand(0.25); b.addSet(\bobo);
+b.setRand(0.25); b.addSet(\coco);
+b.someRand(0.25, 0.5); b.addSet(\dad);
+)
+	// print them all
+b.settings.printcsAll;"";
+b.getSetNames;
+
+	// and set current and target to two random choices
+b.setCurr(b.getSetNames.choose.postln);
+b.setTarg(b.getSetNames.choose.postln);
+
+
+(
+// load a synthdef
+s.boot;
+SynthDef(\pingbend,
+    { arg out=0, freq=440, bend = 4, sustain=0.05;
+        var env = EnvGen.ar(Env.perc(0.001, sustain, 0.3), doneAction:2);
+		freq = freq * XLine.kr(1, bend.midiratio, sustain);
+        Out.ar(out, SinOsc.ar(freq, 0, env))
+    }).add;
+
+// and define what the Tdef does
+Tdef(\a, { |env|
+    loop({
+        (
+			instrument: \pingbend,
+			freq:  env[\freq],
+			bend: env[\bend] + env[\bendVar].rand2,
+			sustain: env[\sustain],
+			pan: 1.0.rand2
+		).play;
+
+		env[\dt].wait;
+    })
+});
+
+Tdef(\a).play;
+)
+
+// make a gui for the NdefPreset
+g = TdefPresetGui(b, 8).moveTo(10, 200);
+
+// morph between its current and target setting:
+b.morph(1.0.rand);
+b.morph(1.0.rand);
+
+// morph between two named settings:
+b.morph(1.0.rand, \ada, \coco);
+
+// xfade to a given setting from current setting:
+b.xfadeTo(\coco, 3, { "xfade doneFunc done.".postln; });
+b.xfadeTo(b.getSetNames.choose.postln, exprand(0.3, 10));
+
+// do recursive crossfading
+(
+f = {
+	"next xfade: ".post;
+	b.xfadeTo(b.getSetNames.choose.postln, exprand(0.3, 10), f)
+};
+
+f.value;
+)
+f = nil; // stop
+
+::

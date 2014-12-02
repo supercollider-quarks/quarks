@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf; min-height: 12.0px}
+span.s1 {color: #000000}
+span.s2 {text-decoration: underline}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>JInTController</b></p>
+<p class="p2"><b>Superclass: Object</b></p>
+<p class="p3">/**</p>
+<p class="p3"><span class="Apple-tab-span">	</span>2006<span class="Apple-converted-space">  </span>Till Bovermann (IEM)</p>
+<p class="p3">*/</p>
+<p class="p4"><br></p>
+<p class="p2">Imagine a Faderbox or a GamePad, or …</p>
+<p class="p2">In general there are a fixed number of controls which behave in different ways.</p>
+<p class="p2">there are e.g.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Fader<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(1 DOF)</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Knob<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(1 DOF)</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Pad<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(1 DOF)</p>
+<p class="p2"><span class="Apple-tab-span">	</span>2D Fader (joystick)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(2 DOF)</p>
+<p class="p2"><span class="Apple-tab-span">	</span>tangible rigid object<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(6 DOF)</p>
+<p class="p2"><span class="Apple-tab-span">	</span>pen on graphics-tablet<span class="Apple-tab-span">	</span>(5 DOF)</p>
+<p class="p2"><span class="Apple-tab-span">	</span>...</p>
+<p class="p2">This class is a general representation of one of these controllers.</p>
+<p class="p2">Subclasses implement the dedicated semantics.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>JInTC_&lt;lowercase&gt; <span class="Apple-tab-span">	</span>– abstract class</p>
+<p class="p2"><span class="Apple-tab-span">	</span>JInTC_&lt;Uppercase&gt; <span class="Apple-tab-span">	</span>– usable class</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s1">a = </span>JInTController<span class="s1">.new</span></p>
+<p class="p4"><br></p>
+<p class="p6"><b><span class="s2">Methods</span></b></p>
+<p class="p4"><b></b><br></p>
+<p class="p4"><b></b><br></p>
+<p class="p2"><b>rawVals</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>array of raw controller values.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>No specs assigned.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>One for each dimension.</p>
+<p class="p4"><b></b><br></p>
+<p class="p2"><b>value(i)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns array of current normed values of controller.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>if <b>i</b> is Integer:</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>returns current normed value <b>i</b> of controller.</p>
+<p class="p4"><b></b><br></p>
+<p class="p2"><b>numDOF</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>number of available degrees of freedom</p>
+<p class="p4"><b></b><br></p>
+<p class="p2"><b>description</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>a String describing the functionality</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>semantics</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>array of arrays containing symbols for each DOF:</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[values]</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\discrete<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[discrete values]</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\continuous<span class="Apple-tab-span">	</span>[contiuous values]</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[what happens if user lets go controller?]</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\snapBack<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[snaps back into a predefined state]</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\sticky<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[remains in last state]</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[]</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\range<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[m .. n]</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\ring<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[modulo ring]</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[active or passive?]</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\passive</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\settable</p>
+<p class="p7"><br></p>
+<p class="p2"><b>specs</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>for each dimension one ControlSpec. nil: [0,1,'linear'].asSpec</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6"><b><span class="s2">1-DOF</span></b></p>
+<p class="p4"><b><span class="s2"></span></b><br></p>
+<p class="p2"><b>JInTC_onoff : JInTController</b></p>
+<p class="p2">simple one-DOF controller with on/off</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s1">a = </span>JInTC_onoff<span class="s1">.new;</span></p>
+<p class="p8">a.numDOF;</p>
+<p class="p8">a.description;</p>
+<p class="p8">a.semantics;</p>
+<p class="p8">a.specs.do{|a| a.asCompileString.postln};</p>
+<p class="p8">a.inspect;</p>
+<p class="p7"><br></p>
+<p class="p2"><b>JInTC_Button : JInTC_onoff</b></p>
+<p class="p2">Button (on/off) with snap back ("Taster")</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s1">a = </span>JInTC_Button<span class="s1">.new</span></p>
+<p class="p8">a.numDOF;</p>
+<p class="p8">a.description;</p>
+<p class="p8">a.semantics;</p>
+<p class="p8">a.specs.do{|a| a.asCompileString.postln};</p>
+<p class="p8">a.inspect;</p>
+<p class="p7"><br></p>
+<p class="p2"><b>JInTC_linear : JInTController</b></p>
+<p class="p2">simple one-DOF contiuous controller (abstract)</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s1">a = </span>JInTC_linear<span class="s1">.new</span></p>
+<p class="p8">a.numDOF;</p>
+<p class="p8">a.description;</p>
+<p class="p8">a.semantics;</p>
+<p class="p8">a.specs.do{|a| a.asCompileString.postln};</p>
+<p class="p8">a.inspect;</p>
+<p class="p7"><br></p>
+<p class="p9"><br></p>
+<p class="p2"><b>JInTC_linearSnapper : JInTController</b></p>
+<p class="p2">simple one-DOF contiuous controller, snapping back into default position</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s1">a = </span>JInTC_linearSnapper<span class="s1">.new</span></p>
+<p class="p8">a.numDOF;</p>
+<p class="p8">a.description;</p>
+<p class="p8">a.semantics;</p>
+<p class="p8">a.specs.do{|a| a.asCompileString.postln};</p>
+<p class="p8">a.inspect;</p>
+<p class="p7"><br></p>
+<p class="p2"><b>JInTC_Fader : JInTC_linear</b></p>
+<p class="p2">simple one-DOF Fader</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s1">a = </span>JInTC_onoff<span class="s1">.new</span></p>
+<p class="p8">a.numDOF;</p>
+<p class="p8">a.description;</p>
+<p class="p8">a.semantics;</p>
+<p class="p8">a.specs.do{|a| a.asCompileString.postln};</p>
+<p class="p8">a.inspect;</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p2"><b>JInTC_Knob : JInTC_linear</b></p>
+<p class="p2">simple knob to turn</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s1">a = </span>JInTC_onoff<span class="s1">.new</span></p>
+<p class="p8">a.numDOF;</p>
+<p class="p8">a.description;</p>
+<p class="p8">a.semantics;</p>
+<p class="p8">a.specs.do{|a| a.asCompileString.postln};</p>
+<p class="p8">a.inspect;</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6"><b><span class="s2">n-DOF</span></b></p>
+<p class="p4"><br></p>
+<p class="p2">I decided to not build trees of 1-DOF JInTController, since the definition of a controller<span class="Apple-converted-space"> </span></p>
+<p class="p2">(see above) says, that a controller is something stick together, where it is near to<span class="Apple-converted-space"> </span></p>
+<p class="p2">impossible to change one dimension without changing the others.</p>
+<p class="p2">Therefore it is not intendet to use one (of many) DOF for a single parameter.</p>
+<p class="p7"><br></p>
+<p class="p2"><b>JInTC_composite : JInTController</b></p>
+<p class="p2">A composite of several controllers. Should not be used (abstract class)</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s1">a = </span>JInTC_composite<span class="s1">.new</span></p>
+<p class="p8">a.numDOF;</p>
+<p class="p8">a.description;</p>
+<p class="p8">a.semantics;</p>
+<p class="p8">a.specs.do{|a| a.asCompileString.postln};</p>
+<p class="p8">a.inspect;</p>
+<p class="p7"><br></p>
+<p class="p2"><b>JInTC_ThumbStick : JInTC_composite</b></p>
+<p class="p2">small two DOF analog joystick with an additional knob-functionality by pressing it. Normally actuated by thumb.</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s1">a = </span>JInTC_ThumbStick<span class="s1">.new</span></p>
+<p class="p8">a.numDOF;</p>
+<p class="p8">a.description;</p>
+<p class="p8">a.semantics;</p>
+<p class="p8">a.specs.do{|a| a.asCompileString.postln};</p>
+<p class="p8">a.inspect;</p>
+<p class="p4"><br></p>
+<p class="p2"><b><span class="s2">Examples</span></b></p>
+</body>
+</html>

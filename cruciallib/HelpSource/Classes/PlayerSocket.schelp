@@ -1,0 +1,398 @@
+CLASS:: PlayerSocket
+summary:: a player that can play other players using a cross-faded and fuse-protected socket
+categories:: Libraries>crucial>Players
+
+
+DESCRIPTION:: A voice that is able to host and switch between different players.
+
+Setting the socket to a new player will load from disk (if needed), prepareForPlay and spawn.
+
+Players are played using an EnvelopedPlayer so that when the socket releases the voice (to end it or to switch to the next incoming player being played in the socket) the outgoing player is released cleanly.  The EnvelopedPlayer also protects against NaN, inf and de-normalized floats, so if anything blows up in the channel it will not propgate up the mixer chain.
+
+the default releaseTime is 0.0 which will stop immediately.
+
+code::
+(
+q = Patch({ Saw.ar(40.midicps) * 0.05 });
+r = Patch({ Saw.ar(52.midicps) * 0.05 });
+p = PlayerSocket.new(\audio,1);
+p.play;
+)
+// then get the socked to alternately spawn q and r
+p.prepareAndQSpawn(q,0.1);
+p.prepareAndQSpawn(r,0.1);
+p.prepareAndQSpawn(q,0.1);
+p.prepareAndQSpawn(r,0.1);
+
+
+(
+p.prepareAndSpawn(
+	Patch({ arg freq=400,gate=1.0;
+		Saw.ar(freq) * EnvGen.kr(Env.adsr(0.1,2.0,0.3,2.0),gate) * 0.1
+	},[
+		rrand(38,70).midicps,
+		KrNumberEditor(1.0,\gate)
+	]),
+	1.0
+)
+)
+// the current player in the socket is set to :  p.source
+
+p.releaseVoice(1.0);
+
+
+//we are asleep now
+p.isSleeping;
+
+p.isPlaying;
+
+p.free;
+
+p.isSleeping;
+
+p.isPlaying;
+
+p.insp
+
+::
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: rate
+all players should be the same rate
+
+argument:: numChannels
+all players should have the same numChannels.
+
+argument:: round
+if calling qspawnPlayer this is the timing quantization setting
+
+argument:: env
+the Envelope for the internal EnvelopedPlayer
+
+
+METHOD:: prNew
+
+
+argument:: rate
+
+
+argument:: numChannels
+
+
+argument:: round
+
+
+argument:: env
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: round
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: numChannels
+
+
+
+METHOD:: env
+
+
+
+METHOD:: socketGroup
+
+
+
+METHOD:: lastPlayer
+
+
+
+METHOD:: envdSource
+
+
+
+METHOD:: fuseBlown
+
+
+
+METHOD:: psinit
+
+
+
+METHOD:: prepareAndSpawn
+
+
+argument:: player
+
+
+argument:: releaseTime
+
+
+
+METHOD:: prepareAndQSpawn
+
+
+argument:: player
+
+
+argument:: releaseTime
+
+
+
+METHOD:: preparePlayer
+
+
+argument:: player
+
+
+argument:: onComplete
+
+
+
+METHOD:: spawnPlayer
+you should have already prepared the player
+
+argument:: player
+
+
+argument:: releaseTime
+
+
+argument:: beatDelta
+
+
+argument:: forceRespawn
+
+
+
+METHOD:: qspawnPlayer
+you should have already prepared the player
+
+
+argument:: player
+
+
+argument:: releaseTime
+
+
+
+METHOD:: qrespawnPlayer
+restart the currently playing player
+
+argument:: releaseTime
+
+
+
+METHOD:: releaseVoice
+release the currently playing player voice
+
+argument:: releaseTime
+
+
+
+METHOD:: isSleeping
+
+
+
+METHOD:: qwake
+
+
+
+METHOD:: makeResourcesToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: freeResourcesToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: prepareChildrenToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: freeToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: subGroups
+
+
+
+METHOD:: loadDefFileToBundle
+
+
+argument:: bundle
+
+
+argument:: server
+
+
+
+METHOD:: instrArgFromControl
+
+
+argument:: control
+
+
+
+METHOD:: spawnToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: synthArg
+
+
+
+METHOD:: setSource
+
+
+argument:: s
+
+
+argument:: atTime
+see link::Guides/atTime::
+
+
+argument:: releaseTime
+
+
+
+METHOD:: setSourceToBundle
+
+
+argument:: s
+
+
+argument:: bundle
+
+
+argument:: releaseTime
+
+
+
+METHOD:: didFree
+
+
+
+METHOD:: fuseDidBlow
+
+
+argument:: value
+
+
+
+METHOD:: socketFreeAll
+
+
+
+METHOD:: name
+
+
+
+METHOD:: limit
+
+
+argument:: boo
+
+
+
+
+EXAMPLES::
+
+
+Testing short time intervals
+code::
+(
+q = Patch({ Saw.ar(600) * 0.2 });
+r = Patch({ Saw.ar(800) * 0.2 });
+p = PlayerSocket.new(\audio,1);
+p.play;
+
+Routine({
+	2.0.wait;
+	32.do({
+		rrand(0.01,0.2).wait;
+		p.prepareAndSpawn([r,q].choose,rrand(0.01,1.0));
+	});
+	2.0.wait;
+	p.release;
+	4.0.wait;
+	p.stop;
+	1.0.wait;
+	p.free;
+}).play(AppClock)
+)
+
+::
+
+
+
+
+
+
+As an input to a Patch
+
+code::
+(
+q = Patch({ Saw.ar * 0.2 });
+r = Patch({ Saw.ar(800) * 0.2 });
+p = PlayerSocket.new(numChannels: 1);
+e = Patch({ arg audio; RLPF.ar(audio,200) },[ p ]);
+e.play;
+)
+
+
+p.prepareAndSpawn(q);
+
+p.prepareAndSpawn(r);
+
+p.prepareAndSpawn(q);
+
+p.prepareAndSpawn(r);
+
+// if you know that you have prepared it
+p.spawnPlayer(q);
+
+q.readyForPlay
+
+p.spawnPlayer(r);
+
+
+p.releaseVoice
+
+p.insp
+e.insp
+p.synthArg
+
+e.free;
+
+
+
+::

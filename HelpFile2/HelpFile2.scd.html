@@ -1,0 +1,61 @@
+    <pre>
+<span class="variable-name">~hf</span> = <span class="type">HelpFile2</span>.new( <span class="string">"HelpFile2.html"</span>);
+<span class="variable-name">~hf</span>.classname = <span class="string">"HelpFile2"</span>;
+<span class="variable-name">~hf</span>.shortDescription_( <span class="string">"utility class to create a help file for a class"</span> );
+<span class="variable-name">~hf</span>.longDescription_( <span class="string">"This class can be used to create helpfiles for SuperCollider classes. You can create a helpfile fully from the SuperCollider language. The only thing you may want to do afterwards is rearrange the order of the method descriptions. This class creates a readable HTML, so it will be easy to do so."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\new</span>, <span class="string">"Create an instance of HelpFile2, with the path &lt;em&gt;pathName&lt;/em&gt;"</span>, <span class="constant">\class</span> );
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\createInstanceMethods</span>, <span class="string">"creates the instance methods. Is called when the classname is set."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\createClassMethods</span>, <span class="string">"creates the class methods. Is called when the classname is set."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\writeInstanceMethods</span>, <span class="string">"writes the instance methods to the file in HTML format. Is called from writeToFile."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\writeClassMethods</span>, <span class="string">"writes the class methods to the file in HTML format. Is called from writeToFile."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\writeArgDesc</span>, <span class="string">"writes the class or instance argument descriptions to the file in HTML format. Is called from either writeInstanceMethods or writeClassMethods."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\classname</span>, <span class="string">"the classname for the current helpfile."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\classname_</span>, <span class="string">"sets the classname for the current helpfile. This autogenerates the instanceMethods and classMethods."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\writeToFile</span>,<span class="string">"writes everything to file"</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\writeHeader</span>,<span class="string">"writes the header for the helpfile. Called from writeToFile."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\writeFooter</span>,<span class="string">"writes the footer for the helpfile. Called from writeToFile."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\writeExamples</span>,<span class="string">"writes the examples for the helpfile. Called from writeToFile."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\instanceMethods</span>, <span class="string">"IdentityDictionary with the class's instance methods. The second item in the array should be the description."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\classMethods</span>, <span class="string">"IdentityDictionary with the class's class methods. The second item in the array should be the description."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\examples</span>, <span class="string">"Array of examples to add in the helpfile."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\shortDescription_</span>, <span class="string">"Set the short (header) description for the helpfile."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\longDescription_</span>, <span class="string">"Set the long prose description for the helpfile."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\addExample</span>, <span class="string">"Add example code to the helpfile. These should be preformatted (e.g. with htmlize), and enclosed in 'PRE' tags"</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\addExampleFromFile</span>, <span class="string">"Add example code from a file to the helpfile. The file should contain code (e.g. created with htmlize) that is enclosed in 'PRE' tags."</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\addDescription</span>, <span class="string">"Add a description for an instance or class method, or one of their arguments"</span>);
+
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\addDescription</span>, <span class="string">"The name of the method"</span>, <span class="constant">\instArg</span>, <span class="constant">\key</span>);
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\addDescription</span>, <span class="string">"The description of the method or argument"</span>, <span class="constant">\instArg</span>, <span class="constant">\desc</span>);
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\addDescription</span>, <span class="string">"The type of item to be described. This can be: &lt;UL&gt;&lt;LI&gt;'instance' (instance method)&lt;/LI&gt;&lt;LI&gt;'class' (class method)&lt;/LI&gt;&lt;LI&gt;'instArg' (argument of an instance method)&lt;/LI&gt;&lt;LI&gt;'classArg' (argument of a class method)&lt;/LI&gt;&lt;/UL&gt; The default is 'instance'"</span>, <span class="constant">\instArg</span>, <span class="constant">\type</span>);
+<span class="variable-name">~hf</span>.addDescription(<span class="constant">\addDescription</span>, <span class="string">"The name of the argument to be described. Only relevant for the latter two types."</span>, <span class="constant">\instArg</span>, <span class="constant">\key2</span>);
+
+
+<span class="comment-delimiter">// </span><span class="comment">now HTMLize this buffer or region within Emacs, trim the header and footer portion in the resulting buffer and save it to file.
+</span>
+<span class="variable-name">~hf</span>.addExampleFromFile( <span class="string">"HelpFile2.scd.html"</span> );
+
+<span class="variable-name">~hf</span>.writeToFile;
+
+<span class="variable-name">~hf</span>.close;
+
+<span class="comment-delimiter">// </span><span class="comment">Now open the file again within Emacs, and rearrange the class and instance methods a bit.</span></pre>

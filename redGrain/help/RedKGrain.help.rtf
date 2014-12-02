@@ -1,0 +1,241 @@
+{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;\f1\fswiss\fcharset77 Helvetica;\f2\fnil\fcharset77 Monaco;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red191\green0\blue0;\red96\green96\blue96;
+}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b\fs36 \cf2 RedKGrain\cf0 			granular synthesis with controlrate control
+\f1\b0\fs24 \
+
+\f0\b\fs36 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\fs24 \cf0 superclass: \cf2 RedAGrain
+\fs36 \cf0 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f1\b0\fs24 \cf0 Server side granulator that is controlled with controlrate busses. Based on TGrains. Same as RedAGrain. Less cpu intensive but you can not modulate fast without getting artefacts.
+\f0\b\fs36 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\fs24 \cf0 Class Methods
+\fs36 \
+
+\fs24 \
+\cf2 RedKGrain\cf0 .new(server)
+\f1\b0  - create granulator (stereo only for now)
+\f0\b \
+\
+\
+Instance Methods\
+\
+start(out, attackTime)
+\f1\b0  - starts the granulator with fade in of attackTime seconds\
+
+\f0\b stop(releaseTime) - 
+\f1\b0 stops the granulator with fade out of releaseTime seconds
+\f0\b \
+free - 
+\f1\b0 stop and free internal busses
+\f0\b \
+synth - 
+\f1\b0 the main granulator
+\f0\b \
+trigBus - 
+\f1\b0 .kr control bus for triggering grains
+\f0\b \
+bufBus - 
+\f1\b0 .kr control bus for selecting which buffer to get the grain source audio from
+\f0\b \
+rateBus - 
+\f1\b0 .kr control bus for grain playback rate
+\f0\b \
+posBus - 
+\f1\b0 .kr control bus for position in source buffer (in percent. 1.0= end of buffer)
+\f0\b \
+durBus - 
+\f1\b0 .kr control bus for grain duration (in seconds)
+\f0\b \
+panBus - 
+\f1\b0 .kr control bus for grain panning (-1 to 1)
+\f0\b \
+ampBus - 
+\f1\b0 .kr control bus for grain amplitude
+\f0\b \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f2\b0\fs18 \cf0 \
+\
+s.boot;\
+\
+\cf3 //-- prepare some buffers\cf0 \
+~length= 1;		\cf3 //segment lengths in seconds - should be the same for positions to scan correctly\cf0 \
+~b1= \cf2 RedBuffer\cf0 (s, \cf4 "sounds/a11wlk01.wav"\cf0 , 0.1, ~length);\
+~b2= \cf2 RedBuffer\cf0 (s, \cf4 "sounds/a11wlk01.wav"\cf0 , 0.3, ~length);\
+~b3= \cf2 RedBuffer\cf0 (s, \cf4 "sounds/a11wlk01.wav"\cf0 , 0.5, ~length);\
+\
+\cf3 //-- create and start the granulator object\cf0 \
+r= \cf2 RedKGrain\cf0 (s);\
+r.start;\
+\
+\cf3 //again note that all lfo synths must send controlrate\cf0 \
+\cf3 //and be careful to free lfo synths before creating new ones - to not loose handle\cf0 \
+\
+\cf3 //-- init lfo synth\cf0 \
+(\
+\cf3 //create lfo synth for trigger - here 30 hz\cf0 \
+a= \cf2 SynthDef\cf0 (\cf4 "trig"\cf0 , \{\cf2 Out\cf0 .kr(r.trigBus.index, \cf2 Impulse\cf0 .kr(30))\}).play;\
+\cf3 //create lfo synth for bufnum - static at ~b1 bufnum\cf0 \
+b= \cf2 SynthDef\cf0 (\cf4 "buf"\cf0 , \{\cf2 Out\cf0 .kr(r.bufBus.index, \cf2 DC\cf0 .kr(~b1.bufnum))\}).play;\
+\cf3 //create lfo synth for rate - slowly rising\cf0 \
+c= \cf2 SynthDef\cf0 (\cf4 "rate"\cf0 , \{\cf2 Out\cf0 .kr(r.rateBus.index, \cf2 LFSaw\cf0 .kr(0.1, 0, 0.1, 1))\}).play;\
+\cf3 //create lfo synth for position - static at 0\cf0 \
+d= \cf2 SynthDef\cf0 (\cf4 "pos"\cf0 , \{\cf2 Out\cf0 .kr(r.posBus.index, \cf2 DC\cf0 .kr(0))\}).play;\
+\cf3 //create lfo synth for duration - slow drunk walk\cf0 \
+e= \cf2 SynthDef\cf0 (\cf4 "dur"\cf0 , \{\cf2 Out\cf0 .kr(r.durBus.index, \cf2 LFNoise2\cf0 .kr(1, 0.1, 0.11))\}).play;\
+\cf3 //create lfo synth for amplitude control - static at 0.4\cf0 \
+f= \cf2 SynthDef\cf0 (\cf4 "pan"\cf0 , \{\cf2 Out\cf0 .kr(r.panBus.index, \cf2 DC\cf0 .kr(0.4))\}).play;\
+\cf3 //create lfo synth for amplitude control - static at 0.4\cf0 \
+g= \cf2 SynthDef\cf0 (\cf4 "amp"\cf0 , \{\cf2 Out\cf0 .kr(r.ampBus.index, \cf2 DC\cf0 .kr(0.4))\}).play;\
+)\
+\
+\
+\cf3 //-- trigBus\cf0 \
+\cf3 //change trigger control lfo to another dusty one\cf0 \
+a.free;\
+a= \cf2 SynthDef\cf0 (\cf4 "trig"\cf0 , \{\cf2 Out\cf0 .kr(r.trigBus.index, \cf2 Dust\cf0 .kr(10))\}).play;\
+\
+\cf3 //change to static fast trigger\cf0 \
+a.free;\
+a= \cf2 SynthDef\cf0 (\cf4 "trig"\cf0 , \{\cf2 Out\cf0 .kr(r.trigBus.index, \cf2 Impulse\cf0 .kr(140))\}).play;\
+\
+\cf3 //let mouseX control trigger rate\cf0 \
+a.free;\
+a= \cf2 SynthDef\cf0 (\cf4 "trig"\cf0 , \{\cf2 Out\cf0 .kr(r.trigBus.index, \cf2 Impulse\cf0 .kr(\cf2 MouseX\cf0 .kr(2, 200)))\}).play;\
+\
+\
+\cf3 //-- bufBus\cf0 \
+\cf3 //change buffer to ~b2\cf0 \
+b.free;\
+b= \cf2 SynthDef\cf0 (\cf4 "buf"\cf0 , \{\cf2 Out\cf0 .kr(r.bufBus.index, \cf2 DC\cf0 .kr(~b2.bufnum))\}).play;\
+\
+\cf3 //play from the 3 buffers in cycle\cf0 \
+b.free;\
+b= \cf2 SynthDef\cf0 (\cf4 "buf"\cf0 , \{\cf2 Out\cf0 .kr(r.bufBus.index, \cf2 Demand\cf0 .kr(\cf2 Impulse\cf0 .kr(4), 0, \cf2 Dseq\cf0 ([~b1.bufnum, ~b2.bufnum, ~b3.bufnum], \cf2 inf\cf0 )))\}).play;\
+\
+\cf3 //quick drunk walk change buffers (little bit dangerous if ~b1-3 not following each other here)\cf0 \
+b.free;\
+b= \cf2 SynthDef\cf0 (\cf4 "buf"\cf0 , \{\cf2 Out\cf0 .kr(r.bufBus.index, \cf2 Demand\cf0 .kr(\cf2 Impulse\cf0 .kr(100), 0, \cf2 Dbrown\cf0 (~b1.bufnum, ~b3.bufnum, 1, \cf2 inf\cf0 )))\}).play;\
+\
+\cf3 //slow back and forth change of buffers - 4 changes per segment length\cf0 \
+b.free;\
+b= \cf2 SynthDef\cf0 (\cf4 "buf"\cf0 , \{\cf2 Out\cf0 .kr(r.bufBus.index, \cf2 Demand\cf0 .kr(\cf2 Impulse\cf0 .kr(~length.reciprocal*4), 0, \cf2 Dseq\cf0 ([~b1.bufnum, ~b2.bufnum, ~b3.bufnum, ~b2.bufnum], \cf2 inf\cf0 )))\}).play;\
+\
+\cf3 //faster back and forth change of buffers - 32 changes per segment length\cf0 \
+b.free;\
+b= \cf2 SynthDef\cf0 (\cf4 "buf"\cf0 , \{\cf2 Out\cf0 .kr(r.bufBus.index, \cf2 Demand\cf0 .kr(\cf2 Impulse\cf0 .kr(~length.reciprocal*32), 0, \cf2 Dseq\cf0 ([~b1.bufnum, ~b2.bufnum, ~b3.bufnum, ~b2.bufnum], \cf2 inf\cf0 )))\}).play;\
+\
+\
+\cf3 //-- rateBus\cf0 \
+\cf3 //varying rate with drunk walk\cf0 \
+c.free;\
+c= \cf2 SynthDef\cf0 (\cf4 "rate"\cf0 , \{\cf2 Out\cf0 .kr(r.rateBus.index, \cf2 LFNoise2\cf0 .kr(1, 0.3, 1))\}).play;\
+\
+\cf3 //halfspeed backwards static rate\cf0 \
+c.free;\
+c= \cf2 SynthDef\cf0 (\cf4 "rate"\cf0 , \{\cf2 Out\cf0 .kr(r.rateBus.index, \cf2 DC\cf0 .kr(-0.5))\}).play;\
+\
+\cf3 //falling rate during segment length\cf0 \
+c.free;\
+c= \cf2 SynthDef\cf0 (\cf4 "rate"\cf0 , \{\cf2 Out\cf0 .kr(r.rateBus.index, \cf2 LFSaw\cf0 .kr(~length.reciprocal.neg, 0, 0.1, 1))\}).play;\
+\
+\
+\cf3 //-- posBus\cf0 \
+\cf3 //set position to normal speed scanning forwards\cf0 \
+d.free;\
+d= \cf2 SynthDef\cf0 (\cf4 "pos"\cf0 , \{\cf2 Out\cf0 .kr(r.posBus.index, \cf2 LFSaw\cf0 .kr(~length.reciprocal, 0, 0.5, 0.5))\}).play;\
+\
+\cf3 //position slow scanning forwards\cf0 \
+d.free;\
+d= \cf2 SynthDef\cf0 (\cf4 "pos"\cf0 , \{\cf2 Out\cf0 .kr(r.posBus.index, \cf2 LFSaw\cf0 .kr(0.4, 0, 0.5, 0.5))\}).play;\
+\
+\cf3 //position slow scanning backwards\cf0 \
+d.free;\
+d= \cf2 SynthDef\cf0 (\cf4 "pos"\cf0 , \{\cf2 Out\cf0 .kr(r.posBus.index, \cf2 LFSaw\cf0 .kr(-0.5, 0, 0.5, 0.5))\}).play;\
+\
+\cf3 //mouseX controls position\cf0 \
+d.free;\
+d= \cf2 SynthDef\cf0 (\cf4 "pos"\cf0 , \{\cf2 Out\cf0 .kr(r.posBus.index, \cf2 MouseX\cf0 .kr(0, 1, lag:1))\}).play;\
+\
+\cf3 //mouseXY control + a little random\cf0 \
+d.free;\
+d= \cf2 SynthDef\cf0 (\cf4 "pos"\cf0 , \{\cf2 Out\cf0 .kr(r.posBus.index, \cf2 LFNoise2\cf0 .kr(120, \cf2 MouseY\cf0 .kr(0, 0.1), \cf2 MouseX\cf0 .kr(0, 1, lag:1)))\}).play;\
+\
+\cf3 //back to static position\cf0 \
+d.free;\
+d= \cf2 SynthDef\cf0 (\cf4 "pos"\cf0 , \{\cf2 Out\cf0 .kr(r.posBus.index, \cf2 DC\cf0 .kr(0))\}).play;\
+\
+\
+\cf3 //-- durBus\cf0 \
+\cf3 //change to short static duration\cf0 \
+e.free;\
+e= \cf2 SynthDef\cf0 (\cf4 "dur"\cf0 , \{\cf2 Out\cf0 .kr(r.durBus.index, \cf2 DC\cf0 .kr(0.02))\}).play;\
+\
+\cf3 //random duration between 0.01 and 0.41\cf0 \
+e.free;\
+e= \cf2 SynthDef\cf0 (\cf4 "dur"\cf0 , \{\cf2 Out\cf0 .kr(r.durBus.index, \cf2 LFNoise0\cf0 .kr(4, 0.2, 0.21))\}).play;\
+\
+\cf3 //mouseY controls duration\cf0 \
+e.free;\
+e= \cf2 SynthDef\cf0 (\cf4 "dur"\cf0 , \{\cf2 Out\cf0 .kr(r.durBus.index, \cf2 MouseY\cf0 .kr(0, 0.6))\}).play;\
+\
+\cf3 //slow phasor control duration\cf0 \
+e.free;\
+e= \cf2 SynthDef\cf0 (\cf4 "dur"\cf0 , \{\cf2 Out\cf0 .kr(r.durBus.index, \cf2 LFSaw\cf0 .kr(0.4, 0, 0.04, 0.05))\}).play;\
+\
+\
+\cf3 //-- panBus\cf0 \
+\cf3 //sine panning\cf0 \
+f.free;\
+f= \cf2 SynthDef\cf0 (\cf4 "pan"\cf0 , \{\cf2 Out\cf0 .kr(r.panBus.index, \cf2 SinOsc\cf0 .kr(4))\}).play;\
+\
+\cf3 //slow random panning\cf0 \
+f.free;\
+f= \cf2 SynthDef\cf0 (\cf4 "pan"\cf0 , \{\cf2 Out\cf0 .kr(r.panBus.index, \cf2 LFNoise2\cf0 .kr(0.3))\}).play;\
+\
+\cf3 //random discrete panning at fast rate\cf0 \
+f.free;\
+f= \cf2 SynthDef\cf0 (\cf4 "pan"\cf0 , \{\cf2 Out\cf0 .kr(r.panBus.index, \cf2 Demand\cf0 .kr(\cf2 Impulse\cf0 .kr(100), 0, \cf2 Dseq\cf0 ([-0.9, 0, 0.9], \cf2 inf\cf0 )))\}).play;\
+\
+\
+\cf3 //-- ampBus\cf0 \
+\cf3 //fast jumps in amplitude\cf0 \
+g.free;\
+g= \cf2 SynthDef\cf0 (\cf4 "amp"\cf0 , \{\cf2 Out\cf0 .kr(r.ampBus.index, \cf2 LFNoise0\cf0 .kr(40, 0.2, 0.2).max(0))\}).play;\
+\
+\cf3 //fade out during each segment\cf0 \
+g.free;\
+g= \cf2 SynthDef\cf0 (\cf4 "amp"\cf0 , \{\cf2 Out\cf0 .kr(r.ampBus.index, \cf2 LFSaw\cf0 .kr(~length.reciprocal.neg, 0, 0.5, 0.5))\}).play;\
+\
+\
+\cf3 //-- more complex example\cf0 \
+[a, b, c, d, e, f, g].do(\cf2 _\cf0 .free);\
+(\
+\cf3 //master trigger controlling the other lfos\cf0 \
+a= \cf2 SynthDef\cf0 (\cf4 "trig"\cf0 , \{\cf2 Out\cf0 .kr(r.trigBus.index, \cf2 Impulse\cf0 .kr(\cf2 LFNoise1\cf0 .kr(0.5, 10, 80)))\}).play;\
+b= \cf2 SynthDef\cf0 (\cf4 "buf"\cf0 , \{\cf2 Out\cf0 .kr(r.bufBus.index, \cf2 DC\cf0 .kr(~b1.bufnum))\}).play;\
+c= \cf2 SynthDef\cf0 (\cf4 "rate"\cf0 , \{\cf2 Out\cf0 .kr(r.rateBus.index, \cf2 Demand\cf0 .kr(\cf2 In\cf0 .kr(r.trigBus.index), 0, \cf2 Dseq\cf0 ([1, 2], \cf2 inf\cf0 )))\}).play;\
+d= \cf2 SynthDef\cf0 (\cf4 "pos"\cf0 , \{\cf2 Out\cf0 .kr(r.posBus.index, \cf2 Demand\cf0 .kr(\cf2 In\cf0 .kr(r.trigBus.index), 0, \cf2 Dseq\cf0 ([\cf2 Dseries\cf0 (0, 0.002, 900)], \cf2 inf\cf0 )))\}).play;\
+e= \cf2 SynthDef\cf0 (\cf4 "dur"\cf0 , \{\cf2 Out\cf0 .kr(r.durBus.index, \cf2 Demand\cf0 .kr(\cf2 In\cf0 .kr(r.trigBus.index), 0, \cf2 Dseq\cf0 ([\cf2 Dseries\cf0 (0.01, 0.001, 100)], \cf2 inf\cf0 )))\}).play;\
+f= \cf2 SynthDef\cf0 (\cf4 "pan"\cf0 , \{\cf2 Out\cf0 .kr(r.panBus.index, \cf2 Demand\cf0 .kr(\cf2 In\cf0 .kr(r.trigBus.index), 0, \cf2 Dseq\cf0 ([-0.9, 0, 0.9], \cf2 inf\cf0 )))\}).play;\
+g= \cf2 SynthDef\cf0 (\cf4 "amp"\cf0 , \{\cf2 Out\cf0 .kr(r.ampBus.index, \cf2 DC\cf0 .kr(0.4))\}).play;\
+)\
+\
+\
+\cf3 //-- clean up and stop\cf0 \
+[a, b, c, d, e, f, g, ~b1, ~b2, ~b3].do(\cf2 _\cf0 .free);\
+r.free\
+}

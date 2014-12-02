@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.46">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #a53317}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a8220e}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0013bb}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a53317}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #001cbb}
+span.s3 {text-decoration: underline ; color: #0018e8}
+span.s4 {color: #000000}
+span.s5 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>MagicPreset<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>explanation of what MagicPreset is and/or does</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p3"><br></p>
+<p class="p1">There are several techniques for saving objects to files in SuperCollider (e.g. Object.writeArchive and readArchive), but sometimes it's useful to keep your data in the same file as the code that refers to it. <span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">MagicPreset makes this possible by storing the data in "magic presets," which are specially formatted comments at the bottom of the current Document.<span class="Apple-converted-space">  </span>This allows you to see at a glance all the data that's associated with your code, and avoid keeping track of multiple files.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="../Core/Archive.html"><span class="s2">Object</span></a><span class="s2">,</span> <a href="../Core/Archive.html"><span class="s3">Archive</span></a></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Some Important Issues Regarding MagicPreset</b></p>
+<p class="p2"><br></p>
+<p class="p1">MagicPreset has only been tested with the SuperCollider app on OS X, and may not function correctly in other environments.</p>
+<p class="p2"><br></p>
+<p class="p1">The specially formatted comments can be moved to anywhere in the file, but they must each be on a single line.<span class="Apple-converted-space">  </span>Editing or deleting the special comments will of course change or remove the data.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*put (key, value, doc)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Store some data in a magic preset.<span class="Apple-converted-space">  </span>The data can be any object that can be stored using asCompileString (i.e. most SuperCollider objects apart from some Functions).</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>key </b>- A name for the magic preset.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>value </b>- An object to be stored.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>doc </b>- A Document in which to store the magic preset.<span class="Apple-converted-space">  </span>Defaults to the current Document.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example: store the data [1,2,3,4,5] in the magic preset presetName:</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">MagicPreset</span>.put("presetName", [1,2,3,4,5]);</p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// or the equivalent</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">MagicPreset</span>.["presetName"] = [1,2,3,4,5];</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*at (key, doc)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Retrieve the data stored in a "magic preset."<span class="Apple-converted-space">  </span>If a magic preset with the given name does not exist, this method will return nil.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>key </b>- A String or Symbol representing the name of the magic preset.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>doc </b>- The Document in which the magic preset is stored.<span class="Apple-converted-space">  </span>Default is the current Document.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example: get the data stored in presetName and store it in x.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = <span class="s2">MagicPreset</span>.at("presetName");</p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// or the equivalent</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = <span class="s2">MagicPreset</span>.["presetName"];</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b>Storing multiple data items</b></p>
+<p class="p12"><br></p>
+<p class="p6">A handy way to store multiple data items in one magic preset is to use an Event:</p>
+<p class="p7"><br></p>
+<p class="p13">// create an event and store it in a magic preset</p>
+<p class="p14">(</p>
+<p class="p14">d = (</p>
+<p class="p14"><span class="Apple-tab-span">	</span>answer: 42.0,</p>
+<p class="p14"><span class="Apple-tab-span">	</span>anArray: [1,2,3,4,5],</p>
+<p class="p14"><span class="Apple-tab-span">	</span>aString: <span class="s5">"Hello"</span></p>
+<p class="p14">);</p>
+<p class="p15">MagicPreset<span class="s4">.[</span><span class="s5">"myData"</span><span class="s4">] = e;</span></p>
+<p class="p14">)</p>
+<p class="p3"><br></p>
+<p class="p13">// retrieve the data and examine part of it</p>
+<p class="p14">(</p>
+<p class="p15"><span class="s4">e = </span>MagicPreset<span class="s4">.[</span><span class="s5">"myData"</span><span class="s4">];</span></p>
+<p class="p14">e.answer.postln;</p>
+<p class="p14">)</p>
+<p class="p2"><br></p>
+<p class="p11"><b>Backing up magic presets</b></p>
+<p class="p12"><br></p>
+<p class="p1">You can easily back up magic presets by copying the corresponding comment at the bottom of the file and giving it a new name (i.e. by changing the text in parentheses after ___MAGIC_PRESET).<span class="Apple-converted-space">  </span>This will create a new magic preset with the new name, containing a copy of the data.</p>
+<p class="p2"><br></p>
+<p class="p11"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p16">// store some magic presets:</p>
+<p class="p14"><span class="s2">MagicPreset</span>.[\test1] = [1,2,3];</p>
+<p class="p14"><span class="s2">MagicPreset</span>.[\test2] = [4,5,6];</p>
+<p class="p16">// note that the magic presets have appeared at the bottom of the file.</p>
+<p class="p3"><br></p>
+<p class="p16">// retrieve the data:</p>
+<p class="p14"><span class="s2">MagicPreset</span>.[\test1].postln;</p>
+<p class="p14"><span class="s2">MagicPreset</span>.[\test2].postln;</p>
+<p class="p3"><br></p>
+<p class="p16">// you can update already existing magic presets:</p>
+<p class="p14"><span class="s2">MagicPreset</span>.[\test1] = [7,8,9];</p>
+<p class="p16">// note that the existing "test1" magic preset has been updated, rather than a new one being added.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

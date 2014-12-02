@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.46">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0b15e8}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #4b52b1}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #3a3e80}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #3f3d37}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #474da6}
+span.s5 {color: #3e4282}
+span.s6 {color: #4b52b1}
+span.s7 {color: #0c16f9}
+span.s8 {color: #0000ff}
+span.s9 {font: 9.0px Monaco}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Hadron<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a graphical environment for live performance and composition</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">v1.6 see <a href="Hadron-Changelog.html"><span class="s3">Hadron-Changelog</span></a></span></p>
+<p class="p4"><br></p>
+<p class="p1">Hadron is a graphical patching environment aimed at live performance and composition. For this cause, it employs a class based plugin system. The plugins simply have audio inputs/outputs and their own GUI windows, and the connections between different plugins are handled automatically by the system (directed by the Hadron GUI). For the patcher paradigm, Hadron uses the only thing a patching based system is good at: handling audio connections in a visual manner (the cable connections analogy). So the patcher GUI is not about handling logic, it's only about routing audio around, and the logic side of things are handled by the plugins themselves in the good way, with code. Hadron is designed to make different chunks of sound producing code come together, so it has a simple plugin interface; it was designed with the "you want your code in the system, you wrap it as a plugin" idea in mind. It is not designed for avoiding coding, or changing the way one codes with SuperCollider, it just helps bringing pieces of code together to make things happen, and provides facilities to make all easier.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2"><b>See also:</b> <a href="HadronPlugin.html"><span class="s4">HadronPlugin</span></a></span><span class="s5"> <a href="HadronModTargetControl.html"><span class="s6">HadronModTargetControl</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1">If you have HadronPlugins <a href="SC://Quark"><span class="s7">Quark</span></a> checked out, see: <a href="../../HadronPlugins/Help/HadronPlugins.html"><span class="s8">HadronPlugins</span></a></p>
+<p class="p6"><br></p>
+<p class="p7"><b>Basic Usage:</b></p>
+<p class="p2"><br></p>
+<p class="p1">To launch the Hadron GUI, run:</p>
+<p class="p2"><br></p>
+<p class="p8">Hadron<span class="s2">.new;</span></p>
+<p class="p2"><br></p>
+<p class="p1">The status bar will in most cases assist you.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">There are two ways of adding a new plugin instance to the system. The first and most useful way is by using the canvas. When you click "Show Canvas" a blank white canvas will show up. To add a plugin to the canvas, right click on the canvas, and write the plugin name to the appearing text field. The plugins included in the distro is:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3"><a href="../hrplugins/Help/HrADC.html">HrADC</a></span></p>
+<p class="p3"><span class="s3"><a href="../hrplugins/Help/HrDAC.html">HrDAC</a></span></p>
+<p class="p3"><span class="s3"><a href="../hrplugins/Help/HrFreeVerb.html">HrFreeVerb</a></span></p>
+<p class="p3"><span class="s3"><a href="../hrplugins/Help/HrStereoMixer.html">HrStereoMixer</a></span></p>
+<p class="p3"><span class="s3"><a href="../hrplugins/Help/HrStereoSplitter.html">HrStereoSplitter</a></span></p>
+<p class="p3"><span class="s3"><a href="../hrplugins/Help/HrSimpleModulator.html">HrSimpleModulator</a></span></p>
+<p class="p3"><span class="s3"><a href="../hrplugins/Help/HrDIYSynth.html">HrDIYSynth</a></span></p>
+<p class="p3"><span class="s3"><a href="../hrplugins/Help/HrWrapSynth.html">HrWrapSynth</a></span></p>
+<p class="p2"><br></p>
+<p class="p1">You may want to check the help files of each to find out what they do.</p>
+<p class="p2"><br></p>
+<p class="p1">After writing the name, you can write an "ident" name for your instance in parenthesis (no spaces allowed in ident name), to make it easier to identify the particular instance if there are or will be more than one instance of the same plugin. After the ident, if the plugin receives any parameters, you can write them too (all space separated).</p>
+<p class="p2"><br></p>
+<p class="p1">So an example would be:<span class="Apple-converted-space">  </span>HrStereoMixer (inputmixer) 8</p>
+<p class="p6"><br></p>
+<p class="p1">This will crete an instance on canvas with 16 inputs and 2 outputs, and a GUI for the created plugin. You can hide the GUI by pressing "Hide". To see it again, select it from the menu from the main Hadron window.</p>
+<p class="p2"><br></p>
+<p class="p1">The other way of adding plugins is using the "New Inst." button. Pretty straightforward; select the plugin from the menu, enter ident name (optional, and you don't need parenthesis here), enter extra args (if your plugin needs or supports them) and click "Ok". The instance will be added, and you can see it on canvas (at point 100x100).</p>
+<p class="p6"><br></p>
+<p class="p7"><b>The Hadron GUI</b></p>
+<p class="p6"><br></p>
+<p class="p1">The New Inst. button opens a new window where you can initialize new plugin instances. "Ident" is the name you give to the instance to help you discriminate that one from others (and is optional), and "Extra args." is the space separated arguments you supply for the plugins (if they use any).</p>
+<p class="p2"><br></p>
+<p class="p1">The PopUpMenu you see on the main Hadron GUI is the list of alive and running plugins. Click on one to bring its window to front (unhides if necessary).</p>
+<p class="p2"><br></p>
+<p class="p1">Save saves your project, and Load loads a project from file.</p>
+<p class="p2"><br></p>
+<p class="p1">The "Collide" button sends a message to all alive plugins (runs their "collide" method), if they make use of it.</p>
+<p class="p2"><br></p>
+<p class="p1">The Exit button quits the application.</p>
+<p class="p2"><br></p>
+<p class="p1">You can show and hide the canvas by using the "Show/Hide Canvas" button.</p>
+<p class="p2"><br></p>
+<p class="p1">"?" button shows this help file.</p>
+<p class="p6"><br></p>
+<p class="p7"><b>Keyboard Shortcuts / Commands</b></p>
+<p class="p6"><br></p>
+<p class="p1">There are various keyboard triggers that Hadron interprets.</p>
+<p class="p2"><br></p>
+<p class="p1">* When working on the canvas, the "h" key hides the canvas.</p>
+<p class="p2"><br></p>
+<p class="p1">* When the canvas view is focused, pressing "o" orders the nodes belonging to plugin instances on the server, with respect to their vertical placement / ordering on the canvas.</p>
+<p class="p2"><br></p>
+<p class="p1">* When working on the canvas selecting one or two plugins and pressing "c" brings up the connection manager where you can enter comma separated output / input pairs to issue connections. The most likely connection you'd want to make will be preset in the manager textbox.</p>
+<p class="p2"><br></p>
+<p class="p1">* On the canvas, "Shift+d" combination duplicates the selected plugins.</p>
+<p class="p2"><br></p>
+<p class="p1">* When a plugin GUI is on focus, pressing "Shifth + h" will open its help file.</p>
+<p class="p2"><br></p>
+<p class="p1">* When the canvas view is on focus, pressing "q" will execute "Server.default.queryAllNodes".</p>
+<p class="p6"><br></p>
+<p class="p7"><b>Working on the Canvas</b></p>
+<p class="p6"><br></p>
+<p class="p1">Connections in Hadron are always handled from output to input (source to target). To connect outputs of one instance to the inputs of another, you have two options:</p>
+<p class="p2"><br></p>
+<p class="p1">1- Hold shift key and click on an instance residing on canvas. It will turn to green. That means it is set as a source. Now Hold shift again and click on your target instance, and a small window will pop up. You need to input comma separated "output, input" pairs. Outlet and inlet indexes start from 1.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">For example, To connect outputs 1 and 2 of plugin A to inputs 1 and 2 of plugin B:</p>
+<p class="p2"><br></p>
+<p class="p1">* Shift + click on A (a turns to green)</p>
+<p class="p1">* Shift + click on B</p>
+<p class="p1">* Type "1,1,2,2" (without the quotes) to the window. This means: Connect out 1 to input 1, output 2 to input 2.</p>
+<p class="p2"><br></p>
+<p class="p1">To disconnect an output, connect it to number 0 (zero). For example typing "1,0,2,0" (without the quotes) will disconnect the outputs of the source instrument.</p>
+<p class="p2"><br></p>
+<p class="p1">You should see a visual representation of the connection on the canvas.</p>
+<p class="p2"><br></p>
+<p class="p1">With Hadron, you can't directly connect a single output to a multiple number of inputs, and you can't connect multiple number of outputs to a single input. To achieve this functionality, you should use a mixer and/or splitter instance. See the help for <a href="../plugins/Help/HrStereoMixer.html"><span class="s6">HrStereoMixer</span></a> and <a href="../plugins/Help/HrStereoSplitter.html"><span class="s6">HrStereoSplitter</span></a>. This limitation/function makes things look cleaner on canvas and keeps the plugin implementation easier.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p1">2- The second way of connecting things is easier if you have your source instance over the target instance on canvas vertically. Just select the two instances by dragging your mouse on the canvas and press the "c" key on your keyboard. The same window will pop up and you won't have to do the Shift + click dance.</p>
+<p class="p2"><br></p>
+<p class="p1">Whether you choose 1 or 2, I think both methods are faster than the PD/Max way of connecting objects together (i.e. using the mouse to draw cables from an outlet to an inlet).</p>
+<p class="p2"><br></p>
+<p class="p1">To delete instances, from the canvas, select the instances (drag your mouse or click on objects directly, selected objects appear darker) and hit delete button on your keyboard. You can also use the "Kill" button found on every plugins GUI.</p>
+<p class="p2"><br></p>
+<p class="p1">Double clicking on an object brings the GUI of the instance to front, and unhides it if necessary.</p>
+<p class="p2"><br></p>
+<p class="p7"><b>Node Ordering</b></p>
+<p class="p6"><br></p>
+<p class="p1">Nodes are not ordered automatically. When the canvas view is focused, pressing the "o" key will order all your plugin instance groups with respect to their vertical alignment on the canvas. So the topmost plugin on your canvas will be at the top of the chain, and the bottom plugin will be at the end of the chain.</p>
+<p class="p2"><br></p>
+<p class="p1">When you add a new instance to the system, the node ordering procedure is triggered by default. But when you move things around, if you want to make sure your nodes are ordered, you need to press the "o" key. A status message on the main Hadron window will inform you about the operation.</p>
+<p class="p2"><br></p>
+<p class="p1">If you press the "q" key when the canvas view is focused, Hadron will issue "Server.default.queryAllNodes" so you can see the current order of the nodes printed on the post window.</p>
+<p class="p2"><br></p>
+<p class="p1">To make sure your own plugins will be included in the ordering procedure, you must target your all Synth and Group instances to the "group" variable reserved for your instance, while writing a plugin.</p>
+<p class="p6"><br></p>
+<p class="p7"><b>Saving and Loading Projects</b></p>
+<p class="p6"><br></p>
+<p class="p1">Hadron has save and load ability. when you save your project, you give it a name, and the state of your patch will be saved to a file. You can load your project later on, using the "Load" button on the main Hadron window.</p>
+<p class="p6"><br></p>
+<p class="p7"><b>Midi Learn and Automation</b></p>
+<p class="p6"><br></p>
+<p class="p1">The current sample set of plugins shipping with Hadron uses the <a href="../widgets/Help/HrSlider.html"><span class="s6">HrSlider</span></a> widget which is a normal slider with midi learn and automation record capabilities. Check its help file to find out how to use it. Midi bindings and automation data is also saved alongside with your patch.</p>
+<p class="p6"><br></p>
+<p class="p7"><b>Class Variables</b></p>
+<p class="p9"><br></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>plugins</b></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>A List. Includes only the default plugins Hadron can use.<span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>loadDelay</b></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Not necessary to modify under normal circumstances. If your saved patch needs more than 2 seconds to send all its synths to server, and if you have problems with your state loading procedure, you might consider increasing this value to more seconds. Because the saved parameters for plugins are sent to the clients after loadDelay seconds pass, and if your instances are not ready by that time, you may experience problems.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// I have a heavy patch!</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Hadron</span>.loadDelay = 5;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p7"><b>Writing Your Own Plugins</b></p>
+<p class="p6"><br></p>
+<p class="p1">To make use of Hadron, you need to wrap your sound generating codes as plugins. All plugins Hadron use are SuperCollider classes, and all inherit from the class <a href="HadronPlugin.html"><span class="s6">HadronPlugin</span></a>. This wrapper base class handles the integration of your plugin with the environment, leaving you dealing with details / things that are only relevant with your own ideas, as much as possible. To read the whole guideline:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3"><a href="Writing-Hadron-Plugins.html">Writing Hadron Plugins</a></span></p>
+<p class="p2"><br></p>
+<p class="p1">If you make something that might be of use for others, you might consider sharing them with the community. If you have Quarks SVN access, you can add them to the HadronPlugins project. If you don't have SVN access, and don't want to deal with it for this, please let me know (you may announce from the mailing list or use my contact info below) that you want to have your work included and I'll add your plugins to the project. If you go through the boring task of providing a simple and descriptive help file for own your plugins it would really be appreciated.</p>
+<p class="p2"><br></p>
+<p class="p1">Access my contact info from my website:</p>
+<p class="p1">http://www.batuhanbozkurt.com</p>
+<p class="p2"><br></p>
+<p class="p1">Batuhan Bozkurt - 2009</p>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad1a17}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad1a17; min-height: 12.0px}
+span.s1 {color: #003ca9}
+span.s2 {color: #4d4d4d}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SETOServerView</b></p>
+<p class="p2">/*</p>
+<p class="p2">Author:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>2004, 2005, 2006</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Till Bovermann<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Neuroinformatics Group<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Faculty of Technology<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Bielefeld University</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Germany</p>
+<p class="p2">*/</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">(</p>
+<p class="p4">e = ();</p>
+<p class="p4">e.tServer = <span class="s1">SETOServer</span>.new(<span class="s2">"_ixya"</span>, <span class="s1">SETOdump</span>);</p>
+<p class="p4">e.tServer.gui;</p>
+<p class="p4">e.tServer.view.background = <span class="s1">Color</span>.gray(0.5, 0.5);</p>
+<p class="p2">/*10.do{|i| e.tServer.setWithFormat("ixya", i, [0, i/10, 0.5, 2pi.rand])};</p>
+<p class="p2">e.tServer.alive((0..9))</p>
+<p class="p2">*/</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p4"><span class="s1">var</span> num = 20, w;</p>
+<p class="p4">num.do{<span class="s1">|i|</span><span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>w = 2pi * (i/(num));</p>
+<p class="p4"><span class="Apple-tab-span">	</span>e.tServer.setWithFormat(<span class="s2">"ixya"</span>, i, [0, (sin(w)+1*0.4+0.1), (cos(w)+1*0.4+0.1), w])</p>
+<p class="p4">};</p>
+<p class="p4">e.tServer.alive((0 .. num-1))</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">e.tServer.setWithFormat(<span class="s2">"xya"</span>, 2, [1.0.rand, 0.5, 1])</p>
+<p class="p4">e.tServer.alive([2])</p>
+<p class="p4">e.tServer.allAlive</p>
+</body>
+</html>

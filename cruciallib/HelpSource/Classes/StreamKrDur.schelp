@@ -1,0 +1,294 @@
+CLASS:: StreamKrDur
+summary:: a 'control' rate player that combines a stream of values with a stream of durations and plays them
+categories:: Libraries>crucial>Players
+related:: Classes/Stream2Trig
+
+DESCRIPTION:: This plays a pattern in real time in the language, and sends those values as /c_set messages to its bus on the server.
+Durations are specified in beats by a second pattern.
+
+Timings are exact, its messages are sent to the server with a small latency period before they should be played.  That is to say when you start playing a StreamKrDur, it will run slightly and exactly ahead of time.
+It is cancellable and stoppable within Server-latency.
+
+
+code::
+// dalek mating season I
+(
+	f = StreamKrDur(
+			Prand(Array.fill(rrand(4,16),{ rrand(20,80).midicps }),inf),
+			 0.125,// a float
+			 0.05);
+
+	Tempo.bpm = 100; // times are in beats
+
+	Patch({ arg freq;
+		Saw.ar(freq,0.2)
+	},[
+		f
+	]).play
+)
+::
+
+code::
+(
+	var freq;
+
+	freq =  StreamKrDur(
+	  		Pbrown(40,100,100,inf),
+	  		`[ 1,2, 0.25], // an array
+	  		0.05);
+
+	Tempo.bpm = 100; // times are in beats
+	Patch({ arg freq=440;
+		SinOsc.ar(freq,SinOsc.ar(600,0,0.3))
+		//PMOsc.ar(freq,100,1.0,0,0.3)
+	},[
+		freq
+	]).play
+)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: values
+	a Pattern or Stream of floats
+	or a Ref of an array of values
+
+	1.0
+	Prand([1,0],inf)
+	{ 1.0.rand }
+	`[ 1,0,1,0,] // Ref converted into Pseq([1,0,1,0],inf)
+
+argument:: durations
+	A stream of values for the duration in beats between each value change.
+
+	0.25
+	Prand([0.25,0.5],inf)
+	FuncStream({ rrand(0.125,16.0) })
+	`[1.0,0.25,0.5] // Ref
+
+
+argument:: lag
+lag time for a Lag.kr that will be added to the output.
+		if 0.0 (default) no Lag will be used.
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: values
+
+
+
+METHOD:: durations
+
+
+
+METHOD:: lastValue
+
+
+
+METHOD:: delta
+
+
+
+METHOD:: beat
+
+
+
+METHOD:: skdinit
+
+
+
+METHOD:: didStop
+
+
+
+METHOD:: stopRoutine
+
+
+
+METHOD:: resetRoutine
+
+
+
+METHOD:: spawnToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: didSpawn
+
+
+
+METHOD:: poll
+
+
+
+METHOD:: spec
+
+
+
+METHOD:: children
+
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: guiClass
+
+
+
+
+
+METHOD:: wigglyness
+
+
+
+
+EXAMPLES::
+
+dalek mating season II
+code::
+(
+var freq,freq2,pmindex;
+
+	freq = StreamKrDur(
+			Prand(Array.fill(rrand(4,16),{ rrand(20,80).midicps }),inf),
+			 0.25,// a float
+			 0.1);
+
+	freq2 =   StreamKrDur(
+	  		Pbrown(40,100,100,inf),
+	  		`[ 1,2, 0.25], // an array
+	  		0.05);
+
+	 pmindex = StreamKrDur(
+		  		Pbrown(1.5,3.0,0.1,inf),
+		  		Prand([0.25,0.125,1.0,3.0],inf), // a pattern
+		  		0.1);
+
+	Tempo.bpm = 100; // times are in beats
+	Patch({ arg freq,freq2,pmindex;
+			PMOsc.ar(freq,freq2,pmindex,0,0.3)
+	},[
+		freq,
+		freq2,
+		pmindex
+	]).gui
+)
+::
+
+
+same thing with a separated Instr
+code::
+(
+	Instr([\oscillOrc,\pmosc],{ arg freq=400, freq2=500,pmindex=0,phasemod=0.0,amp=1.0;
+			PMOsc.ar(freq,freq2,pmindex,phasemod,amp)
+	});
+
+	p=Patch.new([ 'oscillOrc', 'pmosc' ],
+	[
+		StreamKrDur(
+			Prand(Array.fill(rrand(4,16),{ rrand(20,80).midicps }),inf),
+			 0.25,// a float
+			 0.1),
+	  	StreamKrDur(
+	  		Pbrown(40,100,100,inf),
+	  		`[ 1,2, 0.25], // an array
+	  		0.05),
+	  	StreamKrDur(
+	  		Pbrown(1.5,3.0,0.1,inf),
+	  		Prand([0.25,0.125,1.0,3.0],inf), // a pattern
+	  		0.1),
+	  	0,
+	  	0.3
+	  ]);
+
+	 p.gui;
+)
+::
+
+A metronome
+code::
+(
+var nome,layout;
+nome = Patch({ arg beat,freq,amp;
+		Decay2.ar(
+			K2A.ar(beat), 0.01,0.11,
+			SinOsc.ar( freq, 0, amp )
+		)
+	},[
+		BeatClockPlayer.new(4.0),
+		StreamKrDur(
+			Pseq([ 750, 500, 300, 500, 750, 500, 400, 500, 750, 500, 400, 500, 750, 500, 400, 500 ],inf),
+			1.0),
+		StreamKrDur(
+			Pseq([1,0.25,0.5,0.25,0.75,0.25,0.5,0.25,0.75,0.25,0.5,0.25,0.75,0.25,0.5,0.25] * 0.01,inf),
+			1.0)
+	]);
+layout = FlowView.new;
+
+ToggleButton(layout,"Nome",{
+	if(nome.isPlaying.not,{ nome.play(atTime: 4) })
+},{
+	if(nome.isPlaying,{ nome.stop })
+},minWidth: 250);
+
+)
+::
+
+In this case since the beat clock, and both stream kr durs are running all at the same tempo, it
+would be slightly more efficient to use an InstrGateSpawner and do separate events. Only one scheduler then instead of 2.
+See the example in InstrGateSpawner
+
+But if you wanted them in different syncs, different streams and a continuos running synth
+(and have fun with the Decay), then this would be a good starting point.
+
+
+With a Pbind you are creating a new event for every note and creating new UGens and a new Synth each time.  This is more like an analog synth:  the oscillators play constantly and they are gated to create notes.
+code::
+(
+
+	Tempo.bpm = 130;
+
+	Instr([\oscillOrc,\trigged, \pmosc],{ arg trig=0.0,freq=400, freq2=500,pmindex=0,phasemod=0.0,amp=1.0;
+			PMOsc.ar(
+				freq,
+				freq2,
+				pmindex,
+				phasemod,
+				Decay2.kr(trig)
+			)
+	});
+
+	p=Patch.new([\oscillOrc,\trigged, \pmosc],
+	[
+		BeatClockPlayer(16.0),
+
+		StreamKrDur(
+			Prand(Array.fill(rrand(4,16),{ rrand(20,80).midicps }),inf),
+			 0.25,// a float
+			 0.1),
+	  	StreamKrDur(
+	  		Pbrown(40,100,100,inf),
+	  		`[ 1,2, 0.25], // an array
+	  		0.05),
+	  	StreamKrDur(
+	  		Pbrown(1.5,3.0,0.1,inf),
+	  		Prand([0.25,0.125,1.0,3.0],inf), // a pattern
+	  		0.1),
+	  	0,
+	  	0.3
+	  ]);
+
+	 p.gui;
+)
+::

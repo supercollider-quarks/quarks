@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0b3091; min-height: 12.0px}
+span.s1 {font: 12.0px Helvetica}
+span.s2 {color: #0000ff}
+span.s3 {color: #001ab2}
+span.s4 {color: #000000}
+span.s5 {color: #606060}
+span.s6 {color: #36701f}
+span.s7 {color: #a41919}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>MixerChannel</b><span class="s1"><b><span class="Apple-converted-space"> </span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3">Creates a single channel for a MixingBoard. Allows any number of channels in and out. Provides full level and pan automation, and support for pre- and post-fader sends.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>23 Jan 2004:</b> Upon pressing cmd-., all existing MixerChannels will attempt to recreate the server infrastructure so that playing may continue. Synths and effects playing through the MixerChannel will not be rebuilt, but faders and sends will continue to function.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>25 July 2004:</b> The <a href="MixingBoard.html"><span class="s2">MixingBoard</span></a> now allows drag-and-drop to assign MixerChannels to GUI slots. MIDI controls for mixers levels can also be assigned to the GUI objects, rather than directly to the mixer, so that you can have a consistent mapping between your MIDI interface and the visual representation, while the mapping to the "physical" mixer is dynamic.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>17 November 2004:</b> MixerChannels handle node execution order in a much more robust way. See detailed help below, "Order of Execution."</p>
+<p class="p2"><br></p>
+<p class="p3"><b>New feature (16 July 2005):</b> The control structure for MixerChannels is now customizable, to allow support for all spatialization techniques. See the <a href="MixerChannelDef.html"><span class="s2">MixerChannelDef</span></a> and <a href="MixerGUIDef.html"><span class="s2">MixerGUIDef</span></a> help files for more details.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Architecture</b><span class="s1"><b><span class="Apple-converted-space"> </span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3">Each MixerChannel resides in three groups on the server, which should contain all the synths playing on that channel. The order of execution should be:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">fadergroup (contains the other 2)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>synthgroup (contains synths)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>effectgroup (contains effects)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>fader synth</p>
+<p class="p2"><br></p>
+<p class="p3">MixerChannel uses an audio bus to handle all signal processing. You may use only part of the bus at either end, allowing a MixerChannel to expand a mono signal to stereo, or reduce a stereo or quad signal to mono (quad support is not currently provided, but you can add it easily using MixerChannelDef).</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Synthdef conventions<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Note: You can avoid many of these details by using the crucial library Instr's and Patches. See <a href="SC://Instr"><span class="s2">Instr</span></a> and <a href="SC://Patch"><span class="s2">Patch</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p3">Your synthdefs must be able to play on any bus to work with MixerChannel. <i>You must not hardwire the output bus</i>. If MixerChannel can't tell the synthdef what bus to use, the signal will never reach the MixerChannel.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5">s = <span class="s3">Server</span>.internal; s.boot;</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s3">SynthDef</span><span class="s4">.new(</span>"pinkfilt"<span class="s4">, {</span></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span></span><span class="s3">arg</span><span class="s4"><span class="Apple-tab-span">	</span>outbus,<span class="Apple-tab-span">	</span></span>// outbus is the standard name used by MixerChannel</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freq, rq;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(outbus, <span class="s3">RLPF</span>.ar(<span class="s3">PinkNoise</span>.ar, freq, rq));</p>
+<p class="p5">}).send(s);</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s4">m = </span><span class="s3">MixerChannel</span><span class="s4">.new(</span><span class="s5">"pinkfilt"</span><span class="s4">, s);<span class="Apple-converted-space">  </span></span>// defaults to mono-to-stereo</p>
+<p class="p6"><br></p>
+<p class="p5">a = m.play(<span class="s5">"pinkfilt"</span>, [<span class="s6">\freq</span>, 2000, <span class="s6">\rq</span>, 0.02]);</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s4">m.free;<span class="Apple-tab-span">	</span></span>// all synths disappear</p>
+<p class="p2"><br></p>
+<p class="p3">Note that if you use MixerChannel.play, you don't have to specify the bus number <i>as long as your synthdef uses </i><b><i>outbus</i></b><i> as the output bus argument</i>. Otherwise, do this:</p>
+<p class="p2"><br></p>
+<p class="p5">a = m.play(<span class="s5">"pinkfilt"</span>, [<span class="s6">\freq</span>, 2000, <span class="s6">\rq</span>, 0.02, <span class="s6">\out</span>, m.inbus.index]);</p>
+<p class="p2"><br></p>
+<p class="p3">Any effect synthdefs you write should read the input signal from outbus and use ReplaceOut.ar(outbus...). If you want the input signal to be included in the effect's output, it's advisable to include an argument for wet/dry level rather than simply using Out to add the effect to the bus, because you have more control:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s3">SynthDef</span><span class="s4">.new(</span>"fx/chorus1x1"<span class="s4">, {</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">arg</span> outbus, delay = 0.01, freq = 0.2, depth = 0.05, wet = 0.5;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> in, out;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>in = <span class="s3">In</span>.ar(outbus, 1);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>out = <span class="s3">DelayN</span>.ar(in, 1, <span class="s3">SinOsc</span>.ar(freq, 0, depth, delay));</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">ReplaceOut</span>.ar(outbus, in*(1-wet).sqrt + out*wet.sqrt);<span class="Apple-converted-space">  </span><span class="s7">// equal power</span></p>
+<p class="p5">}).send(s);</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s4">m.playfx(</span><span class="s5">"fx/chorus1x1"</span><span class="s4">);<span class="Apple-tab-span">	</span></span>// so it goes to effectgroup</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Methods<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p9"><b>Creation and destruction</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(name, server, inChannels = 1, outChannels = 2, level = 0.75, pan = 0, inbus, outbus, completionFunc)</b><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Creates a new instance. You must specify a server. Name is optional, although if you're planning to use MixingBoard, you'll need the name to know which channel is which. Inbus and outbus will be created for you. Outbus defaults to zero (main hardware out), but can be overridden to point to a bus or another MixerChannel, allowing for a MixerChannel to serve as a submix.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*newFromDef(name, defname, server, initValues, inbus, outbus, completionFunc)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Creates an instance using a specific MixerChannelDef. For instance, the following statements will generate functionally equivalent MixerChannels.</p>
+<p class="p2"><br></p>
+<p class="p5">m = <span class="s3">MixerChannel</span>.new(<span class="s6">\new</span>, s, 1, 2, level: 0.25, pan: -0.5);</p>
+<p class="p5">n = <span class="s3">MixerChannel</span>.newFromDef(<span class="s6">\newFromDef</span>, <span class="s6">\mix1x2</span>, s, (level: 0.25, pan: -0.5));</p>
+<p class="p2"><br></p>
+<p class="p3">The initValues should be a dictionary with control names as keys. (key: value, key: value) is a shortcut syntax. Not all controls need be specified--values not assigned here will take the default from the MixerChannelDef.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>free(updateGUI = true)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Frees all the server objects associated with this mixer, buses created by the MixerChannel, and removes the channel from its mixing board (if it has one). UpdateGUI should usually not be specified by the user; it's there to prevent infinitely recursive calls between MixerChannel-free and MixingBoard-free.</p>
+<p class="p2"><br></p>
+<p class="p8"><span class="s4">m.free;<span class="Apple-tab-span">	</span></span>// watch the ugens on the server drop!</p>
+<p class="p2"><br></p>
+<p class="p9"><b>Playing synths<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>play(thing, args)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Thing may be:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>a string representing the name of the synthdef to play</p>
+<p class="p3"><span class="Apple-tab-span">	</span>an Instr (which will be placed in a Patch, and the Patch returned:</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>myPatch = myMixer.play(myInstr, args)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>a Patch (or any subclass of AbstractPlayer)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>an Event Pattern (any pattern that can be .play'ed on its own)</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3">Args are optional, and must be written in an array as in the usual syntax. The synth object will be placed at the tail of synthgroup.</p>
+<p class="p2"><br></p>
+<p class="p3">Returns the synth object (or Patch, if Instr is used).</p>
+<p class="p2"><br></p>
+<p class="p5">a = m.play(<span class="s5">"pinkfilt"</span>, [<span class="s6">\freq</span>, 2000, <span class="s6">\rq</span>, 0.02]);</p>
+<p class="p5">a.free;</p>
+<p class="p2"><br></p>
+<p class="p3">Playing a pattern (without MixerChannel) takes the arguments clock, protoEvent and quant. With MixerChannel, place these parameters into a dictionary (Event) and supply it to the argument.</p>
+<p class="p2"><br></p>
+<p class="p5">p = m.play(<span class="s3">Pbind</span>(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\degree</span>, <span class="s3">Pn</span>(<span class="s3">Pseries</span>(0, 1, 8), <span class="s3">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\dur</span>, 0.125</p>
+<p class="p5">), (quant: 4.0));</p>
+<p class="p6"><br></p>
+<p class="p5">p.stop;</p>
+<p class="p2"><br></p>
+<p class="p3"><b>playfx(name, args)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Differs from play in that the synth object is placed in the effect group.</p>
+<p class="p2"><br></p>
+<p class="p9"><b>Level and pan setting<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>getControl(name)</b></p>
+<p class="p3"><b>setControl(name, value, updateGUI = true, stopAutomation = true, resync = true)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Get or set the value of a control. The additional flags for setControl are used internally; generally you should not override the default.</p>
+<p class="p2"><br></p>
+<p class="p5">m.setControl(<span class="s6">\level</span>, 0.25);</p>
+<p class="p2"><br></p>
+<p class="p3">Getters and setters are provided for level and pan for backward-compatibility.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>level</b></p>
+<p class="p3"><b>level_(lev)<span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><b>pan</b></p>
+<p class="p3"><b>pan_(p)</b></p>
+<p class="p2"><br></p>
+<p class="p3">The level range is 0..1; use .dbamp to convert decibels (negative!) to this range. Pan ranges from -1..+1.</p>
+<p class="p2"><br></p>
+<p class="p8"><span class="s4">m.level = 0.25;<span class="Apple-tab-span">	</span></span>// sufficient in nearly every case<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p9"><b>Control automation<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Two techniques are used to automate level and panning: a control rate synthdef for LFOs, and a routine for linear (finite) changes.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>automate(name, synthdef, args)</b></p>
+<p class="p3"><b>levelAuto(synthdef, args)</b></p>
+<p class="p3"><b>panAuto(synthdef, args)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Places a control rate synth on the server, mapped to the desired parameter.</p>
+<p class="p10"><br></p>
+<p class="p8"><span class="s3">SynthDef</span><span class="s4">.new(</span><span class="s5">"mxaut/SinLFO"</span><span class="s4">, {<span class="Apple-tab-span">	</span></span>// sinewave lfo</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">arg</span> outbus, freq = 1, phase = 0, mul = 1, add = 0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">ReplaceOut</span>.kr(outbus, <span class="s3">SinOsc</span>.kr(freq, phase, mul, add));</p>
+<p class="p5">}).load(s);</p>
+<p class="p6"><br></p>
+<p class="p5">m.panAuto(<span class="s5">"mxaut/SinLFO"</span>, [<span class="s6">\freq</span>, 0.2]);</p>
+<p class="p5">m.stopPanAuto;</p>
+<p class="p2"><br></p>
+<p class="p3">You may also use any type of object that may be played on the mixerchannel (synthdef name with args, function, Instr or Patch), except that it must output a kr signal.</p>
+<p class="p2"><br></p>
+<p class="p8"><span class="s4">m.panAuto({ </span><span class="s3">SinOsc</span><span class="s4">.kr(0.1) });<span class="Apple-converted-space">  </span></span>// same as a DAW's autopanner *grin*</p>
+<p class="p2"><br></p>
+<p class="p3">To view the automation in a mixingboard:</p>
+<p class="p2"><br></p>
+<p class="p5">m.watch(controlName);</p>
+<p class="p5">m.stopWatching(controlName);</p>
+<p class="p2"><br></p>
+<p class="p3">m.watch without arguments will watch all controls -- however, this can be CPU expensive. Use with caution.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>controlLine(name, start, end, dur, warp)</b></p>
+<p class="p3"><b>levelLine(start, end, dur, warp)</b></p>
+<p class="p3"><b>panLine(start, end, dur, warp)</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>controlLineTo(name, end, dur, warp)</b></p>
+<p class="p3"><b>levelTo(end, dur, warp)</b></p>
+<p class="p3"><b>panTo(end, dur, warp)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Makes a linear transition from start to end, taking dur seconds. Warp can be any of the options supported by ControlSpec. Default values for start and end will be taken from the control's spec. The spec is defined in the MixerChannelDef.</p>
+<p class="p2"><br></p>
+<p class="p3">These methods use a routine to make the changes and update the MixingBoard. The time between the iterations of the routine is controlled by the instance variable guiUpdateTime, which may be set by the user. The default is 0.25.</p>
+<p class="p2"><br></p>
+<p class="p3">controlLineTo, levelTo and panTo start from the current control value, so the starting parameter is not specified.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5">m.levelLine(0, 0.75, 10);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">// a 10-second fade in</span></p>
+<p class="p8"><span class="s4">{ m.levelTo(0, 15); </span><span class="s3">nil</span><span class="s4"> }.defer(7);<span class="Apple-tab-span">	</span></span>// interrupt the fade in and begin fadeout</p>
+<p class="p5">)<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>stopAuto(name)</b> <span class="Apple-converted-space">  </span>[If no name is given, all control automation will be stopped.]</p>
+<p class="p3"><b>stopLevelAuto</b></p>
+<p class="p3"><b>stopPanAuto<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Cancel automation and leave the desired parameter wherever the automation left it. Any time you set the level or pan or start a new automation process, current automation is stopped using one of these methods. Stopping level automation does not stop pan automation, and vice versa.</p>
+<p class="p2"><br></p>
+<p class="p9"><b>Scope</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>scope(layout, bounds)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Displays an oscilloscope view of the output of this mixer channel. This uses the crucial GUI framework, so the scope view can be embedded in FlowViews, MultiPageLayouts, etc.</p>
+<p class="p2"><br></p>
+<p class="p9"><b>Sends<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">See <a href="MixerSend.html"><span class="s2">MixerSend</span></a> for details.</p>
+<p class="p2"><br></p>
+<p class="p3">newPreSend(dest, level)</p>
+<p class="p3">newPostSend(dest, level)</p>
+<p class="p2"><br></p>
+<p class="p3">Create a pre- or post-fader send on the MixerChannel.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">myMC.newPreSend(dest, level) is the same as MixerPreSend.new(myMC, dest, level).</p>
+<p class="p2"><br></p>
+<p class="p9"><b>Order of Execution</b></p>
+<p class="p2"><br></p>
+<p class="p3">MixerChannels use a system of dependencies to determine which mixers should appear first in the mixer chain. The algorithm should work under almost every possible circumstance. It also holds mixer execution order after pressing cmd-.</p>
+<p class="p2"><br></p>
+<p class="p3">It is not permitted to create a circular feedback loop among MixerChannels. This is nonsensical usage anyway, because the server-side implementation does not support feedback. An error is thrown in this case.</p>
+<p class="p2"><br></p>
+<p class="p5">a = <span class="s3">MixerChannel</span>(<span class="s6">\src1</span>, s, 2, 2);</p>
+<p class="p5">b = <span class="s3">MixerChannel</span>(<span class="s6">\src2</span>, s, 2, 2, outbus:a);</p>
+<p class="p8"><span class="s4">a.outbus = b;<span class="Apple-tab-span">	</span></span>// this will produce an error</p>
+<p class="p2"><br></p>
+<p class="p5">ERROR: MixerChannel(src1, localhost, 2, 2) -&gt; MixerChannel(src2, localhost, 1, 2) will produce an infinite loop.</p>
+<p class="p5">RECEIVER:</p>
+<p class="p5">Instance of MixerChannel {<span class="Apple-converted-space">    </span>(0FFCF620, gc=54, fmt=00, flg=00, set=05)</p>
+<p class="p5"><span class="Apple-tab-span">	</span>...</p>
+<p class="p2"><br></p>
+<p class="p3"><b>NOTE:</b> The same error will occur if you try to create a MixerChannel with the same inbus and outbus. MixerChannel is not designed for that use. Instead, use MasterMixerChannel.</p>
+<p class="p2"><br></p>
+<p class="p3">Setting a mixer's outbus to another MixerChannel, or creating a send whose destination is a MixerChannel, automatically creates the required dependencies and fixes the node order. There may be cases where you need to route the signal from a MixerChannel into another MixerChannel without using sends or direct routing. The following methods are provided to assist:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>sendsSignalTo(mc)</b></p>
+<p class="p3"><b>stopsSendingTo(mc)</b></p>
+<p class="p2"><br></p>
+<p class="p3">The source mixer is the message receiver, and the destination is the argument.</p>
+<p class="p2"><br></p>
+<p class="p5">source.sendsSignalTo(dest)</p>
+<p class="p2"><br></p>
+<p class="p3">To end the relationship, use source.stopsSendingTo(dest).</p>
+<p class="p2"><br></p>
+<p class="p3"><b>receivesSignalFrom(mc)</b></p>
+<p class="p3"><b>stopsReceivingFrom(mc)</b></p>
+<p class="p2"><br></p>
+<p class="p3">The argument MC will be added as a dependent of the receiver: dest.receivesSignalFrom(source)</p>
+<p class="p2"><br></p>
+<p class="p9"><b>Recording</b></p>
+<p class="p2"><br></p>
+<p class="p3">Recording functions can be activated from the MixingBoard GUI. The record button switches between "unpauseRecord" (which also starts recording) and "pauseRecord."</p>
+<p class="p2"><br></p>
+<p class="p3"><b>startRecord(path, headerformat = "aiff", sampleformat = "int16")</b></p>
+<p class="p2"><br></p>
+<p class="p3">Begins recording the output of this mixerchannel. All arguments are optional. If path is not specified, the name of the mixerchannel will be used, plus a number based on the length of time SuperCollider has been open--meaning that you can record several files from the same mixerchannel in succession without overwriting.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>stopRecord</b></p>
+<p class="p2"><br></p>
+<p class="p3">Stops recording and closes the file. stopRecord is called when the mixerchannel is freed.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>pauseRecord</b></p>
+<p class="p3"><b>unpauseRecord</b></p>
+<p class="p2"><br></p>
+<p class="p3">If you call unpauseRecord and the channel is not already recording, recording will be started.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>prepareRecord(path, headerformat = "aiff", sampleformat = "int16")</b></p>
+<p class="p2"><br></p>
+<p class="p3">Gets the mixerchannel ready to record but does not begin recording.</p>
+</body>
+</html>

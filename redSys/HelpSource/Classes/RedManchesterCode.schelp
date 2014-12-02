@@ -1,0 +1,121 @@
+CLASS:: RedManchesterCode
+SUMMARY:: Manchester encoding
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedDifferentialManchesterCode, Classes/RedHuffman
+
+DESCRIPTION::
+As per IEEE 802.3. See http://en.wikipedia.org/wiki/Manchester_encoding
+
+CLASSMETHODS::
+
+METHOD::new
+Creates a new encoder.
+
+ARGUMENT::numBits
+The maximum number of bits in the data to be encoded. The default 8 can deal with values between 0 and 255.
+
+INSTANCEMETHODS::
+
+METHOD::encode
+The lowest level method for encoding. Give and return arrays with raw 0/1 bits.
+
+ARGUMENT::bits
+An array of raw bits (zeros and ones) representing the n-bit value to be encoded. The length of this array should match numBits.
+
+RETURNS::
+An array of raw bits (zeros and ones) with encoded clock and data bits.
+NOTE::
+The array returned will be double in length of the argument array (and also 2*numBits in length).
+::
+
+METHOD::encodeValue
+A method for encoding single numbers. Converts the number to bits and then calls link::#-encode::.
+
+ARGUMENT::value
+Some number to be encoded. Make sure to not go above the current set numBits capacity (0-255 by default).
+
+RETURNS::
+Same as link::#-encode:: above
+
+METHOD::encodeArray
+A method for encoding arrays of numbers.
+
+ARGUMENT::array
+Some array of numbers to be encoded.
+
+RETURNS::
+Same as link::#-encode:: above
+
+METHOD::numBits
+Get or set the number of bits dynamically.
+
+EXAMPLES::
+
+CODE::
+//bigger number require more number of bits
+RedManchesterCode(11).encode([1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1]) //compare table in wikipedia article
+
+a= RedManchesterCode();
+a.encode([0, 1, 1, 1, 0, 0, 1, 0])
+a.encodeValue(114) //same but different
+a.encodeArray([114, 114, 5]) //use this method for longer arrays
+
+//if used as an audio signal it is often preferred to normalize the values -1 to 1.
+//here is a simple way to do that normalization...
+RedManchesterCode(11).encode([1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1])*2-1
+::
+
+CODE::
+//--sound examples
+
+//although this is not 100% correct because of the byte boundaries
+//the example just sequence manchester encoded bytes.
+(
+SynthDef(\redBitsPlayer, {|out= 0, amp= 1, rate= 1000|
+	var numBits= 8*2;	//double because of manchester encoding
+	var data= Control.names([\data]).ir(Array.fill(numBits, 0));
+	var src= Duty.ar(1/rate, 0, Dseq(data*2-1++0), 2);	//zero padded because doneAction2 is not stopping sample accurate
+	OffsetOut.ar(out, src*amp!2);
+}).add;
+)
+
+//test counter
+(
+t= 2400;	//datarate
+Routine.run({
+	var encoder= RedManchesterCode(8);
+	inf.do{|i|
+		var byte= (i%256).asInteger;
+		var data= encoder.encodeValue(byte);
+		s.bind{
+			Synth(\redBitsPlayer, [\out, 0, \data, data, \amp, 0.3, \rate, t]);
+			("playing:"+byte+data).postln;
+		};
+		(1/t*16).wait;
+	};
+});
+)
+::
+
+CODE::
+//a more accurate example rendering the 0-255 counter data in advance, normalizing and loading it to a buffer
+//stutter(8) means eight samples per data bit
+b= Buffer.sendCollection(s, RedManchesterCode().encodeArray((0..255)).stutter(8)*2-1)
+b.play
+b.free
+::
+
+CODE::
+//it is also possible to skip this class and do manchester code directly in the synthdef...
+(
+SynthDef(\redManchesterEncode, {|out= 0, amp= 1, rate= 1000|
+	var numBits= 8;
+	var data= Control.names([\data]).ir(Array.fill(numBits, 0));
+	var clock= Dseq(#[1, 0], numBits);
+	var src= Duty.ar(1/rate, 0, Dseq([Dstutter(2, Dseq(data)).bitXor(clock)*2-1, 0]), 2);
+	OffsetOut.ar(out, src*amp!2);
+}).add;
+)
+Synth(\redManchesterEncode, [\data, 114.asBinaryDigits, \amp, 0.3])
+//record the result and compare with RedManchesterCode().encodeValue(114)
+::

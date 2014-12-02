@@ -1,0 +1,30 @@
+TITLE:: Wander
+summary:: Implementation of the wander steering behaviour
+categories:: Class
+related:: Overviews/Gameloop_Overview, Reference/SteeringBehaviors
+
+DESCRIPTION::
+Designed to produce a steering force that will give the impression of a random walk through the agent’s environment. You will either need to read the implementation FOOTNOTE::If you are interested to know about these methods (or even better would like to implement them) a useful resource can be found in the book 'Programming Game AI by Example' by Matt Buckland.:: or experiment with it to get a sense of what the values are doing. I suggest both!
+
+link::http://www.red3d.com/cwr/steer/Wander.html##Click here:: for a java applet demonstration (will not play in the IDE help browser).
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: entity
+the entity on which the steering force will be applied
+
+ARGUMENT:: wanderRadius
+the radius of the constraining circle
+
+ARGUMENT:: wanderDistance
+the distance the wander circle is projected in front of the agent
+
+ARGUMENT:: wanderJitter
+the maximum amount of random displacement that can be added to the target each second
+
+INSTANCEMETHODS::
+
+METHOD:: value
+Get the calculated force. To be used in the .force_ method of the entity. This is how the steering forces are applied.

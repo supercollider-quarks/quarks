@@ -1,0 +1,121 @@
+CLASS:: RedMatrixMixer
+SUMMARY:: mix any number of input and output channels
+CATEGORIES:: Red>redMatrixMixer
+RELATED:: Classes/RedMatrixMixerGUI, Classes/RedEffectsRack, Classes/RedMixer
+
+DESCRIPTION::
+NOTE::
+Requires the link::Classes/Conductor:: quark.
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: nIn
+Number of input busses.
+
+ARGUMENT:: nOut
+Number of output busses.
+
+ARGUMENT:: in
+Offset of first input bus.
+
+ARGUMENT:: out
+Offset of first out bus.
+
+ARGUMENT:: group
+code::nil:: boots the default server and creates a group after the code::defaultGroup::.
+
+ARGUMENT:: lag
+For amplitudes in seconds.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedMatrixMixer
+
+METHOD:: def
+Generate a link::Classes/SynthDef::.
+
+METHOD:: defaults
+Revert all link::Classes/CV::s to their defaults.
+
+METHOD:: free
+Free all synths.
+
+METHOD:: gui
+Create a link::Classes/RedMatrixMixerGUI:: for this RedMatrixMixer.
+
+ARGUMENT:: position
+A link::Classes/Point::.
+
+METHOD:: group
+The link::Classes/Group:: in use.
+
+METHOD:: cvs
+Dictionary of link::Classes/CV::s:
+
+TABLE::
+## in || input bus offset
+## out || output bus offset
+## lag || mix lag time in seconds (linear)
+## o0, o1... oN || as many as out busses. An array of amplitudes (as many as in busses)
+::
+
+METHOD:: synth
+The mixer synth.
+
+METHOD:: os
+List of all amplitude control cv objects. code::.cvs.o0, .cvs.o1, .cvs.02…:: etc.
+
+METHOD:: defString
+Not useful - just for show-off.
+
+EXAMPLES::
+
+CODE::
+a= RedMatrixMixer(4, 2, 0, 0);	//4 channels in, 2 channels out
+(
+SynthDef(\redMatrixMixerTest, {|out= 0, freq= 400, gate= 1, amp= 0.5|
+	var e= EnvGen.kr(Env.asr(0.01, 1, 0.01), gate, doneAction:2);
+	var z= SinOsc.ar(freq, 0, amp);
+	Out.ar(out, z*e);
+}).add;
+)
+(
+b= Pbind(
+	\instrument, \redMatrixMixerTest,
+	\degree, Pseq([0, 1, 5, 4, 3, 4], inf),
+	\dur, 0.25,
+	\amp, 0.7,
+	\out, Pseq([0, 1, 2, 3], inf)
+).play;
+)
+
+a.gui;
+a.cvs.o0.value= [1, 0, 0.3, 0];		//in0 to out0 with full amp, in2 to out0 with 0.3 amp
+a.cvs.o1.value= [0, 1, 0, 0.2];		//in1 to out1 with full amp, in3 to out1 with 0.2 amp
+a.cvs.in.value= 1;			//change to listen to input busses to 1-4
+
+a.cvs.out.value= 1;			//left channel still outputs because the pbinds plays there
+					//and no ReplaceOut is blocking it
+a.cvs.out.value= 0;
+a.cvs.in.value= 0;
+
+a.cvs.lag.value= 3;
+a.cvs.o0.value= [0, 1, 1, 0.3];		//change mix with a 3 second lag
+a.cvs.o1.value= [1, 0, 0, 0.2];
+a.os;
+
+a.defString
+a.def
+
+a.defaults
+a.free;
+b.stop;
+
+//--
+a= RedMatrixMixer(24, 22, 0, 0);	//14 channels in, 12 channels out
+a.defString
+a.free
+::

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #b71505}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bb0e03}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bb0e03; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #001bfd}
+span.s3 {color: #000000}
+span.s4 {color: #b71505}
+span.s5 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>extStatistics<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Additional statistics methods for arrays. Part of </b><a href="MathLib.html"><span class="s2"><b>MathLib</b></span></a></p>
+<p class="p2"><br></p>
+<p class="p3">MathLib provides additional methods for <a href="SC://Collection"><span class="s2">Collection</span></a> and <a href="SC://SequenceableCollection"><span class="s2">SequenceableCollection</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p4">// Here's a pseudo-normal distribution which we'lll analyse in the following</p>
+<p class="p5">a = {45.0.sum3rand + 65}.dup(1000);</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Various measures to characterise the distribution</b></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">a.geoMean </span>// Geometric mean</p>
+<p class="p4"><span class="s3">a.harmMean </span>// Harmonic mean</p>
+<p class="p5">a.variance</p>
+<p class="p4"><span class="s3">a.stdDev </span>// Standard deviation</p>
+<p class="p5">a.skew</p>
+<p class="p6"><span class="s3">a.kurtosis </span>// Note: the formula needs checking</p>
+<p class="p5">a.trimedian</p>
+<p class="p2"><br></p>
+<p class="p3">Measures such as variance and skewness are commonly calculated on the assumption that the data is a sample from the true (larger) population which we wish to know about. The above measures apply in this case. The following alternatives are used when the data represents the entire population:</p>
+<p class="p2"><br></p>
+<p class="p5">a.variancePop</p>
+<p class="p4"><span class="s3">a.stdDevPop </span>// Standard deviation</p>
+<p class="p5">a.skewPop</p>
+<p class="p2"><br></p>
+<p class="p3"><b>percentile</b></p>
+<p class="p2"><br></p>
+<p class="p3">Finds the requested percentile(s) of the distributions, specified as float values from 0 to 1 - e.g. for the 90 percentile use 0.9.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">a.percentile<span class="Apple-converted-space">  </span></span>// By default you get the 25%/50%/75%ile</p>
+<p class="p5">a.percentile(0.25) <span class="s4">// Just the 25%ile</span></p>
+<p class="p5">a.percentile([0.1, 0.9]) <span class="s4">// 10 and 90 percentiles</span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Histogramming</b></p>
+<p class="p2"><br></p>
+<p class="p3">histo partitions the distribution into a set of equal-width bins (default 100 bins):</p>
+<p class="p2"><br></p>
+<p class="p5">a.histo.plot</p>
+<p class="p5">a.histo(10).plot</p>
+<p class="p5">a.histo(1000).plot</p>
+<p class="p2"><br></p>
+<p class="p3">histoBands gives you the corresponding bin centers (same arguments as histo; argument 'center' determines whether you get the center value (default 0.5), the left (0.0) or right (1.0) edge of the bin, or anything in between). This can be useful for creating an annotated plot.</p>
+<p class="p2"><br></p>
+<p class="p5">a.histoBands</p>
+<p class="p2"><br></p>
+<p class="p3">The weighted mean and variance functions can be used to estimate the mean and variance if all you have is histogram-like data:</p>
+<p class="p7"><br></p>
+<p class="p4"><span class="s3">[2, 4, 6].wmean([1,1,2]) </span>// [2, 4, 6] is the bin positions, [1, 1, 2] the heights within each bin</p>
+<p class="p5">[2, 4, 6].wmean([1,1,4])</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Statistical measures of association</b></p>
+<p class="p2"><br></p>
+<p class="p4">// Pearson correlation:</p>
+<p class="p6"><span class="s3">corr(a, a) </span>// Should be perfect correlation with self, i.e. 1!</p>
+<p class="p6"><span class="s3">corr(a, {1.0.rand}.dup(a.size)) </span>// Should be very small correlation with indpendent random stuff</p>
+<p class="p8"><br></p>
+<p class="p6">// Kendall's W statistic: a non-parametric correlation test between separate raters' rankings of a common set of objects.</p>
+<p class="p6">// The input array should be an array-of-arrays, each of which is the same size and contains integer rankings.</p>
+<p class="p6">// The output varies from 0 (no inter-rater agreement) to 1 (perfect inter-rater agreement)</p>
+<p class="p6">// The list of rankings can range (0 .. N-1) or (1 .. N), that won't affect the statistic.</p>
+<p class="p6">// The example used in Kendall's original paper (W value should be around 0.16):</p>
+<p class="p5">[ [5,4,1,6,3,2], [2,3,1,5,6,4], [4,1,6,3,2,5] ].kendallW</p>
+<p class="p6">// If we generate data in which there's perfect agreement we should always get 1 for the W-value:</p>
+<p class="p5">(0..10).scramble.dup(5).postcs.kendallW</p>
+<p class="p7"><br></p>
+<p class="p9">// Principal Component Analysis:</p>
+<p class="p9">// The pc1 method finds the first principal component of a multidimensional data distribution.</p>
+<p class="p9">// It doesn't calculate the full PCA, but finds the first PC via expectation-maximisation.</p>
+<p class="p9">// The data must already be centred (mean removed) and any scaling issues dealt with appropriately.</p>
+<p class="p9">// The termination threshold can be set via an argument to pc1.</p>
+<p class="p10">~data = 10000.collect{ if(0.5.coin){[-1, -0.5]}{[1, 0.5]}.collect{<span class="s5">|v|</span> v + 0.95.sum3rand} };</p>
+<p class="p10"><span class="s5">GNUPlot</span>.new.scatter(~data)</p>
+<p class="p10">~data.pc1</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Autocorrelation</b></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">a.autocorr </span>// Normalised autocorrelation</p>
+</body>
+</html>

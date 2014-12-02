@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cf0c0c}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 12.0px Monaco}
+span.s3 {color: #162bc4}
+span.s4 {color: #000000}
+span.s5 {color: #008323}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Impact</b></span><span class="s2"> <span class="Apple-tab-span">	</span></span><b>a class for playing with the Saitek Impact game controller-based instruments</b></p>
+<p class="p2"><br></p>
+<p class="p1">Impact is a subclass of GamePa. It knows the cookie numbers for the<span class="Apple-converted-space"> </span></p>
+<p class="p1">Saitek Impact X6-38U Game controller, a good controller for music.</p>
+<p class="p3"><br></p>
+<p class="p1">It knows how the scale the ctl values into a range of 0 - 1:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">GamePad</span>.normMaps[<span class="s3">Impact</span>.vendorID].postcs;</p>
+<p class="p2"><br></p>
+<p class="p1">For using a different brand of controller, you can just add a similar map<span class="Apple-converted-space"> </span></p>
+<p class="p1">to GamePad.normMaps at that controllers vendorID (description to follow..)</p>
+<p class="p1">see also Betop.help.</p>
+<p class="p3"><br></p>
+<p class="p1">A newer generation of Saitek Impact has joystick values from -128 to 127.<span class="Apple-converted-space"> </span></p>
+<p class="p1">To adjust for, do the following:</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// check the current map</p>
+<p class="p6"><span class="s3">Impact</span>.normMaps[<span class="s3">Impact</span>.vendorID].postcs;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s4">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// if it uses { |val| val / -255 } etc, put these new functions in the map:</p>
+<p class="p6"><span class="s3">Impact</span>.normMaps[<span class="s3">Impact</span>.vendorID].putAll(</p>
+<p class="p6"><span class="Apple-tab-span">	</span>(<span class="Apple-tab-span">	</span><span class="s5">'joyRX'</span>: { <span class="s3">|val|</span> val - 127 / -255 },<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">'joyLY'</span>: { <span class="s3">|val|</span> val + 128 /<span class="Apple-converted-space">  </span>255 },<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">'joyLX'</span>: { <span class="s3">|val|</span> val - 127 / -255 },<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">'joyRY'</span>: { <span class="s3">|val|</span> val + 128 /<span class="Apple-converted-space">  </span>255 }</p>
+<p class="p6"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span>)</p>
+<p class="p5"><span class="s4"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span>// postcs to check that the new functions are there:<span class="Apple-converted-space"> </span></p>
+<p class="p6">).postcs;</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p6">A documentation image for the GamePad control layout:</p>
+<p class="p7"><br></p>
+<p class="p6">unixCmd("open" + Document.current.path.dirname.quote +/+ "impact.jpg");</p>
+</body>
+</html>

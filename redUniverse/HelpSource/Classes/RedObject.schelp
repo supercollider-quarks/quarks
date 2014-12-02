@@ -1,0 +1,77 @@
+CLASS:: RedObject
+SUMMARY:: fundamental object in the redUniverse toolkit
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview, Classes/RedWorld, Classes/RedUniverse
+
+DESCRIPTION::
+Base for all other object like link::Classes/RedPendulum::, link::Classes/RedParticle::, link::Classes/RedBoid:: etc. Implements simplified physical laws. All objects register themselves in the world when created.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new object. See class source for more information on defaults.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedObject
+
+METHOD:: update
+Moves the object by updating the link::#-loc::, link::#-vel:: and link::#-accel:: instance variables.
+
+METHOD:: addForce
+Adds a force ( link::Classes/RedVector:: ) to the link::#-accel:: variable to push the object somewhere.
+
+METHOD:: gravityForce
+Returns a scalar value representing the gravity force from another object within this world.
+
+METHOD:: frictionForce
+Slows down velocity. Scalar.
+
+METHOD:: viscosityForce
+Slows down velocity. Scalar.
+
+METHOD:: contains
+Returns true if two objects touch. See link::#-size:: below.
+
+METHOD:: containsLoc
+Returns true if location ( link::Classes/RedVector:: ) is within the object.
+
+METHOD:: collide
+Collision detection. Add acceleration vector to both objects if they touch.
+
+ARGUMENT:: redObj
+Another red object.
+
+ARGUMENT:: safety
+How many times the method should nudge objects apart.
+
+RETURNS::
+A link::Classes/Boolean::.
+
+METHOD:: world
+A world ( link::Classes/RedWorld:: of any dimension) that currently holds this object. The object will add itself.
+
+METHOD:: loc
+The current location ( link::Classes/RedVector:: of any dimension) within the world.
+
+METHOD:: vel
+The current velocity ( link::Classes/RedVector:: of any dimension) that the object has.
+
+METHOD:: accel
+A vector or scalar representing current acceleration.
+
+METHOD:: mass
+A scalar. How hard it will be to move this object around. Used for gravity forces.
+
+METHOD:: size
+A scalar. The distance from location to the outer border i.e. radius. Used for contains and rendering.
+
+EXAMPLES::
+
+CODE::
+a= RedWorld.new
+b= RedObject(a)
+
+a.objects
+b.dump
+::

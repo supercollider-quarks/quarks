@@ -1,0 +1,128 @@
+CLASS:: AbstractPlayerProxy
+summary:: base class for players that act as proxies for another player
+categories:: Libraries>crucial>Players>abstract
+related:: Classes/PlayerSocket
+
+DESCRIPTION:: Defers all responsiblities for playing to another object.
+This is a superclass.
+
+Its not really abstract since it is possible to play it, though its primary purpose is as a superclass.
+
+code::
+a = AbstractPlayerProxy.new;
+a.source = Patch({ Saw.ar });
+
+a.play;
+
+a.stop;
+::
+
+see link::Classes/PlayerSocket::
+
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: source
+
+
+
+METHOD:: socketStatus
+
+
+
+METHOD:: asSynthDef
+
+
+
+METHOD:: synthDefArgs
+
+
+
+METHOD:: synthArg
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: numChannels
+
+
+
+METHOD:: loadDefFileToBundle
+
+
+argument:: b
+
+
+argument:: server
+
+
+
+METHOD:: defName
+
+
+
+METHOD:: spawnToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: isPlaying
+
+
+
+METHOD:: didSpawn
+
+
+
+METHOD:: instrArgFromControl
+
+
+argument:: control
+
+
+
+METHOD:: initForSynthDef
+
+
+argument:: synthDef
+
+
+argument:: argi
+
+
+
+METHOD:: connectToPatchIn
+
+
+argument:: patchIn
+
+
+argument:: needsValueSetNow
+
+
+
+METHOD:: didStop
+
+
+
+METHOD:: children
+
+
+
+METHOD:: prepareChildrenToBundle
+
+
+argument:: bundle
+
+
+
+
+

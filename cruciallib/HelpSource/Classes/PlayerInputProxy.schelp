@@ -1,0 +1,103 @@
+CLASS:: PlayerInputProxy
+summary:: placeholder for Patch inputs for a player that will be supplied later
+categories:: Libraries>crucial>Players
+
+
+DESCRIPTION:: represents an audio or control input for a player that is to be filled with a player later.
+
+eg. 	an input to an effect.
+	a potential controller/interface input
+
+code::
+p = Patch({ arg audio,ffreq;
+	RLPF.ar(audio,ffreq)
+},[
+	PlayerInputProxy.new
+]);
+::
+
+it holds the place.  if the patch is played, it is silent.
+
+p.play
+
+other classes can detect these inputs and patch into them.
+
+The audioSpec would specify the number of channels.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: spec
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: spec
+
+
+
+METHOD:: initValue
+
+
+
+METHOD:: patchIn
+
+
+
+METHOD:: pipinit
+
+
+
+METHOD:: setInputBus
+
+
+argument:: bus
+
+
+
+METHOD:: setNodeControl
+
+
+argument:: nc
+
+
+
+METHOD:: synthArg
+
+
+
+METHOD:: ar
+
+
+
+METHOD:: makePatchOut
+
+
+argument:: agroup
+
+
+argument:: private
+
+
+argument:: bus
+
+
+argument:: bundle
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: numChannels
+
+
+
+
+

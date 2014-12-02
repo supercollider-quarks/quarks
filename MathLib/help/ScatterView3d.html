@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {color: #0000bf}
+span.s2 {color: #606060}
+span.s3 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>ScatterView3d</b></p>
+<p class="p2">till bovermann, uni bielefeld 2006</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">GUI.swing</p>
+<p class="p4">GUI.cocoa</p>
+<p class="p3"><br></p>
+<p class="p4">(</p>
+<p class="p5"><span class="s1">var</span> data;</p>
+<p class="p5">data = {{2.0.rand2}!3}!150;</p>
+<p class="p5">w = GUI.window.new(<span class="s2">"3D Scatterplot"</span>, <span class="s1">Rect</span>(40,40, 500, 500)).front;</p>
+<p class="p5">a = <span class="s1">ScatterView3d</span>(w, <span class="s1">Rect</span>(10,10, 450, 450), data, [-2, 2].asSpec);</p>
+<p class="p5">a.drawMethod = <span class="s3">\fillRect</span>;</p>
+<p class="p5">a.symbolSize = 3;</p>
+<p class="p5">a.symbolColor = <span class="s1">Color</span>.blue;</p>
+<p class="p5">a.background = <span class="s1">Color</span>.black;</p>
+<p class="p6"><br></p>
+<p class="p7">// Y Slider</p>
+<p class="p5"><span class="s1">GUI</span>.slider.new(w, <span class="s1">Rect</span>(10, 470, 450, 10)).action_{<span class="s1">|me|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>a.rotY = me.value * 2pi;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>a.refresh;</p>
+<p class="p5">};</p>
+<p class="p7">// X Slider</p>
+<p class="p5"><span class="s1">GUI</span>.slider.new(w, <span class="s1">Rect</span>(470, 10, 10, 450)).action_{<span class="s1">|me|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>a.rotX = me.value * 2pi;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>a.refresh;</p>
+<p class="p5">};</p>
+<p class="p7">// Z Slider</p>
+<p class="p5"><span class="s1">GUI</span>.slider.new(w, <span class="s1">Rect</span>(490, 10, 10, 450)).action_{<span class="s1">|me|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>a.rotZ = me.value * 2pi;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>a.refresh;</p>
+<p class="p5">};</p>
+<p class="p4">)</p>
+<p class="p3"><br></p>
+<p class="p4">a.isHighlight = true</p>
+<p class="p4">a.highlightColor = Color.green;</p>
+<p class="p4">a.highlightSize = 10@10</p>
+<p class="p4">a.highlightItem = 99</p>
+<p class="p4">a.refresh</p>
+</body>
+</html>

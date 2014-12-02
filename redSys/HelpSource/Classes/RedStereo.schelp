@@ -1,0 +1,32 @@
+CLASS:: RedStereo
+SUMMARY:: panning effect
+CATEGORIES:: Red>redUGens
+RELATED:: Classes/RedStereo2
+
+DESCRIPTION::
+Returns four panned bandpass filters - pseudo ugen.
+
+EXAMPLES::
+
+CODE::
+s.boot
+a= {RedStereo.ar(In.ar(10))}.play
+b= RedTest.sf2(10);
+b.sfBus= 0;				//plain
+b.sfBus= 10;				//redstereo - subtle difference
+
+b.free;
+a.free;
+
+//--
+a= {RedStereo.ar(In.ar(10), MouseX.kr(0, 4), MouseY.kr(0, 1))}.play
+b= RedTest.sf2(10);
+b.sfBus= 0;				//plain
+b.sfBus= 10;				//redstereo
+
+b.free;
+a.free;
+
+//--
+{RedStereo.ar(Dust.ar(5), MouseX.kr(0, 4), MouseY.kr(0, 1))}.play
+::

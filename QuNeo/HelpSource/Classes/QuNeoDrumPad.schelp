@@ -1,0 +1,94 @@
+TITLE:: QuNeoDrumPad
+summary:: A drum pad controller used by the QuNeo class.
+categories:: Hardware>QuNeo
+related:: Classes/QuNeo, Classes/MidiCcBus, Classes/MidiNoteFunc, Classes/QuNeoButton, Classes/QuNeoCircleControl, Classes/QuNeoGridPad, Classes/QuNeoLongSlider, Classes/QuNeoSlider
+
+DESCRIPTION::
+A drumpad controller used by the QuNeo class.  Used to represent a pad that is set to drum mode.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new drum pad controller.  During regular use this is called from the QuNeo.createDrumPad method.
+
+ARGUMENT:: noteNum
+MIDI note number for the control.
+
+ARGUMENT:: pressCC
+MIDI CC number for pressure data.
+
+ARGUMENT:: xCC
+MIDI CC number for X location data.
+
+ARGUMENT:: yCC
+MIDI CC number for Y location data.
+
+ARGUMENT:: name
+Name of the control, used when printing debug info.
+
+ARGUMENT:: channel
+MIDI channel the control responds to.
+
+ARGUMENT:: scInPort
+Port that Supercollider will recieve MIDI data from.
+
+ARGUMENT:: scOutPort
+Port that Supercollider will send MIDI data to.
+
+returns:: A new QuNeo drum pad control
+
+
+INSTANCEMETHODS::
+
+
+METHOD:: name
+Name of the control, used when printing debug info.
+
+
+METHOD:: noteNum
+The note number that data will be recieved on.
+
+
+METHOD:: note
+The MidiNoteFunc that deals with MIDI data related to the note.
+
+METHOD:: press
+MIDI CC number for pressure data.
+
+
+METHOD:: x
+MIDI CC number for location x data.
+
+
+METHOD:: y
+MIDI CC number for location y data.
+
+
+METHOD:: channel
+MIDI channel that the control will use to recieve MIDI data.
+
+
+METHOD:: scInPort
+Port that will recieve MIDI data from the QuNeo.
+
+
+METHOD:: scOutPort
+Port that will send MIDI data to the QuNeo.
+
+
+METHOD:: debug
+Allows you to enable or disable debugging for the control.  This setting can also be changed on a per datasource basis.
+
+ARGUMENT:: setDebug
+Enable debugging? true/false.
+
+
+PRIVATE:: init
+
+
+EXAMPLES::
+
+code::
+See QuNeo class for examples
+::

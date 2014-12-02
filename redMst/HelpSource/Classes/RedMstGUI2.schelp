@@ -1,0 +1,41 @@
+CLASS:: RedMstGUI2
+SUMMARY:: gui window for RedMst - with metro
+CATEGORIES:: Red>redMst
+RELATED:: Classes/RedMst, Classes/RedMstGUI, Classes/RedMstGUI3
+
+DESCRIPTION::
+Same as its superclass but adds a visual metronome. This class takes a little bit more CPU to update.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prInitMetro, prInitTask
+
+EXAMPLES::
+
+CODE::
+//--simple example
+(
+s.waitForBoot{
+RedMst.clear;
+RedMst.clock= TempoClock(140/60);
+RedMst.quant= 8;
+RedMstGUI2(20);
+
+RedTrk(
+	\bass,
+	Pbind(\degree, Pseq([0, 5], inf), \octave, 4),
+	#[0, 1, 2, 3]								
+);
+RedTrk(
+	\melody,
+	Pbind(\degree, Pseq([0, 5, 2, 3, 3, 1], inf), \dur, Pseq([0.25, 0.25, 0.5], inf)),
+	#[1, 2, 5]
+);
+RedTrk(
+	\melody2,
+	Pbind(\degree, Pseq([7, 6, 4, 3], inf), \dur, 2, \octave, 6),
+	#[2, 3]
+);
+}
+)
+::

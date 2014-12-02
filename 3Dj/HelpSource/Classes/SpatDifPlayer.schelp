@@ -1,0 +1,66 @@
+TITLE:: SpatDifPlayer
+summary:: a SpatDifPlayer
+categories:: Libraries>3Dj
+related:: Guides/3Dj, Classes/SpatialRender, Classes/SpatDifLogger
+
+DESCRIPTION::
+A SpatDifPlayer is capable of reading and reproducting an OSC-SpatDIF document version 0.3, as documented in link::http://redmine.spatdif.org/attachments/download/106/SpatDIF-exampleScenes-V0.3.pdf::
+
+Despite it can be used stand-alone, we recommend to use it through the provided link::Classes/SpatialRender:: methods, which handle message redundandy, visualization, etc.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: netAddr
+The instance of NetAddr where to send the SpatDIF messages. 
+If CODE::nil:: is provided, the address will be NetAddr.localhost
+
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: init, loadMetaSection
+
+SUBSECTION:: Initializing
+
+METHOD:: loadFile
+Open a OSC-SpatDIF compilant file and load it into a Task
+
+ARGUMENT:: pathToFile
+The path describing the SpatDIF file
+
+
+SUBSECTION:: Reproduction Control
+
+
+METHOD:: start
+Plays the task from the beggining.
+
+METHOD:: pause
+Pauses the task. It can be further resumed with link::Classes/SpatDifPlayer#-play::
+
+METHOD:: play
+Resumes the task from where it was paused.
+
+METHOD:: reset
+Set the task starting point at time 0.
+
+METHOD:: isPlaying
+
+Answers if the playing task is currently playing.
+This method will respond code::true:: until one second after the task reachs the end, for compatibility reasons.
+
+
+METHOD:: verbose
+If verbose is set to true, outcoming messages will be printed
+
+
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::

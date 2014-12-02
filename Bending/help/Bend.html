@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1713}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #102ac3}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008225}
+span.s1 {color: #000000}
+span.s2 {color: #102ac3}
+span.s3 {color: #cd1713}
+span.s4 {color: #737373}
+span.s5 {color: #008225}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><br></p>
+<p class="p2">// modulate everything</p>
+<p class="p3">(</p>
+<p class="p3">{</p>
+<p class="p4">Bend<span class="s1">({ </span>|in|</p>
+<p class="p3"><span class="Apple-tab-span">	</span>in * <span class="s2">LFDNoise3</span>.kr(<span class="s2">MouseX</span>.kr(0.1, 200, 1), 0.1, 1)</p>
+<p class="p3">}, {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">Splay</span>.ar(<span class="s2">SinOsc</span>.ar({ exprand(300.0, 10000.0) } ! 17, 0, { 1.0.rand } ! 17))</p>
+<p class="p1"><span class="Apple-tab-span">	</span></p>
+<p class="p3">}) * 0.1</p>
+<p class="p3">}.play</p>
+<p class="p3">)</p>
+<p class="p1"><br></p>
+<p class="p2">// basic test</p>
+<p class="p3">{ <span class="s2">Bend</span>.time(<span class="s2">MouseX</span>.kr(-2, 2), { <span class="s2">SinOsc</span>.ar(656, <span class="s2">LFPar</span>.ar(12000)) * <span class="s2">LFSaw</span>.ar([70, 37]) }) * 0.1 }.play;</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p3">(</p>
+<p class="p2">// time warped analog bubbles, time scale is mouse x position</p>
+<p class="p3">{</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">Bend</span>.time(<span class="s2">MouseX</span>.kr(0.02, 20, 1), {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s2">LFSaw</span>.kr(0.4, 0, 24, <span class="s2">LFSaw</span>.kr([8,7.23], 0, 3, 80)).midicps; <span class="s3">// glissando function</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CombN</span>.ar(<span class="s2">SinOsc</span>.ar(f, 0, 0.04), 0.2, 0.2, 4) <span class="s3">// echoing sine wave</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>})</p>
+<p class="p3">}.play)</p>
+<p class="p1"><br></p>
+<p class="p3">(</p>
+<p class="p2">// random bent analog bubbles, probablity of a bend is 0.6, intensity is mouse x position</p>
+<p class="p3">{</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">Bend</span>.new({ <span class="s2">|x|</span> if(0.6.coin) { x * <span class="s2">MouseX</span>.kr().exprange(rrand(0.01, 10), rrand(0.01, 10)) } }, {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s2">LFSaw</span>.kr(0.4, 0, 24, <span class="s2">LFSaw</span>.kr([8,7.23], 0, 3, 80)).midicps; <span class="s3">// glissando function</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CombN</span>.ar(<span class="s2">SinOsc</span>.ar(f, 0, 0.04), 0.2, 0.2, 4) <span class="s3">// echoing sine wave</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>})</p>
+<p class="p3">}.play)</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p3">(</p>
+<p class="p2">// bend all numerical values by adding controls</p>
+<p class="p5"><span class="s2">Ndef</span><span class="s1">(</span>\bubbles<span class="s1">, {</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">var</span> index = 0;</p>
+<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span></span>Bend<span class="s1">({ </span>|original|</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[original, original.isNumber, index].postln;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(original.isNumber) {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>original = <span class="s2">NamedControl</span>.kr(<span class="s4">"bend_"</span>++index, original);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>index = index + 1;<span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>original;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>}, {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s2">LFSaw</span>.kr(0.4, 0, 24, <span class="s2">LFSaw</span>.kr([8,7.23], 0, 3, 80)).midicps; <span class="s3">// glissando function</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CombN</span>.ar(<span class="s2">SinOsc</span>.ar(f, 0, 0.04), 0.2, 0.2, 4) <span class="s3">// echoing sine wave</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>})</p>
+<p class="p3">}).play)</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\bubbles</span>).gui(20);</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p2">// "analog" bend: pass in bendFunc directly</p>
+<p class="p3">(</p>
+<p class="p3">{<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="s1"><span class="Apple-tab-span">	</span></span><span class="s2">var</span><span class="s1"> bypass = 1 - </span><span class="s2">MouseButton</span><span class="s1">.kr; </span>// press mouse button to bypass</p>
+<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span></span>Bend<span class="s1">({ </span>|original, argName, ugen|</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> res = original;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argName.postln;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(#[<span class="s5">\freq</span>, <span class="s5">\delaytime</span>].includes(argName)) {<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>res = res * <span class="s2">LFNoise2</span>.kr(0.4, bypass * 0.1, 1)<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(original.rate == <span class="s5">\audio</span>) {<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>res = res + <span class="s2">BPF</span>.ar(<span class="s2">PinkNoise</span>.ar(bypass * 0.04), <span class="s2">Rand</span>(200, 10000), 0.1)<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>res</p>
+<p class="p3"><span class="Apple-tab-span">	</span>}, {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s2">LFSaw</span>.kr(0.4, 0, 24, <span class="s2">LFSaw</span>.kr([8,7.23]/10, 0, 3, 80)).midicps; <span class="s3">// glissando function</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CombN</span>.ar(<span class="s2">SinOsc</span>.ar(f, 0, 0.04), 0.2, 0.2, 4) <span class="s3">// echoing sine wave</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>});</p>
+<p class="p3">}.play;</p>
+<p class="p3">)</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p3">(</p>
+<p class="p2">// circuit bent analog bubbles, bend intensity is mouse x position</p>
+<p class="p3">{</p>
+<p class="p1"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">Bend</span>.time(<span class="s2">MouseY</span>.kr(0.02, 20, 1), {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CircuitBend</span>.central({</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s2">LFSaw</span>.kr(0.4, 0, 24, <span class="s2">LFSaw</span>.kr([8,7.23], 0, 3, 80)).midicps; <span class="s3">// glissando function</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CombN</span>.ar(<span class="s2">SinOsc</span>.ar(f, 0, 0.04), 0.2, 0.2, 0.4) <span class="s3">// echoing sine wave</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}, 2, <span class="s2">MouseX</span>.kr(0.01, 1, 1))</p>
+<p class="p3"><span class="Apple-tab-span">	</span>})</p>
+<p class="p3">}.play</p>
+<p class="p3">)</p>
+<p class="p1"><br></p>
+<p class="p3">(</p>
+<p class="p2">// circuit bent analog bubbles, bend intensity is mouse x position, combined with time stretch</p>
+<p class="p3">{</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">CircuitBend</span>.central({</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s2">LFSaw</span>.kr(0.4, 0, 24, <span class="s2">LFSaw</span>.kr([8,7.23], 0, 3, 80)).midicps; <span class="s3">// glissando function</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CombN</span>.ar(<span class="s2">SinOsc</span>.ar(f, 0, 0.04), 0.2, 0.2, 0.4) <span class="s3">// echoing sine wave</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>}, 6, <span class="s2">MouseX</span>.kr(0.01, 1, 1))</p>
+<p class="p3">}.play</p>
+<p class="p3">)</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p3">(</p>
+<p class="p2">// circuit bent analog bubbles,<span class="Apple-converted-space">  </span>bend intensity is mouse x position, bend focus is drifting<span class="Apple-converted-space"> </span></p>
+<p class="p3">{</p>
+<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span></span>CircuitBend<span class="s1">.drift({</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s2">LFSaw</span>.kr(0.4, 0, 24, <span class="s2">LFSaw</span>.kr([8,7.23], 0, 3, 80)).midicps; <span class="s3">// glissando function</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CombN</span>.ar(<span class="s2">SinOsc</span>.ar(f, 0, 0.04), 0.2, 0.2, 0.4) <span class="s3">// echoing sine wave</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>}, 6, <span class="s2">MouseX</span>.kr(0.01, 5, 1), <span class="s2">MouseY</span>.kr(0.01, 30, 1))</p>
+<p class="p3">}.play</p>
+<p class="p3">)</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p3">(</p>
+<p class="p2">// circuit bent analog bubbles</p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>, {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">CircuitBend</span>.controls({</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s2">LFSaw</span>.kr(0.4, 0, 24, <span class="s2">LFSaw</span>.kr([8,7.23], 0, 3, 80)).midicps; <span class="s3">// glissando function</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CombN</span>.ar(<span class="s2">SinOsc</span>.ar(f, 0, 0.04), 0.2, 0.2, 0.4) <span class="s3">// echoing sine wave</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>}, 5)</p>
+<p class="p3">}).play</p>
+<p class="p3">)</p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>).setn(<span class="s5">\bend_10_1</span>, {[1, 0].choose} ! 16);</p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>).setn(<span class="s5">\bend_11_1</span>, {[1, 0].choose} ! 16);</p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>).setn(<span class="s5">\bend_10_3</span>, {[1, 0].choose} ! 16);</p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>).setn(<span class="s5">\bend_2_1</span>, {[1, 0].choose} ! 16);</p>
+<p class="p1"><br></p>
+<p class="p2">// we need a good gui for finding the good ones.</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>).clear;</p>
+<p class="p1"><br></p>
+<p class="p3">(</p>
+<p class="p2">// circuit bent analog bubbles</p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>, {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">CircuitBend</span>.controls1({</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s2">LFSaw</span>.kr(0.4, 0, 24, <span class="s2">LFSaw</span>.kr([8,7.23], 0, 3, 80)).midicps; <span class="s3">// glissando function</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CombN</span>.ar(<span class="s2">SinOsc</span>.ar(f, 0, 0.04), 0.2, 0.2, 0.4) <span class="s3">// echoing sine wave</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>}, 5)</p>
+<p class="p3">}).play</p>
+<p class="p3">)</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>).gui(32);</p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>).setn(<span class="s5">\bend_10_1</span>, {[1, 0].choose} ! 16);</p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>).setn(<span class="s5">\bend_11_1</span>, {[1, 0].choose} ! 16);</p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>).setn(<span class="s5">\bend_10_3</span>, {[1, 0].choose} ! 16);</p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>).setn(<span class="s5">\bend_2_1</span>, {[1, 0].choose} ! 16);</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p2">// blend is not tuned yet</p>
+<p class="p3">(</p>
+<p class="p2">// circuit bent analog bubbles</p>
+<p class="p3"><span class="s2">Ndef</span>(<span class="s5">\x</span>, {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">CircuitBend</span>.controls1({</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s2">LFSaw</span>.kr(0.4, 0, 24, <span class="s2">LFSaw</span>.kr([8,7.23], 0, 3, 80)).midicps; <span class="s3">// glissando function</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CombN</span>.ar(<span class="s2">SinOsc</span>.ar(f, 0, 0.04), 0.2, 0.2, 0.4) <span class="s3">// echoing sine wave</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>}, 5, blend: <span class="s2">true</span>)</p>
+<p class="p3">}).play</p>
+<p class="p3">)</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<p class="p3">(</p>
+<p class="p2">// circuit bent analog bubbles (blend: true)</p>
+<p class="p3">{</p>
+<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span></span>CircuitBend<span class="s1">.drift({</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s2">LFSaw</span>.kr(0.4, 0, 24, <span class="s2">LFSaw</span>.kr([8,7.23], 0, 3, 80)).midicps; <span class="s3">// glissando function</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">CombN</span>.ar(<span class="s2">SinOsc</span>.ar(f, 0, 0.04), 0.2, 0.2, 0.4) <span class="s3">// echoing sine wave</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>}, 6, <span class="s2">MouseX</span>.kr(0, 3), <span class="s2">MouseY</span>.kr(0.01, 30, 1), blend: <span class="s2">true</span>)</p>
+<p class="p3">}.play</p>
+<p class="p3">)</p>
+</body>
+</html>

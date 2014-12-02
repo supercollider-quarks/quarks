@@ -1,0 +1,41 @@
+CLASS:: EaseInOutBounce
+SUMMARY:: Bounce ease-in/out
+CATEGORIES:: Ease
+RELATED:: Overviews/EaseOverview
+
+DESCRIPTION::
+Easing equation for a bounce (exponentially decaying parabolic bounce) ease-in/out, accelerating until halfway, then decelerating. The strong::a:: parameter controls overshoot, the default producing a 10% overshoot.
+
+Use strong::value::, strong::*value::, strong::*kr:: or strong::*ar::, all with a link::Classes/Float:: argument strong::t:: between 0.0 and 1.0. If strong::t:: is below or above this range the output will be undefined.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: t
+signal in the range 0.0 to 1.0.
+
+ARGUMENT:: a
+overshoot.
+
+INSTANCEMETHODS::
+
+METHOD:: value
+
+ARGUMENT:: t
+a link::Classes/Float:: between 0.0 and 1.0.
+
+ARGUMENT:: a
+overshoot. The default is 1.70158
+
+EXAMPLES::
+
+CODE::
+a= EaseInOutBounce.new(1.70158)
+a.value(0.5)
+
+{|t| EaseInOutBounce.(t/99, 1.70158)}.dup(100).plot2
+
+s.boot
+{SinOsc.ar(EaseInOutBounce.kr(Line.kr(0, 1, 2, doneAction:2), 1.70158).exprange(500, 1000), 0, 0.1)}.play
+::

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: DataBus</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>DataBus</h1>
+<h2>Put data from a function onto a bus</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> </p>
+
+<p>DataBus evaluates a function at a regular time interval and puts the resulting data on a control bus on the server.</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*new(function,nchan,server)</STRONG></DT>
+<DD>Creates a new DataBus<DL>
+<DT><EM>nchan</EM></DT>
+<DD>Number of channels for the bus. The function should give as a result an Array with the same size as the number of channels given.</DD>
+<DT><EM>server</EM></DT>
+<DD>An instance of Server. If none is given the default server is used.</DD>
+<DT><EM>function</EM></DT>
+<DD>Function to be evaluated which provides the data for the server</DD>
+</DL>
+
+</DD>
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+
+<DT><STRONG>renew</STRONG></DT>
+<DD>Create the bus, and start the updater. This is called automatically when a new instance is created, but it may be used if the method free was called previously during the session.</DD>
+
+<DT><STRONG>free</STRONG></DT>
+<DD>Free the bus, and stop the updater.</DD>
+
+<DT><STRONG>scale</STRONG></DT>
+<DD>Scale factor with which the result of the function is scaled before putting the values on the bus.</DD>
+
+<DT><STRONG>scale_</STRONG></DT>
+<DD>Set the scaling.</DD>
+
+<DT><STRONG>dT</STRONG></DT>
+<DD>Get the update rate. This is the delta time at which the function is evaluated.</DD>
+
+<DT><STRONG>dT_(dt)</STRONG></DT>
+<DD>Set the update rate. This is the delta time at which the function is evaluated.</DD>
+
+<DT><STRONG>bus</STRONG></DT>
+<DD>The Bus object to which the data is set.</DD>
+
+<DT><STRONG>func</STRONG></DT>
+<DD>The function to be evaluated.</DD>
+
+<DT><STRONG>nc</STRONG></DT>
+<DD>Number of channels of the bus.</DD>
+
+<DT><STRONG>server</STRONG></DT>
+<DD>The Server object on which the bus is.</DD>
+
+
+</DL>
+
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

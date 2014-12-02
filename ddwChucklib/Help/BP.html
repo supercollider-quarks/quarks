@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #36701f}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {text-decoration: underline}
+span.s2 {color: #001ab2}
+span.s3 {color: #000000}
+span.s4 {color: #36701f}
+span.s5 {color: #0000ff}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>BP(\symbol) -- Bound Process</b></p>
+<p class="p2"><br></p>
+<p class="p3">The process prototype <b>[</b><b><span class="s1">PR</span></b><b>]</b> defines functionality without any musical data. When you bind musical material to a process prototype, you have a bound process (BP).</p>
+<p class="p2"><br></p>
+<p class="p3">PR's cannot be played. BP's can.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">PR</span><span class="s3">(</span>\simplePbind<span class="s3">) =&gt; </span><span class="s2">BP</span><span class="s3">(</span>\pbind1<span class="s3">);</span></p>
+<p class="p5"><span class="s2">BP</span><span class="s3">(</span><span class="s4">\pbind1</span><span class="s3">).play(4);<span class="Apple-converted-space">  </span></span>// start it on the next multiple of 4 beats</p>
+<p class="p6"><span class="s2">BP</span>(<span class="s4">\pbind1</span>).stop(4);<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2">BP</span><span class="s3">(</span><span class="s4">\pbind1</span><span class="s3">).free;<span class="Apple-converted-space">  </span></span>// you ought to clean up after yourself</p>
+<p class="p2"><br></p>
+<p class="p7"><b>Objects that can be chucked into a bound process:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Processes:</b></p>
+<p class="p3"><i>BP</i></p>
+<p class="p3"><i>PR</i></p>
+<p class="p3"><i>AdhocClass</i></p>
+<p class="p2"><br></p>
+<p class="p3">These prepare the BP to receive data. If the BP already holds a process, chucking another BP, PR or AdhocClass will wrap the current process inside the new one, based on the adverb:</p>
+<p class="p2"><br></p>
+<p class="p3"><i>=&gt;.wrap</i> -- default action if no adverb. If the process is already wrapped, remove the current wrapper first. Then add the new wrapper.</p>
+<p class="p3"><i>=&gt;.nest</i> -- wrap the process, whether it's already wrapped or not.</p>
+<p class="p3"><i>=&gt;.replace</i> -- replace the current bound process with the new one.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">It is supported to chuck fully realized BPs into other BPs. The receiving BP gets a copy of the incoming process's AdhocClass. This, for instance, is a way to save the state of a process to reuse.</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s2">BP</span>(<span class="s4">\ch1</span>).unwrap =&gt; <span class="s2">BP</span>(<span class="s4">\saveWrapper</span>);</p>
+<p class="p5">// or:</p>
+<p class="p6"><span class="s2">BP</span>(<span class="s4">\ch1</span>).v.child =&gt; <span class="s2">BP</span>(<span class="s4">\saveChild</span>);</p>
+<p class="p8"><br></p>
+<p class="p5">// later:</p>
+<p class="p5"><span class="s2">BP</span><span class="s3">(</span><span class="s4">\saveWrapper</span><span class="s3">) =&gt;.wrap </span><span class="s2">BP</span><span class="s3">(</span><span class="s4">\ch2</span><span class="s3">);<span class="Apple-converted-space">  </span></span>// apply earlier wrapper to another chord process</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Quantization factors:</b></p>
+<p class="p3"><i>nil</i> (converts to NilTimeSpec)</p>
+<p class="p3"><i>SimpleNumber</i> (converts to BasicTimeSpec)</p>
+<p class="p3"><i>Array</i> (converts to QuantOffsetTimeSpec)</p>
+<p class="p3"><i>TimeSpec</i><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Chucking one of these into a BP defines the default quantization for that process, or for all processes if chucked into the class BP.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>TempoClock</b> -- set the clock for process. May be done only when the process is not running. You can set a default clock for all processes by chucking into the BP class.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Material from MIDI:</b></p>
+<p class="p3"><i>MIDIRecBuf</i> -- binds the buffer as it is. Use the adverb to determine where it should go. The process will define how it responds to different adverbs.</p>
+<p class="p3"><i>MBM</i> (MIDIBufManager) -- binds the current buffer as shown in the GUI.</p>
+<p class="p2"><br></p>
+<p class="p3">You can also index a MBM directly: MBM(0)[0] returns the first midi buffer stored in the MBM at index 0. This may then be chucked into the BP. The index may be an integer or symbolic name.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Support patterns:</b></p>
+<p class="p3"><i>Pattern</i></p>
+<p class="p3"><i>MacRh</i> or subclasses<span class="Apple-converted-space"> </span></p>
+<p class="p3"><i>Symbol</i></p>
+<p class="p2"><br></p>
+<p class="p3">Some processes depend on patterns for various parameters (most importantly, MacRh, MicRh, ArpegPat, Func). Use an adverb to determine which pattern you're sending in.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5">// choose arpeggiation types at random from the list</p>
+<p class="p6"><span class="s2">Prand</span>([<span class="s4">\up</span>, <span class="s4">\down</span>, <span class="s4">\random</span>], <span class="s2">inf</span>) =&gt;.arpeg <span class="s2">BP</span>(<span class="s4">\ch1</span>);</p>
+<p class="p2"><br></p>
+<p class="p3">A Symbol may be used to retrieve a predefined pattern from the Pdefn class; if the Pdefn doesn't exist, the Symbol will be turned into a pattern that outputs itself: Pn(symbol, inf).</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2">Pdefn</span><span class="s3">(</span><span class="s4">\randomArpeg</span><span class="s3">, </span><span class="s2">Prand</span><span class="s3">([</span><span class="s4">\up</span><span class="s3">, </span><span class="s4">\down</span><span class="s3">, </span><span class="s4">\random</span><span class="s3">], </span><span class="s2">inf</span><span class="s3">));<span class="Apple-converted-space">  </span></span>// in your setup code; then...</p>
+<p class="p4">\randomArpeg<span class="s3"> =&gt;.arpeg </span><span class="s2">BP</span><span class="s3">(</span>\ch1<span class="s3">);</span></p>
+<p class="p8"><br></p>
+<p class="p5">// to use only one arpeggiation pattern:</p>
+<p class="p5"><span class="s4">\down</span><span class="s3"> =&gt;.arpeg </span><span class="s2">BP</span><span class="s3">(</span><span class="s4">\ch1</span><span class="s3">);<span class="Apple-tab-span">	</span></span>// BP receives Pn(\down, inf)</p>
+<p class="p2"><br></p>
+<p class="p7"><b>BP scheduling:</b></p>
+<p class="p2"><br></p>
+<p class="p3">Chucklib scheduling is compatible with pattern scheduling. The quant argument helps compute the absolute time (in beats) when the first event should occur. The event stream player thread will wake up at exactly that time. Events use the server's latency settings to delay execution of OSC messages to the server just slightly, preventing timing jitter due to inconsistencies in the amount of time it takes to transmit each message over the network. (See the <a href="SC://ServerTiming"><span class="s5">ServerTiming</span></a> help file for more information.) Since all events delay by the same amount, everything remains in sync.</p>
+<p class="p2"><br></p>
+<p class="p3">For the quant argument, you may use -- see <a href="../../ddwCommon/Help/TimeSpec.html"><span class="s5">TimeSpec</span></a> for more details.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>1</b> (any SimpleNumber) -- begin playing at the next multiple of this number</p>
+<p class="p3"><b>[a, b]</b> (where a and b are simple numbers) -- begin playing at b + the next multiple of a</p>
+<p class="p3"><b>NilTimeSpec()</b> -- begin playing exactly now</p>
+<p class="p3"><b>BasicTimeSpec(quant, phase, offset)</b> -- like standard scheduling: quant, phase, timing offset (see <a href="SC://Quant"><span class="s5">Quant</span></a>)</p>
+<p class="p3"><b>DelayTimeSpec(number)</b> -- begin playing exactly now + number</p>
+<p class="p3"><b>AbsoluteTimeSpec(number)</b> -- begin playing at exactly the time specified</p>
+<p class="p3"><span class="Apple-tab-span">	</span>This object is not valid after the given time passes.</p>
+<p class="p2"><br></p>
+<p class="p3">Each BP also has a leadTime property, which is normally zero (in which case it has no effect on the above scheme). Values greater than zero shift the thread scheduling earlier by that number of beats. At the same time, events are delayed by the same number of beats. Processes with different values of leadTime should sound exactly in sync, but processes with higher values will execute earlier on the client. This is helpful if one process supplies information to another process -- the supplier must always execute earlier.</p>
+<p class="p2"><br></p>
+<p class="p3">You may not change the leadTime while the BP is playing. Negative values are not permitted.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p7"><b>Using BP:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Methods:</b></p>
+<p class="p3"><i>free</i> -- Stop playing now and clear references to objects for garbage collection.</p>
+<p class="p3"><i>play(quant, clock, doReset = false)</i></p>
+<p class="p3"><i>reset</i> -- Rebuild the event stream.</p>
+<p class="p3"><i>stop(quant)</i></p>
+<p class="p3"><i>stopNow</i> -- stop this and all child processes immediately.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><i>triggerOneEvent(argQuant, argClock, doReset)</i> -- produce one event from the event stream and play it. Does not reschedule for the next event.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Useful internal methods:</b></p>
+<p class="p3"><i>prepareForPlay(quant, clock, doReset = false)</i> -- populate objects in the adhoc class needed for play.</p>
+<p class="p3"><i>eventSchedTime(quant)</i> -- populate the absolute number of beats on the clock for scheduling, based on the given quantization factor. If none is given, fall back to the quantization factor in the adhoc class, and lastly to the classwide default.</p>
+<p class="p3"><i>asPattern</i> -- request a pattern from the adhoc class.</p>
+<p class="p3"><i>asStream</i> -- call asPattern, and wrap the resulting stream in a CleanupStream to handle early termination.</p>
+<p class="p3"><i>asEventStreamPlayer</i> -- produce the task that will play the process.</p>
+</body>
+</html>

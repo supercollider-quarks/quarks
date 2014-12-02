@@ -1,0 +1,27 @@
+CLASS:: PDelay2
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Modifiers
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/Delay2::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: pattern
+
+ARGUMENT:: mul
+
+ARGUMENT:: add
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PDelay2(Pseq([0, 2, 4, 5], inf), 2, 4).trace+50).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \abc, Pseq([3, 2, 2, 0, 2, 2, 2], inf), \degree, Pkey(\abc), \amp, PDelay2(Pkey(\abc), 0.25).trace).play
+a.stop
+::

@@ -1,0 +1,476 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWDataNetworkClient</TITLE>
+<META NAME="description" CONTENT="SWDataNetworkClient">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY >
+
+
+<H2><A NAME="SECTION00046000000000000000">
+SWDataNetworkClient</A>
+</H2>
+<p>
+This implements an OSC client to a DataNetwork, so that an external SuperCollider client can also be part of the network.
+</p>
+<p>
+This class is a subclass of SWDataNetwork, so the methods used in that class can be used in this class as well. In some cases methods have an additional argument, which only need to be set, when called internally, so the user interface is the same as when using SWDataNetwork. Access to nodes, slots and their data is just the same as for a local network.
+</p>
+<p>There are some additional methods to send out OSC messages, or for internal use.</p>
+
+
+<h4>Some nomenclature:</h4>
+<p>
+A <strong>DataNode</strong>, or a node, is a collection of data streams which somehow belong together.<br>
+For example, this can be representing:<br>
+
+<UL>
+  <LI>A SenseStage MiniBee hardware sensor node with sensors attached</LI>
+  <LI>All the parameters of a sound process (amplitude, frequency, etc)</LI>
+  <LI>A group of (DMX) light channels</LI>
+  <LI>Showtime information (hours, minutes, seconds, frame)</LI>
+  <LI>All the light sensors in a space, collected in a logical order</LI>
+  <LI>All the parameters of a graphical object (dimensions, color)</LI>
+  <LI>All the data from a gaming device, such as a joystick</LI>
+</UL>
+
+<p>An <strong>expected Node</strong> is a DataNode that is prepared to be added to the network, but may not be present yet.</p>
+
+<p>A <strong>DataSlot</strong>, or a slot, is one datastream. So corresponding to the examples of nodes above a slot would represent:<br>
+
+<UL>
+  <LI>A light sensor attached to a MiniBee</LI>
+  <LI>One axis of an acclerometer attached to a MiniBee</LI>
+  <LI>The amplitude of a sound process</LI>
+  <LI>One DMX light channel</LI>
+  <LI>The seconds of the showtime</LI>
+  <LI>The x-dimension of a graphical object</LI>
+  <LI>The y-axis of a joystick</LI>
+</UL>
+
+<p><strong>A client:</strong> the programming environment of one collaborator hooked up to the network. E.g. Joe, using PureData, or Marije, using SuperCollider, or Vincent, using Processing, or Brett, using Max/MSP.</p>
+
+<p><strong>Subscription:</strong> a client can subscribe to a node to receive its data, or subscribe to a single slot of a node. These are called the client's subscriptions.</p>
+
+<p><strong>Setter:</strong> a client can provide data to the network by creating a DataNode. The client then becomes the "setter" of the node. Other clients can not set data to the same node.</p>
+
+
+<h4>- Example - </h4>
+
+<pre>
+
+// create a network client:
+y = SWDataNetworkClient.new( "192.168.0.104", "myname" );
+
+/* 
+The first argument is the IP address of the datanetwork host,
+this address is shown in the basic GUI on the host in the lower right corner.
+
+The second argument "myname" is the name by which you (as a client)
+will be identified in the network, and should be unique among all
+clients (all collaborators in the project). It is used to remember
+your subscriptions and "setters" when you reconnect to the host,
+e.g. when you restart supercollider (recompile the library) and
+re-execute the code.
+
+The client will find the port of the host automatically, and register.
+If the host goes down, the client will search for the host, and react
+to an announce message from the host to reconnect.
+
+The client will automatically unregister, if you recompile the language,
+or quit SuperCollider.
+*/
+
+
+//------------ Querying:
+
+/*
+You can make queries about which nodes and which slots are present in
+the network.
+
+After you are registered, you will automatically receive info messages
+on any new nodes and slots
+*/
+
+// query which nodes are present; this sends a message to the host:
+y.queryNodes; // the result will print out a lot of informational messages.
+
+// to see which nodes are present (local check,
+// not sending a message to the host):
+y.nodes;
+
+// query which nodes are expected, this sends a message to the host:
+y.queryExpected;
+
+// to see which nodes are expected (local check, not sending
+// a message to the host:
+y.expectedNodes;
+
+// query which slots are present, this sends a message to the host:
+y.querySlots;
+
+
+// query which other clients are present (sending message to host):
+y.queryClients;
+
+// query to which nodes you are subscribed (sending message to host):
+y.querySubscriptions;
+
+// query of which nodes you are the setter (sending message to host):
+y.querySetters;
+
+// perform all of the queries (sending message to host):
+y.queryAll;
+
+
+//------------ Subscribing to a node:
+
+// subscribe to node 101, by number:
+y.subscribeNode( 101 );
+
+// subscribe to node 102 by passing in an instance of SWDataNode as an argument:
+y.subscribeNode( y.nodes[102] );
+
+
+// a lot of the interaction with the DataNetwork can also be
+//  done through a graphical user interface:
+y.makeGui;
+
+// -------- working with the data node:
+
+// get a reference to a DataNode in a variable:
+a = y.nodes[102];
+
+// if the node has a label, you acces it by its label:
+a = y[\minibee102];
+
+// access the values of all slots of the node:
+a.value;
+
+(
+SynthDef(\swexample,{ |out=0,amp=0.1,freq=400|
+	Out.ar( out, SinOsc.ar( freq, 0, amp ) );
+}).send(s)
+)
+
+// use it at synth instantiation:
+b = Synth.new( \swexample, [\amp,a.value ] );
+
+// set it again:
+b.set( \amp, a.value );
+
+// free the synth
+b.free;
+
+// instead of setting it manually each time, you can assign
+// an action to the data node to do this automatically:
+
+b = Synth.new( \swexample, [\amp,a.value ] );
+
+a.action= { |data| b.set( \amp, data )};
+
+// another method is to put the data automatically on a bus,
+// and grab the data from there:
+
+// reset the action:
+a.action = {};
+
+// create a bus:
+a.createBus(s);
+
+// map the amplitude of b to the bus:
+b.map( \amp, a.bus );
+
+b.free;
+
+// alternatively, you can use In.kr in your synthdef to read
+// from the bus:
+(
+SynthDef(\swexampleBus,{ |out=0,ampbus=0,freq=400|
+	Out.ar( out, SinOsc.ar( freq, 0, In.kr( ampbus, 1 ) ) );
+}).send(s)
+)
+
+b = Synth.new( \swexampleBus, [\ampbus,a.bus ] );
+
+b.free;
+
+
+// -------- working with a single slot of a data node:
+
+// DataNodes can have multiple channels of data, so the above
+// approach is mostly useful for multichannel control of data.
+// You can also work with a single slot of a node, and control a synth:
+
+// get a reference to a DataSlot in a variable:
+a = y.nodes[102].slots[0];
+
+// if the slot has a label, you acces it by its label:
+a = y[\minibee102_slot0];
+
+// access the value of the slot:
+a.value;
+
+(
+SynthDef(\swexample,{ |out=0,amp=0.1,freq=400|
+	Out.ar( out, SinOsc.ar( freq, 0, amp ) );
+}).send(s)
+)
+
+// use it at synth instantiation:
+b = Synth.new( \swexample, [\amp,a.value ] );
+
+// set it again:
+b.set( \amp, a.value );
+
+// free the synth
+b.free;
+
+// instead of setting it manually each time, you can assign
+// an action to the data node to do this automatically:
+
+b = Synth.new( \swexample, [\amp,a.value ] );
+
+a.action= { |data| b.set( \amp, data )};
+
+// another method is to put the data automatically on a bus,
+// and grab the data from there:
+
+// reset the action:
+a.action = {};
+
+// create a bus:
+a.createBus(s);
+
+// map the amplitude of b to the bus:
+b.map( \amp, a.bus );
+
+b.free;
+
+// alternatively, you can use In.kr in your synthdef:
+(
+SynthDef(\swexampleBus,{ |out=0,ampbus=0,freq=400|
+	Out.ar( out, SinOsc.ar( freq, 0, In.kr( ampbus, 1 ) ) );
+}).send(s)
+)
+
+b = Synth.new( \swexampleBus, [\ampbus,a.bus ] );
+
+b.free;
+
+</pre>
+
+
+
+
+<DL>
+
+<h3> - Methods - </h3>
+
+<DT><STRONG>*new( hostip, name, reg )</STRONG></DT>
+<DD>Create a new client, connecting to <em>hostip</em>. <em>hostip</em> should be a hostname or string (the NetAddr of it is created in the class). <em>name</em> is the name that the client will have in the network. <em>reg</em> is a flag, whether or not to register rightaway to the host.</DD>
+
+<DT><STRONG>makeGui</STRONG></DT>
+<DD>Create a GUI for the client.</DD>
+
+
+<DT><STRONG>setHost ( ip, port )</STRONG></DT>
+<DD>Set the ip and port of the host. This is the method called upon receiving the datanetwork announce message. This then calls resetHost.</DD>
+
+<DT><STRONG>resetHost ( addr )</STRONG></DT>
+<DD>Set the ip and port of the host. This will remove and then re-add the OSC responders with the new host NetAddr.</DD>
+
+<DT><STRONG>findHost ( ip )</STRONG></DT>
+<DD>Try to find the host, based on the given IP (if none is given, the method will use the IP of the previous host). The client will then get the port number from the file in which it is written by the host (access with curl through http).</DD>
+
+<DT><STRONG>lostHost (  )</STRONG></DT>
+<DD>Posts a message when the DataNetwork host has quit.</DD>
+
+
+
+<DT><STRONG>tryReconnect</STRONG></DT>
+<DD>Try to find the host (with the method findHost), and register again to that host.</DD>
+
+
+<DT><STRONG>autoregister (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>autoregister_ (  )</STRONG></DT>
+<DD>If true, when the host NetAddr is reset with setHost, the client will automatically register to it.</DD>
+
+<DT><STRONG>host (  )</STRONG></DT>
+<DD>Retrieve the current host.</DD>
+<DT><STRONG>myaddr (  )</STRONG></DT>
+<DD>Retrieve own address.</DD>
+
+<DT><STRONG>lasttime (  )</STRONG></DT>
+<DD>Last time the client received a ping message.</DD>
+<DT><STRONG>worryAboutTime (  )</STRONG></DT>
+<DD>Method called to check whether the last time a pong was received is not too late. If it has been too long, the client tries to register anew.</DD>
+
+
+<DT><STRONG>registered (  )</STRONG></DT>
+<DD>If set, then the client has been registered succesfully</DD>
+
+<DT><STRONG>addExpected ( id, label, size, fromnw )</STRONG></DT>
+<DD>Add an expected node to the network. This is the same as in SWDataNetwork. However, if called from an OSC message, then <em>fromnw</em> is set to true and the changes are not sent back to the host.</DD>
+
+<DT><STRONG>setData ( id, data, fromnw )</STRONG></DT>
+<DD>Set data in the network. This is the same as in SWDataNetwork. However, if called from an OSC message, then <em>fromnw</em> is set to true and the changes are not sent back to the host.</DD>
+
+<DT><STRONG>add ( key, slot, fromnw )</STRONG></DT>
+<DD>Add a label in the spec of the network. This is the same as in SWDataNetwork. However, if called from an OSC message, then <em>fromnw</em> is set to true and the changes are not sent back to the host.</DD>
+
+
+<DT><STRONG>removeNode ( id, fromnw )</STRONG></DT>
+<DD>Remove datanode in the network. This is the same as in SWDataNetwork. However, if called from an OSC message, then <em>fromnw</em> is set to true and the changes are not sent back to the host.</DD>
+
+
+<h4> - Methods to interface with the remote host </h4>
+
+<DT><STRONG>register (  )</STRONG></DT>
+<DD>Register to the network.</DD>
+<DT><STRONG>unregister (  )</STRONG></DT>
+<DD>Unregister from the network. This method is called automatically when sclang stops (or library is recompiled).</DD>
+
+<h4> - Sending query messages - </h4>
+
+<DT><STRONG>queryAll (  )</STRONG></DT>
+<DD>Execute all of the queries below.</DD>
+<DT><STRONG>queryExpected (  )</STRONG></DT>
+<DD>Query which nodes are expected in the network.</DD>
+<DT><STRONG>queryNodes (  )</STRONG></DT>
+<DD>Query which nodes are present in the network.</DD>
+<DT><STRONG>querySlots (  )</STRONG></DT>
+<DD>Query which slots are present in the network.</DD>
+<DT><STRONG>querySetters (  )</STRONG></DT>
+<DD>Query of which nodes the client is a setter.</DD>
+<DT><STRONG>querySubscriptions (  )</STRONG></DT>
+<DD>Query to which nodes and slots the client is subscribed.</DD>
+<DT><STRONG>queryClients (  )</STRONG></DT>
+<DD>Query which clients are in the network.</DD>
+
+<h4> - Subscribing and unsubscribing to nodes - </h4>
+
+
+<DT><STRONG>subscribeAll (  )</STRONG></DT>
+<DD>Subscribe to all nodes.</DD>
+
+<DT><STRONG>unsubscribeAll (  )</STRONG></DT>
+<DD>Unsubscribe from all nodes currently subscribed to.</DD>
+
+<DT><STRONG>removeAll (  )</STRONG></DT>
+<DD>Remove all nodes this client is a setter of.</DD>
+
+<DT><STRONG>subscribeNode ( node )</STRONG></DT>
+<DD>Subscribe to a node. <em>node</em> can be an instance of SWDataNode or a node ID.</DD>
+<DT><STRONG>unsubscribeNode ( node )</STRONG></DT>
+<DD>Unsubscribe from a node. <em>node</em> can be an instance of SWDataNode or a node ID.</DD>
+<DT><STRONG>subscribeSlot ( slot )</STRONG></DT>
+<DD>Subscribe to a slot. <em>slot</em> can be an instance of SWDataNode or a slot ID (Array of size 2).</DD>
+<DT><STRONG>unsubscribeSlot ( slot )</STRONG></DT>
+<DD>Unsubscribe from a slot. <em>slot</em> can be an instance of SWDataNode or a slot ID (Array of size 2).</DD>
+
+<DT><STRONG>getNode ( node )</STRONG></DT>
+<DD>Get data from a node just one single time. <em>node</em> can be an instance of SWDataNode or a node ID.</DD>
+<DT><STRONG>getSlot ( slot )</STRONG></DT>
+<DD>Get data from a slot just one single time. <em>slot</em> can be an instance of SWDataNode or a slot ID (Array of size 2).</DD>
+
+
+<h4> - Private methods called from OSC messages; these message automatically update the data in the network - </h4>
+
+<DT><STRONG>nodeInfo ( msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>slotInfo ( msg )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>nodeData ( msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>slotData ( msg )</STRONG></DT>
+<DD></DD>
+
+<h4> - Private methods called from OSC messages; these message automatically post an informative message in the post window - </h4>
+
+<DT><STRONG>unsubscribeNodeInfo ( msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>unsubscribeSlotInfo ( msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>subscribeNodeInfo ( msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>subscribeSlotInfo ( msg )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>clientInfo ( msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>setterInfo ( msg )</STRONG></DT>
+<DD></DD>
+
+
+<h4> - Private methods - </h4>
+
+<DT><STRONG>labelNode ( node )</STRONG></DT>
+<DD><em>private</em> - This method is called when this client labels a node in the network, using the <em>add</em> method. This method sends out an OSC message to the host.</DD>
+<DT><STRONG>labelSlot ( slot )</STRONG></DT>
+<DD><em>private</em> - This method is called when this client labels a slot in the network, using the <em>add</em> method. This method sends out an OSC message to the host.</DD>
+
+<DT><STRONG>sendData ( id, data )</STRONG></DT>
+<DD><em>private</em> - This method is called when this client sets data to the network. This method sends out an OSC message to the host with the data.</DD>
+
+<DT><STRONG>sendPong (  )</STRONG></DT>
+<DD><em>private</em> - sends a pong to the host. This method is called in response to receiving a ping message.</DD>
+
+<DT><STRONG>registered_ (  )</STRONG></DT>
+<DD><em>private</em> - set the registered flag</DD>
+
+<DT><STRONG>addResponders (  )</STRONG></DT>
+<DD><em>private</em> - Add all OSC responders</DD>
+<DT><STRONG>removeResponders (  )</STRONG></DT>
+<DD><em>private</em> - Remove all OSC responders</DD>
+
+</DL>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+	HREF="SWDataNetworkLog.html">SWDataNetworkLog</A>
+</LI>
+<LI><I> Previous:</I> <A 
+  HREF="SWDataNetworkOSCClient.html">SWDataNetworkOSCClient</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<BR><HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</BODY>
+</HTML>

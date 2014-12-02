@@ -1,0 +1,34 @@
+TITLE:: GameLoopDecoder
+summary:: The class managing the decoder for GameLoop
+categories:: Classes
+related:: Overviews/Gameloop_Overview
+
+DESCRIPTION::
+This class provides a central space for the choice of encoder and decoder. It is used inside link::SoundRepresentation::.
+
+In GameLoop you can choose between the AmbIEM (3d order Ambisonic to Binaural) and Ambisonic Toolkit (First order Ambisonics - Stereo, Binaural and other configurations). Regarding Binaural the Ambisonic Toolkit produces less artifacts but AmbIEM delivers (according to my subjective comparison) a superior spatial image.
+
+NOTE::At the moment only binaural and stereo encoders/decoders have been implemented.::
+
+CLASSMETHODS::
+
+METHOD:: binauralAmbIEM
+Create a 3d order Ambisonic to binaural decoder using the AmbIEM library.
+
+METHOD:: newStereo
+ATK stereo decoder.
+
+METHOD:: newListen
+ATK binaural decoder.
+
+METHOD:: active
+Returns true or false.
+
+METHOD:: getEncoderProxy
+Get the relevant encoder proxy. Used in SoundRepresentation.
+
+METHOD:: decoderProxy
+Get the decoder proxy. Used in SoundRepresentation.
+
+METHOD:: clear
+Clear and release everything.

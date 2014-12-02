@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: ThinkPad</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>ThinkPad</h1>
+<h2>class to allow you to access various internal sensors of your ThinkPad.</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> : <strong>Laptop</strong> </p>
+
+<p>This is a subclass of <b>Laptop</b>, to access internals of a ThinkPad (it has been tested on a T61).</p>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+<DT><STRONG>myInit</STRONG></DT>
+<DD>initalizes the keyboard, touchpad, trackpoint and hard disk acceleration sensor.</DD>
+
+<DT><STRONG>initTrackpoint</STRONG></DT>
+<DD>Initializes the trackpoint.</DD>
+
+<DT><STRONG>trackpoint</STRONG></DT>
+<DD>The trackpoint as a GeneralHIDDevice.</DD>
+
+<DT><STRONG>initHdaps</STRONG></DT>
+<DD>Initializes the hard disk acceleration sensor.</DD>
+
+<DT><STRONG>hdaps</STRONG></DT>
+<DD>The hard disk acceleration sensor, as a GeneralHIDDevice.</DD>
+
+
+</DL>
+
+<h3>Example</h3>
+    <pre>
+<span class="comment-delimiter">// </span><span class="comment">create an instance:
+</span>t = <span class="type">ThinkPad</span>.new;
+<span class="comment-delimiter">// </span><span class="comment">show all data in a GUI:
+</span>t.internals.makeGui;
+
+<span class="comment-delimiter">// </span><span class="comment">Sometimes motionstrackosc takes longer to start
+// and you have to ensure that you are subscribed
+// to the directional data from the camera.</span>
+t.camera.subscribeDir(1)
+
+t[<span class="constant">\keyVal</span>].value; <span class="comment-delimiter">// </span><span class="comment">KeyValue (keycode, normalised between 0 and 1)
+</span>
+t[<span class="constant">\temp1</span>].value;  <span class="comment-delimiter">// </span><span class="comment">Temperature at sensor 1
+</span>
+<span class="comment-delimiter">// </span><span class="comment">see SWDataNetwork for more info on how to use the DataNetwork.</span></pre>
+
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

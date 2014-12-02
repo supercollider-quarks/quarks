@@ -1,0 +1,58 @@
+CLASS:: RedVector
+SUMMARY:: a vector of any dimension
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview, Classes/RedVector2D, Classes/RedVector3D
+
+DESCRIPTION::
+
+NOTE::
+For 2 and 3 dimensional vectors, consider using the subclasses link::Classes/RedVector2D:: and link::Classes/RedVector3D::. These are optimized for speed.
+::
+
+INSTANCEMETHODS::
+
+METHOD:: mag
+Get the magnitude of the vector as a link::Classes/Float::.
+
+METHOD:: distance
+Get the distance between two vectors as a link::Classes/Float::. code::(vec1-vec2).pow(2).sum.sqrt::
+
+METHOD:: manhattan
+Get the sum of the absolute differences as a link::Classes/Float::. code::(vec1-vec2).abs.sum::.
+DISCUSSION::
+Sometimes when just comparing distances it is not necessary to perform pow2 and sqrt calculations. In those situations this method will be a lot faster than link::#-distance::.
+
+METHOD:: dot
+Dot product.
+
+METHOD:: normalize
+Get a new vector with normalized magnitude.
+
+METHOD:: limit
+Get a new vector limited to max value.
+
+EXAMPLES::
+
+CODE::
+a= RedVector[10, 20]
+b= a.normalize
+
+a.mag
+b.mag
+
+c= a.limit(5)
+c.mag
+
+a.distance(b)
+b.distance(c)
+c.distance(a)
+
+a+b
+c*RedVector[100, 200].rand
+
+RedVector2D[320, 240]		//this one is hardcoded to 2 dimensions
+RedVector3D[320, 240, 160]	//this one is hardcoded to 3 dimensions
+a= RedVector[1, 2, 3, 4, 5, 6]	//6 dimensions
+b= RedVector[10]		//1 dimension
+a+b
+::

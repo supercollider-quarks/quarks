@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {font: 14.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #0000bf}
+span.s4 {color: #606060}
+span.s5 {color: #007300}
+span.s6 {color: #0000bf}
+span.s7 {color: #007300}
+span.s8 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Fact(\symbol)</b></span> -- Factory -- automatic creation<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">A factory creates an object that depends on other support objects. For example, a voicer may use buffers as wavetables or samples. The factory for this voicer is responsible for creating the buffers and returning the voicer.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Requires an Environment or Event containing:</p>
+<p class="p2"><br></p>
+<p class="p1"><b>make:</b> A function to create the Factory's output object and its support objects.</p>
+<p class="p1"><b>free:</b> For Voicer factories, a function to free supporting objects.</p>
+<p class="p1"><b>type:</b> A symbol specifying whether this is a \voicer or \bp factory.</p>
+<p class="p1"><b>keys:</b> Variables from the current environment to import into the factory during instantiation.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Voicer factories:</b></p>
+<p class="p2"><br></p>
+<p class="p1">The ~target environment variable is reserved for the target on which the Voicer will play. Usually this will be a MixerChannel; if not, it should be a Group or Server.</p>
+<p class="p2"><br></p>
+<p class="p1">Including <i>keys: [\master]</i> means that if there is a master MixerChannel stored in the environment variable ~master in the current environment, it will be available inside the factory environment. Thus the target MixerChannel can direct its output to the master, and adapt to whichever environment is current at the time it's asked to produce its object.</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p4"><span class="s2"><span class="Apple-tab-span">	</span></span>// note: I define my Instr's in the global Instr library</p>
+<p class="p4"><span class="s2"><span class="Apple-tab-span">	</span></span>// (.rtf files held in ./Instr/), then reference them by name here.</p>
+<p class="p4"><span class="s2"><span class="Apple-tab-span">	</span></span>// for this example, I can't assume you have this Instr.</p>
+<p class="p3"><span class="s3">Instr</span>(<span class="s4">"analog.ghostly"</span>, { <span class="s3">arg</span> freq, gate, freqlag, attacktime, decaytime, env, vsense, mul;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s3">var</span> amp;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>amp = <span class="s3">Sensitivity</span>.kr(1, <span class="s3">Latch</span>.kr(gate, gate), vsense);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s3">Mix</span>.ar(<span class="s3">Formlet</span>.ar(<span class="s3">PinkNoise</span>.ar([0.2, 0.2]), freq*2, attacktime, decaytime, mul))</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* <span class="s3">EnvGen</span>.kr(env, gate, doneAction:2, levelScale:amp*2.5)</p>
+<p class="p3">}, [<span class="s5">\freq</span>, [0, 1], [0, 2], [0.001, 2, <span class="s5">\exponential</span>], [0.001, 2, <span class="s5">\exponential</span>],</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s3">EnvSpec</span>(<span class="s3">Env</span>.adsr(0.01, 1, 0.75, 0.1)), [0, 1], [0, 1]]);</p>
+<p class="p5"><br></p>
+<p class="p3">(keys: [<span class="s5">\master</span>], make: {</p>
+<p class="p4"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// master is used as the target mixer's output</p>
+<p class="p3"><span class="Apple-tab-span">	</span>~target = <span class="s3">MixerChannel</span>(<span class="s4">"ghostly"</span>, s, 1, 2, level:0.1, outbus: ~master);</p>
+<p class="p5"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s3">Voicer</span>(10, <span class="s3">Instr</span>(<span class="s4">"analog.ghostly"</span>), [<span class="s5">\attacktime</span>, `0.002, <span class="s5">\decaytime</span>, `0.9186, <span class="s5">\vsense</span>, `0.787, <span class="s5">\mul</span>, `0.535], target:~target).latency_(0.5)</p>
+<p class="p3">},</p>
+<p class="p3">free: {</p>
+<p class="p3"><span class="Apple-tab-span">	</span>~target.free</p>
+<p class="p3">}, type: <span class="s5">\voicer</span>) =&gt; <span class="s3">Fact</span>(<span class="s5">\ghost</span>);</p>
+<p class="p3">)</p>
+<p class="p5"><br></p>
+<p class="p4">// This line creates both the MixerChannel and Voicer.</p>
+<p class="p6"><span class="s3">Fact</span><span class="s2">(</span>\ghost<span class="s2">) =&gt; </span><span class="s3">VC</span><span class="s2">(</span>\ghost<span class="s2">);</span></p>
+<p class="p5"><br></p>
+<p class="p4">// When you free the VC, it remembers the MixerChannel and frees it according to the free function.</p>
+<p class="p3"><span class="s3">VC</span>(<span class="s5">\ghost</span>).free;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Passing parameters to Voicer factories:</b></p>
+<p class="p2"><br></p>
+<p class="p1">Use entries in the Factory's environment to declare parameters. The declaration should be outside the 'make' function; if it's inside, 'make' will overwrite any values that you try to pass in.</p>
+<p class="p2"><br></p>
+<p class="p1">Any parameters specified in the parms dictionary at chuck time will replace the default values.</p>
+<p class="p2"><br></p>
+<p class="p1">This example uses a parameter to alter the amplitude envelope.</p>
+<p class="p2"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s6">Instr</span>(<span class="s4">"analog.ghostly"</span>, { <span class="s6">arg</span> freq, gate, freqlag, attacktime, decaytime, env, vsense, mul;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s6">var</span> amp;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>amp = <span class="s6">Sensitivity</span>.kr(1, <span class="s6">Latch</span>.kr(gate, gate), vsense);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s6">Mix</span>.ar(<span class="s6">Formlet</span>.ar(<span class="s6">PinkNoise</span>.ar([0.2, 0.2]), freq*2, attacktime, decaytime, mul))</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* <span class="s6">EnvGen</span>.kr(env, gate, doneAction:2, levelScale:amp*2.5)</p>
+<p class="p7">}, [<span class="s7">\freq</span>, [0, 1], [0, 2], [0.001, 2, <span class="s7">\exponential</span>], [0.001, 2, <span class="s7">\exponential</span>],</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s6">EnvSpec</span>(<span class="s6">Env</span>.adsr(0.01, 1, 0.75, 0.1)), [0, 1], [0, 1]]);</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span>// this is the default envelope, simple adsr</p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span>// declared as a pre-existing value in the environment</p>
+<p class="p7">(envelope: <span class="s6">Env</span>.adsr,</p>
+<p class="p7">make: { <span class="s6">|name|</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>~target = <span class="s6">MixerChannel</span>(name, s, 1, 2, level: -10.dbamp);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s6">Voicer</span>(10, <span class="s6">Instr</span>(<span class="s4">"analog.ghostly"</span>), [<span class="s7">\attacktime</span>, `0.002, <span class="s7">\decaytime</span>, `0.9186,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\vsense</span>, `0.787, <span class="s7">\mul</span>, `0.535,</p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// parameter is used here, by environment variable</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\env</span>, ~envelope], target:~target);</p>
+<p class="p7">}, free: { ~target.free }, type: <span class="s7">\voicer</span>) =&gt; <span class="s6">Fact</span>(<span class="s7">\parameterized</span>);</p>
+<p class="p7">)</p>
+<p class="p8"><br></p>
+<p class="p9">// use all default values</p>
+<p class="p10"><span class="s6">Fact</span><span class="s2">(</span>\parameterized<span class="s2">) =&gt; </span><span class="s6">VC</span><span class="s2">(</span>\defaults<span class="s2">);</span></p>
+<p class="p8"><br></p>
+<p class="p9">// use a different envelope</p>
+<p class="p7"><span class="s6">Fact</span>(<span class="s7">\parameterized</span>).chuck(<span class="s6">VC</span>(<span class="s7">\slow</span>), parms: (</p>
+<p class="p7"><span class="Apple-tab-span">	</span>envelope: <span class="s6">Env</span>.adsr(5, 3, 0.7, 4)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">// new envelope</span></p>
+<p class="p7">));</p>
+<p class="p8"><br></p>
+<p class="p7"><span class="s6">VC</span>(<span class="s7">\defaults</span>).v.gate(440, 2, 0.5);</p>
+<p class="p7"><span class="s6">VC</span>(<span class="s7">\slow</span>).v.gate(440, 9, 0.5);</p>
+<p class="p8"><br></p>
+<p class="p7"><span class="s6">VC</span>(#[defaults, slow]).free;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>BP factories:</b></p>
+<p class="p2"><br></p>
+<p class="p1">Since a BP manages its own resources, there is no need for the factory to include a free function.</p>
+<p class="p2"><br></p>
+<p class="p1">When creating the BP, the factory must know the name of the output BP. This is passed as the first argument to the make function. So, the general form of a BP factory should be as follows:</p>
+<p class="p2"><br></p>
+<p class="p3">(keys: [... any import variables here, as above...],</p>
+<p class="p4"><span class="s2">make: { </span><span class="s3">|name|</span><span class="s2"><span class="Apple-converted-space">  </span></span>// |name| receives name of target BP</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s3">PR</span>(<span class="s5">\myPrototype</span>) =&gt; <span class="s3">BP</span>(name);</p>
+<p class="p4"><span class="s2"><span class="Apple-tab-span">	</span></span>// set other parameters of BP(name) here</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s2"><span class="Apple-tab-span">	</span></span>// make sure to return BP(name) as the last thing in the function</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s3">BP</span>(name)</p>
+<p class="p3">}, type: <span class="s5">\bp</span>) =&gt; <span class="s3">Fact</span>(<span class="s5">\bpFactory</span>);</p>
+<p class="p5"><br></p>
+<p class="p4">// Fact =&gt; BP passes in the name of the target BP</p>
+<p class="p6"><span class="s3">Fact</span><span class="s2">(</span>\bpFactory<span class="s2">) =&gt; </span><span class="s3">BP</span><span class="s2">(</span>\myBP<span class="s2">);</span></p>
+<p class="p5"><br></p>
+<p class="p4">// does not refer to the Factory; uses its own freeCleanup</p>
+<p class="p3"><span class="s3">BP</span>(<span class="s5">\myBP</span>).free;</p>
+<p class="p2"><br></p>
+</body>
+</html>

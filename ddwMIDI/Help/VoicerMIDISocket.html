@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.47">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #bf0000}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+span.s3 {color: #0016ff}
+span.s4 {color: #007300}
+span.s5 {color: #0000ff}
+span.s6 {font: 9.0px Monaco; color: #000000}
+span.s7 {font: 9.0px Monaco; color: #007300}
+span.s8 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>VoicerMIDISocket<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Allows voicers to be assigned to MIDI channels. Several voicers can be assigned to the same channel, with different key ranges allowing for key splits. MIDI controllers can be attached to arguments in the synthdef as well.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Uses MIDIPort and MIDIChannel, which are the backbone of a MIDI responder framework that will be more flexible than that in the crucial library. More types of sockets will have to be written to duplicate and expand the crucial MIDI responder functionality, but this is a good beginning.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">James Harkins</p>
+<p class="p3">jamshark70@dewdrop-world.net</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(channel, destination, lowkey = 0, hikey = 127)</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>chan:</b> the MIDI channel number to use. May be specified as:</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s1">MIDIChannelIndex</span><span class="s2">(port#, channel#)<span class="Apple-converted-space">  </span></span>// if channel# is omitted, it will be assumed 0</p>
+<p class="p6">[port#, channel#]</p>
+<p class="p5"><span class="s2">channel#<span class="Apple-tab-span">	</span></span>// assumes port 0</p>
+<p class="p5"><span class="s1">nil</span><span class="s2"><span class="Apple-tab-span">	</span></span>// assumes port 0, channel 0</p>
+<p class="p2"><br></p>
+<p class="p3"><b>destination:</b> the voicer to play. This may also be a <a href="../../ddwVoicer/Help/VoicerProxy.html"><span class="s3">VoicerProxy</span></a> for on-the-fly MIDI re-routing.</p>
+<p class="p3"><b>lowkey, hikey:</b> the range of MIDI note numbers to which this voicer will respond. These default to the entire range.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>free<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Removes this MIDI socket from its MIDI channel. If you have multiple MIDI sockets for a given channel, the others will be left intact. To clear a MIDI channel completely, do one of the following:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s1">MIDIPort</span>.removeAt(channel_number);<span class="Apple-converted-space"> </span></p>
+<p class="p5">//or -- you don't need to do both!</p>
+<p class="p6">myVoicerSocket.parent.free;<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Controls<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>transpose_(semitones)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">This number of semitones will be added to the MIDI note number when the note is triggered.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>addControl(ccnum, name, value = 0, spec)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Maps a MIDI controller number to a single argument.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>ccnum:</b> the controller number. Supply <span class="s4">\pb</span> to use the pitch bend wheel. Alternately, leave ccnum nil and the socket will get a control from the MIDIChannel's <a href="CCAllocator.html"><span class="s5">CCAllocator</span></a> (accessed by channel.ccAllocator).</p>
+<p class="p3"><b>name:</b> the name of the synth argument. Should be a symbol (or respond to asSymbol).<span class="Apple-converted-space"> </span></p>
+<p class="p3"><b>value:</b> the desired initial value for this controller.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><b>spec:</b> a ControlSpec used to map the raw controller data onto a user defined range. The controller data are divided by 127 before being mapped by the ControlSpec, so the input range is an 0..1. Can be given as an Array (to which .asSpec will be applied). For pitch bend, if you supply an Integer or Float, addControl will construct a spec which will give that many semitones bend in either direction: <span class="s6">[num.midiratio.reciprocal, num.midiratio, </span><span class="s7">\exponential</span><span class="s6">, 0, 1].asSpec</span>.</p>
+<p class="p2"><br></p>
+<p class="p3">The same controller number can be mapped to many different functions (and even belonging to different voicers or different kinds of objects altogether). If you want to control multiple voicers with one controller, keep in mind that each voicer has to have its own socket; therefore, you'll have to add a control to each socket individually, using the same controller number.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>removeControl(control)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Disconnects a global control from its MIDI controller. You can specify either the controller number or the argument name. The control will still be global in the voicer for programmatic use.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Example</b></p>
+<p class="p7"><br></p>
+<p class="p8">This example illustrates connecting a Voicer, mapping global controls to MIDI controllers, GUI interactivity and pitch bend.</p>
+<p class="p7"><br></p>
+<p class="p6">(</p>
+<p class="p9"><span class="s2">i = </span><span class="s1">Instr</span><span class="s2">([</span>\test<span class="s2">, </span>\miditest<span class="s2">], {</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">arg</span> freq = 440, gate = 0, env, pb = 1, ffreq = 1000, rq = 1;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">var</span> out, amp;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>amp = <span class="s1">Latch</span>.kr(gate, gate);<span class="Apple-tab-span">	</span><span class="s8">// velocity sensitivity</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>out = <span class="s1">EnvGen</span>.kr(env, gate, doneAction:2) *</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">RLPF</span>.ar(<span class="s1">Pulse</span>.ar(freq * pb, 0.25, amp), ffreq, rq);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>[out,out]</p>
+<p class="p6">}, [<span class="s4">\freq</span>, <span class="s4">\amp</span>, <span class="s1">nil</span>, <span class="s1">nil</span>, <span class="s4">\freq</span>, <span class="s4">\rq</span>]);</p>
+<p class="p10"><br></p>
+<p class="p6">v = <span class="s1">Voicer</span>(10, i, [<span class="s4">\env</span>, <span class="s1">Env</span>.adsr(0.01, 0.2, 0.75, 0.1), <span class="s4">\rq</span>, `0.2]);</p>
+<p class="p10"><br></p>
+<p class="p11"><span class="s2">k = </span>VoicerMIDISocket<span class="s2">(0, v);</span></p>
+<p class="p6">k.addControl(1, <span class="s4">\ffreq</span>, 1000, <span class="s4">\freq</span>); <span class="Apple-converted-space">  </span><span class="s8">// filt. cutoff by mw</span></p>
+<p class="p6">k.addControl(<span class="s4">\pb</span>, <span class="s4">\pb</span>, 1, 3);<span class="Apple-tab-span">	</span><span class="s8">// 3-semitone bend</span></p>
+<p class="p10"><br></p>
+<p class="p5"><span class="s2">v.gui;<span class="Apple-tab-span">	</span></span>// the controllers show up in the window, w/ visual feedback when you move the wheels</p>
+<p class="p6">)</p>
+<p class="p10"><br></p>
+<p class="p5">// when done</p>
+<p class="p6">v.free;</p>
+<p class="p12"><br></p>
+<p class="p4"><b>Assigning arbitrary arguments</b></p>
+<p class="p2"><br></p>
+<p class="p3">You can set up streams for any synth arguments. The streams are generated using any event pattern (such as Pbind). The event stream will be evaluated for every note-on, and the results added to the arguments array when triggering the voicer.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>noteOnArgsPat_(pattern)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Example:</p>
+<p class="p2"><br></p>
+<p class="p6">(</p>
+<p class="p9"><span class="s2">i = </span><span class="s1">Instr</span><span class="s2">([</span>\test<span class="s2">, </span>\miditest<span class="s2">], {</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">arg</span> freq = 440, gate = 0, env, pb = 1, ffreq = 1000, rq = 1;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">var</span> out, amp;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>amp = <span class="s1">Latch</span>.kr(gate, gate);<span class="Apple-tab-span">	</span><span class="s8">// velocity sensitivity</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>out = <span class="s1">EnvGen</span>.kr(env, gate, doneAction:2) *</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">RLPF</span>.ar(<span class="s1">Pulse</span>.ar(freq * pb, 0.25, amp), ffreq, rq);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>[out,out]</p>
+<p class="p6">}, [<span class="s4">\freq</span>, <span class="s4">\amp</span>, <span class="s1">nil</span>, <span class="s1">nil</span>, <span class="s4">\freq</span>, <span class="s4">\rq</span>]);</p>
+<p class="p10"><br></p>
+<p class="p6">v = <span class="s1">Voicer</span>(10, i, [<span class="s4">\env</span>, <span class="s1">Env</span>.adsr(0.01, 0.2, 0.75, 0.1), <span class="s4">\rq</span>, `0.2]);</p>
+<p class="p10"><br></p>
+<p class="p11"><span class="s2">k = </span>VoicerMIDISocket<span class="s2">(0, v);</span></p>
+<p class="p6">k.addControl(<span class="s4">\pb</span>, <span class="s4">\pb</span>, 1, 3);<span class="Apple-tab-span">	</span><span class="s8">// 3-semitone bend</span></p>
+<p class="p6">k.noteOnArgsPat = <span class="s1">Pbind</span>(<span class="s4">\ffreq</span>, <span class="s1">Pn</span>(<span class="s1">Pgeom</span>(300, 1.07177346, 20), <span class="s1">inf</span>));</p>
+<p class="p5"><span class="s2">k.noteOnArgsEvent = (gate:0.25);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// gate is 0.25 for every note, overriding velocity sensitivity</p>
+<p class="p6">)</p>
+<p class="p10"><br></p>
+<p class="p5">// when done</p>
+<p class="p6">v.free;</p>
+<p class="p12"><br></p>
+<p class="p4"><b>Tuning schemes</b></p>
+<p class="p2"><br></p>
+<p class="p3">The default tuning scheme is equal temperament (midicps). You can write a function to translate MIDI note numbers into frequencies using any method you like. The example below creates a lookup table for some sort of just intonation.</p>
+<p class="p2"><br></p>
+<p class="p3">Also see the classes in the ddwTemperament quark. The tuning in the example below could be written more simply using TuningRatios, provided ddwTemperament is installed.</p>
+<p class="p2"><br></p>
+<p class="p6">k.midiToFreq = <span class="s1">TuningRatios</span>(12, tunings: [1, 135/128, 9/8, 6/5, 5/4, 4/3, 45/32, 3/2, 14/9, 27/16, 16/9, 15/8]);</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Note:</b> If you change the midiToFreq function while holding notes on the keyboard, you are very likely to get stuck notes because the release frequency for those notes will be different from the onset frequency.</p>
+<p class="p2"><br></p>
+<p class="p8"><b>midiToFreq_(func)</b></p>
+<p class="p13"><span class="s1"><b>VoicerMIDISocket</b></span><span class="s2"><b>.defaultMidiToFreq_(func)</b><span class="Apple-converted-space">  </span></span>// this will be applied to all new sockets</p>
+<p class="p7"><br></p>
+<p class="p6">(</p>
+<p class="p6"><span class="s1">var</span> freqs, base;</p>
+<p class="p6">base = 0.midicps;</p>
+<p class="p6">freqs = [1, 135/128, 9/8, 6/5, 5/4, 4/3, 45/32, 3/2, 14/9, 27/16, 16/9, 15/8] * base;</p>
+<p class="p5">// the next line expands the one octave upward for a continuous scale</p>
+<p class="p5">// see the Adverbs helpfile for an explanation of *.x</p>
+<p class="p6">freqs = 2 ** (0..10) *.x freqs;</p>
+<p class="p10"><br></p>
+<p class="p9"><span class="s2">i = </span><span class="s1">Instr</span><span class="s2">([</span>\test<span class="s2">, </span>\miditest<span class="s2">], {</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">arg</span> freq = 440, gate = 0, env, pb = 1, ffreq = 1000, rq = 1;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">var</span> out, amp;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>amp = <span class="s1">Latch</span>.kr(gate, gate);<span class="Apple-tab-span">	</span><span class="s8">// velocity sensitivity</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>out = <span class="s1">EnvGen</span>.kr(env, gate, doneAction:2) *</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">RLPF</span>.ar(<span class="s1">Pulse</span>.ar(freq * pb, 0.25, amp), ffreq, rq);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>[out,out]</p>
+<p class="p6">}, [<span class="s4">\freq</span>, <span class="s4">\amp</span>, <span class="s1">nil</span>, <span class="s1">nil</span>, <span class="s4">\freq</span>, <span class="s4">\rq</span>]);</p>
+<p class="p10"><br></p>
+<p class="p6">v = <span class="s1">Voicer</span>(10, i, [<span class="s4">\env</span>, <span class="s1">Env</span>.adsr(0.01, 0.2, 0.75, 0.1), <span class="s4">\rq</span>, `0.2]);</p>
+<p class="p10"><br></p>
+<p class="p11"><span class="s2">k = </span>VoicerMIDISocket<span class="s2">(0, v);</span></p>
+<p class="p6">k.addControl(1, <span class="s4">\ffreq</span>, 1000, <span class="s4">\freq</span>); <span class="Apple-converted-space">  </span><span class="s8">// filt. cutoff by mw</span></p>
+<p class="p6">k.addControl(<span class="s4">\pb</span>, <span class="s4">\pb</span>, 1, 3);<span class="Apple-tab-span">	</span><span class="s8">// 3-semitone bend</span></p>
+<p class="p5"><span class="s2">k.midiToFreq_(freqs[</span><span class="s1">_</span><span class="s2">]);<span class="Apple-converted-space">  </span></span>// same as: v.midiToFreq_({ |note| freqs[note] });</p>
+<p class="p6">)</p>
+<p class="p10"><br></p>
+<p class="p5"><span class="s2">k.midiToFreq_(</span><span class="s1">nil</span><span class="s2">);<span class="Apple-tab-span">	</span></span>// go back to default</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// C major triads are ugly again!</p>
+<p class="p6">v.free;</p>
+</body>
+</html>

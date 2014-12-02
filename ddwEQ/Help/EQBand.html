@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>EQBand<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">One band of a Regalia-Mitra EQ filter. -- H. James Harkins, jamshark70@dewdrop-world.net</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(type = \eq, freq = 440, k = 1, rq = 1, numChannels = 1, sr = 44100)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">type:<span class="Apple-tab-span">	</span>\eq -- standard boost/cut filter</p>
+<p class="p3"><span class="Apple-tab-span">	</span>\hishelf -- high shelving</p>
+<p class="p3"><span class="Apple-tab-span">	</span>\loshelf -- low shelving</p>
+<p class="p2"><br></p>
+<p class="p3">freq: Center frequency or transition frequency.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">k: gain factor. One is the unity (no change), 0 is -inf (maximum cut). Use .dbamp to convert decibels to the scaling factor. Generally k should be positive.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">rq: reciprocal of q.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">numChannels: how many channels do you need? The predefined synthdefs support one and two channels; if you need more, follow the templates in <i>EQ synthdefs.rtf</i>.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*newFromArray(a, numChan, sr)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Used by MultiEQ. a contains [type, freq, k, rq].<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>play(target, bus, addAction, amp = 1)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Plays the EQ band on the server. If the EQ synth already exists, it will be moved relative to the (new) target supplied.</p>
+<p class="p2"><br></p>
+<p class="p3">target: if target is a group, the default action will be addToTail. If target is a synth, the default action will be changed to addAfter. If target is a MixerChannel, the target will be changed to the MixerChannel's effects group, and the bus will automatically be set to the MixerChannel bus. MixerChannel is therefore the easiest kind of target to use.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">bus: the EQ band will read the signal from this bus and replace the signal with the processed signal (ReplaceOut).<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">addAction: as in Synth. Usually you don't need to specify this.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">amp: volume adjustment.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>free<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Removes the EQ band from the server.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>mul_(m)</b></p>
+<p class="p3"><b>type_(t)</b></p>
+<p class="p3"><b>freq_(f)</b></p>
+<p class="p3"><b>k_(newk)</b></p>
+<p class="p3"><b>rq_(r)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Updates the filter coefficients on the server.<span class="Apple-converted-space"> </span></p>
+</body>
+</html>

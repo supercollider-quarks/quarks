@@ -1,0 +1,187 @@
+CLASS:: PatchOut
+summary:: manages a Player's output when connecting to other Players
+categories:: Libraries>crucial>internals
+
+
+DESCRIPTION:: These objects hold information about a Player's inputs and outputs. They are used to make connections to other Players, and to manage that connection and all subsequent repatching or disconnections.
+
+This is the predecessor system to Mx, which has a better system and is not limited to just Players.
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: source
+
+
+argument:: group
+
+
+argument:: bus
+
+
+
+METHOD:: prNew
+
+
+argument:: source
+
+
+argument:: group
+
+
+argument:: bus
+
+
+
+METHOD:: audio
+
+
+argument:: source
+
+
+argument:: group
+
+
+argument:: bus
+
+
+
+METHOD:: control
+
+
+argument:: source
+
+
+argument:: group
+
+
+argument:: bus
+
+
+
+METHOD:: scalar
+
+
+argument:: source
+
+
+argument:: group
+
+
+argument:: bus
+
+
+
+METHOD:: stream
+
+
+argument:: source
+
+
+argument:: group
+
+
+argument:: bus
+
+
+
+METHOD:: noncontrol
+
+
+argument:: source
+
+
+argument:: group
+
+
+argument:: bus
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: source
+
+
+
+METHOD:: group
+
+
+
+METHOD:: bus
+
+
+argument:: b
+
+
+
+METHOD:: connectedTo
+
+
+
+METHOD:: patchOutsOfInputs
+
+
+
+METHOD:: init
+
+
+
+METHOD:: busses
+
+
+
+METHOD:: connectTo
+
+
+argument:: patchIn
+
+
+argument:: needsValueSetNow
+
+
+
+METHOD:: disconnect
+
+
+
+METHOD:: free
+
+
+
+METHOD:: server
+
+
+
+METHOD:: isPlaying
+
+
+
+METHOD:: hasBus
+
+
+
+METHOD:: allocBus
+
+
+argument:: name
+
+
+argument:: rate
+
+
+argument:: numChannels
+
+
+
+METHOD:: releaseBusses
+
+
+
+
+

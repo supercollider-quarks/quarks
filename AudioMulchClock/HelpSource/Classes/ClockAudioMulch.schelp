@@ -1,0 +1,71 @@
+CLASS:: ClockAudioMulch
+SUMMARY:: clock that master AudioMulch over network
+CATEGORIES:: Scheduling>Clocks
+RELATED:: Classes/AudioMulchClock
+
+DESCRIPTION::
+Use this class to strong::send:: sync and have SuperCollider act as a strong::master::.
+
+AudioMulch is a program written by Ross Bencina. http://www.audiomulch.com/
+
+ClockAudioMulch is a SuperCollider class for synchronising playback with this program via network sync.
+
+This clock is built upon link::Classes/TempoClock:: and the only additional feature is that is sends out tick messages via network. It can also be used in combo with the link::Classes/AudioMulchClock:: class to synchronize two SuperCollider programs.
+
+SUBSECTION:: Network setup
+In AudioMulch's preference panel under the emphasis::Network Sync:: tab, note which UDP Port is used for receiving sync (default is 7000). Use this number for the emphasis::addr:: argument in SuperCollider. Also activate emphasis::Chase Network Sync:: under AudioMulch's Control menu.
+
+CLASSMETHODS::
+
+METHOD:: new
+same as code::TempoClock.new:: except that it takes an additional argument addr.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initClockAudioMulch
+
+METHOD:: addr
+A link::Classes/NetAddr:: that specifies IP address and port of the AudioMulch program.
+
+METHOD:: tick
+An link::Classes/Integer:: that counts up indefinitely. Can be set to make AudioMulch jump in time.
+
+METHOD:: shift
+An link::Classes/Integer:: specifying latency compensation in ticks.
+
+EXAMPLES::
+
+CODE::
+s.latency= 0.05;
+s.boot
+
+//--simple test
+//make sure AudioMulch is running in the background (press play)
+//and that chase network sync is enabled in the control meny
+c= ClockAudioMulch(123/60, addr:NetAddr("127.0.0.1", 7000));
+d= Pbind(\dur, 1, \octave, 5, \degree, Pseq([0, 1, 2, 4, 3, 2, 1, 1], inf)).play(c, quant:4);
+c.shift= -2;
+c.tempo= 234/60;
+d.stop;
+c.stop;
+c.clear;
+
+
+
+//--syncing two supercollider programs over network using this class
+a= AudioMulchClock.new;							//slave
+b= Pbind(\dur, 1, \degree, Pseq([0, 5, 2, 1], inf)).play(a, quant:4)
+
+c= ClockAudioMulch(114/60, addr:NetAddr("127.0.0.1", 57120))		//master
+c.tempo= 160/60
+d= Pbind(\dur, 1, \octave, 6, \degree, Pseq([7, 6, 5, 4, 5], inf)).play(c, quant:4)
+c.tempo= 190/60
+c.shift= 2;	//latency compensation on the sender/master side
+
+b.stop
+d.stop
+a.stop
+c.stop
+a.clear
+c.clear
+::

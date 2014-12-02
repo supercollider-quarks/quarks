@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 15.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #3c3a37}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #3e3a37}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #3c3a37; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #423a37}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+span.s1 {color: #4d5056}
+span.s2 {color: #606060}
+span.s3 {color: #000000}
+span.s4 {color: #615e59}
+span.s5 {color: #4c505e}
+span.s6 {color: #3a4c74}
+span.s7 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>More examples</b></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p4">// first boot the localhost server</p>
+<p class="p3">s.boot;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p4">// then, make a synthdef</p>
+<p class="p3"><span class="s1">SynthDef</span>(<span class="s2">"grain"</span>, { <span class="s1">arg</span> freq = 440, mul = 1, dur = 1;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s1">Out</span>.ar(</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">SinOsc</span>.ar(freq, 0, mul)<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>*<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">EnvGen</span>.kr(<span class="s1">Env</span>.perc(0.01, 0.99), doneAction: 2, timeScale: dur)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>)</p>
+<p class="p3">}).load(s);</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p4">// plot grains, x = time, y = freq, grainAmplitude = alpha color of ovals</p>
+<p class="p4">// Rendering may take a few seconds ...</p>
+<p class="p3"><span class="s1">var</span> routine;</p>
+<p class="p3"><span class="s1">var</span> num = 51;</p>
+<p class="p3"><span class="s1">var</span> x = 0, y = 0;</p>
+<p class="p3"><span class="s1">var</span> txt;</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s3">txt = </span>"Grains"<span class="s3">;</span></p>
+<p class="p3">n = <span class="s1">NB</span>.new(<span class="s2">"granular"</span>, 600, 470);</p>
+<p class="p3">n.publishCode(</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">"fontsize"</span>.cmd(24),</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">"text"</span>.cmd(txt, 10, 25, n.width, 50),</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>"stroke(random(), random(), random(), random())"<span class="s3">,</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>"strokewidth(1)"<span class="s3">,</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>"line(0, HEIGHT / 2, WIDTH, HEIGHT / 2)"</p>
+<p class="p3">);</p>
+<p class="p2"><br></p>
+<p class="p3">routine = <span class="s1">Routine</span>({</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s1">var</span> freq, mul, dur, scaleOval;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>scaleOval = 100;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>num.do({ <span class="s1">arg</span> item, i;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = (n.width / num) + x;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>y = freq = 100.rrand(n.height);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mul = 0.01.rrand(0.75);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dur = 0.1.rrand(1);</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s2">"grain"</span>, [<span class="s4">\freq</span>, freq, <span class="s4">\mul</span>, mul, <span class="s4">\dur</span>,dur]);</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.fill(1.0.rand, 1.0.rand, 1.0.rand, mul);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.oval(10 * i + 10, n.height - y, scaleOval * dur, scaleOval * mul);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.1.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>});</p>
+<p class="p3"><span class="Apple-tab-span">	</span>n.renderAndDisplayImage</p>
+<p class="p3">});</p>
+<p class="p3">routine.play(<span class="s1">AppClock</span>);</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p6">/* ----- ----- ----- ----- */<span class="Apple-converted-space"> </span></p>
+<p class="p6">/* ----- ----- ----- ----- */</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p3">n = <span class="s1">NB</span>.new(<span class="s2">"testing"</span>, 500, 400);</p>
+<p class="p3">n.publish(</p>
+<p class="p5">"</p>
+<p class="p5">fill(random(), random(), random(), random(0, 0.3))</p>
+<p class="p5">rect(0, 0, WIDTH, HEIGHT)</p>
+<p class="p5">fill</p>
+<p class="p5">fill(random(), random(), random(), random())</p>
+<p class="p5">rect(10, 10, 30, 30)</p>
+<p class="p5">oval(40, 40, 20, 10)</p>
+<p class="p5">for i in range(10):</p>
+<p class="p5"><span class="Apple-tab-span">	</span>fill(random(), random(), random(), random())</p>
+<p class="p5"><span class="Apple-tab-span">	</span>rect(random(40, 200), random(100, 200), random(10, 20), random(10, 20))</p>
+<p class="p5">for i in range(111):</p>
+<p class="p5"><span class="Apple-tab-span">	</span>fill(random(), random(), random(), random())</p>
+<p class="p5"><span class="Apple-tab-span">	</span>skew(random(-20, 20), random(-20, 20))</p>
+<p class="p5"><span class="Apple-tab-span">	</span>text(choice((\"<span class="s1">this</span><span class="s3">\</span>", \"<span class="s3">may\</span>", \"<span class="s1">be</span><span class="s3">\</span>")), random(0, WIDTH), random(0, HEIGHT))</p>
+<p class="p5">"</p>
+<p class="p3">);</p>
+<p class="p3">n.renderAndDisplayImage</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p6">/* ----- ----- ----- ----- */<span class="Apple-converted-space"> </span></p>
+<p class="p6">/* ----- ----- ----- ----- */</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p4">// copied very literally from the nodebox demo of the same name</p>
+<p class="p3">n = <span class="s5">NB</span>.new(<span class="s2">"HowCurvesWork"</span>, 200, 200);</p>
+<p class="p3">n.publishAndDisplayCode(</p>
+<p class="p5">"# This boring example demonstrate how curves work, and goes a bit</p>
+<p class="p5"># into the different parameters for drawing curves on screen.</p>
+<p class="p5">import math</p>
+<p class="p7"><br></p>
+<p class="p5"># Setup colors: no fill is needed, and stroke the curves with black.</p>
+<p class="p5">nofill()</p>
+<p class="p5">stroke(0)</p>
+<p class="p7"><br></p>
+<p class="p5"># Set the initial position</p>
+<p class="p5">x,y = 50, 50</p>
+<p class="p5">width = 50</p>
+<p class="p7"><br></p>
+<p class="p5"># The dx and dy parameters are the relative control points.</p>
+<p class="p5"># When using math.pi/2, you actually define the lower half</p>
+<p class="p5"># of a circle.</p>
+<p class="p5">dy = width/(math.pi / 2)</p>
+<p class="p7"><br></p>
+<p class="p5"># Begin drawing the path. The starting position is on the</p>
+<p class="p5"># given x and y coordinates.</p>
+<p class="p5">beginpath(x, y)</p>
+<p class="p5"># Calculate the control points.</p>
+<p class="p5">cp1 = (x, y + dy)</p>
+<p class="p5">cp2 = (x + width, y + dy)</p>
+<p class="p5"># Draw the curve. The first four parameters are the coordinates</p>
+<p class="p5"># of the two control curves; the last two parameters are</p>
+<p class="p5"># the coordinates of the destination point.</p>
+<p class="p5">curveto(cp1[0], cp1[1], cp2[0], cp2[1], x + width, y)</p>
+<p class="p5"># End the path; ending the path automatically draws it.</p>
+<p class="p5">endpath()</p>
+<p class="p7"><br></p>
+<p class="p5"># To demonstrate where the control points actually are,<span class="Apple-converted-space"> </span></p>
+<p class="p5"># we draw them using lines.</p>
+<p class="p5"># The first control point starts at the x,y position.</p>
+<p class="p5">line(x, y, cp1[0], cp1[1])</p>
+<p class="p5"># The second control point is the ending point.</p>
+<p class="p5">line(x + width, y, cp2[0], cp2[1])</p>
+<p class="p7"><br></p>
+<p class="p5"># To liven things up just a little bit, little ovals are</p>
+<p class="p5"># drawn in red on the position of the control points.</p>
+<p class="p5">nostroke()</p>
+<p class="p5">fill(1,0,0)</p>
+<p class="p5">oval(cp1[0] - 2, cp1[1] - 2, 4, 4)</p>
+<p class="p5">oval(cp2[0] - 2, cp2[1] - 2, 4, 4)"</p>
+<p class="p3">)</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p6">/* ----- ----- ----- ----- */<span class="Apple-converted-space"> </span></p>
+<p class="p6">/* ----- ----- ----- ----- */</p>
+<p class="p8"><br></p>
+<p class="p3">(</p>
+<p class="p3"><span class="s6">var</span> num = 20;</p>
+<p class="p3"><span class="s6">var</span> box;</p>
+<p class="p3"><span class="s6">var</span> off = 5;</p>
+<p class="p3"><span class="s6">var</span> w = 150;</p>
+<p class="p3"><span class="s6">var</span> h = 40;</p>
+<p class="p3">n = <span class="s6">NB</span>(<span class="s2">"square"</span>, 600, 400);</p>
+<p class="p3">n.background(0.9.rand + 0.25, 0.8.rand + 0.4, 0.8.rand + 0.2);</p>
+<p class="p3">n.text(<span class="s2">"Shuffle cards"</span>, 425, 50);</p>
+<p class="p3">num.do({ <span class="s6">arg</span> item, i;</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span>n.translate(</span>"random(-15, 15)"<span class="s3">, </span>"random(-15, 15)"<span class="s3">);</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>n.stroke(0, 1, 0, i/num);</p>
+<p class="p3"><span class="Apple-tab-span">	</span>n.box(10 + (i * off), 10 + (i * off), w, h)</p>
+<p class="p3">});</p>
+<p class="p3">num.do({ <span class="s6">arg</span> item, i;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>n.stroke(1, 0, 0, i/num);</p>
+<p class="p3"><span class="Apple-tab-span">	</span>n.box(100 + (i * off), 100 + (i * off), w, h)</p>
+<p class="p3">});</p>
+<p class="p3">(num * 2).do({ <span class="s6">arg</span> item, i;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>n.stroke(0, 0, 1, i/num);</p>
+<p class="p3"><span class="Apple-tab-span">	</span>n.box(95.rrand(105) + (i * off), 10 + (i * off), w, h)</p>
+<p class="p3">});</p>
+<p class="p3">num.do({ <span class="s6">arg</span> item, i;</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span>n.stroke(</span>"random()"<span class="s3">, </span>"random()"<span class="s3">, </span>"random()"<span class="s3">, i/num);</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>n.box(190 + (i * off), 120 + (i * off), w, h)</p>
+<p class="p3">});</p>
+<p class="p3">n.renderAndDisplayImage;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p6">/* ----- ----- ----- ----- */<span class="Apple-converted-space"> </span></p>
+<p class="p6">/* ----- ----- ----- ----- */</p>
+<p class="p9"><br></p>
+<p class="p3">(</p>
+<p class="p10">// Not an efficient way to draw lines</p>
+<p class="p5"><span class="s3">n = </span><span class="s6">NB</span><span class="s3">.new(</span>"rect_points"<span class="s3">);</span></p>
+<p class="p3">n.basicPointPrim_(<span class="s2">"rect"</span>);</p>
+<p class="p3">y = n.height / 2;</p>
+<p class="p3">n.width.do({ <span class="s6">arg</span> xCoord, i;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>n.point(xCoord, y)</p>
+<p class="p3">});</p>
+<p class="p3">n.renderAndDisplayImage</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p10">// Scatter</p>
+<p class="p5"><span class="s3">n = </span><span class="s6">NB</span><span class="s3">.new(</span>"oval_points"<span class="s3">);</span></p>
+<p class="p3">n.basicPointPrim_(<span class="s2">"oval"</span>);</p>
+<p class="p3">n.width.do({ <span class="s6">arg</span> xCoord, i;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>n.point(n.width.rand, n.height.rand)</p>
+<p class="p3">});</p>
+<p class="p3">n.renderAndDisplayImage</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p11"><b>matrix(neo, smith, func, copies)</b><span class="Apple-converted-space"> </span></p>
+<p class="p9"><br></p>
+<p class="p11"><span class="Apple-tab-span">	</span><b>neo</b> - number of points on the x axis</p>
+<p class="p11"><span class="Apple-tab-span">	</span><b>smith</b> - number of points on the y axis</p>
+<p class="p11"><span class="Apple-tab-span">	</span><b>func</b> - a function, evaluated for each x,y pair</p>
+<p class="p11"><span class="Apple-tab-span">	</span><b>copies</b> - a number or a function; how many copies of the matrix? The 2nd film had 6? 7? 8?</p>
+<p class="p11"><span class="Apple-tab-span">	</span><b>layered</b> - a boolean (true or false) - are matrices layered on top of each other or are they distributed equally across the canvas? (default is true).</p>
+<p class="p9"><br></p>
+<p class="p3">(</p>
+<p class="p12"><span class="s7">var</span> box;</p>
+<p class="p12">box = { <span class="s7">arg</span> x, y;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>n.stroke(1);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>n.beginpath(x, y);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>n.lineto(x + 100, 100 + y);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>n.endpath;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>n.beginpath(x, 100 + y);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>n.lineto(x + 100, 0 + y);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>n.endpath;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>n.fill(1, 0, 0);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>n.oval(45 + x, 45 + y, 10, 10);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>50.rrand(100).do({</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.fill(</span>"random()"<span class="s3">, </span>"random()"<span class="s3">, </span>"random()"<span class="s3">);</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(0.5.coin, {</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.point(x + 25.rand2, y + 25.rand2)</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},{</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.python([<span class="s2">"rect"</span>, <span class="s2">"oval"</span>].choose.cmd(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x + 30.rand2,<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>y + 30.rand2,<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>10.rand,<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>10.rand</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>))</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p12"><span class="Apple-tab-span">	</span>});</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span>n.skew(</span>"random(-20, 20)"<span class="s3">, </span>"random(-20, 45)"<span class="s3">);</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span>n.fontsize(</span>"random(13, 24)"<span class="s3">);</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>n.python(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">"text"</span>.cmd(</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>"where"<span class="s3">, </span>"is"<span class="s3">, </span>"that"<span class="s3">, </span>"much"<span class="s3">, </span>"needed"<span class="s3">, </span>"help"<span class="s3">, </span>"file"<span class="s3">, </span>"dog"<span class="s3">].choose,<span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x + 30,<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>y + 40</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p12"><span class="Apple-tab-span">	</span>);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>n.reset;</p>
+<p class="p12">};</p>
+<p class="p12">#r, g, b, a = <span class="s7">Array</span>.fill(4, { <span class="s2">"random(0, 0.5)"</span> });</p>
+<p class="p12">n = <span class="s7">NB</span>(<span class="s2">"matrix1"</span>, 400, 400, <span class="s7">true</span>);</p>
+<p class="p12">n.background(r, g, b, a);</p>
+<p class="p12">n.matrix(400, 400, { <span class="s7">arg</span> x, y;</p>
+<p class="p13"><br></p>
+<p class="p12">case</p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==0 and: { y==0 } } { box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==100 and: { y==0 }} { box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==200 and: { y==0 }} { box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==300 and: { y==0 }} { box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==0 and: { y==100 }}<span class="Apple-converted-space">  </span>{ box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==100 and: { y==100 }}<span class="Apple-converted-space">  </span>{ box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==200 and: { y==100 }}<span class="Apple-converted-space">  </span>{ box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==300 and: { y==100 }}<span class="Apple-converted-space">  </span>{ box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==0 and: { y==200 }}<span class="Apple-converted-space">  </span>{ box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==100 and: { y==200 }}<span class="Apple-converted-space">  </span>{ box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==200 and: { y==200 }}<span class="Apple-converted-space">  </span>{ box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==300 and: { y==200 }}<span class="Apple-converted-space">  </span>{ box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==0 and: { y==300 }}<span class="Apple-converted-space">  </span>{ box.value(x, y) }</p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==100 and: { y==300 }}<span class="Apple-converted-space">  </span>{ box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==200 and: { y==300 }} { box.value(x, y) }<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>{ x==300 and: { y==300 }} { box.value(x, y) };</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12">});</p>
+<p class="p12">n.renderAndDisplayImage(5);</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p4">/* ----- ----- ----- ----- */<span class="Apple-converted-space"> </span></p>
+<p class="p4">/* ----- ----- ----- ----- */</p>
+<p class="p9"><br></p>
+<p class="p3">(</p>
+<p class="p3">#r, g, b, a = <span class="s1">Array</span>.fill(3, { <span class="s2">"random(0.6, 1.0)"</span> });</p>
+<p class="p3">w = h = 400;</p>
+<p class="p3">c = w/10;</p>
+<p class="p3">x = y = c/2;</p>
+<p class="p3">n = <span class="s1">NB</span>(<span class="s2">"matrix2"</span>, 400, 400, <span class="s1">true</span>);</p>
+<p class="p3">n.background(r, g, b);</p>
+<p class="p3">n.matrix(w, h, {<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s1">arg</span> neo, smith;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>if(neo == smith or: { neo == (h-smith + 60.rand2) } or: { neo == (h - smith) }, {<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>#r, g, b = <span class="s1">Array</span>.fill(3, { 1.0.rand });</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.fill(r, g, b);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.point(neo, smith);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(r&lt;0.01, {</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.skew(</span>"random(-20, 20)"<span class="s3">, </span>"random(-20, 45)"<span class="s3">);</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.fontsize(<span class="s2">"random(10, 16)"</span>);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.python(</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">"text"</span>.cmd(</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>"where"<span class="s3">, </span>"is"<span class="s3">, </span>"the"<span class="s3">, </span>"help"<span class="s3">, </span>"readme"<span class="s3">, </span>"file"<span class="s3">].choose,<span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>neo + 30,<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>smith + 40</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.reset;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if((r+g+b)&gt;2, {<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.python([<span class="s2">"rect"</span>, <span class="s2">"oval"</span>].choose.cmd(neo.rand, smith.rand, 4, 3.rrand(6)));</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if((r+g+b<span class="Apple-tab-span">	</span>)&gt;2.24, {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.python([<span class="s2">"rect"</span>, <span class="s2">"oval"</span>].choose.cmd(neo, smith, 4, 3.rrand(6)))</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if((r+g+b)&lt;0.5, {<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>#r, g, b, a = [r, g, b, r+g+b * 1.5].scramble;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.fill(r, g, b, a);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.python([<span class="s2">"rect"</span>, <span class="s2">"oval"</span>].choose.cmd(neo, smith, 7.rrand(11), 9.rrand(16)))</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p3"><span class="Apple-tab-span">	</span>});</p>
+<p class="p3">}</p>
+<p class="p3">);</p>
+<p class="p3">#r, g, b, a = <span class="s1">Array</span>.fill(4, { <span class="s2">"random()"</span> });</p>
+<p class="p3">n.fill(r, g, b, a);</p>
+<p class="p3">n.oval(w/2 - x, h/2 - y, c, c);</p>
+<p class="p3">n.renderAndDisplayImage(10)</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+</body>
+</html>

@@ -1,0 +1,98 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+ <hmtl>
+ 
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>SuperCollider Help -Soundscape</title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #d40000}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #d40000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #1200c4}
+span.s3 {color: #1200c4}
+span.s4 {color: #000000}
+span.s5 {color: #1200c4}
+span.s6 {color: #d40000}
+span.s7 {font: 12.0px Helvetica; color: #000000}
+span.s8 {color: #1200c4}
+span.s9 {color: #1200c4}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+ <body>
+ 
+<p class="p1"><span class="s1"><b>Soundscape<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>
+<span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><b> Object </b></p>
+<p class="p3"><br></p>
+<p class="p1"> Soundscape is an abstract class that collects models (each with a synthDef for spatialization) for simulating a soundscape exploration. Right now, the proposed model is developed in the CartoonModel subclass. Here I describe just the variable and methods that are designed to be common to each model. For more details see CartoonModel.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="CartoonModel.html"><span class="s2">CartoonModel</span></a></p>
+<p class="p2"><br></p>
+ 
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+  
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (runner, geoListener, aServer)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Soundscape is a Dependant
+of <a href="Runner.html"><span class="s2">Runner</span></a> and <a href="GeoListener.html"><span class="s2">GeoListener</span></a>,
+it receives all the sound object sequencing messages coming from Runner and it monitors the GeoListener interactionupdates. aServer is usefull to pass the server you want SuperCollider to use. Default is localhost, but you could need internal</p>
+ 
+ <p class="p3"><br></p>
+ <p class="p3"><br></p>
+<p class="p11"><b>Accessing Instance and Class Variables</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+  
+<p class="p6"><b><span class="Apple-tab-span">	</span>sampleplaying</b></p>
+ 
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>sampleplaying </b>is an IdentityDictionary, indexing to all the synths that are playing, allowing the method modifplay to interact with them when the GeoListener send an update message.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+  
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>update (theChanged, theChanger, more)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Listen upcoming updates from Runner and GeoListener, if
+the Changer is the Runner (that activates a new vertex playing), this.update calls the method this.play. Instead, if the Changer is GeoListener (a movement), this.update call the method modifplay.
+Both play and modifplay are overwritten in the Soundscape subclasses.</p>
+
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>  
+<p class="p6"><b><span class="Apple-tab-span">	</span>initAudio</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>To be overwritten by subclasses.</p>
+ 
+ <p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>sendDef</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>To be overwritten by subclasses.</p>
+ 
+ <p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>play (more)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>To be overwritten by subclasses.</p>
+ 
+ <p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>modifplay (more)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>To be overwritten by subclasses.</p>
+  
+ </body> </html>

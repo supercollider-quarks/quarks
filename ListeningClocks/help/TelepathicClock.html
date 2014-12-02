@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.25">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1612}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0b28c5}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #00831c}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #0000bf}
+span.s3 {color: #1135f9}
+span.s4 {color: #000000}
+span.s5 {color: #0b28c5}
+span.s6 {color: #737373}
+span.s7 {color: #00831c}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>TelepathicClock<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a clock that listens to other clocks over a netork</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="../../Core/Object.html"><span class="s2"><b>Object</b></span></a><b> : </b><a href="SC://Clock"><span class="s3"><b>Clock</b></span></a><b> : </b><a href="SC://TempoClock"><span class="s3"><b>TempoClock</b></span></a><b> : </b><a href="SoftClock.html"><span class="s3"><b>SoftClock</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p1">Like <a href="ListeningClock.html"><span class="s3">ListeningClock</span></a><span class="s3">,</span> a telepathic clock adjusts to others, but it does so over the network. It was developed for the project <i>Virtual Gamelan Graz</i> by Rainer Schütz, Alberto de Campo, and Julian Rohrhuber.</p>
+<p class="p2"><br></p>
+<p class="p1">For more methods, see <a href="ListeningClock.html"><span class="s3">ListeningClock</span></a> and <a href="SC://TempoClock"><span class="s3">TempoClock</span></a></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new(tempo, beats, seconds, queueSize, permanent, addr, channel, start)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new instance with the given tempo and starting times. If not supplied, <b>tempo</b> defaults to 1.0, <b>beats</b> defaults to 0.0 and <b>seconds</b> defaults to the current elapsed time since SuperCollider startup. The default <b>queueSize</b> is 256, see <b>queue</b> (see <a href="SC://TempoClock"><span class="s3">TempoClock</span></a>).</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>permanent</b> - if true (default: false), the clock is not removed on cmdPeriod (or equivalent).<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>addr</b> - The address given is a <a href="SC://NetAddr"><span class="s3">NetAddr</span></a> which serves as a message receiver, usually this is the local broadcast address.<span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>channel</b> - For several independent networks of telepathic clocks, different channels may be used. The name is used as osc command. Default:<span class="Apple-converted-space">  </span>'/teleclock'</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>start</b> - If true, the new clock starts to listen immediately (default: true).</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p8">// first step: find your local local broadacst ip.<span class="Apple-converted-space"> </span></p>
+<p class="p8">// For demonstration, we assume here the loopback ip (on a single computer).</p>
+<p class="p3"><br></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// make three telepathic clocks.</p>
+<p class="p9">(</p>
+<p class="p9"><span class="s5">var</span> addr = <span class="s5">NetAddr</span>(<span class="s6">"127.0.0.1"</span>, <span class="s5">NetAddr</span>.langPort);</p>
+<p class="p9">t = <span class="s5">TelepathicClock</span>(permanent: true, addr: addr);</p>
+<p class="p9">u = <span class="s5">TelepathicClock</span>(permanent: true, addr: addr);</p>
+<p class="p9">v = <span class="s5">TelepathicClock</span>(permanent: true, addr: addr);</p>
+<p class="p3"><br></p>
+<p class="p9">);</p>
+<p class="p3"><br></p>
+<p class="p9">(</p>
+<p class="p9">(</p>
+<p class="p10">SynthDef<span class="s4">(</span><span class="s7">\ping</span><span class="s4">, {</span>|freq, pan, amp=0.3|</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="s5">var</span> e, z;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>e= <span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>.perc(0, 0.1, amp), doneAction:2);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>z= <span class="s5">SinOsc</span>.ar(freq, 0, 0.2);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="s5">OffsetOut</span>.ar(0, <span class="s5">Pan2</span>.ar(z*e, pan));</p>
+<p class="p9">}).memStore;</p>
+<p class="p9">);</p>
+<p class="p9">)</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span></span>// play a pattern on clock t:</p>
+<p class="p8"><span class="Apple-tab-span">	</span>// clock U following clock t:<span class="Apple-converted-space"> </span></p>
+<p class="p9">(</p>
+<p class="p10">Pdef<span class="s4">(</span><span class="s7">\a</span><span class="s4">,</span></p>
+<p class="p11"><span class="s4"><span class="Apple-tab-span">	</span></span><span class="s5">Pbind</span><span class="s4">(</span>\instrument<span class="s4">, </span>\ping<span class="s4">,</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\degree</span>, <span class="s5">Pseq</span>((0..7), <span class="s5">inf</span>),</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, 0.25, <span class="s7">\pan</span>, -0.5, <span class="s7">\amp</span>, 0.5</p>
+<p class="p9"><span class="Apple-tab-span">	</span>)</p>
+<p class="p9">).play(t);</p>
+<p class="p3"><br></p>
+<p class="p10">Pdef<span class="s4">(</span><span class="s7">\b</span><span class="s4">,</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span></span>Pbind<span class="s4">(</span></p>
+<p class="p11"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\instrument<span class="s4">, </span>\ping<span class="s4">,</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\degree</span>, <span class="s5">Pseq</span>((0..7), <span class="s5">inf</span>) + 7,</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, 0.25, <span class="s7">\pan</span>, 0.5, <span class="s7">\amp</span>, 0.5</p>
+<p class="p9"><span class="Apple-tab-span">	</span>)</p>
+<p class="p9">).play(u);</p>
+<p class="p9">)</p>
+<p class="p3"><br></p>
+<p class="p9">t.verbose_(<span class="s5">false</span>); u.verbose_(<span class="s5">true</span>);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p9">t.tempo = 1.4;</p>
+<p class="p3"><br></p>
+<p class="p9">t.fadeTempo(2, 4, -2);<span class="Apple-converted-space"> </span></p>
+<p class="p9">t.fadeTempo(0.5, 4, -2);<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p9">u.tempo;</p>
+<p class="p9">t.tempo;</p>
+<p class="p3"><br></p>
+<p class="p9">[t, u, v].do(_.stop);</p>
+<p class="p3"><br></p>
+</body>
+</html>

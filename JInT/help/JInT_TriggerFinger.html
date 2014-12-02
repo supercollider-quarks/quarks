@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+span.s3 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>JInT_TriggerFinger</b></p>
+<p class="p2"><b>superclass: JInT</b></p>
+<p class="p3">/**</p>
+<p class="p3"><span class="Apple-tab-span">	</span>2006<span class="Apple-converted-space">  </span>Till Bovermann (IEM)</p>
+<p class="p3">*/</p>
+<p class="p4"><b></b><br></p>
+<p class="p2">implements JustInTerface for an M-Audio Trigger Finger.</p>
+<p class="p4"><b></b><br></p>
+<p class="p5">s.boot;</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p3">// plug in a TriggerFinger</p>
+<p class="p5"><span class="s1">var</span> inPorts = 3;</p>
+<p class="p5"><span class="s1">var</span> outPorts = 3;</p>
+<p class="p6"><br></p>
+<p class="p3"><span class="s1">MIDIClient</span><span class="s2">.init(inPorts,outPorts);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// explicitly intialize the client</p>
+<p class="p5">inPorts.do({ <span class="s1">arg</span> i;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">MIDIIn</span>.connect(i, <span class="s1">MIDIClient</span>.sources.at(i));</p>
+<p class="p5">});</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s2">k = </span>JInT_TriggerFinger<span class="s2">.new(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>s,<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">MIDIClient</span>.sources.detect{<span class="s1">|device|</span> device.name == "<span class="s1">USB</span> <span class="s1">Trigger</span> <span class="s1">Finger"</span>}.uid</p>
+<p class="p5">)</p>
+<p class="p5">k.start</p>
+<p class="p6"><br></p>
+<p class="p3">// get information on device</p>
+<p class="p5">k.info</p>
+<p class="p6"><br></p>
+<p class="p5">p = p ? <span class="s1">ProxySpace</span>.push(s)</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p5">~x = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">SinOsc</span>.ar(k.at([<span class="s3">\c1</span>, <span class="s3">\c2</span>]).collect(<span class="s1">_</span>.kr).poll.lag(0.025) * 400 + [400, 800])<span class="Apple-converted-space"> </span></p>
+<p class="p3">//<span class="Apple-tab-span">	</span>SinOsc.ar(k.at([\c1, 11]).collect(_.kr).lag(0.025) * 400 + [400, 800])<span class="Apple-converted-space"> </span></p>
+<p class="p3">//<span class="Apple-tab-span">	</span>SinOsc.ar(k.kr([\c1, \c2], \polar).lag(0.025) * 400 + [400, 800])<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>*<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>k[<span class="s3">\pad1</span>].kr(2)[1].lag(0.1)<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>* 0.5</p>
+<p class="p5">}</p>
+<p class="p5">)</p>
+<p class="p5">~x.play</p>
+<p class="p6"><br></p>
+<p class="p5">~x.free</p>
+<p class="p5">~x.clear</p>
+<p class="p6"><br></p>
+<p class="p5">j.stop</p>
+<p class="p6"><br></p>
+<p class="p7">HIDresponder<span class="s2">.releaseAll</span></p>
+</body>
+</html>

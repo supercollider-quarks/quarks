@@ -1,0 +1,132 @@
+<html>
+<head>
+  <title>PpatRewrite</title>
+</head>
+
+<body>
+<h2>PpatRewrite</h2>
+<h3>superclasses: FilterPattern : Pattern : AbstractFunction : Object</h3>
+
+<p>An extension of the rule-based stream-rewriting implementation in Prewrite.</p>
+
+<p>Prewrite matches values based on equality (Dictionary) or identity (IdentityDictionary). PpatRewrite uses the matchItem interface to support identity, array lookup and arbitrary functions for more flexible rule lookup.</p>
+
+<p>Prewrite does not support non-deterministic rewriting rules. In PpatRewrite, the rule may be a function, and this function may return a pattern that will be embedded in place of the incoming value.</p>
+
+<p>PpatRewrite specifies rules as an array of associations. The first matching rule applies; rules given earlier in the list take priority.</p>
+
+<p>The level number may also be a pattern. PpatRewrite will obtain the level number and then apply the rules recursively to each value from 'pattern', going that number of levels deep. When this cycle runs out of output values, another level number will be chosen and the seed pattern will be repeated with a new application of the rules (at the new level).</p>
+
+
+<p><strong>*new(pattern, levelPattern, rules, defaultRule, autoStreamArrays = false, reuseLevelResults = false)</strong></p>
+
+<ul>
+  <li><strong>pattern:</strong> The seed pattern.</li>
+  <li><strong>levelPattern:</strong> Returns the desired number of levels of recursion. 0 will output the seed pattern with no modification. 1 applies the rules to the values from the seed pattern only. 2 applies the rules to the seed pattern and then applies the rules again to the first-level rule results, and so on.</li>
+  <li><strong>rules:</strong> An array of associations: matchObject -> rule. See below.</li>
+  <li><strong>defaultRule:</strong> A single association, applied only if nothing matches from 'rules'.</li>
+  <li><strong>autoStreamArrays:</strong> If true, any time a rule returns an array of values, the array will be wrapped in Pseq so that the array items are output one by one. This is simply a convenience to avoid writing Pseq(array, 1) in every rule.</li>
+  <li><strong>reuseLevelResults:</strong> If true, the first time the rewriting is done at a given level, the results are saved internally. Then, if the level is used again, the saved results are returned again. Useful if it's important that the results at different levels be recognizable.</li>
+</ul>
+
+<p><strong>Rules:</strong></p>
+
+<pre>[
+	matchingObject -> rule,
+	matchingObject -> rule,
+	matchingObject -> rule,
+	...
+]</pre>
+
+<p>matchingObject may be:</p>
+
+<ul>
+  <li><strong>nil:</strong> matches everything</li>
+  <li>an <strong>Object:</strong> matches if the value being tested is identical</li>
+  <li>an <strong>Array/List:</strong> matches if any item in the array is identical to the test value (array.includes(x))</li>
+  <li>a <strong>Function:</strong> The function is passed the test value and should return true or false</li>
+</ul>
+
+<p>If the incoming values are MIDI notes:</p>
+
+<pre>[
+	60 -> { ... return a pattern to play instead of middle C },
+	[62, 65, 67, 68 72] -> { ... pattern for D, F, G, A and C above middle C ... },
+	{ |mnote| mnote.odd } -> { ... pattern for odd numbered notes ... },
+	nil -> { |item| item }  // everything else, no change
+]</pre>
+
+<p>The rule's function is passed the incoming item, level number, and the input value passed by 'next'. When used in Pbind, the rule can use previously calculated items in the event-in-progress.</p>
+
+
+<p><strong>Example</strong></p>
+
+<pre>// Recursively ornament a melody
+(
+var	intervals = Pseries(0, Pwrand(#[-2, -1, 1, 2], #[0.1, 0.2, 0.4, 0.3], inf), { rrand(2, 5) });
+p = Pbind(
+	\root, 7,
+	\degree, PpatRewrite(
+		Pseq(#[2, 5, 4], 1),
+		Pseries(0, 1, 5),
+		[
+			// intervals is biased upward, so this should tend to rise
+			{ |item| item <= 0 } -> { |item| item + intervals },
+			// and '-', applied to a higher note, should tend to fall
+			{ |item| item > 0 } -> { |item| item - intervals },
+		]
+	),
+	\dur, 0.5
+).play;
+)
+
+p.stop;
+
+
+/*
+We can also attach the level number to the output degree,
+and use the level to highlight the tree-like structure.
+
+In each rewriting operation, the first output value comes directly from the parent level.
+So the original level associated with the item is attached.
+Subsequent values acquire the current level.
+*/
+
+(
+var	intervals = Pseries(
+	0,
+	Pwrand(#[-2, -1, 1, 2], #[0.1, 0.2, 0.4, 0.3], inf),
+	Pwrand(#[2, 3, 4, 5], #[0.4, 0.3, 0.2, 0.1], inf).asStream
+);
+p = Pbind(
+	\root, 7,
+	[\degree, \level], PpatRewrite(
+		Ptuple([Pseq(#[2, 5, 4], 1), 0]),
+		Pseries(0, 1, 5),
+		[
+			// intervals is biased upward, so this should tend to rise
+			{ |item| item[0] <= 0 } -> { |item, level|
+				Ptuple([
+					item[0] + intervals,
+					Pseq([item[1], Pn(level, inf)])
+				])
+			},
+			// and '-', applied to a higher note, should tend to fall
+			{ |item| item[0] > 0 } -> { |item, level|
+				Ptuple([
+					item[0] - intervals,
+					Pseq([item[1], Pn(level, inf)])
+				])
+			},
+		]
+	),
+	// 2**(1-0) = 2, 2**(1-1) = 1, 2**(1-2) = 0.5 etc.
+	\dur, 2 ** (1 - Pkey(\level)),
+	\amp, (Pkey(\level) + 1).reciprocal * 0.5,
+	\octave, Pkey(\level) + 3
+).play;
+)
+
+p.stop;</pre>
+</body>
+</html>

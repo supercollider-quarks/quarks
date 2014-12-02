@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SW Pattern Support</TITLE>
+<META NAME="description" CONTENT="SWDataNetwork">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00041000000000000000">
+SWDataNetwork Pattern support</A></H2>
+
+<p>
+A couple of patterns have been defined to use values of slots in patterns. The slots or nodes can be either accessed by their label, their node ID or their slot ID. The labels or id's themselves can be output by other patterns too. If arrays are used, the patterns create multiple events as expected (multichannel expansion).
+</p>
+
+<h4>- Example - </h4>
+
+    <pre>
+x = <span class="type">SWDataNetwork</span>.new;
+
+<span class="comment-delimiter">// </span><span class="comment">build the device list and start the event loop: 
+</span><span class="type">GeneralHID</span>.buildDeviceList; 
+<span class="type">GeneralHID</span>.startEventLoop; 
+ 
+<span class="comment-delimiter">// </span><span class="comment">find an Impact game device and open it: 
+</span>a = <span class="type">GeneralHID</span>.open( <span class="type">GeneralHID</span>.findBy( 1973 ) ); 
+
+<span class="comment-delimiter">// </span><span class="comment">set a spec for the device:
+</span>a.setSpec( a.findSpec.first ); 
+
+<span class="comment-delimiter">// </span><span class="comment">add the device to the network:</span>
+x.addExpected( 1, <span class="constant">\impact</span> );
+a.addToNetwork( x, 1 );
+
+<span class="comment-delimiter">// </span><span class="comment">boot the server 
+</span> s = <span class="type">Server</span>.local.boot; 
+
+<span class="comment-delimiter">// </span><span class="comment">simple example, use the left axis as the current note to be played:
+</span>p = <span class="type">Pbind</span>( 
+    <span class="constant">\degree</span>, ( <span class="type">PdataKey</span>( <span class="constant">\lx</span>, x, <span class="builtin">inf</span> )*12 ).round(1), 
+    <span class="constant">\dur</span>, 0.25 
+).play;
+
+<span class="comment-delimiter">// </span><span class="comment">stop the pattern
+</span>p.stop; 
+
+<span class="comment-delimiter">// </span><span class="comment">simple example, use all of the nodes as the current note to be played.
+// Since there are multiple slots, this will result in many synths to be created
+// (the sonic result of this example is not beautiful).
+</span>p = <span class="type">Pbind</span>( 
+    <span class="constant">\degree</span>, ( <span class="type">PdataKey</span>( <span class="constant">\impact</span>, x, <span class="builtin">inf</span> )*12 ).round(1), 
+    <span class="constant">\dur</span>, 0.25, <span class="constant">\amp</span>, 0.025
+).play;
+
+p.stop; 
+
+<span class="comment-delimiter">// </span><span class="comment">same as above, but use the node ID instead:
+</span>p = <span class="type">Pbind</span>( 
+    <span class="constant">\degree</span>, ( <span class="type">PdataNode</span>( 1, x, <span class="builtin">inf</span> )*12 ).round(1), 
+    <span class="constant">\dur</span>, 0.25,<span class="constant">\amp</span>,0.025
+).trace.play;
+
+p.stop;
+
+<span class="comment-delimiter">// </span><span class="comment">Using the slot ID's. Also showing that the slot ID's to use can be sequenced with another pattern.
+</span>p = <span class="type">Pbind</span>( 
+    <span class="constant">\degree</span>, ( <span class="type">PdataSlot</span>( <span class="type">Pseq</span>( (14..17),<span class="builtin">inf</span> ), 1, x, <span class="builtin">inf</span> )*12 ).round(1), 
+    <span class="constant">\dur</span>, 0.25 
+).play;
+
+p.stop;
+
+<span class="comment-delimiter">// </span><span class="comment">Using the slot ID's. Also showing that the slot ID's can be arrayed to produce multiple synths.
+</span>p = <span class="type">Pbind</span>( 
+    <span class="constant">\degree</span>, ( <span class="type">PdataSlot</span>( [12,14,16], 1, x, <span class="builtin">inf</span> )*12 ).round(1), 
+    <span class="constant">\dur</span>, 0.25 
+).play;
+
+p.stop;</pre>
+
+
+<h3>- Methods - </h3>
+
+<D>
+<DL>
+<DT><strong>PdataSlot( slot, node, network, repeats )</strong></DT>
+<DD>Access a slot by ID. Both slot and node input can be another pattern.</DD>
+
+
+<DT><strong>PdataNode( node, network, repeats )</strong></DT>
+<DD>Access a node by ID. This generates an Array with all the values of all slots. The node input can be another pattern.</DD>
+
+<DT><strong>PdataKey( key, network, repeats )</strong></DT>
+<DD>Access a node or slot by its key (label). In the case of a node, this generates an Array with all the values of all slots. The key input can be another pattern.</DD>
+
+</DL>
+</D>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Previous: </I> <A NAME="tex2html79"
+  HREF="SWDataNode.html">SWGeneralHID</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</P>
+
+</BODY>
+</HTML>

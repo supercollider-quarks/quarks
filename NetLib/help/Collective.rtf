@@ -1,0 +1,141 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf410
+{\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;\f1\fswiss\fcharset77 Helvetica;\f2\fnil\fcharset77 Monaco;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;\red191\green0\blue0;\red0\green0\blue191;
+\red0\green115\blue0;\red96\green96\blue96;}
+\deftab560
+\pard\pardeftab560\ql\qnatural
+
+\f0\b\fs36 \cf0 Collective			
+\fs24 group of named network participants
+\fs36 	
+\f1\b0\fs24 \
+\
+superclass: Object\
+
+\f2\fs18 \
+
+\f1\fs24 This class allows to conveniently access a set of named network addresses independent of the actual computer they are located on (see: {\field{\*\fldinst{HYPERLINK "NamedNetAddr.rtf"}}{\fldrslt NamedNetAddr}}). It encapsulates automatic joining of participants. \
+\
+Joining and quitting automatically can be sometimes error prone (e.g. when another participant crashes). For the simplest case, it ios always possible to only send messages to all. For this, no participant needs to be registered.\
+\
+
+\fs28 \
+\pard\pardeftab560\li1140\fi-1140\ql\qnatural
+
+\f2\fs18 \cf0 \
+\pard\pardeftab560\li1140\fi-1140\ql\qnatural
+
+\f0\b\fs24 \cf0 	*new(myName, groupName, participants)
+\f1\b0 \
+
+\f0\b 	
+\f1\b0 \
+
+\f0\b 		
+\f1\b0 return a new instance of Collective, and add participants to it (optional).\
+		Different subclasses of {\field{\*\fldinst{HYPERLINK "Participation.rtf"}}{\fldrslt \cf2 Participation}} make this more convenient.\
+		\
+\pard\pardeftab560\li1700\fi-1700\ql\qnatural
+\cf0 		
+\f0\b myName 
+\f1\b0 - a symbol which is the identifier within the current group\
+		
+\f0\b groupName 
+\f1\b0  - a symbol which is the identifier of this group (default: \\all)	\
+		
+\f0\b participants
+\f1\b0  - a list of pairs of names and hostnames in the group.\
+\pard\pardeftab560\li1140\fi-1140\ql\qnatural
+\cf0 		\
+\pard\pardeftab560\li1140\fi-1140\ql\qnatural
+
+\f2\fs18 \cf0 		\cf3 // example\cf0 \
+		a = \cf4 Collective\cf0 (\cf5 \\lisa\cf0 , \cf5 \\session\cf0 , [\cf5 \\joe\cf0 , \cf6 "127.0.0.1"\cf0 , \cf5 \\lisa\cf0 , \cf6 "127.0.0.1"\cf0 ]);\
+		b = \cf4 Collective\cf0 (\cf5 \\joe\cf0 , \cf5 \\session\cf0 , [\cf5 \\joe\cf0 , \cf6 "127.0.0.1"\cf0 , \cf5 \\lisa\cf0 , \cf6 "127.0.0.1"\cf0 ]);\
+		a.start; b.start;\
+		x = a.makeResponder(\cf4 nil\cf0 , \cf5 \\chat\cf0 , \{ \cf4 |t, r, msg|\cf0  msg[1].postln \}).add;\
+		y = b.makeResponder(\cf4 nil\cf0 , \cf5 \\chat\cf0 , \{ \cf4 |t, r, msg|\cf0  msg[1].postln \}).add;\
+		a.sendToAll(\cf5 \\chat\cf0 , \cf6 "hello joe!"\cf0 );\
+		a.sendToName(\cf5 \\joe\cf0 , \cf5 \\chat\cf0 , \cf6 "hello joe"\cf0 );\
+		a.sendToName(\cf5 \\lisa\cf0 , \cf5 \\chat\cf0 , \cf6 "hi \cf5 lisa\cf6 "\cf0 );\
+		a.stop; b.stop; x.remove; y.remove;\
+		\
+\
+\pard\pardeftab560\li1140\fi-1140\ql\qnatural
+
+\f0\b\fs24 \cf0 	*default
+\f1\b0 \
+
+\f0\b 	
+\f1\b0 \
+
+\f0\b 		
+\f1\b0 return one single default collective - similar to {\field{\*\fldinst{HYPERLINK "SC://TempoClock"}}{\fldrslt \cf2 TempoClock}}. If not set explicitly, return one with a randomly generated name.
+\f0\b \
+	\
+	*makeName
+\f1\b0 \
+
+\f0\b 	
+\f1\b0 \
+
+\f0\b 		
+\f1\b0 returns a random name, with the last byte of the hostname attached to it\
+			\
+\pard\pardeftab560\li1140\fi-1140\ql\qnatural
+
+\fs28 \cf0 \
+\pard\pardeftab560\li1140\fi-1140\ql\qnatural
+
+\fs24 \cf0 	\
+
+\f0\b 	newAddrAction_(func) -	
+\f1\b0 an optional action that is evaluated when a new address is received.\
+
+\f0\b 	sortFunc_(func) - 
+\f1\b0 if sortFunc is given, addresses are sorted when new addr was added.\
+
+\f0\b 	
+\f1\b0 	\
+		\
+\
+\pard\pardeftab560\ql\qnatural
+\cf0 \
+\pard\pardeftab560\li1140\fi-1140\ql\qnatural
+
+\f0\b\fs28 \cf0 Examples
+\f1\b0 \
+\pard\pardeftab560\ql\qnatural
+
+\f2\fs18 \cf0 \
+\
+\pard\pardeftab560\ql\qnatural
+\cf3 // a randomly generated name, and three instances of collective. Like this one may \
+// test network apps locally and later transfer them to multiple computers.\cf0 \
+\
+a = \{ \cf4 Collective\cf0 .new \}.dup(3);\
+a.do(_.autoCollect(\cf4 true\cf0 ));\
+a[0].everybody.postln;\
+a.do(_.makeWin);\
+\
+\cf3 // create responders from each one\
+(\cf0 \
+r = a.collect \{ \cf4 |coll|\cf0  \
+	coll.makeResponder(\cf4 nil\cf0 , \cf5 \\test\cf0 , \{ \cf4 |t, r, msg|\cf0  \
+				(coll.myName + \cf6 "received:"\cf0  + msg[1]).postln \
+	\}).add \
+\}\
+);\
+									\
+a.choose.sendToAll(\cf5 \\test\cf0 , \cf6 "this is a test"\cf0 );\
+a.choose.sendToName(b = a.choose.myName, \cf5 \\test\cf0 , \cf6 "this is a test sent to"\cf0  + b);\
+\
+\cf3 // quit.\cf0 \
+a.do \{\cf4 |coll|\cf0  coll.quit \}; \cf3 // quit: notify the others. stop: stop collecting\cf0 \
+a.collect(\cf4 _\cf0 .everybody); \cf3 // all empty.\cf0 \
+r.do(\cf4 _\cf0 .remove); \cf3 // remove responders \cf0 \
+\
+\
+\
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+span.s3 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>JInT_PocketControl</b></p>
+<p class="p2"><b>superclass: JInT</b></p>
+<p class="p3">/**</p>
+<p class="p3"><span class="Apple-tab-span">	</span>2006<span class="Apple-converted-space">  </span>Till Bovermann (IEM)</p>
+<p class="p3">*/</p>
+<p class="p4"><b></b><br></p>
+<p class="p2">implements JustInTerface for a Doepfer Pocket Control.</p>
+<p class="p4"><b></b><br></p>
+<p class="p5">s.boot;</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p3">// plug in a PocketControl</p>
+<p class="p5"><span class="s1">var</span> inPorts = 3;</p>
+<p class="p5"><span class="s1">var</span> outPorts = 3;</p>
+<p class="p6"><br></p>
+<p class="p3"><span class="s1">MIDIClient</span><span class="s2">.init(inPorts,outPorts);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// explicitly intialize the client</p>
+<p class="p5">inPorts.do({ <span class="s1">arg</span> i;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">MIDIIn</span>.connect(i, <span class="s1">MIDIClient</span>.sources.at(i));</p>
+<p class="p5">});</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5">k = <span class="s1">JInT_PocketControl</span>.new(s, 2094993222)</p>
+<p class="p5">k.start</p>
+<p class="p6"><br></p>
+<p class="p5">k[\c1].action = {|jint| jint.value.postln}</p>
+<p class="p5">k[\c1].action = nil</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p3">// get information on device</p>
+<p class="p5">k.info</p>
+<p class="p6"><br></p>
+<p class="p5">p = p ? <span class="s1">ProxySpace</span>.push(s.boot)</p>
+<p class="p5">p.makeTempoClock</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">var spec = [1, 4].asSpec;</p>
+<p class="p5">k[\c16].action = {|jint|<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>p.clock.tempo = spec.map(jint.value(0));</p>
+<p class="p5">}</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">~y = {Impulse.ar(~tempo)}</p>
+<p class="p5">~y.play</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">~y.clear</p>
+<p class="p5">~y.fadeTime = 10</p>
+<p class="p5">(</p>
+<p class="p5">~y = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">Pan2</span>.ar(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Mix</span>.ar(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">LFPulse</span>.ar(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k[<span class="s3">\c1</span>].kr.round(0.1).exprange(10, 400)!2 * [1, 1.4, 1.25, 1.246],</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[0, 0.5],</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k[<span class="s3">\c9</span>].kr.range(0, 1)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* <span class="s1">Pulse</span>.ar(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~tempo.kr,<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k[<span class="s3">\c10</span>].kr.range(0, 1)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k[<span class="s3">\c15</span>].kr</p>
+<p class="p5"><span class="Apple-tab-span">	</span>)</p>
+<p class="p5">}</p>
+<p class="p5">)</p>
+<p class="p5">~y.play</p>
+<p class="p6"><br></p>
+<p class="p5">~y.free</p>
+<p class="p6"><br></p>
+<p class="p5">k[<span class="s3">\c10</span>].kr.inspect</p>
+<p class="p5">~tempo.inspect</p>
+<p class="p6"><br></p>
+<p class="p5">k.stop</p>
+<p class="p6"><br></p>
+</body>
+</html>

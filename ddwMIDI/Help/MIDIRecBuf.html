@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001ab2}
+span.s1 {color: #0000ff}
+span.s2 {color: #000000}
+span.s3 {color: #007300}
+span.s4 {color: #36701f}
+span.s5 {color: #001ab2}
+span.s6 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>MIDIRecBuf</b></p>
+<p class="p2"><br></p>
+<p class="p3">A storage and utility class for MIDI style data. Initially designed for recording note data from a MIDI keyboard, it also has some analysis methods that are useful for hand-coded or algorithmically-generated data.</p>
+<p class="p2"><br></p>
+<p class="p3">MIDIRecBuf does not store controller data.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>*new(name, notesArray, properties)</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>name:</b> For easier access through MIDIBufManager and its GUI, you may name the buffer. Recommended to use a symbol rather than a string.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>notesArray:</b> An array containing SequenceNotes (or its subclasses). See <a href="../../ddwCommon/Help/SequenceNote/SequenceNote.html"><span class="s1">SequenceNote</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>properties:</b> A user definable dictionary describing the MIDI data, to be used by client processes. The most common properties are a ModalSpec describing the key in which the note data should be interpreted, a symbol describing the purpose of the data to a melody player or chord arpeggiator process, or hints on how one of these processes should split the note data into smaller segments.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Some properties are used by MIDIRecBuf itself; the user may add any other properties as needed.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Reserved properties:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>mode</b></p>
+<p class="p3"><b>tuning</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>factor</b></p>
+<p class="p3"><b>beatsPerBar</b></p>
+<p class="p3"><b>error</b></p>
+<p class="p2"><br></p>
+<p class="p3">See the quantize methods.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>deltaThresh</b></p>
+<p class="p3"><b>overlapThresh</b></p>
+<p class="p3"><b>allowShortNotes</b></p>
+<p class="p2"><br></p>
+<p class="p3">See the parse method.</p>
+<p class="p2"><br></p>
+<p class="p3">For hand coding data, a very useful array method is asNotes, which takes parallel arrays of frequencies, iterations, lengths and arguments (see for details), and converts them into a flat list of SequenceNotes. This is easier than writing [SequenceNote(), SequenceNote(), SequenceNote(), ...].</p>
+<p class="p2"><br></p>
+<p class="p5">// a c-major scale; if you have chucklib, you can define</p>
+<p class="p5">// ModalSpec(#[0, 2, 4, 5, 7, 9, 11], stepsPerOctave: 12, root: 0) =&gt; Mode(\cmaj)</p>
+<p class="p5">// and client processes can understand the notes in terms of c major</p>
+<p class="p5">// because the mode is specified as one of the properties</p>
+<p class="p6"><br></p>
+<p class="p5">// 0.25, 0.3 and 0.5 are the dur, length and args values respectively</p>
+<p class="p5">// because they are not arrays, they will apply to every note</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s2">b = </span>MIDIRecBuf<span class="s2">(</span><span class="s3">\demo</span><span class="s2">, [</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>#[60, 62, 64, 65, 67, 69, 71, 72],</p>
+<p class="p8"><span class="Apple-tab-span">	</span>0.25, 0.3, 0.5</p>
+<p class="p8">].asNotes, (mode: <span class="s3">\cmaj</span>));</p>
+<p class="p9"><br></p>
+<p class="p4"><b>dumpSeq</b></p>
+<p class="p2"><br></p>
+<p class="p3">List the notes in a flat format. If the buffer contains compound note objects (SeqChordNote and SequenceItem), they will not be shown (only the main note data will be listed).</p>
+<p class="p9"><br></p>
+<p class="p10">b.dumpSeq;</p>
+<p class="p9"><br></p>
+<p class="p10">MIDIRecBuf("demo")</p>
+<p class="p10">0 : [ 60, 0.25, 0.3, 0.5 ]</p>
+<p class="p10">1 : [ 62, 0.25, 0.3, 0.5 ]</p>
+<p class="p10">2 : [ 64, 0.25, 0.3, 0.5 ]</p>
+<p class="p10">3 : [ 65, 0.25, 0.3, 0.5 ]</p>
+<p class="p10">4 : [ 67, 0.25, 0.3, 0.5 ]</p>
+<p class="p10">5 : [ 69, 0.25, 0.3, 0.5 ]</p>
+<p class="p10">6 : [ 71, 0.25, 0.3, 0.5 ]</p>
+<p class="p10">7 : [ 72, 0.25, 0.3, 0.5 ]</p>
+<p class="p2"><br></p>
+<p class="p4"><b>asPattern</b></p>
+<p class="p4"><b>asStream</b></p>
+<p class="p4"><b>embedInStream(inval)</b></p>
+<p class="p2"><br></p>
+<p class="p3">For streaming note data.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p11"><b>Data access methods</b></p>
+<p class="p2"><br></p>
+<p class="p3">In the following methods, chord and grace notes in SeqChordNote and SequenceItem objects will be ignored.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>midiNotes</b> - get the note numbers from each note (i.e., [note0.freq, note1.freq, ...])</p>
+<p class="p3"><b>freqs</b> - get the real frequencies from each note. The function to specify the tuning is obtained from properties.tuning, falling back to properties.mode.cpsFunc, falling back to midicps.</p>
+<p class="p3"><b>durs</b> - get the dur values from each note.</p>
+<p class="p3"><b>lengths</b> - get the length values from each note.</p>
+<p class="p3"><b>gates</b> - get the gate values from each note.</p>
+<p class="p3"><b>args</b> - get the args values from each note.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p11"><b>Collection methods</b></p>
+<p class="p2"><br></p>
+<p class="p3">The following methods behave like collection methods.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>at(i)</b> - get the note at i</p>
+<p class="p3"><b>first</b>, <b>last</b> - get the (first, last) note</p>
+<p class="p3"><b>add(note)</b> - add the note object to the notes array; returns the same MIDIRecBuf object</p>
+<p class="p3"><b>includes(item1)</b> - is the supplied note already in the array?</p>
+<p class="p3"><b>removeDups</b> - remove duplicate freq values so that each note has a distinct freq; returns a new MIDIRecBuf</p>
+<p class="p3"><b>sort</b> - returns a new MIDIRecBuf</p>
+<p class="p3"><b>++</b> - appends a MIDIRecBuf or an array of notes; returns a new MIDIRecBuf</p>
+<p class="p3"><b>reverse</b></p>
+<p class="p3"><b>scramble</b></p>
+<p class="p3"><b>copy</b></p>
+<p class="p3"><b>copyRange</b></p>
+<p class="p3"><b>size</b></p>
+<p class="p3"><b>asArray</b> - returns the note array</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p11"><b>Analysis methods</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>mapMode(mode)</b> - convert modally-represented SequenceNotes into note indices</p>
+<p class="p3"><b>unmapMode(mode)</b> - convert note indices into modal representation</p>
+<p class="p2"><br></p>
+<p class="p4"><b>quantize(factor, beatsPerBar)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Quantize the note deltas to the nearest <i>factor</i> beats. Note that the absolute onset times of each note are not considered, only the deltas between notes.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>factor:</b> The portion of the beat to which to round the deltas, e.g., 0.25 = sixteenth-note.</p>
+<p class="p3"><b>beatsPerBar:</b> Used at the end of the buffer to make sure the total length of the buffer is an integer multiple of the bar length. If no value is supplied, the last note's duration will not be changed and there will be no guarantee of the sequence looping at a bar boundary.</p>
+<p class="p2"><br></p>
+<p class="p3">If you do not supply the arguments in the method call, they will be looked up in the buffers properties dictionary (meaning that a buffer can store information about how it should be quantized).</p>
+<p class="p2"><br></p>
+<p class="p4"><b>flexQuantize(factor, clock, error)</b></p>
+<p class="p2"><br></p>
+<p class="p3">flexQuantize attempts to handle the case of MIDI data that are internally consistent rhythmically, but which do not match the tempo of the clock that was used to record the data. That is, if you play on the keyboard slower or faster than the clock's tempo, you might get delta values that are approximately integer multiples of 0.2 or 0.3. It should be possible to round these values to the nearest integer division of the beat.</p>
+<p class="p2"><br></p>
+<p class="p3">The algorithm uses baseRhythmicValue to estimate the greatest common divisor of the delta values, within a range of tolerance specified by the error argument. It then rounds this base value to the nearest factor, and adjusts the notes to match this ratio.</p>
+<p class="p2"><br></p>
+<p class="p3">baseRhythmicValue is unfortunately not a terribly robust algorithm, and requires almost superhuman precision to succeed consistently. Thus it is quite likely, with real world data, that quantization will fail and return nil. The caller must be prepared to handle a nil return value.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>clock:</b> Should be the TempoClock used to record the data initially. If not specified, it defaults to TempoClock.default.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>baseRhythmicValue(factor, clock, error)</b></p>
+<p class="p2"><br></p>
+<p class="p3">As noted above, attempts to identify the lowest rhythmic value in the buffer. Returning the minimum duration is not sufficient, because in typical rhythmic music, deltas will cluster around integer multiples of a base value.</p>
+<p class="p2"><br></p>
+<p class="p3">Eventually I will replace this method with a proper cluster analysis; for now, be aware that it gets pretty good results with well behaved data but fails easily.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>parse(deltaThresh = 0.1, overlapThresh = 0.1, allowShortNotes = true)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Identifies grace notes and chord notes, and consolidates them into the appropriate compound note objects. (See <b>[SeqChordNote]</b> and <b>[SequenceItem]</b> for details.) The basic rules are:</p>
+<p class="p2"><br></p>
+<p class="p3">Grace notes have a dur (delta) less than deltaThresh and at most a very short overlap with the next note (less than overlapThresh). The amount of overlap is defined as length - dur; if length &gt; dur, the note sustains longer than the time to the next note and the notes overlap. The short overlap means that the notes will not be perceived as sustaining together; otherwise they would be perceived as chord notes.</p>
+<p class="p2"><br></p>
+<p class="p3">Chord notes have a dur less than deltaThresh and a longer overlap. Overlap is calculated as a percentage relative to the main note of the chord; if the chord is only 0.25 beats long, the overlap may be physically very short but very significant perceptually. If overlapThresh is 0.1 a minimum 10 percent overlap is required.</p>
+<p class="p2"><br></p>
+<p class="p3">The allowShortNotes argument determines how grace notes will be handled if they do not overlap with the main note (if they terminate before the next note sounds). If true, no overlap is needed (length may be less than dur); if false, the notes must at least touch.</p>
+<p class="p2"><br></p>
+<p class="p3">deltaThresh, overlapThresh and allowShortNotes may be stored in the MIDIRecBuf properties to avoid supplying them on the parse call.</p>
+<p class="p2"><br></p>
+<p class="p12">// b has some very short notes (0.03) duration</p>
+<p class="p9"><br></p>
+<p class="p13"><span class="s2">b = </span>MIDIRecBuf<span class="s2">(</span><span class="s4">\parse</span><span class="s2">, [</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>#[60, 63, 60, 65, 66, 65, 62, 63, 60],</p>
+<p class="p10"><span class="Apple-tab-span">	</span>#[0.4, 0.6, 0.4, 0.03, 0.57, 0.4, 0.03, 0.57, 1],</p>
+<p class="p10"><span class="Apple-tab-span">	</span>#[0.4, 0.6, 0.4, 0.03, 0.57, 0.4, 0.03, 0.57, 1],</p>
+<p class="p10"><span class="Apple-tab-span">	</span>0.5</p>
+<p class="p10">].asNotes);</p>
+<p class="p9"><br></p>
+<p class="p12"><span class="s2">b = b.parse;<span class="Apple-tab-span">	</span></span>// use default values, 0.1 and 0.1</p>
+<p class="p9"><br></p>
+<p class="p12">// now the buffer has two SequenceItems, matching the two grace notes</p>
+<p class="p9"><br></p>
+<p class="p10">b.notes;</p>
+<p class="p10">[ a SequenceNote, a SequenceNote, a SequenceNote, a SequenceItem, a SequenceNote, a SequenceItem, a SequenceNote ]</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>convertToDeltas</b></p>
+<p class="p2"><br></p>
+<p class="p3">If you are hand-coding your note data, you might want to specify times in terms of absolute points rather than note deltas. In that case, you can set the absoluteOnsets flag to true and call convertToDeltas to get a buffer that is suitable for streaming.</p>
+<p class="p2"><br></p>
+<p class="p3">This call modifies the original buffer -- so it's critical that this method never be called twice on the same buffer. absoluteOnsets is intended to prevent this situation. Alternately, make sure that you copy the buffer first if you don't want to lose the the original, absolute timings.</p>
+<p class="p2"><br></p>
+<p class="p3">You may also set the variable stopRecTime to determine the delta for the last note (which will be lastRecTime - onset time of the last note). If this variable is empty, the last note will have the same dur as the length stored in the note.</p>
+<p class="p2"><br></p>
+<p class="p13"><span class="s2">b = </span>MIDIRecBuf<span class="s2">(</span><span class="s4">\absOnset</span><span class="s2">, [</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>#[60, 60, 67, 67, 69, 69, 67,<span class="Apple-converted-space">  </span>65, 65, 64, 64, 62, 62, 60],</p>
+<p class="p10"><span class="Apple-tab-span">	</span>#[0, 1, 2, 3, 4, 5, 6,<span class="Apple-converted-space">  </span>8, 9, 10, 11, 12, 13, 14],</p>
+<p class="p10"><span class="Apple-tab-span">	</span>#[1, 1, 1, 1, 1, 1, 2,<span class="Apple-converted-space">  </span>1, 1, 1, 1, 1, 1, 2]</p>
+<p class="p10">].asNotes);</p>
+<p class="p9"><br></p>
+<p class="p10">b.absoluteOnsets_(<span class="s5">true</span>).convertToDeltas;</p>
+<p class="p9"><br></p>
+<p class="p10">b.dumpSeq;</p>
+<p class="p13">MIDIRecBuf<span class="s2">(</span><span class="s6">"absOnset"</span><span class="s2">)</span></p>
+<p class="p10">0 : [ 60, 1, 1, nil ]</p>
+<p class="p10">1 : [ 60, 1, 1, nil ]</p>
+<p class="p10">2 : [ 67, 1, 1, nil ]</p>
+<p class="p10">3 : [ 67, 1, 1, nil ]</p>
+<p class="p10">4 : [ 69, 1, 1, nil ]</p>
+<p class="p10">5 : [ 69, 1, 1, nil ]</p>
+<p class="p10">6 : [ 67, 2, 2, nil ]</p>
+<p class="p10">7 : [ 65, 1, 1, nil ]</p>
+<p class="p10">8 : [ 65, 1, 1, nil ]</p>
+<p class="p10">9 : [ 64, 1, 1, nil ]</p>
+<p class="p10">10 : [ 64, 1, 1, nil ]</p>
+<p class="p10">11 : [ 62, 1, 1, nil ]</p>
+<p class="p10">12 : [ 62, 1, 1, nil ]</p>
+<p class="p12"><span class="s2">13 : [ 60, 2, 2, nil ]<span class="Apple-tab-span">	</span></span>// length == 2, dur == 2 also</p>
+<p class="p9"><br></p>
+<p class="p12">// using stopRecTime for a longer last note</p>
+<p class="p9"><br></p>
+<p class="p13"><span class="s2">b = </span>MIDIRecBuf<span class="s2">(</span><span class="s4">\absOnset</span><span class="s2">, [</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>#[60, 60, 67, 67, 69, 69, 67,<span class="Apple-converted-space">  </span>65, 65, 64, 64, 62, 62, 60],</p>
+<p class="p10"><span class="Apple-tab-span">	</span>#[0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14],</p>
+<p class="p10"><span class="Apple-tab-span">	</span>#[1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2]</p>
+<p class="p10">].asNotes);</p>
+<p class="p9"><br></p>
+<p class="p10">b.absoluteOnsets_(<span class="s5">true</span>).stopRecTime_(20).convertToDeltas;</p>
+<p class="p9"><br></p>
+<p class="p10">b.last;</p>
+<p class="p12"><span class="s2">[ 60, 6, 2, nil ]<span class="Apple-tab-span">	</span></span>// now the last note has 4 extra beats</p>
+</body>
+</html>

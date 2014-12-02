@@ -1,0 +1,82 @@
+CLASS:: Sheet
+summary:: utility to create a  single auto-resized window
+categories:: Libraries>crucial>GUI
+related:: Classes/ModalDialog
+
+DESCRIPTION::  The name sheet comes from Cocoa where a Sheet is the window that slides down asking you to deal with something (like a license agreement).
+
+In practice, since the Sheet syntax is so convienient, its been used for many cases where a window with auto-resizing is wanted.
+
+code::
+(
+	Sheet({ arg f;
+		ActionButton(f,"selectionStart",{});
+		ActionButton(f,"selectionEnd",{});
+	});
+)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: buildDialog
+
+
+argument:: name
+
+
+argument:: bounds
+
+
+
+METHOD:: getString
+
+
+argument:: prompt
+
+
+argument:: defaultString
+
+
+argument:: callback
+
+
+
+
+EXAMPLES::
+
+code::
+(
+Sheet({ |f|
+
+	f.comp({ |f|
+		CXLabel(f,"blah");
+
+	}).background_(Color.red).resizeToFit;
+
+})
+
+)
+::
+
+Although the composite view inside has been shrunk down to fit its contents, the flow view's decorator still has the large size accounted for as "used up" (the maximum that was available for the composite view to consume).
+
+solution:
+
+code::
+(
+Sheet({ |f|
+
+	f.comp({ |f|
+		CXLabel(f,"blah");
+
+	}).background_(Color.red).resizeToFit;
+	f.reflowAll;
+
+})
+
+)
+::
+

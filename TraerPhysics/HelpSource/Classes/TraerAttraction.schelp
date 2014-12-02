@@ -1,0 +1,55 @@
+CLASS:: TraerAttraction
+SUMMARY:: act on two particles
+CATEGORIES:: TraerPhysics
+RELATED:: Overviews/TraerPhysicsOverview, Classes/TraerParticle, Classes/TraerParticleSystem, Classes/TraerSpring
+
+DESCRIPTION::
+Attractions or repulsions (negative attraction) act on 2 particles and either constantly pull them together or constantly pull them apart by applying a force to each particle:
+
+CODE::G*m1*m2/d2::
+
+in other words the force is is much stronger close up than far away.
+
+Attractions/repulsions have 2 properties:
+NUMBEREDLIST::
+##Strength - the G up there.
+##Minimum Distance - the force does not get stronger closer than this
+::
+
+NOTE::
+Documentation is only very slightly adapted to comply with the SuperCollider port. See the original by Jeffrey Traer Bernstein here... http://murderandcreate.com/physics/
+::
+
+INSTANCEMETHODS::
+
+PRIVATE::initTraerAttraction
+
+METHOD::getStrength
+Positive strength is attraction, negative strength is repulsion.
+
+RETURNS::
+a LINK::Classes/Float::
+
+METHOD::setStrength
+Positive strength is attraction, negative strength is repulsion.
+
+ARGUMENT::k
+a LINK::Classes/Float::
+
+METHOD::getOneEnd, getTheOtherEnd
+Return the particles being attracting or repelling each other.
+
+RETURNS::
+a LINK::Classes/TraerParticle::
+
+METHOD::getMinimumDistance
+Get the minimum distance, which limits how strong the force can get close up.
+
+RETURNS::
+a LINK::Classes/Float::
+
+METHOD::setMinimumDistance
+Set the minimum distance, which limits how strong the force can get close up.
+
+ARGUMENT::d
+a LINK::Classes/Float::

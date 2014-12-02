@@ -1,0 +1,215 @@
+TITLE:: SSObject
+summary:: A Sound Scene Object
+categories:: Libraries>3Dj
+related:: Guides/3Dj, Classes/SSWorld, Classes/SpatialRender, Classes/Motion
+
+DESCRIPTION::
+A sound object that lives inside a link::Classes/SSWorld::
+
+SSObjects have a set of spatial and dynamic properties, such as position, velocity, shape, etc., and they are also related to a specific sound source (a "mono track").
+Currently, the sound is only managed through link::Classes/SpatialRender:: and Jack.
+
+Interaction with the dynamic behavior of a SSObject can be handled in two ways: emphasis::top-down::, by assigning the object motion to a link::Classes/Motion:: instance, or emphasis::bottom-up:: physical model, by applying forces.
+
+
+This class is based on link::Classes/RedObject::.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: world
+Reference to the link::Classes/SSWorld:: instance in which the object is going to exist
+
+ARGUMENT:: loc
+Initial position in m. code::Array:: or code::Cartesian:: in the format [x,y,z].
+
+Default to [0,0,0]
+
+ARGUMENT:: vel
+Initial velocity in m/s. code::Array:: or code::Cartesian:: in the format [x,y,z].
+
+Default to [0,0,0]
+
+ARGUMENT:: accel
+Initial acceleration in m/^2. code::Array:: or code::Cartesian:: in the format [x,y,z].
+
+Default to [0,0,0]
+
+ARGUMENT:: mass
+Mass of the object. Default to 1.
+
+note::At the moment, the mass parameter has any effect in the physical model::
+
+ARGUMENT:: size
+Object size. Default to 1.
+
+note::At the moment, the size parameter has any effect in the physical model::
+
+ARGUMENT:: shape
+code::Symbol:: with the shape type. Currently, there are 4 possibilities:
+list::
+## CODE::\point:: classical punctual source. Default
+## CODE::\ring::  arbitrary width ring-type surface around a virtual sphere's surface
+## CODE::\extended:: arbitrary squared surface around a virtual sphere's surface
+## CODE::\meridian:: a half meridian shape
+::
+
+
+ARGUMENT:: gravity
+code::Boolean:: indicating whether the object is subject to gravity. Default to code::false::
+
+ARGUMENT:: friction
+code::Boolean:: indicating whether the object is subject to friction. Default to code::false::
+
+ARGUMENT:: name
+code::Symbol:: containing the object name. 
+
+If code::nil::, the reference world will assign one automatically, based on the object channel
+
+ARGUMENT:: channel
+Jack channel number from where the object gets its sound. 
+
+If code::nil::, the reference world will assign one automatically
+
+
+
+INSTANCEMETHODS::
+
+private:: regLoc, initSSObject, setValue, update, motionList
+
+
+
+
+subsection:: Object Properties
+
+
+METHOD:: channel
+Get the Jack channel associated with the object.
+
+METHOD:: setChannel
+Set the Jack channel associated with the object.
+
+ARGUMENT:: newChannel
+Channel number
+
+
+METHOD:: name
+Get/set the object's name, as a code::Symbol::
+
+
+METHOD:: loc
+Get/set the object location in Cartesian coordinates
+
+ARGUMENT:: newLoc
+code::Array:: in the form [x,y,z], or instance of code::Cartesian::
+ARGUMENT:: x
+if newLoc is code::nil::, set only x, holding other values
+ARGUMENT:: y
+if newLoc is code::nil::, set only y, holding other values
+ARGUMENT:: z
+if newLoc is code::nil::, set only z, holding other values
+
+METHOD:: locSph
+Get/set the object location in Spherical coordinates
+ARGUMENT:: newLocSph
+code::Array:: in the form [rho,azimuth,elevation], or instance of code::Spherical::
+ARGUMENT:: rho
+if newLocSph is code::nil::, set only rho, holding other values
+ARGUMENT:: azi
+if newLocSph is code::nil::, set only azimuth, holding other values
+ARGUMENT:: ele
+if newLocSph is code::nil::, set only elevation, holding other values
+
+METHOD:: shape
+Get/set the object's shape
+ARGUMENT:: newShape
+One of these symbols:
+list::
+## CODE::\point:: classical punctual source. Default
+## CODE::\ring::  arbitrary width ring-type surface around a virtual sphere's surface
+## CODE::\extended:: arbitrary squared surface around a virtual sphere's surface
+## CODE::\meridian:: a meridian-type shape
+::
+
+METHOD:: preserveArea
+Get/set wether the object preserves its area when moving, for non-punctual shapes.
+
+ARGUMENT:: bool
+
+
+METHOD:: dAzimuth
+Get/set the azimuth difference angle, for extended sources
+
+METHOD:: dElevation
+Get/set the elevation difference angle, for extended sources
+
+
+METHOD:: present
+Get/set if the object is emphasis::present:: (active) in the reference world
+
+
+METHOD:: remove
+Remove this object from the reference world. Called internally by the link::Classes/SSWorld#-remove::
+
+
+
+
+subsection:: Physical Model
+
+
+METHOD:: gravity
+Get/set whether the object is subject to gravity, as a code::Boolean::
+
+METHOD:: friction
+Get/set whether the object is subject to friction, as a code::Boolean::
+
+
+METHOD:: vel
+Get/set the object's velocity, as an code::Array:: or code::Cartesian::
+METHOD:: addVel
+
+Add velocity to the existing one
+ARGUMENT:: newVel
+code::Array:: with the added velocity
+
+METHOD:: velSph
+Get/set the object's velocity, as a instance of code::Array:: or code::Spherical::
+
+METHOD:: accel
+Get/set the object's acceleration, as an code::Array:: or code::Cartesian::
+
+METHOD:: accelSph
+Get/set the object's acceleration, as a instance of code::Array:: or code::Spherical::
+
+
+
+subsection:: Motion
+
+METHOD:: motion
+Get the current object's motion
+
+METHOD:: setMotion
+Assign one of the predefined motions to the object
+
+ARGUMENT:: type
+One of the following symbols:
+list::
+## code::\static::
+## code::\rect::
+## code::\random::
+## code::\brown::
+## code::\shm::
+## code::\orbit::
+::
+
+ARGUMENT::  ... args
+Required parameters for each of the motion types. See link::Classes/Motion:: for more information. 
+
+METHOD:: stop
+Set object's velocity and acceleration vectors to 0.
+
+
+
+

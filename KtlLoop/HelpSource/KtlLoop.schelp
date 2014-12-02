@@ -1,0 +1,143 @@
+TITLE:: KtlLoop
+summary:: KtlLoop is an EventLoop that can set an object's params from recorded events.
+categories:: Libraries>JITLib
+related:: Classes/EventLoop, Classes/EventLoopGui, Classes/EventList
+
+DESCRIPTION::
+
+KtlLoop can recorded events from input controllers, and play them back with the time manipulations of EventLoop. It can use those events to set an object's params based on a ktlMap. It can further rescale the recorded events in equally flexible ways - scaling, shifting, inversion.
+
+
+code::
+
+// make a sound to control 
+(
+Ndef(\form, { |freq = 50, shape = 0.9, ffreq = 200, amp = 0.1, lag = 0.1|
+	var snd = VarSaw.ar(freq.lag(lag) + [0.1, -0.1], 0, shape.lag(lag));
+	Formlet.ar(snd * amp.lag(lag), ffreq.lag(lag), 0.003, 0.03).softclip;
+}).play(vol: 0.2);
+// add specs for its unusual params:
+Ndef(\form).addSpec(\shape, [0, 1]);
+Ndef(\form).addSpec(\ffreq, \freq);
+)
+
+// make a KtlLoop for it
+(
+k = KtlLoop(\form);
+
+// tell it which params will be recorded for control input:
+k.paramsToRecord_([\lx, \ly, \rx, \ry]);
+
+// simple usage case:
+// tell it which object will be controlled 
+k.object_(Ndef(\form));
+
+// and declare which input params set which object params
+k.ktlMap_((lx: \freq, ly: \shape, rx: \ffreq, ry: \amp));
+
+)
+
+// make 4 channel controller:
+	// put params into an event, store it, 
+	// and set the object from it
+
+(
+w = Window("KtlLoop.help", Rect(0,500, 400, 550)).front;
+w.view.addFlowLayout;
+Slider2D(w, Rect(0,0,190,190))
+    .action_({ |sl|
+
+		// put params into an event, 
+	var event = (lx: sl.x, ly: sl.y);
+		// store it, 
+	k.recordEvent(event.put(\type, \set));
+		// and set the object from it
+	k.setuObj(event);
+});
+Slider2D(w, Rect(0,0,190,190))
+    .action_({ |sl|
+	var event = (rx: sl.x, ry: sl.y);
+	k.recordEvent(event.put(\type, \set));
+	k.setuObj(event);
+});
+
+// make an eventloopgui for KtlLoop
+KtlLoopGui(k, parent: w, bounds: 260@180);
+
+// and an NdefGui for the Ndef
+NdefGui(Ndef(\form), 6, w);
+)
+
+// try recording: 
+k.startRec;
+// ...
+// now move the two sliders
+// ...
+// ...
+
+k.stopRec;
+
+k.listInfo;
+
+k.play;
+
+
+// Rescaling Gestures - all recorded controller values 
+// can be scaled, shifted, and inverted. 
+
+k.rescaled = false;
+k.rescaled = true;
+// decrease range toward center
+k.scaler = 0.5;
+k.scaler = 0.25;
+// shift up or down
+k.shift = 0.1;
+k.shift = -0.1;
+
+// invert range
+k.invert;
+k.up;
+k.flipInv;
+
+k.dontRescale(\lx);
+k.doRescale(\lx);
+
+k.postKtlInfo;
+
+::
+
+CLASSMETHODS::
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: paramsToRecord
+the names of the input params to record
+
+METHOD:: object
+the object to which KtlLoop will send set commands
+
+METHOD:: ktlMap
+a dict which says which input key (controller side) sets which param on the object.
+
+METHOD:: currState
+the current numerical state of all input controllers
+
+private:: init
+
+METHOD:: setuObj
+do param key matching, then set the object: 
+select all params from the event that are in paramsToRecord, 
+use it to set the object params specified in ktlMap, 
+and let the object handle spec mapping.
+
+METHOD:: defaultFunc
+the default function to use for playback: 
+if the recorded event is type \set, use it to KtlLoop.setuObj
+
+EXAMPLES::
+
+code::
+(some example code)
+::

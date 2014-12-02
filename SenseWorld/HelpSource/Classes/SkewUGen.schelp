@@ -1,0 +1,32 @@
+TITLE:: SkewUGen
+summary:: Calculates the skewness of a signal over a specified time window.
+categories:: UGens>Analysis>Statistics
+related:: Classes/StdDevUGen
+
+DESCRIPTION::
+SkewUGen is a pseudo UGen that calculates the skewness of a signal over a specified time window.
+
+Skewness is a measure of the asymmetry of the probability distribution of a real-valued random variable about its mean.
+
+CLASSMETHODS::
+private:: categories
+
+METHOD:: kr
+Calculates the skewness of a control rate signal.
+
+ARGUMENT:: input
+The signal to calculate the skewness of.
+
+ARGUMENT:: length
+The length in samples of the window.
+
+ARGUMENT:: stddev
+If you already calculate a standard deviation (=StdDevUGen) in another part of your SynthDef you can supply it here, so it is not calculated again, thus safing processing power.
+
+ARGUMENT:: mean
+If you already calculate a mean (=RunningSum/length) in another part of your SynthDef you can supply it here, so it is not calculated again, thus safing processing power.
+
+
+
+INSTANCEMETHODS::
+

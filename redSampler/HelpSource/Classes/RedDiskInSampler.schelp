@@ -1,0 +1,172 @@
+CLASS:: RedDiskInSampler
+SUMMARY:: playing soundfiles from disk
+CATEGORIES:: Red>redSampler
+RELATED:: Classes/RedDiskInSamplerGiga, Classes/RedSampler, Classes/RedDiskInPlayer
+
+DESCRIPTION::
+This class buffers a small portion of a soundfile in RAM and then streams the rest from disk. It is built around the link::Classes/DiskIn:: ugen and makes it quick and easy to preload and manage lots of samples - much more than you could fit in your RAM. It associates each soundfile with a key (usually a number or a symbol) and can simultaneously play code::n:: overlaps of each sound.
+
+This class has a small delay before starting the sound as it buffers or 'cues' data right before playing. On the other hand it can deal with an almost unlimited number of samples. The subclass link::Classes/RedDiskInSamplerGiga:: is recommended if you need your samples to start instantly e.g. when syncing to a beat.
+
+Do not use this class for granular synthesis or for playing heaps of sounds at once. Remember that it streams data from disk. For playing very many soundfiles at once, use the link::Classes/RedSampler:: class.
+
+CLASSMETHODS::
+
+PRIVATE:: initClass
+
+METHOD:: new
+Create a new sampler on a server.
+
+ARGUMENT:: server
+If this is code::nil:: it will use code::Server.default::. The server must be booted.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prCreateVoice
+
+METHOD:: prepareForPlay
+Attach a soundfile to a key (number or symbol) and create buffers - one for each overlapping voice. This method is also has the alias code::preload:: for backward compatability.
+
+ARGUMENT:: key
+A number or a symbol.
+
+ARGUMENT:: path
+A string to a soundfile.
+
+ARGUMENT:: startFrame
+In samples.
+
+ARGUMENT:: numFrames
+Safest to leave this as code::nil::. Then the link::#-numFrames:: below is used (default for that is 32768).
+
+METHOD:: play
+Preload and play the sample at key. For this class the actual preloading will happen here. So it will not trigger instantaneously but still be pretty quick. How quick depends on the link::#-numFrames:: to preload and disk drive activity.
+
+ARGUMENT:: key
+A number or a symbol.
+
+ARGUMENT:: attack
+In seconds.
+
+ARGUMENT:: sustain
+In seconds. If this is code::nil:: then the total length of the soundfile will be used (-attack-release). So the default: attack 0, sustain nil, release 0 will play the soundfile in its full length without an envelope.
+
+ARGUMENT:: release
+In seconds.
+
+ARGUMENT:: amp
+Amplitude.
+
+ARGUMENT:: out
+Sets outbus and defaults to 0.
+
+ARGUMENT:: group
+If code::nil:: it will use Server.defaultGroup.
+
+ARGUMENT:: loop
+Should be either 0 (default), 1 or 2.
+table::
+## 0 || Loop off. Play once through with finite duration (using attack+sustain+release).
+## 1 || Loop on. Loop infinite until it receives a code::.stop:: (ignoring sustain).
+## 2 || Loop on. Loop with finite duration (using attack+sustain+release).
+::
+
+METHOD:: stop
+Stops one voice currently playing at this key.
+
+ARGUMENT:: release
+Release time is in seconds. The voice is stolen when the sound is fully released.
+
+METHOD:: flush
+Stop all currently playing voices for all keys.
+
+METHOD:: free
+Clear all keys, close files, free synths and buffers.
+
+METHOD:: freeKey
+Clear a key, close its file and free its synth and buffer.
+
+METHOD:: loadedKeys
+Report which keys have been preloaded with soundfiles.
+
+METHOD:: playingKeys
+Report which keys that currently have one or more voices playing.
+
+METHOD:: numFrames
+Get or set the size of the preload buffer. The default is 32768.
+
+METHOD:: overlaps
+Get or set number of overlaps or voices allowed to play per key at once. The default is 2. You will need to link::#-prepareForPlay:: again after setting this.
+
+METHOD:: length
+Report the length in seconds of the soundfile loaded at this key.
+
+METHOD:: channels
+Report the number of channels of the soundfile loaded at this key.
+
+METHOD:: buffers
+Return an array of buffer for this key. The number of buffers depend on how many overlaps you had when preloading.
+
+METHOD:: voicesLeft
+Return number of free voices for this key i.e. the number of non-playing voices.
+
+METHOD:: isPlaying
+Return boolean if more than one voice is playing.
+
+METHOD:: amp
+Set the amplitude for a running synth.
+
+EXAMPLES::
+
+code::
+s.boot;
+a= RedDiskInSampler(s);
+
+//-- setting up which samples to use and prepare them
+a.prepareForPlay(\snd1, Platform.resourceDir +/+ "sounds/a11wlk01-44_1.aiff");
+a.prepareForPlay(\snd2, "~/sounds/break.wav".standardizePath);	//add your own soundfile
+a.prepareForPlay(\snd3, Platform.resourceDir +/+ "sounds/a11wlk01-44_1.aiff", 44100);	//offset 44100 samples
+
+//-- play
+a.play(\snd1);			//play the whole soundfile
+a.voicesLeft(\snd1);
+a.playingKeys;
+a.isPlaying(\snd1);
+a.stop(\snd1);			//stop
+
+a.play(\snd1, 3, 0, 0.05);	//play with slow attack and quick release
+
+a.play(\snd2);			//play another sample
+a.play(\snd3);			//and another
+a.play(\snd3, 0.1, 0.1, 0.1);	//very short
+
+a.play(\snd2, loop:1);		//looping
+a.amp_(0.3);			//set amplitude
+a.stop(\snd2, 4);		//stop with 4 second fadetime
+
+(				//start many at once
+a.play(\snd1);
+a.play(\snd2);
+a.play(\snd3);
+)
+a.flush(0);			//stop all right away
+
+a.play(\snd2);
+a.play(\snd2);
+a.voicesLeft(\snd2);		//check if any free voices
+a.stop(\snd2, 0);
+a.stop(\snd2, 0);
+a.voicesLeft(\snd2);		//check if any free voices
+
+a.loadedKeys;			//report all keys that have soundfiles loaded
+a.numFrames;			//report size of preload buffer
+a.overlaps;			//how many voices allowed to play simultaneously
+
+a.length(\snd1);		//how long is the soundfile in seconds
+a.channels(\snd1);		//how many channels
+a.buffers(\snd1);		//access buffers for a key. one for each overlap
+
+a.play(\snd1, 4, 4, 4, loop:2)	//play in loop with finite duration
+
+a.free;				//stop and clear
+::

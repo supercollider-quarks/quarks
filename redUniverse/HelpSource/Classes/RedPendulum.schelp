@@ -1,0 +1,36 @@
+CLASS:: RedPendulum
+SUMMARY:: an object that oscillates
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview
+
+DESCRIPTION::
+NOTE::
+The size is used as radius for this object.
+::
+
+INSTANCEMETHODS::
+
+METHOD:: addForceAngular2D
+Push the pendulum with a scalar force.
+
+METHOD:: pendulumOffset2D
+Return the current location ( link::Classes/RedVector2D:: ) of the pendulum relative to the whole object.
+
+METHOD:: pendulumLoc2D
+Return the actual location ( link::Classes/RedVector2D:: ) of the pendulum.
+
+METHOD:: theta
+Scalar in radians.
+
+METHOD:: angularVel
+Scalar angular velocity.
+
+EXAMPLES::
+
+CODE::
+a= RedWorld.new
+b= RedPendulum(a).theta_(pi/2)
+
+a.objects
+b.dump
+::

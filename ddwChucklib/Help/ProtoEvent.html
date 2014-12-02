@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.47">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+span.s1 {font: 12.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #007300}
+span.s4 {color: #0000bf}
+span.s5 {color: #606060}
+span.s6 {text-decoration: underline}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>ProtoEvent(\symbol)</b><span class="s1"> -- automatic<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><br></p>
+<p class="p3">Playing an event pattern requires an event prototype. (Note that an event prototype is not the same as the object prototype implemented by proto.) The event pattern -- produced by the as pattern method in a chucklib process -- does nothing more than insert values into the event prototype under specific names. It's the event prototype that defines how to interpret the data from the pattern and take whatever action is required.</p>
+<p class="p2"><br></p>
+<p class="p3">When you play a BP, it updates the event belonging to the process with the latest definition from the ProtoEvent repository.</p>
+<p class="p2"><br></p>
+<p class="p4">Proto<span class="s2">({</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>~event = (eventKey: <span class="s3">\default</span>);</p>
+<p class="p5">}) =&gt; <span class="s4">PR</span>(<span class="s3">\generic</span>);</p>
+<p class="p2"><br></p>
+<p class="p3"><b>eventKey: \default</b> means that at play time, all the definitions in ProtoEvent(\default) will be added to the ~event, and the updated event will be used to play the process' pattern. (Technical detail, skip if not interested: the proto event is actually set as the parent of the event Event so that the items in the proto event do not have to be copied every time the pattern evaluates.)</p>
+<p class="p2"><br></p>
+<p class="p3">An event prototype must have a function assigned to the <i>play</i> key. If you don't want the event to play anything per se, you can provide a dummy like 1 (which does nothing when .value'd).</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s2">(play: #{<span class="Apple-converted-space">  </span></span>/* do something in here */<span class="s2"> }) =&gt; </span><span class="s4">ProtoEvent</span><span class="s2">(</span><span class="s3">\uselessEvent</span><span class="s2">);</span></p>
+<p class="p2"><br></p>
+<p class="p3">To use a ProtoEvent outside the BP framework, get a copy of it:</p>
+<p class="p2"><br></p>
+<p class="p6">// returns a copy of the Event stored at ProtoEvent(\default)</p>
+<p class="p4">ProtoEvent<span class="s2">(</span><span class="s3">\default</span><span class="s2">).copy</span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Composite ProtoEvents</b></p>
+<p class="p2"><br></p>
+<p class="p3">If the pattern needs to use different proto events at different times in the same pattern, a composite proto event may be used.</p>
+<p class="p2"><br></p>
+<p class="p3">The pattern should then place the name of the proto event into the protoEvent key for each event. The correct proto event will be chosen on a per event basis.</p>
+<p class="p2"><br></p>
+<p class="p5">(play: { ~number.debug(<span class="s5">"ProtoEvent(\a)"</span>) }) =&gt; <span class="s4">ProtoEvent</span>(<span class="s3">\a</span>);</p>
+<p class="p5">(play: { ~number.debug(<span class="s5">"\tProtoEvent(\b)"</span>) }) =&gt; <span class="s4">ProtoEvent</span>(<span class="s3">\b</span>);</p>
+<p class="p5"><span class="s4">ProtoEvent</span>.composite([<span class="s3">\a</span>, <span class="s3">\b</span>]) =&gt; <span class="s4">ProtoEvent</span>(<span class="s3">\composite</span>);</p>
+<p class="p7"><br></p>
+<p class="p4">Proto<span class="s2">({</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>~event = (eventKey: <span class="s3">\composite</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~asPattern = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Pbind</span>(<span class="s3">\number</span>, <span class="s4">Pseries</span>(1, 1, <span class="s4">inf</span>), <span class="s3">\protoEvent</span>, <span class="s4">Prand</span>(#[<span class="s3">\a</span>, b], <span class="s4">inf</span>), <span class="s3">\delta</span>, 0.5)</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">}) =&gt; <span class="s4">BP</span>(<span class="s3">\comp</span>);</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s4">BP</span>(<span class="s3">\comp</span>).play;</p>
+<p class="p5"><span class="s4">BP</span>(<span class="s3">\comp</span>).stop;</p>
+<p class="p5"><span class="s4">BP</span>(<span class="s3">\comp</span>).free;</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Scheduling of server events within event prototypes</b></p>
+<p class="p2"><br></p>
+<p class="p3">If you need server messages from custom event prototypes to sound in sync with the default event, the messages must be sent in the proper way.</p>
+<p class="p2"><br></p>
+<p class="p3">The default event uses a number of parameters to adjust timing:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>~lag:</b> delay this event by this number of beats; may be different for each event</p>
+<p class="p3"><b>~timingOffset:</b> delay by this number of beats; this is intended only to compensate for scheduling a process' thread slightly early to simulate higher priority for the process. See the discussion of leadTime in the <b>[</b><b><span class="s6">BP</span></b><b>]</b> helpfile.</p>
+<p class="p3"><b>~server.latency:</b> apply this many seconds of latency to the outgoing OSC message, solely for the purpose of controlling network timing jitter.</p>
+<p class="p2"><br></p>
+<p class="p3">Functions in the default event handle these parameters correctly. The same functions are available in the Func repository. If you are sending OSC messages in your event prototype, you should use these functions to ensure consistent timing with other event prototypes.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Func('schedEventBundle').value(time, server, bundle)</b></p>
+<p class="p3">e.g.,</p>
+<p class="p3">Func('schedEventBundle').value(~lag, ~server, [message1...], [message2...])</p>
+<p class="p2"><br></p>
+<p class="p3"><b>time:</b> ~lag value plus whatever adjustment in beats is needed</p>
+<p class="p3"><b>server:</b> the server to receive the message</p>
+<p class="p3"><b>bundle:</b> one or more arrays containing OSC messages</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Func('schedEventBundleArray').value(time, server, bundleArray)</b></p>
+<p class="p3">e.g.,</p>
+<p class="p3">Func('schedEventBundleArray').value(~lag, ~server, [[message1...], [message2...]])</p>
+<p class="p2"><br></p>
+<p class="p3">The above two functions handle most needs. Optionally, when scheduling notes, the following may be used.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Func('schedEventStrummedNote').value(lag, strumTime, sustain, server, msg, sendGate)</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>lag:</b> ~lag time (beats)</p>
+<p class="p3"><b>strumTime:</b> used by the default event prototype when scheduling a chord; the notes may be offset from each other by ~strum beats</p>
+<p class="p3"><b>sustain:</b> how long (in beats) the note should last</p>
+<p class="p3"><b>server:</b> the server to receive the message</p>
+<p class="p3"><b>msg:</b> the message to send; it must be a /s_new message</p>
+<p class="p3"><b>sendGate:</b> a Boolean flag; if true, send a release message after <i>sustain</i> beats; if false, do not send a release (the synth node is expected to free itself)</p>
+</body>
+</html>

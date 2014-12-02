@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #653f2e; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {color: #0000bf}
+span.s2 {font: 9.0px Monaco CY}
+span.s3 {color: #000000}
+span.s4 {color: #606060}
+span.s5 {color: #007300}
+span.s6 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>GeoGraphy: Audio</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">The classes responsible for audio using GeoGraphy must (at least in the proposed approach) inherit from the abstract class GeoAudio.</p>
+<p class="p3">Lets' consider this:</p>
+<p class="p2"><br></p>
+<p class="p4">s = <span class="s1">Server</span>.local.boot ;</p>
+<p class="p5">// An available synth</p>
+<p class="p4"><span class="s2">h = </span><span class="s1">Sinusoider</span>.new(b).initAudio ;</p>
+<p class="p6"><br></p>
+<p class="p3">Each GeoAudio-child class (here Sinusoider) requires a Runner: it works by spawning an audio event each time it receives an updated message from the runner. The audio class instance is registered to the runner. This means the each time the sequencing mechanism (i.e.e an actant) activates a vertex, a message is sent to the audio device.</p>
+<p class="p6"><br></p>
+<p class="p3">The message is an array like this:</p>
+<p class="p6"><br></p>
+<p class="p7">[vID, vertex[..4], eID, edge, aID, weight, offsetWeight, count]</p>
+<p class="p6"><span class="Apple-converted-space"> </span></p>
+<p class="p3">Here is the class definition with some comments.<span class="Apple-converted-space"> </span></p>
+<p class="p3">You have to provide three methods.</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>initAudio</b>: <span class="Apple-tab-span">	</span>allows you to perform all the required initialization passes (e.g. filling buffers). It is optional (i.e. you could not need initialization at all)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>sendDef</b>:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>assigns to the aDef variable the SynthDef you want and send it to the server</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>play</b>:<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>the play method allows to define mappings between the GeoGraphy values and your synthDef. The method is called each time a new event is spawned by GeoGraphy. Typically a new synth is created from the provided synthDef and its arguments are mappings from GeoGraphy message elements.</p>
+<p class="p6"><br></p>
+<p class="p3">This is the class definition of Sinusoider with some comment:</p>
+<p class="p8"><br></p>
+<p class="p9">Sinusoider<span class="s3"> : </span>GeoAudio<span class="s3"> {</span></p>
+<p class="p5">// we need to inherit from GoeAudio</p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// initAudio is not necessary here</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// so we use it just to let you know that it can be used</p>
+<p class="p4"><span class="Apple-tab-span">	</span>initAudio { <span class="s4">"nothing to do here"</span>.postln }</p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// this method<span class="Apple-converted-space">  </span>is simply a container for the synthDef you like</p>
+<p class="p4"><span class="Apple-tab-span">	</span>sendDef {</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// simply replace the SynthDef with yours</p>
+<p class="p4"><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span><span class="s1">var</span> aDef<span class="Apple-converted-space">  </span>= <span class="s1">SynthDef</span>(<span class="s5">\Sinusoider</span>, { <span class="s1">arg</span> pitch, amp = 0.1, out = 0 ;</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s1">var</span><span class="s3"> dur = 30/pitch ; </span>// --&gt; duration of the event is proportional to pitch</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Out</span>.ar(out, <span class="s1">Pan2</span>.ar(</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">EnvGen</span>.kr(<span class="s1">Env</span>.perc(dur*0.01, dur, 1, -8), 1.0, doneAction:2)<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// doneAction=2 avoids the freeing issue</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>*</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">SinOsc</span>.ar(pitch.midicps),</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s1">LFNoise1</span><span class="s3">.kr(1/dur), </span>// --&gt; panning is proportional to duration and to pitch</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amp</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)}) ;</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// here we send it to server, a variable representing the local server</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// aDef and server are declared in GeoAudio</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>aDef.send(server) ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><br></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// each time there's an update, a new synth is spawned</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// don't change the method's name</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// message is the array passed by GeoGraphy to the audio devices</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// it is made by the following values</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// [vID, next, duration, eID, options, aID, offsetWeight, weight, count]</p>
+<p class="p4"><span class="Apple-tab-span">	</span>play { <span class="s1">arg</span> message ;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> label, weight ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> label, weight, offsetWeight, amp ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>label <span class="Apple-tab-span">	</span>= message[1][3].asString ;</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// message[1] is the array of a vertex without the edges</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// its [3] element is the label: see Graph</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>weight <span class="Apple-tab-span">	</span>= message[5] ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>offsetWeight = message[6] ;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amp = (weight+offsetWeight).thresh(0) ;</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if ( label[0].asSymbol == </span><span class="s5">\s</span><span class="s3">, { </span>// --&gt; reacting to s+num messages</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>label = label[1..].asFloat ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="s1">Synth</span>.new(<span class="s5">\Sinusoider</span>, [<span class="s5">\pitch</span>, label, <span class="s5">\amp</span>, amp])<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><br></p>
+<p class="p4">}</p>
+<p class="p6"><br></p>
+<p class="p3">Note that in this case the label for sinusoider is a string in form s+midiNumber. So it is possible to extract the midi number from it and pass as an argument for synth creation. In this case the play method checks if the first letter of the label is "s".</p>
+<p class="p3">Only if it is so (e.g. s90), then the the midiNumber is extracted from the label itself, converted to float, and passed as a pitch argument to a new Synth from the SynthDef. This means that Sinusoider reacts only to certain labels. This allows to filter messages to different synth devices. More, the sum of weight+offsetWeight is used to control amp arg. The following is a varation on the theme just to show the mechanism. This time<span class="Apple-converted-space">  </span>a square wave is generated with the same envelope and the instance reacts to q+num messages, instead of s+num.</p>
+<p class="p6"><br></p>
+<p class="p10"><br></p>
+<p class="p5">// 1b. The same, just for comparison, using a square</p>
+<p class="p5">// It reacts to a different format: e.g. "q60" (pitch --&gt; 60, 60 is extracted)</p>
+<p class="p10"><br></p>
+<p class="p9">Squarer<span class="s3"> : </span>GeoAudio<span class="s3"> {</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// initAudio is not necessary here</p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// we assume pitch as midi notation</p>
+<p class="p4"><span class="Apple-tab-span">	</span>sendDef {</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//the synthDef being sent</p>
+<p class="p4"><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span><span class="s1">var</span> aDef<span class="Apple-converted-space">  </span>= <span class="s1">SynthDef</span>(<span class="s5">\Squarer</span>, { <span class="s1">arg</span> pitch, amp = 0.1, out = 0 ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> dur = 30/pitch ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Out</span>.ar(out, <span class="s1">Pan2</span>.ar(</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">EnvGen</span>.kr(<span class="s1">Env</span>.perc(dur*0.01, dur, 1, -8), 1.0, doneAction:2)<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>*</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Pulse</span>.ar(pitch.midicps, 0.5),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">LFNoise1</span>.kr(1/dur),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amp</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)}) ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>aDef.send(server) ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>play { <span class="s1">arg</span> message ;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> label, weight, offsetWeight, amp ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>label <span class="Apple-tab-span">	</span>= message[1][3].asString ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>weight <span class="Apple-tab-span">	</span>= message[5] ;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>offsetWeight = message[6] ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amp = (weight+offsetWeight).thresh(0) ;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if ( label[0].asSymbol == <span class="s5">\q</span>, {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>label = label[1..].asFloat ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="s1">Synth</span>.new(<span class="s5">\Squarer</span>, [<span class="s5">\pitch</span>, label, <span class="s5">\amp</span>, amp])<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><br></p>
+<p class="p4">}</p>
+<p class="p11"><br></p>
+<p class="p3">The following is a sample player. You pass a folder and then all the audio samples in the folder and its subfolders are available by assigning their name to a vertex label.</p>
+<p class="p10"><br></p>
+<p class="p9">GraphSampler<span class="s3"> : </span>GeoAudio<span class="s3"><span class="Apple-converted-space">  </span>{</span></p>
+<p class="p10"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s1">var</span> &lt;&gt;bufDict, &lt;&gt;samplesPath ;</p>
+<p class="p10"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>initAudio { <span class="s1">arg</span> aSamplesPath ; <span class="s6">// init is relevant</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> p, l, name ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>samplesPath = aSamplesPath ;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bufDict = <span class="s1">IdentityDictionary</span>.new ;<span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>server.doWhenBooted({<span class="Apple-tab-span">	</span></span>// load a buffer for all the files in samplePath</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s1">Pipe</span>.new(<span class="s4">"ls -R"</span> + samplesPath, <span class="s4">"r"</span>) ;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>l = p.getLine ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>while({l.notNil}, {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>case<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ l.contains(<span class="s4">"/"</span>) }</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ samplesPath = l.split($:)[0] }</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ (l.contains(<span class="s4">"/"</span>).not).and(l.contains(<span class="s4">"."</span>)) }</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ name = (l.split($.)[0].asSymbol).postln ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bufDict.add(name<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>-&gt; <span class="s1">Buffer</span>.read(server, samplesPath++<span class="s4">"/"</span>++l))} ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>l = p.getLine;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}) ;<span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>sendDef {</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a simple file player</p>
+<p class="p4"><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span><span class="s1">var</span> aDef = <span class="s1">SynthDef</span>(<span class="s5">\graphSampler</span>, { <span class="s1">arg</span> bufnum, amp = 1, out = 0, dur = 1 ;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Out</span>.ar(out, <span class="s1">Pan2</span>.ar(</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Line</span>.kr(amp, amp, dur, doneAction:2)<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>*</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">PlayBuf</span>.ar(1, bufnum, <span class="s1">BufRateScale</span>.kr(bufnum), loop: 0),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">LFNoise1</span>.kr(1/dur)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)}) ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>aDef.send(server) ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>play { <span class="s1">arg</span> message ;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> label, weight, offsetWeight, dur, amp ;</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>label = message[1][3] ; </span>// the label is used to refer to the buffer dictionary</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>weight = message[5] ;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>offsetWeight = message[6] ;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amp = (weight+offsetWeight).thresh(0) ;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if (bufDict[label] != <span class="s1">nil</span>, <span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="Apple-tab-span">	</span>dur = bufDict[label].numFrames/server.sampleRate ;</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the duration fi the sample is used for the EnvGen</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// so that after playing the synth is freed</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s1">Synth</span><span class="s3">.new(</span>\graphSampler<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s5">\bufnum</span>, bufDict[label].bufnum, <span class="s5">\amp</span>, amp, <span class="s5">\dur</span>, dur]) }</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// ,{ "NO SAMPLE WITH THIS NAME".postln }</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> )</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p4">}</p>
+<p class="p10"><br></p>
+<p class="p3">Classes provided with GeoGraphy (and used in the help files) are <b>Sinusoider</b>, <b>Squarer</b>, <b>GraphSampler</b> and <b>SlicePlayer</b> (using vertex' coordinates to read fragments of an audio file at different rates). <span class="Apple-converted-space"> </span></p>
+<p class="p11"><br></p>
+<p class="p3">Note that you can have as many as instances of<span class="Apple-converted-space">  </span>GeoAudio-inheriting classes as you want. They will all receive a play message when GeoGraphy is updated: the way they will react depends on you.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p3">Note also that very different approaches to audio handling are surely possible. A generic audio synthesis handler<span class="Apple-converted-space">  </span>has only to register to the runner in order to be notified about incoming events spawned by actants. Then it's up to the developer to decide how to map the data contained in runner's messages to audio syntheis algorithms and design.</p>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; color: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+span.s1 {text-decoration: underline}
+span.s2 {color: #0000bf}
+span.s3 {color: #000000}
+span.s4 {color: #606060}
+</style>
+</head>
+<body>
+<p class="p1"><b>Note</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">a placeholder for musical notes, based on the <a href="midiname.html">midiname</a> methods in wslib</p>
+<p class="p3"><br></p>
+<p class="p2"><b>Note( name, midi, freq, cents )</b></p>
+<p class="p2">from the first three arguments only one should be not nil.</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s2">Note</span><span class="s3">( </span><span class="s4">"G4"</span><span class="s3"> );<span class="Apple-converted-space">  </span></span>// -&gt; will show as a name string in the post window (asString)</p>
+<p class="p4"><span class="s2">Note</span><span class="s3">( </span><span class="s4">"G4"</span><span class="s3"> ).asCompileString;<span class="Apple-converted-space">  </span></span>// -&gt; will show as a name string in the post window (asString)</p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s2">Note</span>( midi: 65 );</p>
+<p class="p6"><span class="s2">Note</span>( freq: 456 ).asCompileString;</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">n = <span class="s2">Note</span>( <span class="s4">"G#3"</span>, cents: 25 );</p>
+<p class="p5"><br></p>
+<p class="p4">// all the folowing methods can also be used as setter:</p>
+<p class="p6">n.cents;</p>
+<p class="p6">n.name;</p>
+<p class="p6">n.oct;</p>
+<p class="p6">n.note;</p>
+<p class="p6">n.sign;</p>
+<p class="p4"><span class="s3">n.alt; </span>// + 1 means #</p>
+<p class="p5"><br></p>
+<p class="p6">n.alt = 3;</p>
+<p class="p5"><br></p>
+<p class="p4"><span class="s3">n.simplifyName; </span>// enharmonic shift</p>
+<p class="p5"><br></p>
+<p class="p4">// possible binary operators</p>
+<p class="p4">// +, -, *, /, min, max, wrap, clip, rand, round<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p6">n + <span class="s2">Note</span>( <span class="s4">"A1"</span> );</p>
+<p class="p6">n + 1;</p>
+<p class="p6">(n / 2).asCompileString;</p>
+<p class="p4"><span class="s3">n.rand; </span>// only whole notes; no cents</p>
+<p class="p5"><br></p>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; min-height: 22.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco CY; color: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco CY; color: #000000; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco CY; color: #bf0000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco CY; color: #606060}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco CY; color: #0000bf}
+span.s1 {color: #0030f2}
+span.s2 {color: #0000bf}
+span.s3 {font: 9.0px Monaco}
+span.s4 {font: 9.0px Monaco CY}
+span.s5 {color: #000000}
+span.s6 {font: 9.0px Monaco; color: #bf0000}
+span.s7 {color: #606060}
+span.s8 {font: 9.0px Monaco; color: #606060}
+span.s9 {font: 9.0px Monaco CY; color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>iXno: scripting grammar for GeoGraphy</b></p>
+<p class="p2"><br></p>
+<p class="p3">iXno (--&gt; Ichno) is a micro language for GeoGraphy. It is intended as a fast and easy shortcut to control the graph structure and the dynamic process (i.e. the Graph and Runner instance). It does not exploit the potential of the Graph and the Runner classes and it sets many values with defaults.</p>
+<p class="p3">Vertices and edges can be referred to respectively by label or vID and by vID.</p>
+<p class="p3">Even if its typical use is to be input inside the NimChimpsky view or though a <a href="GeoDocument.html"><span class="s1">GeoDocument</span></a>, you can nevertheless simply pass a command string to the parser through the .parse method, which is what the NimChimpsky view does.</p>
+<p class="p4"><br></p>
+<p class="p5">a = <span class="s2">Graph</span>.new ;</p>
+<p class="p6">b = <span class="s2">Runner</span>.new(a).gui <span class="s3">;</span></p>
+<p class="p5"><span class="s4">h = </span><span class="s2">Sinusoider</span>.new(b) ;</p>
+<p class="p6">o = <span class="s2">Painter</span>.new(a, b, colFact:0.1);<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p6">p = <span class="s2">GraphParser</span>(a, b, o).gui ;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><br></p>
+<p class="p8">// just like what you type in the NimChimpsky View</p>
+<p class="p9"><span class="s5">p.parse(</span>"e+ s90 1 s92 1 s94 1 s95 1 s90 a+ s95 t+ 480"<span class="s5">) ;</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-converted-space"> </span>This is the grammar that GraphParser can parse.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p3"><i>v+ name dur name ... name</i></p>
+<p class="p3">Add vertices with label <i>name. </i>Note that you cannot control x, y, vDur:<span class="Apple-converted-space">  </span>x and y are randomly chosen in a space 1200x800, while vDur is set to 0.</p>
+<p class="p4"><br></p>
+<p class="p3"><i>v- name name ... name</i></p>
+<p class="p3"><i>v- id id ... id</i></p>
+<p class="p3">Remove vertices with label <i>name</i> or with vID <i>id.</i></p>
+<p class="p4"><br></p>
+<p class="p3"><i>e+ name dur name ... name</i></p>
+<p class="p3">Add edges having dur duration between successive vertices (names).<span class="Apple-converted-space"> </span></p>
+<p class="p3">If vertices do not exist, they are created (see before).</p>
+<p class="p4"><br></p>
+<p class="p3"><i>e- id id ... id</i></p>
+<p class="p3">Remove edges with eID id</p>
+<p class="p4"><br></p>
+<p class="p3"><i>r+ name1 name2</i></p>
+<p class="p3">Rename the label <i>name1</i> in <i>name2</i>.</p>
+<p class="p4"><br></p>
+<p class="p3"><i>r+ vID1 vID2</i></p>
+<p class="p3">Rename the <i>vID1</i> in <i>vID2</i>.</p>
+<p class="p4"><br></p>
+<p class="p3"><i>i- name name ... name</i></p>
+<p class="p3"><i>i- id id ... id</i></p>
+<p class="p3">Isolate each vertex (indicated by ID or by label) by removing all the edges in I/O.</p>
+<p class="p4"><br></p>
+<p class="p3"><i>c+ id dur</i></p>
+<p class="p3">Change into <i>dur</i> the duration of the arch with <i>eID</i> id.</p>
+<p class="p4"><br></p>
+<p class="p3"><i>a+ name name ... name</i></p>
+<p class="p3"><i>a+ id id ... id</i></p>
+<p class="p3">Add an actant on each vertex having label <i>name </i>or having vID <i>id.</i></p>
+<p class="p4"><br></p>
+<p class="p3"><i>a- id id ... id</i></p>
+<p class="p3">Remove all the actants with IDs <i>id</i> (Note that here id represent the actant IDs, not the vertices' one).</p>
+<p class="p4"><br></p>
+<p class="p3"><i>t+ bpm</i></p>
+<p class="p3">Change the tempo to <i>bpm</i>.</p>
+<p class="p4"><br></p>
+<p class="p3"><i>s+ a</i></p>
+<p class="p3">Prompt for a path and save the graph and the runner to a SC archive format file. Providing a name results in saving two files with names: name.run and name.gra. Set the current IOpath var.</p>
+<p class="p4"><br></p>
+<p class="p3"><i>s+</i></p>
+<p class="p3">Save to the actual IOpath.</p>
+<p class="p4"><br></p>
+<p class="p3"><i>o+</i></p>
+<p class="p3">Prompt for a path in order to open archive file. You have to choose the .run file and the realted .gra file must be available in the same folder.</p>
+<p class="p4"><br></p>
+<p class="p3"><i>w+</i></p>
+<p class="p3">Clean all (reset data structures)</p>
+<p class="p4"><br></p>
+<p class="p10"><br></p>
+<p class="p5">a = <span class="s2">Graph</span>.new ;</p>
+<p class="p6">b = <span class="s2">Runner</span>.new(a, weight:0.02).gui(step:10) ; <span class="s6">// gui can be excluded, indeed</span></p>
+<p class="p5"><span class="s4">h = </span><span class="s2">Sinusoider</span>.new(b) ;<span class="Apple-converted-space"> </span></p>
+<p class="p6">p = <span class="s2">GraphParser</span>(a, b) ;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><br></p>
+<p class="p8">// the following routine uses a GraphParser to control Graph and Runner</p>
+<p class="p6">(</p>
+<p class="p6"><span class="s2">var</span> i = 0, dur, label, n = 600 ; <span class="Apple-converted-space"> </span></p>
+<p class="p7"><br></p>
+<p class="p11">Routine<span class="s5">.new({</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>n.do({<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>dur = 0.5.rand+0.5 ;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>label = <span class="s7">"s"</span>++(60+(i*0.1)) ;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>p.parse(<span class="s7">"e+"</span>+label+dur+l<span class="s3">abel+</span><span class="s8">"p+"</span><span class="s3">+label) ;</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>i = i+1;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>0.1.rand.wait ;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>}) ;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>3.wait ;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>n.do({<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span>p.parse(</span><span class="s9">"a-"</span>+(n-i).asString) ;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>i = i-1;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>0.1.rand.wait ;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>}) ;</p>
+<p class="p7"><br></p>
+<p class="p6">} ).play(<span class="s2">AppClock</span>)</p>
+<p class="p6">)</p>
+</body>
+</html>

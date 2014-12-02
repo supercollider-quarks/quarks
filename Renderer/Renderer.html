@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1713}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #102ac3}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008225}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #737373}
+span.s1 {color: #102ac3}
+span.s2 {color: #737373}
+span.s3 {color: #008225}
+span.s4 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">// this is some old classes, I don't know if they work well.</p>
+<p class="p1">// BundleNetAddr also came later, so perhaps it could be simplified and improved</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">// here only some tests:</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">// RecordAddr</p>
+<p class="p2"><br></p>
+<p class="p3">a = <span class="s1">RecordAddr</span>(<span class="s2">"127.0.0.1"</span>, 57110);</p>
+<p class="p2"><br></p>
+<p class="p3">s = <span class="s1">Server</span>(<span class="s3">\test</span>, a);</p>
+<p class="p3">s.makeWindow.boot;</p>
+<p class="p2"><br></p>
+<p class="p3">s.addr.start;</p>
+<p class="p3">s.addr.score.score.postcs;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">{ <span class="s1">SinOsc</span>.ar(500, 0, 0.1) }.play(s);</p>
+<p class="p3">s.addr.score.postcs;</p>
+<p class="p2"><br></p>
+<p class="p3">s.addr.score.recordNRT(<span class="s2">"test.osc"</span>, <span class="s2">"testNRT.aif"</span>)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">// RenderAddr (still fails, needs to load SynthDef library - how?)</p>
+<p class="p2"><br></p>
+<p class="p3">a = <span class="s1">RenderAddr</span>(<span class="s2">"127.0.0.1"</span>, 57110);</p>
+<p class="p3">s = <span class="s1">Server</span>(<span class="s3">\test</span>, a);</p>
+<p class="p3">s.makeWindow.boot;</p>
+<p class="p2"><br></p>
+<p class="p3">s.addr.start;</p>
+<p class="p3">s.addr.score.score.postcs;</p>
+<p class="p2"><br></p>
+<p class="p3">a.lifeTime = 3;</p>
+<p class="p4">SynthDescLib<span class="s4">.read;</span></p>
+<p class="p3"><span class="s1">Pbind</span>(<span class="s3">\server</span>, s).play(a);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">// Renderer</p>
+<p class="p2"><br></p>
+<p class="p1">// could be used like this:</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">SynthDescLib<span class="s4">.read;</span></p>
+<p class="p3">(</p>
+<p class="p1"><span class="s4">a = </span><span class="s1">Renderer</span><span class="s4">(3.0); </span>// render 3.0 seconds</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">Pbind<span class="s4">(</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s3">\freq</span>, 500,</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span></span>\server<span class="s4">, a<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s4">).play(a); </span>// seems to be still broken because of a change in the Event System since 2004.</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">a.score.score</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p4">Renderer<span class="s4">.use({</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>{ <span class="s1">SinOsc</span>.ar(499) * 0.1 }.play;</p>
+<p class="p3">}, 3).score</p>
+<p class="p3">);</p>
+<p class="p2"><br></p>
+<p class="p1">// error here still</p>
+<p class="p3">(</p>
+<p class="p4">Renderer<span class="s4">.use {</span></p>
+<p class="p4"><span class="s4"><span class="Apple-tab-span">	</span></span>Pbind<span class="s4">(</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">\freq</span>, <span class="s1">Pseq</span>([500, 300, 200], 2),</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">\dur</span>, 0.1</p>
+<p class="p3"><span class="Apple-tab-span">	</span>).play;</p>
+<p class="p3">}.score</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p3">a = <span class="s1">Renderer</span>(3);</p>
+<p class="p2"><br></p>
+<p class="p4">Routine<span class="s4">({</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s1">SynthDef</span>(<span class="s2">"test"</span>, { <span class="s1">arg</span> freq; <span class="s1">Out</span>.ar(0, <span class="s1">SinOsc</span>.ar(freq, 0, 0.1)) }).send(a);</p>
+<p class="p3"><span class="Apple-tab-span">	</span>0.5.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>a.sendMsg(<span class="s2">"/s_new"</span>, <span class="s2">"test"</span>, 1889);</p>
+<p class="p3"><span class="Apple-tab-span">	</span>0.3.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>a.sendMsg(<span class="s2">"/c_set"</span>, 0, 700);</p>
+<p class="p3"><span class="Apple-tab-span">	</span>0.2.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>a.sendMsg(<span class="s2">"/n_map"</span>, 1889, <span class="s3">\freq</span>, 0);</p>
+<p class="p3"><span class="Apple-tab-span">	</span>0.1.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>a.sendMsg(<span class="s2">"/c_set"</span>, 0, 500);</p>
+<p class="p3"><span class="Apple-tab-span">	</span>1.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>a.sendMsg(<span class="s2">"/n_free"</span>, 1889);</p>
+<p class="p2"><br></p>
+<p class="p3">}).play(a);</p>
+<p class="p3">)</p>
+<p class="p3">a.score.score.postcs;</p>
+<p class="p6"><span class="s4">a.score.recordNRT(</span>"test.osc"<span class="s4">, </span>"testNRT.aif"<span class="s4">)</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

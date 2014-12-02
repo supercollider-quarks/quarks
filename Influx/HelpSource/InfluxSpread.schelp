@@ -1,0 +1,170 @@
+TITLE:: InfluxSpread
+summary:: Influx variant that can spread influences to multiple destinations.
+categories:: Influx
+related:: Classes/InfluxBase, Classes/Influx, Classes/InfluxMix, Classes/KtlLoop
+
+DESCRIPTION::
+
+InfluxSpread can distribute incoming values to
+  multiple destinations, with optional rescaling,
+  and optional mapping to other parameter names.
+
+For an example of influencing several destinations,
+see InfluxMix
+
+First example - simplest 2 cases:
+
+code::
+	// make an InfluxSpread
+z = InfluxSpread();
+
+	// make a destination
+Ndef(\four, { |a, b, c, d| SinOsc.ar( 440 * (2 ** [a, b, c, d].lag(0.1))).sum * 0.1 }).play;
+Ndef(\four).gui;
+
+	// add the destination
+z.addDest(\four, Ndef(\four)); z.destsDict;
+
+	// set values :
+	// as no paramMap and specs were given,
+	// param names and values are sent as is:
+
+z.set(\a, 0.5);
+z.destsDict[\four];
+z.inValDict;
+z.set(\a, 0.5, \b, 0.2, \c, 0.1);
+z.set(\a, 0.5.rand2, \b, 0.2.rand2, \c, 0.1.rand2);
+
+z.set(\a, 0.5, \b, 0.2, \c, 0.1);
+
+	// add specs to the Ndef - they will be used:
+Ndef(\four).addSpec(\a, \bipolar);
+Ndef(\four).addSpec(\b, \bipolar);
+Ndef(\four).addSpec(\b, \bipolar);
+
+z.set(\a, 0.5, \b, 0.2, \c, 0.1);
+z.set(\a, 1.0.rand2, \b, 1.0.rand2, \c, 1.0.rand2);
+
+
+	// change the specs in the Ndef
+	// new specs will be used when setting values
+
+Ndef(\four).addSpec(\a, [-2, 2]);
+Ndef(\four).addSpec(\b, [-2, 2]);
+Ndef(\four).addSpec(\b, [-2, 2]);
+
+z.set(\a, 0.5, \b, 0.2, \c, 0.1);
+z.set(\a, 1.0.rand2, \b, 1.0.rand2, \c, 1.0.rand2);
+
+
+	// use a scaler value in the InfluxSpread
+	// - the range is scaled
+z.setScaler(\four, 0.5);
+z.setScaler(\four, 1);
+
+
+	// add offsets
+z.setOffsets(\four, (a: -0.42, b: 0, c: 0.333, d: 0.58));
+
+	// when setting to center,  the offsets form a slightly off major chord
+z.set(\a, 0, \b, 0, \c, 0, \d, 0);
+
+z.setOffsets(\four, nil);
+
+::
+
+CLASSMETHODS::
+
+private:: initClass
+
+METHOD:: sendFuncs
+a repository of send functions that can be used for destinations.
+
+INSTANCEMETHODS::
+
+private:: init
+
+METHOD:: destsDict
+the dictionary of destination data
+
+METHOD:: addDest
+add a destination and its data with name, object (anything that responds to .set)
+
+ARGUMENT:: name
+the name for the destination
+
+ARGUMENT:: object
+the object that gets the information, often a proxy
+
+ARGUMENT:: specs
+the specs for the object's parameters
+
+ARGUMENT:: sendFunc
+the function to evaluate when sending. if nil, defaultSendFunc is used.
+example for a special sendFunc setting influence on an InfluxMix:
+code::
+{ |destDict, influx|
+	influx.remapFor(
+	destDict[\object].influence(
+		destDict[\object].key,
+		*influxSpread.inValDict.asKeyValuePairs
+	);
+};
+::
+ARGUMENT:: offsets
+event with key value pairs for parameter offsets to use.
+
+ARGUMENT:: scaler
+a scaler to use for influences
+
+METHOD:: setScaler
+set a range scaler for a destination by name and val
+
+METHOD:: setOffsets
+set the offsets to use for a destination, as an event with key and value for every parameter.
+
+EXAMPLES::
+
+code::
+
+
+z = InfluxSpread([\a, \b, \c]);
+
+
+    // test - remap to different param names,
+    // no specs, so use values as they are
+Ndef(\tre, { |f1, f2, f3| SinOsc.ar( 440 * (2 ** [f1, f2, f3].lag(0.1))).sum * 0.1 }).play;
+Ndef(\tre).gui;
+
+	// try mapping to different param names: give a paramMap
+z.addDest(\tre, Ndef(\tre), paramMap: (a: \f1, b: \f2, c: \f3));
+z.destsDict[\tre][\paramMap][\a];
+
+z.set(\a, 0, \b, 0, \c, 0);
+z.inValDict;
+z.set(\a, 0.5, \b, 0.3, \c, 0.1);
+z.inValDict;
+
+// now add specs to object -
+Ndef(\tre).addSpec(\f1, [-3, 3]);
+Ndef(\tre).addSpec(\f2, [-3, 3]);
+Ndef(\tre).addSpec(\f3, [-3, 3]);
+
+// set message will reset range
+z.set(\a, 0.5, \b, 0.3, \c, 0.1);
+
+// offsets and scaler still works
+z.setOffsets(\tre, (f1: 0.2, f2: 0, f3: -0.3));
+z.set(\a, 0, \b, 0, \c, 0);
+z.inValDict;
+z.set(\a, 0.5, \b, 0.3, \c, 0.1);
+z.inValDict;
+
+z.setScaler(\tre, 1.1);
+z.set(\a, 0, \b, 0, \c, 0);
+z.set(\a, 0.5, \b, 0.3, \c, 0.1);
+
+z.dump
+
+::
+

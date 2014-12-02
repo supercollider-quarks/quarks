@@ -1,0 +1,662 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+span.s3 {color: #606060}
+span.s4 {color: #bf0000}
+span.s5 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>BoxGrid<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a simple GUI grid made of rects</b></p>
+<p class="p2"><br></p>
+<p class="p3">This GUI widget can be useful in various situations such as representing scales,</p>
+<p class="p3">step sequencers, etc. It is a modification of an earlier class called <b>Grid</b>. Both<span class="Apple-converted-space"> </span></p>
+<p class="p3">work fine, but for representing some things, one might be better than the other.</p>
+<p class="p4"><br></p>
+<p class="p3">The grid is basically a graphical representation of 2 dimensional array of</p>
+<p class="p3">columns and rows.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p3">For example, here we have 2 columns with 3 rows: [[0, 1, 0], [1, 1 0]]</p>
+<p class="p3">(1 and 0 indicating the state of the node in that location)</p>
+<p class="p4"><br></p>
+<p class="p3">The getState and setState_ methods function according to the convention of<span class="Apple-converted-space"> </span></p>
+<p class="p3">passing (x, y), i.e. the horizontal first and then the vertical.</p>
+<p class="p4"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>*new(window, bounds, columns, rows);</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>window <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- A GUI.window in which the Grid will appear</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>bounds<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The Rect of the Grid<span class="Apple-converted-space"> </span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>columns<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The number of columns in the grid (vertical lines)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>rows<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The number of rows in the grid (horizontal lines)</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>nodeDownAction_ <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The function that mouse down on a box will trigger.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>nodeTrackAction_ <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The function that dragging the cursor will trigger.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>nodeUpAction_ <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The function that mouse up on a box will trigger.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>keyDownAction_<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- </b>The function that key down on the view will trigger (makes view focusable)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>rightDownAction_<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- </b>The function that a right mouse click on a box will trigger.</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>clearGrid <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- sets all nodes on the grid to inactive.</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setFillMode_(boolean) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Whether the nodes are filled with color or not.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setFillColor_(color) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The color of the filled nodes. (see setBoxColor)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setTrailDrag_(bool, bool)<span class="Apple-tab-span">	</span></b>- Mouse tracking on the grid leaves a trail of on states (or switches).</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- The first argument is the trails, the second is if it switches on/off.</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setNodeString_(index, string)</b><span class="Apple-tab-span">	</span>- Set the label/string of a node.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>getNodeString_(index)<span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span>- Get string of a node.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setFont_(font)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- Set the font..</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setFontColor_(Color)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- Set the color of the font.</p>
+<p class="p4"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setNodeStates_(array)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Updates the grid from a 2 dimensional array of columns and rows.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>getNodeStates<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Returns 2 dimensional array representing the columns and rows.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setNodeBorder_(int) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The border around the selection box.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setState_(row, column, state) <span class="Apple-tab-span">	</span></b>- Sets the state of an individual box.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>getState(row, column) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Returns the state of an individual box.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setBoxColor_(row, col, Color) <span class="Apple-tab-span">	</span></b>- Sets the color of an individual box.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>getBoxColor(row, column) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Returns the color of an individual box.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setBackgrColor_(Color) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The background color of the grid.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setBackgrDrawFunc_(func) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Allows Pen to draw behind the grid.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">Note: the only methods that differ between BoxGrid and Grid are : setNodeBorder_/setNodeSize_</p>
+<p class="p3">respectively, and the BoxGrid doesn't take the border argument. There is no "nodeshape" in BoxGrid.</p>
+<p class="p3">Apart from these differences, the code should run the same, so it's easy to change between the two.</p>
+<p class="p4"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// choose a gui (see GUI helpfile)</p>
+<p class="p7"><span class="s1">GUI</span>.swing;</p>
+<p class="p7"><span class="s1">GUI</span>.cocoa;</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// create a grid</p>
+<p class="p8">BoxGrid<span class="s2">.new</span></p>
+<p class="p5"><br></p>
+<p class="p7"><span class="s1">BoxGrid</span>.new(bounds: <span class="s1">Rect</span>(0, 0, 600, 400), columns: 4, rows: 2)</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s1">BoxGrid</span>.new(bounds: <span class="s1">Rect</span>(20, 20, 300, 200), columns: 4, rows: 8)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p5"><br></p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"Testing BoxGrid"</span>, <span class="s1">Rect</span>(10, 500, 500, 212)).front;</p>
+<p class="p7"><span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20, 460, 20), columns: 4, rows: 1);</p>
+<p class="p7"><span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 60, 460, 20), columns: 14, rows: 1);</p>
+<p class="p7"><span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 100, 460, 20), columns: 12, rows: 1);</p>
+<p class="p7"><span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 140, 460, 20), columns: 10, rows: 1);</p>
+<p class="p5"><br></p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p5"><br></p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"Testing BoxGrid"</span>, <span class="s1">Rect</span>(10, 500, 840, 642)).front;</p>
+<p class="p7">a = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20, 760, 520), columns: 18, rows: 18);</p>
+<p class="p5"><br></p>
+<p class="p7">a.setNodeBorder_(8);</p>
+<p class="p5"><br></p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s2">a.setNodeBorder_(3); </span>// due to problems with Pen, it is often good to add 0.5</p>
+<p class="p5"><br></p>
+<p class="p7">a.setBackgrColor_(<span class="s1">Color</span>.white);</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// you can use either boolean</p>
+<p class="p7">a.setState_(1,1,<span class="s1">true</span>)</p>
+<p class="p6">// or integer (1 = true, 0 = false)</p>
+<p class="p7">a.setState_(1,3,1)</p>
+<p class="p5"><br></p>
+<p class="p6">// get state will return only integers (0 or 1)</p>
+<p class="p7">a.getState(1,3)</p>
+<p class="p7">a.getState(2,3)</p>
+<p class="p5"><br></p>
+<p class="p6">// get the states of all nodes</p>
+<p class="p7">b = a.getNodeStates</p>
+<p class="p6">// or just the first row:</p>
+<p class="p7">c = a.getNodeStates[0]</p>
+<p class="p5"><br></p>
+<p class="p6">// clear the grid</p>
+<p class="p7">a.clearGrid</p>
+<p class="p5"><br></p>
+<p class="p6">// set it back to previous state</p>
+<p class="p7">a.setNodeStates_(b)</p>
+<p class="p5"><br></p>
+<p class="p6">// fillmode and color</p>
+<p class="p7">a.setFillMode_(<span class="s1">true</span>);</p>
+<p class="p7">a.setFillColor_(<span class="s1">Color</span>.white);</p>
+<p class="p7">a.setFillColor_(<span class="s1">Color</span>.blue);</p>
+<p class="p5"><br></p>
+<p class="p7">a.setBoxColor_(1,1, <span class="s1">Color</span>.red);</p>
+<p class="p5"><br></p>
+<p class="p7">a.setBackgrColor_(<span class="s1">Color</span>.green);</p>
+<p class="p7">a.setFillMode_(<span class="s1">false</span>);</p>
+<p class="p7">a.setFillMode_(<span class="s1">true</span>);</p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s2">a.setTrailDrag_(</span><span class="s1">true</span><span class="s2">); </span>// leaves a trail of active nodes when moved around the grid</p>
+<p class="p6"><span class="s2">a.setTrailDrag_(</span><span class="s1">true</span><span class="s2">, </span><span class="s1">true</span><span class="s2">); </span>// bool true (so it switches the state of boxes that you move over</p>
+<p class="p7">a.setTrailDrag_(<span class="s1">true</span>, <span class="s1">false</span>); <span class="s4">// bool false</span></p>
+<p class="p6"><span class="s2">a.setTrailDrag_(</span><span class="s1">false</span><span class="s2">, </span><span class="s1">false</span><span class="s2">); </span>// back to the default</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// or</p>
+<p class="p7">a.gridNodes[0][3].setState_(<span class="s1">true</span>)</p>
+<p class="p7">a.refresh</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p7">a.keyDownAction_({<span class="s1">arg</span> key, modifiers, unicode;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s5">\key</span>, key, <span class="s5">\modifiers</span>, modifiers, <span class="s5">\unicode</span>, unicode].postln;</p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}); </span>// this makes the view focusable (with a grey border)</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p7">a.rightDownAction_({<span class="s1">arg</span> nodeloc; <span class="s3">"cntrl click on : "</span>.post; nodeloc.postln;}); <span class="s4">// right click</span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p5"><br></p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"Testing BoxGrid"</span>, <span class="s1">Rect</span>(100, 500, 500, 212)).front;</p>
+<p class="p7">a = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20, 460, 140), columns: 24, rows: 8);</p>
+<p class="p7">a.reconstruct({</p>
+<p class="p7"><span class="Apple-tab-span">	</span>a.setBackgrColor_(<span class="s1">Color</span>.white)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setNodeBorder_(3)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.new255(103, 148, 103))</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.nodeDownAction_({<span class="s1">arg</span> nodeloc; nodeloc.postln;})</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.nodeTrackAction_({<span class="s1">arg</span> nodeloc; nodeloc.postln;})</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.nodeUpAction_({<span class="s1">arg</span> nodeloc; nodeloc.postln});<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>30.do({</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setState_(24.rand, 8.rand, 1); <span class="s4">// column, row, state</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p7">b = a.getNodeStates</p>
+<p class="p6">// clear the grid</p>
+<p class="p7">a.clearGrid</p>
+<p class="p6">// set it back to previous state</p>
+<p class="p7">a.setNodeStates_(b)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// draw on the same GUI as the grid (labelling the nodes for example)</p>
+<p class="p6">// see also the example with setBackgrDrawFunc_ here below</p>
+<p class="p7">(</p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"Testing BoxGrid"</span>, <span class="s1">Rect</span>(10, 500, 800, 212)).front;</p>
+<p class="p7">a = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20, 760, 140), columns: 14, rows: 4);</p>
+<p class="p7">a.reconstruct({</p>
+<p class="p7"><span class="Apple-tab-span">	</span>a.setNodeBorder_(3);</p>
+<p class="p7"><span class="Apple-tab-span">	</span>a.setBackgrColor_(<span class="s1">Color</span>.white);</p>
+<p class="p7"><span class="Apple-tab-span">	</span>14.do({<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>4.do({<span class="s1">arg</span> j;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setNodeString_(i, j, <span class="s3">" ["</span>+i.asString+<span class="s3">","</span>+j.asString+<span class="s3">"]"</span>);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"Testing BoxGrid"</span>, <span class="s1">Rect</span>(10, 500, 800, 212)).front;</p>
+<p class="p7">a = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20, 760, 140), columns: 14, rows: 2);</p>
+<p class="p7">a.reconstruct({</p>
+<p class="p7"><span class="Apple-tab-span">	</span>a.setNodeBorder_(3);</p>
+<p class="p7"><span class="Apple-tab-span">	</span>a.setBackgrColor_(<span class="s1">Color</span>.white);</p>
+<p class="p7"><span class="Apple-tab-span">	</span>a.setFont_(<span class="s1">GUI</span>.font.new(<span class="s3">"Helvetica"</span>, 12));</p>
+<p class="p7"><span class="Apple-tab-span">	</span>14.do({<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2.do({<span class="s1">arg</span> j;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setNodeString_(i, j, <span class="s3">"ZXIEU"</span>.scramble);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">//////////<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> w, a;</p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"a plus"</span>, <span class="s1">Rect</span>(10, 500, 420, 320)).front;</p>
+<p class="p7">a = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20, 360, 260), columns: 18, rows: 18);</p>
+<p class="p5"><br></p>
+<p class="p7">a.setNodeBorder_(2);</p>
+<p class="p7">a.nodeDownAction_({<span class="s1">arg</span> nodeloc; nodeloc.postln;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>a.reconstruct({</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.clearGrid;<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.gridNodes[nodeloc[1]].do({<span class="s1">arg</span> item; item.setState_(<span class="s1">true</span>)});</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.gridNodes.do({<span class="s1">arg</span> item; item[nodeloc[0]].setState_(<span class="s1">true</span>)});</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">});</p>
+<p class="p7">a.nodeTrackAction_({<span class="s1">arg</span> nodeloc; nodeloc.postln;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>a.reconstruct({</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.clearGrid;<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.gridNodes[nodeloc[1]].do({<span class="s1">arg</span> item; item.setState_(<span class="s1">true</span>)});</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.gridNodes.do({<span class="s1">arg</span> item; item[nodeloc[0]].setState_(<span class="s1">true</span>)});</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">/////////////////// some examples from the development of Grid</p>
+<p class="p5"><br></p>
+<p class="p6">// the synthdef used in the examples</p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">SynthDef</span>(<span class="s5">\pure</span>, {<span class="s1">arg</span> freq=440, pan=0.0, vol=0.3, envdur=0.8;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s1">var</span> signal, envArray, env;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>env = <span class="s1">EnvGen</span>.kr(<span class="s1">Env</span>.perc(0.01, envdur), doneAction:2);<span class="Apple-tab-span">	</span>signal = <span class="s1">Pan2</span>.ar(<span class="s1">SinOsc</span>.ar(freq, 0, vol), pan) * env;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s1">Out</span>.ar(0, signal);</p>
+<p class="p7">}).add;</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p6">///////////// scales</p>
+<p class="p6">// here we have one octave of 19 equal tempered scale (19-TET)</p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> clock, scale;</p>
+<p class="p6"><span class="s1">var</span><span class="s2"> nTET = 19; </span>// change this variable to something else (5, 12, 24, etc.)</p>
+<p class="p5"><br></p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"Testing BoxGrid"</span>, <span class="s1">Rect</span>(10, 500, 800, 100+ (20*nTET))).front;</p>
+<p class="p5"><br></p>
+<p class="p7">k = <span class="s1">Array</span>.fill(nTET, {<span class="s1">arg</span> i; 2.pow(i/nTET) * 440;}).reverse; <span class="s4">// 19-TET scale in A</span></p>
+<p class="p5"><br></p>
+<p class="p7">a = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20, 760, 20), columns: 32, rows: 1, border: <span class="s1">false</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setNodeBorder_(4)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.white);</p>
+<p class="p7">b = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 50, 760, 20*nTET), columns: 32, rows: nTET, border:<span class="s1">true</span>);</p>
+<p class="p7">b.reconstruct({</p>
+<p class="p7"><span class="Apple-tab-span">	</span>b.setBackgrColor_(<span class="s1">Color</span>.white)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setNodeBorder_(8)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.new255(103, 148, 103))</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.nodeDownAction_({<span class="s1">arg</span> nodeloc; nodeloc.postln; <span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, k[nodeloc[1]], <span class="s5">\envType</span>, 1])})</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.nodeUpAction_({<span class="s1">arg</span> nodeloc; nodeloc.postln; b.setState_(nodeloc[0], nodeloc[1], 0)});<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span></span>// fill it with random nodes</p>
+<p class="p7"><span class="Apple-tab-span">	</span>(nTET*3).do({</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b.setState_(32.rand, nTET.rand, 1); <span class="s4">// column, row, state</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// and we can play the grid from above with a clock</p>
+<p class="p6">// note: if you close the windows without stopping the clock (using apple+dot)</p>
+<p class="p6">// SuperCollider will crash. That is not a problem with BoxGrid, but with SC.</p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> nTET = 19;</p>
+<p class="p8"><span class="s2">t = </span>TempoClock<span class="s2">(4);</span></p>
+<p class="p7">t.schedAbs(t.beats.ceil, { <span class="s1">arg</span> beat, sec;</p>
+<p class="p5"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>{a.setState_( beat%32, 0, 1)}.defer;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>{a.setState_( beat%32, 0, 0)}.defer(t.beatDur);</p>
+<p class="p5"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>nTET.do({<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(b.getState( beat%32, i) == 1, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, k[i], <span class="s5">\envType</span>, 1]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span>1;</p>
+<p class="p7">});</p>
+<p class="p6"><span class="s2">b.nodeUpAction_({</span><span class="s1">nil</span><span class="s2">;}); </span>// remove the mouseUp function (so the nodes stay)</p>
+<p class="p5"><br></p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p7">b.clearGrid</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// ----------------------------------------------------------------------</p>
+<p class="p5"><br></p>
+<p class="p6">//<span class="Apple-converted-space">  </span>the same as above but with some differences:</p>
+<p class="p6">//<span class="Apple-converted-space">  </span>horizontal location is the pitch in one octave</p>
+<p class="p6">//<span class="Apple-converted-space">  </span>vertical location is octave higher/lower</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> clock, scale;</p>
+<p class="p7"><span class="s1">var</span> nTET = 19;</p>
+<p class="p7"><span class="s1">var</span> octaves = 8;</p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"Keyboard"</span>, <span class="s1">Rect</span>(10, 500, 800, 100+ (20*nTET))).front;</p>
+<p class="p5"><br></p>
+<p class="p7">k = <span class="s1">Array</span>.fill(nTET, {<span class="s1">arg</span> i; 2.pow(i/nTET);}); <span class="s4">// 19-TET scale in A</span></p>
+<p class="p7">n = <span class="s1">Array</span>.fill(octaves, {<span class="s1">arg</span> i; k * (2.pow(i)*110)}).reverse;</p>
+<p class="p5"><br></p>
+<p class="p7">a = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20, 760, 20), columns: nTET, rows: 1)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.white)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.nodeTrackAction_({<span class="s1">arg</span> nodeloc;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>octaves.do({<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(b.getState(i, nodeloc[1]) == 1, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, n[i][nodeloc[1]]]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p5"><br></p>
+<p class="p7">b = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 50, 760, 20*nTET), columns: nTET, rows: 8)</p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span></span>//.setBackgrColor_(Color.white)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setNodeBorder_(8)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.white)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.nodeDownAction_({<span class="s1">arg</span> nodeloc;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>nodeloc.postln;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s5">\midinote</span>, n[nodeloc[1]][nodeloc[0]].cpsmidi].postln;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, n[nodeloc[1]][nodeloc[0]]])})</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.nodeTrackAction_({<span class="s1">arg</span> nodeloc;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>nodeloc.postln;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s5">\midinote</span>, n[nodeloc[1]][nodeloc[0]].cpsmidi].postln;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, n[nodeloc[1]][nodeloc[0]]])})</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setBackgrDrawFunc_({</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>19.do({<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if((i==1)||(i==2)||(i==4)||(i==5)||(i==7)||(i==9)||</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(i==10)||(i==12)||(i==13)||(i==15)||(i==16)||(i==18),{</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Pen</span>.fillColor = <span class="s1">Color</span>.new255(0, 0, 0, 80);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},{</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Pen</span>.fillColor = <span class="s1">Color</span>.new255(255, 255, 255, 80);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Pen</span>.fillRect(<span class="s1">Rect</span>((i*(760/nTET)), 0, 760/nTET, 380));</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p6">// and we can play the grid from above with a clock</p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> nTET = 19;</p>
+<p class="p7"><span class="s1">var</span> octaves = 8;</p>
+<p class="p5"><br></p>
+<p class="p8"><span class="s2">t = </span>TempoClock<span class="s2">(4);</span></p>
+<p class="p7">t.schedAbs(t.beats.ceil, { <span class="s1">arg</span> beat, sec;</p>
+<p class="p5"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>{a.setState_(beat%nTET, 0, 1)}.defer;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>{a.setState_(beat%nTET, 0, 0)}.defer(t.beatDur);</p>
+<p class="p5"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>octaves.do({<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(b.getState(beat%nTET, i) == 1, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, n[i][beat%nTET], <span class="s5">\envType</span>, 1]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span>1;</p>
+<p class="p7">});</p>
+<p class="p6"><span class="s2">b.nodeUpAction_({</span><span class="s1">nil</span><span class="s2">;}); </span>// remove the mouseUp function (so the nodes stay)</p>
+<p class="p5"><br></p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p7">t.tempo_(6)</p>
+<p class="p5"><br></p>
+<p class="p6">// -------------------------------------------</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// I'm not sure what this is... but it's fun!</p>
+<p class="p6">// note the pitch algorithm in the array n is different from the above (where we have octaves)</p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> clock, scale;</p>
+<p class="p6"><span class="s1">var</span><span class="s2"> nTET = 19; </span>// change this variable to something else (5, 12, 24, etc.)</p>
+<p class="p7"><span class="s1">var</span> octaves = 8;</p>
+<p class="p5"><br></p>
+<p class="p7">z = [ [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0 ], [ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0 ], [ 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0 ], [ 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0 ], [ 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1 ], [ 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1 ], [ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ];</p>
+<p class="p5"><br></p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"Testing Grid"</span>, <span class="s1">Rect</span>(10, 500, 800, 100+ (20*nTET))).front;</p>
+<p class="p5"><br></p>
+<p class="p7">k = <span class="s1">Array</span>.fill(nTET, {<span class="s1">arg</span> i; 2.pow(i/nTET);}); <span class="s4">// 19-TET scale in A</span></p>
+<p class="p7">n = <span class="s1">Array</span>.fill(octaves, {<span class="s1">arg</span> i; k * (1.5.pow(i)*110)}).reverse;</p>
+<p class="p5"><br></p>
+<p class="p7">a = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20, 760, 20), columns: nTET, rows: 1, border: <span class="s1">false</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.white);</p>
+<p class="p7">b = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 50, 760, 20*nTET), columns: nTET, rows: octaves, border:<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setBackgrColor_(<span class="s1">Color</span>.new255(203, 248, 203))</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setNodeBorder_(12)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setNodeStates_(z)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.new255(103, 148, 103))</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.nodeDownAction_({<span class="s1">arg</span> nodeloc; nodeloc.postln; <span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, n[nodeloc[1]][nodeloc[0]]])});</p>
+<p class="p5"><br></p>
+<p class="p8"><span class="s2">t = </span>TempoClock<span class="s2">(6);</span></p>
+<p class="p7">t.schedAbs(t.beats.ceil, { <span class="s1">arg</span> beat, sec;</p>
+<p class="p5"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>{a.setState_(beat%nTET, 0, 1)}.defer;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>{a.setState_(beat%nTET, 0, 0)}.defer(t.beatDur);</p>
+<p class="p5"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>octaves.do({<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(b.getState(beat%nTET, i) == 1, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, n[i][beat%nTET], <span class="s5">\envType</span>, 1]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span>1;</p>
+<p class="p7">});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">//////</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// same as above but without a TempoClock and here you can use the</p>
+<p class="p6">// top grid to scroll through the chords, like strumming strings or.... err...</p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> clock, scale;</p>
+<p class="p6"><span class="s1">var</span><span class="s2"> nTET = 19; </span>// change this variable to something else (5, 12, 24, etc.)</p>
+<p class="p7"><span class="s1">var</span> octaves = 8;</p>
+<p class="p5"><br></p>
+<p class="p7">z = [ [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0 ], [ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0 ], [ 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0 ], [ 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0 ], [ 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1 ], [ 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1 ], [ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ];</p>
+<p class="p5"><br></p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"Testing BoxGrid"</span>, <span class="s1">Rect</span>(10, 500, 420, 100+ (10*nTET))).front;</p>
+<p class="p5"><br></p>
+<p class="p7">k = <span class="s1">Array</span>.fill(nTET, {<span class="s1">arg</span> i; 2.pow(i/nTET);}); <span class="s4">// 19-TET scale in A</span></p>
+<p class="p7">n = <span class="s1">Array</span>.fill(octaves, {<span class="s1">arg</span> i; k * (1.5.pow(i)*110)}).reverse;</p>
+<p class="p5"><br></p>
+<p class="p7">a = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20, 380, 20), columns: nTET, rows: 1)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.white)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.nodeDownAction_({<span class="s1">arg</span> nodeloc;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>octaves.do({<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(b.getState(nodeloc[0], i) == 1, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, n[i][nodeloc[0]], <span class="s5">\envType</span>, 1]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.nodeUpAction_({<span class="s1">arg</span> nodeloc;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setState_(nodeloc[0], nodeloc[1], 0)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.nodeTrackAction_({<span class="s1">arg</span> nodeloc;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>octaves.do({<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(b.getState(nodeloc[0], i) == 1, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, n[i][nodeloc[0]], <span class="s5">\envType</span>, 1]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p5"><br></p>
+<p class="p7">b = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 50, 380, 10*nTET), columns: nTET, rows: octaves)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setBackgrColor_(<span class="s1">Color</span>.new255(203, 248, 203))</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setNodeBorder_(5)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setNodeStates_(z)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.new255(103, 148, 103))</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.nodeDownAction_({<span class="s1">arg</span> nodeloc; nodeloc.postln; <span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, n[nodeloc[1]][nodeloc[0]]])});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">//----------------------------------------------------</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">///////// a step sequencer</p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> gridArray, clockArray, meter, freq;</p>
+<p class="p5"><br></p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"Step sequencer"</span>, <span class="s1">Rect</span>(10, 500, 400, 250)).front;</p>
+<p class="p5"><br></p>
+<p class="p7">a = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20, 360, 20), columns: 16, rows: 1)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.gray);</p>
+<p class="p5"><br></p>
+<p class="p7">gridArray = <span class="s1">Array</span>.fill(4, {<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 80+(i*30), 360, 20), columns: 16, rows: 1)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.white);</p>
+<p class="p7">});</p>
+<p class="p5"><br></p>
+<p class="p8"><span class="s2">t = </span>TempoClock<span class="s2">(4);</span></p>
+<p class="p7">t.schedAbs(t.beats.ceil, { <span class="s1">arg</span> beat, sec;</p>
+<p class="p5"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>{a.setState_( beat%16, 0, 1)}.defer;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>{a.setState_( beat%16, 0, 0)}.defer(t.beatDur);</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>4.do({<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(gridArray[i].getState(beat%16, 0) == 1, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, 440*(i+1), <span class="s5">\envType</span>, 1]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span>1;</p>
+<p class="p7">});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p7">t.tempo_(12)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">//////////////// polyrhythm</p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> gridArray, clockArray, meter, freq;</p>
+<p class="p7">meter = [4,3,5];</p>
+<p class="p5"><br></p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"polyrhythm"</span>, <span class="s1">Rect</span>(10, 500, 400, 150)).front;</p>
+<p class="p5"><br></p>
+<p class="p7">gridArray = <span class="s1">Array</span>.fill(3, {<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20+(i*30), 360, 20), columns: meter[i], rows: 1)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.white);</p>
+<p class="p7">});</p>
+<p class="p5"><br></p>
+<p class="p7">clockArray = <span class="s1">Array</span>.fill(3, {<span class="s1">arg</span> i;</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span>t = </span>TempoClock<span class="s2">(4);</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>t.schedAbs(t.beats.ceil, { <span class="s1">arg</span> beat, sec;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(gridArray[i].getState(beat%meter[i], 0) == 1, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, 440*(i+1), <span class="s5">\envType</span>, 1]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p6">// if you want to draw the above with equal sized boxes, then:</p>
+<p class="p6">// (this is one of the problems with the Grid class as it has borders)</p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> gridArray, clockArray, meter, freq;</p>
+<p class="p7">meter = [4,3,5];</p>
+<p class="p5"><br></p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"polyrhythm"</span>, <span class="s1">Rect</span>(10, 500, 400, 150)).front;</p>
+<p class="p5"><br></p>
+<p class="p7">gridArray = <span class="s1">Array</span>.fill(3, {<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20+(i*30), meter[i]*50, 20), columns: meter[i], rows: 1)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.white);</p>
+<p class="p7">});</p>
+<p class="p5"><br></p>
+<p class="p7">clockArray = <span class="s1">Array</span>.fill(3, {<span class="s1">arg</span> i;</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span>t = </span>TempoClock<span class="s2">(4);</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>t.schedAbs(t.beats.ceil, { <span class="s1">arg</span> beat, sec;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(gridArray[i].getState(beat%meter[i], 0) == 1, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, 440*(i+1), <span class="s5">\envType</span>, 1]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// or perhaps:</p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> gridArray, anArray, clockArray, meter, freq;</p>
+<p class="p7">meter = [4,3,5];</p>
+<p class="p5"><br></p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"polyrhythm"</span>, <span class="s1">Rect</span>(10, 500, 400, 450)).front;</p>
+<p class="p5"><br></p>
+<p class="p7">anArray = <span class="s1">Array</span>.fill(3, {<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 20+(i*60), meter[i]*50, 10), columns: meter[i], rows: 1)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setNodeBorder_(4)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.red);</p>
+<p class="p7">});</p>
+<p class="p5"><br></p>
+<p class="p7">gridArray = <span class="s1">Array</span>.fill(3, {<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 35+(i*60), meter[i]*50, 20), columns: meter[i], rows: 1)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.white);</p>
+<p class="p7">});</p>
+<p class="p5"><br></p>
+<p class="p7">clockArray = <span class="s1">Array</span>.fill(3, {<span class="s1">arg</span> i;</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span>t = </span>TempoClock<span class="s2">(2);</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>t.schedAbs(t.beats.ceil, { <span class="s1">arg</span> beat, sec;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(gridArray[i].getState(beat%meter[i], 0) == 1, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, 440*(i+1), <span class="s5">\envType</span>, 1]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// update gui (the top arrays)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{anArray[i].setState_( beat%meter[i], 0, 1)}.defer;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{anArray[i].setState_( beat%meter[i], 0, 0)}.defer(t.beatDur);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">});</p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s2">w.onClose_({ </span>// this doesn't work and is a bug in SC-cocoa (it does work in Swing)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>clockArray.do({<span class="s1">arg</span> clock; clock.clear; clock.stop;});</p>
+<p class="p7">});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// in case you want to draw behind the Grid then use the setBackgrDrawFunc</p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s1">var</span> clock, scale;</p>
+<p class="p7"><span class="s1">var</span> nTET = 12;</p>
+<p class="p7"><span class="s1">var</span> octaves = 8;</p>
+<p class="p7">w = <span class="s1">Window</span>.new(<span class="s3">"Keyboard"</span>, <span class="s1">Rect</span>(10, 500, 800, 100+ (20*nTET))).front;</p>
+<p class="p5"><br></p>
+<p class="p7">k = <span class="s1">Array</span>.fill(nTET, {<span class="s1">arg</span> i; 2.pow(i/nTET);});</p>
+<p class="p7">n = <span class="s1">Array</span>.fill(octaves, {<span class="s1">arg</span> i; k * (2.pow(i)*110)}).reverse;</p>
+<p class="p5"><br></p>
+<p class="p7">b = <span class="s1">BoxGrid</span>.new(w, bounds: <span class="s1">Rect</span>(20, 50, 760, 20*nTET), columns: nTET, rows: 8)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setNodeBorder_(8)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillMode_(<span class="s1">true</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setFillColor_(<span class="s1">Color</span>.white)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.nodeDownAction_({<span class="s1">arg</span> nodeloc; nodeloc.postln; <span class="s1">Synth</span>(<span class="s5">\pure</span>, [<span class="s5">\freq</span>, n[nodeloc[1]][nodeloc[0]]])})</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.setBackgrDrawFunc_({</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>12.do({<span class="s1">arg</span> i;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if((i==1)||(i==3)||(i==6)||(i==8)||(i==10),{</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">GUI</span>.pen.fillColor = <span class="s1">Color</span>.new255(60, 60, 60);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},{</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">GUI</span>.pen.fillColor = <span class="s1">Color</span>.new255(255, 255, 255);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">GUI</span>.pen.fillRect(<span class="s1">Rect</span>(1+(i*(760/12)), 0, 760/12, 240));</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">)</p>
+<p class="p5"><br></p>
+</body>
+</html>

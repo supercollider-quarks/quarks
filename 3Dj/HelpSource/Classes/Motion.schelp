@@ -1,0 +1,91 @@
+TITLE:: Motion
+summary:: SSObject motion type
+categories:: Libraries>3Dj
+related:: Guides/3Dj, Classes/SSWorld, Classes/SSObject
+
+DESCRIPTION::
+Motion provide, through its subclasses, predefined dynamic behaviors to the receiving SSObject instance.
+
+All Motions provide a next method, which is used to compute the next object position.
+
+
+At the moment, the following motion types are available:
+
+
+--> code::\static:: No predefined motion. This is the default for new SSObject instances, With this behavior, objects can still move by the physical interaction way (for instance, link::Classes/SSObject#-vel:: or link::Classes/SSObject#-accel::).
+
+code::
+w = SSWorld.new.showView;
+o = SSObject(w,name:\O); // don't do nothing since it's static
+::
+
+--> code::\rect:: Rectilinear motion. It takes as argument an Array with the initial velocity in each axis. Physical model actions can still interact with the object. With rectilinear motion, objects can also still interact in the physical way.
+
+code::
+o.setMotion(\rect,[1,0,0]) // 1m/s in the x axis
+o.setMotion(\rect,[10,5,15]) // a little more fun
+::
+
+--> code::\random:: Random motion. Performs a series of rectilinear motions with random velocity and acceleration. 
+
+It takes two arguments: the maximum value for the random velocity and acceleration vectors (default to 1), and the period (in s) of parameter recalculation (default to world.timeStep).
+
+code::
+o.setMotion(\random) // default to max 1m every 1 second
+o.setMotion(\random,0.01,10) // slowly
+o.setMotion(\random,5,0.1) // erratical movements
+::
+
+
+--> code::\brown:: Brownian motion. Based on link::Classes/Pbrown::.
+
+It receives as an argument the amount of position variation of each step, in reference to the world's dimension. Default to 0.01 (1% of the world size).
+
+More in link::http://en.wikipedia.org/wiki/Brownian_motion::
+
+code::
+o.setMotion(\brown) // default to 1% of world dimmensions
+o.setMotion(\brown,0.1) // angry mosquito
+::
+ 
+
+--> code::\shm:: Simple Harmonic Motion (link::http://en.wikipedia.org/wiki/Simple_harmonic_motion::) in each of the three axis, resulting in a composite motion.
+
+It takes two arguments; first one is an array code::[xAmp,yAmp,zAmp]:: with the amplitudes (in m) in each axis. Default to [1,1,1]. Second argument is the motion period, in seconds. Default to [1,1,1].
+
+code::\orbit:: Orbital motion in the horizontal plane. The arguments are the angular velocity (in m/s), and the rotation direction (either code::\dex:: for dextrorotatory, or code::\lev:: for levorotatory).
+
+code::
+o.setMotion(\shm) // default
+o.setMotion(\shm,[2,1,0],[2,1,0]) // eight movement
+o.setMotion(\shm,[1,5,1],[0.5,5,1]) // sinusoidal-like
+o.setMotion(\shm,[2,0,0],[0.1,0,0]) // fast shake
+::
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Usually, motion creation is called internally from inside link::Classes/SSObject#-setMotion:: method.
+ARGUMENT:: object
+Receiving SSObject
+
+
+INSTANCEMETHODS::
+
+METHOD:: initMotion
+
+
+METHOD:: type
+Get motion type
+
+METHOD:: object
+Get object receiver
+
+METHOD:: next
+
+
+METHOD:: step
+The object's SSWorld stepFreq
+

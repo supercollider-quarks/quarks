@@ -1,0 +1,28 @@
+CLASS:: RedFood
+SUMMARY:: an object with energy
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview
+
+INSTANCEMETHODS::
+
+METHOD:: eat
+Takes away energy from this object.
+
+RETURNS::
+How much energy was taken away. Energy can not go below 0 so if there is 6 left and 10 is taken, this method returns 4.
+
+METHOD:: energy
+Scalar. The default is 1000.
+
+EXAMPLES::
+
+CODE::
+a= RedWorld.new
+b= RedFood(a)
+
+a.objects
+b.dump
+
+b.eat(10)
+b.energy		//should now be 990
+::

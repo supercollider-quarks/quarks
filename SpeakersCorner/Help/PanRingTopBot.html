@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {font: 9.0px Monaco}
+span.s2 {font: 9.0px Monaco; color: #a91616}
+span.s3 {color: #0000bf}
+span.s4 {color: #000000}
+span.s5 {color: #007300}
+span.s6 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>PanRingTopBot</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>a panner for a ring with one speaker on top, and one on the bottom.</b></p>
+<p class="p3"><b>see also PanRingTop, TorusPanAz.</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>*ar(numChans, in, azi, elev, orientation)</b></p>
+<p class="p3"><span class="s1"><span class="Apple-tab-span">	</span></span><b>numChans<span class="Apple-tab-span">	</span></b>number of channels in the ring</p>
+<p class="p3"><span class="s2"><span class="Apple-tab-span">	</span></span><b>in<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>input signal to pan</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>azi<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>azimuth, angle in the horizontal ring; from 0 to 2, wraps around.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>elev<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>height above the horizon, toward top speaker; 0 is ring, 1 is top, -1 is bottom.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>orientation<span class="Apple-tab-span">	</span></b>direction of azimuth 0: orientation 0 means azi 0 is on chan0,<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>orientation 0.5 means azi 0 is between chan0 and chan1.</p>
+<p class="p4"><br></p>
+<p class="p3">The order of the returned channels is: ring1, ring2 ... ringN, top, bottom.</p>
+<p class="p4"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s3">Server</span>.internal.boot;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span></span>// orientation defaults to 0.5, between first 2 chans.</p>
+<p class="p5">z = { <span class="s3">|azi=0, elev=0|</span> <span class="s3">PanRingTopBot</span>.ar(4, <span class="s3">Dust</span>.ar(1000, 0.5), azi, elev) }.scope;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">z.set(<span class="s5">\azi</span>, -0.25);<span class="Apple-tab-span">	</span><span class="s6">// chan 1</span></p>
+<p class="p5">z.set(<span class="s5">\azi</span>, 0.25);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">// chan 2</span></p>
+<p class="p5">z.set(<span class="s5">\azi</span>, 0.75);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">// chan 3</span></p>
+<p class="p5">z.set(<span class="s5">\azi</span>, 1.25);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">// chan 4</span></p>
+<p class="p7"><span class="s4">z.set(</span><span class="s5">\elev</span><span class="s4">, 0.5);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// halfway up to top chan (here chan 5).</p>
+<p class="p7"><span class="s4">z.set(</span><span class="s5">\elev</span><span class="s4">, 1);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// pan all the way to top chan.</p>
+<p class="p7"><span class="s4">z.set(</span><span class="s5">\elev</span><span class="s4">, -0.5);<span class="Apple-tab-span">	</span></span>// halfway down to bottom (here chan 6).</p>
+<p class="p7"><span class="s4">z.set(</span><span class="s5">\elev</span><span class="s4">, -1);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// pan fully to to bottom chan.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">// The bottom speaker can also be virtual, and mixed to the ring speakers:</p>
+<p class="p5">(</p>
+<p class="p5">z = { <span class="s3">|azi=0, elev=0|</span> <span class="s3">var</span> all, ring, top, bot;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>all = <span class="s3">PanRingTopBot</span>.ar(6, <span class="s3">Dust</span>.ar(1000, 0.5), azi, elev);<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>ring = all.keep(6);<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>top = all[6];<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>bot = all[7];<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>(ring + (bot * (1/6))) ++ top;</p>
+<p class="p5">}.scope;</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5">z.set(<span class="s5">\azi</span>, -0.17);<span class="Apple-tab-span">	</span><span class="s6">// chan 1</span></p>
+<p class="p5">z.set(<span class="s5">\azi</span>, 0.5);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">// chan 3</span></p>
+<p class="p7"><span class="s4">z.set(</span><span class="s5">\elev</span><span class="s4">, 1);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// pan all the way to top chan.</p>
+<p class="p7"><span class="s4">z.set(</span><span class="s5">\elev</span><span class="s4">, -0.5);<span class="Apple-tab-span">	</span></span>// bottom is added to ring of 6.</p>
+<p class="p7"><span class="s4">z.set(</span><span class="s5">\elev</span><span class="s4">, -1);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// fully down is now evenly on all ring speakers.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">// could also be done with TorusPanAz now.</p>
+</body>
+</html>

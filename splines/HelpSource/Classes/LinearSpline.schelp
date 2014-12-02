@@ -1,0 +1,181 @@
+CLASS:: LinearSpline
+summary:: A simple linearly interpolated spline passing through a series of points.
+categories:: Splines, Envelopes>Splines
+related:: Classes/BezierSpline, Classes/BSpline
+
+DESCRIPTION::
+A spline is defined by a series of points. These points may be of 2 or more dimensions.  2 dimensional splines may be displayed and edited using a gui.  A LinearSpline interpolates between points using straight lines with no curvature.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+argument:: points
+An array of points supplied as either Point objects or simple arrays. Points may have unlimited dimensions, though all points in a spline need to have the same number of dimensions.
+
+argument:: isClosed [boolean]
+If the spline's last point loops around to its first point.
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: interpolate
+Interpolate points along the spline path. Note they are not evenly spaced along the whole path, but interpolate per segment. For a more common usage see bilinearInterpolate
+
+argument:: divisions
+number of divisions per segment
+
+returns:: returns an array of points of size: (divisions * num segments)
+
+METHOD:: bilinearInterpolate
+While the interpolate method returns points spaced evenly along each segment of the spline, bilinearInterpolate returns points spaced evenly along one dimension.  So if a spline is considered to be Y value varying over time as X, then bilinearInterpolate will return points along even time increments for use in buffers, routines that automate changing levels and for mapping function lookup tables.
+
+argument:: divisions
+Number of points desired in the interpolated array
+
+argument:: domain
+The dimension number of the evenly spaced interpolation.  Default is 0, which in the gui is seen as the X/horizontal dimension.
+
+argument:: fillEnds
+The interpolation will start at X value 0 and end at the last point.  But your first point may not be at X=0. If fillEnds is true then the start of the interpolated array will be the first point repeated until the first point is reached.
+
+code::
+(
+b = BSpline([ [ 0.42695473251029, 2.275 ], [ 1, 1 ], [ 2.5102880658436, 3.1 ], [ 4, 4 ] ]);
+b.gui;
+
+// to use X as time we need y values spaced in even X units
+d = b.bilinearInterpolate(512);
+
+d.plot2;
+)
+::
+
+returns:: an array of points, size=divisions
+
+The bend in the road
+
+If X is time, then time must of course march ever onwards.
+
+If a spline point is to the left of a previous spline point then the spline path has travelled backwards in time
+
+code::
+(
+b = BSpline([ [ 0, 2.5 ], [ 2.9044117647059, 1.225 ], [ 2.5275735294118, 2.8946875 ], [ 5.5836397058824, 4.58734375 ] ]);
+
+b.gui;
+
+b.bilinearInterpolate(512).plot2
+)
+::
+
+So you can see that the interpolation which progresses always forward in time is bounded in the X dimension until the spline resumes travelling forward in the X direction.
+
+Even if a point does not lie to the left of its left neighbor  with certain curvature settings (in subclasses that have curvature):
+
+code::
+(
+b = BSpline([ [ 0, 2.5 ], [ 2.9044117647059, 1.225 ], [ 3.1479779411765, 2.55125 ], [ 5.5836397058824, 4.58734375 ] ], 3.0);
+
+b.gui;
+
+b.bilinearInterpolate(512).plot2
+)
+::
+
+then mapping along the X dimension can only yield one value for Y.  That is always the first encountered value. This is to stop you from going back in time to kill your Grandfather.
+
+In 3D this would be visibility: if the road curves to the left of the mountain, you cannot see it until it comes back out.  In 3D rendering the area behind the curve would not be visible.
+
+
+
+METHOD:: createPoint
+Create a new point, inserting it in the points array.
+
+argument:: p
+The point, either as a Point object or as an array.
+
+argument:: i
+The point index to insert the point at. Note that the subsequent points are moved along the spline's point array but their values are not changed.
+
+METHOD:: deletePoint
+delete a point
+
+argument:: i
+index of the point to delete
+
+
+
+METHOD:: points
+get/set the points array
+
+METHOD:: isClosed
+get/set if the spline's last point loops around to its first point.
+
+returns:: boolean
+
+A closed loop:
+code::
+LinearSpline( [ 0@0, 1@2.5,3@3],true).gui
+::
+
+METHOD:: value
+Where value is a float index into the points array, interpolate a new point between points.  This is used by the other interpolation methods.
+
+argument:: u
+Float index into the points array
+
+returns:: a point array
+
+
+METHOD:: numDimensions
+
+returns:: the number of dimensions of the first point, assuming that all other points have the same dimensionality
+
+METHOD:: xypoints
+For use by the gui, this returns the point array as Point objects, discarding any higher dimensions.
+
+METHOD:: minMaxVal
+returns the min and max val of all points in the given dimension.  Note that with subclasses that have curvature the min max returns only the points' min and max and does not account for curvature that may result in values above or below that in the final interpolation.
+
+argument:: dim
+The dimension
+
+returns:: [minVal,maxVal]
+
+METHOD:: normalizeDim
+Scale and normalize the points in that dimension to the requested min/max values. This moves the points, but note that subclasses which have curvature may result in values in teh interpolated spline that exceed min/max.
+
+argument:: dim
+The dimension
+
+argument:: min
+min value
+
+argument:: max
+max value
+
+returns:: the normalization is in place, returns the same Spline object
+
+METHOD:: ++
+concatenate another LinearSpline
+
+argument:: thou
+the other spline
+
+returns:: a new LinearSpline
+
+METHOD:: guiClass
+specifies the ObjectGui subclass which builds the GUI for editing the spline
+
+returns:: ObjectGui subclass
+
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::

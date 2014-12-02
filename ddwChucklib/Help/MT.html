@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+span.s1 {font: 14.0px Helvetica}
+span.s2 {color: #0000bf}
+span.s3 {color: #000000}
+span.s4 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>MT(MixerChannelIndex)</b></span> -- MIDI Trigger -- automatic</p>
+<p class="p2"><br></p>
+<p class="p1">MIDI Trigger provides a number of slots corresponding to keys on a MIDI keyboard. Each slot can hold a BP. When receiving a MIDI note on, the slot toggles between three states:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><i>Stopped</i>: idle (grey background in the GUI)<span class="Apple-converted-space"> </span></p>
+<p class="p1"><i>Ready</i>: waiting to confirm the play/stop action (blue background)<span class="Apple-converted-space"> </span></p>
+<p class="p1"><i>Playing</i>: process is running (green background)<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">The "ready" state is protection against accidental key triggers. To play or stop a process, you have to hit the MIDI key twice. If you hit the wrong key, you can simply omit the second keystroke. After a few seconds, ready state will end and the slot will go back to its previous state.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Assign a process to a slot either programmatically, or dragging it into the GUI. Processes displayed in the GUI may be triggered by clicking on the slot. In this case, there is no ready state.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">MT</span><span class="s3">(1).gui<span class="Apple-tab-span">	</span></span>// note, here you don't need .v</p>
+<p class="p3"><span class="s2">BP</span><span class="s3">(</span><span class="s4">\someProcess</span><span class="s3">) =&gt; </span><span class="s2">MT</span><span class="s3">(1)<span class="Apple-tab-span">	</span></span>// assign to first unused midi note</p>
+<p class="p3"><span class="s2">BP</span><span class="s3">(</span><span class="s4">\otherProcess</span><span class="s3">) =&gt;.72 </span><span class="s2">MT</span><span class="s3">(1)<span class="Apple-tab-span">	</span></span>// assign to midi note 72</p>
+<p class="p2"><br></p>
+<p class="p1">You may also chuck a BP factory into an MT.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">Fact</span><span class="s3">(</span>\someProcess<span class="s3">) =&gt; </span><span class="s2">MT</span><span class="s3">(1);</span></p>
+<p class="p2"><br></p>
+<p class="p1">This is the same as executing the following, to make the BP and subsequently put it in the GUI.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">Fact</span><span class="s3">(</span>\someProcess<span class="s3">) =&gt; </span><span class="s2">BP</span><span class="s3">(</span>\someProcess<span class="s3">) =&gt; </span><span class="s2">MT</span><span class="s3">(1);</span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b>Note:</b> When using SwingOSC for GUI representation, simply clicking on a slot in the GUI is not sufficient to trigger the action. This is because Swing handles drag actions slightly differently. In Cocoa dragging begins as soon as you click the mouse. In Swing, you must move the mouse before dragging commences. To trigger a process with Swing, you must drag a very short distance.</p>
+<p class="p5"><br></p>
+<p class="p6">Why is dragging involved? Because you should be able to drag into any MT slot, and also drag a BP from its slot in the GUI to other GUI objects such as MixerChannel GUI or Voicer GUI, so a simple SCButton is not sufficient.</p>
+</body>
+</html>

@@ -1,0 +1,47 @@
+CLASS:: RedMixerChannelGUI
+SUMMARY:: gui for RedMixerChannel
+CATEGORIES:: Red>redMixer
+RELATED:: Classes/RedMixerChannel, Classes/RedMixerGUI, Classes/RedMixer, Classes/RedEffectsRackGUI
+
+DESCRIPTION::
+NOTE::
+Requires link::Classes/Conductor:: quark.
+::
+
+CLASSMETHODS::
+
+PRIVATE:: initClass
+
+METHOD:: new
+
+ARGUMENT:: redMixerChannel
+A link::Classes/RedMixerChannel::.
+
+ARGUMENT:: parent
+A link::Classes/Window::, link::Classes/CompositeView:: or code::nil::.
+
+ARGUMENT:: position
+A link::Classes/Point::.
+
+ARGUMENT:: name
+A link::Classes/String:: displayed below the volume slider.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prContainer, initRedMixerChannelGUI
+
+METHOD:: close
+Close the window if open.
+
+EXAMPLES::
+
+CODE::
+a= RedMixerChannel(#[0, 1]);
+b= Pbind(\pan, Pseq([-1, 1], inf), \amp, 0.5).play
+c= RedMixerChannelGUI(a, name: "testing")
+a.cvs.eqHi.input= 1
+a.cvs.eqHi.input= 0
+a.free
+b.stop
+c.close
+::

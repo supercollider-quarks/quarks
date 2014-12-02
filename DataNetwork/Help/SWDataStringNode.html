@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWDataStringNode</TITLE>
+<META NAME="description" CONTENT="SWDataNode">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY >
+
+
+<H2><A NAME="SECTION00042000000000000000">
+SWDataStringNode </a> : <a href="SWDataNode.html">SWDataNode</a>
+</H2>
+Base class for a data string node.
+
+<p>The methods of this class are largely inherited from SWDataNode, so this document only lists the methods which are different.</p>
+
+
+<h3>- Methods - </h3>
+
+<P>
+<DL>
+
+<DT><STRONG>initSlots( )</STRONG></DT>
+	<DD>Initializes the slots for this node with <a href="SWDataStringSlot.html">SWDataStringSlots</a>.</DD>
+
+
+<h4>- Identifier and label - </h4>
+
+<DT><STRONG>type (  )</STRONG></DT>
+	<DD>The type of the node, which is 1 (string).</DD>
+
+<h4>- Slots and data - </h4>
+
+<DT><STRONG>data_ ( indata )</STRONG></DT>
+	<DD>Set the data to each slot. This sets the <em>indata</em> to the instance variable <em>data</em>, and then sets each slot with its value. Also sets the <code>lasttime</code> the data was set. Performs the <code>action</code> defined for the node (each slot will perform its own action as well). The difference with SWDataNode is that scaling is not performed, as this makes no sense for strings.</DD>
+
+
+<h4>- Bus support - </h4>
+
+<p>not available for strings</p>
+
+
+<h4>- Debugging and monitoring - </h4>
+
+<p>monitoring is not available for strings</p>
+
+</DL>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+  HREF="SWDataSlot.html">SWDataSlot</A>
+</LI>
+<LI><I> Previous:</I> <A 
+  HREF="SWDataNetwork.html">SWDataNetwork</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<BR><HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</BODY>
+</HTML>

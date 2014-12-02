@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWDataAction</TITLE>
+<META NAME="description" CONTENT="SWDataNetwork">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00041000000000000000">
+SWDataAction</A></H2>
+
+An SWDataAction is a function that will put its result when evaluated on a SWDataNetwork.
+
+<h3>- Methods - </h3>
+
+<DL>
+<DT><STRONG>*new ( key, network, func )</STRONG></DT>
+<DD>Create a new SWDataAction, which will put its results on the <em>network</em> with the nodeID <em>id</em>. The <em>func</em> is the function that will be evaluated, and which has to return an array as its result.</DD>
+<DT><STRONG>function (  )</STRONG></DT>
+<DD>The function to be evaluated. It will be evaluated with the arguments given to it, and the settings that are stored in the SWDataAction instance.</DD>
+
+<DT><STRONG>settings (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>settings_ (  )</STRONG></DT>
+<DD>The settings with which the function will be evaluated.</DD>
+<DT><STRONG>set ( key, val )</STRONG></DT>
+<DD>Set one key within the settings.</DD>
+
+<DT><STRONG>value ( args )</STRONG></DT>
+<DD>Evaluate the function.</DD>
+
+<DT><STRONG>copy ( newid )</STRONG></DT>
+<DD>Make a copy of the SWDataAction to a new key. That SWDataAction will have the same settings, function and network, but post its result to a different nodeID.</DD>
+<DT><STRONG>network (  )</STRONG></DT>
+<DD>The network to which the node belongs.</DD>
+<DT><STRONG>id (  )</STRONG></DT>
+<DD>The id of the node within the network.</DD>
+<DT><STRONG>initFunction ( func )</STRONG></DT>
+<DD>Initialize the function. This method is overloaded in subclasses.</DD>
+</DL>
+
+<h3>- Subclasses - </h3>
+
+<p>These are specific actions that are preprogrammed by overloading the initFunction method.
+</p>
+
+<DL>
+<DT><STRONG>ByteDecodeAction</STRONG></DT>
+<DD>Interprets the incoming data as bytes, and decodes these into 8 on/off values per byte.</DD>
+<DT><STRONG>GeomLeakAction</STRONG></DT>
+<DD>Geometrical leak function. Has a <strong>reset</strong> method to reset the settings.</DD>
+<DT><STRONG>LinLeakAction</STRONG></DT>
+<DD>Linear leak function. Has a <strong>reset</strong> method to reset the settings.</DD>
+</DL>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+  HREF="SWGeneralHID.html">GeneralHID support</A>
+</LI>
+<LI>
+<I> Previous: </I> <A NAME="tex2html79"
+  HREF="SWCombineNode.html">SWCombineNode</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</P>
+
+</BODY>
+</HTML>

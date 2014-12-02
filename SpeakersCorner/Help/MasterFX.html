@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.29">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #862323}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0023b6}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #4d6d13}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1c23b6; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0023b6; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #0023b6}
+span.s4 {color: #000000}
+span.s5 {color: #4d6d13}
+span.s6 {color: #1936a7}
+span.s7 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>MasterFX</b></span><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>a highly configurable chain of effects on the main outputs</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>see also: </b><span class="s3"><b>ProxyChain</b></span><b><span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><br></p>
+<p class="p4">(</p>
+<p class="p4">s.boot;</p>
+<p class="p3"><br></p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span></span>// add a few global filter functions to use - these are then available by name.</p>
+<p class="p6">ProxyChain<span class="s4">.add(</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s5">\leakDC</span>,<span class="Apple-converted-space">  </span><span class="s5">\filter</span> -&gt; { <span class="s3">|in, leak=0.99|</span> <span class="s3">LeakDC</span>.ar(in, leak) },</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span><span class="s5">\rollClip</span><span class="s4">, </span><span class="s5">\filter</span><span class="s4"> -&gt; { </span>|in, clip=0.99, pole=0.2|</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">OnePole</span>.ar(in.clip2(clip), pole ** 0.7);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>},</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span><span class="s5">\krush</span><span class="s4">, </span><span class="s5">\filter</span><span class="s4"> -&gt; { </span>|in, bits=16, downsamp=2|<span class="s4"><span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> down;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>in = in.round(0.5 ** bits);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>down = <span class="s3">Latch</span>.ar(in, <span class="s3">Impulse</span>.ar(<span class="s3">SampleRate</span>.ir / downsamp.max(2)));<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// below 1/2 downsamp, do xfade:</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>blend(in, down, (downsamp - 1).clip(0, 1));</p>
+<p class="p4"><span class="Apple-tab-span">	</span>},</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span><span class="s5">\ampFin</span><span class="s4">, </span><span class="s5">\filter</span><span class="s4"> -&gt; { </span>|in, limDrive=1, ampLimit=0.8, postAmp=1 |<span class="s4"><span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Limiter</span>.ar(in * limDrive, ampLimit) * <span class="s3">postAmp</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p4">);</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span></span>// and specs for them fof gui control.</p>
+<p class="p4"><span class="s3">Spec</span>.add(<span class="s5">\leak</span>, [0.5, 0.999, <span class="s5">\exp</span>]);</p>
+<p class="p4"><span class="s3">Spec</span>.add(<span class="s5">\clip</span>, [0.0, 1, <span class="s5">\amp</span>]);</p>
+<p class="p4"><span class="s3">Spec</span>.add(<span class="s5">\pole</span>, [0, 0.95, <span class="s5">\lin</span>]);</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s3">Spec</span>.add(<span class="s5">\bits</span>, [16, 1]);</p>
+<p class="p4"><span class="s3">Spec</span>.add(<span class="s5">\downsamp</span>, [1, 100, <span class="s5">\exp</span>]);</p>
+<p class="p3"><br></p>
+<p class="p7"><span class="s3">Spec</span><span class="s4">.add(</span>\limDrive<span class="s4">, </span>\ampx4<span class="s4">);</span></p>
+<p class="p7"><span class="s3">Spec</span><span class="s4">.add(</span>\ampLimit<span class="s4">, </span>\amp<span class="s4">);</span></p>
+<p class="p6">Spec<span class="s4">.add(</span><span class="s5">\</span>postAmp<span class="s4">, </span><span class="s5">\ampx4</span><span class="s4">);</span></p>
+<p class="p4">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>*new(server, numChannels, slotNames, busnum)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>server: <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the server on which the <span class="s3">MasterFX</span> chain will run;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>numChannels: <span class="Apple-tab-span">	</span>the number of channels it will work on,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>default is server.numOutputBusChannels</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>slotNames: <span class="Apple-tab-span">	</span>the names of the filters/functions to be used, in order of execution;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>busnum: <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the busnumber where it will process audio, default = 0.</p>
+<p class="p3"><br></p>
+<p class="p4">(</p>
+<p class="p4">m = <span class="s3">MasterFX</span>.new(server: s,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>numChannels: 8,<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span>slotNames: [</span>\leakDC<span class="s4">, </span>\krush<span class="s4">, </span>\rollClip<span class="s4">, </span>\ampFin<span class="s4">],<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>busIndex: 0);</p>
+<p class="p8"><br></p>
+<p class="p4">g = m.gui;</p>
+<p class="p4">)</p>
+<p class="p3"><br></p>
+<p class="p4">{ <span class="s6">PinkNoise</span>.ar(0.5) * LFNoise2.kr([5, 8, 13, 21]).max(0); }.play;</p>
+<p class="p4">s.scope(8);</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// kick the effects in at full wet level</p>
+<p class="p4">m.pxChain.add(<span class="s5">\leakDC</span>, 1);</p>
+<p class="p4">m.pxChain.add(<span class="s5">\rollClip</span>, 1);</p>
+<p class="p4">m.pxChain.add(<span class="s5">\dualComp</span>, 1);</p>
+<p class="p4">m.pxChain.add(<span class="s5">\ampFin</span>, 1);</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// make a more specific gui - see also ProxyChainGui</p>
+<p class="p4">(</p>
+<p class="p4">m.gui(<span class="s5">\Mestre</span>, 20, [</p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span>[</span>\leakDC<span class="s4">, </span>\slotCtl<span class="s4">, 1],</span></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span>[</span>\rollClip<span class="s4">, </span>\slotCtl<span class="s4">, 1],</span></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span>[</span>\krush<span class="s4">, </span>\slotCtl<span class="s4">, 1],</span></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span>[</span>\ampFin<span class="s4">, </span>\slotCtl<span class="s4">, 1],</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>[<span class="s5">\RESET</span>, <span class="s5">\extra</span>, { m.pxChain.add(<span class="s5">\leakDC</span>, 1).add(<span class="s5">\ampFin</span>, 1) }],</p>
+<p class="p4">])</p>
+<p class="p4">)</p>
+<p class="p3"><br></p>
+<p class="p4">m.pxChain.remove(<span class="s5">\leakDC</span>, 1);</p>
+<p class="p4">m.pxChain.remove(<span class="s5">\rollClip</span>, 1);</p>
+<p class="p4">m.pxChain.remove(<span class="s5">\krush</span>);</p>
+<p class="p4">m.pxChain.remove(<span class="s5">\ampFin</span>, 1);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span></span>// removing a MasterFX<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s3">MasterFX</span><span class="s4">.all;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// all masterFX, one per server, live here.</p>
+<p class="p5"><span class="s3">MasterFX</span><span class="s4">.clear(</span><span class="s5">\localhost</span><span class="s4">); <span class="Apple-tab-span">	</span></span>// clear one specific masterfx</p>
+<p class="p5"><span class="s3">MasterFX</span><span class="s4">.all;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// gone now.</p>
+<p class="p3"><br></p>
+<p class="p7"><span class="s3">MasterFX</span><span class="s4">(</span><span class="s3">Server</span><span class="s4">.internal, 8, [</span>\leakDC<span class="s4">, </span>\rollClip<span class="s4">, </span>\dualComp<span class="s4">, </span>\ampFin<span class="s4">]);</span></p>
+<p class="p6">MasterFX<span class="s4">.all;</span></p>
+<p class="p5"><span class="s3">MasterFX</span><span class="s4">.clear; <span class="Apple-tab-span">	</span></span>// clear all mfxes</p>
+<p class="p6">MasterFX<span class="s4">.all;</span></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">p = <span class="s3">ProxySpace</span>.push;</p>
+<p class="p4">~pink = { <span class="s3">PinkNoise</span>.ar * <span class="s3">SinOsc</span>.ar };</p>
+<p class="p4">~pink.play;</p>
+<p class="p6">ProxyMixer<span class="s4">(p);</span></p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p10"><span class="s4">z = </span><span class="s7">MasterFX</span><span class="s4">(s, 8, [</span>\leakDC<span class="s4">, </span>\rollClip<span class="s4">, </span>\dualComp<span class="s4">, </span>\ampFin<span class="s4">]);</span></p>
+<p class="p4">z.gui;</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">ToDo:<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>maybe at some point one will want separate MasterFX for different output groups<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>on the same server. in that case, remove storage by server name, and use freely<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>given names.<span class="Apple-converted-space"> </span></p>
+</body>
+</html>

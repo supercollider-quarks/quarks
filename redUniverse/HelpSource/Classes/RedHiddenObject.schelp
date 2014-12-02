@@ -1,0 +1,21 @@
+CLASS:: RedHiddenObject
+SUMMARY:: an invisible object
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview
+
+DESCRIPTION::
+An object that behaves like a normal link::Classes/RedObject:: but does not add itself to the world. Sometimes useful for non rendered objects e.g. points of attraction.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedObject
+
+EXAMPLES::
+
+CODE::
+a= RedWorld.new
+b= RedHiddenObject(a)
+
+a.objects		//it is not there!
+b.dump
+::

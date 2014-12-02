@@ -1,0 +1,3 @@
++ Object {
+	*help { this.openHelpFile }
+	}

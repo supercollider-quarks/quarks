@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    span.s1 {color: #0000bf}
+  </style>
+</head>
+<body>
+<p class="p1"><b>Pscratch : FilterPattern</b></p>
+<p class="p2"><br></p>
+<p class="p3">Performs a random walk over a lazy stream of values (unlike Pwalk which takes an eagerly-evaluated list of possible values). This is like scratching a record over an audio stream; hence, Pscratch.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(pattern, stepPattern, memorySize = 100)</b></p>
+<p class="p2"><br></p>
+<p class="p3">pattern: The source for the output values.</p>
+<p class="p3">stepPattern: How many steps forward or backward to move in the stream at each iteration.</p>
+<p class="p3">memorySize: How many values to retain for backtracking.</p>
+<p class="p2"><br></p>
+<p class="p4">p = <span class="s1">Pscratch</span>(<span class="s1">Pseries</span>(0, 1, <span class="s1">inf</span>), (<span class="s1">Pwhite</span>(1, 3, <span class="s1">inf</span>) * <span class="s1">Prand</span>(#[-1, 1], <span class="s1">inf</span>)).max(-1)).asStream;</p>
+<p class="p4">p.nextN(20);</p>
+<p class="p2"><br></p>
+<p class="p4">[ 0, 0, 0, 1, 0, 0, 3, 6, 8, 9, 12, 11, 10, 11, 12, 11, 10, 12, 13, 12 ]</p>
+<p class="p5"><br></p>
+<p class="p3">Here the initial steps were negative so the first value was repeated.</p>
+<p class="p5"><br></p>
+<p class="p4">[ 2, 1, 0, 3, 4, 3, 4, 5, 4, 3, 4, 6, 9, 11, 12, 11, 14, 13, 12, 11 ]</p>
+<p class="p5"><br></p>
+<p class="p3">Here the first step was 3, so the third value from pattern was the first to be output. The first two values were available for backtracking.</p>
+</body>
+</html>

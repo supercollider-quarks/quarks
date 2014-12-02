@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWDataSlot</TITLE>
+<META NAME="description" CONTENT="SWDataSlot">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY >
+
+
+<H2><A NAME="SECTION00043000000000000000">
+SWDataSlot</A>
+</H2>
+Base class for a data slot.
+
+
+<h3>- Example - </h3>
+
+<pre>
+
+// create a network client:
+y = SWDataNetworkClient.new( "192.168.0.104", "myname" );
+
+// subscribe to node 102
+y.subscribeNode( 102 );
+
+
+// -------- working with a single slot of a data node:
+
+// DataNodes can have multiple channels of data, so the above
+// approach is mostly useful for multichannel control of data.
+// You can also work with a single slot of a node, and control a synth:
+
+// get a reference to a DataSlot in a variable:
+a = y.nodes[102].slots[0];
+
+// if the slot has a label, you acces it by its label:
+a = y[\minibee102_slot0];
+
+// access the value of the slot:
+a.value;
+
+(
+SynthDef(\swexample,{ |out=0,amp=0.1,freq=400|
+	Out.ar( out, SinOsc.ar( freq, 0, amp ) );
+}).send(s)
+)
+
+// use it at synth instantiation:
+b = Synth.new( \swexample, [\amp,a.value ] );
+
+// set it again:
+b.set( \amp, a.value );
+
+// free the synth
+b.free;
+
+// instead of setting it manually each time, you can assign
+// an action to the data node to do this automatically:
+
+b = Synth.new( \swexample, [\amp,a.value ] );
+
+a.action= { |data| b.set( \amp, data )};
+
+// another method is to put the data automatically on a bus,
+// and grab the data from there:
+
+// reset the action:
+a.action = {};
+
+// create a bus:
+a.createBus(s);
+
+// map the amplitude of b to the bus:
+b.map( \amp, a.bus );
+
+b.free;
+
+// alternatively, you can use In.kr in your synthdef:
+(
+SynthDef(\swexampleBus,{ |out=0,ampbus=0,freq=400|
+	Out.ar( out, SinOsc.ar( freq, 0, In.kr( ampbus, 1 ) ) );
+}).send(s)
+)
+
+b = Synth.new( \swexampleBus, [\ampbus,a.bus ] );
+
+b.free;
+
+</pre>
+
+ 
+<h3>- Methods - </h3>
+<P>
+<DL>
+<DT><STRONG>*new ( id )</STRONG></DT>
+	<DD>Create a new instance of a slot with identifier <em>id</em></DD>
+
+<h4>- Identifier and label - </h4>
+
+<DT><STRONG>id (  )</STRONG></DT>
+	<DD>The unique ID of the slot</DD>
+<DT><STRONG>id_ (  )</STRONG></DT>
+	<DD></DD>
+<DT><STRONG>key (  )</STRONG></DT>
+	<DD>The label of the slot</DD>
+<DT><STRONG>key_ (  )</STRONG></DT>
+	<DD>Set the label of the slot (done internally when a mapping is added with the method <em>add</em> of SWDataNetwork)</DD>
+<DT><STRONG>type (  )</STRONG></DT>
+	<DD>The type of the slot. 0 is number (float), 1 is string (see the subclass <a href="SWDataStringSlot.html">SWDataStringSlot</a>).</DD>
+
+
+<h4>- Data and action - </h4>
+
+<DT><STRONG>value (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>value_ ( val )</STRONG></DT>
+<DD>the current value of the slot. When set, it is multiplied by the <code>scale</code> factor of the slot, and remapped according to <em>map</em> and <em>range</em>. The <code>action</code> of the slot is performed, the debugAction is performed (printing), and if a bus has been created the (scaled) value is put on the bus.</DD>
+
+<DT><STRONG>action (  )</STRONG></DT>
+	<DD></DD>
+<DT><STRONG>action_ (  )</STRONG></DT>
+	<DD>Function to be performed each time the data is set</DD>
+
+<h4>- Scaling, mapping and calibrating - </h4>
+
+<DT><STRONG>scale (  )</STRONG></DT>
+	<DD></DD>
+<DT><STRONG>scale_ (  )</STRONG></DT>
+	<DD>The scaling factor for the data</DD>
+
+<DT><STRONG>map (  )</STRONG></DT>
+	<DD>If a map has been set the value will be (after scaling) <CODE>value = map.map( range.unmap( value ) )</CODE>. Thus <em>range</em> is the range the incoming values are expected to be in. <em>map</em> is the output range the data is mapped to.</DD>
+<DT><STRONG>map_ (  )</STRONG></DT>
+	<DD>Sets the output map. If <em>range</em> is not set yet, it will be set to a linear range between 0 and 1.</DD>
+
+<DT><STRONG>range (  )</STRONG></DT>
+	<DD>The input range.</DD>
+<DT><STRONG>range_ (  )</STRONG></DT>
+	<DD>Sets the input range. If <em>map</em> is not set yet, it will be set to a linear range between 0 and 1.</DD>
+
+<DT><STRONG>calibrate ( steps )</STRONG></DT>
+	<DD>This method looks at <em>steps</em> amount of times at the incoming data and calculates the mean of this. It assumes this mean is the minimum value the data will have, and it sets the minimum of <em>range</em> accordingly. <em>Note, this method will be improved!</em></DD>
+
+<h4>- Bus support - </h4>
+
+<DT><STRONG>createBus ( s )</STRONG></DT>
+	<DD>create a Bus for the node on the server</DD>
+<DT><STRONG>freeBus (  )</STRONG></DT>
+	<DD>free the Bus on the server</DD>
+<DT><STRONG>bus (  )</STRONG></DT>
+	<DD>Return the Bus object.</DD>
+
+<DT><STRONG>kr (  )</STRONG></DT>
+	<DD>JITLib support. This creates the bus (if not already present) and provides an In.kr around the bus.</DD>
+
+<h4>- Debugging and monitoring - </h4>
+
+<DT><STRONG>debug_ ( onoff )</STRONG></DT>
+	<DD>print debugging messages for the slot</DD>
+
+<DT><STRONG>monitor ( onoff )</STRONG></DT>
+	<DD>Monitor the data in a plot. This uses the GNUPlot to plot the data and the interface class GNUPlot and BusMonitor, which can be found in the GNUPlot quark.</DD>
+
+<DT><STRONG>monitorClose (  )</STRONG></DT>
+	<DD>Cleans up the monitor (closing the pipe to GNUPlot).</DD>
+
+<DT><STRONG>busmonitor (  )</STRONG></DT>
+	<DD>Reference to the BusMonitor instance for monitoring the slot.</DD>
+</DL>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+  HREF="SWDataNetworkSpec.html">SWDataNetworkSpec</A>
+</LI>
+<LI><I> Previous:</I> <A 
+  HREF="SWDataNode.html">SWDataNode</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<BR><HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: MultiFileWriter</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>MultiFileWriter</h1>
+<h2>writes multiple files to disk, and keeps an index of these files.</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> </p>
+
+<p>MultiFileWriter writes multiple files to disk, and keeps in index of these files. Additionally, it can zip each file that is written, and bundle them in a tar-ball. This class uses the programs tar and gzip for the bundling and compression. The interface is written so that you can use this class easily instead of another file-writing class, since any methods that are not known by this class, are forwarded to the class used for writing the single files.</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*new(fn)</STRONG></DT>
+<DD>Create a new instance.<DL>
+<DT><EM>fn</EM></DT>
+<DD>The basic filename to use. MultiFileWriter checks the path of this filename for its extension (this will be the extension used for the individual files), for the base file name (without extension), this is used as the basic filename for each individual file; individual files will have a sequential index number and a timestamp added to the filename. Finally it checks for the folder in which it lives. If the folder is not empty, it will create a folder with the same basename, and use this folder to put files into.</DD>
+</DL>
+
+</DD>
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+<DT><STRONG>open</STRONG></DT>
+<DD>Open a new individual file. This adds the new file name to the index file.</DD>
+
+<DT><STRONG>close</STRONG></DT>
+<DD>Close an individual file. This will move the newly written file to the directory, zip the file (if zipSingle is true), and create a new bundle (if tarBundle is true).</DD>
+
+<DT><STRONG>fileClass_</STRONG></DT>
+<DD>  </DD>
+<DT><STRONG>fileClass</STRONG></DT>
+<DD>The fileclass to use for writing the individual files (default TabFileWriter).</DD>
+
+<DT><STRONG>zipSingle_</STRONG></DT>
+<DD>  </DD>
+<DT><STRONG>zipSingle</STRONG></DT>
+<DD>Whether or not to compress the individual files with gzip.</DD>
+
+
+<DT><STRONG>tarBundle_</STRONG></DT>
+<DD>  </DD>
+<DT><STRONG>tarBundle</STRONG></DT>
+<DD>Whether or not to create tar-bundles of the file collection (default is true).</DD>
+
+
+<DT><STRONG>fileName</STRONG></DT>
+<DD>The base filename.</DD>
+
+<DT><STRONG>extension</STRONG></DT>
+<DD>The file extension.</DD>
+
+<DT><STRONG>pathDir</STRONG></DT>
+<DD>Directory in which we are writing.</DD>
+
+
+
+<DT><STRONG>createTarBundle(newf)</STRONG></DT>
+<DD>Creates a tar bundle. This is called internally.</DD>
+
+<DT><STRONG>curfn</STRONG></DT>
+<DD>Filename that is currently written to.</DD>
+
+<DT><STRONG>curFile</STRONG></DT>
+<DD>Instance of the current file being written to.</DD>
+
+<DT><STRONG>index</STRONG></DT>
+<DD>Current file index.</DD>
+
+<DT><STRONG>doesNotUnderstand(selector,args)</STRONG></DT>
+<DD>Forwards any methods (e.g. writing data to the file) to the fileClass.</DD>
+
+</DL>
+
+<h3> Example 1 - zip and bundle</h3>
+    <pre>
+m = <span class="type">MultiFileWriter</span>.new( <span class="string">"testfile14.txt"</span>);
+
+<span class="type">Task</span>({
+
+    3.do{
+        m.open;
+
+        20.do{
+            m.writeLine( <span class="type">Array</span>.fill( 10, { 1.0.rand }));
+            0.25.wait;
+        };
+        m.close;
+        
+        1.0.wait;
+    };
+    <span class="string">"done"</span>.postln;
+    
+}).play;</pre>
+<h3> Example 2 - don't zip and bundle </h3>
+    <pre>
+m = <span class="type">MultiFileWriter</span>.new( <span class="string">"testfile13.txt"</span>);
+m.zipSingle = <span class="builtin">false</span>;
+m.tarBundle = <span class="builtin">false</span>;
+
+<span class="type">Task</span>({
+
+    3.do{
+        m.open;
+
+        20.do{
+            m.writeLine( <span class="type">Array</span>.fill( 10, { 1.0.rand }));
+            0.25.wait;
+        };
+        m.close;
+        
+        1.0.wait;
+    };
+    <span class="string">"done"</span>.postln;
+    
+}).play;
+</pre>
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

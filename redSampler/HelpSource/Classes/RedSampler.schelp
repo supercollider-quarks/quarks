@@ -1,0 +1,127 @@
+CLASS:: RedSampler
+SUMMARY:: playing soundfiles from memory
+CATEGORIES:: Red>redSampler
+RELATED:: Classes/RedDiskInSampler, Classes/RedDiskInSamplerGiga, Classes/RedDiskInPlayer
+
+DESCRIPTION::
+Nothing fancy. This class just loads soundfiles into RAM and then uses link::Classes/PlayBuf:: to play them back. It uses the same interface as link::Classes/RedDiskInSampler::.
+
+CLASSMETHODS::
+
+PRIVATE:: initClass
+
+INSTANCEMETHODS::
+
+PRIVATE:: prCreateVoice
+
+EXAMPLES::
+
+code::
+s.boot;
+a= RedSampler(s);
+
+//-- setting up which samples to use and prepare them
+a.prepareForPlay(\snd1, Platform.resourceDir +/+ "sounds/a11wlk01-44_1.aiff");
+a.prepareForPlay(\snd2, "~/sounds/break.wav".standardizePath);	//add your own soundfile
+a.prepareForPlay(\snd3, Platform.resourceDir +/+ "sounds/a11wlk01-44_1.aiff", 44100, 22050);	//offset 44100 samples, 0.5sec
+
+//-- play
+a.play(\snd1);			//play the whole soundfile
+a.voicesLeft(\snd1)
+a.stop(\snd1);			//stop
+
+a.play(\snd1, 1, 0, 0.05);	//play with slow attack and quick release
+
+a.play(\snd2);			//play another sample
+a.play(\snd3);			//and another
+a.play(\snd3, 0.1, 0, 0.1);	//very short
+a.play(\snd3, 3, 3, 3, loop:2)	//using loop:2 to both have finite duration and loop on
+
+a.play(\snd2, loop:1);		//looping forever
+a.stop(\snd2, 4);		//stop with 4 second fadetime
+
+(				//start many at once
+a.play(\snd1);
+a.play(\snd2);
+a.play(\snd3, loop:1);
+)
+a.flush(0);			//stop all right away
+
+a.play(\snd2);
+a.play(\snd2);
+a.voicesLeft(\snd2);		//check if any free voices
+a.stop(\snd2, 0);
+a.stop(\snd2, 0);
+a.voicesLeft(\snd2);		//check if any free voices
+
+a.loadedKeys;			//report all keys that have soundfiles loaded
+a.overlaps;			//how many voices allowed to play simultaneously
+
+a.length(\snd1);		//how long is the soundfile in seconds
+a.length(\snd3);
+a.channels(\snd1);		//how many channels
+a.buffers(\snd1);		//access buffers for a key.  one for each overlap
+
+a.free;				//free synths, close files and free buffers
+::
+
+code::
+//--example that play back short sections of all your soundfiles in your sounds directory
+s.boot;
+(
+var root= "~/sounds".standardizePath;	//edit this!
+a= RedSampler(s);
+p= PathName(root).deepFiles.select{|x|
+	var sf= SoundFile.openRead(x.fullPath);
+	if(sf.notNil, {
+		sf.close;
+		true;
+	}, {
+		false;
+	});
+};
+p.do{|x|
+	var sf= SoundFile(x.fullPath);
+	var len= if(sf.numFrames<44100, {-1}, {sf.numFrames.rand});
+	("loading..."+x.fullPath).postln;
+	a.prepareForPlay(sf.path, sf.path, sf.numFrames.rand, len);
+	sf.close;
+};
+r= Routine.run{
+	1.wait;
+	inf.do{
+		a.play(a.loadedKeys.choose.postln, 4, 2.rrand(6), 4, loop:2);
+		2.rrand(5).wait;
+	};
+};
+)
+
+
+r.stop;
+a.free;
+::
+
+code::
+//--example that chops up a soundfile into segments and plays them back one after the other in random order
+s.boot;
+a= RedSampler(s);
+(
+10.do{|x|
+	a.prepareForPlay(("cut"++x).asSymbol, Platform.resourceDir +/+ "sounds/a11wlk01-44_1.aiff", 100000.linrand, 50000.linrand); //key, path, offset and length
+};
+)
+a.play(\cut3);	//quick test
+
+(
+r= Routine({
+	inf.do{
+		var key= a.loadedKeys.choose;
+		a.play(key.postln, attack: 0.05, release: 0.1, out:2.rand);
+		while({a.isPlaying(key)}, {0.001.wait});
+	};
+}).play;
+)
+
+r.stop;
+a.free;
+::

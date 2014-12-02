@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 58.0px; text-indent: -58.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #9d1c12}
+p.p11 {margin: 0.0px 0.0px 0.0px 28.0px; text-indent: -28.0px; font: 12.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 28.0px; text-indent: -28.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #9d1c12}
+p.p15 {margin: 0.0px 0.0px 0.0px 29.0px; text-indent: -29.0px; font: 12.0px Helvetica}
+p.p16 {margin: 0.0px 0.0px 0.0px 29.0px; text-indent: -29.0px; font: 9.0px Monaco}
+p.p17 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p18 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 10.0px Helvetica}
+span.s3 {color: #5975ad}
+span.s4 {color: #000000}
+span.s5 {color: #0026b4}
+span.s6 {color: #002efa}
+span.s7 {font: 9.0px Monaco}
+span.s8 {color: #9d1c12}
+span.s9 {font: 14.0px Helvetica}
+span.s10 {font: 12.0px Helvetica; color: #000000}
+span.s11 {font: 12.0px Helvetica}
+span.s12 {text-decoration: underline ; color: #4c6fb6}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>LoudnessModel<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>functions for working with phons, sones and masking</b></p>
+<p class="p2"><br></p>
+<p class="p1">Phon values are obtained from equal loudness contours which measure the sensitivity of the (average) human ear to loudness as a function of frequency. There are 11 such contours for different intensity levels and the calculation interpolates within them.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Sones are units of so called 'specific loudness', the difference with respect to phons being that they are a linear, not a logarithmic scale. They reflect the linear behaviour of loudness impression in that a perceived doubling is the double of their value, corresponding to an increase of 10 phons. Dynamic levels <b><i>ppp</i></b>, <b><i>pp</i></b>, <b><i>p</i></b>, <b><i>mf</i></b>, <b><i>f</i></b>, <b><i>ff</i></b>, and <b><i>fff</i></b><i> </i>correspond to loudnesses 1, 2, 4, 8, 16, 32, and 64 sones (40, 50, 60, 70, 80, 90 and 100 phons).<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Masking is the perceptual phenomena whereby a louder sound masks (prevents us from hearing) an otherwise fainter sound. The basilar membrane in the cochlea operates as a bank of filters, each having a limited resolving power corresponding to a critical band. Masking happens when two partials stimulate the same critical band. The formulas for calculating this have been derived from experimental data.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">ISO 226:2003</span> contours and interpolation code kindly shared by Nick Collins.<span class="Apple-converted-space"> </span></p>
+<p class="p3">Masking model implemented from the article: <i>Applying Psychoacoustics in Composition: "Harmonic" Progressions of "Nonharmonic" Sonorities</i>, by Richard Parncutt. Perspectives of New Music, 32:2, 1994.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="../Help/Dissonance.html"><span class="s3">Dissonance</span></a><span class="s3"> </span>a class that deals with auditory roughness.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Class Methods</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>No instances are created from this class. It just holds the functions and data to calculate loudness countours and masking. They return floats and arrays of floats.<span class="Apple-converted-space"> </span></p>
+<p class="p7"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*calc(freq, spl)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns the phon value for a certain frequency in Hz and intensity in dB SPL</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// examples</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s5">LoudnessModel</span><span class="s4">.calc(1000, 100); </span>//at 1000Hz phons and dB spl are the same</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s5">LoudnessModel</span><span class="s4">.calc(50,100); </span>// at 50Hz the perception of those 100dB is 23dB lower</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s5">LoudnessModel</span><span class="s4">.calc(30,100); </span>// and falls drastically by 30Hz</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s5">LoudnessModel</span><span class="s4">.calc(8000,100); </span>// also lower at 8000Hz</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>However, there is a convinience method in the additions to SimpleNumber and Sequenceable Collection that simplifies this:</p>
+<p class="p12"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span>asPhon(freq, spl, calib = 0) </b>(a method of <a href="sc://SimpleNumber"><span class="s6">SimpleNumber</span></a> and <a href="sc://SequenceableCollection"><span class="s6">SequenceableCollection</span></a>)</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The method is made to work for numbers, pairs, and arrays of pairs:<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>50.asPhon(100);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[8000, 100].asPhon;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[[110, 80], [440, 80], [880, 80], [1720,80]].asPhon;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Calib is used for calibration when the values for intensity have been converted directly from amplitudes:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s5">Array</span>.series(5, 100, 100);</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//ampdb will be relative to 0 dBFS (dB Full Scale), not to 'absolute' dB spl:</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a = <span class="s5">Array</span>.fill(5, {<span class="s5">|i|</span> (i+1).reciprocal}).ampdb; <span class="s8">// 1/n amp array in dB</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, a].flop.asPhon(80).round(0.01); <span class="s8">// calibrate so that 80dB spl = 0 dBFS</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// -&gt; [ 61.45, 65.28, 65.72, 65.28, 64.65 ]</p>
+<p class="p7"><br></p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span></span>To convert from amplitudes to sones, an additional step is needed to go from phons to sones, using<span class="Apple-converted-space">  </span>SimpleNumber:phonToSone (also included is the inverse function soneToPhon). There is a convenience method that behaves in the same way as asPhon:<span class="s7"><span class="Apple-tab-span">	</span></span></p>
+<p class="p7"><br></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span>asSone(freq, spl, calib = 0) </b>(a method of <a href="sc://SimpleNumber"><span class="s6">SimpleNumber</span></a> and <a href="sc://SequenceableCollection"><span class="s6">SequenceableCollection</span></a>)</p>
+<p class="p12"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Calib works in the same way as in asPhon.</p>
+<p class="p7"><br></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1000.asSone(100); </span>// fff of a 1000Hz sine is 64 sones</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[1000, 40].asSone;</span>// the range ppp-fff corresponds to the range 40-100dB spl (at 1000Hz)</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[[110, 80], [440, 80], [880, 80], [1720,80]].asSone;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s5">Array</span>.series(5, 100, 100);</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//ampdb will be relative to 0 dBFS (dB Full Scale), not to 'absolute' dB spl:</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a = <span class="s5">Array</span>.fill(5, {<span class="s5">|i|</span> (i+1).reciprocal}).ampdb;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, a].flop.asSone(100).round(0.01); <span class="s8">// calibrate so that 100dB spl = 0 dBFS</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// -&gt; [ 33.33, 32.25, 29.15, 26.37, 24.04 ]</p>
+<p class="p17"><br></p>
+<p class="p18"><b><span class="Apple-tab-span">	</span>Methods for masking analysis:</b></p>
+<p class="p9"><span class="s9"><b><span class="Apple-tab-span">	</span></b></span><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>For most applications you will only need to use <b>*compensateMasking </b>which returns the amplitudes of partials compensated to account for this effect. The other methods go through the process of masking calculation and call each other progressively.<span class="Apple-converted-space">  </span><b>*audibleLevel </b>and<b> *audibility </b>are usefull for knowing how many dB or in what proportion do partials mask each other.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>They are presented from the highest to the lowest level of processing:<span class="Apple-converted-space"> </span></p>
+<p class="p17"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><b>*compensateMasking(partials, levels, grad = 12)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This method handles all the details of masking analysis. It calculates the audibility and uses it as weights for compensating the loudness of each partial in arrays <b>partials</b> and<b> levels</b>. It returns the dB spl values for each of the partials.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Example:<span class="Apple-converted-space"> </span></p>
+<p class="p19"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = [ [400, 90], [500, 80], [700, 75] ]; <span class="s8">// pairs of freqs, levels</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = f.flop; </span>// express them as separate arrays of freqs and levels</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m = </span><span class="s5">LoudnessModel</span><span class="s4">.compensateMasking(p[0], p[1]); </span>// -&gt; [ 90, 72.335687836532, 73.853070085656 ]</p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[p[0], m].flop.asSone.round(0.01); </span>// -&gt; [ 30.8, 8.76, 10.52 ] results in sones</p>
+<p class="p19"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.asSone.round(0.01);<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// -&gt; [ 30.8, 15.42, 11.42 ] (the second partial is half as loud after masking)</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Convenience method for arrays of pairs [freq, spl]:</p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.compensateMasking; </span>//work directly on array f, no need to flop it</p>
+<p class="p19"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[p[0], f.compensateMasking].flop.asSone.round(0.01);<span class="Apple-converted-space"> </span><span class="s11"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*audibility(f, a, grad = 12)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Gives the audibility (also called 'spectral pitch weight') for arrays of <b>partials</b> and <b>levels</b>. It is a value from 0.0 to 1.0, a weight of how audible a partial is after masking.</p>
+<p class="p10"><span class="s10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Example:<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = [ [400, 90], [500, 80], [700, 75] ]; <span class="s8">// pairs of freqs, levels</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = f.flop; </span>// express them as separate arrays of freqs and levels</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">LoudnessModel</span>.audibility(p[0], p[1]);</p>
+<p class="p2"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*audibleLevel(partials, levels, grad = 12)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Gives as a result the audible level for arrays <b>partials</b> and <b>levels</b>.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p10"><span class="s10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Example (follows from previous):</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">LoudnessModel</span>.audibleLevel(p[0], p[1]);</p>
+<p class="p2"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*maskingSum(partials, levels, grad = 12)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Calculates the overal masking level for arrays of <b>partials </b>(in Hz) and <b>levels</b> (in dB spl).<span class="Apple-converted-space"> </span></p>
+<p class="p7"><br></p>
+<p class="p10"><span class="s10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Example (following the previous ones):<span class="Apple-converted-space"> </span><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">LoudnessModel</span>.maskingSum(p[0], p[1]);</p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// -&gt; [ 63.468028014719, 73.693756009561, 55.533500735127 ]<span class="s10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>*partialMasking(p, p2, a2, grad = 12)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Where p is the maskee, p2 the masker and a2 the level of the masker. p1 and p2 should be in erb units (Equivalent Rectangular Bandwidth, use SimpleNumber:hzToErb) and a2 in dB spl; grad is the gradient of the masking pattern of a single pure tone, it is derived from experimental data and normally should be in the range of 12 to 18dB per critical band (12 meaning <i>more</i> masking than 18).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Example: the extent to which two sine tones of 400 and 500 Hz with levels of<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// 50 and 60 dB respectively mask each other:</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">LoudnessModel</span>.partialMasking(400.hzToErb, 500.hzToErb, 60); <span class="s8">// -&gt; 43.27..</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">LoudnessModel</span>.partialMasking(500.hzToErb, 400.hzToErb, 50); <span class="s8">// -&gt; 33.27..</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// this means that the higher component masks the lower by 43dB, its audible level</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// is 50 - 43 = 7dB (it is only weakly audible). Conversely, the degree to which the lower</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// component masks the upper one is 60 - 33 = 27dB, considerably higher.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p20"><br></p>
+<p class="p19">...</p>
+<p class="p2"><br></p>
+<p class="p1">LoudnessModel: (2007), juan sebastián lach lau <span class="s12">http://web.me.com/jslach/</span></p>
+</body>
+</html>

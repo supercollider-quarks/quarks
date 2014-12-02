@@ -1,0 +1,463 @@
+CLASS:: MxUnit
+summary:: Container for a musical object (Instr, NDef, Spline etc); this is a single unit that has inlets and outlets which can be connected to other units
+categories:: Mx
+related:: Classes/MxUnitApp
+
+
+DESCRIPTION:: Container for a musical object (Instr, NDef, Spline etc); this is a single unit that has inlets and outlets which can be connected to other units
+
+CLASSMETHODS::
+
+METHOD:: protoHandler
+
+
+
+
+
+METHOD:: make
+
+
+argument:: source
+
+
+argument:: class
+
+
+
+
+
+METHOD:: loadData
+
+
+argument:: data
+
+
+
+
+
+METHOD:: new
+
+argument:: source
+
+
+argument:: inlets
+
+
+argument:: outlets
+
+
+
+
+
+METHOD:: handlersFor
+
+
+argument:: class
+
+
+
+
+
+METHOD:: handlersForClass
+
+
+argument:: class
+
+
+
+
+
+METHOD:: register
+
+
+argument:: classname
+
+
+argument:: handlers
+
+
+
+
+
+METHOD:: initClass
+
+
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: source
+
+
+
+
+
+METHOD:: inlets
+
+
+
+
+
+METHOD:: outlets
+
+
+
+
+
+METHOD:: handlers
+
+
+
+
+
+METHOD:: varPooling
+This is of interest if you are adding live coding documents.  Each unit has an environment that is active when your document is active.  If varPooling is turned on then the parent of the units environment is the environment of the first upstream unit that also has varPooling turned on.  That in turn may get variables from further upstream units.
+
+So Units with varPooling on share environment variable space, but this variable space flows down the graph (channels, units).   You may however explicitly find an upstream unit and set its values or use its environment.
+
+argument:: boo
+
+
+
+
+
+METHOD:: onLoad
+
+
+
+
+
+METHOD:: group
+
+
+
+
+
+METHOD:: saveData
+
+
+
+
+
+METHOD:: init
+
+
+
+
+
+METHOD:: getInlet
+
+
+argument:: index
+
+
+
+
+
+METHOD:: getOutlet
+
+
+argument:: index
+
+
+
+
+
+METHOD:: mx
+
+
+argument:: mx
+
+
+
+
+
+METHOD:: parentEnvir
+
+
+argument:: env
+
+
+
+
+
+METHOD:: isPrepared
+
+
+
+
+
+METHOD:: prSetStatus
+
+
+argument:: newStatus
+
+
+
+
+
+METHOD:: didLoad
+
+
+
+
+
+METHOD:: prepareToBundle
+
+
+argument:: agroup
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+argument:: private
+
+
+argument:: bus
+
+
+
+
+
+METHOD:: spawnToBundle
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: stopToBundle
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: freeToBundle
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: respawnToBundle
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: moveToHead
+
+
+argument:: aGroup
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: use
+
+
+argument:: function
+
+
+argument:: rollback
+
+
+
+
+
+METHOD:: delegate
+
+
+argument:: handlerName
+
+
+argument::  ... args
+
+
+
+
+
+METHOD:: callHandler
+
+
+argument:: method
+
+
+argument::  ... args
+
+
+
+
+
+METHOD:: play
+
+
+argument:: group
+
+
+argument:: atTime
+
+
+argument:: bus
+
+
+
+
+
+METHOD:: stop
+
+
+argument:: atTime
+
+
+argument:: andFreeResources
+
+
+
+
+
+METHOD:: respawn
+
+
+argument:: atTime
+
+
+
+
+
+METHOD:: isPlaying
+
+
+
+
+
+METHOD:: numChannels
+
+
+
+
+
+METHOD:: spec
+
+
+
+
+
+METHOD:: beatDuration
+
+
+
+
+
+METHOD:: copySource
+
+
+
+
+
+METHOD:: name
+
+
+
+
+
+METHOD:: gui
+
+
+argument:: parent
+
+
+argument:: bounds
+
+
+
+
+
+METHOD:: draw
+
+
+argument:: pen
+
+
+argument:: bounds
+
+
+argument:: style
+
+
+
+
+
+METHOD:: timeGui
+
+
+argument:: parent
+
+
+argument:: bounds
+
+
+argument:: maxTime
+
+
+
+
+
+METHOD:: zoomTime
+
+
+argument:: fromTime
+
+
+argument:: toTime
+
+
+
+
+
+METHOD:: gotoBeat
+
+
+argument:: beat
+
+
+argument:: atBeat
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: canRecord
+
+
+
+
+
+METHOD:: record
+
+
+argument:: boo
+
+
+argument:: atTime
+
+
+
+
+
+
+

@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Helvetica; min-height: 11.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica; min-height: 16.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #862323}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #862323}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #862323}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #4d6d13}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0023b6}
+span.s1 {font: 9.0px Helvetica}
+span.s2 {font: 12.0px Helvetica}
+span.s3 {color: #000000}
+span.s4 {color: #0023b6}
+span.s5 {color: #4d6d13}
+span.s6 {color: #606060}
+span.s7 {color: #862323}
+span.s8 {font: 13.0px Helvetica}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>CV</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>superclass: Stream</b></p>
+<p class="p3"><b>related classes: SV, Conductor</b></p>
+<p class="p3">A <b>CV</b> models a single floating point value or an array of such values constrained to a specific numerical</p>
+<p class="p3">range by a ControlSpec. <b>[SV] </b>is a derived class that defines an index into an array.</p>
+<p class="p2"><br></p>
+<p class="p3">CV is derived from Stream so it can be used directly in Stream and Pattern definitions. <span class="Apple-converted-space"> </span></p>
+<p class="p3">CV:connect(view) will connect a CV to a GUI ControlView in both Cocoa and Swing.</p>
+<p class="p3">GUI representations.<span class="Apple-converted-space">  </span>A similar set of methods have been defined that connect</p>
+<p class="p3">argument arrays consisting of keys and CVs to nodes, buses, buffers, and NodeProxys.</p>
+<p class="p2"><br></p>
+<p class="p3">An <b>SV </b>is a CV that models an index into an array of Symbols.<span class="Apple-converted-space">  </span>The array is held in the instance<span class="Apple-converted-space"> </span></p>
+<p class="p3">variable <b>items</b>. The symbol corresponding to the CV's current value can be accessed with the<span class="Apple-converted-space"> </span></p>
+<p class="p3">method <b>item</b>.</p>
+<p class="p4"><br></p>
+<p class="p5"><b>Creation</b></p>
+<p class="p6"><br></p>
+<p class="p3"><span class="s1">*</span><b>new( spec, initialValue)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>spec</b> - Any object that responds to asSpec (Nil, Symbol, ControlSpec, Array)<span class="Apple-converted-space">  </span>with a <b>ControlSpec</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>initialValue - </b>the initialValue is constrained to lie within the range of the spec</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Note: some common ControlSpecs include:</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>unipolar, bipolar, freq, lofreq, midfreq, widefreq, phase, rq,<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>audiobus, controlbus, midi, midinote, midivelocity,<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>db, amp, boostcut, pan, detune, rate, beats, delay<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p5"><b>Setting the range of values on existing CVs</b></p>
+<p class="p4"><br></p>
+<p class="p3"><b>spec_(spec, default value)<span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>spec</b> - Any object that responds to asSpec (Nil, Symbol, ControlSpec, Array)<span class="Apple-converted-space">  </span>with a ControlSpec</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>defaultValue </b>- the initial value of the CV</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>sp( val, min, max, step, warp)<span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>val <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>inital value</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>min<span class="Apple-converted-space"> </span></b> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>smallest possible value</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>max <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>largest possible value</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>step<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>smallest incremental change in GUI</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>warp<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>either 'linear' or 'exponential'</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>In the case of exponential warp,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>min and max must be non-zero and the same sign.</p>
+<p class="p2"><br></p>
+<p class="p8">Examples:</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a = CV(\freq, 480);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>b = CV.new.spec_(\bipolar, -1);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>c = CV.new.sp(0, 0 , 100);</p>
+<p class="p4"><br></p>
+<p class="p3"><b>connect (view</b>)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>Connects a CV to a view.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Array defines <b>connect </b>to allow a set of CVs to be connected to a view with multiple control values (i.e., Slider2D.</p>
+<p class="p4"><br></p>
+<p class="p5"><b>Accessing<span class="Apple-converted-space"> </span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>value</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Answer the current value of the control. This is how the control is read within tasks and patterns</p>
+<p class="p2"><br></p>
+<p class="p3"><b>input<span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>a number ranging form 0 to 1 that corresponds to postion of<span class="Apple-converted-space">  </span>the current value between min and max</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>input_ (inputValue)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>an inputValue ranging form 0 to 1 results in this.value ranging from min to max. <span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>This method is typically used by external controls (such as MIDI) and GUI views to alter the CV.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>value_ (newValue)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Set the current value of the control, irrespective of the range settings.</p>
+<p class="p4"><br></p>
+<p class="p10"><b>windex</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b>Interprets the value of the CV as a probability table and returns a weighted random value</p>
+<p class="p11"><br></p>
+<p class="p10"><b>indexedBy (key)</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b>For use in Patterns:<span class="Apple-converted-space">  </span>uses the value of key in the current Event as an index and returns the</p>
+<p class="p10"><span class="Apple-tab-span">	</span>indexed value</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p5"><b>CV connections using SimpleControllers</b></p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>When a CV's value is changed a <b>changed </b>message (with <b>'synch' </b>as the identifier) is send to update</p>
+<p class="p3"><span class="Apple-tab-span">	</span>any dependant objects.<span class="Apple-converted-space">  </span>For example, <b>action_(function)</b> creates a SimpleController which is added to</p>
+<p class="p3"><span class="Apple-tab-span">	</span>the dependants of the CV and evaluated whenever the CV changes value.<span class="Apple-converted-space">  </span>This same basic mechanism<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>is used to connect the CV to GUI's, server, objects, and some other objects in the language. Most of</p>
+<p class="p3"><span class="Apple-tab-span">	</span>this is more or less hidden from view.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Under normal circumstances, CV connections are automatically removed when the targeted Control,<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Bus, or View is deleted.<span class="Apple-converted-space">  </span>If there is a program error, it is possible that connections will persist and will<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>need to be explicitly removed.</p>
+<p class="p4"><br></p>
+<p class="p3"><b>action_ (function)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Create a dependant SimpleController that evaluates the function whenever the CV's value is altered.</p>
+<p class="p4"><br></p>
+<p class="p3"><b>release<span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span></b>Remove all dependants. (This is actually a method of Object..)</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b>GUI connections</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>The following methods establish connections Views and CVs.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>SCSlider</b>-connect(aCV)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>SCNumberBox</b>-connect(aCV)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>SC2DSlider</b>-connect([xCV, yCV])</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>SCRangeSlider</b>-connect([loCV, hiCV])</p>
+<p class="p9"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>SCMultiSliderView</b>-connect(aCV)<span class="Apple-tab-span">	</span>// for CVs with multiple values</p>
+<p class="p9"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>SCPopupMenu</b>-connect(aCV)<span class="Apple-tab-span">	</span>// for SVs, displays SV-items</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>SCListView</b>-connect(aCV)<span class="Apple-tab-span">	</span>// for SVs</p>
+<p class="p9"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>One CV can be connected to many views but each view is connected to only one CV.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>When a CV's value changes, it is relayed to all of its dependants including the source of the<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>the change.<span class="Apple-converted-space">  </span>That way, the GUI accurately reflects the new value of the CV.<span class="Apple-converted-space">  </span>See the behavior</p>
+<p class="p3"><span class="Apple-tab-span">	</span>of 'b' in the following example.<span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><i><span class="Apple-tab-span">	</span>The following example provides a generic graphic interface to two CVs. <span class="Apple-converted-space"> </span></i></p>
+<p class="p5"><i>Subsequent examples depend on that window, so leave it open until you are finished<span class="Apple-converted-space"> </span></i></p>
+<p class="p5"><i>working through the help file.<span class="Apple-converted-space">  </span>(The interpreter variables 'a' and 'b' contain the CVs</i></p>
+<p class="p5"><i>used by the examples, so they should be left unaltered.)</i></p>
+<p class="p6"><br></p>
+<p class="p9"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a = </span><span class="s4">CV</span><span class="s3">(</span><span class="s5">\freq</span><span class="s3">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// create a couple of CVs</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b = <span class="s4">CV</span>.new.sp(-10,-100,20, 10);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w = <span class="s4">SCWindow</span>(<span class="s6">"CV Demo"</span>, <span class="s4">Rect</span>(64, 0, 400, 300)).front;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">// make a window</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.view.decorator = <span class="s4">FlowLayout</span>(w.view.bounds);</p>
+<p class="p2"><br></p>
+<p class="p13"><b>//<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>CVs can be connected to SCSlider and SCNumberBox.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>z = <span class="s4">SCNumberBox</span>(w, <span class="s4">Rect</span>(0, 0, 50, 20));</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.connect(z);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>y = <span class="s4">SCSlider</span>(w, <span class="s4">Rect</span>(50, 0, 150, 20));</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.connect(y);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.view.decorator.nextLine;</p>
+<p class="p9"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b.connect( <span class="s4">SCNumberBox</span>(w, <span class="s4">Rect</span>(0, 0, 50, 20)) );</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b.connect( <span class="s4">SCSlider</span>(w, <span class="s4">Rect</span>(50, 0, 150, 20))<span class="Apple-converted-space">  </span>);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.view.decorator.nextLine;</p>
+<p class="p2"><br></p>
+<p class="p13"><b>//<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Pairs of CVs can be connected to SCRangeSlider, SC2DSlider .</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[a,b].connect( <span class="s4">SCRangeSlider</span>(w, <span class="s4">Rect</span>(0, 0, 200, 20)) );</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.view.decorator.nextLine;</p>
+<p class="p9"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[a,b].connect( <span class="s4">SC2DSlider</span>(w, <span class="s4">Rect</span>(00, 0, 200, 200)) );</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b>Server connections</b></p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>OSC commands (i.e.,<span class="Apple-converted-space">  </span><b>/n_set,</b><span class="Apple-converted-space">  </span><b>/s_new) </b>specify<b> </b>initial values of parameters as a flat array of pairs</p>
+<p class="p3"><span class="Apple-tab-span">	</span>consisting of a<span class="Apple-converted-space">  </span>name and its initial value:</p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>[frequency: 440, amplitude: 1, ...]</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>"Extended argument arrays" allow CVs to be used in place of the initial value. This is the standard</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span></b>syntax for establishing connections between CVs and a server. In an extended argument array,</p>
+<p class="p3"><span class="Apple-tab-span">	</span>the CV's value can be altered before being sent, multiple CV's can determine the value to be sent,</p>
+<p class="p3"><span class="Apple-tab-span">	</span>and the value to be sent can be determined by a function:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>value <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[freq:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>440<span class="Apple-converted-space">  </span>]</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>CV<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[freq: <span class="Apple-tab-span">	</span>aCV<span class="Apple-converted-space">  </span>]</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>altered CV<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[freq: <span class="Apple-tab-span">	</span>[ aCV, aCV.midicps ] ]</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>combination<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[freq:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[ [aCV, bCV], aCV.midicps + bCV] ]</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>function<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[freq:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[ aCV, { aCV.midicps.value + 33.rand }]</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>For example, the method <b>Synth-controls</b> is identical to <b>Synth-new</b> except the args parameter is</p>
+<p class="p3"><span class="Apple-tab-span">	</span>extended:</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>Synth-controls(defName, extendedArgArray, target, addAction)<span class="Apple-converted-space"> </span></b></p>
+<p class="p14"><br></p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span>( </span>// basic CV connection</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Synth</span>.controls(<span class="s6">"default"</span>, [</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freq: a</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>)</p>
+<p class="p14"><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span>( </span>// modified CV connection<span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Synth</span>.controls(<span class="s6">"default"</span>, [</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amp: [b, b.dbamp],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freq: a</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>)</p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span>(</span>// multiple modified connection</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Synth</span>.controls(<span class="s6">"default"</span>, [</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freq: [</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[a,b], a + b,</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>],<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amp: [</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[a,b], (a.cpsmidi.neg/4 + b).dbamp<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>)</p>
+<p class="p14"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>In the previous two examples, the modifyin expression is actually a combination of Streams altered<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>with binary and unary operators.<span class="Apple-converted-space">  </span>This is concise, but in some cases, it may be necessary</p>
+<p class="p3"><span class="Apple-tab-span">	</span>to use a Function to define the modification. Notice that within a Function definition it is necessary<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>to explicitly extract the value of the CV using a <b>value</b> message.<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span>(</span>// a Function modifying the CV connection</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Synth</span>.controls(<span class="s6">"default"</span>, [</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freq: [b, { <span class="s4">var</span> index; (index = b.value + 100 /12 ).asInteger;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[100,200,300,400,500, 600].mirror.at(index)</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amp: [</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[a,b], {(a.value.cpsmidi.neg/4 + b.value).dbamp<span class="Apple-converted-space">  </span>}</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>)</p>
+<p class="p2"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>Summary of Node related connection methods</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>Array</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>connectToNode(server,nodeID)</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>connectToNodeProxy(server,nodeID)</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the receiver is a flat Array of name/value pairs</p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>connectToBuffer(server,bufnum)</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>connectToBus(server, index)</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the receiver is an Array of CVs.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>Node</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>setControls(extendedArgArray)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>NodeProxy</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>setControls(extendedArgArray) - connects CVs to the named controls</b></p>
+<p class="p7"><span class="s8"><b><span class="Apple-tab-span">	</span></b></span><span class="Apple-tab-span">	</span>(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c = CV.new.sp(-20, -100, 120);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = NodeProxy.audio(s, 2);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.play; //play to hardware output, return a group with synths</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.setControls([f: a, c: [b, { \freq.asSpec.map(b.input)}] ]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b.input_(0.5);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.source = { arg f=400, c = 400; PMOsc.ar(f , c, 4, 0, 0.1) };<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>Synth</b></p>
+<p class="p10"><span class="s2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>*controls(synthDef, extendedArgArray, target, addAction)</b></span><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Thihe same as *new, but allows CV's to be used in the args array.</p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>Bus</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>*controls(arrayOfCVs,server)</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c = { <span class="s4">arg</span> f = 400,<span class="Apple-converted-space">  </span>a = -20, pan = 0; <span class="s4">Pan2</span>.ar(<span class="s4">SinOsc</span>.ar(f, 0, a.dbamp), pan) }.play;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d = <span class="s4">Bus</span>.controls([a,b],s);<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[a,b].connectToBus(d.server, d.index);</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s4">Routine</span><span class="s3">({<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// need to make sure the synth has been created...</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>s.sync;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c.map(<span class="s5">\f</span>,d.index,<span class="s5">\a</span>,d.index + 1);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>setControls(arrayOfCVS) - connects CVs to consecutive buses</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(<span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c = { <span class="s4">arg</span> f = 400,<span class="Apple-converted-space">  </span>a = -20, pan = 0; <span class="s4">Pan2</span>.ar(<span class="s4">SinOsc</span>.ar(f, 0, a.dbamp), pan) }.play;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d = <span class="s4">Bus</span>.control(s,3);<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d.setControls([a,b]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[a,b].connectToBus(d.server, d.index);</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s4">Routine</span><span class="s3">({<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// need to make sure the synth has been created...</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>s.sync;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c.map(<span class="s5">\f</span>,d.index,<span class="s5">\a</span>,d.index + 1);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p11"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><b>Reading and writing CVs in functions and patterns</b></p>
+<p class="p4"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>Tasks</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span></b>Within a function, CVs are accessed using <b>value </b>and <b>input </b>and<span class="Apple-converted-space">  </span>altered using <b>value_ </b>and <b>input_</b>.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>(</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Task</span>({</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>10.do({<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.input.post; </span><span class="s6">" "</span><span class="s3">.post;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// print the value scaled to the range [0,1]</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.value.postln; <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// print the actual value</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.input_(1.0.rand); <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// select a new value at random</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the weighting of values will conform to the warp</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// with \exp, values fall uniformly in each octave</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>wait(0.1);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play(<span class="s4">AppClock</span>)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>)</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>Patterns</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Within a pattern definition, a CV can directly substitute for a Pattern:</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">SynthDescLib</span>.global.read;</p>
+<p class="p16"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s4">Pbind</span><span class="s3">(<span class="Apple-tab-span">	</span></span>\instrument<span class="s3">,<span class="Apple-tab-span">	</span></span>\default<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\freq</span>, a,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\db</span>, b,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\dur</span>, 0.2</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>).play(quant: 0);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b><span class="s4">Pfunc</span> can be used to change the <span class="s4">CV</span> from within a <span class="s4">Pattern</span>.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">SynthDescLib</span>.global.read;</p>
+<p class="p16"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s4">Pbind</span><span class="s3">(<span class="Apple-tab-span">	</span></span>\instrument<span class="s3">,<span class="Apple-tab-span">	</span></span>\default<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\freq</span>, <span class="s4">Pwhite</span>(100, 1000).round(100),<span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\placeholder</span>, <span class="s4">Pfunc</span>({ <span class="s4">arg</span> ev; a.value_(ev.at(<span class="s5">\freq</span>)) }),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\db</span>, b,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\dur</span>, 0.2</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>).play;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p4"><br></p>
+<p class="p5"><b>CVs and external input</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The input_(in) method makes it easy to connect a CV to any control source:</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>( </span>// MIDI</p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>MIDIClient<span class="s3">.init;</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">MIDIIn</span>.connect(0,0);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">MIDIIn</span>.control = { <span class="s4">arg</span> src, chan, num, val;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.input_(val/127)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The methods <b>input </b>and <b>input_</b> are also used by ConductorPreset to allow interpolations</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>between settings that follow warp of the CV's ControlSpec.</p>
+</body>
+</html>

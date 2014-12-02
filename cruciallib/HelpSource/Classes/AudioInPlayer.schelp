@@ -1,0 +1,65 @@
+CLASS:: AudioInPlayer
+summary:: plays the computers audio in — microphone or record busses
+categories:: Libraries>crucial>Players
+related:: Classes/AudioIn
+
+DESCRIPTION:: Plays the first two channels of your Audio input.
+
+code::
+AudioInPlayer.new.play;
+
+AudioInPlayer.new.gui;
+::
+
+code::
+(
+
+Instr("audioIn.filter",{ arg audio,ffreq=400,rq=0.1,amp=0.1;
+	RLPF.ar( audio, ffreq, rq) * amp
+});
+
+Patch("audioIn.filter",[
+	AudioInPlayer.new
+]).gui
+
+)
+::
+
+
+CLASSMETHODS::
+
+METHOD:: amp
+
+
+
+METHOD:: new
+
+
+argument:: numChannels
+
+
+argument:: firstChannel
+firstChannel - starting at 0
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: numChannels
+
+
+
+METHOD:: firstChannel
+
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: ar
+
+
+
+
+

@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: DimpleWorld</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>DimpleWorld</h1>
+<h2>Represents the world in a dimple</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> : <strong><a href="DimpleThing.html">DimpleThing</a></strong> </p>
+
+<p>This class represents the world within dimple. It holds lists of all objects and their constraints. Properties you can set and get are 'gravity' (x,y,z) and 'collide' (0 or 1).</p>
+
+<p>Any method not known as an instance method of Dimple, is forwarded to this class, so instead of (if 'd' is an instance of Dimple): d.world.clear, you can do d.clear.</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*new(dimple)</STRONG></DT>
+<DD>Create a new instance of DimpleWorld. This is done automatically when an instance of Dimple is created.<DL>
+<DT><EM>dimple</EM></DT>
+<DD>The instance of Dimple to which this DimpleWorld belongs.</DD>
+</DL>
+
+</DD>
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+<DT><STRONG>drop</STRONG></DT>
+<DD>Drop the current object.</DD>
+
+<DT><STRONG>clear</STRONG></DT>
+<DD>Clear the world.</DD>
+
+<DT><STRONG>constraints</STRONG></DT>
+<DD>List with all DimpleConstraints within the world.</DD>
+
+<DT><STRONG>objects</STRONG></DT>
+<DD>List with all DimpleObjects in the world</DD>
+
+<DT><STRONG>addObject(obj)</STRONG></DT>
+<DD>Add a DimpleObject to the world.</DD>
+
+<DT><STRONG>addConstraint(obj)</STRONG></DT>
+<DD>Add a DimpleConstraint to the world.</DD>
+
+<DT><STRONG>removeObject(obj)</STRONG></DT>
+<DD>Remove an object from the world. This is called automatically when an object is destroyed with the destroy method.</DD>
+
+<DT><STRONG>removeConstraint(obj)</STRONG></DT>
+<DD>Remove a constraint from the world. This is called automaticall when a constraint is destroyed with a destroy method, or as a result of destroying an object.</DD>
+
+<DT><STRONG>oscPath(property)</STRONG></DT>
+<DD>Create an osc-tag for the property (overloaded from DimpleThing)</DD>
+
+</DL>
+
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    span.s1 {color: #0000bf}
+    span.s2 {color: #bf0000}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>PbindMultiChan : Pbind</b></p>
+<p class="p2"><br></p>
+<p class="p3">PbindMultiChan differs from Pbind in its handling of multi-value streams.</p>
+<p class="p2"><br></p>
+<p class="p3">In Pbind, you can have a stream return an array of values, and assign those values to multiple keys by specifying an array as the "key" for the key/value pair.</p>
+<p class="p2"><br></p>
+<p class="p4">p = <span class="s1">Pbind</span>(#[x, y, z], <span class="s1">Ptuple</span>([<span class="s1">Pseries</span>(0, 1, <span class="s1">inf</span>), <span class="s1">Pgeom</span>(1, 2, <span class="s1">inf</span>), <span class="s1">Pwhite</span>(1, 10, <span class="s1">inf</span>)], <span class="s1">inf</span>)).asStream;</p>
+<p class="p4">p.next(());</p>
+<p class="p5"><br></p>
+<p class="p4">( 'y': 1, 'x': 0, 'z': 6 )</p>
+<p class="p4">( 'y': 2, 'x': 1, 'z': 6 )</p>
+<p class="p4">( 'y': 4, 'x': 2, 'z': 7 )</p>
+<p class="p4">( 'y': 8, 'x': 3, 'z': 8 )</p>
+<p class="p4">( 'y': 16, 'x': 4, 'z': 9 )</p>
+<p class="p4">( 'y': 32, 'x': 5, 'z': 5 )</p>
+<p class="p4">( 'y': 64, 'x': 6, 'z': 3 )</p>
+<p class="p4">( 'y': 128, 'x': 7, 'z': 10 )</p>
+<p class="p4">( 'y': 256, 'x': 8, 'z': 1 )</p>
+<p class="p4">( 'y': 512, 'x': 9, 'z': 8 )</p>
+<p class="p2"><br></p>
+<p class="p3">If there are not enough elements in the stream array, keys in the key array will be ignored in Pbind.</p>
+<p class="p2"><br></p>
+<p class="p6">// three keys, two values</p>
+<p class="p4">p = <span class="s1">Pbind</span>(#[x, y, z], <span class="s1">Ptuple</span>([<span class="s1">Pseries</span>(0, 1, <span class="s1">inf</span>), <span class="s1">Pgeom</span>(1, 2, <span class="s1">inf</span>)], <span class="s1">inf</span>)).asStream;</p>
+<p class="p4">p.next(());</p>
+<p class="p5"><br></p>
+<p class="p4">( 'y': 1, 'x': 0 )<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">// 'z' is omitted</span></p>
+<p class="p4">( 'y': 2, 'x': 1 )</p>
+<p class="p4">( 'y': 4, 'x': 2 )</p>
+<p class="p4">( 'y': 8, 'x': 3 )</p>
+<p class="p2"><br></p>
+<p class="p3">PbindMultiChan will wrap the value array around so that all keys will be populated. It is the same behavior as multichannel expansion in a UGen. This is useful for cases where the number of keys is known but the streams are user-supplied and might not have enough streams to match keys.</p>
+<p class="p2"><br></p>
+<p class="p6">// three keys, two values</p>
+<p class="p4">p = <span class="s1">PbindMultiChan</span>(#[x, y, z], <span class="s1">Ptuple</span>([<span class="s1">Pseries</span>(0, 1, <span class="s1">inf</span>), <span class="s1">Pgeom</span>(1, 2, <span class="s1">inf</span>)], <span class="s1">inf</span>)).asStream;</p>
+<p class="p4">p.next(());</p>
+<p class="p5"><br></p>
+<p class="p4">( 'y': 1, 'x': 0, 'z': 0 )</p>
+<p class="p4">( 'y': 2, 'x': 1, 'z': 1 )</p>
+<p class="p4">( 'y': 4, 'x': 2, 'z': 2 )</p>
+<p class="p4">( 'y': 8, 'x': 3, 'z': 3 )</p>
+<p class="p4">( 'y': 16, 'x': 4, 'z': 4 )</p>
+<p class="p2"><br></p>
+<p class="p3">Observe that 'x' and 'z' have the same values in each event. 'x' gets the first stream result, 'y' gets the second, and 'z' wraps back around to the first.</p>
+</body>
+</html>

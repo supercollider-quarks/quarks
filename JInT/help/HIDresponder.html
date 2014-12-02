@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 22.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf; min-height: 12.0px}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+span.s3 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>HIDresponder</b></p>
+<p class="p2">/**</p>
+<p class="p2"><span class="Apple-tab-span">	</span>2006<span class="Apple-converted-space">  </span>Till Bovermann, Alberto deCampo (IEM)</p>
+<p class="p2">*/</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">Register a function to be called upon receiving a specific command from a specific HID location ID.</p>
+<p class="p3"><br></p>
+<p class="p5">(</p>
+<p class="p2">// plug in a HID device and start HIDDeviceService</p>
+<p class="p5">q = q ? ();</p>
+<p class="p5"><span class="s1">HIDDeviceService</span>.buildDeviceList;</p>
+<p class="p3"><br></p>
+<p class="p2">// get first responding device</p>
+<p class="p5">q.device = <span class="s1">HIDDeviceService</span>.devices.first</p>
+<p class="p5">)</p>
+<p class="p3"><br></p>
+<p class="p2">// HIDresponder seperates HIDs by their locID (which is a unique id of the USB port...)</p>
+<p class="p5">q.device.locID;</p>
+<p class="p3"><br></p>
+<p class="p2">/* load HID and run eventloop; Do _not_ unplug your HID device now until calling</p>
+<p class="p2"><span class="Apple-tab-span">	</span>HIDresponder.releaseAll</p>
+<p class="p2">*/</p>
+<p class="p6">HIDresponder<span class="s2">.load;</span></p>
+<p class="p7"><br></p>
+<p class="p6">HIDresponder.locDict.inspect</p>
+<p class="p3"><br></p>
+<p class="p5">h = <span class="s1">HIDresponder</span>(q.device.locID, 4, { <span class="s1">|val, spec, resp|</span> [val, spec, resp].postcs }, [0, 100].asSpec);</p>
+<p class="p5">h.add</p>
+<p class="p5">h.remove</p>
+<p class="p3"><br></p>
+<p class="p6">HIDresponder.respond(q.device.locID, 4, 1)</p>
+<p class="p3"><br></p>
+<p class="p2">// use Specs</p>
+<p class="p5">i = <span class="s1">HIDresponder</span>(q.device.locID, 4, { <span class="s1">|val, spec|</span> spec.unmap(val).postcs }, [1, 0].asSpec).add;</p>
+<p class="p3"><br></p>
+<p class="p5">k = <span class="s1">HIDresponder</span>(q.device.locID, 17, { <span class="s1">|val, spec|</span> postf(<span class="s3">"upDown: %\n"</span>, spec.unmap(val)) }, [0, 255].asSpec).add;</p>
+<p class="p5">k.add</p>
+<p class="p2">// oneShot</p>
+<p class="p5">j = <span class="s1">HIDresponder</span>(q.device.locID, 4, { <span class="s1">|val, spec|</span> postf(<span class="s3">"Boooom: %\n"</span>, spec.unmap(val)) }, [1, 0].asSpec).add.removeWhenDone;</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p6">HIDresponder.releaseAll</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">//////////////////////////////////////////</p>
+<p class="p3"><br></p>
+<p class="p5">h = <span class="s1">HIDresponder</span>(123, 4, { <span class="s1">|val, spec, resp|</span> [val, spec, resp].postcs }, [0, 100].asSpec);</p>
+<p class="p5">i = <span class="s1">HIDresponder</span>(123, 4);</p>
+<p class="p5">h == i</p>
+<p class="p3"><br></p>
+<p class="p5">h.value(1);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p5">h = <span class="s1">HIDresponder</span>(123, 4, { <span class="s1">|val, spec, resp|</span> [val, spec, resp].postcs }, [0, 100].asSpec);</p>
+<p class="p5">h.add</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p5"><span class="s1">HIDresponder</span>.respond(123, 5, 100);</p>
+<p class="p5"><span class="s1">HIDresponder</span>.respond(123, 4, 100);</p>
+<p class="p3"><br></p>
+<p class="p5"><span class="s1">HIDresponder</span>.locDict.inspect</p>
+<p class="p3"><br></p>
+<p class="p2">///////////////////////////////////////</p>
+<p class="p5">)</p>
+</body>
+</html>

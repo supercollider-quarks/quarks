@@ -1,0 +1,110 @@
+title:: Freesound2
+summary:: API client for freesound.org
+
+DESCRIPTION::
+
+Freesound.org is a collaborative database of sound samples licensed under Creative Commons, supported by the Music Technology Group at Universitat Pompeu Fabra (Barcelona). In its current implementation, Freesound.org provides a web API based on REST principles. The general documentation for the API can be found at http://www.freesound.org/docs/api/. This quark provides a client for accessing the Freesound API from within SuperCollider. For the moment, only the Sound resource is supported. Prospective users are requested to apply for an API key at http://www.freesound.org/api/apply/. Being a web API, this form expects you to fill information about a hypothetical web application, but there is no restriction for using the API for music creation or performance. For general discussion about the API, join the google group: http://groups.google.com/group/freesound-api.
+
+The API provides several response formats, but JSON is generally preferred. This quark provides a convenience wrapper around most of the functionality by requesting resources via curl, and mapping JSON responses to SC Dictionary objects.
+
+NOTE: this version uses the old APIv1, which is still supported. It will be eventually updated to the newer APIv2. Here's the APIv1 documentation: http://www.freesound.org/docs/api/resources_apiv1.html#resources-apiv1
+
+
+EXAMPLES::
+
+code::
+// The API key should be set before any request
+
+Freesound2.api_key="<your_api_key_here>";
+
+
+s = Server.internal.boot
+
+
+// text search
+
+// http://www.freesound.org/docs/api/resources_apiv1.html#sound-search-resource
+
+FS2Sound.search(q:"glitch",f:"type:wav",action:{|p|
+	~snd = p[0]; // first result
+	~snd.original_filename.postln;
+});
+
+// download
+~snd.retrieve("/tmp/",{
+	~buf = Buffer.read(s,"/tmp/"++~snd["original_filename"]);
+	    "done!".postln;
+});
+
+~buf.play;
+
+
+// metadata fields
+~snd.dict.keys;
+
+
+// note that you can access the fields directly
+~snd["id"]
+~snd["original_filename"];
+~snd["duration"];
+~snd["url"];
+~snd["preview-hq-mp3"];
+
+
+// download preview
+~preview = ~snd.retrievePreview("/tmp/",{
+		~buf = Buffer.read(s,"/tmp/"++~snd["original_filename"]);
+	    "done!".postln;
+});
+
+("/tmp/"++~preview).postln;
+
+// note: if your libsndfile version supports ogg, try format=ogg and load the resulting file
+
+// get sound by id
+// http://www.freesound.org/docs/api/resources_apiv1.html#sound-resource
+FS2Sound.getSound(31362,{|f|
+	~snd = f;
+	~snd.retrieve("/tmp/",{
+		~snd["original_filename"].postln;
+		~buf = Buffer.read(s,"/tmp/"++~snd["original_filename"]);
+		"done!".postln;
+
+	});
+});
+
+~buf.play;
+
+
+// get similar
+//http://www.freesound.org/docs/api/resources_apiv1.html#sound-similarity-resource
+~snd.getSimilar({|p| ~snd = p[1];})
+~snd["original_filename"].postln;
+
+
+// analysis
+//http://www.freesound.org/docs/api/resources_apiv1.html#sound-analysis-resource
+//http://www.freesound.org/docs/api/analysis_index.html
+
+~snd.getAnalysis("lowlevel",{|val|
+			val["pitch"]["mean"].postln;
+			val["pitch_instantaneous_confidence"]["mean"].postln;
+		},true)
+
+// content-based search:
+//http://www.freesound.org/docs/api/resources_apiv1.html#sound-content-based-search-resource
+FS2Sound.contentSearch(t:'.lowlevel.pitch.mean:600',f:'.lowlevel.pitch_instantaneous_confidence.mean:[0.8 TO 1]',action:{|pager|
+	~snd = pager[0];
+	~snd["original_filename"].postln;
+	~snd.retrieve("/tmp/",{
+		~buf = Buffer.read(s,"/tmp/"++~snd["original_filename"]);
+		"done!".postln;
+	});
+});
+
+~buf.play;
+
+
+::
+
+

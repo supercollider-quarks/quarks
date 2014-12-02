@@ -1,0 +1,346 @@
+TITLE:: SSWorld
+summary:: Sound Scene World Simulation
+categories:: Libraries>3Dj
+related:: Guides/3Dj, Classes/SSObject, Classes/SpatialRender
+
+DESCRIPTION::
+The world where the sound scene exists. It can contain an arbitrary number of link::Classes/SSObject::.
+
+A code::SSWorld:: presents some settable physical parameters (gravity, friction...), that objects are subject to.
+
+There is a sweet spot in the bottom center of the room, where the objects cannot be located. For a room with dimmension code::dim =[x,y,z]::, the room center will be code::[0,0,0]::, and the possible locations: [ -x/2 to x/2, -y/2 to y/2, 0 to z ]. If an object location exceeds world limits, it will be relocated in the equivalent folded position.
+
+The code::SSWorld:: is continuously monitoring what happens inside, and sending to a desired addres the scene description in OSC-SpatDIF format.
+
+It is a subclass of link::Classes/RedWorld1::. Notice that, in contraposition with its superclass, the SSWorld is the emphasis::higher level:: element. There is, for the moment, not a such thing like SSUniverse.
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: dim
+code::Array:: or code::Cartesian:: with the world dimensions (in m) in each of the three axis, in the format [dimX,dimY,dimZ]. 
+
+Default to [10, 10, 5]. 
+
+ARGUMENT:: gravity
+code::Array:: or code::Cartesian:: with the default gravity acceleration (in m/s^2) in each of the three axis, in the format [gravX,gravY,gravZ].
+
+Default to [0, 0, 0.98]
+
+ARGUMENT:: maxVel
+Light velocity : maximum velocity allowed in the world, in m/s. Default to 100.
+
+ARGUMENT:: damping
+Coefficient of energy loss when an object rebounces in the wall. 0 for nothing and 1 for all.
+
+Default to 0.25
+
+ARGUMENT:: friction
+Coefficient of velocity loss in contact with the medium. 0 for nothing and 1 for all.
+
+Default to 0.01
+
+ARGUMENT:: timeStep
+Frequency of monitoring changes inside the world, and generating the scene description.
+
+Default to 60 Hz.
+
+ARGUMENT:: netAddr
+Instance of code::NetAddr:: where to send the scene description.
+
+Default to code::NetAddr.localAddr::
+
+
+
+
+INSTANCEMETHODS::
+
+private:: contain, updateView, getMaxDistance, sendMsg, initSSWorld, getObjectID
+
+subsection:: World Properties
+
+
+METHOD:: dim
+Get/set the world dimensions. 
+
+ARGUMENT:: value
+code::Array:: or code::Cartesian:: in the form [dimX,dimY,dimX]
+
+
+METHOD:: sweetSpotSize
+METHOD:: setSweetSpotSize
+
+ARGUMENT:: newSize
+Radius in meters. Default to 2 m
+
+
+METHOD:: stepFreq
+Get/set the world's update frequency.
+
+
+METHOD:: rDiff
+Get/set the distance JND: minimum distance change (in spherical coordenates) to be considered as a different position.
+
+Default to 0.05 m.
+
+
+METHOD:: aziDiff
+Get/set the azimuth JND: minimum angle change to be considered as a different position.
+
+Default to 1 degree.
+
+METHOD:: eleDiff
+Get/set the elevation JND: minimum angle change to be considered as a different position.
+
+Default to 5 degrees.
+
+METHOD:: center
+Get the world's coordinate system center.
+
+returns:: code::Cartesian()::
+
+METHOD:: maxDistance
+Get the maximum possible distance from any point to the world's coordinate system center. 
+
+METHOD:: friction
+Get/set the medium friction parameter. A number between 0 (no friction) and 1 (every time step, velocity will be decreased a 100%)  
+
+METHOD:: pause
+Stop the time passing.
+
+METHOD:: resume
+Resume the time passing, as if nothing happened.
+
+METHOD:: update
+Forces a world update. This can be useful when the world is paused.
+
+This method is called automatically every link::Classes/SSWorld#-stepFreq::
+
+
+
+
+
+subsection:: Object managing
+
+
+METHOD:: add
+Add an object to the world. This method is called automatically from link::Classes/SSObject#*new::
+
+ARGUMENT:: obj
+an instance of code::SSObject::
+
+METHOD:: remove
+Remove completely the given object from the world
+
+ARGUMENT:: obj
+An instance of code::SSObject::
+
+METHOD:: removeByName
+Remove completely the given object from the world
+
+ARGUMENT:: name
+A code::\Symbol:: with the object's name.
+
+METHOD:: contains
+Ask if the world contains the given object.
+
+ARGUMENT:: ssObj
+An instance of code::SSObject::
+
+returns:: Boolean
+
+METHOD:: getObject
+Get the reference to an object, given its name
+
+ARGUMENT:: objName
+A code::Symbol:: with the object name
+
+returns:: The code::SSObject:: instance, or code::nil:: if not found
+
+
+METHOD:: getAllObjects
+
+returns:: an Array with references to all existing SSObjects
+
+
+METHOD:: getAllObjectNames
+
+returns:: an Array with the names of all existing SSObjects
+
+METHOD:: numObjects
+Get the number of exisisting objects in the world
+
+
+
+
+
+subsection:: Visualization
+
+METHOD:: showView
+Show the world's view
+
+METHOD:: hideView
+Hide the world's view
+
+METHOD:: alwaysOnTop
+Set the alwaysOnTop property of the world's view
+
+METHOD:: viewDiff
+If code::true::, update world's view only after checking that the scene changed.
+If code::false::, update it in a continuous way (every code::stepFreq.reciprocal:: seconds)
+
+Default to code::false::
+
+METHOD:: showNames
+Show or hide the object names in the view
+
+METHOD:: closeWindow
+Closes the window
+
+
+
+
+subsection:: Network Communication
+
+METHOD:: renderAddresses
+Get the list of all code::Classes/SpatialRender:: addresses where to send the scene information.
+
+Multiple addresses are allowed, in order to support remote control.
+
+By default, there will be only the code::NetAddress:: provided in instanciation. 
+
+METHOD:: addRenderAddress
+Add a code::NetAddress:: to the link::Classes/SSWorld#-renderAddresses::
+
+METHOD:: removeRenderAddress
+Remove a code::NetAddress:: to the link::Classes/SSWorld#-renderAddresses::
+
+returns:: The removed code::NetAddress:: if succesful, or code::nil:: if not.
+
+
+METHOD:: receivingFromServer
+If code::this:: receives any external messages (from code::SpatDifPlayer:: playback or remote control), link::Classes/SSWorld#-receivingFromServer:: will be automatically set to true. In that case, the world won't update itself (avoiding message redundancy to the server).
+
+The user can set its value at any time through the set method.
+
+
+
+EXAMPLES::
+code::
+
+// // // // // // PHYSICAL MODEL // // // // // //
+
+// create a new world with dimension 10x10x10
+// the coordinate system is located on the floor, half away from wals
+w = SSWorld([10,10,10]).showView;
+
+// put an object into the world
+o = SSObject(w,name:\1)
+
+// locate it
+o.loc_([3,1,0]) // in cartesian (x,y,z)
+o.loc_(z:5) // only the desired dimension
+
+o.locSph_([3,pi,0]) // in spherical (rho, azi, ele)
+o.locSph_(ele:pi/4)
+
+//get location
+o.loc
+o.locSph
+
+// put some gravity in the world
+w.gravity
+w.gravity_([3,0,0])
+// nothing happened? objects have gravity disabled by default
+o.gravity_(true)
+
+// movement won't stop because we don't have almost friction..
+w.friction
+w.friction_(0.5) //50% of velocity loosed in every step
+o.friction_(true)
+
+// .. and because the wall dampening is not so high
+w.damping
+w.damping_(0.5) //50% of velocity loosed in bounce
+
+// we can always show only when there was a significative difference
+w.viewDiff_(true)
+
+// something with more fun...
+(
+t=Task({
+	inf.do{
+		w.gravity_((3.0.dup(3).collect(_.rand2)).postln);
+		w.friction_(1.0.rand);
+		w.gravity_(1.0.rand);
+		2.wait;
+		w.gravity_([0,0,0]);
+		5.wait;
+	}
+});
+
+t.play;
+)
+t.stop
+
+// if we want to stop an object, we use its method stop
+o.stop
+
+// we can interact with objects directly (the "bottom-up" approach)
+o.accel_([-1,0,0])
+o.accel_(3.0.dup(3).collect(_.rand2))
+
+o.friction_(false) // try it without friction
+o.accel_([-1,0,0])
+
+o.stop
+
+// the other interaction way is the "top-bottom" or god mode. See the Motion helpfile for examples on that...
+
+// it is possible to stop the world's time, freezing everything...
+w.pause
+// ...and resume it again when desired
+w.resume
+
+
+w.closeWindow
+::
+
+
+
+
+
+code::
+
+
+
+
+
+// // // // // // OBJECT MANAGING // // // // // //
+
+w = SSWorld([10,10,10]).showView;
+
+// objects are usually created by the SSObject.new method
+o = SSObject(w,name:\object,loc:[1,2,3])
+
+// sometimes we don't want to save a instance...
+SSObject(w) // a default name will be applied
+
+//...but we can still acces it by name (remember: it's a Symbol)
+w.getObject(\1).loc_([3,0,0])
+
+// we can remove objects
+w.remove(o)
+// and also by name
+w.removeByName(\1)
+::
+
+
+
+
+
+
+

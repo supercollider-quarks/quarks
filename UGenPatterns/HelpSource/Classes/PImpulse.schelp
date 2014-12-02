@@ -1,0 +1,32 @@
+CLASS:: PImpulse
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Generators
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/Impulse::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: freq
+
+ARGUMENT:: phase
+
+ARGUMENT:: mul
+
+ARGUMENT:: add
+
+ARGUMENT:: length
+Number of values produced.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PImpulse(8, 0, 10, 60).trace).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \amp, PImpulse(4*PSinOsc(16, 0, 0.1, 1), 0, 0.5, 0.125).trace).play
+a.stop
+::

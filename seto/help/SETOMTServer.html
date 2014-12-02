@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.33">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica; min-height: 19.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0b1407}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #671110}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #002c5c}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0039a1}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a61716}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times New Roman; min-height: 15.0px}
+span.s1 {font: 16.0px Helvetica}
+span.s2 {color: #0060c6}
+span.s3 {font: 12.0px Helvetica; color: #000000}
+span.s4 {color: #000000}
+span.s5 {color: #002c5c}
+span.s6 {color: #0b1407}
+span.s7 {color: #131313}
+span.s8 {color: #1d4c15}
+span.s9 {color: #0039a1}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SETOMTServer</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1"><b><span class="Apple-tab-span">	</span></b></span>2008</p>
+<p class="p3"><span class="Apple-tab-span">	</span>Till Bovermann<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Neuroinformatics Group, Bielefeld University, Germany</p>
+<p class="p4"><br></p>
+<p class="p3">a server fullfilling the TUIO-Specs.</p>
+<p class="p3">Uses the proprietary OSC protocol for the Mutlitouch surface implemented by mayan.</p>
+<p class="p3">Format has to be the following:</p>
+<p class="p5"><span class="Apple-tab-span">	</span>/mt "set" &lt;numItems&gt; &lt;id&gt; &lt;x&gt; &lt;y&gt; &lt;id&gt; &lt;x&gt; &lt;y&gt; ...</p>
+<p class="p3">the used format String (explained in <a href="SETObject.html"><span class="s2">SETObject</span></a>) is then<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span>'</span>_ixy'</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(netaddr, setoClass)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>netaddr<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a netaddr, default nil; listening to all.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>setoClass<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the Class of the created objects.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Must be a subclass of <a href="SETObject.html"><span class="s2">SETObject</span></a>, defaults to <a href="SETObject.html"><span class="s2">SETObject</span></a>.</p>
+<p class="p3"><b>start</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>starts listening</p>
+<p class="p3"><b>stop</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>stops litening</p>
+<p class="p3"><b>gui</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span></b>creates a gui representing recognized objects (2D for now and no rotation)</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p5">(</p>
+<p class="p7"><span class="s4">t = </span><span class="s5">SETOMTServer</span><span class="s4">(</span><span class="s5">nil</span><span class="s4">, </span><span class="s5">SETOdump</span><span class="s4">); </span>// listen to all messages from anywhere</p>
+<p class="p5">t.start;</p>
+<p class="p8"><br></p>
+<p class="p5">g = t.gui;</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7">// send it messages</p>
+<p class="p5">n = <span class="s5">NetAddr</span>.localAddr;</p>
+<p class="p8"><br></p>
+<p class="p5">n.sendMsg(<span class="s6">'/mt'</span>, <span class="s6">\set</span>, 1, 400, 400);<span class="Apple-converted-space"> </span></p>
+<p class="p5">i.update</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p5">t.stop;</p>
+<p class="p2"><br></p>
+<p class="p7">///////////////////////</p>
+<p class="p9"><span class="s4">o = </span>OSCresponder<span class="s4">(</span>NetAddr<span class="s4">(</span><span class="s7">"192.168.0.20"</span><span class="s4">, </span>nil<span class="s4">), </span><span class="s7">"/client"</span><span class="s4">, {</span>|time, resp, msg|<span class="s4"> msg.postln})</span></p>
+<p class="p5">o.add</p>
+<p class="p5">o.remove</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p5">------------------</p>
+<p class="p5">basic tonal example</p>
+<p class="p8"><br></p>
+<p class="p10">SynthDef<span class="s4">(</span><span class="s8">\testTUIO</span><span class="s4">, {</span>|freq = 400, out = 0, amp = 0, vol = 0.25, famp=1|</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s9">Out</span>.ar([out, out+1], <span class="s9">SinOsc</span>.ar(freq, 0, (amp.lag(0.01)*vol*famp)))</p>
+<p class="p5">}).send(s);</p>
+<p class="p8"><br></p>
+<p class="p10">q = ();</p>
+<p class="p5">(</p>
+<p class="p11"><span class="s9">q.</span><span class="s4">synths = </span><span class="s9">IdentityDictionary</span><span class="s4">.new; </span>// a storage for synths</p>
+<p class="p8"><br></p>
+<p class="p5"><span class="s9">JITseto</span>.action = {<span class="s9">|me|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>s.bind{</p>
+<p class="p11"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// make sure there is a synth</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.synths[me].isNil.if{</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.synths[me] = <span class="s9">Synth</span>(<span class="s8">\testTUIO</span>, [<span class="s8">\vol</span>, 0.2, <span class="s8">\amp</span>, 0])</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>s.sync;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>me.visible.if({</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.synths[me].set(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\freq</span>, me.pos[0].linexp(0, 1, 300, 800),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, me.pos[1]</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}, {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.synths[me].set(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p5"><span class="Apple-tab-span">	</span>}</p>
+<p class="p5">}</p>
+<p class="p5">)</p>
+<p class="p8"><br></p>
+<p class="p11">// instantiate SETOServer</p>
+<p class="p7"><span class="s4">t = </span><span class="s5">SETOMTServer</span><span class="s4">(</span><span class="s5">nil</span><span class="s4">, </span><span class="s5">JITseto</span><span class="s4">); </span>// listen to all messages from anywhere</p>
+<p class="p5">t.gui;</p>
+<p class="p5">t.start;</p>
+<p class="p5">t.stop;</p>
+<p class="p12"><br></p>
+<p class="p8"><br></p>
+</body>
+</html>

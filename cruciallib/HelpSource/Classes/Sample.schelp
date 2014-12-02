@@ -1,0 +1,390 @@
+CLASS:: Sample
+summary:: a soundfile small enough to be loaded in memory
+categories:: Libraries>crucial>Buffers, Libraries>crucial>SoundFiles
+related:: Classes/SoundFile
+
+DESCRIPTION:: This class can be used as an argument to a Patch.  It will take care of all the troubles of loading, allocating, measuring, and even beat synchronizing of a small sound file.  It will not clear the copyright.
+
+It will not play by itself, its just like a Buffer.
+
+But within the Instr function you can use many useful methods on your Sample object such as .bufDurKr
+
+
+code::
+(
+
+p = Patch({ arg sample;
+
+	PlayBuf.ar(sample.numChannels,
+			sample.bufnumIr,
+			sample.bufRateScaleKr,
+			1.0,
+			0.0,
+			1.0)
+
+},[
+	Sample("a11wlk01.wav")
+]);
+
+p.gui;
+
+)
+::
+
+Notice that the path to the sample is relative to the sounds/ directory, not to SuperCollider's own directory.  You can set the Sample.soundsDir to the directory of your choice (eg, ~/Library/Sounds/  or ~/Sounds/ ).  Copy  a11wlk01.wav to your own sounds directory so you can still play examples.
+
+
+section:: methods usable inside an Instr function.
+
+These methods will work inside an Instr but not when used in a normal SynthDef.
+
+	bufnumIr
+		at the start of the synth, this will get the dynamic bufferID of your Sample object.
+		this Instr will reuse SynthDefs where possible.  Multiple synths may use the same
+		basic sample synthDef for many voices with no need to compile new SynthDefs
+		and send to the server.
+
+	sampleRate
+		a float of the current sample's sample rate, embedded into the SynthDef as a constant.
+		the def will be resuable for all samples of that sample rate, and will be slightly more efficient.
+	sampleRateKr
+		a kr rate signal that will change if you load a different sample into the buffer,even
+		while playing.
+	sampleRateIr
+		a ir rate signal that will NOT change if you load a different sample into the buffer.
+		use when you know the sample will not change, or if you know that all samples are the
+		same sampleRate anyway.
+
+	bufRateScaleKr
+		the nominal pitchRatio value needed to play at the original pitch
+	bufRateScaleIr
+		the nominal pitchRatio value needed to play at the original pitch.
+		will NOT change if you load a different sample into the buffer.
+
+	bufFramesKr
+		a kr rate signal with the number of frames of the current sample
+	bufFramesIr
+		an ir rate signal with the number of frames of the sample
+
+	bufSamplesKr
+		a kr rate signal with the number of samples of the current sample
+	bufSamplesIr
+		an ir rate signal with the number of samples of the current sample
+
+	duration
+		duration in seconds of current sample, embedded into SynthDef as a constant.
+	bufDurKr
+		duration in seconds
+	bufDurIr
+		duration in seconds
+
+
+	numChannels
+		integer, number of channels of the current sample.  this will be embedded
+		into the SynthDef as a constant.  the SynthDef will still be reusable for
+		all samples of the same numChannels.
+	bufChannelsKr
+		number of channels of the current sample.  you cannot use this to modulate
+		a PlayBuf.
+	bufChannelsIr
+		number of channels of the  sample.  you cannot use this to modulate
+		a PlayBuf.
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: soundFilePath
+
+
+argument:: tempo
+If the sample is a rhythmic loop then this specifies what the tempo of that loop is.  This can then be used for beat sync or beat splicing calculations.  If the sample is an even 4 or 8 beats then it will do a fairly good job of guessing the tempo.
+
+argument:: startFrame
+
+
+argument:: endFrame
+
+
+
+METHOD:: newClear
+
+
+argument:: numFrames
+
+
+argument:: numChannels
+
+
+argument:: sampleRate
+
+
+
+METHOD:: roster
+
+
+argument:: perItems
+
+
+argument:: globals
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: soundFile
+
+
+
+METHOD:: beats
+number of beats in the sample if its a rhythmic loop.  this co-depends on the tempo setting.
+
+argument:: bt
+
+
+
+METHOD:: tempo
+tempo of the musical content of the sample if its a rhythmic loop.  this co-depends on the beats setting.
+
+
+argument:: tm
+
+
+
+METHOD:: beatsize
+number of samples per beat based on beat or tempo setting.
+
+
+METHOD:: end
+signal.size - 1
+	the last indexable position in the signal
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: printOn
+
+
+argument:: stream
+
+
+
+METHOD:: load
+
+
+argument:: thing
+
+
+argument:: tempo
+
+
+argument:: argStartFrame
+
+
+argument:: argEndFrame
+
+
+
+METHOD:: prLoad
+
+
+argument:: thing
+
+
+argument:: t
+
+
+
+METHOD:: reloadBuffer
+
+
+
+METHOD:: bpm
+
+
+argument:: bpm
+
+
+
+METHOD:: calculate
+
+
+
+METHOD:: guessBeats
+
+
+argument:: min
+
+
+argument:: max
+
+
+
+METHOD:: initForSynthDef
+
+
+argument:: synthDef
+
+
+argument:: argi
+
+
+
+METHOD:: pchRatioKr
+
+
+
+METHOD:: getTempoBus
+
+
+
+METHOD:: beatsizeIr
+
+
+
+METHOD:: sampleTempoIr
+
+
+
+METHOD:: prepareToBundle
+
+
+argument:: group
+
+
+argument:: bundle
+
+
+
+METHOD:: guiClass
+
+
+
+METHOD:: play
+
+
+
+METHOD:: asSignal
+
+
+argument:: channel
+
+
+
+METHOD:: addToDefName
+
+
+argument:: stream
+
+
+
+METHOD:: spec
+
+
+
+METHOD:: rand
+
+
+
+
+EXAMPLES::
+
+
+You can swap the samples while playing.  Click on the name of the sample (in black font) and browse for a  stereo sample.  Then start play, and you can browse for more and change it while playing.
+
+code::
+(
+Instr("help-Sample",{ arg sample,pchRatio=0.50;
+	PlayBuf.ar(sample.numChannels,
+				sample.bufnumIr, // finds the buffer number when the synth starts
+				sample.bufRateScaleKr * pchRatio,
+				1.0,0.0,1.0);
+});
+
+p = Patch("help-Sample",[
+	Sample()
+]);
+
+p.gui
+
+)
+::
+
+The def name was : help-SampleO8NEut
+
+
+You can build up a library of Instr functions and exploit them with Patch.
+
+code::
+(
+Instr([\help,\Sample],{ arg sample,pchRatio=1.0,start=0.0;
+	PlayBuf.ar(sample.numChannels,
+				sample.bufnumIr, // finds the buffer number when the synth starts
+				sample.sampleRateKr / 44100 * pchRatio,
+				1.0,
+				start * sample.bufFramesKr,
+				1.0); // loop
+});
+)
+::
+
+Patch object:
+
+code::
+(
+	p = Patch([\help,\Sample],
+	[
+		Sample("a11wlk01.wav")
+	]);
+
+	// edit controls on the gui
+	p.gui
+)
+::
+
+You can save it to disk and reload it the settings will be restored.
+
+code::
+(
+	Patch.new(
+		[ 'help', 'Sample' ], [ Sample.new("a11wlk01.wav", 1.6347258775994),
+			0.46511627906977, 0.17441860465116 ]
+	).play
+)
+::
+
+
+section:: Beat Synching
+
+code::
+(
+	Instr([\help,\Sample],{ arg sample;
+		PlayBuf.ar(
+			sample.numChannels,
+			sample.bufnumIr,
+			sample.pchRatioKr,
+			1.0,
+			0.0,
+			1.0);
+	});
+
+	p = Patch([\help,\Sample],
+	[
+		Sample("a11wlk01-44_1.aiff")
+	]);
+
+	// move the tempo slider
+	p.gui
+)
+::
+
+Note that the patch will not play starting on the even bar division unless it is started with
+p.play(atTime: 1)
+
+

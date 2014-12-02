@@ -1,0 +1,159 @@
+TITLE:: Dissonance
+summary:: Generate dissonance curves from roughness analysis.
+categories:: DissonanceLib
+related:: Overviews/DissonanceLib, Classes/PitchSet, Classes/HarmonicVector, Classes/HarmonicMetric, Classes/IntervalTable, Classes/LoudnessModel, Overviews/numberExtras
+
+DESCRIPTION::Dissonance curves are made by calculating the psychoacoustic roughness between two sets of partials, usually both sets coming from the same source. The partials are weighted against each other according to a critical band model of auditory roughness; this makes one point of the curve, the rest of the points are arrived at by transposing one of the sets. Once the dissonance curve is calculated, a link::Classes/PitchSet:: is formed out of the rationalized local minima. This makes it possible to compose with harmonic material derived from spectra.
+
+
+SUBSECTION:: External methods required:
+This class uses the extensions to link::Classes/SimpleNumber::, link::Classes/Integer:: and link::Classes/SequenceableCollection:: included as part of link::Overviews/DissonanceLib:: and available in link::Overviews/numberExtras::. They contain formulas for harmonicity, unit conversion, rationalization, etc. There are other methods in plusSignal.sc handy for calculating dissonance curves from FFT data. See link::Guides/LiveDissonance::.
+
+
+CLASSMETHODS::
+
+METHOD:: make
+Make a dissonance curve for the array of partials f with array of amplitudes a. A set of partials is measured against transpositions of itself, yielding a profile of its sensory dissonance behavior. The time of the calculations will slow down exponentially as the number of partials increases, 8-10 gives good results, depending on the source sound and the kind of application.
+
+argument:: f
+An array of partials in Hz
+
+argument:: a
+Array of amplitudes. If the method code::\parncutt:: is used then they should be expressed as loudnesses in sones. See link::Classes/LoudnessModel::
+
+argument:: start
+Start frequency factor for the transpositions of the analysis. It is usually set a little lower than the lowest interval of interest, e.g. 1 would correspond to unison, so its good to start a bit before, at 0.99
+
+argument:: end
+End frequency factor for the transposition of the analysis. Here it ends a bit after and octave, e.g. 2.01
+
+argument:: inc
+Increment of the frequency factor, default 0.01, a hundredth of an octave
+
+argument:: method
+Either code::\parncutt:: or code::\sethares::. This class was first made out of code from W. Sethares' book Tuning, Timbre, Spectrum, Scale. This model is based on frequency and amplitude. Later on, the algorithm was refined to use Richard Parncutt's model based on subjective units of barks and sones. This method gives more precise curves with more meaningful roughness measures and is also a bit faster, so there really is no need to use the code::\sethares:: setting.
+
+argument:: max
+Either true or false. This is to tell the analysis which partial it should consider to be the fundamental of the spectrum. If true then the fundamental will be the partial with the highest amplitude, otherwise the first one in the frequency array
+
+returns:: A Dissonance object.
+
+Example, execute line by line:
+code::
+d = Dissonance.make([100,200,300,400,500],[32, 16, 8, 4, 2], 0.49, 4.01, 0.01);
+::
+-> [1/2, 3/5, 2/3, 3/4, 4/5, 1/1, 5/4, 4/3, 3/2, 5/3, 2/1, 5/2, 3/1, 4/1]
+
+plot the curve, x = interval, y = roughness:
+
+code::d.plot;
+::
+
+listen to the scale
+
+code::d.play;
+::
+
+Instance variables:
+
+code::
+d.scale; // the scale derived from the minima of the curve, as frequency factors
+d.ratios; // the scale expressed as ratios in the form of [p,q] array pairs
+d.roughness.round(0.01); // the roughness at each scale degree 
+d.fund * d.scale; // the scale in Hz
+d.harmonicAnalysis;
+d.pitchSet; // the ratios are part of a PitchSet to have proper harmonic use of them.
+// For more, see below and its related helpfile.
+d.partials; // the original freqs and amps
+d.postln; // pitch sets are represented as strings with the oblique p/q
+
+d.harmonicity.round(0.001); // Harmonicity measure for each ratio
+::
+
+METHOD:: make2
+To make a dissonance curve between 2 different sets of partials (f and g with amplitudes a and b). All other arguments stay the same as in *make. 
+
+METHOD:: default
+Makes a default dissonance object obtained from a sawtooth spectrum. 
+
+METHOD:: load
+Loads a dissonance object from disk. 
+
+METHOD:: readZArchive
+This is useful for reading arrays or dictionaries of dissonance objects saved with ZArchive. 
+
+INSTANCEMETHODS::
+
+METHOD:: intervals
+the intervals (in frequency ratios) found by the dissonance analysis. 
+
+
+METHOD:: partials
+the partials that generated the curve (the input)
+
+METHOD:: roughness
+Roughness of all the intervals found by the analysis. 
+
+METHOD:: dcurve
+The dissonance curve itself
+
+METHOD:: fund
+The fundamental. Can be either the lowest partial or the highest amplitude on depending on the max boolean argument in *make and *make2. 
+
+METHOD:: scale
+The scale in frequency ratios. 
+
+METHOD:: ratios
+The scale in terms of an array of [p,q] ratios. 
+
+METHOD:: harmonicity
+Harmonic metrics of the intervals found in the analysis. 
+
+METHOD:: cents
+Intervals in cents. 
+
+
+METHOD:: pitchSet
+The link::Classes/Dissonance#-harmonicAnalysis:: method rationalizes, calculates harmonicities and creates a link::Classes/PitchSet:: with the intervals. This pitch set is held in this instance variable. 
+
+METHOD:: metric
+The metric with which it calculates the harmonicity instance variable.
+
+METHOD:: info
+A dictionary containing keys and values that describe when and how the dissonance curve was made. 
+
+METHOD:: harmonicAnalysis
+To the intervals formed by the points of local minimum roughness in the dissonance curve, an additional harmonic analysis is done: first they are rationalized (see link::Classes/SequenceableCollection#-rationalize::), then the harmonicities calculates (the metric depending on the code::metric::), and finally a link::Classes/PitchSet:: is created. It is a collection of link::Classes/HarmonicVector:: which partitions the intervals into harmonic and timbral sets among other things. 
+
+argument:: tolerance
+in cents
+
+argument:: metric
+code::\harmonicity:: or code::\harmonicDistance:: or code::\gradusSuavitatis::
+
+argument:: type
+code::\size:: means that code::max:: will hold the highest ratio allowed in the rationalization. Instead it can be the highest code::\prime:: allowed. 
+
+argument:: max
+Either a ratio or a prime number.
+
+argument:: unisonvector
+The unison matrix used to partition the intervals in harmonic space. See link::Classes/PitchSet::. 
+
+argument:: post
+If code::true:: then post info regarding the Dissonance object before and after the harmonic analysis. 
+
+METHOD:: save
+Saves the Dissonance object.
+
+METHOD:: play
+Play scale of the dissonance curve. 
+
+METHOD:: plot
+Plot the curve. 
+
+METHOD:: makeMatrix
+Allows to use the pitch set of the dissonance object in stochastic ways for harmonic fields. See the discussion in link::Classes/PitchSet::
+
+METHOD:: calcPolarity
+Likewise.

@@ -1,0 +1,499 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+span.s1 {color: #131db2}
+span.s2 {color: #0000bf}
+span.s3 {color: #000000}
+span.s4 {color: #606060}
+span.s5 {color: #bf0000}
+span.s6 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>ParaSpace<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a GUI parameter space</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">ParaSpace is a GUI widget, similar to the SCEnvelopeView, but has some additional functionality and it is easier to use.<span class="Apple-converted-space"> </span></p>
+<p class="p3">One can select many nodes at the same time and drag them around.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p3">&gt;&gt; <b>Use ctrl+click to create a node</b> &lt;&lt;</p>
+<p class="p3">&gt;&gt; <b>Draw a rect around one or more nodes to select them</b> &lt;&lt;</p>
+<p class="p3">&gt;&gt; <b>Use backspace to delete a selected node</b> &lt;&lt;</p>
+<p class="p3">&gt;&gt; <b>Hold down 'c' to connect (a) selected node(s) to another node</b> &lt;&lt;</p>
+<p class="p4"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>*new(window, bounds);</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>window <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- A SCWindow in which the ParaSpace will appear</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>bounds<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The Rect of the ParaSpace<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>nodeDownAction_ <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The function that mouse down on a node will trigger.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>nodeTrackAction_ <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The function that dragging the node will trigger.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>nodeUpAction_ <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The function that mouse up on a node will trigger.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>nodeOverAction_ <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The function that mouse over on a node will trigger. (sets acceptsMouseOver)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>keyDownAction_<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- </b>The function that key down on the view will trigger. (makes view focusable)</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>createNode(x, y, color)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- Creates a node in loc x and y. Color is optional.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>createConnection(a, b)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- Creates a connection between node a and b.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>deleteNode(index)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- Deletes a specific node.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>deleteConnection(a, b)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- Deletes a connection between two nodes.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>deleteConnections<span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- Deletes all connections.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>clearSpace<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Clears the View.</p>
+<p class="p4"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setNodeSize_(int) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The size of ALL paranodes.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setNodeSize_(int, int) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The size of an individual node. (index, size)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setFillColor_(color) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The color of all the nodes. (see setNodeColor)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setShape_(shape) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Shape can be either "rect" or a "circle".</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setOutlineColor(color)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- Set the outline color of the selected nodes.</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>getNodeLoc(index)<span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- Get the x, y pixel location of a node returned in an [x, y] array.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>getNodeLoc1(index)<span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span>- Get the x, y normalized (0 to 1) location returned in an [x, y] array.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setNodeLoc_(index, x, y)<span class="Apple-tab-span">	</span></b>- Set the x, y pixel location of a node.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setNodeLoc1_(index, x,<span class="Apple-converted-space">  </span>y)</b><span class="Apple-tab-span">	</span>- Set the x, y location normalized (0 to 1) location.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setNodeString_(index, string)</b><span class="Apple-tab-span">	</span>- Set the label/string of a node.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>getNodeString_(index)<span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span>- Get string of a node.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setFont_(font)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- Set the font..</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setFontColor_(Color)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- Set the color of the font.</p>
+<p class="p4"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setNodeStates_(array)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Updates the grid from a 2 dimensional array of :</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- nodes, connections, color and size.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>- You can pass<span class="s1"> ni</span>l as either nodes or connections to update either.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>getNodeStates<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Returns 2 dimensional array of nodes and connections.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setNodeColor_(index, Color) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Sets the color of an individual node.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>getNodeColor(index) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Returns the color of an individual node.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setBackgrColor_(Color) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The background color of the view.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setBackgrDrawFunc_(func) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Allows Pen to draw behind the nodes and connections.</p>
+<p class="p2"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setSelectFillColor_(Color) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The color of the rect when selecting nodes.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setSelectStrokeColor_(Color) <span class="Apple-tab-span">	</span></b>- The stroke color of the rect when selecting nodes.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setNodeLoc1Action_(index, x,<span class="Apple-converted-space">  </span>y, \action)</b><span class="Apple-tab-span">	</span>- Set location and perform an action (\up, \down, \track).</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>setNodeLocAction_(index, x,<span class="Apple-converted-space">  </span>y, \action)</b><span class="Apple-tab-span">	</span>- Set location and perform an action (\up, \down, \track).</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">NOTE: all GUI updates, such as setNodeLoc() and createConnection() have a default</p>
+<p class="p5">argument to refresh the window after the new state has been set. If you are using</p>
+<p class="p5">these methods in a routine with loads of updating, you might want to set refresh</p>
+<p class="p5">to false setNodeLoc_(i, x, y, false) and then do a.refresh; after the routine, so</p>
+<p class="p5">you aren't updating on every iteration of the routine, but at the end of the loop.</p>
+<p class="p2"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">// choose a gui (see GUI helpfile)</p>
+<p class="p8"><span class="s2">GUI</span>.swing;</p>
+<p class="p8"><span class="s2">GUI</span>.cocoa;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p9">ParaSpace<span class="s3">.new</span></p>
+<p class="p6"><br></p>
+<p class="p7">// use ctrl+click to create a Box</p>
+<p class="p8">(</p>
+<p class="p8">w = <span class="s2">Window</span>.new(<span class="s4">"ParaSpace"</span>, <span class="s2">Rect</span>(10, 500, 400, 300)).front;</p>
+<p class="p8">a = <span class="s2">ParaSpace</span>.new(w, bounds: <span class="s2">Rect</span>(15, 15, 360, 260));</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p8">a.createNode(180,130)</p>
+<p class="p8">a.deleteNode(0)</p>
+<p class="p8">a.createNode(122,33)</p>
+<p class="p6"><br></p>
+<p class="p8">a.setFillColor_(<span class="s2">Color</span>.new255(222.rand, 222.rand, 122.rand));</p>
+<p class="p6"><br></p>
+<p class="p8">a.setBackgrColor_(<span class="s2">Color</span>.new255(120+(122.rand), 120+(122.rand), 120+(122.rand)));</p>
+<p class="p6"><br></p>
+<p class="p8">a.setNodeColor_(0, <span class="s2">Color</span>.white);</p>
+<p class="p6"><br></p>
+<p class="p8">a.setOutlineColor_(<span class="s2">Color</span>.red);</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s3">a.setNodeSize_(0, 14); </span>// round to 2 due to drawing</p>
+<p class="p8">a.getNodeSize(0);</p>
+<p class="p6"><br></p>
+<p class="p8">a.createNode(222.rand,270.rand)</p>
+<p class="p6"><br></p>
+<p class="p8">a.createConnection(0, 1);</p>
+<p class="p8">a.deleteConnection(0, 1);</p>
+<p class="p8">a.createConnection(0, 1);</p>
+<p class="p6"><br></p>
+<p class="p8">a.createNode(22,133)</p>
+<p class="p6"><br></p>
+<p class="p8">b = a.getNodeStates</p>
+<p class="p8">a.clearSpace</p>
+<p class="p8">a.setNodeStates_(b)</p>
+<p class="p6"><br></p>
+<p class="p7">// location in pixels</p>
+<p class="p8">a.getNodeLoc(0);</p>
+<p class="p8">a.setNodeLoc_(0, 135, 120);</p>
+<p class="p6"><br></p>
+<p class="p7">// location in floats from 0 to 1</p>
+<p class="p8">a.getNodeLoc1(0);</p>
+<p class="p8">a.setNodeLoc1_(0, 0.3, 0.36);</p>
+<p class="p6"><br></p>
+<p class="p7">// select more than one box by dragging</p>
+<p class="p8">a.setSelectFillColor_(<span class="s2">Color</span>.red(alpha:0.2));</p>
+<p class="p8">a.setSelectStrokeColor_(<span class="s2">Color</span>.blue(alpha:0.8));</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s3">a.setMouseOverState_(</span><span class="s2">true</span><span class="s3">); </span>// slightly cpu intensive</p>
+<p class="p8">a.nodeOverAction_({<span class="s2">arg</span> node; <span class="s4">"over"</span>.postln; node.spritenum.postln; node.nodeloc.postln;});<span class="Apple-converted-space"> </span></p>
+<p class="p8">a.nodeOverAction_({<span class="s2">nil</span>}); <span class="s5">// delete the action</span></p>
+<p class="p8">a.setMouseOverState_(<span class="s2">false</span>);<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p8">a.nodeDownAction_({<span class="s2">arg</span> node; <span class="s4">"down"</span>.postln; node.spritenum.postln; node.nodeloc.postln;});<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p8">a.nodeUpAction_({<span class="s2">arg</span> node; <span class="s4">"up"</span>.postln; node.spritenum.postln; node.nodeloc.postln;});<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p8">(</p>
+<p class="p8">a.nodeTrackAction_({<span class="s2">arg</span> node; <span class="s4">"tracking sprite: "</span>.post; node.spritenum.post;<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="s4">" - location : "</span>.post; node.nodeloc.postln;});<span class="Apple-converted-space"> </span></p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p8">(</p>
+<p class="p8">a.connectAction_({<span class="s2">arg</span> node1, node2;<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="s4">"you connected node : "</span>.post; <span class="Apple-tab-span">	</span>node1.spritenum.post;</p>
+<p class="p8"><span class="s4">" and node : "</span>.post; <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>node2.spritenum.postln;</p>
+<p class="p8"><span class="s4">"node1 location : "</span>.post; node1.nodeloc.postln;</p>
+<p class="p8"><span class="s4">"node2 location : "</span>.post; node2.nodeloc.postln;</p>
+<p class="p8">});</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p8">(</p>
+<p class="p8">a.keyDownAction_({<span class="s2">arg</span> key, modifiers, unicode;<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s6">\key</span>, key, <span class="s6">\modifiers</span>, modifiers, <span class="s6">\unicode</span>, unicode].postln;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(key == $a, {<span class="s4">"You pressed the a key"</span>.postln;});</p>
+<p class="p8">});</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p8">(</p>
+<p class="p8">a.setBackgrDrawFunc_({</p>
+<p class="p8"><span class="Apple-tab-span">	</span>10.do{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Color</span>.blue(rrand(0.0, 1), rrand(0.0, 0.5)).set;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pen</span>.addWedge(180@130, rrand(10, 100), 2pi.rand, 2pi.rand);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pen</span>.perform([<span class="s6">\stroke</span>, <span class="s6">\fill</span>].choose);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>}</p>
+<p class="p8">});</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p7">// or perhaps?</p>
+<p class="p8">(</p>
+<p class="p8">a.setBackgrDrawFunc_({</p>
+<p class="p8"><span class="Apple-tab-span">	</span>20.do{<span class="s2">|i|</span> <span class="s2">Pen</span>.line((i*20)@0, (i*20)@280)};</p>
+<p class="p8"><span class="Apple-tab-span">	</span>14.do{<span class="s2">|i|</span> <span class="s2">Pen</span>.line(0@(i*20), 380@(i*20))};</p>
+<p class="p8">});</p>
+<p class="p8">)</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p8">a.setShape_(<span class="s4">"circle"</span>)</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p8">a.clearSpace</p>
+<p class="p6"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7">///////////// example 2</p>
+<p class="p8">(</p>
+<p class="p8"><span class="s2">var</span> bounds;</p>
+<p class="p8">bounds = <span class="s2">Rect</span>(20, 20, 760, 520);</p>
+<p class="p8">w = <span class="s2">Window</span>.new(<span class="s4">"ParaSpace"</span>, <span class="s2">Rect</span>(10, 500, 800, 612)).front;</p>
+<p class="p8">a = <span class="s2">ParaSpace</span>.new(w, bounds: bounds);</p>
+<p class="p6"><br></p>
+<p class="p8">20.do({</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.createNode(740.rand, 500.rand, refresh:<span class="s2">false</span>);</p>
+<p class="p8">});</p>
+<p class="p6"><br></p>
+<p class="p8">30.do({</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.createConnection(20.rand, 20.rand, refresh:<span class="s2">false</span>);</p>
+<p class="p8">});</p>
+<p class="p6"><span class="Apple-converted-space"> </span></p>
+<p class="p8">20.do({<span class="s2">arg</span> i;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.setNodeColor_(i, <span class="s2">Color</span>.new255(100+(155.rand), 100+(155.rand), 100+(155.rand)), refresh:<span class="s2">false</span>);</p>
+<p class="p8">});</p>
+<p class="p8">20.do({<span class="s2">arg</span> i;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.setNodeSize_(i, (6+(12.rand)).round(2), refresh:<span class="s2">false</span>);</p>
+<p class="p8">});</p>
+<p class="p8">a.refresh;</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p8">b = a.getNodeStates</p>
+<p class="p8">a.clearSpace</p>
+<p class="p8">a.setNodeStates_(b)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">///////////// example 3</p>
+<p class="p8">(</p>
+<p class="p8">w = <span class="s2">Window</span>.new(<span class="s4">"ParaSpace"</span>, <span class="s2">Rect</span>(10, 500, 400, 300)).front;</p>
+<p class="p8">a = <span class="s2">ParaSpace</span>.new(w, bounds: <span class="s2">Rect</span>(20, 20, 360, 260));</p>
+<p class="p6"><br></p>
+<p class="p8">a.setShape_(<span class="s4">"circle"</span>);</p>
+<p class="p6"><br></p>
+<p class="p8">36.do({<span class="s2">arg</span> i;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.createNode(3+(i*10), 130, refresh:<span class="s2">false</span>)</p>
+<p class="p8">});</p>
+<p class="p8">35.do({<span class="s2">arg</span> i;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.createConnection(i, i+1, refresh:<span class="s2">false</span>);</p>
+<p class="p8">});</p>
+<p class="p6"><br></p>
+<p class="p8">a.setBackgrDrawFunc_({</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>10.do{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">GUI</span>.pen.color =<span class="Apple-converted-space">  </span><span class="s2">Color</span>.green(rrand(0.0, 1), rrand(0.0, 0.5));</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">GUI</span>.pen.addWedge(190@130, rrand(10, 100), 2pi.rand, 2pi.rand);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">GUI</span>.pen.perform([<span class="s6">\stroke</span>, <span class="s6">\fill</span>].choose);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p8"><span class="Apple-tab-span">	</span>})</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p8">(</p>
+<p class="p8">t = <span class="s2">Task</span>({</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">inf</span>.do({<span class="s2">arg</span> i;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>36.do({<span class="s2">arg</span> j;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setNodeLoc_(j, ((j%36)*10), ((i*j/100).sin*120)+130, <span class="s2">false</span>); <span class="s5">// false</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.1.wait;</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.refresh; </span>// Updating GUI</p>
+<p class="p8"><span class="Apple-tab-span">	</span>})</p>
+<p class="p9"><span class="s3">}, </span>SystemClock<span class="s3">);</span></p>
+<p class="p8">t.start;</p>
+<p class="p8">)</p>
+<p class="p8">t.stop;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">///////////// example 4</p>
+<p class="p8"><span class="s2">SynthDef</span>(<span class="s6">\sin</span>, {<span class="s2">arg</span> freq, amp=1;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">Out</span>.ar(0, <span class="s2">SinOsc</span>.ar(<span class="s2">Lag3</span>.kr(freq, 0.1), 0, amp)!2);</p>
+<p class="p8">}).add;</p>
+<p class="p6"><br></p>
+<p class="p8">(</p>
+<p class="p8">l = <span class="s2">List</span>.new;</p>
+<p class="p8">w = <span class="s2">Window</span>.new(<span class="s4">"ParaSpace"</span>, <span class="s2">Rect</span>(10, 500, 800, 300)).front;</p>
+<p class="p8">a = <span class="s2">ParaSpace</span>.new(w, bounds: <span class="s2">Rect</span>(20, 20, 760, 260));</p>
+<p class="p6"><br></p>
+<p class="p8">76.do({<span class="s2">arg</span> i;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.createNode(3+(i*10), 130, refresh:<span class="s2">false</span>);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>l.add(<span class="s2">Synth</span>(<span class="s6">\sin</span>, [<span class="s6">\freq</span>, 400, <span class="s6">\amp</span>, 0.01]));</p>
+<p class="p8">});</p>
+<p class="p8">75.do({<span class="s2">arg</span> i;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.createConnection(i, i+1, refresh:<span class="s2">false</span>);</p>
+<p class="p8">});</p>
+<p class="p8">a.refresh;</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p8">(</p>
+<p class="p8">t = <span class="s2">Task</span>({</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">var</span> d;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">inf</span>.do({<span class="s2">arg</span> i;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>76.do({<span class="s2">arg</span> j;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d = ((i*(j/100)).sin*120)+130;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setNodeLoc_(j, 3+((j%76)*10), d, <span class="s2">false</span>); <span class="s5">// not updating GUI</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>l[j].set(<span class="s6">\freq</span>, 400+(400 - (d*4)));</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.05.wait;</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.refresh; </span>// Here we update the GUI.</p>
+<p class="p8"><span class="Apple-tab-span">	</span>})</p>
+<p class="p9"><span class="s3">}, </span>AppClock<span class="s3">);</span></p>
+<p class="p8">t.start;</p>
+<p class="p8">)</p>
+<p class="p8">t.stop;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">///////////// example 5 - where sound happens on connections</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s2">SynthDef</span>(<span class="s6">\sinWEnv</span>, {<span class="s2">arg</span> freq, amp=0.01;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">Out</span>.ar(0, <span class="s2">SinOsc</span>.ar(freq, 0, amp)!2 * <span class="s2">EnvGen</span>.ar(<span class="s2">Env</span>.perc(0.01,0.4), doneAction:2));</p>
+<p class="p8">}).add;</p>
+<p class="p6"><br></p>
+<p class="p8">(</p>
+<p class="p8">w = <span class="s2">Window</span>.new(<span class="s4">"ParaSpace"</span>, <span class="s2">Rect</span>(10, 500, 400, 300)).front;</p>
+<p class="p8">a = <span class="s2">ParaSpace</span>.new(w, bounds: <span class="s2">Rect</span>(20, 20, 360, 260));</p>
+<p class="p8">36.do({<span class="s2">arg</span> i; a.createNode(350.rand, 250.rand, refresh:<span class="s2">false</span>)});</p>
+<p class="p6"><br></p>
+<p class="p8">a.connectAction_({<span class="s2">arg</span> node1, node2;<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-converted-space"> </span><span class="s2">Synth</span>(<span class="s6">\sinWEnv</span>, [<span class="s6">\freq</span>, 400+ (400-node1.nodeloc.y)]);</p>
+<p class="p8"><span class="Apple-converted-space"> </span><span class="s2">Synth</span>(<span class="s6">\sinWEnv</span>, [<span class="s6">\freq</span>, 400+ (400-node2.nodeloc.y)]);</p>
+<p class="p8">});</p>
+<p class="p6"><br></p>
+<p class="p8">t = <span class="s2">Task</span>({</p>
+<p class="p8"><span class="Apple-tab-span">	</span>1.wait;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">inf</span>.do({<span class="s2">arg</span> i;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>6.do({<span class="s2">arg</span> j; a.createConnection(35.rand, 35.rand, <span class="s2">false</span>);});</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>176.do({<span class="s2">arg</span> j; a.deleteConnection(35.rand, 35.rand, <span class="s2">false</span>);});</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.6.coin(</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setNodeLoc1_(35.rand, 1.0.rand, 1.0.rand, <span class="s2">false</span>);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setNodeColor_(35.rand, <span class="s2">Color</span>.new255(255.rand, 255.rand, 255.rand), <span class="s2">false</span>);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.refresh;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.05.wait;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>})</p>
+<p class="p9"><span class="s3">}, </span>AppClock<span class="s3">);</span></p>
+<p class="p8">t.start;</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p8">t.stop;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">//////////////// example 6</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s2">SynthDef</span>(<span class="s6">\sinWEnv</span>, {<span class="s2">arg</span> freq, amp=0.03;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">Out</span>.ar(0, <span class="s2">SinOsc</span>.ar(freq, 0, amp)!2 * <span class="s2">EnvGen</span>.ar(<span class="s2">Env</span>.perc(0.01,0.4), doneAction:2));</p>
+<p class="p8">}).add;</p>
+<p class="p6"><br></p>
+<p class="p8">(</p>
+<p class="p8"><span class="s2">var</span> bounds, oldcolor, freqList;</p>
+<p class="p8">bounds = <span class="s2">Rect</span>(20, 20, 310, 310);</p>
+<p class="p8">w = <span class="s2">GUI</span>.window.new(<span class="s4">"ParaSpace"</span>, <span class="s2">Rect</span>(10, 600, 350, 350)).front;</p>
+<p class="p8">a = <span class="s2">ParaSpace</span>.new(w, bounds: bounds);</p>
+<p class="p6"><br></p>
+<p class="p8">a.setNodeSize_(16);</p>
+<p class="p8">a.setFillColor_(<span class="s2">Color</span>.new255(108, 143, 103, 80));</p>
+<p class="p8">a.nodeDownAction_({<span class="s2">arg</span> node; <span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>oldcolor = node.color;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>node.color = <span class="s2">Color</span>.new255(188, 143, 143, 190);</p>
+<p class="p8">});<span class="Apple-converted-space"> </span></p>
+<p class="p8">a.nodeUpAction_({<span class="s2">arg</span> node; node.color = oldcolor});<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p7">// not very interesting scale mapping... all random freqs (feel free to map boxes to freqs)</p>
+<p class="p8">freqList = <span class="s2">Array</span>.fill(225, {200 + (5000.rand)});</p>
+<p class="p8">15.do({<span class="s2">arg</span> i;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>15.do({<span class="s2">arg</span> j;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.createNode(14+(i*20), 14+(j*20), refresh:<span class="s2">false</span>);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>});</p>
+<p class="p8">});</p>
+<p class="p8">a.refresh;</p>
+<p class="p6"><br></p>
+<p class="p8">t = <span class="s2">Task</span>({</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">inf</span>.do({</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.deleteConnections(<span class="s2">false</span>); <span class="s5">// not updating GUI</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setFillColor_(<span class="s2">Color</span>.new255(108, 143, 103, 80), <span class="s2">false</span>);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>20.do({r = 225.rand;<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.createConnection(112, r, <span class="s2">false</span>);<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setNodeColor_(r, <span class="s2">Color</span>.yellow(alpha:0.6), <span class="s2">false</span>);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = ((1-a.getNodeLoc1(112)[1])*2) * freqList[r];</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Synth</span>(<span class="s6">\sinWEnv</span>, [<span class="s6">\freq</span>, f]);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setNodeColor_(112, <span class="s2">Color</span>.green(alpha:0.6), <span class="s2">false</span>);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.refresh;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.45.wait;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>});</p>
+<p class="p9"><span class="s3">}, </span>SystemClock<span class="s3">);</span></p>
+<p class="p8">t.start;</p>
+<p class="p8">)</p>
+<p class="p8">t.stop;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">///////////////// example 7</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">// Displaying data in the ParaSpace</p>
+<p class="p8">(</p>
+<p class="p8"><span class="s2">var</span> data;</p>
+<p class="p8">w = <span class="s2">Window</span>.new(<span class="s4">"ParaSpace"</span>, <span class="s2">Rect</span>(10, 500, 400, 300)).front;</p>
+<p class="p8">a = <span class="s2">ParaSpace</span>.new(w, bounds: <span class="s2">Rect</span>(20, 20, 360, 260));</p>
+<p class="p6"><br></p>
+<p class="p7">// what's that data?</p>
+<p class="p8">data = [[<span class="s4">"2000"</span>, <span class="s2">Color</span>.red, 0.3, 0.5], [<span class="s4">"2002"</span>, <span class="s2">Color</span>.green, 0.4, 0.6], [<span class="s4">"2004"</span>, <span class="s2">Color</span>.blue, 0.8, 0.2], [<span class="s4">"2006"</span>, <span class="s2">Color</span>.yellow, 0.37, 0.8]];</p>
+<p class="p6"><br></p>
+<p class="p8">data.do({<span class="s2">arg</span> d, i; a.createNode1(d[2], d[3], d[1]).setNodeString_(i, d[0])});</p>
+<p class="p6"><br></p>
+<p class="p8">(data.size-1).do({<span class="s2">arg</span> i; a.createConnection(i, i+1)});</p>
+<p class="p6"><br></p>
+<p class="p8">a.setBackgrDrawFunc_({</p>
+<p class="p8"><span class="Apple-tab-span">	</span>18.do{<span class="s2">|i|</span> <span class="Apple-tab-span">	</span><span class="s2">Color</span>.blue(alpha:0.2).set;<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pen</span>.line((i*20)@0, (i*20)@280); <span class="s2">Pen</span>.stroke};</p>
+<p class="p8"><span class="Apple-tab-span">	</span>13.do{<span class="s2">|i|</span> <span class="Apple-tab-span">	</span><span class="s2">Color</span>.blue(alpha:0.2).set;<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pen</span>.line(0@((i*20)), 380@((i*20))); <span class="s2">Pen</span>.stroke};</p>
+<p class="p8">});</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p8">b = a.getNodeStates</p>
+<p class="p8">a.clearSpace</p>
+<p class="p8">a.setNodeStates_(b)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">/////////////// example 8<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p7">// If example 7 was boring, here is one with sound</p>
+<p class="p6"><br></p>
+<p class="p7">// first load the synthdef</p>
+<p class="p8">(</p>
+<p class="p9">SynthDef<span class="s3">(</span><span class="s6">\ps</span><span class="s3">, {</span>|freq=300, sinamp=0.4, modfreq=20, modamp=100, bpfreq=300, bprq=1, vol=0.5, pan=0|</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">var</span> carrier, modulator, bpf;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>modulator = <span class="s2">SinOsc</span>.ar(modfreq, 0, modamp);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>carrier = <span class="s2">SinOsc</span>.ar(freq+modulator, 0, sinamp);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>bpf = <span class="s2">BPF</span>.ar(carrier, bpfreq, bprq);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">Out</span>.ar(0, <span class="s2">Pan2</span>.ar(bpf, pan)*vol);</p>
+<p class="p8">}).add;</p>
+<p class="p8">)</p>
+<p class="p8">(</p>
+<p class="p8"><span class="s2">var</span> data;</p>
+<p class="p8">w = <span class="s2">Window</span>.new(<span class="s4">"ParaSpace Synth"</span>, <span class="s2">Rect</span>(10, 500, 400, 300)).front;</p>
+<p class="p8">a = <span class="s2">ParaSpace</span>.new(w, bounds: <span class="s2">Rect</span>(20, 20, 360, 260));</p>
+<p class="p6"><br></p>
+<p class="p8">data = [[<span class="s4">"carrier"</span>, <span class="s2">Color</span>.red, 0.3, 0.5], [<span class="s4">"modulator"</span>, <span class="s2">Color</span>.green, 0.4, 0.6], [<span class="s4">"BPF"</span>, <span class="s2">Color</span>.blue, 0.8, 0.2], [<span class="s4">"vol/pan"</span>, <span class="s2">Color</span>.yellow, 0.37, 0.8]];</p>
+<p class="p6"><br></p>
+<p class="p8">data.do({<span class="s2">arg</span> d, i; a.createNode1(d[2], d[3], d[1]).setNodeString_(i, d[0])});</p>
+<p class="p8">(data.size-1).do({<span class="s2">arg</span> i; a.createConnection(i, i+1)});</p>
+<p class="p8">d = <span class="s2">Synth</span>(<span class="s6">\ps</span>);</p>
+<p class="p6"><br></p>
+<p class="p8">a.nodeTrackAction_({<span class="s2">arg</span> node;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>switch (node.spritenum)</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{0} {d.set(<span class="s6">\freq</span>, (280-node.nodeloc.y)*3); d.set(<span class="s6">\sinamp</span>, node.nodeloc.x/360)}</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{1} {d.set(<span class="s6">\modfreq</span>, (280-node.nodeloc.y)*1.6); d.set(<span class="s6">\modamp</span>, node.nodeloc.x)}</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{2} {d.set(<span class="s6">\bpfreq</span>, node.nodeloc.x*3); d.set(<span class="s6">\bprq</span>, node.nodeloc.y/360)}</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{3} {d.set(<span class="s6">\vol</span>, 1-(node.nodeloc.y/260)); d.set(<span class="s6">\pan</span>, ((node.nodeloc.x/400)-0.5)*2)};</p>
+<p class="p8">});</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p8">a.setNodeLoc1Action_(0, 1.0.rand, 1.0.rand, <span class="s6">\track</span>)<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">////////////////// example 9</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">// constraining the x location (sliders) using the temp variable of the node.</p>
+<p class="p8">(</p>
+<p class="p8"><span class="s2">var</span> data;</p>
+<p class="p8">w = <span class="s2">Window</span>.new(<span class="s4">"ParaSpace"</span>, <span class="s2">Rect</span>(10, 500, 400, 300)).front;</p>
+<p class="p8">a = <span class="s2">ParaSpace</span>.new(w, bounds: <span class="s2">Rect</span>(20, 20, 360, 260));</p>
+<p class="p6"><br></p>
+<p class="p8">9.do({<span class="s2">arg</span> d, i; a.createNode1((i/10)+0.1, 0.5).setNodeString_(i, (i+1).asString);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.paraNodes[i].temp = (i/10)+0.1;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><br></p>
+<p class="p8">8.do({<span class="s2">arg</span> i; a.createConnection(i, i+1)});</p>
+<p class="p6"><br></p>
+<p class="p8">a.setBackgrDrawFunc_({</p>
+<p class="p8"><span class="Apple-tab-span">	</span>10.do{<span class="s2">|i|</span> <span class="Apple-tab-span">	</span><span class="s2">Color</span>.blue(alpha:0.2).set;<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pen</span>.line((i*36)@0, (i*36)@280); <span class="s2">Pen</span>.stroke};</p>
+<p class="p8"><span class="Apple-tab-span">	</span>13.do{<span class="s2">|i|</span> <span class="Apple-tab-span">	</span><span class="s2">Color</span>.blue(alpha:0.2).set;<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pen</span>.line(0@(i*20), 380@(i*20)); <span class="s2">Pen</span>.stroke};</p>
+<p class="p8">});</p>
+<p class="p6"><br></p>
+<p class="p8">a.nodeTrackAction_({<span class="s2">arg</span> node;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.setNodeLoc1_(node.spritenum, node.temp, a.getNodeLoc1(node.spritenum)[1])</p>
+<p class="p8">});</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

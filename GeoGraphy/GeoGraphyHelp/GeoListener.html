@@ -1,0 +1,184 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+ <hmtl>
+ 
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>SuperCollider Help -GeoListener</title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #d40000}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #d40000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #1200c4}
+span.s3 {color: #1200c4}
+span.s4 {color: #000000}
+span.s5 {color: #1200c4}
+span.s6 {color: #d40000}
+span.s7 {font: 12.0px Helvetica; color: #000000}
+span.s8 {color: #1200c4}
+span.s9 {color: #1200c4}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+ <body>
+ 
+<p class="p1"><span class="s1"><b>GeoListener<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b></b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><b> Object </b></p>
+<p class="p3"><br></p>
+<p class="p1"> A GeoListener instance creates a Listener in a virtual space. The active sound objects sequences are filtered (see CartoonModel filter and sendDef methods) by the Listener, in order to simulate the perception of an exploration of the Soundscape. This class only collects information about the Listener position, orientation and movement boundaries. It also provides OSC commands to interact with the Listener both from a local machine or from a network. Anyway, without it you cannot hear the Soundscape. </p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="CartoonModel.html"><span class="s2">CartoonModel</span></a>, 
+<a href="Soundscape.html"><span class="s2">Soundscape</span></a></p>
+
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+
+ 
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+  
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (a, b, scapeWidth, scapeHeight)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b> Assuming the soundscape represented as a 2D space, the parameters youshould configure are:</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>a </b>- The initial x position of the listener in the virtual space.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>b </b>- The initial y position of the listener in the virtual space.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>scapeWidth </b>- The width of the virtual space representing the soundscape (assumed as a rectangle).</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>scapeHeight </b>- The height of the virtual space representing the soundscape.</p>
+ 
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// inline example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s5">GeoListener</span>.new(0, 0, 2000, 2000);</p>
+<p class="p5"><br></p>
+ <p class="p5"><br></p>
+ 
+<p class="p11"><b>Accessing Instance and Class Variables</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+  
+<p class="p6"><b><span class="Apple-tab-span">	</span>address</b></p>
+ 
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>Address </b> is the host name or IP adress of a machinerunning the application for soundscape generation. </p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is nil, and in this case it is set as localhost ("127.0.0.1", 57120).</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>la</b></p>
+ <p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>la </b>is the variable that store the x position of the Listener</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+ 
+  
+<p class="p6"><b><span class="Apple-tab-span">	</span>lb</b></p>
+ <p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>lb </b>is the variable that store the y position of the Listener.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>lorient</b></p>
+ <p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>lorient </b> store the Listener orientation, as a radiant.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+
+<p class="p6"><b><span class="Apple-tab-span">	</span>perceptionArea</b></p>
+ 
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>In meter, the area where the listener perceive clearly sound object, this parameter is used in CartoonModel to compute the cutFrequency of the LowBandPass Filter
+used to simulate the perception of far sound object<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is 30 meter.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+
+<p class="p6"><b><span class="Apple-tab-span">	</span>gostraight()</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Increase the position in the direction of the orientation.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>goback()</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Increase the position in the opposite direction of the orientation.</p>
+ <p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>turnleft()</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Increment the orientation ofthe listener in the opposite clockwise direction of the default angle unit.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>turnright()</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Increment the orientation ofthe listener in the clockwise direction of the default angle unit.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>setPosition (x, y)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Set the Listener position to (x,y) coordinates.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p> 
+ 
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>calculatePanning (aXv, aYv, aA, aB, aOrient, anAtm)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Calculate the panning value between a vertex (sound object) and the Listener.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aXv </b>- The x position of a vertex  </p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aYv </b>- The y position of a vertex.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aA </b>- The x position of the Listener.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aB </b>- The y position of the Listener.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aOrient </b>- The Listener orientation.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>anAtm </b>- The W and H dimensions of the vertex if it is a non point source. </p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>update (theChanged, theChanger, more)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>When the Listener position/orientation changes, send the changes to Soundscape (GeoListener Dependant), to perform the synthesis of the spatialisation and exploration model you choose (Right now only CartoonModel exists).</p>
+ 
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p14">// Interact with the Listener from a GUI on the local machine</p>
+<p class="p15">l = <span class="s9">GeoListener</span>.new(xListener, yListener, WSoundscape, HSoundscape);</p>	
+<p class="p15">e = <span class="s9">GeoListenerGUI</span>.new(l);</p>	
+<p class="p3"><br></p>
+  
+<p class="p14">// Interact with the Listener in a network (assuming you created a GeoListener instance in another machine)</p>
+<p class="p15">m.sendMsg("/spatdif/core/listener/1/position", x, y); </p> 
+<p class="p14">//create the listener </p>
+<p class="p15">m = <span class="s9">NetAddr</span>.new(address, 57120)</p>
+<p class="p14"> //the host name or IP adress where the application runs</p>
+<p class="p15">m.sendMsg("/spatdif/core/listener/1/position", x, y);</p>
+<p class="p14">  //move the listener to a new point </p>
+<p class="p15">m.sendMsg("/spatdif/core/listener/1/move", "gostraight");</p>
+<p class="p15">m.sendMsg("/spatdif/core/listener/1/move", "goback");</p>
+<p class="p15">m.sendMsg("/spatdif/core/listener/1/move", "turnright");</p>
+<p class="p15">m.sendMsg("/spatdif/core/listener/1/move", "turnleft");</p>
+
+
+
+
+
+ </body> </html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.11">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 15.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #e10000}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #e10000; min-height: 12.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #e10002}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #e10002; min-height: 12.0px}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #3300d3}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #4300ff}
+span.s3 {font: 17.0px Helvetica}
+span.s4 {font: 5.0px Helvetica}
+span.s5 {color: #000000}
+span.s6 {text-decoration: underline}
+span.s7 {text-decoration: underline ; color: #0000ee}
+span.s8 {color: #3300d3}
+span.s9 {color: #e10002}
+span.s10 {font: 10.0px Helvetica}
+span.s11 {font: 12.0px Helvetica}
+span.s12 {color: #737373}
+span.s13 {color: #028c01}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Solver<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>numerical solver of systems of Ordinary Differential Equations of any order</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1">Solver is the base class to inherit from to implement numerical solving methods for ODEs.<span class="Apple-converted-space"> </span></p>
+<p class="p1">Current such classes available are <a href="../_Movement/Euler.html"><span class="s2">Euler</span></a>, <a href="../_Movement/RK2.html"><span class="s2">RK2</span></a>, <a href="../_Movement/RK3.html"><span class="s2">RK3</span></a>, <a href="../_Movement/RK4.html"><span class="s2">RK4</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3">1</span> - ODEs of the first order take the form:</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>y' = F(t,y)<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">where F:RxR -&gt; R and y = y(t) and y' the derivative of f.</p>
+<p class="p2"><br></p>
+<p class="p1">Systems of equations take the form:</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>dy<span class="s4"><sub>1</sub></span>/dt = F<span class="s4"><sub>1</sub></span>(t,y<span class="s4"><sub>1</sub></span>)<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>...</p>
+<p class="p1"><span class="Apple-tab-span">	</span>dy<span class="s4"><sub>n</sub></span>/dt = F<span class="s4"><sub>n</sub></span>(t,y<span class="s4"><sub>n</sub></span>)<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space"> </span>or in vector form:</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>DY = F^(t,Y)<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">where F^ = { F<span class="s4"><sub>1</sub></span>,...,F<span class="s4"><sub>n</sub></span>}, Y = { Y<span class="s4"><sub>1</sub></span>,...,Y<span class="s4"><sub>n</sub></span>}, and DY is the jacobian matrix of Y.</p>
+<p class="p2"><br></p>
+<p class="p3">2 - ODE's of order N take the form:</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>y = F(t,y,dy/dt,...,d<span class="s4"><sup>N</sup></span>y/dt<span class="s4"><sup>N</sup></span>)<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">and Systems of M equation of order N take the form;<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>d<span class="s4"><sup>N</sup></span>y<span class="s4"><sub>1</sub></span>/dt<span class="s4"><sup>N</sup></span> = F<span class="s4"><sub>1</sub></span>(t,y,dy<span class="s4"><sub>1</sub></span>/dt,...,d<span class="s4"><sup>N-1</sup></span>y<span class="s4"><sub>1</sub></span>/dt<span class="s4"><sup>N-1</sup></span>)<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>...</p>
+<p class="p1"><span class="Apple-tab-span">	</span>d<span class="s4"><sup>N</sup></span>y<span class="s4"><sub>M</sub></span>/dt<span class="s4"><sup>N</sup></span> = F<span class="s4"><sub>M</sub></span>(t,y,dy<span class="s4"><sub>M</sub></span>/dt,...,d<span class="s4"><sup>N-1</sup></span>y<span class="s4"><sub>M</sub></span>/dt<span class="s4"><sup>N-1</sup></span>)<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">or in vector form</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>DY = F^(t,Y,DY,...,D<span class="s4"><sup>N</sup></span>Y) <span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-converted-space">  </span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s5"><b>See also:</b> <a href="../_Movement/NFunc.html"><span class="s6">NFunc</span></a>, <a href="../_Movement/SystemNFunc.html"><span class="s6">SystemNFunc</span></a>,</span><span class="s2"> <a href="../_Movement/Euler.html"><span class="s7">Euler</span></a>, <a href="../_Movement/RK2.html"><span class="s7">RK2</span></a>, <a href="../_Movement/RK3.html"><span class="s7">RK3</span></a>, <a href="../_Movement/RK4.html"><span class="s7">RK4</span></a></span><span class="s5">, <a href="../Movement.html"><span class="s6">Movement</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Some Important Issues Regarding Solver<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p1">This class can be quite cpu intensive and with small dt values can completly freeze supercollider.</p>
+<p class="p1">ODE's of higher order are solved by converting them to systems of equations of the first order.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (args)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Create a solver for a one dimensional equation or system of equations.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>f </b>- see below</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dt </b>- calculation time step in seconds.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>t </b>- initial time.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>y </b>- initial position: a number or array of numbers.</p>
+<p class="p10"><br></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">var</span> time = 2.5, dt = 0.01, t0 = 1, y0 =1, min= 3.5.neg,max=2;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = {<span class="s8">|t,y|</span> ((2/t)+(y*y)).neg/(2*t*y) };</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d = <span class="s8">RK4</span>(f,dt,t0,y0);</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d.next;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*newHO (f, dt, t, y)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Create a solver for a higher dimensional equation or system of equations.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>f </b>- see below</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dt </b>- calculation time step in seconds.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>t </b>- initial time.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>y </b>- initial position: a number or array of numbers.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p11"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>var</span> time = 40, dt = 0.1, t0 = 0, y0 =2.5, dy0 = 0, min= 2.5.neg,max=2.5, k=3, mass=0.5, bcoef = 0.2;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = {<span class="s8">|t,y,dydt|</span> ((k*y)+(bcoef*dydt)).neg/mass }; <span class="s9">// harmonic oscillator</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d = <span class="s8">RK4</span>.newHO(f,dt,t0,[y0,dy0]);</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d.next</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p13"><b>Accessing Instance and Class Variables</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>y_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>y</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>It can take the following forms:<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1D ODE - y</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>System of 1D ODEs - [y<span class="s10">1</span>,...,y<span class="s10">n</span>]</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>N-order ODE - [y,dy,..., d<span class="s4"><sup>N-1</sup></span>y]</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>System of M, N-order ODEs - [[y<span class="s4"><sub>1</sub></span>,dy<span class="s4"><sub>1</sub></span>,..., d<span class="s4"><sup>N-1</sup></span>y<span class="s4"><sub>1</sub></span>],...,[y<span class="s4"><sub>M</sub></span>,dy<span class="s4"><sub>1</sub></span>,..., d<span class="s4"><sup>N-1</sup></span>y<span class="s4"><sub>M</sub></span>]]</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the value can be reset and the calculation will continue from there.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>t_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>t</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>time in seconds.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>order_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>order</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>order of the ODE.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>f_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>f</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f is the function F defining the equation DY = F^(t,Y,DY,...,D<span class="s4"><sup>N</sup></span>Y) . It can take the following forms:</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>D ODE - { |t,y| ... }</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>System of 1D ODEs - [{ |t,y| ... },...,{ |t,y| ... }]</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>N-order ODE - { |t,y,dy,..., d<span class="s4"><sup>N-1</sup></span>y| ... }<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>System of M, N-order ODEs - [{ |t,y,dy<span class="s4"><sub>1</sub></span>,..., d<span class="s4"><sup>N-1</sup></span>y<span class="s4"><sub>1,...,</sub></span>dy<span class="s4"><sub>M</sub></span>,..., d<span class="s4"><sup>N-1</sup></span>y<span class="s4"><sub>M</sub></span>| ... } ,...,{ |t,y,dy<span class="s4"><sub>1</sub></span>,..., d<span class="s4"><sup>N-1</sup></span>y<span class="s4"><sub>1,...,</sub></span>dy<span class="s4"><sub>M</sub></span>,..., d<span class="s4"><sup>N-1</sup></span>y<span class="s4"><sub>M</sub></span>| ... }]</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>dt_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>dt</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>calculation time step in seconds.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>next</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>get the next value from the solver.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>in general this will be:</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[[y<span class="s4"><sub>1</sub></span>,y'<span class="s4"><sub>1</sub></span>,...,y<span class="s4"><sub>1</sub></span>^(n-1)],...,[y<span class="s4"><sub>M</sub></span>,y'<span class="s4"><sub>M</sub></span>,...,y<span class="s4"><sub>M</sub></span>^(n-1)]]</p>
+<p class="p6"><span class="s11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><br></p>
+<p class="p13"><b>Examples</b></p>
+<p class="p14"><br></p>
+<p class="p15">//note: for the gui examples the ixiViews and wslib quarks are needed</p>
+<p class="p16"><br></p>
+<p class="p14"><br></p>
+<p class="p17">//-----------------------------------------------------------------------------------------------//</p>
+<p class="p17">//First order ODE</p>
+<p class="p14"><br></p>
+<p class="p11">(</p>
+<p class="p11"><span class="s8">var</span> time = 2.5, dt = 0.01, t0 = 1, y0 =1, min= 3.5.neg,max=2;</p>
+<p class="p11">f = {<span class="s8">|t,y|</span> ((2/t)+(y*y)).neg/(2*t*y) };</p>
+<p class="p17">//f = {|t,y| y }; //exponential</p>
+<p class="p11">a = <span class="s8">Euler</span>(f,dt,t0,y0);</p>
+<p class="p11">b = <span class="s8">RK2</span>(f,dt,t0,y0);</p>
+<p class="p11">c = <span class="s8">RK3</span>(f,dt,t0,y0);</p>
+<p class="p11">d = <span class="s8">RK4</span>(f,dt,t0,y0);</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p11"><span class="s8">Window</span>.closeAll;</p>
+<p class="p14"><br></p>
+<p class="p11">[a,b,c,d].do({ <span class="s8">|i,j|</span> (time/dt).asInteger.collect{ i.next }.plot(i.class.asString,bounds:<span class="s8">Rect</span>(0,200*j,600,200),minval:min,maxval:max)});</p>
+<p class="p11">r = 6.collect{ c.next.round(0.000001) };</p>
+<p class="p14"><br></p>
+<p class="p11">)</p>
+<p class="p14"><br></p>
+<p class="p17">//checks out with http://people.revoledu.com/kardi/tutorial/ODE/Comparison%20Runge%20Kutta.htm</p>
+<p class="p17">// problem with k3...</p>
+<p class="p17">//-----------------------------------------------------------------------------------------------//</p>
+<p class="p14"><br></p>
+<p class="p17">//-----------------------------------------------------------------------------------------------//</p>
+<p class="p17">//Second order ODE</p>
+<p class="p17">// the spring</p>
+<p class="p11">(</p>
+<p class="p11"><span class="s8">var</span> time = 40, dt = 0.1, t0 = 0, y0 =2.5, dy0 = 0, min= 2.5.neg,max=2.5, k=3, mass=0.5, bcoef = 0.2;</p>
+<p class="p11">f = {<span class="s8">|t,y,dydt|</span> ((k*y)+(bcoef*dydt)).neg/mass }; <span class="s9">// harmonic oscillator</span></p>
+<p class="p11">a = <span class="s8">Euler</span>.newHO(f,dt,t0,[y0,dy0]);</p>
+<p class="p11">b = <span class="s8">RK2</span>.newHO(f,dt,t0,[y0,dy0]);</p>
+<p class="p11">c = <span class="s8">RK3</span>.newHO(f,dt,t0,[y0,dy0]);</p>
+<p class="p11">d = <span class="s8">RK4</span>.newHO(f,dt,t0,[y0,dy0]);</p>
+<p class="p14"><br></p>
+<p class="p11"><span class="s8">Window</span>.closeAll;</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p11">[a,b,c,d].do({ <span class="s8">|i,j|</span> (time/dt).asInteger.collect{ i.next[0] }.plot(i.class.asString,bounds:<span class="s8">Rect</span>(0,220*j,600,200),minval:min,maxval:max)});</p>
+<p class="p14"><br></p>
+<p class="p11">)</p>
+<p class="p14"><br></p>
+<p class="p15">//gui<span class="Apple-converted-space"> </span></p>
+<p class="p15">// you can drag the dot<span class="Apple-converted-space"> </span></p>
+<p class="p11">(</p>
+<p class="p11"><span class="s8">var</span> w, time = 40, dt = 0.1, t0 = 0, y0 =2.5, dy0 = 0, min= 2.5.neg,max=2.5, k=3, mass=0.5, bcoef = 0.2,task;</p>
+<p class="p11"><span class="s8">var</span> moving = <span class="s8">false</span>,zoom;</p>
+<p class="p14"><br></p>
+<p class="p11">w = <span class="s8">Window</span>(<span class="s12">"Gui"</span>,<span class="s8">Rect</span>(100,100,520,580),<span class="s8">false</span>);</p>
+<p class="p11">w.addFlowLayout( 10@10, 20@5 ); <span class="s9">// a shortcut method</span></p>
+<p class="p14"><br></p>
+<p class="p11">k = <span class="s8">EZSmoothSlider</span>(w,200@20,<span class="s12">"k"</span>,[0.1,10,<span class="s13">\lin</span>].asSpec,initVal:3);</p>
+<p class="p11">mass = <span class="s8">EZSmoothSlider</span>(w,200@20,<span class="s12">"mass"</span>,[0.1,30,<span class="s13">\lin</span>].asSpec,initVal:0.5);</p>
+<p class="p11">w.view.decorator.nextLine;</p>
+<p class="p11">bcoef = <span class="s8">EZSmoothSlider</span>(w,200@20,<span class="s12">"bcoef"</span>,[0,1,<span class="s13">\lin</span>].asSpec,initVal:0.2);</p>
+<p class="p11">zoom = <span class="s8">EZSmoothSlider</span>(w,200@20,<span class="s12">"zoom"</span>,[0,0.1,<span class="s13">\lin</span>].asSpec,initVal:0.01);</p>
+<p class="p14"><br></p>
+<p class="p11"><span class="s8">RoundButton</span>.new(w,60@20)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.states_([ [ <span class="s13">\play</span>, <span class="s8">Color</span>(1.0, 1.0, 1.0, 1.0),<span class="s8">Color</span>.grey ],</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[ <span class="s13">\stop</span> , <span class="s8">Color</span>(1.0, 1.0, 1.0, 1.0), <span class="s8">Color</span>.red ] ])</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.canFocus_(<span class="s8">false</span>)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_{<span class="s8">|v|</span><span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>switch (v.value)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{1} {task.start }</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{0} {task.stop; a = <span class="s8">RK4</span>.newHO(f,dt,t0,[y0,dy0]) };</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p11">w.view.decorator.nextLine;</p>
+<p class="p11">p =<span class="Apple-converted-space">  </span><span class="s8">ParaSpace</span>.new(w, bounds: <span class="s8">Rect</span>(0,0,500,500)).createNode1(0.5,0.5);</p>
+<p class="p11">f = {<span class="s8">|t,y,dydt|</span> ((k.value*y)+(bcoef.value*dydt)).neg/mass.value };</p>
+<p class="p11">a = <span class="s8">RK4</span>.newHO(f,dt,t0,[y0,dy0]);</p>
+<p class="p14"><br></p>
+<p class="p11">p.nodeTrackAction_({ <span class="s8">|node|</span><span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>moving = <span class="s8">true</span>;</p>
+<p class="p11"><span class="Apple-tab-span">	</span>postln(<span class="s12">"started moving node "</span>++ node.spritenum);</p>
+<p class="p11"><span class="Apple-tab-span">	</span>a.y =<span class="Apple-converted-space">  </span>[(node.nodeLoc1[0]-0.5)/zoom.value,0];<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>p.setNodeLoc1_(0, p.getNodeLoc1(0)[0],0.5);</p>
+<p class="p11"><span class="Apple-tab-span">	</span>a.y.postln;</p>
+<p class="p11"><span class="Apple-tab-span">	</span>});</p>
+<p class="p14"><span class="Apple-tab-span">	</span></p>
+<p class="p11">p.nodeUpAction_({<span class="s8">|node|</span><span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>postln(<span class="s12">"stoped moving node "</span>++ node.spritenum);</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>moving = <span class="s8">false</span>; });</p>
+<p class="p14"><br></p>
+<p class="p11">task = <span class="s8">Task</span>.new({</p>
+<p class="p11"><span class="Apple-tab-span">	</span>loop{</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(moving.not){ p.setNodeLoc1_(0, 0.5+(a.next[0]*zoom.value), 0.5)};</p>
+<p class="p14"><br></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dt.wait;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p14"><br></p>
+<p class="p11">w.front;</p>
+<p class="p11">w.onClose_({ task.stop})</p>
+<p class="p14"><br></p>
+<p class="p11">)<span class="Apple-converted-space"> </span></p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p17">//-----------------------------------------------------------------------------------------------//</p>
+<p class="p17">//System of second order ODE</p>
+<p class="p17">// two springs</p>
+<p class="p17">//m1, m2 = mass of blocks</p>
+<p class="p17">//w1, w2 = width of blocks</p>
+<p class="p17">//k1, k2 = spring constants</p>
+<p class="p17">//R1, R2 = rest length of springs</p>
+<p class="p17">//m1 x1'' = −k1 (x1 − R1) + k2 (x2 − x1 − w1 − R2)</p>
+<p class="p17">//m2 x2'' = −k2 (x2 − x1 − w1 − R2)</p>
+<p class="p17">// from<span class="Apple-converted-space"> </span></p>
+<p class="p17">// http://www.myphysicslab.com/dbl_spring1.html</p>
+<p class="p18"><br></p>
+<p class="p11">(</p>
+<p class="p11"><span class="s8">var</span> time = 40, dt = 0.1, t0 = 0, min= 4.neg,max=4;</p>
+<p class="p11"><span class="s8">var</span><span class="Apple-converted-space">  </span>y1_0 =<span class="Apple-converted-space">  </span>2.5, dy1_0 = 0, k1=3, mass1=0.5, bcoef1 = 0.2, r1 = -2, w1 = 0;</p>
+<p class="p11"><span class="s8">var</span><span class="Apple-converted-space">  </span>y2_0 = -2.5, dy2_0 = 0, k2=3, mass2=0.5, bcoef2 = 0.2, r2 = 1, w2 = 0;</p>
+<p class="p14"><br></p>
+<p class="p11">f = [{<span class="s8">|t,y1,dy1dt,y2,dy2dt|</span> ((k1.neg*(y1-r1))+(k2*(y2-y1-w1-r2)))/mass1 },</p>
+<p class="p11"><span class="Apple-tab-span">	</span>{<span class="s8">|t,y1,dy1dt,y2,dy2dt|</span> (k2.neg*(y2-y1-w1-r2))/mass2 }];</p>
+<p class="p14"><br></p>
+<p class="p11">a = <span class="s8">Euler</span>.newHO(f,dt,t0,[[y1_0,dy1_0],[y2_0,dy2_0]]);</p>
+<p class="p11">b = <span class="s8">RK2</span>.newHO(f,dt,t0,[[y1_0,dy1_0],[y2_0,dy2_0]]);</p>
+<p class="p11">c = <span class="s8">RK3</span>.newHO(f,dt,t0,[[y1_0,dy1_0],[y2_0,dy2_0]]);</p>
+<p class="p11">d = <span class="s8">RK4</span>.newHO(f,dt,t0,[[y1_0,dy1_0],[y2_0,dy2_0]]);</p>
+<p class="p14"><br></p>
+<p class="p17">Window.closeAll;</p>
+<p class="p14"><br></p>
+<p class="p11">[a,b,c,d].do({ <span class="s8">|i,j|</span> (time/dt).asInteger.collect{ i.next[1][0] }</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.plot(i.class.asString,bounds:<span class="s8">Rect</span>(0,200*j,600,200),minval:min,maxval:max)});</p>
+<p class="p14"><br></p>
+<p class="p11">)</p>
+<p class="p14"><br></p>
+<p class="p15">//Gui</p>
+<p class="p15">// drag the points</p>
+<p class="p11">(</p>
+<p class="p11"><span class="s8">var</span> w, time = 40, dt = 0.1, t0 = 0, min= 2.5.neg,max=2.5, task,zoom;</p>
+<p class="p11"><span class="s8">var</span><span class="Apple-converted-space">  </span>y1_0 =<span class="Apple-converted-space">  </span>1, dy1_0 = 0, k1=3, mass1=0.5, bcoef1 = 0.2, r1 = 1, w1 =0;</p>
+<p class="p11"><span class="s8">var</span><span class="Apple-converted-space">  </span>y2_0 = 2.2, dy2_0 = 0, k2=3, mass2=0.5, bcoef2 = 0.2, r2 = 1, w2 = 0;</p>
+<p class="p11"><span class="s8">var</span> moving = [<span class="s8">false</span>,<span class="s8">false</span>];</p>
+<p class="p11">w = <span class="s8">Window</span>(<span class="s12">"Gui"</span>,<span class="s8">Rect</span>(100,100,520,625),<span class="s8">false</span>);</p>
+<p class="p11">w.addFlowLayout( 10@10, 20@5 ); <span class="s9">// a shortcut method</span></p>
+<p class="p14"><br></p>
+<p class="p11">k1 = <span class="s8">EZSmoothSlider</span>(w,200@20,<span class="s12">"k1"</span>,[0.1,10,<span class="s13">\lin</span>].asSpec,initVal:3, labelWidth: 30);</p>
+<p class="p11">mass1 = <span class="s8">EZSmoothSlider</span>(w,200@20,<span class="s12">"mass1"</span>,[0.1,10,<span class="s13">\lin</span>].asSpec,initVal:0.5, labelWidth: 40);</p>
+<p class="p11">bcoef1 = <span class="s8">EZSmoothSlider</span>(w,200@20,<span class="s12">"bcoef1"</span>,[0,1,<span class="s13">\lin</span>].asSpec,initVal:0.2, labelWidth: 40);</p>
+<p class="p17">//w.view.decorator.nextLine;</p>
+<p class="p11">k2 = <span class="s8">EZSmoothSlider</span>(w,200@20,<span class="s12">"k2"</span>,[0.1,10,<span class="s13">\lin</span>].asSpec,initVal:3, labelWidth:<span class="Apple-converted-space">  </span>40);</p>
+<p class="p11">mass2 = <span class="s8">EZSmoothSlider</span>(w,200@20,<span class="s12">"mass2"</span>,[0.1,10,<span class="s13">\lin</span>].asSpec,initVal:0.5, labelWidth: 40);</p>
+<p class="p11">bcoef2 = <span class="s8">EZSmoothSlider</span>(w,200@20,<span class="s12">"bcoef2"</span>,[0,1,<span class="s13">\lin</span>].asSpec,initVal:0.2, labelWidth: 40);</p>
+<p class="p11">w.view.decorator.nextLine;</p>
+<p class="p11">zoom = <span class="s8">EZSmoothSlider</span>(w,200@20,<span class="s12">"zoom"</span>,[0,0.05,<span class="s13">\lin</span>].asSpec,initVal:0.01, labelWidth: 40);</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p11"><span class="s8">RoundButton</span>.new(w,60@20)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.states_([ [ <span class="s13">\play</span>, <span class="s8">Color</span>(1.0, 1.0, 1.0, 1.0),<span class="s8">Color</span>.grey ],</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[ <span class="s13">\stop</span> , <span class="s8">Color</span>(1.0, 1.0, 1.0, 1.0), <span class="s8">Color</span>.red ] ])</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.canFocus_(<span class="s8">false</span>)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_{<span class="s8">|v|</span><span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>switch (v.value)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{1} {task.start }</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{0} {task.stop;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a = <span class="s8">RK4</span>.newHO(f,dt,t0,[[y1_0,dy1_0],[y2_0,dy2_0]]);</p>
+<p class="p11"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>};</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p11">w.view.decorator.nextLine;</p>
+<p class="p11">p =<span class="Apple-converted-space">  </span><span class="s8">ParaSpace</span>.new(w, bounds: <span class="s8">Rect</span>(0,0,500,500))</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.createNode1(0.25,0.5)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.createNode1(0.75,0.5);</p>
+<p class="p11">p.paraNodes.do{ |node,i| node.string_(i.asString) };</p>
+<p class="p14"><br></p>
+<p class="p19"><span class="s5">f = [{</span>|t,y1,dy1dt,y2,dy2dt|</p>
+<p class="p11"><span class="Apple-tab-span">	</span>(((k1.value.neg*(y1-r1.value))+(k2.value*(y2-y1-w1.value-r2.value)))-(bcoef1.value*dy1dt))/mass1.value },</p>
+<p class="p11"><span class="Apple-tab-span">	</span>{<span class="s8">|t,y1,dy1dt,y2,dy2dt|</span> ((k2.value.neg*(y2-y1-w1.value-r2.value))-(bcoef2.value*dy2dt))/mass2.value }];</p>
+<p class="p14"><br></p>
+<p class="p11">a = <span class="s8">RK4</span>.newHO(f,dt,t0,[[y1_0,dy1_0],[y2_0,dy2_0]]);</p>
+<p class="p14"><br></p>
+<p class="p11">p.nodeTrackAction_({<span class="s8">|node|</span><span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>moving[node.spritenum] = <span class="s8">true</span>;</p>
+<p class="p11"><span class="Apple-tab-span">	</span>postln(<span class="s12">"started moving node "</span>++ node.spritenum);</p>
+<p class="p11"><span class="Apple-tab-span">	</span>a.y[node.spritenum] =<span class="Apple-converted-space">  </span>[(p.getNodeLoc1(node.spritenum)[0]-0.5)/zoom.value,0];<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>p.setNodeLoc1_(node.spritenum, p.getNodeLoc1(node.spritenum)[0],0.5);</p>
+<p class="p11"><span class="Apple-tab-span">	</span>a.y.postln;</p>
+<p class="p11"><span class="Apple-tab-span">	</span>});</p>
+<p class="p14"><span class="Apple-tab-span">	</span></p>
+<p class="p11">p.nodeUpAction_({<span class="s8">|node|</span><span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>postln(<span class="s12">"stoped moving node "</span>++ node.spritenum);</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>moving[node.spritenum] = <span class="s8">false</span>; });</p>
+<p class="p14"><br></p>
+<p class="p11">task = <span class="s8">Task</span>.new({</p>
+<p class="p11"><span class="Apple-tab-span">	</span>loop{</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(moving[0].not){ p.setNodeLoc1_(0, 0.5+(a.next[0][0]*zoom.value*3), 0.5)};</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(moving[1].not){ p.setNodeLoc1_(1, 0.5+(a.next[1][0]*zoom.value*3), 0.5)};</p>
+<p class="p14"><br></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dt.wait;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p11">w.front;</p>
+<p class="p11">w.onClose_({ task.stop})</p>
+<p class="p14"><br></p>
+<p class="p11">)</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p17">//chaotic pendulum</p>
+<p class="p11">(</p>
+<p class="p11"><span class="s8">var</span> w, time = 40, dt = 0.01, t0 = 0, min= 2.5.neg,max=2.5, task;</p>
+<p class="p11"><span class="s8">var</span> r, mass=0.5, bcoef = 0.2, g = 9.8,drive,freq;</p>
+<p class="p11"><span class="s8">var</span> moving = <span class="s8">false</span>,zoom, deltat,dtslider,timewarp;</p>
+<p class="p11"><span class="s8">var</span> theta0 = pi, dtheta0 = 0;</p>
+<p class="p11">w = <span class="s8">Window</span>(<span class="s12">"A chaotic pendulum"</span>,<span class="s8">Rect</span>(100,100,520,640),<span class="s8">false</span>);</p>
+<p class="p11">w.addFlowLayout( 10@10, 20@5 ); <span class="s9">// a shortcut method</span></p>
+<p class="p14"><br></p>
+<p class="p11">drive = <span class="s8">EZSlider</span>(w,200@20,<span class="s12">"drive amp"</span>,[0.1,3,<span class="s13">\lin</span>].asSpec,initVal:1.150);</p>
+<p class="p11">freq = <span class="s8">EZSlider</span>(w,200@20,<span class="s12">"drive freq"</span>,[0.0,3.0,<span class="s13">\lin</span>].asSpec,initVal:0.666);</p>
+<p class="p11">r = <span class="s8">EZSlider</span>(w,200@20,<span class="s12">"lenght"</span>,[0.5,1.5,<span class="s13">\exp</span>].asSpec,initVal:1);</p>
+<p class="p11">mass = <span class="s8">EZSlider</span>(w,200@20,<span class="s12">"mass"</span>,[0.1,30,<span class="s13">\lin</span>].asSpec,initVal:1);</p>
+<p class="p11">bcoef = <span class="s8">EZSlider</span>(w,200@20,<span class="s12">"damp"</span>,[0,1,<span class="s13">\lin</span>].asSpec,initVal:0.5);</p>
+<p class="p11">zoom = <span class="s8">EZSlider</span>(w,200@20,<span class="s12">"zoom"</span>,[0,0.7,<span class="s13">\lin</span>].asSpec,initVal:0.3);</p>
+<p class="p11">w.view.decorator.nextLine;</p>
+<p class="p11">z = deltat =<span class="Apple-converted-space">  </span><span class="s8">EZSlider</span>(w,200@20,<span class="s12">"screen dt"</span>,[0.01,0.9,<span class="s13">\lin</span>].asSpec,initVal:0.05);</p>
+<p class="p11">y = dtslider = <span class="s8">EZSlider</span>(w,200@20,<span class="s12">"physics dt"</span>,[0.001,0.3,<span class="s13">\lin</span>].asSpec,initVal:0.01)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.action_({ <span class="s8">|ez|</span><span class="Apple-converted-space">  </span>a.dt = dtslider.value*timewarp.value});</p>
+<p class="p11">timewarp = <span class="s8">EZSlider</span>(w,200@20,<span class="s12">"timewarp"</span>,[0.25,4,<span class="s13">\lin</span>].asSpec,initVal:1)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.action_({ |ez| a.dt = dtslider.value*timewarp.value }) ;</p>
+<p class="p11"><span class="s8">EZSlider</span>(w,200@20,<span class="s12">"lag"</span>,[0,1,<span class="s13">\lin</span>].asSpec,initVal:0.15)</p>
+<p class="p11">.action_({ <span class="s8">|ez|</span> ~synth.set(<span class="s13">\lag</span>,ez.value) });</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p11">~synth = { <span class="s8">|freq = 500,lag = 0.1|</span> <span class="s8">SyncSaw</span>.ar(100, <span class="s8">Lag</span>.kr(freq,lag), 0.1) }.play;</p>
+<p class="p14"><br></p>
+<p class="p11"><span class="s8">RoundButton</span>.new(w,60@20)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.states_([ [ <span class="s13">\play</span>, <span class="s8">Color</span>(1.0, 1.0, 1.0, 1.0),<span class="s8">Color</span>.grey ],</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[ <span class="s13">\stop</span> , <span class="s8">Color</span>(1.0, 1.0, 1.0, 1.0), <span class="s8">Color</span>.red ] ])</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.canFocus_(<span class="s8">false</span>)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_{<span class="s8">|v|</span><span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>switch (v.value)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{1} {task.start;<span class="Apple-converted-space">  </span>}</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{0} {task.stop; ~synth.stop; a = <span class="s8">RK4</span>.newHO(f,dtslider.value*timewarp.value,t0,[theta0,dtheta0]); };</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p11">w.view.decorator.nextLine;</p>
+<p class="p11">p =<span class="Apple-converted-space">  </span><span class="s8">ParaSpace</span>.new(w, bounds: <span class="s8">Rect</span>(0,0,500,500)).createNode1(0.5,0.5).createNode1(0.5,0.5);</p>
+<p class="p11">p.createConnection(0, 1);</p>
+<p class="p17">//--------FUNC-----------</p>
+<p class="p19"><span class="s5">f = {</span>|t,theta,dthetadt|</p>
+<p class="p11"><span class="Apple-tab-span">	</span>(g.neg/r.value*sin(theta)) +</p>
+<p class="p11"><span class="Apple-tab-span">	</span>(bcoef.value.neg*dthetadt+(drive.value*cos(freq.value*2*pi*t))/(mass.value*r.value*r.value))</p>
+<p class="p11">};</p>
+<p class="p17">//--------FUNC-----------</p>
+<p class="p11">a = <span class="s8">RK4</span>.newHO(f,dtslider.value,t0,[theta0,dtheta0]);</p>
+<p class="p14"><br></p>
+<p class="p11">p.nodeTrackAction_({ <span class="s8">|node|</span><span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>moving = <span class="s8">true</span>;</p>
+<p class="p17"><span class="s5"><span class="Apple-tab-span">	</span></span>//postln("started moving node "++ node.spritenum);</p>
+<p class="p11"><span class="Apple-tab-span">	</span>a.y =<span class="Apple-converted-space">  </span>[(node.nodeLoc1.asPoint-<span class="s8">Point</span>(0.5,0.5)).theta.neg+(pi/2),0];<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>a.y.postln;</p>
+<p class="p11"><span class="Apple-tab-span">	</span>});</p>
+<p class="p14"><span class="Apple-tab-span">	</span></p>
+<p class="p11">p.nodeUpAction_({<span class="s8">|node|</span><span class="Apple-converted-space"> </span></p>
+<p class="p17"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//postln("stoped moving node "++ node.spritenum);</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>moving = <span class="s8">false</span>; });</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p11">task = <span class="s8">Task</span>.new({</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s8">var</span> accumulator = 0, angle =<span class="Apple-converted-space">  </span>a.next[0], alpha = 0, interpolateAngle, oldangle = a.y[0];</p>
+<p class="p14"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>loop{</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(moving.not){ <span class="s8">var</span> temp;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accumulator = accumulator + deltat.value;</p>
+<p class="p17"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//(" <span class="Apple-converted-space">  </span>increased accumulator to "++ accumulator++" screendt "++deltat.value).postln;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><br></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>while({accumulator &gt;= dtslider.value},{</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>oldangle = a.y[0];<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>angle = a.next[0];</p>
+<p class="p17"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//("********calculating physics accumulator: "++ accumulator++ " value: "++angle).postln;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accumulator = accumulator - dtslider.value;</p>
+<p class="p17"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//(" <span class="Apple-converted-space">  </span>decreased accumulator to "++ accumulator).postln;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~synth.set(<span class="s13">\freq</span>, 50+(((angle+pi).mod(2*pi)*200)));</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(dtslider.value &lt; deltat.value){dtslider.value.max(0.001).wait; (<span class="s12">" <span class="Apple-converted-space">  </span>waiting physics "</span>++[dtslider.value,deltat.value])};</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> </span></p>
+<p class="p14"><br></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>alpha = accumulator/dtslider.value;</p>
+<p class="p17"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//("-------updating screen. accumulator: "++ accumulator++" alpha: "++alpha).postln;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>interpolateAngle = angle*alpha + (oldangle*(1+alpha.neg));<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>temp = <span class="s8">WFSPoint</span>.newAZ( interpolateAngle.mod(2*pi)/(2*pi)*360,1).asPoint*zoom.value+<span class="s8">Point</span>(0.5,0.5);</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.setNodeLoc1_(0,temp.x,temp.y);</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(dtslider.value &gt;= deltat.value){deltat.value.max(0.001).wait; <span class="s12">" <span class="Apple-converted-space">  </span>waiting screen"</span>};</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{dtslider.value.max(0.001).wait };</p>
+<p class="p14"><br></p>
+<p class="p11"><span class="Apple-tab-span">	</span>};</p>
+<p class="p11">});</p>
+<p class="p14"><br></p>
+<p class="p11">w.front;</p>
+<p class="p11">w.onClose_({ task.stop; ~synth.free})</p>
+<p class="p14"><br></p>
+<p class="p11">)</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p11">...</p>
+</body>
+</html>

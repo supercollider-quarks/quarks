@@ -1,0 +1,146 @@
+CLASS:: RedGrain2
+SUMMARY:: granular synthesis
+CATEGORIES:: Red>redGrain
+RELATED:: Classes/RedAGrain, Classes/RedBuffer, Classes/RedGrain, Classes/RedGrainController, Classes/RedKGrain
+
+DESCRIPTION::
+Language side granulator built upon link::Classes/Task::. Same as link::Classes/RedGrain:: but does not use link::Classes/OffsetOut::. Should be less cpu intensive but might sound a bit more rough.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create granulator (stereo only for now)
+
+ARGUMENT:: server
+If code::nil:: then the default server will be used.
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedGrain, prSynthName
+
+METHOD:: start
+starts the granulator playing on bus index out
+
+METHOD:: stop
+stops the granulator
+
+METHOD:: pause
+pause the task
+
+METHOD:: resume
+resume the task
+
+METHOD:: delta
+get or set time between grains in seconds
+
+METHOD:: buf
+get or select which buffer to get the grain source audio from
+
+METHOD:: rate
+get or set grain playbackrate
+
+METHOD:: pos
+get or set position in source buffer (1.0= end of buffer)
+
+METHOD:: dur
+get or set grain duration in seconds
+
+METHOD:: pan
+get or set grain panning (-1 to 1)
+
+METHOD:: amp
+get or set grain amplitude
+
+METHOD:: mute
+silence grains (boolean)
+
+METHOD:: latency
+get or set bundle message latency
+
+
+EXAMPLES::
+
+CODE::
+s.boot;
+
+//-- prepare some buffers
+~length= 1;		//segment lengths in seconds - should be the same for positions to scan correctly
+~b1= RedBuffer(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav", 0.1, ~length);
+~b2= RedBuffer(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav", 0.3, ~length);
+~b3= RedBuffer(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav", 0.5, ~length);
+
+//-- create and start the granulator object
+r= RedGrain2(s);
+r.buf_(~b1);
+r.start;
+
+//offset halfway into source buffer
+r.pos_(0.5);
+
+//switch buffer
+r.buf_(~b2);
+
+//cycle through buffers quickly 20 times
+(
+fork{
+	20.do{|i| r.buf_([~b1, ~b2, ~b3].wrapAt(i)); 0.1.wait};
+};
+)
+
+//cycle through buffers and randomise playback rate
+(
+fork{
+	20.do{|i|
+		r.buf_([~b1, ~b2, ~b3].wrapAt(i));
+		r.rate_(2.0.rand2);
+		0.1.wait;
+	}
+};
+)
+
+//now for something completely different
+(
+r.rate_(-1.7);
+r.pos_(0);
+r.dur_(0.2);
+r.delta_({0.2.rrand(0.3)});	//delta can be a function
+)
+
+//and all of the controllers can be functions
+(
+r.buf_({[~b1, ~b2, ~b3].choose});
+r.rate_({8.0.rand2});
+r.pos_({0.1.rand});
+r.dur_({0.05.rrand(0.15)});
+r.pan_({1.0.rand2});
+r.amp_({0.5.rrand(1.0)});
+r.delta_({0.01.rrand(0.2)});
+)
+
+//quantise playbackrate
+r.rate_({10.rand.round(5)});
+r.rate_({10.rand.round(4)});
+r.rate_({10.rand.round(3)});
+
+//back to static amp and deltatime
+r.amp_(0.3);
+r.delta_(0.005);	//default
+r.dur_(0.1);
+r.buf_(~b1);
+r.pos_(0);
+
+//take out more and more and stop
+(
+fork{
+	30.do{|i| r.delta_(r.delta*1.1); 0.2.wait};
+	r.stop;
+};
+)
+
+//clean up
+~b1.free;
+~b2.free;
+~b3.free;
+::

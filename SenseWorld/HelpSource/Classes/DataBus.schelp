@@ -1,0 +1,52 @@
+TITLE:: DataBus
+summary:: Put data from a function onto a bus
+categories:: Control
+related:: Classes/OSCBus
+
+
+DESCRIPTION::
+DataBus evaluates a function at a regular time interval and puts the resulting data on a control bus on the server.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new DataBus
+
+
+ARGUMENT:: function
+Function to be evaluated which provides the data for the server
+
+ARGUMENT:: nchan
+Number of channels for the bus. The function should give as a result an Array with the same size as the number of channels given.
+
+ARGUMENT:: server
+An instance of Server. If none is given the default server is used.
+
+
+INSTANCEMETHODS::
+
+private:: init
+
+METHOD:: renew
+Create the bus, and start the updater. This is called automatically when a new instance is created, but it may be used if the method free was called previously during the session.
+
+METHOD:: free
+Free the bus, and stop the updater.
+
+METHOD:: scale
+Scale factor with which the result of the function is scaled before putting the values on the bus.
+
+METHOD:: dT
+The update rate. This is the delta time at which the function is evaluated.
+
+METHOD:: bus
+The Bus object to which the data is set.
+
+METHOD:: func
+The function to be evaluated.
+
+METHOD:: numChannels
+Number of channels of the bus.
+
+METHOD:: server
+The Server object on which the bus is.

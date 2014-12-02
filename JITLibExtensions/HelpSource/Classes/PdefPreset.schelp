@@ -1,0 +1,61 @@
+TITLE:: PdefPreset
+summary:: storing and morphing between presets for Pdefs
+categories:: Undocumented classes
+related:: Classes/ProxyPreset, Classes/TdefPreset, Classes/NdefPreset
+
+DESCRIPTION::
+Like ProxyPreset, PdefPreset stores settings and can morph between them.
+
+code::
+to follow
+::
+
+CLASSMETHODS::
+
+PdefPreset
+METHOD:: all
+the global dict for all PdefPreset instances
+
+METHOD:: proxyClass
+the class to be used with PdefPreset: Pdef.
+
+private:: initClass
+
+METHOD:: new
+access an existing PdefPreset or make a new one for a Pdef.
+
+ARGUMENT:: key
+If key is key of an existing PdefPreset, then that is accessed. If key is a Pdef, then a net PdefPreset with that Pdef's key will be created.
+
+ARGUMENT:: namesToStore
+which paramNames to store in the presets. if none given, inferred from the current proxy settings.
+
+ARGUMENT:: settings
+provide preset settings for the proxy
+
+ARGUMENT:: specs
+provide preset specs for the proxy, mainly for randomizing and morphing.
+if none given here, and object has a halo of specs, those in halo will be used.
+
+ARGUMENT:: morphFuncs
+special functions to provide for morphing between non-numerical settings.
+not used yet.
+
+
+INSTANCEMETHODS::
+
+private:: proxy, prAdd
+
+METHOD:: key
+the key under which the PdefPreset is stored in PdefPreset.all
+
+METHOD:: getFromProxy
+get current values for namesToStore from proxy, except those given in <except>
+
+
+
+EXAMPLES::
+
+code::
+to follow
+::

@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SenseWorldDataNetwork</TITLE>
+<META NAME="description" CONTENT="SenseWorldDataNetwork">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00041000000000000000">
+SenseWorld Data Network</A>
+</H2>
+
+
+<DIV CLASS="ABSTRACT">
+The Sense World Data Network framework is meant to make sharing of data (from sensors or internal processes) between collaborators in an interactive media art work easier, faster and more flexible. There is a central host, which receives all data, and manages the client connections. Each client can subscribe to data <SPAN  CLASS="textit">nodes</SPAN>, to use that data in its own internal processes; and each client can publish data onto the network, by creating a node. A new client can query the network which nodes are present and is informed when new nodes appear after the client has been registered.
+</DIV>
+
+<p>
+The SenseWorld DataNetwork was created as part of the <a href="http://sensestage.hexagram.ca">SenseStage</a> project, more info available on that project on the website: <a href="http://sensestage.hexagram.ca">http://sensestage.hexagram.ca</a>
+</p>
+
+
+
+
+
+<H3><A NAME="SECTION00010000000000000000">
+Data Network Elements</A>
+</H3>
+
+<P>
+The data network is built up from different elements:
+
+<DL>
+
+<DT><STRONG>SWDataNetwork</STRONG></DT>
+<DD>the network itself
+ 
+</DD>
+<DT><STRONG>SWDataNode</STRONG></DT>
+<DD>a node is a collection of slots, usually based upon a device or another common source (e.g. result from a function).
+ 
+</DD>
+<DT><STRONG>SWDataSlot</STRONG></DT>
+<DD>a slot is a single data stream
+</DD>
+
+</DL>
+
+<P>
+Data on the network is set by calling the function method <code>setData</code> with as arguments the node ID and an array of data values. The ID is an unique identifier. The function can be called for example by a class instance that parses serial data.
+</P>
+
+<P>
+Each <em>DataNode</em> and each <em>DataSlot</em> can be given a label, so that their functionality becomes more human understandable.
+</P>
+
+
+<h4>Some nomenclature:</h4>
+<p>
+A <strong>DataNode</strong>, or a node, is a collection of data streams which somehow belong together.<br>
+For example, this can be representing:<br>
+
+<UL>
+  <LI>A SenseStage MiniBee hardware sensor node with sensors attached</LI>
+  <LI>All the parameters of a sound process (amplitude, frequency, etc)</LI>
+  <LI>A group of (DMX) light channels</LI>
+  <LI>Showtime information (hours, minutes, seconds, frame)</LI>
+  <LI>All the light sensors in a space, collected in a logical order</LI>
+  <LI>All the parameters of a graphical object (dimensions, color)</LI>
+  <LI>All the data from a gaming device, such as a joystick</LI>
+</UL>
+
+<p>An <strong>expected Node</strong> is a DataNode that is prepared to be added to the network, but may not be present yet.</p>
+
+<p>A <strong>DataSlot</strong>, or a slot, is one datastream. So corresponding to the examples of nodes above a slot would represent:<br>
+
+<UL>
+  <LI>A light sensor attached to a MiniBee</LI>
+  <LI>One axis of an acclerometer attached to a MiniBee</LI>
+  <LI>The amplitude of a sound process</LI>
+  <LI>One DMX light channel</LI>
+  <LI>The seconds of the showtime</LI>
+  <LI>The x-dimension of a graphical object</LI>
+  <LI>The y-axis of a joystick</LI>
+</UL>
+
+<p><strong>A client:</strong> the programming environment of one collaborator hooked up to the network. E.g. Joe, using PureData, or Marije, using SuperCollider, or Vincent, using Processing, or Brett, using Max/MSP.</p>
+
+<p><strong>Subscription:</strong> a client can subscribe to a node to receive its data, or subscribe to a single slot of a node. These are called the client's subscriptions.</p>
+
+<p><strong>Setter:</strong> a client can provide data to the network by creating a DataNode. The client then becomes the "setter" of the node. Other clients can not set data to the same node.</p>
+
+
+<H3>SuperCollider implementation</H3>
+
+Within SuperCollider the implementation is done in a number of classes.
+
+
+<p>
+<A HREF="SWDataNetwork.html">SWDataNetwork</A> is the basic implementation of the DataNetwork. You can use it in a local project to manage your datastreams within SC (not communicating with other programs), or become the host of the DataNetwork by calling the method, <em>addOSCInterface</em>. It is also the base class of <A HREF="SWDataNetworkClient.html">SWDataNetworkClient</A>, so the common usage interface between the host and the client is the same. The client has some extra methods for registering, subscribing and querying.
+</p>
+
+<p>You can easily create a <A HREF="SWDataNetworkGui.html">graphical user interface</A> for the DataNetwork with the methods <em>makeGui</em> and <em>makeBasicGui</em>. 
+</p>
+
+
+<p><A 
+  HREF="SWDataNode.html">SWDataNode</A> - <A 
+  HREF="SWDataStringNode.html">SWDataStringNode</A> are the implementations of the DataNode. You usually access them by number or by name from the DataNetwork instance.
+</p>
+<p><A 
+  HREF="SWDataSlot.html">SWDataSlot</A> - <A 
+  HREF="SWDataStringSlot.html">SWDataStringSlot</A> are the implementations of the DataSlots. You usually access them by number or by name from the DataNetwork instance.
+</p>
+
+<p><A 
+  HREF="SWDataNetworkLog.html">SWDataNetworkLog</A> can be used to read a logfile of the DataNetwork and play the data back into a DataNetwork.
+</p>
+
+
+<p><A 
+  HREF="SWDataNetworkSpec.html">SWDataNetworkSpec</A>, <A 
+  HREF="SWDataNetworkOSC.html">SWDataNetworkOSC</A>, and <A 
+  HREF="SWDataNetworkOSCClient.html">SWDataNetworkOSCClient</A> are used internally to handle labeling of DataNodes and DataSlots, and the OSC communication of the host.
+</p>
+
+
+<p>There are methods for easily adding <A 
+  HREF="SWGeneralHID.html">GeneralHID devices</A> and <A 
+  HREF="SWWiiMote.html">WiiMotes</A> to the network. There are also extensions to use data from the DataNetwork in <A 
+  HREF="SWDataPattern.html">Patterns</A>.</p>
+
+
+<p><A 
+  HREF="SWBusNode.html">SWBusNode</A>, <A 
+  HREF="SWWatcherNode.html">SWWatcherNode</A>, <A 
+  HREF="SWBusWatcherNode.html">SWBusWatcherNode</A>, <A 
+  HREF="SWCombineNode.html">SWCombineNode</A> and <A 
+  HREF="SWDataAction.html">SWDataAction</A> are classes to use to process data from the datanetwork and create derived or conditioned data.
+</p>
+
+
+
+<H3><A NAME="SECTION00020000000000000000">
+OSC interface</A>
+</H3>
+<P>
+There is an OSC interface to the network, which allows clients to become part of the data network and access its data, and also create its own data nodes on the network.
+</P>
+<P>
+The network will announce itself to the broadcast address of the network, to a number of ports (default: range 6000-6009, and 57120-57129), so that clients can automatically configure to connect to the network, as soon as it is in the air.
+</P>
+<P>
+A textfile with the network's OSC port can be found in the file <TT><A NAME="#tex2html2">http://hostip/SenseWorldDataNetwork</A></TT><A 
+  HREF="#foot58"><SUP><SPAN CLASS="arabic">1</SPAN></SUP></A>, which can be retrieved by clients, so they know where to send the registration message.
+<br>(see <a href="SW_Apache_setup.html">Apache setup</A> for setup instructions to make this work properly)
+</P>
+<P>
+The general setup is that an OSC client first sends a register message to the data network server. Then it will start receiving ping messages, to which it has to reply with pong messages. The client has to query which nodes and slots are present on the network after registering, so it will receive info messages on each node and slot. Then it can subscribe to nodes and slots, and will receive data from the nodes and slots it is subscribed to via the data messages.
+</P>
+<P>
+The client can supply a new node to the network, by using the /set/data message; it can also label the nodes and slots thus created.
+Whenever a new node or slot is added (or changed, e.g. when it gets a label), the client will receive a new info message.
+If there occurs an error in the communication, then an error message is sent. The unregister message only needs to be sent, if for example the client crashed and is trying to reconnect on the same port.
+</P>
+<P>
+All messages to the server now have a reply, which is either the requested info, a confirmation message, or a warning or error.
+</P>
+<H3><A NAME="SECTION00030000000000000000">
+Clients</A>
+</H3>
+
+<P>
+Clients for other software environments are available in the Help/Clients directory.
+<BR>
+Currently there are Max patches for Max4.6 and Max5 (created by Harry Smoak, Joseph Malloch and Brett Bergmann), PureData (Pd) patches (created by Joseph Thibodeau), a Processing and Java library (Vincent de Belleval), and a C++ library (created by Marije Baalman).
+</P>
+<H3><A NAME="SECTION00040000000000000000">
+Futher documentation</A>
+</H3>
+<P>
+Further documentation is available in the Help/doc folder, in pdf and latex source file format.
+<BR>
+That document contains the full OSC namspace specification, how to set up the http access to the host, and the ChangeLog of the development.
+</P>
+
+<BR><HR>
+<UL>
+<LI><A 
+  HREF="SWDataNetwork.html">SWDataNetwork</A></LI>
+<LI><A 
+  HREF="SWDataNode.html">SWDataNode</A> - <A 
+  HREF="SWDataStringNode.html">SWDataStringNode</A></LI>
+<LI><A 
+  HREF="SWDataSlot.html">SWDataSlot</A> - <A 
+  HREF="SWDataStringSlot.html">SWDataStringSlot</A></LI>
+<LI><A 
+  HREF="SWDataNetworkSpec.html">SWDataNetworkSpec</A></LI>
+<LI><A 
+  HREF="SWDataNetworkOSC.html">SWDataNetworkOSC</A></LI>
+<LI><A 
+  HREF="SWDataNetworkOSCClient.html">SWDataNetworkOSCClient</A></LI>
+<LI><A 
+  HREF="SWDataNetworkClient.html">SWDataNetworkClient</A></LI>
+<LI><A 
+  HREF="SWDataNetworkLog.html">SWDataNetworkLog</A></LI>
+
+<LI><A 
+  HREF="SWDataNetworkGui.html">SWDataNetworkGui</A></LI>
+
+<LI><A 
+  HREF="SWBusNode.html">SWBusNode</A></LI>
+
+<LI><A 
+  HREF="SWWatcherNode.html">SWWatcherNode</A></LI>
+<LI><A 
+  HREF="SWBusWatcherNode.html">SWBusWatcherNode</A></LI>
+<LI><A 
+  HREF="SWCombineNode.html">SWCombineNode</A></LI>
+<LI><A 
+  HREF="SWDataAction.html">SWDataAction</A></LI>
+
+<LI><A 
+  HREF="SWGeneralHID.html">GeneralHID support</A></LI>
+<LI><A 
+  HREF="SWWiiMote.html">WiiMote support</A></LI>
+<LI><A 
+  HREF="SWDataPattern.html">Pattern support</A></LI>
+
+</UL>
+
+
+<BR><HR>
+
+<DL>
+<DT><A NAME="foot58"><A
+ HREF="#tex2html2"><SUP><SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
+<DD>e.g. for a host with IP 192.168.1.7 the url is: <TT><A NAME="tex2html3"
+  HREF="http://192.168.1.7/SenseWorldDataNetwork">http://192.168.1.7/SenseWorldDataNetwork</A></TT>
+</DD></DL>
+
+<P>
+<HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</P>
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,121 @@
+TITLE:: TabbedViewTab
+summary:: A Tab held by a TabbedView2
+categories:: GUI>Views
+related:: Classes/TabbedView2,Classes/CompositeView, Classes/ScrollView
+
+DESCRIPTION::
+WARNING::
+You never instantiate a TabbedViewTab directly, but rather use TabbedView2.add to add it to the parent view and get a reference to the tab. However, once you have the reference, you can use it like a CompositeView or a ScrollView, plus you can configure all kinds of options, and override TabbedView2 defaults.
+
+::
+
+SUBSECTION:: Version and Author
+version: 1.04 , May 2, 2014
+author: Jost Muxfeldt
+
+CLASSMETHODS::
+NOTE::
+Instantiate by using
+
+LINK::Classes/TabbedView2#-add::
+
+or
+
+LINK::Classes/TabbedView2#-insert::
+
+::
+
+PRIVATE:: new
+
+
+INSTANCEMETHODS::
+SUBSECTION:: Properties
+
+METHOD:: widget
+returns:: the UserView which draws the widget
+
+METHOD:: label
+The tab label text
+METHOD:: index
+returns the index of this tab
+
+SUBSECTION:: Actions
+
+METHOD:: focus
+focus this tab
+METHOD:: remove
+delete this tab from parent
+METHOD::onRemove_
+a Function to be performed on remove: {arg thisView; do stuff }
+METHOD::onChangeParent_
+a Function to be performed right before detach or on dragging to another view: {arg thisView; do stuff...}.
+METHOD::onAfterChangeParent_
+a Function to be performed right after detach or on dragging to another view: {arg thisView; do stuff...}.
+
+
+SUBSECTION:: Customize Colors
+NOTE::
+These methods override the defaults in TabbedView2.
+
+See LINK::Classes/TabbedView2#Setting Colors::
+::
+METHOD:: labelColor
+METHOD:: unfocusedColor
+METHOD:: stringColor
+METHOD:: stringFocusedColor
+METHOD:: background
+
+SUBSECTION:: Customize Appearance
+METHOD:: useDetachIcon
+boolean. default false.  Add an icon for detaching the view ( Qt GUI only)
+
+METHOD:: tabWidth
+set with \auto or and integer
+
+METHOD:: userDrawFunction
+adds your function to the user draw function. Add an icon if something is happening in the tab, for example
+
+
+SUBSECTION:: Customize Behavior
+METHOD:: rightClickDetach
+Boolean or Function:  {arg thisView;   return boolean}.
+to disable:set to false
+
+METHOD:: closable
+Boolean or Function:  {arg thisView; return boolean}-
+add a close icon by setting this to true. If tabWidth is \auto, the width will adjust automatically, but you might have to play with TabbedView2's  labelPadding, depending on other settings, like the TabbedView2's  Font, or tabHeight, etc.
+
+
+METHOD:: focusAction
+add a focus action to the tab. For example enable a scope you are showing in the tab.
+METHOD:: unfocusAction
+add an unfocus action to the tab. For example disable a scope you were showing in the tab.
+
+
+METHOD:: homeView
+The TabbedView2 instance to which a detached TabbedViewTab instance will return if its enclosing window is closed.
+This defaults to the TabbedView2 instnace which created the TabbedViewTab instance (using add).
+
+PRIVATE:: refreshEventHandlers
+PRIVATE:: pr_interTabDragActions
+PRIVATE:: lock
+PRIVATE:: init
+PRIVATE:: detachTab
+PRIVATE:: setParent
+PRIVATE:: detRect
+PRIVATE:: closeRect
+PRIVATE:: tabbedView
+PRIVATE:: tbwdth
+
+PRIVATE::pr_removeWidgets
+PRIVATE::pr_setIndex
+
+PRIVATE::clearEventHandlers
+PRIVATE::refreshMouseMoveHandler
+
+
+
+
+EXAMPLES::
+
+See LINK::Classes/TabbedView2#EXAMPLES::

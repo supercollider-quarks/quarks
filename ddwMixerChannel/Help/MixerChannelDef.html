@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 29.0px; text-indent: -29.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {color: #007300}
+span.s2 {color: #000000}
+span.s3 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>MixerChannelDef<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Contains the definition for a control structure for a MixerChannel.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Every MixerChannel must have a definition. Default definitions are provided for stereo and mono MixerChannels.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">This provides better support for multichannel applications. The MixerChannel's structure depends on the spatialization technique used--therefore, the user is encouraged to design her own channel definitions as needed.</p>
+<p class="p2"><br></p>
+<p class="p3">MixerChannelDef objects are stored in the global Library, under the keys (\mixerdefs, myMixerDefName).</p>
+<p class="p2"><br></p>
+<p class="p3">The format for mixer controls has changed as of Feb. 23, 2008.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(name, inChannels, outChannels, basicFader, postSendReadyFader, controls, guidef)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Creates a new instance and stores it in the library.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>name:</b> The name by which the definition will be retrieved. The standard format, to allow backward-compatibility with MixerChannel's default <i>new</i> method, is 'mix' ++ inChannels ++ 'x' ++ outChannels, e.g., 'mix1x2' for a mono-to-stereo channel. You may, however, use any name you like, and create the mixer channels using MixerChannel.newFromDef().</p>
+<p class="p5"><b>inChannels:</b> The number of channels to be input into the fader.</p>
+<p class="p5"><b>outChannels:</b> The number of channels the fader will output.</p>
+<p class="p5"><b>fader:</b> A synthdef that defines the fader operation. See the example below.</p>
+<p class="p5"><b>controls:</b> An IdentityDictionary of specifications for mixer controls.</p>
+<p class="p5"><b>guidef:</b> The MixerGUIDef object that defines how a mixer using this template will appear in a MixingBoard. See the MixerGUIDef help file. The guidef may be set after creation by myDef.guidef = myMixerGUIDef;</p>
+<p class="p2"><br></p>
+<p class="p3">The <b>controls</b> dictionary lists the name by which each control will be accessed, and gives its default value and ControlSpec, e.g. <b>(name: spec, name1: spec1)</b> where spec may be any of the following:</p>
+<p class="p2"><br></p>
+<p class="p3">number -- The control's default value. The default ControlSpec (0..1, linear) is assumed.</p>
+<p class="p3">(default: number, spec: aControlSpec) -- Specify a ControlSpec and override its default.</p>
+<p class="p3">aControlSpec -- Anything that responds to asSpec. The spec's default will be the MixerControl's starting value.</p>
+<p class="p2"><br></p>
+<p class="p3">The default MixerChannelDefs use this as the controls dictionary:</p>
+<p class="p2"><br></p>
+<p class="p6">(level: (spec: <span class="s1">\amp</span>, value: 0.75),</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span>pan: </span>\bipolar<span class="s2">)</span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Accessing:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*at(name)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Retrieves the mixer definition with the given name from the global library.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Example:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Following is the definition for the default mono-to-stereo mixer channel.</p>
+<p class="p2"><br></p>
+<p class="p8">MixerChannelDef<span class="s2">(</span><span class="s1">\mix1x2</span><span class="s2">, 1, 2,</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span>fader: </span><span class="s3">SynthDef</span><span class="s2">(</span>"mixers/Mxb1x2"<span class="s2">, {</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">arg</span> busin, busout, level, pan;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> in, out;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>in = <span class="s3">In</span>.ar(busin, 1);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>out = <span class="s3">Pan2</span>.ar(in, pan, level);</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// so that mixerchan bus can be used as postsendbus</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">ReplaceOut</span>.ar(busin, out);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(busout, out);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>controls: (<span class="Apple-tab-span">	</span>level: (spec: <span class="s1">\amp</span>, value: 0.75),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>pan: <span class="s1">\bipolar</span>)</p>
+<p class="p6">);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">The synthdefs must have two arguments at minimum: busin and busout. MixerChannel manages these inputs internally. The other synthdefs inputs should correspond to the entries in the controls dictionary.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Note that there are two output UGens. Out.ar(busout, out) mixes the output signal on the target bus, while the ReplaceOut retains a copy of the processed signal on the channel's own bus. Whatever your fader control structure and whatever operations take place in the fader synthdefs, you must include both output UGens. If you don't, post-fader sends, mixer recording, MixerScope, PeakMonitor and perhaps other features will not work.</p>
+<p class="p2"><br></p>
+<p class="p3">The control names (the keys of the dictionary) should correspond to the synthdef argument names <i>except</i> busin and busout. If they don't, the controls will not be mapped correctly and your MixerChannel won't work.</p>
+</body>
+</html>

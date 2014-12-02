@@ -1,0 +1,343 @@
+CLASS:: MxChannel
+summary:: a group of MxUnits
+categories:: Mx
+
+
+DESCRIPTION:: A channel strip which holds multiple MxUnits; groups and mixes them together.
+
+When looking at the patch bay grid view, the MxChannels are the vertical strips.
+
+Each square is an MxUnit.  The MxChannel keeps all of its units in a Group and by default patches audio output to its fader.
+
+Unlike Ableton, which it visually resembles, the units in the patchbay do not play mutually exclusively.
+
+You can wire any unit to any place you like, they are all playing.
+
+
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+argument:: units
+
+
+argument:: faderArgs
+
+
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: units
+
+
+
+
+
+METHOD:: fader
+
+
+
+
+
+METHOD:: input
+
+
+
+
+
+METHOD:: numChannels
+
+
+
+
+
+METHOD:: pending
+
+
+
+
+
+METHOD:: myUnit
+
+
+
+
+
+METHOD:: unitsGroup
+
+
+
+
+
+METHOD:: mixGroup
+
+
+
+
+
+METHOD:: storeArgs
+
+
+
+
+
+METHOD:: init
+
+
+argument:: argunits
+
+
+argument:: argfader
+
+
+argument:: nc
+
+
+
+
+
+METHOD:: makeInput
+
+
+
+
+
+METHOD:: at
+
+
+argument:: index
+
+
+
+
+
+METHOD:: put
+
+
+argument:: index
+
+
+argument:: unit
+
+
+
+
+
+METHOD:: insert
+
+
+argument:: index
+
+
+argument:: unit
+
+
+
+
+
+METHOD:: extendUnits
+
+
+argument:: index
+
+
+
+
+
+METHOD:: removeAt
+
+
+argument:: index
+
+
+
+
+
+METHOD:: extractAt
+
+
+argument:: index
+
+
+
+
+
+METHOD:: insertAt
+
+
+argument:: index
+
+
+argument:: unit
+
+
+argument:: unitGroup
+
+
+
+
+
+METHOD:: move
+
+
+argument:: fromIndex
+
+
+argument:: toIndex
+
+
+
+
+
+METHOD:: children
+
+
+
+
+
+METHOD:: prepareToBundle
+
+
+argument:: parentGroup
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+argument:: private
+
+
+argument:: bus
+
+
+argument:: groupToUse
+
+
+
+
+
+METHOD:: prepareChildrenToBundle
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: loadDefFileToBundle
+
+
+argument:: b
+
+
+argument:: server
+
+
+
+
+
+METHOD:: spawnToBundle
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: stopToBundle
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: freeToBundle
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: update
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: bus
+
+
+argument:: b
+
+
+
+
+
+METHOD:: groupForIndex
+
+
+argument:: index
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: addUnitGroupMsg
+
+
+argument:: index
+
+
+argument:: g
+
+
+
+
+
+METHOD:: moveUnitGroupMsg
+
+
+argument:: index
+
+
+argument:: g
+
+
+
+
+
+METHOD:: findGroupPreviousTo
+
+
+argument:: index
+
+
+
+
+
+METHOD:: inlets
+
+
+
+
+
+METHOD:: outlets
+
+
+
+
+
+
+

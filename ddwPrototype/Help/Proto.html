@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #c40000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a81912}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #4f2b71}
+span.s1 {color: #0016ff}
+span.s2 {color: #0010c4}
+span.s3 {color: #001fb6}
+span.s4 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Proto<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Proto is a mechanism to define something like an object class on the fly. It contains an <a href="SC://Environment"><span class="s1">Environment</span></a>, into which you put values (corresponding to instance variables) and functions (corresponding to methods). Now the object acts essentially like an object of a particular class, except that the class can be defined and changed at runtime.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Any messages sent to a Proto object that are not listed below will be sent to the environment by retrieving the environment variable corresponding to the message selector. If that value is a function, it will be evaluated using the arguments supplied (if any) and the result returned. Otherwise, the value of the variable will be returned. If no variable exists, nil will be returned.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">In other words:</p>
+<p class="p2"><br></p>
+<p class="p3">- if you assign a <i>function</i> to an environment variable, it acts like a <i>method</i> of a class;</p>
+<p class="p3">- if you assign any other value to an environment variable, it acts like an <i>instance variable</i> of a class.</p>
+<p class="p2"><br></p>
+<p class="p4">// ~methodName.(arg list) is a way to enter a different method while inside a method function</p>
+<p class="p5">~method2 = { <span class="s2">|a, b|</span> ~method1.(a) * b };</p>
+<p class="p2"><br></p>
+<p class="p5">n = <span class="s2">Proto</span>({</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~mul = { <span class="s2">|x, y|</span> [x, y, x * y] };</p>
+<p class="p5">});</p>
+<p class="p5">n.mul(5, 4);</p>
+<p class="p5">--&gt; [ 5, 4, 20 ]</p>
+<p class="p2"><br></p>
+<p class="p3">There is a small performance cost, primarily associated with switching the current environment for practically every access. There is also a lookup cost from using environment variables rather than hard-coded variables. This cost is negligible, and acceptable for a structure that needs maximum flexibility.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(initFunc, env, parentKeys)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Create a new instance of Proto, containing only the instance variables and functions defined in the initFunc. A base environment may be given as <i>env</i>. Functions (methods) will automatically be moved to the environment's parent. Other variables may be moved to the parent by listing the variable names in an array of symbols passed in as <i>parentKeys</i>. Moving them to the parent makes them analogous to class variables.</p>
+<p class="p2"><br></p>
+<p class="p5">a = <span class="s3">Proto</span>({</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~a = 1;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~b = 2;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~mulAB = { ~a * ~b };</p>
+<p class="p5">}, parentKeys: #[b]);</p>
+<p class="p6"><br></p>
+<p class="p5">a.env</p>
+<p class="p5">Environment[ (a -&gt; 1) ]</p>
+<p class="p6"><br></p>
+<p class="p5">a.env.parent</p>
+<p class="p5">Environment[ (mulAB -&gt; a Function), (b -&gt; 2) ]</p>
+<p class="p2"><br></p>
+<p class="p3"><b>init(func)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Throw away the environment of this Proto, and create a new environment with the instance variables and functions defined in the function argument. Should generally not be called by the user.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>copy</b></p>
+<p class="p2"><br></p>
+<p class="p3">Create an instance.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>clone(modFunc, parentKeys)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">.clone creates a copy of the receiving Proto and executes the modFunc to change method and variable definitions. It is like creating a subclass of an Proto, with new methods and variables.</p>
+<p class="p2"><br></p>
+<p class="p3">Parent environments are nested for purposes of inheritance.</p>
+<p class="p2"><br></p>
+<p class="p5">a = <span class="s3">Proto</span>({</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~a = 1;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~b = 2;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~mulAB = { ~a * ~b };</p>
+<p class="p5">}, parentKeys: #[b]);</p>
+<p class="p6"><br></p>
+<p class="p5">b = a.clone({</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~c = 3;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~divAC = { ~a * ~c };</p>
+<p class="p5">});</p>
+<p class="p6"><br></p>
+<p class="p5">b.env</p>
+<p class="p5">Environment[ (c -&gt; 3), (a -&gt; 1) ]</p>
+<p class="p6"><br></p>
+<p class="p5">b.env.parent</p>
+<p class="p5">Environment[ (divAC -&gt; a Function) ]</p>
+<p class="p6"><br></p>
+<p class="p5">b.env.parent.parent</p>
+<p class="p5">Environment[ (mulAB -&gt; a Function), (b -&gt; 2) ]</p>
+<p class="p2"><br></p>
+<p class="p3">~a is an instance variable and remains in the lowest-level environment in the clone. ~c is a new instance variable defined in the clone and is naturally in the lowest-level environment. ~divAC is a new method and goes in the clone's parent. The clone (b) also inherits from a; thus a's parent becomes the grandparent. At the lowest level, all variables and methods are usable. If you change the value of ~b in a's parent, the new value will be seen in all Protos that inherit from a (exactly as a class variable should do).</p>
+<p class="p2"><br></p>
+<p class="p3">Normally you do not need to worry about this structure.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>import(objectKeyDict, parentKeys)</b></p>
+<p class="p2"><br></p>
+<p class="p3">You can steal methods from another Proto, as a means of multiple inheritance. With a and b as above,</p>
+<p class="p2"><br></p>
+<p class="p5">c = <span class="s3">Proto</span>({</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~addAB = { ~a + ~b };</p>
+<p class="p5">});</p>
+<p class="p2"><br></p>
+<p class="p3">Note that c does not inherit from a or b. To make a composite containing all methods.</p>
+<p class="p2"><br></p>
+<p class="p5">d = b.copy.import(((`c): #[addAB]));</p>
+<p class="p2"><br></p>
+<p class="p3">objectKeyDict is of the form (object_reference: key_list, object_reference: key_list, ...). Object_reference may be:</p>
+<p class="p2"><br></p>
+<p class="p3">- a Proto or Dictionary: look up the imported keys in the object directly.</p>
+<p class="p3">- a Symbol: look up the keys in the chucklib process prototype named for the symbol -- PR(object_reference)</p>
+<p class="p3">- a Ref: a syntax shortcut, used above to protect a variable name from becoming a symbol in the () dictionary syntax.</p>
+<p class="p2"><br></p>
+<p class="p3">The parentKeys argument behaves as in *new and clone.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>at(key)</b></p>
+<p class="p3"><b>put(key, value)</b></p>
+<p class="p3"><b>putAll(... dictionaries)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Long form to access or change environment variables.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>parent</b></p>
+<p class="p2"><br></p>
+<p class="p3">Access the environment's parent.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>use(func)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Enter the environment and execute code.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>next(... args)</b></p>
+<p class="p3"><b>value(... args)</b>  // calls ~next(*args)</p>
+<p class="p3"><b>reset</b></p>
+<p class="p3"><b>update</b></p>
+<p class="p3"><b>asStream</b></p>
+<p class="p3"><b>asPattern</b></p>
+<p class="p3"><b>free</b></p>
+<p class="p2"><br></p>
+<p class="p3">Evaluates the function contained in the corresponding environment variable with the arguments supplied. If no function is given, the call returns nil. This is to allow Protos to behave as streams.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Note:</b> 'next' and 'value' both call the function stored under ~next. For Streams, 'next' and 'value' are synonyms; likewise, they are implemented the same in Proto.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>perform(selector, ... args)</b></p>
+<p class="p3"><b>tryPerform(selector, ... args)</b></p>
+<p class="p3"><b>respondsTo(selector)</b></p>
+<p class="p2"><br></p>
+<p class="p3">As in Object.</p>
+<p class="p2"><br></p>
+<p class="p3">Self-documentation:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>listVars</b></p>
+<p class="p3"><b>listMethods</b></p>
+<p class="p3"><b>help</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p7"><b>Trivial example (sc output in purple):</b></p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5">n = <span class="s3">Proto</span>.new({</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a variable</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~stream = <span class="s3">Pxrand</span>([0, 2, 4, 5, 7, 9, 11], <span class="s3">inf</span>).asStream;</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a "method"</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~next = { ~stream.next };</p>
+<p class="p5">});</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span></span>// keep the method, but change the variable</p>
+<p class="p5">o = n.clone({ ~stream = <span class="s3">Pseq</span>([0, 1, 2], <span class="s3">inf</span>).asStream });</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s4">10.do({ [n.next, o.next].postln });<span class="Apple-tab-span">	</span></span>// .next evaluates ~next, returning ~stream.next</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// stream is different for both nodes</p>
+<p class="p6"><br></p>
+<p class="p9">[ 11, 0 ]</p>
+<p class="p9">[ 0, 1 ]</p>
+<p class="p9">[ 4, 2 ]</p>
+<p class="p9">[ 5, 0 ]</p>
+<p class="p9">[ 7, 1 ]</p>
+<p class="p9">[ 4, 2 ]</p>
+<p class="p9">[ 11, 0 ]</p>
+<p class="p9">[ 5, 1 ]</p>
+<p class="p9">[ 11, 2 ]</p>
+<p class="p9">[ 5, 0 ]</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s4">n.stream<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// stream is a "soft" method "defined" in the environment (a getter)</p>
+<p class="p6"><br></p>
+<p class="p9">a Routine</p>
+<p class="p2"><br></p>
+<p class="p7"><b>Mimicking object-oriented behavior using Proto</b></p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5">a = <span class="s3">Proto</span>({</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// class/instance variables are defined dynamically, here and at run time</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// distinction between class and instance variables appears later</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~a = 1;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~b = 2;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// all functions are moved to the parent environment to be shared between instances</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~times = { <span class="s3">|mul|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mul.notNil.if({ mul }, { ~a }) * ~b</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// env: you can merge an existing environment into the new Proto</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// parentKeys: moves non-function values into the parent environment, making them class variables</p>
+<p class="p5">}, env: <span class="s3">nil</span>, parentKeys: #[b]);</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5">a.times;</p>
+<p class="p5">a.times(5);</p>
+<p class="p6"><br></p>
+<p class="p8">// Make a new instance with .copy</p>
+<p class="p6"><br></p>
+<p class="p5">b = a.copy;</p>
+<p class="p5">b.a = 3;</p>
+<p class="p6"><br></p>
+<p class="p5">b.times;</p>
+<p class="p6"><br></p>
+<p class="p8">// Change class variable -- syntax is not so convenient</p>
+<p class="p8">// Class variables are possible but tricky to manage</p>
+<p class="p8">// Easier to change in the Proto that defined the class variable (propagates to clones/copies)</p>
+<p class="p8">// Later I might make it better</p>
+<p class="p6"><br></p>
+<p class="p5">b.parent.b = 5;</p>
+<p class="p5">b.times(10);</p>
+<p class="p5">a.times(10);</p>
+<p class="p6"><br></p>
+<p class="p8">// Inheritance with .clone</p>
+<p class="p6"><br></p>
+<p class="p5">c = b.clone({</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~div = { <span class="s3">|denom|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~a / denom.notNil.if({ denom }, { ~b });</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">});</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s4">a.div;<span class="Apple-tab-span">	</span></span>// nil response, method not defined</p>
+<p class="p5">c.div;</p>
+<p class="p8"><span class="s4">c.times;<span class="Apple-tab-span">	</span></span>// times method is inherited from b</p>
+<p class="p6"><br></p>
+<p class="p5">a.parent.b = 10;</p>
+<p class="p8"><span class="s4">c.div;<span class="Apple-tab-span">	</span></span>// change to a's class variable affects c</p>
+<p class="p6"><br></p>
+<p class="p8">// currently user must know at which level the variable resides -- I may change this later</p>
+<p class="p6"><br></p>
+<p class="p8">// Polymorphism -- d overrides c's definition of ~div</p>
+<p class="p6"><br></p>
+<p class="p5">d = c.clone({</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~div = { <span class="s3">|num|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>num.notNil.if({ num }, { ~a }) / ~b</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">});</p>
+<p class="p6"><br></p>
+<p class="p5">c.div(50);</p>
+<p class="p5">d.div(50);</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p8">// Multiple inheritance</p>
+<p class="p6"><br></p>
+<p class="p8">// clumsy syntax</p>
+<p class="p5">e = a.clone.import(<span class="s3">Dictionary</span>[c -&gt; #[div]]);</p>
+<p class="p6"><br></p>
+<p class="p8">// nicer syntax, using Ref for c variable</p>
+<p class="p5">e = a.clone.import(((`c): #[div]));</p>
+<p class="p6"><br></p>
+<p class="p8">// e now has a copy of c's div method, though it inherits directly from a</p>
+<p class="p5">e.div;</p>
+</body>
+</html>

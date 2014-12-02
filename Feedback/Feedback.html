@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #3200ff}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Feedback<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a quark for implementing feedback loops painlessly</b></p>
+<p class="p2"><br></p>
+<p class="p1">The Feedback quark provides a small collection of classes aimed at making it easier to create feedback loops within a SynthDef. These classes are particularly useful if you want to implement a complicated network of many feedbacks.<span class="Apple-converted-space">  </span>The classes provided are</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s2"><a href="FbNode.html"><b>FbNode</b></a></span> - this is probably the best place for new users to start. It provides a way to read from and write to a feedback bus, similarly to <a href="SC://LocalIn"><span class="s2">LocalIn</span></a> and <a href="SC://LocalOut"><span class="s2">LocalOut</span></a>. The big difference is that you can have many FbNodes in a single SynthDef, and they can all feed back into each other if you want. In addition, FbNode makes it easy to implement feedback delay lines, by adding an optional modulateable multi-tap delay to every FbNode.</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s2"><a href="Fb.html"><b>Fb</b></a></span> (and its interpolating versions <a href="FbL.html"><span class="s2">FbL</span></a> and <a href="FbC.html"><span class="s2">FbC</span></a>) - this does the same sort of thing as FbNode, but with a different interface. With Fb, you supply a function, whose output is delayed (by an amount you specify) and then fed back into its input. You can have many such feedback functions within a single SynthDef, and they can even be nested. Fb is the class to use if you're thinking in terms of <i>feedback loops</i>, whereas FbNode is better if you're thinking in terms of <i>feedback delay lines.</i></p>
+<p class="p2"><i></i><br></p>
+<p class="p1"><span class="s2"><a href="FbK.html"><b>FbK</b></a></span> - this is similar to Fb, except that it operates on control-rate (kr) signals instead of audio rate ones, and doesn't have an extra delay line. It can be used to iterate equations at control rate.</p>
+</body>
+</html>

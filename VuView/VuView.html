@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {color: #0000bf}
+span.s2 {color: #606060}
+span.s3 {color: #007300}
+span.s4 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><br></p>
+<p class="p2"><b>VuView a gui view with a gauge</b></p>
+<p class="p1"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>*new(parent, bounds);</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bounds</b>: a Rect(</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>distance from left,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>distance from bottom,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>width,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>height</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>value</b>: a number. Get or set the control's value.</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>needleColor</b>: a Color. Get or set the control's needle color.</p>
+<p class="p1"><br></p>
+<p class="p5">(</p>
+<p class="p5"><span class="s1">var</span> txt, needleColors;</p>
+<p class="p5">needleColors = [<span class="s1">Color</span>.black(0.8, 0.8), <span class="s1">Color</span>.red(1.0, 0.8)];</p>
+<p class="p5">w = <span class="s1">SCWindow</span>(<span class="s2">"Meter"</span>, <span class="s1">Rect</span>(300,400,300,120));</p>
+<p class="p5">w.view.decorator = <span class="s1">FlowLayout</span>(w.view.bounds);</p>
+<p class="p5">w.front;</p>
+<p class="p5">m = <span class="s1">VuView</span>(w, 120@80);</p>
+<p class="p5"><span class="s1">Knob</span>(w, 32@32)</p>
+<p class="p5"><span class="Apple-tab-span">	</span>.action = {<span class="s1">|v|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> mappedValue;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mappedValue = [0,1.2].asSpec.map(v.value);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m.needleColor = needleColors.at( (mappedValue &gt; 1.0).binaryValue );</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m.value = mappedValue;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>txt.string = format(<span class="s2">"val: % dB"</span>, m.value.ampdb.round(0.01));</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">txt = <span class="s1">SCStaticText</span>(w, 200@14);</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5">s.boot;</p>
+<p class="p5">(</p>
+<p class="p5">o = <span class="s1">OSCresponderNode</span>(s.addr,<span class="s3">'/tr'</span>,{ <span class="s1">arg</span> time,responder,msg;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>if (msg[1] == z.nodeID, {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ m.value = <span class="s3">\amp</span>.asSpec.unmap(msg[3]) }.defer;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>});</p>
+<p class="p5">}).add;</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p5"><span class="s1">SynthDef</span>(<span class="s3">\meter</span>, {<span class="s1">arg</span> bus = 0, rate = 15, rel = 1;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">var</span> signal, amplitude;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>signal = <span class="s1">In</span>.ar(bus,1);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>amplitude = <span class="s1">Amplitude</span>.kr(signal, 0.01, rel);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">SendTrig</span>.kr(<span class="s1">Impulse</span>.kr(rate), 1200, amplitude);</p>
+<p class="p5">}).send(s);</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p7">// start the meter synth</p>
+<p class="p5">z = <span class="s1">Synth</span>.tail(1, <span class="s2">"meter"</span>);</p>
+<p class="p5">z.set(<span class="s3">\rate</span>, 15)</p>
+<p class="p5">z.set(<span class="s3">\rel</span>, 0.1)</p>
+<p class="p5">z.set(<span class="s3">\rel</span>, 2)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">// a click synth</p>
+<p class="p5">(</p>
+<p class="p5">a = { <span class="s1">arg</span> amp=0.1;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">Decay2</span>.ar(<span class="s1">Impulse</span>.ar(1.0), 0.1, 0.4, <span class="s1">SinOsc</span>.ar(1200,0,amp))</p>
+<p class="p5">}.play.play(addAction: <span class="s3">\addToHead</span>)</p>
+<p class="p5">)</p>
+<p class="p5">a.set(<span class="s3">\amp</span>, 0.5)</p>
+<p class="p5">a.free</p>
+<p class="p6"><br></p>
+<p class="p7">// read audio inputs</p>
+<p class="p5">(</p>
+<p class="p5">a = { <span class="s1">arg</span> amp=0.1;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">AudioIn</span>.ar([1,2]) * amp</p>
+<p class="p5">}.play(addAction: <span class="s3">\addToHead</span>)</p>
+<p class="p5">)</p>
+<p class="p5">a.set(<span class="s3">\amp</span>, 1.0)</p>
+<p class="p5">a.free</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s4">z.free;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// free meter synth</p>
+<p class="p7"><span class="s4">o.remove;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// remove responder</p>
+<p class="p6"><br></p>
+<p class="p7">//</p>
+<p class="p5">(</p>
+<p class="p5"><span class="s1">var</span> txt;</p>
+<p class="p5">w = <span class="s1">SCWindow</span>(<span class="s2">"Meter"</span>, <span class="s1">Rect</span>(300,400,300,120));</p>
+<p class="p5">w.view.decorator = <span class="s1">FlowLayout</span>(w.view.bounds);</p>
+<p class="p5">w.front;</p>
+<p class="p5">m = <span class="s1">VuView</span>(w, 120@80);</p>
+<p class="p5">k = <span class="s1">Knob</span>(w, 32@32)</p>
+<p class="p5"><span class="Apple-converted-space">       </span>.action = {<span class="s1">|v|</span></p>
+<p class="p5"><span class="Apple-converted-space">               </span>m.value = <span class="s3">\amp</span>.asSpec.map(v.value);</p>
+<p class="p5"><span class="Apple-converted-space">               </span>txt.string = format(<span class="s2">"val: % dB"</span>, m.value.ampdb.round(0.01));</p>
+<p class="p5"><span class="Apple-converted-space">       </span>};</p>
+<p class="p5">txt = <span class="s1">SCStaticText</span>(w, 200@14);</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p7">// needle color changes, evaluate a few times</p>
+<p class="p5">(</p>
+<p class="p5"><span class="s1">var</span> signal, needleColor;</p>
+<p class="p7"><span class="s4">signal = rrand(0.3, 1.6); </span>// possibly distorted signal</p>
+<p class="p5">if(signal&gt; 1.0, {</p>
+<p class="p5"><span class="Apple-converted-space">       </span>needleColor=<span class="s1">Color</span>.red(1.0, 0.8);</p>
+<p class="p5"><span class="Apple-converted-space">       </span>format(<span class="s2">"Signal value distorted: %"</span>, signal).postln;</p>
+<p class="p5">}, {</p>
+<p class="p5"><span class="Apple-converted-space">       </span>needleColor=<span class="s1">Color</span>.black(0.8, 0.8);</p>
+<p class="p5">});</p>
+<p class="p7"><span class="s4">m.needleColor_(needleColor); </span>// doesn't update until VuView value changes</p>
+<p class="p5">k.valueAction_(signal);</p>
+<p class="p5">signal</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+</body>
+</html>

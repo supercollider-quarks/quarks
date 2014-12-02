@@ -1,0 +1,35 @@
+CLASS:: RedTapeRecorder
+SUMMARY:: sampling and looping
+CATEGORIES:: Red>redUGens
+RELATED:: Classes/RedLive, Classes/RedOverdub
+
+DESCRIPTION::
+If gate= 1 record, if gate= 0 loop playback.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: buffer
+
+ARGUMENT:: in
+Input signal.
+
+ARGUMENT:: gate
+1= record, 0= looped playback.
+
+ARGUMENT:: interpol
+1= no, 2= linear, 4= cubic.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+b= Buffer.alloc(s, 44100*3, 2);
+{RedTapeRecorder.ar(b, SoundIn.ar([0, 1]), MouseX.kr>0.7, 1)}.play;
+b.free;
+
+b= Buffer.alloc(s, 44100*3, 1);
+{SinOsc.ar(RedTapeRecorder.kr(b, LFNoise1.kr(2, 100, 400), MouseX.kr>0.7, 2), 0, 0.1)}.play;
+b.free;
+::

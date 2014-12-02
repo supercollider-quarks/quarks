@@ -1,0 +1,91 @@
+TITLE:: EventList
+summary:: a list of recorded events in time.
+categories:: Libraries>Modality
+related:: Classes/EventLoop, Classes/KeyPlayer,  Classes/TaskProxy
+
+DESCRIPTION::
+EventList is a list of Events, each of which has a required entry for absTime, the absolute time at which the event was recorded.
+An EventList always starts with a start event - usually (absTime: 0, type: \start); 
+then some events with ascending values for absTime, and an end event, which is usually 
+(type: \end, absTime: <loopEndTime>). 
+
+EventLists are used in KeyPlayer and other related classes that record various forms of user gestures in time.
+
+code::
+
+// make a new EventList
+a = EventList[];
+
+// add some time-stamped events to it
+a.start;
+a.addEvent((absTime: 0, deg: 0));    // events should begin with time 0;
+a.addEvent((absTime: 0.3, deg: 1));
+a.addEvent((absTime: 0.52, deg: 2));
+a.addEvent((absTime: 0.72, deg: 3));
+a.addEvent((absTime: 0.93, deg: 4));
+a.finish(1.88);
+
+// printing is quite flexible:
+a.print;
+a.print([\dur]);
+a.print([\dur], false);
+a.print([\absTime, \dur], false);
+
+a.quantizeDurs(0.25, 2).printAll;"";
+a.totalDur;
+a.playingDur;
+
+// play the list by hand 
+// ( usually one would use EventLoop )
+(
+fork { 
+	a.do { |ev|
+		var deg = ev[\deg];
+		ev.postln;
+		if (deg.notNil) { (degree: deg, sustain: 0.1).play; };
+		ev[\dur].wait;
+	};
+};
+)
+
+For more examples, see link::Classes/EventLoop:: and link::Classes/KeyPlayer::.
+::
+
+
+INSTANCEMETHODS::
+
+METHOD:: totalDur
+the total duration of the recorded event sequence
+
+METHOD:: playingDur
+the playing total duration of the EventList, may be different.
+
+METHOD:: print
+print event values in the order of keys given; post the rest if flag is true
+
+METHOD:: start
+start recording, add a 'start' event like (type: \start, absTime: 0)
+
+METHOD:: addEvent
+add an event with a value for absTime, plus any other key/value pairs
+
+METHOD:: finish
+add an 'end' event, like (type: \end, absTime: <loopEndTime>). 
+
+private:: setDeltaInPrev
+
+METHOD:: quantizeDurs
+quantize durations to some grid, and to an optional full duration.
+
+METHOD:: setDurs
+set the dur values in the events by some func, used e.g. when quantizing.
+
+METHOD:: restoreDurs
+restore durations unquantized state.
+
+METHOD:: calcDeltas
+in all events, calculate delta and dur values based on absTime values.
+
+METHOD:: setDursToDelta
+in all events, copy values for delta to dur key.
+

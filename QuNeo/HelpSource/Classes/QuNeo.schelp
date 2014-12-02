@@ -1,0 +1,346 @@
+TITLE:: QuNeo
+summary:: A class to make it easier to interface with the Keith McMillen QuNeo.
+categories:: Hardware>QuNeo
+related:: Classes/MidiCcBus, Classes/MidiNoteFunc, Classes/QuNeoButton, Classes/QuNeoCircleControl, Classes/QuNeoDrumPad, Classes/QuNeoGridPad, Classes/QuNeoLongSlider, Classes/QuNeoSlider
+
+DESCRIPTION::
+A class to make it easier to interface with the Keith McMillen QuNeo - http://www.keithmcmillen.com/QuNeo/ .
+
+
+If this is your first time using the class I recommend looking at the example QuNeo preset and Supercollider code in the \QuNeo\QuNeoPresets\ directory of your Supercollider extentions directory.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new instance of the QuNeo class to interface with the QuNeo hardware
+
+ARGUMENT:: defaultChannel
+This is the MIDI channel that will be used when creating new controls if one is not specified.
+
+ARGUMENT:: scInPort
+Specify the port within Supercollider that will recieve MIDI data from the QuNeo.  If this argument is not provided it will be auto-detected.
+
+ARGUMENT:: scOutPort
+Specify the port within Supercollider that will send MIDI data to the QuNeo.  If this argument is not provided it will be auto-detected.
+
+returns:: A new instance of the QuNeo class.
+
+
+INSTANCEMETHODS::
+
+METHOD:: createDrumPad
+Create a new drum pad controller and add it to the pads array.
+
+ARGUMENT:: index
+The index to create the new drum pad control with.
+
+ARGUMENT:: noteNum
+MIDI note number for the control.
+
+ARGUMENT:: pressCC
+MIDI CC number for pressure data.
+
+ARGUMENT:: xCC
+(describe argument here)
+
+ARGUMENT:: yCC
+(describe argument here)
+
+ARGUMENT:: channel
+MIDI channel for the control.  Will use the default if one is not provided.
+
+
+METHOD:: createVSlider
+Create a new vertical slider controller and add it to the vSliders array.
+
+ARGUMENT:: index
+The index to create the new verticle slider control with.
+
+ARGUMENT:: noteNum
+MIDI note number for the control.
+
+ARGUMENT:: pressCC
+MIDI CC number for pressure data.
+
+ARGUMENT:: locCC
+MIDI CC number for location data.
+
+ARGUMENT:: channel
+MIDI channel for the control.  Will use the default if one is not provided.
+
+ARGUMENT:: scInPort
+The port that this control will recieve MIDI data from the QuNeo on.
+
+ARGUMENT:: scOutPort
+The port that this control will use to send MIDI to the QuNeo.
+
+
+METHOD:: createHSlider
+Create a new horizontal slider controller and add it to the hSliders array.
+
+ARGUMENT:: index
+The index to create the new horizontal slider control with.
+
+ARGUMENT:: noteNum
+MIDI note number for the control.
+
+ARGUMENT:: pressCC
+MIDI CC number for pressure data.
+
+ARGUMENT:: locCC
+MIDI CC number for location data.
+
+ARGUMENT:: channel
+MIDI channel for the control.  Will use the default if one is not provided.
+
+ARGUMENT:: scInPort
+The port that this control will recieve MIDI data from the QuNeo on.
+
+ARGUMENT:: scOutPort
+The port that this control will use to send MIDI to the QuNeo.
+
+
+METHOD:: createLSlider
+Create a new long slider controller and add it to the lSliders array.
+
+ARGUMENT:: index
+The index to create the new long slider control with.
+
+ARGUMENT:: noteNum
+MIDI note number for the control.
+
+ARGUMENT:: pressCC
+MIDI CC number for pressure data.
+
+ARGUMENT:: locCC
+MIDI CC number for location data.
+
+ARGUMENT:: widthCC
+MIDI CC number for width data.
+
+ARGUMENT:: channel
+MIDI channel for the control.  Will use the default if one is not provided.
+
+ARGUMENT:: scInPort
+The port that this control will recieve MIDI data from the QuNeo on.
+
+ARGUMENT:: scOutPort
+The port that this control will use to send MIDI to the QuNeo.
+
+
+METHOD:: createCircle
+Create a new circle controller and add it to the circles array.
+
+ARGUMENT:: index
+The index to create the new circle control with.
+
+ARGUMENT:: noteNum
+MIDI note number for the control.
+
+ARGUMENT:: pressCC
+MIDI CC number for pressure data.
+
+ARGUMENT:: locCC
+MIDI CC number for location data.
+
+ARGUMENT:: channel
+MIDI channel for the control.  Will use the default if one is not provided.
+
+ARGUMENT:: scInPort
+The port that this control will use to recieve MIDI data from the QuNeo.
+
+ARGUMENT:: scOutPort
+The port that this control will use to send MIDI to the QuNeo.
+
+
+METHOD:: createButton
+Create a new button controller and add it to the buttons array.
+
+ARGUMENT:: index
+The index to create the new button control with.
+
+ARGUMENT:: noteNum
+MIDI note number for the control.
+
+ARGUMENT:: pressCC
+MIDI CC number for pressure data.
+
+ARGUMENT:: channel
+MIDI channel for the control.  Will use the default if one is not provided.
+
+ARGUMENT:: scInPort
+The port that this control will recieve MIDI data from the QuNeo on.
+
+ARGUMENT:: scOutPort
+The port that this control will use to send MIDI to the QuNeo.
+
+
+METHOD:: pads
+Array of pad controls.
+
+
+METHOD:: vSliders
+Array of verticle slider controls.
+
+
+METHOD:: hSliders
+Array of horizontal slider controls.
+
+
+METHOD:: lSliders
+Array of long slider controls.
+
+
+METHOD:: circles
+Array of circle controls.
+
+
+METHOD:: buttons
+Array of button controls
+
+
+METHOD:: scInPort
+Port that will recieve MIDI data from the QuNeo.
+
+
+METHOD:: scOutPort
+Port that will send MIDI data to the QuNeo.
+
+
+METHOD:: defaultChannel
+MIDI channel that new controls will use to recieve MIDI data unless one is specified when they are created.
+
+
+METHOD:: detectInPort
+Searches the MIDIClient source for a device named "QuNeo" and returns the port number.
+
+returns:: The MIDIClient port number.
+
+
+METHOD:: detectOutPort
+Searches the MIDIClient destinations for a device named "QuNeo" and returns the port number.
+
+returns:: The MIDIClient port number.
+
+
+METHOD:: debug
+Allows you to enable or disable debugging for every controller on the QuNeo.  This setting can also be changed on a per control and per datasource basis.
+
+ARGUMENT:: setDebug
+Enable debugging? true/false.
+
+
+METHOD:: postInfo
+Posts info about the current QuNeo setup to the console.
+
+
+PRIVATE:: init
+
+
+EXAMPLES::
+
+code::
+/*
+All examples assume QuNeo has been mapped properly and is stored in the variable ~quNeo.  Please see the sample files referanced at the top of this document for setup instructions.
+*/
+
+//Test if QuNeo is hooked up correctly
+~quNeo.debug(true)
+
+//Stop debugging
+~quNeo.debug(false)
+
+//Just debug pad 0
+~quNeo.pads[0].debug(true)
+
+//Stop debugging
+~quNeo.pads[0].debug(false)
+
+//Grab the current value of a control (local server only)
+~quNeo.pads[0].x.value.postln
+
+(
+//One pad theremin
+{
+	var freq = ~quNeo.pads[0].x.kr(5000, 300);
+	var amp = ~quNeo.pads[0].y.kr;
+	SinOsc.ar(freq, mul: amp);
+}.play
+)
+
+(
+//One pad - One Slider - Using Ugens
+{
+	var freq1 = ~quNeo.pads[0].x.kr(5000, 100);
+	var freq2 = ~quNeo.pads[0].y.kr(5000, 100);
+	var amp = ~quNeo.pads[0].press.kr;
+	var lpfFreq = ~quNeo.vSliders[0].loc.kr(3000, 30);
+	var lpfRes = 1 - ~quNeo.vSliders[0].press.kr(0.9, 0.1);
+	var sin = Saw.ar(freq1) * Saw.ar(freq2) * amp;
+	RLPF.ar(sin, lpfFreq, lpfRes);
+}.play
+)
+
+(
+//One pad - One Slider - Using maps
+{
+	SynthDef(\test, {|freq1, freq2, amp, lpfFreq, lpfRes|
+		var sin;
+		freq1 = freq1 * 5000 + 100;
+		freq2 = freq2 * 5000 + 100;
+		lpfFreq = lpfFreq * 3000 + 30;
+		lpfRes = 1 - lpfRes * 0.9 + 0.1;
+		sin = Saw.ar(freq1) * Saw.ar(freq2) * amp;
+		Out.ar([0,1], RLPF.ar(sin, lpfFreq, lpfRes));
+	}).add;
+
+	s.sync;
+
+	Synth(\test, [
+		\freq, ~quNeo.pads[0].x.map,
+		\freq2, ~quNeo.pads[0].y.map,
+		\amp, ~quNeo.pads[0].press.map,
+		\lpfFreq, ~quNeo.vSliders[0].loc.map,
+		\lpfRes, ~quNeo.vSliders[0].press.map
+	])
+}.fork
+)
+
+(
+//Calling functions
+{
+	SynthDef(\test, {|freq1, freq2, amp, lpfFreq, lpfRes|
+		var sin = Saw.ar(freq1) * Saw.ar(freq2) * amp;
+		lpfFreq = lpfFreq * 3000 + 200;
+		sin = sin * EnvGen.ar(Env.perc, doneAction:2);
+		Out.ar([0,1], RLPF.ar(sin, lpfFreq, lpfRes));
+	}).add;
+
+	s.sync;
+
+	~quNeo.pads[0].note.onFunc = {
+		Pbind(*[instrument: \test,
+			freq1: Pseq([300,600,900,1200], 1),
+			freq2: 1000,
+			amp: 1,
+			dur: 0.3,
+			lpfFreq: ~quNeo.vSliders[0].loc.map,
+			lpfRes: 0.5
+		]).play;
+	};
+
+	~quNeo.pads[1].note.onFunc = {
+		Pbind(*[instrument: \test,
+			freq1: Pseq([300,600,900,1200] * 2, 1),
+			freq2: 1000,
+			amp: 1,
+			dur: 0.3,
+			lpfFreq: ~quNeo.vSliders[0].loc.map,
+			lpfRes: 0.5
+		]).play;
+	};
+
+}.fork
+)
+::

@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #d00c0c}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #d00c0c}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #162bc4}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p17 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #cf0c0c}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cf0c0c}
+p.p19 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #162bc4}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #737373}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #162bc4}
+span.s4 {color: #008323}
+span.s5 {color: #d00c0c}
+span.s6 {color: #1200c4}
+span.s7 {font: 9.0px Monaco}
+span.s8 {color: #1e39f6}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>NPVoicer<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>handle polyphony with nodeproxies</b></p>
+<p class="p2"><br></p>
+<p class="p1">first example:</p>
+<p class="p2"><br></p>
+<p class="p3">s.boot;</p>
+<p class="p3">s.latency = nil;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// for faster response;</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2">g = </span><span class="s3">NPVoicer</span><span class="s2">(</span><span class="s3">Ndef</span><span class="s2">(</span><span class="s4">\vox</span><span class="s2">)); <span class="Apple-tab-span">	</span></span>// make an NPVoicer with an Ndef in it</p>
+<p class="p5"><span class="s2">g.prime(</span><span class="s4">\default</span><span class="s2">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// prepare it with the default synthdef</p>
+<p class="p4"><br></p>
+<p class="p3">g.play;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// play it</span></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span>// start a sound with key 48, with its won set of params</p>
+<p class="p3">g.put(48, [<span class="s4">\freq</span>, 48.midicps]);</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span>// a second note at 51</p>
+<p class="p3">g.put(51, [<span class="s4">\freq</span>, 51.midicps]);</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span>// release them</p>
+<p class="p3">g.release(48);</p>
+<p class="p3">g.release(51);</p>
+<p class="p6"><br></p>
+<p class="p7"><b>Methods</b></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>*new (proxy, setParams)</b></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>proxy </b>- a nodeproxy, typically an Ndef, or a ~proxy, if you use ProxySpace.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>setParams </b>- the parameters to set independently for each node/voice on the proxy.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s6">NPVoicer</span>(Ndef(\a), [\freq, \amp]);</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>prime (obj)</b><span class="Apple-tab-span">	</span>prepare proxy for playing voices.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>obj </b>- can be anything a nodeproxy accepts:<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SynthDef name (a Symbol), a function, ...</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// init with Event's default SynthDef,<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// as made in Event.makeDefaultSynthDef;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.prime(<span class="s4">\default</span>);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>synCtl</b> <span class="Apple-tab-span">	</span>a SynthDefControl that is made when priming, and used for the voices.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.synCtl.dump;</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>put (index, args)<span class="Apple-tab-span">	</span></b>start a voice at some index</p>
+<p class="p10"><br></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>index </b>- some key to identify the running voice. e.g. a MIDInote key, or a button number.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>args </b>- the arguments to be set individually for this voice.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(usually, these are the ones in setParams.)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.play;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.put(48, [<span class="s4">\freq</span>, 48.midicps, <span class="s4">\amp</span>, 0.2, <span class="s4">\pan</span>, -0.5]);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.put(51, [<span class="s4">\freq</span>, 51.midicps, <span class="s4">\amp</span>, 0.1, <span class="s4">\pan</span>, 0.5]);</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>release (key, fadeTime)<span class="Apple-tab-span">	</span></b>release the voice at key, optionally with a fadetime.</p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>key </b>-<span class="Apple-converted-space">  </span>the key at which to find the voice to release.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>fadeTime </b>- a release fadetime. works if the synthdef/object supports it.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.release(48);</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.release(51, 3);<span class="Apple-tab-span">	</span></span>// default has no fadetime, so not working</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14">(</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.prime({ </span>|freq = (60.midicps), amp = 0.1, pan|</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pan2</span>.ar( <span class="s3">Ringz</span>.ar(<span class="s3">Dust</span>.ar(10) + <span class="s3">GrayNoise</span>.ar(0.03), freq, 0.1), pan, amp)</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p14">)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// fadeTime gets built automatically in proxy, so separate fadetime<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// works here:<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.put(72, [<span class="s4">\freq</span>, 72.midicps, <span class="s4">\amp</span>, 0.2, <span class="s4">\pan</span>, -0.5, <span class="s4">\fadeTime</span>, 0.5]);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.release(72, 3);<span class="Apple-tab-span">	</span><span class="s5">// key, fadeTime</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>playingKeys</b><span class="Apple-tab-span">	</span>the keys that currently play voices</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.put(60, [<span class="s4">\freq</span>, 48.midicps, \amp, 0.2, \pan, -0.5]);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.put(67, [<span class="s4">\freq</span>, 51.midicps, \amp, 0.1, \pan, 0.5]);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.playingKeys;</p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>releaseAll (fadeTime)</b><span class="Apple-tab-span">	</span>release all voices.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>fadeTime </b>- fadetime for the release</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.releaseAll(0.0);</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.put(60, [<span class="s4">\freq</span>, 60.midicps, \amp, 0.2, \pan, -0.5, \fadeTime, 1]);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.put(67, [<span class="s4">\freq</span>, 67.midicps, \amp, 0.1, \pan, 0.5, \fadeTime, 5]);</p>
+<p class="p8"><br></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.releaseAll(3);</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>spawn (args)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>play voices that end by themselves (doneAction: 2)<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>i.e. NPVoicer need not keep track of these voices.</p>
+<p class="p10"><br></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>args </b>- the arguments to be set individually for this voice.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">ProxySpace</span>.push;<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~x.play;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s3">NPVoicer</span>(~x);<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.play;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.prime({ <span class="s3">|freq = 400|</span> <span class="s3">SinOsc</span>.ar(freq) * <span class="s3">XLine</span>.ar(0.2, 0.0002, 0.4, doneAction:2) }, true);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.proxy.spawn([<span class="s4">\freq</span>, 72.midicps]);<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.proxy.spawn([<span class="s4">\freq</span>, 96.midicps]);<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// not working now, because spawning</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.put(72, [<span class="s4">\freq</span>, 72.midicps, <span class="s4">\amp</span>, 0.1, <span class="s4">\pan</span>, 0.5]); <span class="s5">// works</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// spawn</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.spawn([<span class="s4">\freq</span>, 72.midicps]);<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.spawn([<span class="s4">\freq</span>, 96.midicps]);<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s7"><span class="Apple-tab-span">	</span></span><b>Interface to the proxy</b> - see <a href="SC://NodeProxy"><span class="s8">NodeProxy</span></a><span class="s8"> </span>for details</p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>play</b> (out, numChannels, group, multi, vol, fadeTime, addAction)</p>
+<p class="p10"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>playN</b> (outs, amps, ins, vol, fadeTime, group, addAction)</p>
+<p class="p10"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>stop</b> (fadeTime, reset)</p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>end</b> (fadeTime, reset)</p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>pause</b></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>resume</b></p>
+<p class="p8"><br></p>
+<p class="p16"><b>Examples</b></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span>// </span>trigger percussion-style notes<span class="s2"> from computer keyboard</span> while above window.<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="Apple-tab-span">	</span>// could also be done without NPVoicer, but it is convenient with NPVoicer.</p>
+<p class="p3">(</p>
+<p class="p3">s.latency = nil;</p>
+<p class="p19"><span class="s2">g = </span>NPVoicer<span class="s2">(</span>Ndef<span class="s2">(</span><span class="s4">\x</span><span class="s2">));</span></p>
+<p class="p12">g.prime({ <span class="s3">|freq = 400|</span> <span class="s3">SinOsc</span>.ar(freq) * <span class="s3">EnvGen</span>.ar(<span class="s3">Env</span>.perc(0.001, 0.03, 0.4), doneAction:2) }, <span class="s3">true</span>);</p>
+<p class="p12">g.play;</p>
+<p class="p8"><br></p>
+<p class="p20"><span class="s2">w = </span><span class="s3">Window</span><span class="s2">(</span>"ascii player - clickies"<span class="s2">).front;<span class="Apple-converted-space"> </span></span></p>
+<p class="p3">w.view.keyDownAction = { <span class="s3">|view, char|</span><span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>g.spawn([<span class="s4">\freq</span>, char.ascii.midicps])</p>
+<p class="p3">};</p>
+<p class="p3">)</p>
+<p class="p8"><br></p>
+<p class="p12"><span class="Apple-tab-span">	</span>// play, hold, and release notes from computer keyboard</p>
+<p class="p3">(</p>
+<p class="p3">s.latency = nil;</p>
+<p class="p12">g = <span class="s3">NPVoicer</span>(<span class="s3">Ndef</span>(<span class="s4">\x</span>), [<span class="s4">\freq</span>, <span class="s4">\amp</span>, <span class="s4">\pan</span>]);</p>
+<p class="p12">g.prime(\default, false);</p>
+<p class="p12">g.play;</p>
+<p class="p8"><br></p>
+<p class="p20"><span class="s2">w = </span><span class="s3">Window</span><span class="s2">(</span>"ascii player2 - it IS a keyboard after all..."<span class="s2">).front;<span class="Apple-converted-space"> </span></span></p>
+<p class="p3">w.view.keyDownAction = { <span class="s3">|view, char|</span><span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>var key = char.ascii;<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// no retriggering</p>
+<p class="p3"><span class="Apple-tab-span">	</span>if (g.playingKeys.includes(key).not) {<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.put(key, [<span class="s4">\freq</span>, key.midicps])</p>
+<p class="p3"><span class="Apple-tab-span">	</span>};</p>
+<p class="p3">};</p>
+<p class="p3">w.view.keyUpAction = { <span class="s3">|view, char|</span><span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>var key = char.ascii;<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>if (g.playingKeys.includes(key)) { g.release(key) };</p>
+<p class="p3">};</p>
+<p class="p3">)</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// ToDo<span class="Apple-converted-space"> </span></p>
+<p class="p5">// An example with KeyPlayer</p>
+<p class="p4"><br></p>
+<p class="p5">// An example with MultiTouchPad</p>
+<p class="p4"><br></p>
+<p class="p5">// An example with NanoKey - MIDI, play and hold notes<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p5">// An example with NanoPad - MIDI, trigger perc notes only</p>
+<p class="p4"><br></p>
+<p class="p3">// Manta, ... others ... ?<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+</body>
+</html>

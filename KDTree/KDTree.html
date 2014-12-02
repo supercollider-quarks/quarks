@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bb0e03}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #002bb2}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {text-decoration: underline}
+span.s3 {color: #000ebe}
+span.s4 {color: #167209}
+span.s5 {color: #bb0e03}
+span.s6 {color: #606060}
+span.s7 {color: #000000}
+span.s8 {color: #0000bf}
+span.s9 {text-decoration: underline ; color: #0036de}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>KDTree<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b><i>k</i>d-tree data structure for efficient spatial search</b></p>
+<p class="p2"><br></p>
+<p class="p3">A <b><i>k</i>d-tree</b> is a data structure for storing points in a Euclidean space. It is not optimised for data that changes (insertions/deletions) but is very efficient at spatial queries such as nearest-neighbour search.</p>
+<p class="p3">See <span class="s2">http://en.wikipedia.org/wiki/Kd_tree</span></p>
+<p class="p2"><br></p>
+<p class="p3">KDTree is initialised using an array of points - each of these points must be an array, each of the same size. If you want to store an item or label along with each point, you can add it as the last item of each point array, and set the <i>lastIsLabel</i> constructor argument to true (see examples below). The things that you can store as "labels" can be anything at all, but they should be things that can meaningfully be compared for equality. Numbers, symbols, strings, etc, are all fine.</p>
+<p class="p2"><br></p>
+<p class="p3">(Note: You typically create a KDTree using an Array of points, but the array and the ordering of elements is not stored. The asArray method will return an array of points stored in the tree but typically in a different order.)</p>
+<p class="p2"><br></p>
+<p class="p4"><br></p>
+<p class="p5">// KDTree with no labels stored:</p>
+<p class="p6">~tree = <span class="s3">KDTree</span>([[2,3], [5,4], [9,6], [4,7], [8,1], [7,2]]);</p>
+<p class="p5">// Or create one with a "label" (an item) at each node:</p>
+<p class="p6">~tree = <span class="s3">KDTree</span>([[2,3, <span class="s4">\fred</span>], [5,4, <span class="s4">\yep</span>], [9,6, <span class="s4">\bonk</span>], [4,7, <span class="s4">\hat</span>], [8,1, <span class="s4">\smak</span>], [7,2, <span class="s4">\jexx</span>]], lastIsLabel: <span class="s3">true</span>);</p>
+<p class="p6">~tree.dumpTree;</p>
+<p class="p6">~tree.asArray;</p>
+<p class="p6">~tree.asArray(incLabels: <span class="s3">true</span>);</p>
+<p class="p5">// Each KDTree node stores data in a leftChild, a rightChild, and a location</p>
+<p class="p6">~tree.leftChild.asArray;</p>
+<p class="p6">~tree.rightChild.asArray;</p>
+<p class="p6">~tree.location;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">///////// Searching ////////////</p>
+<p class="p4"><br></p>
+<p class="p5">// The kd-tree structure means that large portions of the tree often don't need to be searched.<span class="Apple-converted-space"> </span></p>
+<p class="p5">// For large data (e.g. 100000 points) this gives a massive speed increase compared against<span class="Apple-converted-space"> </span></p>
+<p class="p5">// searching the corresponding array, even for ordinary exact-match search.<span class="Apple-converted-space"> </span></p>
+<p class="p5">// Also allows fast spatial searches which are very efficient even on medium-sized data.</p>
+<p class="p5">// See benchmarks below.</p>
+<p class="p4"><br></p>
+<p class="p5">// Simple exact-match search - returns the first matching node object if found, or nil otherwise.</p>
+<p class="p6">~tree.find([5,9]); <span class="s5">// Not found</span></p>
+<p class="p6">~tree.find([5,4]).label; <span class="s5">// Found</span></p>
+<p class="p4"><br></p>
+<p class="p5">// Nearest neighbour search - returns only one node, although of course there could be a tie.</p>
+<p class="p5">// What is actually returned is an array containing [node, distance]</p>
+<p class="p6">~tree.nearest([3,3]);</p>
+<p class="p6">~tree.nearest([3,3])[0].location;</p>
+<p class="p6">~tree.nearest([7,6])[0].location;</p>
+<p class="p6">~tree.nearest([6,6])[0].location;</p>
+<p class="p5">// Let's map out the nearest symbol at every point in a grid</p>
+<p class="p6">11.do({<span class="s3">|y|</span> 11.do({<span class="s3">|x|</span> format(<span class="s6">"%\t"</span>, ~tree.nearest([x, y])[0].label).post; });<span class="Apple-tab-span">	</span><span class="s6">""</span>.postln; });<span class="s6">""</span></p>
+<p class="p4"><br></p>
+<p class="p5">// To find the nearest point to a point that's already in the tree (excluding self), call nearestToNode on the node in question:</p>
+<p class="p5">// (again, what is actually returned is an array containing [node, distance])</p>
+<p class="p6">~tree.location</p>
+<p class="p6">~tree.nearestToNode</p>
+<p class="p6">~tree.nearestToNode[0].location</p>
+<p class="p6">~tree.leftChild.location</p>
+<p class="p6">~tree.leftChild.nearestToNode[0].location</p>
+<p class="p6">~tree.do{<span class="s3">|node|</span> <span class="s6">"node: %\t nearest other: %"</span>.format(node.location, node.nearestToNode[0].location).postln};</p>
+<p class="p4"><br></p>
+<p class="p5">// "All Nearest Neighbour" search - each point finds its neighbour.</p>
+<p class="p5">// This returns an array of assocations of the form (node -&gt; [nearestneighbour, distance]).</p>
+<p class="p5">// It should be possible to optimise this relative to lots of separate .nearest queries, but at present speed is only a little bit faster.</p>
+<p class="p6">~tree.allNearest</p>
+<p class="p6">~tree.allNearest.do({<span class="s3">|res|</span> <span class="s6">"(% -&gt; %)"</span>.format(res.key.location, res.value[0].location).postln});</p>
+<p class="p4"><br></p>
+<p class="p5">// Search within a rectangle (/hyperrectangle), defined by low and high co-ordinates</p>
+<p class="p6">~tree.rectSearch([4,4], [8,8]).collect(<span class="s3">_</span>.location);</p>
+<p class="p6">~tree.rectSearch([2,1], [8,4]).collect(<span class="s3">_</span>.location);</p>
+<p class="p6">~tree.rectSearch([12,11], [18,41]).collect(<span class="s3">_</span>.location);</p>
+<p class="p4"><br></p>
+<p class="p5">// Search within a circle (/hypersphere), defined by a point and a radius</p>
+<p class="p6">~tree.radiusSearch([3,6], 2).collect(<span class="s3">_</span>.location);</p>
+<p class="p6">~tree.radiusSearch([3,6], 3).collect(<span class="s3">_</span>.location);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">////////// Other things ////////</p>
+<p class="p4"><br></p>
+<p class="p5">// min and max are measured independently on each dimension.</p>
+<p class="p5">// They aren't cached, but calculated when requested.</p>
+<p class="p6">~tree.min;</p>
+<p class="p6">~tree.max;</p>
+<p class="p6">~tree.leftChild.min;</p>
+<p class="p6">~tree.leftChild.max;</p>
+<p class="p4"><br></p>
+<p class="p5">// .do and .collect are implemented to iterate the whole tree, evaluating func for every (non-deleted) node</p>
+<p class="p6">~tree.do({<span class="s3">|node|</span> node.location[0].postln});</p>
+<p class="p6">~tree.collect({<span class="s3">|node|</span> node.location[0]});</p>
+<p class="p4"><br></p>
+<p class="p5">// Adding and removing are NOT RECOMMENDED, because the change doesn't generally result in a balanced tree. To balance the tree you have to re-create it from scratch from the flat array, which the .recreate method will do - however if you're happy to use an un-balanced tree you may add/delete/undelete data:</p>
+<p class="p6">~tree.dumpTree; <span class="Apple-converted-space">  </span><span class="s5">// Orig tree</span></p>
+<p class="p5"><span class="s7">~tree.add([5,5]).dumpTree; <span class="Apple-converted-space">  </span></span>// Now with new element, but unbalanced</p>
+<p class="p5"><span class="s7">~tree = ~tree.recreate; </span>// Recreates structure from scratch! Not recommended! But will be balanced.</p>
+<p class="p5"><span class="s7">~tree.dumpTree; <span class="Apple-converted-space">  </span></span>// Recreated, the order is quite different</p>
+<p class="p6">~tree.find([5,5]);</p>
+<p class="p5"><span class="s7">~tree.delete([5,5]); </span>// "delete" marks a node as deleted, without removing it</p>
+<p class="p6">~tree.find([5,5]);</p>
+<p class="p6">~tree.find([5,5], incDeleted: <span class="s3">true</span>);</p>
+<p class="p6">~tree.dumpTree;</p>
+<p class="p6">~tree.undelete([5,5]);</p>
+<p class="p6">~tree.find([5,5]);</p>
+<p class="p6">~tree.dumpTree;</p>
+<p class="p6">~tree.delete([5,5]);</p>
+<p class="p5"><span class="s7">~tree = ~tree.recreate; </span>// Recreates structure from scratch! Not recommended! But will be balanced.</p>
+<p class="p5"><span class="s7">~tree.dumpTree; </span>// Deleted nodes are not included in the recreated version.</p>
+<p class="p4"><br></p>
+<p class="p5">// The DIFFERENTIAL ENTROPY of the spatial distribution can be estimated from nearest-neighbour distances:</p>
+<p class="p6">~tree.entropyNN;</p>
+<p class="p5">// Let's generate trees based on known distributions and estimate the entropy:</p>
+<p class="p5">// 2D uniform distrib has the MAXIMAL entropy of anything with the same range (here 0 to 1):</p>
+<p class="p6">~tree = <span class="s3">KDTree</span>({[1.0.rand, 1.0.rand]}.dup(1000));</p>
+<p class="p6">~tree.entropyNN;</p>
+<p class="p5">// The following should have a lower entropy than the above:</p>
+<p class="p6"><span class="s3">KDTree</span>({[1.0.linrand, 1.0.linrand]}.dup(1000)).entropyNN;</p>
+<p class="p5">// Even lower entropy:</p>
+<p class="p6"><span class="s3">KDTree</span>({[1.0.linrand.squared, 1.0.linrand.squared]}.dup(1000)).entropyNN;</p>
+<p class="p7">// For a 1D uniform distribution ranging from zero to one, the true entropy is zero:</p>
+<p class="p8"><span class="s8">KDTree</span>({[1.0.rand]}.dup(1000)).entropyNN;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p3"><b>Tests</b></p>
+<p class="p2"><br></p>
+<p class="p3">For speed tests see <a href="KDTree_benchmarking.html"><span class="s9">KDTree_benchmarking</span></a>.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">For unit tests (for correctness) there is a Unit Test class <i>TestKDTree</i> - basically just run</p>
+<p class="p9">KDTree<span class="s7">.test</span></p>
+</body>
+</html>

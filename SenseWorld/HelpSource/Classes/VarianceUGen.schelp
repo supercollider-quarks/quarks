@@ -1,0 +1,32 @@
+TITLE:: VarianceUGen
+summary:: Calculates the variance of a signal over a specified window.
+categories:: UGens>Analysis>Statistics
+related:: Classes/StdDevUGen
+
+DESCRIPTION::
+VarianceUGen is a pseudo UGen that calculates the variance of a signal over a specified time window.
+
+The calculation done is the sum over a time window of
+code::(signal - mean).abs.squared::
+divided by the code::(length - 1):: of the window.
+
+The link::Classes/StdDevUGen:: takes the square root of the VarianceUGen.
+
+
+CLASSMETHODS::
+
+private:: categories
+
+METHOD:: kr
+Calculates the variance on a control rate signal.
+
+ARGUMENT:: input
+The signal to calculate the variance of.
+
+ARGUMENT:: length
+The length in samples of the window
+
+ARGUMENT:: mean
+If you already calculate a mean (=RunningSum/length) in another part of your SynthDef you can supply it here, so it is not calculated again, thus safing processing power.
+
+INSTANCEMETHODS::

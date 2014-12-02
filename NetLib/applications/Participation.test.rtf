@@ -1,0 +1,316 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf410
+{\fonttbl\f0\fnil\fcharset77 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red191\green0\blue0;\red0\green0\blue191;
+\red0\green115\blue0;\red96\green96\blue96;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs18 \cf2 \
+\
+\cf3 // forum keeps track of all participants.\cf2 \
+\cf3 // every participant sends to all others that are known to her\cf2 \
+\
+\cf3 // possible improvement: current lookup scheme is redundant (n * n messages.)\cf2 \
+\cf3 // but this is needed for network without previous knowledge of a hub\cf2 \
+\
+\cf3 ///////////////////////////// forum ////////////////////////////\cf2 \
+\
+\
+\cf3 /////// do this first! needed for all examples:\cf2 \
+(\
+c = \cf4 Collective\cf2 (\cf5 \\c\cf2 );\
+c.start;\
+\
+x = \cf4 Collective\cf2 (\cf5 \\x\cf2 );\
+x.start;\
+)\
+\
+\cf3 //////////////////////////////////////////////////////////////////////////\cf2 \
+\cf3 /*\
+for using these examples in a real network situation, use only one Collective,\
+for example Collective.default.\
+So c is replaced by Collective.default, x is not needed (it is the other participants)\
+*/\cf2 \
+\cf3 //////////////////////////////////////////////////////////////////////////\cf2 \
+\
+\
+c.addresses;\
+x.addresses;\
+\
+c.everybody;\
+c.postEverybody;\
+\
+c.myIP;\
+c.myName;\
+c.groupName;\
+\
+e = \cf4 Participation\cf2 (c);\
+f = \cf4 Participation\cf2 (x);\
+e.start; f.start;\
+e.addResponder(\cf5 '/dont'\cf2 , \{ \cf4 |t,r,msg|\cf2  msg.postln \});\
+f.addResponder(\cf5 '/dont'\cf2 , \{ \cf4 |t,r,msg|\cf2  \cf6 "please %\\n"\cf2 .postf(msg[1]) \});\
+\
+c.sendToAll(\cf5 '/dont'\cf2 , \cf6 "do it!"\cf2 );\
+x.sendToAll(\cf5 '/dont'\cf2 , \cf6 "go there!"\cf2 );\
+e.stop; f.stop;\
+\
+\
+\cf3 ///////////////////////////// clock sync ////////////////////////////\cf2 \
+\
+\cf3 // ClockSync sets the TempoClock.default to a new instance of TempoClock.\cf2 \
+\
+e = \cf4 ClockSync\cf2 (c).start;\
+f = \cf4 ClockSync\cf2 (x).start;\
+\
+\
+e.ping(\cf5 \\c\cf2 , 8);\
+e.ping(\cf5 \\c\cf2 , 8);\
+e.sync(\cf5 \\c\cf2 , [4.0, 2.0]);\
+\
+e.latency;\
+\
+e.stop;\
+f.stop;\
+\
+\cf3 //////////////////////////////////////////////////////////////////////////\cf2 \
+\cf3 /*\
+e.g. for using this example in a real network situation:\
+c = Collective.default;\
+e = ClockSync(c).start\
+*/\cf2 \
+\cf3 //////////////////////////////////////////////////////////////////////////\cf2 \
+\
+\
+\cf3 /////////////////////////// chat window ///////////////////////\cf2 \
+\cf3 // use tab to send window content.\cf2 \
+(\
+e = \cf4 ChatWindow\cf2 (c).start;\
+f = \cf4 ChatWindow\cf2 (x).start;\
+)\
+\cf3 // the windows are on top of each other.\cf2 \
+\
+\
+\cf3 ///////////////////////////// chat ////////////////////////////\cf2 \
+\
+\
+e = \cf4 Chat\cf2 (c).start;\
+f = \cf4 Chat\cf2 (x).start;\
+e.recvMsgAction = \{ \cf4 |str|\cf2  \cf6 "in chat window c: %\\n"\cf2 .postf(str) \};\
+f.recvMsgAction = \{ \cf4 |str|\cf2  \cf6 "in chat window x: %\\n"\cf2 .postf(str) \};\
+\
+e.talk(\cf6 "hello Ibehikim"\cf2 );\
+f.talk(\cf6 "hello Maha"\cf2 );\
+\
+e.stop;\
+f.stop;\
+\
+\cf3 ///////////////////////////// chat ////////////////////////////\cf2 \
+\
+e = \cf4 NetLog\cf2 (c).start;\
+f = \cf4 NetLog\cf2 (x).start;\
+\
+\
+\cf3 ///////////////////////////// draw together ////////////////////////////\cf2 \
+\
+\
+\cf3 // based on example of SCUserView\cf2 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li200\ql\qnatural\pardirnatural
+\cf2 (\
+	\cf4 var\cf2  drawing;\
+	\cf4 var\cf2  format = [340, 360];\
+	\
+	e = \cf4 Participation\cf2 (c);\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 	f = \cf4 Participation\cf2 (x);\
+	e.start; f.start;\
+	\
+	\
+	\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li200\ql\qnatural\pardirnatural
+\cf2 	\
+	drawing = \{ \cf4 | participation |\cf2 \
+	\
+		\cf4 var\cf2  w, v, txt, tmppoints, all;\
+		tmppoints = (); \cf3 // dictionary for temp data of each collaborator\cf2 \
+		\
+		w = \cf4 GUI\cf2 .window.new(\cf6 "draw on us"\cf2 , \cf4 Rect\cf2 (128, 64, format[0], format[1]));\
+		\
+		participation.addResponder(\cf5 '/track'\cf2 , \{ \cf4 |t,r,msg|\cf2 \
+			\cf4 var\cf2  point = msg[2] @ msg[3];\
+			\cf4 var\cf2  name = msg[1];\
+			tmppoints[name] = tmppoints[name].add(point);\
+			defer \{\'caw.refresh \};\
+		\});\
+		participation.addResponder(\cf5 '/endTrack'\cf2 , \{ \cf4 |t,r,msg|\cf2 \
+			\cf4 var\cf2  name = msg[1];\
+			all = all.add(tmppoints[name].copy);\
+			tmppoints[name] = [];\
+			defer \{\'caw.refresh \};\
+		\});\
+		\
+		v = \cf4 GUI\cf2 .userView.new(w, w.view.bounds)\
+			.mouseTrackFunc_(\{\cf4 |v,x,y|\cf2 \
+				c.sendToAll(\cf5 '/track'\cf2 , participation.forum.myName, x, y);\
+		\})\
+			.mouseEndTrackFunc_(\{\cf4 |v,x,y|\cf2 \
+				c.sendToAll(\cf5 '/endTrack'\cf2 , participation.forum.myName);\
+		\});\
+		\
+		w.drawHook_\{\
+			\cf4 GUI\cf2 .pen.use \{	\
+				\cf4 GUI\cf2 .pen.width = 1;\
+				\cf4 GUI\cf2 .pen.beginPath;\
+				\
+				tmppoints.do\{	\cf4 |points|\cf2 \
+					points.do \{\cf4 |p, i|\cf2 \
+						if(i == 0)\{\
+						\cf4 GUI\cf2 .pen.moveTo(p);\
+						\}\{\
+						\cf4 GUI\cf2 .pen.lineTo(p);\
+						\}\
+					\}\
+				\};\
+				all.do\{\cf4 |points|\cf2 \
+					points.do\{\cf4 |p, i|\cf2 \
+						if(i == 0)\{\
+							\cf4 GUI\cf2 .pen.moveTo(p);\
+						\}\{\
+							\cf4 GUI\cf2 .pen.lineTo(p);\
+						\}\
+					\};\
+				\};\
+				\cf4 GUI\cf2 .pen.stroke;\
+			\};\
+		\};\
+		\
+			\
+		w.front;\
+	\};\
+	\
+	[e, f].do(drawing);\
+	\
+\
+)\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 \
+\
+\
+e.stop; f.stop;\
+\
+\
+\cf3 ////////////////////////////// markov net  ////////////////////////////\cf2 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf2 (\
+\cf4 SynthDef\cf2 (\cf6 "eugen"\cf2 , \{ \cf4 arg\cf2  out=0, freq=1000, freq2=400, freq3=70, sustain=0.1, amp=0.1, pan;\
+		\cf4 var\cf2  env, u;\
+        	env = \cf4 EnvGen\cf2 .ar(\cf4 Env\cf2 .sine(sustain, amp), doneAction:2);\
+         u = \cf4 SinOsc\cf2 .ar(freq, \cf4 SinOsc\cf2 .ar([freq2, freq3]) * 0.4) * env;\
+         \cf4 OffsetOut\cf2 .ar(out, u)\
+\}).store;\
+);\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 \
+\
+e = [ \cf4 MarkovNet\cf2 (c), \cf4 MarkovNet\cf2 (x)];\
+(\
+e.do(\cf4 _\cf2 .function = \{ \cf4 |data|\cf2  \
+	data.postln;\
+	\cf4 Synth\cf2 (\cf5 \\eugen\cf2 , [[\cf5 \\freq\cf2 , \cf5 \\freq2\cf2 , \cf5 \\freq3\cf2 ], data].flop.flat.postln)\
+\})\
+);\
+\
+e.do(\cf4 _\cf2 .data = \{ 1000.rand \}.dup(3).postln );\
+e.do(\cf4 _\cf2 .start);\
+\
+\
+\
+f = e[0];\
+\{ f.nextIndex \}\'ca! 10;\
+\
+f.newChain;\
+f.newChain(1, 3)\
+f.newChain(0.1, 10, 0.0)\
+f.newChain(0.1, 10, 1.0)\
+f.newChain(0.1, 10, 0.5)\
+\
+e.do(\cf4 _\cf2 .stop);\
+\
+\cf3 // zo do: time as parameter?\cf2 \
+\
+\
+\
+\
+\
+\
+\
+\cf3 ////////////////////////////////////////////////////////////////////////////////////////////\cf2 \
+\cf3 ////////////////////////////////////////////////////////////////////////////////////////////\cf2 \
+\cf3 ///////////////////////////// simulate multiuser participations ////////////////////////////\cf2 \
+\cf3 ////////////////////////////////////////////////////////////////////////////////////////////\cf2 \
+\cf3 ////////////////////////////////////////////////////////////////////////////////////////////\cf2 \
+\
+\
+a = \{\'ca\cf4 Collective\cf2 .new \} ! 10;\
+a.do(\cf4 _\cf2 .start);\
+\
+a.collect(\cf4 _\cf2 .myName);\
+\
+x = a[0];\
+\
+x.postEverybody;\
+\
+z = \cf4 Participation\cf2 (x);\
+z.addResponder(\cf5 '/help'\cf2 , \{ \cf4 |t,r,msg|\cf2  postln(\cf6 "Please help "\cf2  ++ msg[1]) \});\
+z.responders;\
+z.start;\
+\
+\
+\cf4 var\cf2  g = a.choose; g.sendToName(x.myName, \cf5 '/help'\cf2 , g.myName);\
+a.choose.sendToAll(\cf5 '/help'\cf2 , \cf6 "Fred"\cf2 );\
+\
+a.do(\cf4 _\cf2 .stop);\
+z.stop;\
+\
+\
+\
+\
+\cf3 ///////////////////////////// markov with many nodes ////////////////////////////\cf2 \
+\
+\
+a = \{\'ca\cf4 Collective\cf2 .new \} ! 10;\
+a.do(\cf4 _\cf2 .start);\
+\
+e = a.collect(\cf4 MarkovNet\cf2 (\cf4 _\cf2 ));\
+(\
+e.do(\cf4 _\cf2 .function = \{ \cf4 |...args|\cf2  \
+	args.postln;\
+	\cf4 Synth\cf2 (\cf5 \\eugen\cf2 , [[\cf5 \\freq\cf2 , \cf5 \\freq2\cf2 , \cf5 \\freq3\cf2 ], args[0]].flop.flat.postln) \})\
+)\
+\
+e.do(\cf4 _\cf2 .data = \{ 1000.rand \}.dup(3) );\
+e.do(\cf4 _\cf2 .start);\
+\
+a[0].postEverybody;\
+\
+f = e[0];\
+f.responders\
+f.nextIndex;\
+f.function.postcs\
+\
+f.newChain;\
+f.newChain(1, 3)\
+f.newChain(0.1, 10, 0.1)\
+\
+e.do(\cf4 _\cf2 .stop);\
+a.do(\cf4 _\cf2 .stop);\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

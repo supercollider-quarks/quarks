@@ -1,0 +1,300 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf480
+{\fonttbl\f0\fnil\fcharset77 Monaco;\f1\fswiss\fcharset77 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green0\blue0;\red0\green0\blue191;
+\red96\green96\blue96;\red0\green115\blue0;}
+\deftab720
+\pard\pardeftab720\ql\qnatural
+
+\f0\fs18 \cf2 // jedem W\'9frfel ist eine Geraeuschfamilie zugeordnet\cf3 \
+\
+\pard\pardeftab560\ql\qnatural
+\cf3 \
+(\
+\cf4 Server\cf3 .default = s = \cf4 Server\cf3 .internal;\
+\
+s.waitForBoot\{\
+q = ();\
+\
+\cf2 // joseph\cf3 \
+\cf2 // q.directory = "/Network/Servers/stitch/srv/nfs/volume1/home/till/samples/";\cf3 \
+\
+\cf2 // till\cf3 \
+\cf2 // q.directory = "/localvol/sound/share/audiosamples/koelnKalk/sequencer/";\cf3 \
+\
+\cf2 // hubert\cf3 \
+q.directory = \cf5 "/Users/till/Documents/koelnKalk/sequencer/"\cf3 ;\
+\
+\cf2 /* open directory\
+"open %".format(q.directory).unixCmd; // */\cf3 \
+\
+\
+\
+\cf2 // For each name given below, q.directory should have a directory containing files named 1-*.aiff, 2-*.aiff, etc. \cf3 \
+\cf2 // If the files are n-channel, currently only the first channel is used.\cf3 \
+\cf2 // be sure to have only .aiff files here. Neither wav, nor mp3 are supported yet. If you need to convert files easily, use e.g. Max ({\field{\*\fldinst{HYPERLINK "http://sbooth.org/Max/"}}{\fldrslt 
+\f1\fs22 \cf2 http://sbooth.org/Max/}}), or sndfile-convert.\cf3 \
+\
+\cf2 // Link directory names to colors. Only given colores will be recognized, all other blocks are ignored.\cf3 \
+q.colorToName = (\
+	lightGreen: \cf6 \\sn\cf3 ,\
+	red: \cf6 \\bass\cf3 , \
+	blue: \cf6 \\chords\cf3 , \
+	yellow: \cf6 \\hh\cf3 ,\
+	orange: \cf6 \\synth\cf3 ,\
+	green: \cf6 \\bd\cf3 \
+);\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf3 \
+\pard\pardeftab560\ql\qnatural
+\cf2 // the audiochannels to which the block speakers are attached to\cf3 \
+q.blockChannels = (\
+	yellow:		0,\
+	lightGreen:	1,\
+	blue:		2,\
+	orange:		3,\
+	red:			4,\
+	green:		5\
+);\
+\
+\
+\
+\cf2 /*q.blockChannels = (\
+	yellow:		7,\
+	lightGreen:	7,\
+	blue:		7,\
+	orange:		7,\
+	red:			7,\
+	green:		7\
+);\
+*/\cf3 \
+\
+q.visualsAddr = \cf4 NetAddr\cf3 (\cf5 "localhost"\cf3 , 12000);\
+\
+q.filenames = ();\
+q.colorToName.keysValuesDo\{\cf4 |color, subdirname|\cf3 \
+	q.filenames[color] = 6.collect\{\cf4 |i|\cf3 \
+		\cf5 "%/%.aif"\cf3 .format(subdirname, i+1);\
+	\}\
+\};\
+\
+\cf2 /*\
+q.filenames.printAll // */\cf3 \
+\
+\
+\
+q.buffers = q.filenames.collect\{\cf4 |blockfiles|\cf3 \
+	blockfiles.collect\{\cf4 |name|\cf3 \
+		\cf4 Buffer\cf3 .readChannel(s, q.directory ++ name, channels: [0], action:\{\cf5 "file % read.\\n"\cf3 .postf(name) \})\
+\cf2 //		Buffer.read(s, q.directory ++ name, action:\{"file % read.\\n".postf(name) \})\cf3 \
+	\}\
+\};\
+\
+\cf2 // only first channel of the file is read \cf3 \
+\
+\cf2 /* test\
+q.buffers.choose.choose.play \
+\
+q.sfile = SoundFile.openRead(q.directory ++ q.filenames[\\green][6]);\
+\
+q.sfile.numChannels\
+q.sfile.close;\
+\
+\
+// */\cf3 \
+\
+\}\
+)\
+\
+\
+(\
+q.blocks = q.colorToName.collect\{\cf4 |v, color|\cf3  \cf4 BufferBlock\cf3 (color, 0, q.visualsAddr, q.buffers[color], q.blockChannels[color])\};\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf4 BufferBlock\cf3 .sendSynth;\
+\pard\pardeftab560\ql\qnatural
+\cf4 SynthDef\cf3 (\cf6 \\masterAmper\cf3 , \{\cf4 |out = 0|\cf3 \
+	\cf4 var\cf3  amps = [\
+		\cf6 \\amp0\cf3 .kr(1, 0.1),\
+		\cf6 \\amp1\cf3 .kr(1, 0.1),\
+		\cf6 \\amp2\cf3 .kr(1, 0.1),\
+		\cf6 \\amp3\cf3 .kr(1, 0.1),\
+		\cf6 \\amp4\cf3 .kr(1, 0.1),\
+		\cf6 \\amp5\cf3 .kr(1, 0.1),\
+		\cf6 \\amp6\cf3 .kr(1, 0.1)\
+	];\
+	\
+	\cf4 ReplaceOut\cf3 .ar(out, \cf4 In\cf3 .ar(out, 7) * amps);\
+\}).memStore;\
+\
+q.buffers.asArray.flatten.do\{\cf4 _\cf3 .normalize\};\
+)\
+\
+\
+(\
+s.bind\{\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf3 	\cf4 BufferBlock\cf3 .startClock;\
+	q.blockAmper = \cf4 Synth\cf3 (\cf6 \\masterAmper\cf3 , target: 1, addAction: \cf6 \\addAfter\cf3 );\
+\pard\pardeftab560\ql\qnatural
+\cf3 	q.blocks.do(\cf4 _\cf3 .play);\
+\}\
+)\
+\
+\
+\
+\cf2 //////////////////////\cf3 \
+\cf2 // Start SETO\cf3 \
+\
+(\
+q.seto = \cf4 SETO_OSCTUIOServer\cf3 (\cf5 "2Dobj"\cf3 , \cf4 nil\cf3 , \cf4 JITseto\cf3 , \cf4 SETOIDistance\cf3 ); \
+q.seto.start;\
+\
+\cf2 /*\
+Tdef(\\player, \{loop\{\
+	0.03.wait;\
+	// bd\
+//	q.blocks.green.setFace(126, \\amps, 1);q.blocks.green.setFace(126, \\filterFreqs, 260000);\
+\
+\
+//	q.blocks.blue.setFace(180, \\amps, 1);q.blocks.blue.setFace(180, \\filterFreqs, 260000);\
+//	q.blocks.red.setFace(108, \\amps, 1);q.blocks.red.setFace(108, \\filterFreqs, 260000);\
+//	q.blocks.lightGreen.setFace(144, \\amps, 1);q.blocks.lightGreen.setFace(144, \\filterFreqs, 260000);\
+//	q.blocks.orange.setFace(162, \\amps, 1);q.blocks.orange.setFace(162, \\filterFreqs, 260000);\
+//	q.blocks.yellow.setFace(198, \\amps, 1);q.blocks.yellow.setFace(198, \\filterFreqs, 260000);\
+\}\}).play;\
+*/\cf3 \
+\
+\cf4 JITseto\cf3 .action = \{\cf4 |me|\cf3 \
+	\cf4 var\cf3  block = q.blocks.detect\{\cf4 |block|\cf3  block.ids.includes(me.id)\};\
+	block.notNil.if\{\
+		\cf2 //block.color.postln;\cf3 \
+		\cf2 //block.setFace(me.id, \\amps, ((sin(me.rotEuler.first) * 0.95).abs + 0.05));\cf3 \
+		block.faceSeenAs(me);\
+		block.setFace(me.id, \cf6 \\amps\cf3 , me.pos.first.linlin(0, 1, 1, 1));\
+		block.setFace(me.id, \cf6 \\filterFreqs\cf3 , sin(me.rotEuler.first*0.5).abs.linexp(0, 1, 1500, 260000));\
+		\cf2 //block.setFace(me.id, \\amps, 0.9)\cf3 \
+	\}\
+\};\
+\
+\
+\
+\cf2 /*\
+JITseto.action = nil; // */\cf3 \
+\cf2 //JITseto.action = \{|me| me.postln\}; // */\cf3 \
+)\
+\
+(\
+s.bind\{\
+q.blocks.do(\cf4 _\cf3 .stop);\
+\}\
+)\
+\
+\
+q.blocks.do\{\cf4 |block|\cf3 \
+	block.set(\cf6 \\amp\cf3 , 1);\
+	\cf2 //block.out = 0\cf3 \
+\};\
+\
+\cf2 ///////////////////////\cf3 \
+\cf2 // Midi Mixer\cf3 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
+\cf4 MIDIClient\cf3 .init;\
+\cf4 MIDIIn\cf3 .connect;\
+\
+(\
+\cf4 MIDIIn\cf3 .control = \{\cf4 |port, chan, ctlNum, val|\cf3  \
+	[chan, ctlNum, val].postln;\
+	\
+	(ctlNum == 7).if\{ \cf2 // fader\cf3 \
+		(chan == 8).if\{ \cf2 // master (right-most)\cf3 \
+			q.blocks.do\{\cf4 |block|\cf3 \
+				block.set(\cf6 \\masterAmp\cf3 , val.linlin(0, 127, 0, 1))	\
+			\}\
+		\};\
+\
+		(chan < 8).if\{ \cf2 // red (left-most)\cf3 \
+			[chan, val].postln;\
+			q.blocks[q.blockChannels.findKeyForValue(chan)].set(\cf6 \\amp\cf3 , val.linlin(0, 127, 0, 1))	\
+		\};\
+	\};\
+	\
+	(ctlNum == 17).if\{ \cf2 // lower button -> mute\cf3 \
+		(chan == 8).if\{ \cf2 // master (right-most)\cf3 \
+			q.blocks.do\{\cf4 |block|\cf3 \
+				block.set(\cf6 \\masterMute\cf3 , val.linlin(0, 127, 0, 1))	\
+			\}\
+		\};\
+\
+		(chan < 8).if\{ \cf2 // red (1- rightmost)\cf3 \
+			q.blocks[q.blockChannels.findKeyForValue(chan)].set(\cf6 \\mute\cf3 , val.linlin(0, 127, 0, 1))	\
+		\};\
+	\};\
+	\
+	(ctlNum == 10).if\{ \cf2 // knob\cf3 \
+		(chan == 8).if\{ \cf2 // global rate -> master (right-most)\cf3 \
+			\cf4 BufferBlock\cf3 .phase.set(\cf6 \\rate\cf3 , val.linlin(0, 127, 0.5, 2).round(0.01).postln)\
+		\};\
+		(chan < 8).if\{ \cf2 // amps\cf3 \
+			q.blockAmper.set(\cf5 "amp%"\cf3 .format(chan), val.linlin(0, 127, 0, 1));\
+		\};\
+		\
+\
+	\};\
+\}\
+\pard\pardeftab560\ql\qnatural
+\cf3 )\
+\
+q.blocks.do\{\cf4 |block|\cf3 \
+	block.synthParams.add(\cf6 \\masterMute\cf3  -> [0]);\
+	block.synthParams.add(\cf6 \\mute\cf3  -> [0]);\
+\}\
+\
+q.blocks[3].play\
+q.blocks[3].out = 0\
+\
+q.blocks[3].stop\
+\
+\
+\
+\
+\
+\
+\
+q.blocks.do\{\cf4 |block|\cf3 \
+	block.set(\cf6 \\amps\cf3 , 3);\
+\}\
+\
+q.blocks.do\{\cf4 |block|\cf3 \
+	block.stop;\
+\}\
+\
+q.blocks[3].play\
+q.blocks[3].out = 0\
+q.blocks[3].stop\
+\
+q.blocks[1].set(side: 2, what: \cf6 \\rates\cf3 , val: 0.5);\
+\
+6.do\{\cf4 |i|\cf3 \
+	q.blocks[1].set(side: i, what: \cf6 \\amps\cf3 , val: 0.5);\
+\}\
+\
+6.do\{\cf4 |i|\cf3 \
+	q.blocks[1].set(side: i, what: \cf6 \\rates\cf3 , val: rrand(0.5, 2.0));\
+\}\
+\
+\
+6.do\{\cf4 |i|\cf3 \
+	q.blocks[0].set(side: i, what: \cf6 \\rates\cf3 , val: rrand(1, 4.0));\
+\}\
+\
+\
+\
+x.setn(\cf6 \\amps\cf3 , [1, 0, 0, 0, 0, 0])\
+x.setn(\cf6 \\amps\cf3 , [0, 0, 1, 0, 0, 0])\
+x.setn(\cf6 \\amps\cf3 , 1!6)\
+\
+x.setn(\cf6 \\amps\cf3 , [10, 0, 0, 0, 0, 0, 0])\
+\
+\
+x.setn(\cf6 \\amps\cf3 , [1, 1, 1, 1, 1, 1, 1])}

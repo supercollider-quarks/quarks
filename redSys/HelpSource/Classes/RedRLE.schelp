@@ -1,0 +1,50 @@
+CLASS:: RedRLE
+SUMMARY:: run-length compression/decompression
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedBase64, Classes/RedHuffman, Classes/RedLZ77, Classes/RedLZ78, Classes/RedLZSS, Classes/RedLZW
+
+DESCRIPTION::
+See http://en.wikipedia.org/wiki/Run-length_encoding
+
+Performs well with highly repetitive data e.g. [0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3]. Performs very bad with data containing repeating patterns e.g. [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3].
+
+NOTE::
+Works with link::Classes/Integer::, link::Classes/Float:: and link::Classes/Symbol::. Can also take a link::Classes/String:: instead of an link::Classes/Array::.
+::
+
+CLASSMETHODS::
+
+METHOD:: encode
+Returns an array with length, value pairs.
+
+METHOD:: decode
+Array must be length, value pairs.
+
+EXAMPLES::
+
+CODE::
+a= [0, 0, 0, 0, 0, 1, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 0.5, 0.5, 0.5, \abc, \abc, \abc];
+b= RedRLE.encode(a);
+b.size/a.size;		//compressed to 55%
+c= RedRLE.decode(b);
+c==a
+
+
+a= "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW";	//string instead of array
+a.size;
+b= RedRLE.encode(a);
+b.size/a.size;		//compressed to 21%
+c= RedRLE.decode(b);
+c.size;
+a==c.join;
+
+
+a= "JOEYNJOEYNJOEYJOEYNJOEYNJOEYJOEYNJOEYNJOEYJOEYNJOEYNJOEY".ascii;
+a.size;
+b= RedRLE.encode(a);
+b.size/c.size;		//expanded to 167%.  performs really bad with non-repeating values
+c= RedRLE.decode(b);
+c.size;
+a==c;
+c.collect{|x| x.asAscii}.join;
+::

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0033f1; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001bb9}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {color: #0047e4}
+span.s2 {text-decoration: underline ; color: #002fe0}
+span.s3 {color: #0033f1}
+span.s4 {text-decoration: underline}
+span.s5 {color: #000000}
+span.s6 {color: #001bb9}
+span.s7 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SVGGroup</b></p>
+<p class="p2">Part of <a href="../wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">see also: <a href="SVG.html"><span class="s2">SVG</span></a>, <a href="SVGFile.html"><span class="s3">SVGFile</span></a></p>
+<p class="p4"><br></p>
+<p class="p2"><b>superclass : </b><a href="SVGObject.html"><span class="s3"><b>SVGObject</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p2">With SVGGroup SVGObjects can be grouped. It is similar to SVGFile, but works only inside an objects array.</p>
+<p class="p3"><br></p>
+<p class="p5"><b><span class="s4">creation</span></b></p>
+<p class="p6"><br></p>
+<p class="p2"><b>SVGGroup ( objects, name, transform )</b></p>
+<p class="p2">creates a new object with the instance variables as described below and in the <a href="SVGObject.html"><span class="s3">SVGObject</span></a> helpfile</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p5"><b><span class="s4">instance variables</span></b></p>
+<p class="p6"><br></p>
+<p class="p2"><b>objects</b></p>
+<p class="p2">all SVGObjects in an array. The order of the array is the order of execution; the last item is always the frontmost layer.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p7">(</p>
+<p class="p8">SVGGroup<span class="s5">( [</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s6">SVGEllipse</span>( 200, 200, 100, 50, <span class="s7">"my ellipse"</span>, <span class="s7">"olive"</span> ),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s6">SVGRect</span>( 10, 10, 300, 200, 0, 0, <span class="s7">"my rect"</span>, <span class="s7">"navajo_white"</span>, <span class="s7">"none"</span>, 5 ).opacity_(0.5),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s6">SVGCircle</span>( 200, 200, 150, <span class="s7">"my circle"</span>, <span class="s7">"chocolate"</span>, <span class="s7">"none"</span>, 10 ),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s6">SVGLine</span>( 200, 200, 150, 10, <span class="s7">"my line"</span>, <span class="s7">"dark_red"</span>, <span class="s7">"none"</span>, 6 )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>], <span class="s7">"my group"</span> ).plot;</p>
+<p class="p7">)</p>
+<p class="p9"><br></p>
+<p class="p5"><b><span class="s4">instance methods</span></b></p>
+<p class="p6"><br></p>
+<p class="p2"><b>add ( object ), addAll (objects )</b></p>
+<p class="p2">add an object or an Array of objects to the group</p>
+<p class="p3"><br></p>
+<p class="p2"><b>++ anSVGGroup</b></p>
+<p class="p2">Concatenate the objects of 2 SVGGroups to a new SVGGroup.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>at ( index ), copySeries ( first, second, last ), put (index, item )</b></p>
+<p class="p2">calls .at and copySeries on <b>objects</b>, also to provide compatibility with the ..[..] syntax in SC</p>
+<p class="p3"><br></p>
+<p class="p2"><b>postTree</b></p>
+<p class="p2">post a tre-like structure with all objects and groups contained in the <b>objects </b>array</p>
+<p class="p9"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

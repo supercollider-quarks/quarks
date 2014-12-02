@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 58.0px; text-indent: -58.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 58.0px; text-indent: -58.0px; font: 12.0px Helvetica; color: #476db9; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #832519}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #0035aa}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #606060}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #8f2116}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #8f2116; min-height: 12.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #002efa}
+span.s3 {text-decoration: underline}
+span.s4 {color: #476db9}
+span.s5 {font: 12.0px Helvetica; color: #000000}
+span.s6 {color: #000000}
+span.s7 {color: #0035aa}
+span.s8 {color: #606060}
+span.s9 {font: 9.0px Monaco}
+span.s10 {color: #0000ff}
+span.s11 {color: #007300}
+span.s12 {font: 12.0px Helvetica}
+span.s13 {color: #003eea}
+span.s14 {color: #002eaf}
+span.s15 {color: #486b24}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>IntervalTable<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a class for classifying intervals that fall within a tuning tolerance</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1">This class is used in <a href="Dissonance.html"><span class="s2">Dissonance</span></a> through the rationalize method of <a href="SC://SequenceableCollection"><span class="s2">SequenceableCollection</span></a> to find the intervals in an interval list which lie within a tolerance range to array of frequency ratios. This is done in Dissonance:harmonicAnalysis and replaces the intervals from the dissonance analysis with the ones in the list which have the highest harmonic intensity value.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">There are two kinds of interval tables: one obtained from the Huygens-Fokker Foundation<span class="Apple-converted-space"> </span></p>
+<p class="p1">(<span class="s3">http://www.huygens-fokker.org/docs/intervals.html</span>, consulted 03/10/07) which contains 356 intervals inside an octave. The second kind (which is the default) is a table generated with the Atari ST program JST written by <span class="Apple-tab-span">	</span>Clarence Barlow (see <span class="s3">http://www.musikwissenschaft.uni-mainz.de/Autobusk</span>). There are several lists generated with JST, each with intervals filtered by a different minimum harmonicity value.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space"> </span>*loadTable is used to load the lists from files, with arguments \huygens or \JST.<span class="Apple-converted-space">  </span>If \JST is the case, an additional argument for minimum harmonicity should be provided: \030, \035, \040, \045 or \050 (where for instance, \030 stands for a harmonicity of 0.03).<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="Dissonance.html"><span class="s4">Dissonance</span></a></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Class Methods</b></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>No instances are created from this class. Its only use is through the following class methods. <span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*classify(centList, tolerance = 6)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns an <a href="SC://Array"><span class="s4">Array</span></a><span class="s4"> </span>of arrays of intervals, cents and names for all candidates falling within <b>tolerance</b> cents from <b>centList</b><span class="s4">.</span></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="s5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span>// The result of *classify is not formatted for human viewing.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// This example shows how to use its results and print them nicely</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p9"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>i = [100, 150, 200, 450]; </span>// some tempered intervals in cents, try with other values</p>
+<p class="p9"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t = 12; </span>// tolerance, play around with this too</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s7">IntervalTable</span>.classify(i, t);</p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>i.do{</span>|int, idx|<span class="s6"><span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>postf(</span>"The following intervals are close to % cents by +/- % cents:\n"<span class="s6">, int, t);</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g[idx].do{<span class="s7">|x|</span><span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>postf(<span class="s8">"\t%/%,\t% cents,\t%\n"</span>,x[0][0],x[0][1],x[1].round(0.001),x[2]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">""</span>.postln;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>There is a method to <a href="SC://SequenceableCollection"><span class="s10">SequenceableCollection</span></a> that does this automatically:<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>centsToName(tolerance = 12, restore = true)</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Practical to find out the closest rationalization for a list of cent distances.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Tolerance in cents. As this method changes the current table of IntervalTable to<i> </i><span class="s11">\huygens,<span class="Apple-converted-space"> </span></span></p>
+<p class="p7"><span class="s11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>restore </b>is a flag for resetting the class back the table it had before calling this method.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p10"><span class="s12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>[100, 150, 200, 450].centsToName</p>
+<p class="p4"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>ratioToName(tolerance = 12, restore = true)</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Useful to find the closest ratios to a list of ratios. This method is just a minor conveniece.</p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p10"><span class="s12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>[[531441,524288],[3,2],[5,4],[7,4],[11,8],[16,15]].ratioToName<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*loadTable( type = \JST, min = \030, path )</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>This method is used to load a table from files included in the dissonance package of classes. The files are dictionaries saved as ZArchives with a .int extension. There are five such files: huygensList.int, and four JSTList0xx.int files, containing the different versions of the JST intervals. The class is initialized with the default file JSTList030.int. This method is thus only necessary when a different interval list is required.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The dissonance package should be installed inside the extensions directory which is located inside the user application support directory (see <a href="SC://Platform"><span class="s13">Platform</span></a>). In case the interval table files are located elsewhere, the optional path argument should point to this directory. This is provided for non-standard cases.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Examples:<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p13"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s14">IntervalTable</span><span class="s6">.loadTable(</span><span class="s15">\huygens</span><span class="s6">); </span>// load the Huygens table</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s14">IntervalTable</span><span class="s6">.loadTable(</span><span class="s15">\JST</span><span class="s6">, \045); </span>// load a JST with a min harmonicity of 0.045</p>
+<p class="p4"><br></p>
+<p class="p15"><b>Class Variables</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>table</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Contains a dictionary with the interval tables.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The data from the JST files contains the following keys:</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>t = <span class="s14">IntervalTable</span>.table<span class="s12"><b>;</b><span class="Apple-tab-span">	</span></span></p>
+<p class="p10"><span class="s12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>t.ratios;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t.cents;</p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t.harmon; </span>// their harmonicity</p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t.numIntervals; </span>// total number of intervals</p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t.maxNum; </span>// max numerator of intervals</p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t.maxDenom; </span>// max denominator<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t.range; </span>// the total range of the list in cents</p>
+<p class="p8"><br></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The data from the Huygens-Fokker table of intervals hast the following key: <span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s14">IntervalTable</span><span class="s6">.loadTable(</span><span class="s15">\huygens</span><span class="s6">); </span>// first load the Huygens table</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t = <span class="s7">IntervalTable</span>.table<span class="s12"><b>;</b><span class="Apple-tab-span">	</span></span></p>
+<p class="p10"><span class="s12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>t.ratios;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t.cents;</p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t.names; </span>// the names of the intevals</p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s9"><span class="Apple-tab-span">	</span></span><b>tableType</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Either<span class="Apple-converted-space">  </span>\JST or \huygens<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7">(cc) 2008, jsl<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+</body>
+</html>

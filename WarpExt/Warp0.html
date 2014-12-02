@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.27">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #782727}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+span.s1 {color: #0428b3}
+span.s2 {color: #556b17}
+span.s3 {color: #000000}
+span.s4 {color: #0000bf}
+span.s5 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Warp0<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Warp a buffer with a warp factor</b></p>
+<p class="p2"><br></p>
+<p class="p3">Inspired by Chad Kirby's SuperCollider2 Warp1 class, which was inspired by Richard Karpen's sndwarp for CSound. A granular time strecher and pitchshifter.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Warp0.ar(numChannels, buffer, warpFactor, freqScale, windowSize, envbufnum,<span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>overlaps, windowRandRatio, interp, mul, add)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>numChannels</b> - the number of channels in the buffer.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>buffer</b> - the buffer number of a mono soundfile.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>warpFactor</b> - amount to stretch or compress the buffer. 0.5 is half speed, 2 is twice the speed.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>freqScale</b>- the amount of frequency shift. 1.0 is normal, 0.5 is one octave down, 2.0 is one octave up.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Negative values play the soundfile backwards.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>windowSIze</b> - the size of each grain window.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>envbufnum</b> - the buffer number containing a singal to use for the grain envelope. -1 uses a built-in<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Hanning envelope.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>overlaps</b> - the number of overlaping windows.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>windowRandRatio </b>- the amount of randomness to the windowing function.<span class="Apple-converted-space">  </span>Must be between 0 (no</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>randomness) to 1.0 (probably to random actually)<b><span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>interp -<i> </i></b>the interpolation method used for pitchshifting grains. 1 = no interpolation. 2 = linear.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>4 = cubic interpolation (more computationally intensive).</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Examples:</b></p>
+<p class="p2"><br></p>
+<p class="p4">s.boot;</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4"><span class="s1">SynthDef</span>(<span class="s2">\warp</span>, {<span class="s1">arg</span> buffer = 0;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s1">var</span> out, filelength, env;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>env = <span class="s1">EnvGen</span>.kr(<span class="s1">Env</span>([0.01, 1, 1, 0.01], [0.1, 14, 0.9], <span class="s2">'exp'</span>), doneAction: 2);</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>//warp factor of 0.25- stretch sound by 4 times</p>
+<p class="p4"><span class="Apple-tab-span">	</span>out = <span class="s1">Warp0</span>.ar(1, buffer, 0.25, MouseX.kr(0.25, 4), 0.1, -1, 8, 0.05, 1);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s1">Out</span>.ar(0, out * env);</p>
+<p class="p4">}).send(s);</p>
+<p class="p6"><br></p>
+<p class="p4">)</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s3">b = </span><span class="s4">Buffer</span><span class="s3">.read(s, </span>"sounds/a11wlk01.wav"<span class="s3">);</span></p>
+<p class="p7"><br></p>
+<p class="p9">a = <span class="s4">Synth</span>(<span class="s5">\warp</span>, [<span class="s5">\buffer</span>, b]);</p>
+<p class="p9">a.free;</p>
+<p class="p6"><br></p>
+<p class="p4">(</p>
+<p class="p4"><span class="s1">SynthDef</span>(<span class="s2">\warp</span>, {<span class="s1">arg</span> buffer = 0;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s1">var</span> out, warp, filelength, env, freq;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>warp = <span class="s1">MouseX</span>.kr(0, 1);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>freq = <span class="s1">MouseY</span>.kr(0.5, 4);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>env = <span class="s1">EnvGen</span>.kr(<span class="s1">Env</span>([0.01, 1, 1, 0.01], [0.1, 14, 0.9], <span class="s2">'exp'</span>), doneAction: 2);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>out = <span class="s1">Warp0</span>.ar(1, buffer, warp, freq, 0.1, -1, 8, 0.05, 1);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s1">Out</span>.ar(0, out * env);</p>
+<p class="p4">}).send(s);</p>
+<p class="p6"><br></p>
+<p class="p4">)</p>
+<p class="p6"><br></p>
+<p class="p4">a = Synth(\warp, [\buffer, b]);</p>
+<p class="p4">a.free;</p>
+<p class="p4">b.free;</p>
+</body>
+</html>

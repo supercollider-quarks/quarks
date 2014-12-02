@@ -1,0 +1,344 @@
+TITLE:: Influx
+summary:: entangle control parameters in non-obvious ways
+categories:: Libraries>JITLib
+related:: Classes/Ndef, Classes/Tdef, Classes/ProxyPreset, Classes/FuncChain
+
+DESCRIPTION::
+Influx explores the idea performing with running processes by means of influence on process parameters rather than direct control. It maps input values to output values by allowing every input param to influence any output param by a given weight.
+
+Possible Scenarios :
+
+strong::FAN IN/FAN OUT::
+
+One typical use would be with sound processes or patterns with too many input parameters: Rather than mapping one control directly to each param, one can entangle rather few control parameters to influence a big bundle of process control inputs.
+While this will not access to the full possibility space, it can reduce time to find interesting areas in the space (which one then might want to store)
+
+strong::DIS/ENTANGLE::
+
+One can also use the same param names for input and output, starting with neutral weights like [0,0,1,0] where each param only influences its same-named output. Then one can introduce "entanglement" between params by adding small random deviations to the weights.
+
+strong::RELATIVE - playing around a known preset::
+
+One can use a known location in the param space (e.g. a stored good preset) as a starting point, and use Influx to play relative to the preset. Here, zooming allows very subtle explorations of shadings within a known good zone.
+
+First example:
+
+code::
+// make an influx - fan-in, fan-out
+a = Influx([\x, \y], [\a, \b, \c,\d, \e, \f, \g, \h], (x: 0.5, y: 0.1));
+b = InfluxWGui(a); 
+
+// randomize to  maximum bipolar value
+a.rand(0.5).postw;
+// blend toward a given array of values
+a.blend([1,0.1, 0.1, 0.5]).postw;
+a.blend([1,0.1, 0.1], 0.9).postw;
+
+// make a slider to control 
+c = InfluxKtlGui(a);
+d = InfluxIOWGui(a); 
+
+a.set(\x, 0.0, \y, 0.0).postw; // set to center
+a.set(\x, 0.0, \y, 0.2).postw; // set to specific place
+a.set(\x, 1.0.rand2, \y, 1.0.rand2).postw; // jump randomly
+
+::
+
+strong::Longer example follows below!::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+make a new Influx
+
+ARGUMENT:: ins
+names for the inputs to use
+ARGUMENT:: outs
+names for outputs to use
+ARGUMENT:: vals
+an optional dictionary of values for the input names as keys
+ARGUMENT:: weights
+an optional list of weights (of shape inputs x outputs) that determine how much influence which ins exert on which outs.
+
+INSTANCEMETHODS::
+
+subsection:: Instance Variables
+
+METHOD:: inNames
+the input names
+
+METHOD:: outNames
+the output names
+
+METHOD:: inValDict
+the dict of input values
+
+METHOD:: outValDict
+the dict of output values
+
+METHOD:: action
+a FuncChain, where actions can be put that run when new output values are calculated. This is used for attaching e.g. Ndefs to be played with Influx.
+
+
+METHOD:: shape, smallDim, bigDim
+shape is the shape of the weights, [inNames.size, outNames.size]
+smallDim is the smaller of the two, bigDim the greater.
+
+METHOD:: presets
+a dict of named weights presets used for disentangling. Can also be a place to put user presets of weights.
+
+METHOD:: inScaler
+a scaler for the input values - zooms into a smaller range around the center setting. (see examples)
+
+METHOD:: outOffsets
+by default, influences start from the center. To explore the parameter space near a given setting, one can make a bipolarized version of that setting, and set the outOffsets to it. 
+See examples.
+
+subsection:: Instance Methods
+
+METHOD:: postv, postw, postp
+pretty-post input and output values, weights, and weights presets
+ 
+private:: init, printOn, storeArgs
+
+METHOD:: plot
+plot the weights arrays with an InfluxPlot.
+
+METHOD:: set
+set input values of Influx
+ARGUMENT::  ... keyValPairs
+key1, val1, ... keyN, valN
+
+METHOD:: rand
+create random weights up to +- maxval given.
+
+METHOD:: blend
+blend weights with other array by given factor. 
+other array values will wrap as required by weights shape.
+
+METHOD:: calcOutVals
+calculate new output values and do action(s).
+
+METHOD:: makePresets
+make some default presets (diagonal etc.)
+
+METHOD:: setwPre
+set weights to preset of the given name.
+
+METHOD:: entangle
+introduce more entanglement between params 
+
+METHOD:: disentangle
+disentangle in the direction of a preset
+ARGUMENT:: blend 
+by how much to disentangle
+ARGUMENT:: presetName
+name of the weights preset to disentangle towards
+
+METHOD:: attach
+attach an object - typically a JITLib proxy - and set its params from the Influx outputs.
+
+ARGUMENT:: object
+the object
+
+ARGUMENT:: funcName
+a name to use in the FuncChain 
+
+ARGUMENT:: paramNames
+paramNames to set - if none given, gets them from the object.
+
+ARGUMENT:: specs
+specs to use for mapping. If none given, those stored in the object's Halo are used. 
+
+
+
+
+EXAMPLES::
+
+code::
+
+// EXAMPLES
+// make an influx - fan-out 2 params to 8
+a = Influx([\x, \y], [\a, \b, \c,\d, \e, \f, \g, \h], (x: 0.5, y: 0.1));
+
+// make plot/edit views for weights:
+// or multislider style, which I find clearer:
+c = InfluxWGui(a); 
+// or weights and current IO values - recommended for debugging, 
+// maybe distracting for performance
+d = InfluxIOWGui(a); 
+// plot style - not recommended anymore:
+/// b = InfluxPlot(a).moveTo(300, 630);
+
+
+
+///// interactive gui example
+// recommended for direct use: 
+InfluxKtlGui(a);
+
+// if you want to make a control window by hand, like this
+(
+w = Window("Influx control", Rect(0, 630, 300, 200)).front;
+w.layout = VLayout(
+	HLayout(
+		VLayout(
+			StaticText(w, 190@20).string_("Change  weights:"),
+			Button(w, 190@20).states_([["set to diagonal"]])
+			.action_({ a.setwPre(\diagL); }),
+			Button(w, 190@20).states_([["disentangle"]])
+			.action_({ a.disentangle(0.3); }),
+			Button(w, 190@20).states_([["entangle"]])
+			.action_({ a.entangle(0.3); }),
+			Button(w, 190@20).states_([["RANDOM"]])
+			.action_({  a.rand(1.0); })
+		),
+		VLayout(
+			StaticText(w, 190@20).string_("Change inputs:"),
+			Slider2D(w, 190@190)
+			.action_({|sl| a.set(\x, sl.x * 2 - 1, \y, sl.y * 2 - 1); })
+		)
+	)
+);
+
+v = Window("Influx2 state", Rect(0, 300, 300, 300)).front;
+v.addFlowLayout;
+
+StaticText(v, 290@20).string_("Influx values:");
+
+[a.inValDict, a.outValDict].collect { |dict, i|
+	var eg = ParamGui(nil, [4, 8][i], v, 280@100, options: [\name]);
+	eg.name_(["ins", "outs"][i]);
+	dict.keysDo { |key| eg.specs.put(key, \bipolar) };
+	eg.object_(dict);
+	eg.zone.enabled_(false);
+	eg.skipjack.dt = 0.1;
+}
+);
+
+//// more tests by code - check that new values appear
+a.set(\x, 1.0, \y,0); 
+a.set(\x, 0, \y,0);    // go to center values
+a.set(\x, 1.0.rand2, \y, 1.0.rand2);
+
+// add an action to perform when outvals change
+a.action.add(\test, { |influx| "post outValDict:".postln; influx.postw.postln; });
+
+a.set(\x, 1.0.rand2, \y, 1.0.rand2);
+a.set(\x, 1.0.rand2, \y, 1.0.rand2);
+a.set(\x, 1.0.rand2, \y, 1.0.rand2);
+
+// remove again by name:
+a.action.removeAt(\test);
+
+
+// try playing a boring sound with too many parameters
+// note that .addSpec requires JITLibExtensions quark
+(
+Ndef(\a).addSpec(\intv, [-24, 24]);
+Ndef(\a).addSpec(\timescale, [0.01, 10, \exp]);
+Ndef(\a).addSpec(\curve, [-10, 10]);
+Ndef(\a).addSpec(\ffreq, \freq);
+Ndef(\a).addSpec(\loopnode, [0, 12]);
+
+Ndef(\a).addSpec(\dens, [10, 1000]);
+Ndef(\a).addSpec(\resfreq, \freq);
+Ndef(\a).addSpec(\ringtime, [0.01, 1, \exp]);
+
+Ndef(\a, { |freq=250, intv=19, timescale=1, curve=0, loopnode=0, dens = 10, resfreq = 500, ringtime = 0.01|
+	var n = 15;
+	var env = EnvGen.kr(
+		Env({ 1.0.rand2 }!(n+1), {1.0.rand}!n, curve, releaseNode: n-1, loopNode: loopnode.min(n-3)),
+		timeScale: timescale);
+	var pitch = (env * [1, 0.33, -1] * intv).midiratio * freq;
+	var form = Formant.ar(pitch, pitch.rotate(1) * 1.6, pitch.rotate(2) * 2.6);
+
+	var dusty = Ringz.ar(Dust.ar(dens!3), resfreq * LFNoise0.kr([3, 5, 7], 0.5, 1), ringtime) * ((dens ** -0.5) * (ringtime ** -0.3)) ;
+	Splay.ar(form * dusty);
+
+}).play(vol: 0.25);
+Ndef(\a).gui.moveTo(0, 50);
+);
+Ndef(\a).play;
+
+// connect the influx action to the Ndef
+a.attachMapped(Ndef(\a));
+
+// (this actually does:) 
+/// a.attachMapped(Ndef(\a), Ndef(\a).key, Ndef(\a).controlKeys);
+
+
+// now play with the influx gui for a while ... 
+
+// and remove it again when done: 
+// a.detach(\a);
+
+
+
+// EXPERIMENTS WITH SETTINGS:
+
+// set ndef to a special setting, here a strange whistler effect:
+Ndef('a').set('dens', 535.47, 'timescale', 0.331, 'loopnode', 6.23, 'curve', 4.75, 'freq', 12299.63, 'intv', -16.18, 'resfreq', 2581.33, 'ringtime', 0.238);
+
+// and explore playing RELATIVE to this setting:
+
+// puts the current ndef setting in the center at 0@0:
+a.offsetsFromProxy(Ndef(\a));	
+// put the controller there
+a.set(\x, 0, \y, 0); 
+// rather wide range, setting is at center
+a.inScaler = 1; 
+a.inScaler = 0.5; // smaller range, zooming in
+a.inScaler = 0.25; // even smaller
+
+
+
+// PLAY RELATIVE TO A PRESET
+
+// Next, try playing this with NdefPreset.
+// try finding interesting, contrasting settings,
+// storing them, morphing between them;
+// then try explore the areas around a preset by zooming in
+// and creating offsets...
+// this requires the JITLibExtensions Quark.
+(
+n = NdefPreset(Ndef(\a));
+g = NdefPresetGui(NdefPreset(\a), 12);
+)
+
+// make some rand presets
+n.setRand(0.5);
+n.addSet(\noisy);
+n.setRand(0.5);
+n.addSet(\crackly);
+
+
+(
+// or add a few settings from my earlier experiments
+NdefPreset(\a).addSettings([
+('noisy' -> [ [ 'freq', 9355.48 ], [ 'intv', -11.95 ], [ 'timescale', 0.285 ], [ 'curve', 3.938 ], [ 'loopnode', 3.052 ], [ 'dens', 534.251 ], [ 'resfreq', 859.160 ], [ 'ringtime', 0.0134 ] ]),
+('crickety' -> [ [ 'freq', 32.366 ], [ 'intv', -5.187 ], [ 'timescale', 0.0954 ], [ 'curve', 0.2156 ], [ 'loopnode', 4.712 ], [ 'dens', 636.7 ], [ 'resfreq', 6358.147 ], [ 'ringtime', 0.964 ] ]),
+
+('dense' -> [ [ 'freq', 690.505 ], [ 'intv', -21.576 ], [ 'timescale', 0.327 ], [ 'curve', 9.646 ], [ 'loopnode', 1.2 ], [ 'dens', 529.79 ], [ 'resfreq', 1646.71 ], [ 'ringtime', 0.0539 ] ]),
+('otto' -> [ [ 'freq', 454.81 ], [ 'intv', -2.666 ], [ 'timescale', 0.8055 ], [ 'curve', 0.7688 ], [ 'loopnode', 8.2 ], [ 'dens', 510.5 ], [ 'resfreq', 305.044 ], [ 'ringtime', 0.04298 ] ]),
+('whistle2' -> [ [ 'freq', 32.567 ], [ 'intv', -20.467 ], [ 'timescale', 0.0672 ], [ 'curve', -0.9438 ], [ 'loopnode', 6.89 ], [ 'dens', 518.313 ], [ 'resfreq', 1582.355 ], [ 'ringtime', 0.0639 ] ]),
+('whistle3' -> [ [ 'freq', 194.16 ], [ 'intv', 6.367 ], [ 'timescale', 0.1955 ], [ 'curve', -9.31 ], [ 'loopnode', 6.619 ], [ 'dens', 631.79 ], [ 'resfreq', 9158.27 ], [ 'ringtime', 0.0202 ] ])
+]);
+)
+
+// set the offsets from preset: now center values [0,0] will play the preset.
+a.offsetsFromPreset(n, \crickety);
+
+// set the scaler smaller to zoom in to a smaller neighborhood of the preset
+a.inScaler = 0.5;
+
+n.getSet(\whistle2);
+NdefPreset(\a).settings.printcsAll;
+
+n.getSetNames.choose
+
+// choose a random preset
+a.offsetsFromPreset(n, n.getSetNames.choose);
+
+
+::

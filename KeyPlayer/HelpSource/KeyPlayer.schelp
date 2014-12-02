@@ -1,0 +1,235 @@
+TITLE:: KeyPlayer
+summary:: a simple keyboard playing interface
+categories:: Undocumented classes
+related:: Classes/KeyPlayerGui, Classes/KeyPlayerRec, Classes/KeyChain, Classes/KtlLoop
+
+
+
+DESCRIPTION::
+KeyPlayer allows using the computer keyboard keys for
+executing functions when given keys are pressed or released
+(keyDown and keyUp).
+
+code::
+(
+k = KeyPlayer(\rd);
+"qwertzuiopasdfghjklyxcvbnm".do { |char|
+    var note = (midinote: rrand(36, 96), dur: rrand(0.1, 1.0));
+    k.put(char, { |char| char.postln; note.postln.play });
+};
+)
+	// make a big gui for it - see KeyPlayerGui.help
+g = KeyPlayerGui(k);
+
+
+	// or have KeyPlayer respond to a single button:
+g.close;
+(
+w = Window("any window", Rect(0,500, 200, 50)).front;
+b = Button(w, Rect(10, 10, 180, 30)).states_([["I am KeyPlayer('rand')"]]);
+b.keyDownAction_({ |view, char, mod, uni|
+	KeyPlayer(\rd).keyAction(char, mod, uni, which: \down);
+});
+b.keyUpAction_({ |view, char, mod, uni|
+	KeyPlayer(\rd).keyAction(char, mod, uni, which: \up);
+});
+)
+
+::
+
+
+How to link to this file, in quarks/KeyPlayer? link::../KeyPlayerExample.scd::
+
+CLASSMETHODS::
+
+METHOD:: all
+Global dict for all KeyPlayers
+
+METHOD:: at
+Look up KeyPlayers by name in KeyPlayer.all
+
+METHOD:: verbose
+get or set verbose flag to posts debug messages. default = false.
+code::
+KeyPlayer.verbose_(true);
+	// debugging, posts:
+	// [KeyPlayer, char, modifiers, unicode, keycode]
+KeyPlayer.verbose_(false);
+::
+
+METHOD:: new
+create a new KeyPlayer
+code::
+k = KeyPlayer(\k);		// create an instance
+KeyPlayer(\k) == k;		// same name accesses same instance
+KeyPlayer.at(\k) == k;  // just access to an existing instance
+::
+ARGUMENT:: key
+key under wich to store it
+ARGUMENT:: inDict
+an optional dict of keyDown and keyUp functions - not well tested yet.
+ARGUMENT:: ignoreCase
+a flag whether to ignore upper/lowercase letter distinction.
+
+METHOD:: gui
+make a global gui for up to ten KeyPlayers.
+
+METHOD:: initClass
+
+
+INSTANCEMETHODS::
+
+subsection::Instance Variables
+
+METHOD:: key
+The KeyPlayer's name/key
+
+METHOD:: actions, upActions, bothActions
+dicts where the down and up actions kept.
+
+METHOD:: pressed
+a dict with the currently pressed keys
+
+METHOD:: put, putDown, putUp, putBoth, putAll
+set actions for keyDown and keyUp on given characters
+code::
+	// put in some functions
+k.put($a, { "A down!".postln });		// or equivalent:
+k.putDown($a, { "A down!".postln });
+k.actions;	// they are stored here by unicode numbers
+
+	// upActions are separate
+k.putUp($a, { "A up!".postln });
+k.upActions;
+
+	// both dictionaries are kept here:
+k.bothActions.postcs; "";
+
+	// you can put things in both:
+k.putBoth($a, { "A upOrDown!".postln });
+
+	// put in a dict at once
+k.putAll(($x: { "x!".postln }, $y: { "y not?".postln }), true, \down);
+
+	// avoid retriggering keyDowns: try holding the s-key down
+k.putDown($s, { "yo again".postln }, noRep: true);
+k.putUp($s, { "yo again".reverse.postln });
+	// retriggers by default
+k.putDown($s, { "yo again".postln });
+::
+
+ARGUMENT:: char
+the char for which to put the action
+
+ARGUMENT:: func
+the action
+
+ARGUMENT:: both
+flag whether to distinguish upper/lower or to respond to both.
+
+ARGUMENT:: noRep
+on keyDown, flag whether to swallow auto-repeated keystrokes.
+
+METHOD:: gui
+make its own gui for KeyPlayer
+code::
+g = k.gui;
+// now try typing the colored keys
+::
+
+
+METHOD:: keyDown, keyUp
+evaluate keyActions by hand
+code::
+k.keyDown($a);
+k.keyUp($a);
+k.keyDown($a.asUnicode);
+k.keyUp($a.asUnicode);
+::
+
+METHOD:: removeAt
+remove actions from down or up dicts.
+code::
+k.removeAt($a);
+k.removeAt($a, \up);
+k.upActions;
+k.removeAt($a, \down);
+k.actions;
+::
+
+METHOD:: isUp, isDown
+check wether a char is currently down (pressed) or not.
+
+METHOD:: makeRec
+make an instance of KeyPlayerRec for the KeyPlayer
+
+METHOD:: rec
+get and set the KeyPlayerRec for the KeyPlayer
+
+METHOD:: saveDoc
+post current actions as code into a Document.
+Works if all functions are closed.
+
+subsection:: Private methods
+
+METHOD:: keyAction, makeKeyAction, makeKeyUpAction
+
+EXAMPLES::
+
+code::
+	// the random keyboard:
+(
+s.latency = nil;	// make sure we respond quickly
+thisThread.randSeed = 2008;
+"qwertzuiopasdfghjklyxcvbnm".do { |char|
+	var note = (midinote: rrand(36, 96), dur: rrand(0.1, 1.0));
+	KeyPlayer(\rand).put(char, { |char| char.postln; note.postln.play });
+};
+KeyPlayer.gui.front;
+)
+
+KeyPlayer(\rand).bothActions
+
+	// random keyboard, no retrig, hold until release with keyUp
+(
+q = q ? ();	// create a dict to keep things:
+q.notes = ();
+q.synths = ();
+thisThread.randSeed = 2008; // it is not that new
+
+"qwertzuiopasdfghjklyxcvbnm".do { |char|
+	q.notes.put(char, rrand(36, 96));
+
+	KeyPlayer(\hold).putDown(char, { |char|
+		char.post;
+		q.synths[char].release;
+		q.synths.put(char, Synth(\default, [\freq, q.notes[char].postln.midicps]));
+	}, noRep: true);
+
+	KeyPlayer(\hold).putUp(char.postln, { |char| q.synths.removeAt(char).release });
+};
+KeyPlayer.gui.front;
+)
+
+KeyPlayer(\px);
+// stop and resume a proxyspace:
+p = ProxySpace.push;
+KeyPlayer(\px).put($p, { p.do(_.pause) });
+KeyPlayer(\px).put($r, { p.do(_.resume) });
+
+	// David Cottle example IIRC
+~test = { SinOsc.ar(LFNoise0.kr([10, 15], 200, [300, 500])) * 0.2 };
+~test.play;
+
+	// re-send or rebuild the sound
+(
+~test = {
+	SinOsc.ar(
+		LFNoise0.kr([10, 15] * exprand(0.5, 4.0), 200, [300, 500])
+		* exprand(1.0, 4.0)
+	) * XLine.kr(0.5, 0.005, exprand(0.1, 10), doneAction: 2);
+};
+KeyPlayer(\px).put($t, { ~test.send });
+KeyPlayer(\px).put($u, { ~test.rebuild });
+)
+::

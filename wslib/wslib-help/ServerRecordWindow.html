@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001bb9}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #2c7014}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad140d}
+span.s1 {color: #0047e4}
+span.s2 {color: #0024f8}
+span.s3 {color: #000000}
+span.s4 {color: #606060}
+span.s5 {color: #001bb9}
+span.s6 {color: #2c7014}
+span.s7 {color: #ad140d}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>ServerRecordWindow</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">A dedicated graphic interface for recording from a <a href="SC://Server"><span class="s2">Server</span></a></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s3">w = </span>ServerRecordWindow<span class="s3">( s );</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p2"><b>ServerRecordWindow ( server, nodeID )</b></p>
+<p class="p2">The controls in the window you get should be self-explanatory.</p>
+<p class="p3"><br></p>
+<p class="p2">There can be no more then one ServerRecordWindow per server. If you create another one for the same server it will just bring the window of the already existing one to the front.</p>
+<p class="p3"><br></p>
+<p class="p2">The filename popupmenu gives you the following options:</p>
+<p class="p3"><br></p>
+<p class="p2"><b><i>auto name<span class="Apple-converted-space"> </span></i></b></p>
+<p class="p2">the filename will be automatically generated as soon as the "prepare" button is hit. This is the default SuperCollider behaviour for Server:prepareForRecord is called.</p>
+<p class="p3"><br></p>
+<p class="p2">&lt;<b><i>a filename&gt; / recording.aif</i></b></p>
+<p class="p2">if this item is selected the server will record to the file at that path, overwriting it without notice if it already exsists. The filename item will change to that of the last recorded file name after recording.</p>
+<p class="p3"><br></p>
+<p class="p2"><b><i>specify..</i></b></p>
+<p class="p2">specify brings up a <a href="SCRequestString.html"><span class="s2">SCRequestString</span></a><span class="s2"> </span>dialog where you can change the filename displayed in the item above.</p>
+<p class="p3"><br></p>
+<p class="p2"><b><i>browse..</i></b></p>
+<p class="p2">brings up a CocoaDialog:savePanel where you can enter a name and browse for a location</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">The <b><i>show </i></b>button shows the folder where ServerRecordWindow will be recording to in the Finder.<span class="Apple-converted-space"> </span></p>
+<p class="p2">The time counter will keep running during recording, and will display the total duration after recording was stopped. This counter is not sample accurate, and may drift when you record very long sections or hit pause a lot.</p>
+<p class="p3"><br></p>
+<p class="p2">Once you've hit <b><i>prepare </i></b>there's no way back; the header for the file is then already created. The filename and format etc. cannot be changed anymore then. Make sure you're not overwriting any important files by hitting "prepare" too early. If you press it by accident you need to press record and stop to return to the initial state.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>prepare, record, pause, stop</b></p>
+<p class="p2">These are methods to automate ServerRecordWindow</p>
+<p class="p3"><br></p>
+<p class="p5"><span class="s3">w = </span>ServerRecordWindow<span class="s3">( s );</span></p>
+<p class="p4"><br></p>
+<p class="p6">(</p>
+<p class="p5">SynthDef<span class="s3">( </span><span class="s4">"sinegrain"</span><span class="s3">, { </span>|freq = 440, sustain = 0.1, amp = 0.1, pan = 0|</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s5">Out</span>.ar(0,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Env</span>.sine( sustain, amp ).kr(2) *<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Pan2</span>.ar( <span class="s5">SinOsc</span>.ar( freq ), pan ) );</p>
+<p class="p6"><span class="Apple-tab-span">	</span>}).store;</p>
+<p class="p6">)</p>
+<p class="p4"><br></p>
+<p class="p6">(</p>
+<p class="p6">p = <span class="s5">Pbind</span>(<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>\instrument<span class="s3">, </span>\sinegrain<span class="s3">,</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s6">\freq</span>, <span class="s5">Pwhite</span>( 110, 2200, <span class="s5">inf</span> ),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s6">\dur</span>, <span class="s5">Pwhite</span>( 0.001, 0.01, <span class="s5">inf</span> ),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s6">\legato</span>, <span class="s5">Pwhite</span>( 0.25, 4, <span class="s5">inf</span> ),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s6">\pan</span>, <span class="s5">Pwhite</span>( -1.0, 1.0, <span class="s5">inf</span> ),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s6">\amp</span>, <span class="s5">Pwhite</span>(0.005, 0.01, <span class="s5">inf</span> )</p>
+<p class="p6"><span class="Apple-tab-span">	</span>);</p>
+<p class="p6">)</p>
+<p class="p4"><br></p>
+<p class="p8">// now by hand select a file format and filename if you wish in the window</p>
+<p class="p4"><br></p>
+<p class="p6">w.prepare;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p6">(</p>
+<p class="p6">w.record;</p>
+<p class="p6">q = p.play( quant: 0 );</p>
+<p class="p6"><span class="s5">TempoClock</span>.default.sched( 5, { q.stop; } ); <span class="s7">// after 5 secs stop the pattern</span></p>
+<p class="p6"><span class="s5">TempoClock</span>.default.sched( 5.1, { { w.stop; }.defer; } ); <span class="s7">// 0.1 sec later stop recording</span></p>
+<p class="p6">)</p>
+<p class="p4"><br></p>
+<p class="p4"><span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><span class="Apple-converted-space"> </span></p>
+</body>
+</html>

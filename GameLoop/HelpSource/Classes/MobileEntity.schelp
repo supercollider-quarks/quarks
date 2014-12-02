@@ -1,0 +1,40 @@
+TITLE:: MobileEntity
+summary:: An entity that can move
+categories:: Class
+related:: Overviews/Gameloop_Overview, Classes/Entity, Classes/Vehicle
+
+DESCRIPTION::
+A mobile entity is an entity that can have a velocity.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new mobile entity
+
+ARGUMENT:: world
+an instance of link::Classes/EntityManager::
+
+ARGUMENT:: position
+an instance of link::RealVector2D::
+
+ARGUMENT:: radius
+radius in meters
+
+ARGUMENT:: mass
+a number/float
+
+ARGUMENT:: collisionType
+a symbol for the collision type /free, /mobile or /static
+
+ARGUMENT:: velocity
+an instance of link::RealVector2D::
+
+INSTANCEMETHODS::
+
+METHOD:: velocity
+
+METHOD:: update
+Integration of the position based on the velocity and the relevant forces.
+
+METHOD:: force
+Get or pass in a force. A link::RealVector2D::

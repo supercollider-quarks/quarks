@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #496d2c}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0024a6}
+span.s1 {color: #0022ed}
+span.s2 {color: #000000}
+span.s3 {color: #0024a6}
+span.s4 {color: #496d2c}
+span.s5 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>miditest</b></p>
+<p class="p2"><br></p>
+<p class="p3">A method of Instr and SynthDef allowing quick-and-dirty testing of a synth using your midi keyboard. It makes a 20-node voicer, plugs it into a VoicerMIDISocket, creates global controls (see <a href="Voicer.html"><span class="s1">Voicer</span></a>) for all arguments except freq, gate and outbus which will appear in a GUI window and can be controlled by the mouse. If your MIDI controller has enough continuous controls (I'm using a Novation ReMOTE 25 with 8 knobs, 8 encoders and 8 sliders), each argument will be MIDI-controllable as well. A button on the GUI closes the test, printing a list of arguments and their last settings.</p>
+<p class="p2"><br></p>
+<p class="p3">The usage is slightly different depending on whether you're using Instr or SynthDef. See below for more details.</p>
+<p class="p2"><br></p>
+<p class="p3">hjh, jamshark70@dewdrop-world.net</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Instr-miditest(channel, initArgs, target, bus)</b></p>
+<p class="p2"><br></p>
+<p class="p3">channel: The midi channel your keyboard is sending on. May be specified as <i>[port#, channel#]</i> or simply <i>[port#]</i> for channel 0 on that port. Nil will give you port 0, channel 0.</p>
+<p class="p3">initArgs: Initial arguments, which should be in the Voicer format: [name1, arg1, name2, arg2...]—more like Synth or Set than like Patch. Fixed arguments like envelopes should be specified here.</p>
+<p class="p3">target: Where you want the synths to be placed.</p>
+<p class="p3">bus: The bus you want them to play on.</p>
+<p class="p2"><br></p>
+<p class="p3">If target and bus are not specified, Server.local's RootNode will be used, along with the default audio outs.</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p5"><span class="s2">i = </span><span class="s3">Instr</span><span class="s2">([</span>\test<span class="s2">, </span>\miditest<span class="s2">], {</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s3">arg</span> freq = 440, gate = 0, env, pb = 1, ffreq = 1000, rq = 1;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s3">var</span> out, amp;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>amp = <span class="s3">Latch</span>.kr(gate, gate);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>out = <span class="s3">EnvGen</span>.kr(env, gate, doneAction:2) *</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">RLPF</span>.ar(<span class="s3">Pulse</span>.ar(freq * pb, 0.25, amp), ffreq, rq);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>[out,out]</p>
+<p class="p5"><span class="s2">}, [</span>\freq<span class="s2">, </span>\amp<span class="s2">, </span><span class="s3">nil</span><span class="s2">, </span><span class="s3">nil</span><span class="s2">, </span>\freq<span class="s2">, </span>\rq<span class="s2">])</span></p>
+<p class="p6"><br></p>
+<p class="p4">.miditest(<span class="s3">nil</span>, [<span class="s4">\env</span>, <span class="s3">Env</span>.adsr(0, 0.05, 0.5, 1), <span class="s4">\ffreq</span>, 1500]);</p>
+<p class="p6"><br></p>
+<p class="p4">)</p>
+<p class="p6"><br></p>
+<p class="p3">Note that pb will automatically use the MIDI controller's pitch bend wheel, if you have CCAllocator set up properly. See the CCAllocator help file.</p>
+<p class="p2"><br></p>
+<p class="p3">miditest will pull specs for the GUI sliders from the instrument definition, so be sure to specify them in the Instr.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>SynthDef-miditest(channel, specs, target, bus)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Because SynthDef does not include specs in its definition, you must supply them here if you want the GUI to work right.</p>
+<p class="p2"><br></p>
+<p class="p7">(</p>
+<p class="p4"><span class="s3">SynthDef</span>(<span class="s5">"sd-miditest"</span>, { <span class="s3">arg</span> outbus = 0, freq, gate, amp, pb=1;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(outbus, <span class="s3">SinOsc</span>.ar(freq*pb, mul:amp) * <span class="s3">EnvGen</span>.kr(<span class="s3">Env</span>.adsr, gate, doneAction:2))</p>
+<p class="p4">}).miditest(<span class="s3">nil</span>, [<span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, [0, 1, <span class="s4">\linear</span>, 0, 0.5]]);</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p3">Note that the first 3 arguments have a nil spec because they will not be reflected on the GUI. Freq and gate will be different for every node, so it makes no sense to show a global value for the whole voicer. Also, the pitch bend spec is not provided because it will be constructed by miditest. Initial values for the arguments should be supplied as the "default" value in the spec.</p>
+</body>
+</html>

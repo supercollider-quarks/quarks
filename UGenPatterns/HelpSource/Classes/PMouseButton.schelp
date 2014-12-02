@@ -1,0 +1,40 @@
+CLASS:: PMouseButton
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Generators
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/MouseButton::
+
+NOTE::
+mac osx only, lag is not implemented
+::
+NOTE::
+only osx, and only sc3.4 or sc3.5 in 32bit mode (i.e. something is broken under 64bit sc3.5)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: minval
+
+ARGUMENT:: maxval
+
+ARGUMENT:: lag
+NOTE::
+not implemented
+::
+
+ARGUMENT:: length
+Number of values produced.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \freq, PMouseButton(400, 800).trace).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \amp, PMouseButton(0, 0.2).trace).play
+a.stop
+::

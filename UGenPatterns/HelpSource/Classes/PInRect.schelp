@@ -1,0 +1,30 @@
+CLASS:: PInRect
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Modifiers
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/InRect::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: pattern
+pattern x-position
+
+ARGUMENT:: y
+pattern y-position
+
+ARGUMENT:: rect
+a link::Classes/Rect:: object.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PInRect(Pseq([0, 2, 4, 5], inf), Pseq([0, 1, 2], inf), Rect(2, 2, 4, 4)).trace*5+50).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \amp, PInRect(5, 5, Pseq([Rect(0, 0, 10, 10), Rect(6, 6, 7, 7)], inf)).trace*0.5).play
+a.stop
+::

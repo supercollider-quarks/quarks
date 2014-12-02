@@ -1,0 +1,599 @@
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{rotating}
+\usepackage{url}
+
+%opening
+\title{Sense World Data Network\\ \url{http://sensestage.hexagram.ca} \\ \url{http://www.sensestage.eu}  }
+\author{Marije Baalman}
+
+\begin{document}
+
+% \textwidth 17cm
+% \hoffset 1cm
+% \voffset 1cm
+
+\maketitle
+
+\begin{abstract}
+The data network framework is meant to make sharing of data (from sensors or internal processes) between collaborators in an interactive media art work easier, faster and more flexible. There is a central host, which receives all data, and manages the client connections. Each client can subscribe to data \textit{nodes}, to use that data in its own internal processes; and each client can publish data onto the network, by creating a node. A new client can query the network which nodes are present and is informed when new nodes appear after the client has been registered.
+\end{abstract}
+
+\section{Data Network Elements}
+
+The data network is built up from different elements:
+\begin{description}
+ \item [DataNetwork] the network itself
+ \item [DataNode] a node is a collection of slots, usually based upon a device or another common source (e.g. result from a function).
+ \item [DataSlot] a slot is a single data stream
+\end{description}
+
+Data on the network is set by calling the function method \verb|setData| with as arguments the node ID and an array of data values (either numbers (floats) or strings). The ID is an unique identifier (an integer). The function can be called for example by a class instance that parses serial data.
+
+Each \textbf{DataNode} and each \textbf{DataSlot} can be given a label, so that their functionality becomes more human understandable.
+
+\section{OSC interface}
+There is an OSC interface to the network, which allows clients to become part of the data network and access its data, and also create its own data nodes on the network.
+
+The network will announce itself to the broadcast address of the network, to a number of ports (default: range 6000-6009, and 57120-57129), so that clients can automatically configure to connect to the network, as soon as it is in the air.
+
+A textfile with the network's OSC port can be found in the file \url{http://hostip/SenseWorldDataNetwork}\footnote{e.g. for a host with IP 192.168.1.7 the url is: \url{http://192.168.1.7/SenseWorldDataNetwork}}, which can be retrieved by clients, so they know where to send the registration message.
+
+The general setup is that an OSC client first sends a register message to the data network server. Then it will start receiving ping messages, to which it has to reply with pong messages. The client has to query which nodes and slots are present on the network after registering, so it will receive info messages on each node and slot. Then it can subscribe to nodes and slots, and will receive data from the nodes and slots it is subscribed to via the data messages.
+
+The client can supply a new node to the network, by using the /set/data message; it can also label the nodes and slots thus created.
+Whenever a new node or slot is added (or changed, e.g. when it gets a label), the client will receive a new info message.
+If there occurs an error in the communication, then an error message is sent. The unregister message only needs to be sent, if for example the client crashed and is trying to reconnect on the same port.
+
+All messages to the server now have a reply, which is either the requested info, a confirmation message, or a warning or error.
+
+See table \ref{oscinterface} for an overview of commands.
+
+% \begin{table}
+ \begin{sidewaystable}[!tbp]
+\small
+\begin{center}
+% use packages: array
+\begin{tabular}{|llll|}
+\hline
+\verb|/datanetwork/announce| & si & host, port no. & announce the network with its coordinates \\
+\verb|/datanetwork/quit| & si & host, port no. & inform that the host has quit \\
+
+\verb|/register| & is & port no., name & register to the network as a client, the name is used as an identifier for the client to remember settings \\
+\verb|/registered| & i & port no., name & reply to register to the network as a client \\
+
+\verb|/unregister| & is & port no., name & unregister to the network as a client \\  
+\verb|/unregistered| & is & port no., name & reply to unregister to the network as a client \\
+
+\verb|/ping| & is & port no., name &  message to check if client is still there \\
+\verb|/pong| & is & port no., name &  expected reply to the \verb|/ping| message \\
+
+\verb|/error| & ssi & cause, error message, error ID & error occurred upon request (indicated by cause) \\
+\verb|/warn| & ssi & cause, warn message, error ID & non fatal error occurred upon request \\  
+
+\verb|/query/all| & is & port no., name& do all queries \\
+\verb|/query/expected| & is & port no., name& query which nodes are expected in the network (reply /info/expected) \\
+\verb|/query/nodes| & is & port no., name& query which nodes are in the network (reply /info/node) \\
+\verb|/query/slots| & is & port no., name& query which slots are in the network (reply /info/slot)\\
+\verb|/query/clients| & is & port no., name& query which clients are in the network (reply /info/client)\\
+\verb|/query/setters| & is & port no., name& query which nodes the client is the setter of (reply /info/setter) \\
+\verb|/query/subscriptions| & is & port no., name& query which subscriptions the client has (reply /subscribed/node, /subscribed/slot)\\
+
+\verb|/info/expected| & i(s) & node ID, node label & info about an expected node \\
+\verb|/info/node| & isii & node ID, node label, number of slots, node type & info about a node \\
+\verb|/info/slot| & iisi & node ID, slot ID, slot label, slot type & info about a slot \\
+\verb|/info/client| & sis & ip, port no., name & info about a client \\
+\verb|/info/setter| & isii & node ID, node label, number of slots, node type & info about a node the client is setting \\
+
+\verb|/subscribe/all| & is & port no., name & subscribe to receive data from all nodes \\
+\verb|/unsubscribe/all| & is & port no., name & unsubscribe from all nodes \\
+
+\verb|/subscribe/node| & isi & port no., name, node ID & subscribe to receive data from a node \\
+\verb|/subscribed/node| & isi & port no., name, node ID & reply to subscribe to receive data from a node \\
+
+\verb|/unsubscribe/node| & isi & port no., name, node ID & unsubscribe to receive data from a node \\
+\verb|/unsubscribed/node| & isi & port no., name, node ID & reply to unsubscribe to receive data from a node \\
+
+\verb|/subscribe/slot| & isii & port no., name, node ID, slot ID & subscribe to receive data from a slot \\  
+\verb|/subscribed/slot| & isii & port no., name, node ID, slot ID & reply to subscribe to receive data from a slot \\  
+
+\verb|/unsubscribe/slot| & isii & port no., name, node ID, slot ID & subscribe to receive data from a slot \\  
+\verb|/unsubscribed/slot| & isii & port no., name, node ID, slot ID & reply to unsubscribe to receive data from a slot \\  
+
+\verb|/data/node| & iff..f & node ID, data values & node data \\
+\verb|/data/node| & iss..s & node ID, string data values & node data \\
+\verb|/get/node| & isi & port no., name, node ID & get data from a node (reply /data/node) \\
+
+\verb|/data/slot| & iif & node ID, slot ID, data value & slot data \\
+\verb|/data/slot| & iis & node ID, slot ID, string data value & slot data \\
+\verb|/get/slot| & isii & port no., name, node ID, slot ID & get data from a slot (reply /data/slot) \\
+
+\verb|/set/data| & isif..f & port no., name, node ID, data values & set data to a node (reply /data/node)\\
+\verb|/set/data| & isis..s & port no., name, node ID, string data values & set data to a node\\
+
+\verb|/label/node| & isis & port no., name, node ID, node label & set label to a node \\
+\verb|/label/slot| & isiis & port no., name, node ID, slot ID, slot label & set label to a slot \\
+
+\verb|/remove/node| & isi & port no., name, node ID & remove a node (only possible if client is setter) \\
+\verb|/removed/node| & i & node ID & reply to remove a node \\
+\verb|/remove/all| & is & port no., name & remove all nodes the client is a setter of (generates /removed/node messages) \\
+
+\verb|/add/expected| & isi(isi) & port no., name, node ID, node size, node label, node type & add an expected node to the network (reply /info/expected) \\
+ &  &  & if node size is given, the node is created as well (and generates a /info/node message) \\
+ &  &  & node type is 0: float, 1: string (default is 0) \\
+\hline
+\end{tabular}
+\end{center}
+\caption{OSC namespace for the Data Network}
+\label{oscinterface}
+% \end{table}
+ \end{sidewaystable}
+
+\section{Interaction with the MiniBees}
+
+You can send queries to the network to get information about the minibees that are present. Info messages of minibees that appear after a client has joined the network, will automatically be sent.
+
+You can map datanodes to send data to a MiniBee (see table \ref{oscinterfaceMB}):
+\begin{description}
+ \item [output] The DataNode that is used to map from, has to have an equal amount of slots as the MiniBee has outputs. The PWM outputs come first, then the digital outputs.
+%  \item [pwm] The DataNode that is used to map from, has to have 6 slots. (MiniBee pins 3, 5, 6, 9, 10, 11).
+%  \item [digital] The DataNode that is used to map from, has to have 19 slots. (MiniBee pins 1 through 19).
+ \item [custom] The DataNode that is used to map from, has to have as many slots as the custom message received in the MiniBee has data bytes.
+\end{description}
+
+A client can also provide a hive of MiniBees, by using the special hive register message. It has to request a certain number of nodes that it will create (the amount of MiniBees), and the DataNetwork host will reply with the minimum and maximum id that are reserved for the hive's nodes. Mapping messages for the minibees of the hive are then forwarded by the DataNetwork to the hive client.
+
+% Note that an \textbf{output}-mapping will remove any previous \textbf{pwm} or \textbf{digital} mappings. A \textbf{pwm} or \textbf{digital} mapping will remove a previous \textbf{output} mapping.
+
+
+% \begin{table}
+ \begin{sidewaystable}[!tbp]
+\small
+\begin{center}
+% use packages: array
+\begin{tabular}{|llll|}
+\hline
+\verb|/query/hives| & is & port no., name& query which hives are in the network (reply /info/hive) \\
+\verb|/info/hive| & sis & ip, port no., name, min ID, max ID & info about a hive \\
+\verb|/register/hive| & is & port no., name, no Nodes & register as a hive to the DataNetwork. The last argument is the number of MiniBee nodes the hive will have. \\
+\verb|/registered/hive| & i & port no., name, min ID, max ID & reply to register to the network as a hive. min ID and max ID are the node IDs that are reserved for this hive. \\
+\verb|/unregister/hive| & is & port no., name & unregister to the network as a hive \\  
+\verb|/unregistered/hive| & is & port no., name & reply to unregister to the network as a hive \\
+\hline
+\verb|/query/minibees| & is & port no., name& query which minibees are in the network (reply /info/minibee) \\
+\verb|/info/minibee| & isiiis & node ID, number of slots (inputs), number of outputs, config id, serial number & info about a minibee - host -> client \\
+\verb|/info/minibee| & isisiiis & port no., name, node ID, number of slots (inputs), number of outputs, config id, serial number & info about a minibee - hiveclient -> host \\
+\verb|/remove/minibee| & isi & port no., name, node ID & remove a minibee (only possible if client is setter) \\
+\verb|/removed/minibee| & i & node ID & reply to remove a node \\
+\verb|/query/configurations| & is & port no., name & query which configurations are in the network (reply /info/configuration) - client -> host \\
+\verb|/query/configurations| &  & & query which configurations are in the network (reply /info/configuration) - host -> hiveclient \\
+\verb|/info/configuration| & is & port no., name& query which configurations are in the network - hiveclient -> host \\
+\verb|/info/configuration| &  &  & query which configurations are in the network - host -> client \\
+\hline
+\verb|/status/minibee| & isiiis & node ID, status & status info about a minibee - host -> client \\
+\verb|/status/minibee| & isisiiis & port no., name, node ID, status & status info about a minibee - hiveclient -> host \\
+\hline
+\verb|/map/minibee/output| & isii & port no., name, node ID, minibee ID & map node output to MiniBee output (reply /mapped/minibee/output) - client -> host\\
+\verb|/map/minibee/custom| & isii & port no., name, node ID, minibee ID & map node output to MiniBee custom output (reply /mapped/minibee/custom) - client -> host\\
+\verb|/map/minibee/output| & ii & node ID, minibee ID & map node output to MiniBee output (reply /mapped/minibee/output) - host -> hiveclient\\
+\verb|/map/minibee/custom| & ii & node ID, minibee ID & map node output to MiniBee custom output (reply /mapped/minibee/custom) - host -> hiveclient\\
+% \verb|/map/minibee/pwm| & isii & port no., name, node ID, minibee ID &  map node output to MiniBee pwm output (reply /mapped)\\
+% \verb|/map/minibee/digital| & isii & port no., name, node ID, minibee ID &  map node output to MiniBee digital output (reply /mapped/minibee)\\
+\verb|/mapped/minibee/output| & ii & node ID, minibee ID & reply to /map/minibee/output messages - host -> client\\
+\verb|/mapped/minibee/custom| & ii & node ID, minibee ID & reply to /map/minibee/custom messages - host -> client \\
+\verb|/mapped/minibee/output| & isii & port no., name, node ID, minibee ID & reply to /map/minibee/output messages - hiveclient -> host \\
+\verb|/mapped/minibee/custom| & isii & port no., name, node ID, minibee ID & reply to /map/minibee/custom messages - hiveclient -> host \\
+\hline
+\verb|/unmap/minibee/output| & isii & port no., name, node ID, minibee ID & unmap node output to MiniBee output (reply /unmapped/minibee/output)\\
+\verb|/unmap/minibee/custom| & isii & port no., name, node ID, minibee ID & unmap node output to MiniBee custom output (reply /unmapped/minibee/custom)\\
+\verb|/unmap/minibee/output| & ii & node ID, minibee ID & unmap node output to MiniBee output (reply /unmapped/minibee/output) - host -> hiveclient\\
+\verb|/unmap/minibee/custom| & ii & node ID, minibee ID & unmap node output to MiniBee custom output (reply /unmapped/minibee/custom) - host -> hiveclient\\
+% \verb|/map/minibee/pwm| & isii & port no., name, node ID, minibee ID &  map node output to MiniBee pwm output (reply /mapped)\\
+% \verb|/map/minibee/digital| & isii & port no., name, node ID, minibee ID &  map node output to MiniBee digital output (reply /mapped/minibee)\\
+\verb|/unmapped/minibee/output| & ii & node ID, minibee ID & reply to /unmap/minibee/output messages - host -> client\\
+\verb|/unmapped/minibee/custom| & ii & node ID, minibee ID & reply to /unmap/minibee/custom messages - host -> client \\
+\verb|/unmapped/minibee/output| & isii & port no., name, node ID, minibee ID & reply to /unmap/minibee/output messages - hiveclient -> host \\
+\verb|/unmapped/minibee/custom| & isii & port no., name, node ID, minibee ID & reply to /unmap/minibee/custom messages - hiveclient -> host \\
+\hline
+\verb|/map/minihive/output| & isi & port no., name, node ID & map node output to MiniBee output broadcast (reply /mapped/minihive/output) - client -> host\\
+\verb|/map/minihive/custom| & isi & port no., name, node ID & map node output to MiniBee custom output broadcast (reply /mapped/minihive/custom) - client -> host\\
+\verb|/map/minihive/output| & i & node ID & map node output to MiniBee output broadcast (reply /mapped/minihive/output) - host -> hiveclient\\
+\verb|/map/minihive/custom| & i & node ID & map node output to MiniBee custom output broadcast (reply /mapped/minihive/custom) - host -> hiveclient\\
+% \verb|/map/minihive/pwm| & isii & port no., name, node ID, minihive ID &  map node output to MiniBee pwm output (reply /mapped)\\
+% \verb|/map/minihive/digital| & isii & port no., name, node ID, minihive ID &  map node output to MiniBee digital output (reply /mapped/minihive)\\
+\verb|/mapped/minihive/output| & i & node ID & reply to /map/minihive/output messages - host -> client\\
+\verb|/mapped/minihive/custom| & i & node ID & reply to /map/minihive/custom messages - host -> client \\
+\verb|/mapped/minihive/output| & isi & port no., name, node ID & reply to /map/minihive/output messages - hiveclient -> host \\
+\verb|/mapped/minihive/custom| & isi & port no., name, node ID & reply to /map/minihive/custom messages - hiveclient -> host \\
+\hline
+\verb|/unmap/minihive/output| & isi & port no., name, node ID & unmap node output to MiniBee output broadcast (reply /unmapped/minihive/output)\\
+\verb|/unmap/minihive/custom| & isi & port no., name, node ID & unmap node output to MiniBee custom output broadcast (reply /unmapped/minihive/custom)\\
+\verb|/unmap/minihive/output| & i & node ID & unmap node output to MiniBee output broadcast(reply /unmapped/minihive/output) - host -> hiveclient\\
+\verb|/unmap/minihive/custom| & i & node ID & unmap node output to MiniBee custom output broadcast (reply /unmapped/minihive/custom) - host -> hiveclient\\
+% \verb|/map/minihive/pwm| & isii & port no., name, node ID, minihive ID &  map node output to MiniBee pwm output (reply /mapped)\\
+% \verb|/map/minihive/digital| & isii & port no., name, node ID, minihive ID &  map node output to MiniBee digital output (reply /mapped/minihive)\\
+\verb|/unmapped/minihive/output| & i & node ID & reply to /unmap/minihive/output messages - host -> client\\
+\verb|/unmapped/minihive/custom| & i & node ID & reply to /unmap/minihive/custom messages - host -> client \\
+\verb|/unmapped/minihive/output| & isi & port no., name, node ID & reply to /unmap/minihive/output messages - hiveclient -> host \\
+\verb|/unmapped/minihive/custom| & isi & port no., name, node ID & reply to /unmap/minihive/custom messages - hiveclient -> host \\
+\hline
+
+\end{tabular}
+\end{center}
+\caption{OSC namespace for the Data Network - interaction with MiniBees. }
+\label{oscinterfaceMB}
+% \end{table}
+ \end{sidewaystable}
+
+ \begin{sidewaystable}[!tbp]
+\small
+\begin{center}
+% use packages: array
+\begin{tabular}{|llll|}
+\hline
+
+\verb|/configure/minibee| & isii(s) & port no., name, minibee ID, config ID (, serial number) & configure minibee (reply /configured/minibee) - client -> host\\
+\verb|/configured/minibee| & ii(s) & minibee ID, config ID (, serial number)& reply to /configure/minibee - host -> client\\
+\verb|/configure/minibee| & ii(s) & minibee ID, config ID (, serial number)& configure minibee (reply /configured/minibee) - host -> hiveclient\\
+\verb|/configured/minibee| & is ii(s) & port no., name, minibee ID, config ID (, serial number) & reply to /configure/minibee - hiveclient -> host\\
+\hline
+
+\verb|/minihive/configuration/create| & is isii ii..i ii..i & port no., name, config id, configname, samples per message & create a configuration \\
+                                          &         or        & message interval, number of pins (N), number of twi devices (M)\\
+                                          & is isii ss..s ss..s & N times pin config, M times twi config & client -> host\\
+\verb|/minihive/configuration/created| & isii ii..i ii..i & config id, configname, samples per message & reply to /minihive/configuration/create \\
+                                          &         or        & message interval, number of pins (N), number of twi devices (M)\\
+                                          & isii ss..s ss..s & N times pin config, M times twi config & host -> client\\
+\verb|/minihive/configuration/create| & isii ii..i ii..i & config id, configname, samples per message\\
+                                          &         or        & message interval, number of pins (N), number of twi devices (M) & create a configuration \\
+                                          & isii ss..s ss..s & N times pin config, M times twi config &  - host -> hiveclient\\
+\verb|/minihive/configuration/created| & is isii ii..i ii..i & port no., name, config id, configname, samples per message & reply to /minihive/configuration \\
+                                          &         or        & message interval, number of pins (N), number of twi devices (M)\\
+                                          & is isii ss..s ss..s & N times pin config, M times twi config & - hiveclient -> host\\
+                                          
+\verb|/minihive/configuration/delete| & is i & port no., name, config id & delete a configuration - client -> host\\
+\verb|/minihive/configuration/deleted| & i & config id & reply to /minihive/configuration/delete -  host -> client\\
+\verb|/minihive/configuration/delete| & i & config id & delete a configuration  - host -> hiveclient\\
+\verb|/minihive/configuration/deleted| & is i & port no., name, config id & reply to /minihive/configuration/delete - hiveclient -> host\\
+\hline
+\verb|/minihive/configuration/save| & is s & port no., name, filename & save configuration file - client -> host\\
+\verb|/minihive/configuration/saved| & s & filename & reply to /minihive/configuration/save - host -> client\\
+\verb|/minihive/configuration/save| & s & filename &  save configuration file -  host -> hiveclient\\
+\verb|/minihive/configuration/saved| & is s & port no., name, filename & reply to /minihive/configuration/save - hiveclient -> host\\
+
+\verb|/minihive/configuration/load| & is s & port no., name, filename & load configuration file - client -> host\\
+\verb|/minihive/configuration/loaded| & s & filename & reply to /minihive/configuration/load - host -> client\\
+\verb|/minihive/configuration/load| & s & filename &  load configuration file -  host -> hiveclient\\
+\verb|/minihive/configuration/loaded| & is s & port no., name, filename & reply to /minihive/configuration/load - hiveclient -> host\\
+
+\hline
+
+\end{tabular}
+\end{center}
+\caption{OSC namespace for the Data Network - interaction with MiniBee Configurations }
+\label{oscinterfaceMBC}
+% \end{table}
+ \end{sidewaystable}
+
+\begin{table}
+\small
+\begin{center}
+\begin{tabular}{|rl|}
+ \hline
+  1 & "Client with IP"+addr.ip+"and port"+addr.port+"is not registered. Please register first" \\
+  2 & "Client with IP"+addr.ip+"and port"+addr.port+"is already registered. Please unregister first" \\
+  3 & "Client with IP"+addr.ip+"and port"+addr.port+"was not registered"  \\
+  4 & "Client with IP"+addr.ip+"and port"+addr.port+"is not the setter of node with id"+..  \\
+  5 & "Node with id"+..+"is not part of the network" \\
+  6 & "Node with id"+..+"is not expected to be part of the network"  \\
+  7 & "There are no expected nodes in the network" \\
+  8 & "There are no nodes in the network"  \\
+  9 & "There are no clients in the network"  \\
+ 10 & "Client with IP"+addr.ip+"and port"+addr.port+"has no setters"  \\
+ 11 & "Client with IP"+addr.ip+"and port"+addr.port+"has no subscriptions" \\
+ 12 & "Node with id"+...+"does not have"+..+"slots" \\
+ 12 & "Node with id"+...+"does not have"+..+"slots" \\
+ 13 & "Node with id"+...+"has wrong type"+... \\
+ 14 & "Client with IP"+addr.ip+"and port"+addr.port+"was not registered under name"+name \\
+ 15 & "Client with IP"+addr.ip+"and port"+addr.port+"and name" + name + "is not registered. Please register first" \\
+ \hline
+ 16 & "Client with IP"+addr.ip+"and port"+addr.port+"and name" + msg[0] + "tried to add a minibee with id" + msg[1] + ", but is not a hive client"\\
+ 17 & "Client with IP"+addr.ip+"and port"+addr.port+"and name" + msg[0] + "tried to add a minibee with id" + msg[1] + ", which is out of range of the hive"\\
+ 18 & "Client with IP"+addr.ip+"and port"+addr.port+"and name" + msg[0] + "sent a minibee configuration with id" + msg[1] + ", but is not a hive client"\\
+ \hline
+ \end{tabular}
+\end{center}
+\caption{Error codes and strings}
+\label{errorcodes}
+\end{table}
+
+
+\section{Max implementation (by Harry Smoak, Joseph Malloch and Brett Bergmann)}
+In the Max implementation, there is a data \textit{sink}, which manages the connection to the network (registering, subscriptions, etc.), and gives the received data. There is a data \textit{source}, which can send data into the network. The subscriptions are handled by textfiles, as are the published data nodes, so they can be easily restored upon opening a max patch.
+The objects react to the announce message from the network to set the right host IP and port.
+
+The Max patch dn.node can receive data from any number of nodes, as it takes multiple arguments (i.e. the object "dn.node 10 12 15" would subscribe to data from nodes 10, 12 and 15)
+
+\section{Processing implementation (by Vincent de Belleval and Brett Bergmann)}
+
+The Processing client implementation is done as a Processing library, using JavaOSC for OSC communication. It comes with two example files and an HTML reference documentation.
+
+\section{C++ implementation (by Marije Baalman)}
+
+The C++ client implementation comes as a library, with a doxygen file to generate documentation, and an example client.
+
+\section{SuperCollider implementation}
+
+The SuperCollider implementation is done in a set of classes.
+
+Documentation for these is available in HTML format.
+
+
+\section{Installation}
+
+\subsection{SuperCollider Quark}
+
+The DataNetwork can be most easily installed from SuperCollider's Quarks extension management system.
+This also includes the client patches for other software environments.
+
+To install the classes, do the following inside SuperCollider:
+
+\begin{verbatim}
+ Within SuperCollider do the following:
+// check out all quarks:
+Quarks.checkoutAll;
+
+// or update them all to the latest version:
+Quarks.update;
+
+ // install the SenseWorld DataNetwork quark
+// - this will install all other quarks that are needed
+Quarks.install("SenseWorld DataNetwork");
+
+// recompile the library 
+
+//---------------- host -----------------------
+ // On OSX, add this to the startup file (or execute it each time)
+SWDataNetworkOSC.httppath = "/Library/WebServer/Documents/";
+
+ // create a network:
+x = SWDataNetwork.new;
+// add the OSC interface
+x.addOSCInterface;
+
+//---------------- client ----------------------
+
+// create a network client:
+y = SWDataNetworkClient.new( ~hostip, "myname" );
+// where ~hostip is an IP address of the datanetwork host like: "192.168.0.104",
+// and "myname" is the name by which you (as a client) will be identified in the network:
+// so it becomes:
+// y = SWDataNetworkClient.new( "192.168.0.104", "myname" );
+
+// to show a GUI:
+y.makeGui;
+ 
+// For more help, access the helpfile:
+SenseWorldDataNetwork
+\end{verbatim}
+
+
+\subsection{Apache}
+
+You need to install a webserver such as Apache on the host system.
+
+(package apache2 on Debian/Ubuntu; usually available on OSX)
+
+The general files will be put in \verb|/var/www|.
+You have to make this directory writable by the user by executing (as root)
+
+\begin{verbatim}
+ cd /var/www
+ chmod 775 .
+ chgrp netdev .
+\end{verbatim}
+
+Assuming that the user running SuperCollider is member of the group \verb|netdev|. You can check this by:
+
+\begin{verbatim}
+ groups
+\end{verbatim}
+
+To add yourself to the group, execute as root (with instead of ``nescivi'' your username):
+\begin{verbatim}
+ adduser nescivi netdev
+\end{verbatim}
+
+You may need to logout and log back in for this to take effect.
+
+On OSX the default path for http files is: \verb|/Library/WebServer/Documents/|. You may have to enable ``Web Sharing'' in the ``Sharing'' settings in the System Preferences.
+
+% \subsection*{TODO (SuperCollider)}
+
+% \begin{itemize}
+%  \item (discard) change expectedNodes to become a security option
+% \end{itemize}
+
+\section{Detailed message description}
+
+\begin{itemize}
+ \item \verb|/datanetwork/announce| - si - host, port no. 
+    \begin{description}
+    \item[sent by host] When the host becomes active, or manual. It is sent both as a broadcast message to the network, and to any clients that may be known already by the host by their IPs.
+    \item[response] clients should note the possible change in port and reregister if not registered
+   \end{description}
+
+\item \verb|/datanetwork/quit| - si - host, port no.
+    \begin{description}
+    \item[sent by host] When the host shuts down (in a proper way, not when it crashes).
+    \item[response] clients should check if this is from their host, and note that they are no longer registered with the datanetwork
+   \end{description}
+
+\item \verb|/register| - is - port no., name
+    \begin{description}
+     \item[sent by client] In order to register
+     \item[response] If it is a new client, the host will register the client and reply with the \verb|/registered| message. If it is a client at the same IP, port and name that was already registered, the host will reply with \verb|/registered|. If a client with that IP and port, but with a different name was already registered, the host will return an error message 2.
+   \end{description}
+
+\item \verb|/registered| - is - port no., name
+    \begin{description}
+     \item[sent by host] Upon a succesful registration of the client
+     \item[response] The client should note that it has been registered with the host.
+   \end{description}
+
+\item \verb|/unregister| - is - port no., name
+    \begin{description}
+     \item[sent by client] In order to unregister
+     \item[response] If the client was registered under that port and name, the host will return the \verb|/unregistered| message. If the client name does not match, it will return error 14; if the client was not registered, the host returns error 3.
+   \end{description}
+
+\item \verb|/unregistered| - is - port no., name
+    \begin{description}
+     \item[sent by host] Upon a succesful unregistration of the client, or before a shutdown of the host, or when the maximum number of pings are left without reply.
+     \item[response] The client should note that it has been unregistered with the host.
+   \end{description}
+
+\item \verb|/ping| - is - port no., name
+    \begin{description}
+     \item[sent by host] Every second to check that the client is still there
+     \item[response] The client should send a \verb|/pong| message back, if it has indeed this name.
+   \end{description}
+
+\item \verb|/pong| - is - port no., name
+    \begin{description}
+     \item[sent by client] In response to the \verb|/ping| message of the host.
+     \item[response] none
+   \end{description}
+
+\item \verb|/error| - ssi - cause, error message, error ID
+    \begin{description}
+     \item[sent by host] when an error occurs. See the error message table for descriptions of errors.
+     \item[response] client could do attempts to fix the error.
+   \end{description}
+
+\item \verb|/warn| - ssi - cause, error message, error ID
+    \begin{description}
+     \item[sent by host] When a request from the client does not have any results. See the error message table for descriptions of warnings.
+     \item[response] client can display the warning to the user, but do not need to take action.
+   \end{description}
+
+
+% \verb|/query/all| & i & port no.& query which nodes are expected in the network (reply /info/expected) \\
+% \verb|/query/expected| & i & port no.& query which nodes are expected in the network (reply /info/expected) \\
+% \verb|/query/nodes|    & i & port no.& query which nodes are in the network (reply /info/node) \\
+% \verb|/query/slots|    & i & port no.& query which slots are in the network (reply /info/slot)\\
+% \verb|/query/clients|  & i & port no.& query which clients are in the network (reply /info/client)\\
+% \verb|/query/setters|  & i & port no.& query which nodes the client is the setter of (reply /info/setter) \\
+% \verb|/query/subscriptions| & i & port no.& query which subscriptions the client has (reply /subscribed/node, /subscribed/slot)\\
+% 
+% \verb|/info/expected| & i(s) & node ID, node label & info about an expected node \\
+% \verb|/info/node| & isii & node ID, node label, number of slots, node type & info about a node \\
+% \verb|/info/slot| & iisi & node ID, slot ID, slot label, slot type & info about a slot \\
+% \verb|/info/client| & sis & ip, port no., hostname & info about a client \\
+% \verb|/info/setter| & isii & node ID, node label, number of slots, node type & info about a node the client is setting \\
+% 
+% \verb|/subscribe/all| & i & port no. & subscribe to receive data from all nodes \\
+% \verb|/unsubscribe/all| & i & port no. & unsubscribe from all nodes \\
+% 
+% \verb|/subscribe/node| & ii & port no., node ID & subscribe to receive data from a node \\
+% \verb|/subscribed/node| & ii & port no., node ID & reply to subscribe to receive data from a node \\
+% 
+% \verb|/unsubscribe/node| & ii & port no., node ID & unsubscribe to receive data from a node \\
+% \verb|/unsubscribed/node| & ii & port no., node ID & reply to unsubscribe to receive data from a node \\
+% 
+% \verb|/subscribe/slot| & iii & port no., node ID, slot ID & subscribe to receive data from a slot \\  
+% \verb|/subscribed/slot| & iii & port no., node ID, slot ID & reply to subscribe to receive data from a slot \\  
+% 
+% \verb|/unsubscribe/slot| & iii & port no., node ID, slot ID & subscribe to receive data from a slot \\  
+% \verb|/unsubscribed/slot| & iii & port no., node ID, slot ID & reply to unsubscribe to receive data from a slot \\  
+% 
+% \verb|/data/node| & iff..f & node ID, data values & node data \\
+% \verb|/data/node| & iss..s & node ID, string data values & node data \\
+% \verb|/get/node| & ii & port no., node ID & get data from a node (reply /data/node) \\
+% 
+% \verb|/data/slot| & iif & node ID, slot ID, data value & slot data \\
+% \verb|/data/slot| & iis & node ID, slot ID, string data value & slot data \\
+% \verb|/get/slot| & iii & port no., node ID, slot ID & get data from a slot (reply /data/slot) \\
+% 
+% \verb|/set/data| & iif..f & port no., node ID, data values & set data to a node (reply /data/node)\\
+% \verb|/set/data| & iis..s & port no., node ID, string data values & set data to a node\\
+% 
+% \verb|/label/node| & iis & port no., node ID, node label & set label to a node \\
+% \verb|/label/slot| & iiis & port no., node ID, slot ID, slot label & set label to a slot \\
+% 
+% \verb|/remove/node| & ii & port no., node ID & remove a node (only possible if client is setter) \\
+% \verb|/removed/node| & i & node ID & reply to remove a node \\
+% \verb|/remove/all| & i & port no. & remove all nodes the client is a setter of (generates /removed/node messages) \\
+% 
+% \verb|/add/expected| & ii(isi) & port no., node ID, node size, node label, node type & add an expected node to the network (reply /info/expected) \\
+%  &  &  & if node size is given, the node is created as well (and generates a /info/node message) \\
+%  &  &  & node type is 0: float, 1: string (default is 0) \\
+ 
+\end{itemize}
+
+
+\section*{Acknowledgments}\label{sec:acknowledgments}
+This software was created by
+
+\textbf{SuperCollider classes, C++ client, Python client \& hive client:}
+Marije Baalman (nescivi)  
+
+\textbf{Processing \& Java library:}
+Vincent de Belleval,
+Brett Bergmann
+
+\textbf{Max objects:}
+Harry Smoak,
+Joseph Malloch, 
+Brett Bergmann
+
+\textbf{PureData objects:}
+Joseph Thibodeau, Marije Baalman
+
+Developed as part of the "Sense/Stage" project and the "Papyrus" project between\\
+Design and Computation Arts, Fine Arts, Concordia University\\
+and\\
+Input Devices and Music Interaction Lab, Music Technology, McGill University
+
+This work was support by grants from the Social Sciences and Humanities Research Council of Canada and the Hexagram Institute for Research/Creation in Media Arts and Sciences, Montr\'eal, QC, Canada.
+
+Development since 2010 by nescivi/sensestage in Amsterdam (http://www.sensestage.eu)
+
+\vspace*{0.5cm}
+(c) 2008-11 by the authors\\
+Released under the GNU/GPL (see COPYING file)\\
+C++ library under GNU/LGPL
+
+\subsection*{ChangeLog}
+
+\begin{itemize}
+ \item 6/4/2010 - Added /map/minibee messages to the network.
+ 
+ \item ------------- v 0.5 --------------
+ \item 12/12/2009 - all messages from clients need to have port no and client name. This breaks compatibility with previous versions.
+ 
+ \item ------------- v 0.3 --------------
+ \item 2/12/2009 - lots of bugfixes. New clients: processing and C++. Better assertion of argument types now in the sending of data by the host. 
+ \item ------------- v 0.3 --------------
+ \item 9/7/2009 - improved data logging and playback support. Added string data nodes (adds a type tag to some osc messages). Logging now saves the spec with labels.
+ \item ------------- v 0.2 --------------
+ \item 27/5/2009 - added remove all message. error codes for error and warn messages.
+ \item 19/5/2009 - performance improvement, fix bugs in gui, logging option for osc communication, logging option for update times, clients are now removed after a certain amount of missed pongs. Protection for non-numerical data coming in.
+ \item 18/5/2009 - added subscribe all and unsubscribe all messages.
+ \item 4/4/2009 - added client gui, and updated the client in SC.
+ \item 2/4/2009 - added gui for connected clients
+ \item 1/4/2009 - added help files and wii mote support, improved main gui
+ \item 12/3/2009 - added pattern support
+ \item 12/3/2009 - create a bridge from GeneralHID, including some other bugfixes
+ \item 12/3/2009 - added a size argument to expected nodes; if set, this will create the node already with the given size, with data values 0, so that properties of the node and slots can be set. (to fix the todo: create ``virtual nodes'' for nodes that are expected but not there yet, so some settings can already be set)
+ \item 12/3/2009 - implemented the port storage in a file mechanism
+ \item 21/11/2008 - implemented backup mechanism for reconnection of any clients that were connected before a restart and the SC client version
+ \item 21/11/2008 - added warn message for some actions
+ \item 06/10/2008 - added announce message
+ \item 06/10/2008 - added acknowledgement messages for actions that do not have an immediate reply otherwise
+ \item 06/10/2008 - changed so that nodeID's and slotID's now are always integers.
+\end{itemize}
+
+
+
+\end{document}

@@ -1,0 +1,27 @@
+instancemethods::
+
+subsection:: Extensions by OpenObject
+
+method:: unfoldOSCArrays
+
+When receiving arrays in an OSC message that have been converted with link::#asOSCArgArray::, according to the OSC standard using $[ and $] characters, this converts them back.
+
+method::foldOSC
+
+Prepare a nested array for sending via OSC
+
+method::unfoldOSC
+
+Unpack a nested array for sending via OSC
+
+code::
+(
+n = NetAddr("127.0.0.1", 57120);
+OSCFunc({ |msg|
+	msg.unfoldOSC.postln;
+	}, \test);
+);
+
+n.sendMsg(*[\test, [[200, 300, 400], [0.3, 0.4]]].foldOSC);
+::
+

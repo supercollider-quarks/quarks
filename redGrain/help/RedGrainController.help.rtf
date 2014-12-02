@@ -1,0 +1,159 @@
+{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;\f1\fswiss\fcharset77 Helvetica;\f2\fnil\fcharset77 Monaco;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red191\green0\blue0;\red96\green96\blue96;
+\red0\green115\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b\fs36 \cf2 RedGrainController\cf0 		controller class for RedGrain
+\f1\b0\fs24 \
+
+\f0\b\fs36 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\fs24 \cf0 superclass: \cf2 Object
+\fs36 \cf0 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f1\b0\fs24 \cf0 Used for controlling RedGrain granulators.
+\f0\b\fs36 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\fs24 \cf0 Class Methods
+\fs36 \
+
+\fs24 \
+\cf2 RedGrainController\cf0 .new(aRedGrain)
+\f1\b0  - create controller\
+
+\f0\b \
+\
+Instance Methods\
+\
+start
+\f1\b0  - \
+
+\f0\b stop - \
+pause - \
+resume - \
+delta_(sec) - \
+grainBuf_(bufnum) - \
+grainRate_(rate) - \
+positionStart_(percent) - \
+positionSpeed_(rate) - \
+grainDur_(sec) - \
+grainPan_(val) - \
+grainAmp_(val) - \
+gain_(dict) - 
+\f1\b0 individual buffer amplitude lookup (bufnum : amp) to balance the mix
+\f0\b \
+density_(percent) - 
+\f1\b0 how many grains to play. 1.0= play all, 0.5= 50% chance to play a grain\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f2\fs18 \cf0 \
+\
+s.boot;\
+\
+\cf3 //prepare some buffers\cf0 \
+~length= 1.8;		\cf3 //segment lengths in seconds - should be the same for positions to scan correctly\cf0 \
+~b1= \cf2 RedBuffer\cf0 (s, \cf4 "sounds/a11wlk01.wav"\cf0 , 0.0, ~length);\
+~b2= \cf2 RedBuffer\cf0 (s, \cf4 "sounds/a11wlk01.wav"\cf0 , 0.1, ~length);\
+~b3= \cf2 RedBuffer\cf0 (s, \cf4 "sounds/a11wlk01.wav"\cf0 , 0.2, ~length);\
+\
+\cf3 //create and start a grain object\cf0 \
+r= \cf2 RedGrain\cf0 (s);\
+r.buf_(~b1);\
+r.start;\
+\
+\cf3 //create and start the controller object\cf0 \
+g= \cf2 RedGrainController\cf0 (r);\
+g.start;\
+\
+\cf3 //for density - position and index is passed in as arguments\cf0 \
+g.density_(0.1);									\cf3 //10% on and 90% off\cf0 \
+g.density_(0.75);									\cf3 //75% on and 25% off\cf0 \
+g.density_(\{\cf2 |o|\cf0  o\});								\cf3 //from 0 to 100% -depend on position\cf0 \
+g.density_(\{\cf2 |o, i|\cf0  [0, 0.3].asSpec.map(i%1000/1000)\});	\cf3 //slowly from 0% to 30%\cf0 \
+g.density_(\{\cf2 |o, i|\cf0  i%2\});							\cf3 //only every second ie 50%\cf0 \
+g.density_(1);									\cf3 //all on\cf0 \
+\
+\cf3 //for positionStart - position and index is passed in as arguments\cf0 \
+g.positionStart_(\{\cf2 |o|\cf0  o\});							\cf3 //no change\cf0 \
+g.positionStart_(\{\cf2 |o, i|\cf0  [0, 0.2.rand, 0.5].foldAt(i)\});\cf3 //pattern with random element\cf0 \
+g.positionStart_(\{\cf2 |o|\cf0  o+0.0015.rand2\});				\cf3 //minimal drunk\cf0 \
+g.positionStart_(\{\cf2 |o|\cf0  o+0.01.rand2\});					\cf3 //little drunk\cf0 \
+g.positionStart_(\{\cf2 |o|\cf0  o+0.05.rand2\})					\cf3 //more drunk\cf0 \
+g.positionStart_(\{1.0.rand\})						\cf3 //total random offset start\cf0 \
+g.positionStart_(0.1);								\cf3 //freeze\cf0 \
+g.positionStart_(\{\cf2 |o|\cf0  if(0.03.coin, \{o+0.1\}, \{o\})\});	\cf3 //small chance to skip forward\cf0 \
+\
+\cf3 //for positionSpeed - position and index is passed in as arguments\cf0 \
+g.positionSpeed_(\{\cf2 |o|\cf0  if(o<0.5, \{0.5\}, \{1.1\})\});		\cf3 //first half 50%, rest 110%\cf0 \
+g.positionSpeed_(0.4);								\cf3 //slow forward\cf0 \
+g.positionSpeed_(0);								\cf3 //freeze\cf0 \
+g.positionSpeed_(-1);								\cf3 //static backwards\cf0 \
+g.positionSpeed_(\{\cf2 |o|\cf0  [1, 2, \cf5 'exp'\cf0 ].asSpec.map(o)\});	\cf3 //accelerate\cf0 \
+g.positionSpeed_(\{\cf2 |o, i|\cf0  #[0.5, 1.25, 5].wrapAt(i)\});	\cf3 //pattern\cf0 \
+g.positionSpeed_(\{\cf2 |o|\cf0  #[0.1, 1, 1.5].wrapAt(o%0.5*50)\});\cf3 //3 positions\cf0 \
+\
+\cf3 //for grainBuf - buffer, position and index is passed in as arguments\cf0 \
+g.grainBuf_(~b2);									\cf3 //static buffer\cf0 \
+g.grainBuf_(\{[~b1, ~b2, ~b3].choose\});				\cf3 //randomise buffer\cf0 \
+g.grainBuf_(\{[~b1, ~b3].wchoose(#[0.3, 0.7])\});		\cf3 //weighted random\cf0 \
+g.grainBuf_(\{\cf2 |buf, o, i|\cf0  [~b2, ~b1, ~b2, ~b2, ~b3].wrapAt(i/50%5)\});\cf3 //pattern\cf0 \
+g.grainBuf_(\{\cf2 |buf, o, i|\cf0  [~b1, ~b2, ~b3].wchoose(\cf2 FloatArray\cf0 [0.1, 1.0, 0.0].interpolate([0.0, 0.0, 1.0], o).normalizeSum)\});\cf3 //interpolate -buffer depend on position\cf0 \
+g.grainBuf_(\{\cf2 |buf, o, i|\cf0  [~b1, ~b2, ~b3].wchoose(\cf2 FloatArray\cf0 [0.2, 0.8, 0.0].interpolate([0.0, 0.0, 1.0], i%9000/9000).normalizeSum)\}) \cf3 //interpolate weights slowly\cf0 \
+\
+\cf3 //for grainRate - rate, position and index is passed in as arguments\cf0 \
+g.grainRate_(0.9);									\cf3 //transpose\cf0 \
+g.grainRate_(\{1.0+0.01.rand2\});						\cf3 //rate fluctuate\cf0 \
+g.grainRate_(\{\cf2 |rate, o, i|\cf0  o*0.5+0.75\});				\cf3 //transpose upwards -depend on position\cf0 \
+\
+\cf3 //for grainDur - duration, position and index is passed in as arguments\cf0 \
+g.grainDur_(0.03);									\cf3 //static short\cf0 \
+g.grainDur_(0.3);									\cf3 //static long duration\cf0 \
+g.grainDur_(\{0.2.rand\});							\cf3 //randomise duration\cf0 \
+g.grainDur_(\{\cf2 |dur, o|\cf0  #[0.01, 0.4, \cf5 'exp'\cf0 ].asSpec.map(o)\});\cf3 //from short to long -depend on position\cf0 \
+g.grainDur_(\{\cf2 |dur|\cf0  dur= (dur+0.0001).min(0.6)\});		\cf3 //grows and grows (independent of position)\cf0 \
+g.grainDur_(\{\cf2 |dur, o, i|\cf0  #[0.01, 0.02, 0.1].foldAt(i)\});\cf3 //pattern\cf0 \
+\
+\cf3 //for grainAmp - amplitude, position and index is passed in as arguments\cf0 \
+g.grainAmp_(0.1);									\cf3 //quite quiet\cf0 \
+g.grainAmp_(1);									\cf3 //unity gain\cf0 \
+g.grainAmp_(\{1.0.rand\});							\cf3 //randomise amplitude for each grain\cf0 \
+g.grainAmp_(\{\cf2 |amp, o, i|\cf0  o.rand\});					\cf3 //rising random -depend on position\cf0 \
+g.grainAmp_(\{\cf2 |amp, o, i|\cf0  #[0, 0, 0, 1, 0, 0, 1, 1].wrapAt(i/5)\});\cf3 //pattern\cf0 \
+\
+\cf3 //for grainPan - panning, position and index is passed in as arguments\cf0 \
+g.grainPan_(-1);									\cf3 //static full left\cf0 \
+g.grainPan_(\{1.0.rand2\});							\cf3 //random panning for each grain\cf0 \
+g.grainPan_(\{\cf2 |pan, o, i|\cf0  sin(o*2*pi)\});				\cf3 //sine -depend on position\cf0 \
+g.grainPan_(\{\cf2 |pan, o, i|\cf0  sin(i%1000/1000*2*pi)\});		\cf3 //sine (not dependent on position)\cf0 \
+g.grainPan_(\{\cf2 |pan, o, i|\cf0  #[0, 0, 0, -1, 0, 0, 1, -1].wrapAt(i)\});\cf3 //pattern\cf0 \
+\
+\
+\cf3 //set up a dictionary to control the gain of the different buffers\cf0 \
+(\
+~dict= (\
+	~b1.bufnum : 0.2,\
+	~b2.bufnum : 1,\
+	~b3.bufnum : 0.2\
+));\
+g.gain_(~dict);\
+g.grainBuf_(~b2);	\cf3 //loud\cf0 \
+g.grainBuf_(~b1);	\cf3 //soft\cf0 \
+\
+\
+\cf3 //stop and clear\cf0 \
+g.stop;\
+r.stop;\
+(\
+r.free;\
+~b1.free;\
+~b2.free;\
+~b3.free;\
+)\
+}

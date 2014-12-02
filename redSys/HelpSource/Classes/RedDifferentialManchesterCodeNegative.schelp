@@ -1,0 +1,116 @@
+CLASS:: RedDifferentialManchesterCodeNegative
+SUMMARY:: Differential manchester encoding with negative edge clock
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedManchesterCode, Classes/RedDifferentialManchesterCode, Classes/RedHuffman
+
+DESCRIPTION::
+Also known as biphase mark code (BMC).
+See http://en.wikipedia.org/wiki/Differential_Manchester_encoding
+
+NOTE::
+There are two classes... one with positive edge clock (link::Classes/RedDifferentialManchesterCode::) and one with negative edge clock (link::Classes/RedDifferentialManchesterCodeNegative::).
+::
+
+CLASSMETHODS::
+
+METHOD::new
+Creates a new encoder.
+
+ARGUMENT::numBits
+The maximum number of bits in the data to be encoded. The default 8 can deal with values between 0 and 255.
+
+INSTANCEMETHODS::
+
+METHOD::reset
+To reset the phase to the initial value.
+
+METHOD::encode
+The lowest level method for encoding. Give and return arrays with raw 0/1 bits.
+
+ARGUMENT::bits
+An array of raw bits (zeros and ones) representing the n-bit value to be encoded. The length of this array should match numBits.
+
+RETURNS::
+An array of raw bits (zeros and ones) with encoded clock and data bits.
+NOTE::
+The array returned will be double in length of the argument array (and also 2*numBits in length).
+::
+
+EXAMPLES::
+
+CODE::
+//bigger number require more number of bits
+RedDifferentialManchesterCode(11, 0).encodeValue(2r10011010010) //compare table in wikipedia article
+RedDifferentialManchesterCodeNegative(11).encodeValue(2r10100111001)
+a= RedDifferentialManchesterCode();
+a.encode([0, 1, 1, 1, 0, 0, 1, 0])
+a.encodeValue(114) //same but different
+a.encodeArray([114, 114, 5]) //use this method for longer arrays
+
+//if used as an audio signal it is often preferred to normalize the values -1 to 1.
+//here is a simple way to do that normalization...
+RedDifferentialManchesterCodeNegative(11).encode([1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1])*2-1
+::
+
+CODE::
+//--sound examples
+
+//the example just sequence differential manchester encoded bytes.
+(
+SynthDef(\redBitsPlayer, {|out= 0, amp= 1, rate= 1000|
+	var numBits= 8*2;	//double because of manchester encoding
+	var data= Control.names([\data]).ir(Array.fill(numBits, 0));
+	var src= Duty.ar(1/rate, 0, Dseq(data*2-1++0), 2);	//zero padded because doneAction2 is not stopping sample accurate
+	OffsetOut.ar(out, src*amp!2);
+}).add;
+)
+
+//test counter
+(
+t= 2400;	//datarate
+Routine.run({
+	var encoder= RedDifferentialManchesterCodeNegative(8);
+	inf.do{|i|
+		var byte= (i%256).asInteger;
+		var data= encoder.encodeValue(byte);
+		s.bind{
+			Synth(\redBitsPlayer, [\out, 0, \data, data, \amp, 0.3, \rate, t]);
+			("playing:"+byte+data).postln;
+		};
+		(1/t*16).wait;
+	};
+});
+)
+::
+
+CODE::
+//this example renders the 0-255 counter data in advance, normalize it and load it into a buffer
+//stutter(8) means eight samples per data bit
+b= Buffer.sendCollection(s, RedDifferentialManchesterCodeNegative().encodeArray((0..255)).stutter(8)*2-1)
+b.play
+b.free
+::
+
+CODE::
+//it is also possible to skip this class and do differential manchester code directly in the synthdef...
+(
+SynthDef(\redDifferentialManchesterEncodeNegative, {|out= 0, amp= 1, rate= 1000|
+	var numBits= 8;
+	var buf= LocalBuf(1).set(1);
+	var env= EnvGen.ar(Env(#[1, 1, 0], [16/rate, 0]), doneAction:2);
+	var data= Control.names([\data]).ir(Array.fill(numBits, 0));
+	var src= Duty.ar(1/rate, 0, Dswitch1([
+			1-Dbufrd(buf),
+			Dbufrd(buf),
+			Dbufrd(buf),
+			Dbufwr(1-Dbufrd(buf), buf)
+		],
+		Dstutter(2, Dseq(data))+Dseq(#[0, 2], numBits)
+	));
+	OffsetOut.ar(out, src*2-1*amp*env);
+}).add;
+)
+
+Synth(\redDifferentialManchesterEncodeNegative, [\data, 154.asBinaryDigits, \amp, 0.2])
+//record the result and compare with RedDifferentialManchesterCodeNegative().encodeValue(114)
+::

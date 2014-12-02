@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #36701f}
+span.s1 {color: #0000ff}
+span.s2 {color: #001ab2}
+span.s3 {color: #000000}
+span.s4 {color: #36701f}
+span.s5 {color: #a41919}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>PR(\aiMel)</b></p>
+<p class="p2"><br></p>
+<p class="p3">A melody player that automatically generates variations on input material.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Initialization</b></p>
+<p class="p2"><br></p>
+<p class="p3">To begin playing, you need to chuck the BP instance into a VC to specify what should play the notes, and chuck in a MIDIRecBuf holding the notes to play.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Note:</b> Code in this help file is intended for illustration only. Proper execution depends on resources that will not be created in this file. For a working example, see <a href="ChuckExamples.html"><span class="s1">ChuckExamples</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2">PR</span><span class="s3">(</span><span class="s4">\aiMel</span><span class="s3">) =&gt; </span><span class="s2">BP</span><span class="s3">(</span><span class="s4">\mel</span><span class="s3">);<span class="Apple-tab-span">	</span></span>// create the instance</p>
+<p class="p5"><span class="s2">BP</span><span class="s3">(</span><span class="s4">\mel</span><span class="s3">) =&gt; </span><span class="s2">VC</span><span class="s3">(</span><span class="s4">\instrument</span><span class="s3">);<span class="Apple-tab-span">	</span></span>// assign to a Voicer to render the notes</p>
+<p class="p6">melodyMIDIRecBuf =&gt;.mel <span class="s2">BP</span>(<span class="s4">\mel</span>);</p>
+<p class="p2"><br></p>
+<p class="p3">Whenever you chuck a MIDIRecBuf into this process, if you don't specify an adverb (.mel in the statement above), it will look to the properties stored in the MIDI buffer. To specify that a MIDI buffer contains source material, set the properties as illustrated below.</p>
+<p class="p2"><br></p>
+<p class="p3">Throughout this document, "parameters" refers to data which, as above, may be a member of the properties collection belonging to MIDI buffer, or can be overridden using the parms dictionary in a chuck operation.</p>
+<p class="p2"><br></p>
+<p class="p5">// Using a MIDI buffer property to indicate the buffer type.</p>
+<p class="p5">// I assume here that you're using [MBM] to store MIDI buffers.</p>
+<p class="p5">// You could also keep it in a variable.</p>
+<p class="p6"><span class="s2">MIDIRecBuf</span>(<span class="s4">\melody</span>, [... note array ...], (type: <span class="s4">\mel</span>)) =&gt; <span class="s2">MBM</span>(0);</p>
+<p class="p6"><span class="s2">MBM</span>(0)[<span class="s4">\melody</span>] =&gt; <span class="s2">BP</span>(<span class="s4">\mel</span>);</p>
+<p class="p7"><br></p>
+<p class="p5">// Using a chuck parameter to indicate the buffer type.</p>
+<p class="p6"><span class="s2">MBM</span>(0)[<span class="s4">\melody</span>].chuck(<span class="s2">BP</span>(<span class="s4">\mel</span>), parms: (type: <span class="s4">\mel</span>));</p>
+<p class="p2"><br></p>
+<p class="p3">Several properties/parameters may be set at the same time.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Modal representation</b></p>
+<p class="p2"><br></p>
+<p class="p3">The MIDI buffers should contain the pitches in a chromatic representation, typically MIDI note numbers but you can use a different representation for non twelve-tone temperaments. It converts the notes to a modal representation by reference to a <a href="../../ddwTemperament/Help/ModalSpec.html"><span class="s1">ModalSpec</span></a> object, which may be held in the <a href="Mode.html"><span class="s1">Mode</span></a> storage class.</p>
+<p class="p2"><br></p>
+<p class="p3">If no mode is specified, Mode(\default) is used. You may specify the mode as a property of the MIDI buffer, or as a chucking parameter.</p>
+<p class="p2"><br></p>
+<p class="p5">// Assumes that you have defined Mode(\cmaj).</p>
+<p class="p6"><span class="s2">MIDIRecBuf</span>(<span class="s4">\melody</span>, [... notes array ...], (type: <span class="s4">\mel</span>, mode: <span class="s4">\cmaj</span>)) =&gt; <span class="s2">MBM</span>(0);</p>
+<p class="p7"><br></p>
+<p class="p5">// Or, override the buffer parameter.</p>
+<p class="p6"><span class="s2">MBM</span>(0)[<span class="s4">\melody</span>].chuck(<span class="s2">BP</span>(<span class="s4">\mel</span>), parms: (mode: <span class="s4">\gmaj</span>));</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Splitting into phrases and segments</b></p>
+<p class="p2"><br></p>
+<p class="p3">For additional playback control, and to treat different parts of the melody individually while generating variations, the input data are split into phrases and segments.</p>
+<p class="p2"><br></p>
+<p class="p3">Phrases are the outer layer of organization. Specify the algorithm to split the notes using the splitFunc parameter (which, like mode, can be given in the MIDI buffer properties or chuck parameters). The value is the name of a Func() object, whose function does the work. The following are provided in the distribution:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>\noSplit:</b> Do not split -- keep everything in one big phrase.</p>
+<p class="p3"><b>\defaultMelSplit:</b> Calculate split points based on rhythm (tends to split after longer notes).</p>
+<p class="p3"><b>\userSplit:</b> The user specifies the number of notes in each phrase in the <b>\phrSplits</b> parameter.</p>
+<p class="p3"><b>\barMelSplit:</b> Given a <b>\barLength</b> parameter, split the melody so that each phrase has exactly that number of beats. Dummy rests are inserted when a note spans a barline.</p>
+<p class="p2"><br></p>
+<p class="p3">During playback, you can insert rests between phrases by assigning or chucking a numeric pattern to the <b>~macro</b> variable in the process.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2">Pwhite</span><span class="s3">(1, 4, </span><span class="s2">inf</span><span class="s3">) =&gt;.macro </span><span class="s2">BP</span><span class="s3">(</span><span class="s4">\mel</span><span class="s3">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// rest randomly 1, 2, 3 or 4 beats between each phrase</p>
+<p class="p5">// or:</p>
+<p class="p6"><span class="s2">BP</span>(<span class="s4">\mel</span>).macro = <span class="s2">Pwhite</span>(1, 4, <span class="s2">inf</span>);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// same result</span></p>
+<p class="p2"><br></p>
+<p class="p3">Segments are the basic unit for generating variations.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>\noSplit:</b> Do not split -- keep the whole phrase in one segment.</p>
+<p class="p3"><b>\defaultMelSegmenter:</b> Look for larger than average intervals as places to break segments.</p>
+<p class="p2"><br></p>
+<p class="p3">You may, of course, write your own functions -- just chuck the function into a Func storage object, and reference it by name in the parameters. See the definitions of these functions for their arguments.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Generating variations ("adaptations")</b></p>
+<p class="p2"><br></p>
+<p class="p3">To generate variations, the process needs to know what secondary material to introduce into the source and, for each segment, which Func to use to produce the variation.</p>
+<p class="p2"><br></p>
+<p class="p5">// Use the "adapt" adverb...</p>
+<p class="p8"><span class="s2">MBM</span><span class="s3">(0)[</span>\adaptationNotes<span class="s3">] =&gt;.adapt </span><span class="s2">BP</span><span class="s3">(</span>\mel<span class="s3">);</span></p>
+<p class="p7"><br></p>
+<p class="p5">// Or set type: \adapt in the buffer properties or chuck parameters.</p>
+<p class="p5">// While we're at it, let's set its mode as well.</p>
+<p class="p6"><span class="s2">MIDIRecBuf</span>(<span class="s4">\adaptationNotes</span>, [... note array ...], (type: <span class="s4">\adapt</span>, mode: <span class="s4">\cmaj</span>)) =&gt; <span class="s2">MBM</span>(0);</p>
+<p class="p2"><br></p>
+<p class="p3">The Func names are drawn from a pattern that returns symbols.</p>
+<p class="p2"><br></p>
+<p class="p8"><span class="s2">Prand</span><span class="s3">([</span>\absSplice<span class="s3">, </span>\intSplice<span class="s3">, </span>\delete<span class="s3">], </span><span class="s2">inf</span><span class="s3">) =&gt;.adapt </span><span class="s2">BP</span><span class="s3">(</span>\mel<span class="s3">);</span></p>
+<p class="p7"><br></p>
+<p class="p5">// To save time in performance, you can define the adaptation symbol pattern as a Pdefn,</p>
+<p class="p5">// and use the Pdefn name to chuck into the adapt adverb.</p>
+<p class="p5">// This works only with chucking syntax; variable assignment syntax does not work in that case.</p>
+<p class="p8"><span class="s2">Pdefn</span><span class="s3">(</span>\adaptKeys<span class="s3">, </span><span class="s2">Prand</span><span class="s3">([</span>\absSplice<span class="s3">, </span>\intSplice<span class="s3">, </span>\delete<span class="s3">], </span><span class="s2">inf</span><span class="s3">));</span></p>
+<p class="p8">\adaptKeys<span class="s3"> =&gt;.adapt </span><span class="s2">BP</span><span class="s3">(</span>\mel<span class="s3">);</span></p>
+<p class="p2"><br></p>
+<p class="p3">The adaptation functions in the distribution are:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>\absSplice:</b> Splice adaptation notes into the source notes with no transposition.</p>
+<p class="p3"><b>\intSplice:</b> Splice adaptation notes, preserving the intervals at the splice points by transposing material as needed.</p>
+<p class="p3"><b>\fixedSplice:</b> Splice adaptation notes, dropping source notes so that the resulting segment has exactly the same rhythmic duration as the source.</p>
+<p class="p3"><b>\delete:</b> Delete notes from the source. Adaptation notes are ignored.</p>
+<p class="p3"><b>\delHoldDur:</b> Delete notes from the source, and add rests so that the resulting segment has exactly the same rhythmic duration as the source.</p>
+<p class="p3"><b>\dropNote:</b> Remove one note from the source, but preserve the other notes' rhythm.</p>
+<p class="p3"><b>\noteSwap:</b> Switch the positions of two of the source notes</p>
+<p class="p3"><b>\splitNote:</b> Divide a source note into two, randomly generating a pitch for the second note within the range of the segment.</p>
+<p class="p3"><b>\splitNote2:</b> Divide a source note into two, but the second note may go just outside the range of the segment.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Testing variations for validity</b></p>
+<p class="p2"><br></p>
+<p class="p3">Since machine generated variations might not fit in with the existing material, each variation is tested using a Func. The function returns no less the variation is okay, or a score indicating its degree of unacceptability -- the larger the number, the worst the fit. Once a segment object reaches the maximum number of variations it can contain, whichever variation has the worst score will be deleted. (The original material always remains in place.)</p>
+<p class="p2"><br></p>
+<p class="p3">The test function name should be assigned to the process' eugTest variable. (Inspired by the terminology of genetic programming, and apparently unconcerned with the unsavory history of the word, I chose "eug" as short for "eugenicize.")</p>
+<p class="p2"><br></p>
+<p class="p5">// Test that the new variation remains within the range given in the ~range variable.</p>
+<p class="p8"><span class="s2">PR</span><span class="s3">(</span>\mel<span class="s3">).eugTest = </span>\eugRangeOnlyTest<span class="s3">;</span></p>
+<p class="p6"><span class="s2">PR</span>(<span class="s4">\mel</span>).range = <span class="s2">NumericRange</span>(14, 35);</p>
+<p class="p2"><br></p>
+<p class="p3">The following functions are supplied in the distribution:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>\dummyEugTest:</b> Step validation completely -- every variation is accepted without question. (When there are too many variations in a segment already, the oldest one is removed.)</p>
+<p class="p3"><b>\eugRangeOnlyTest:</b> Test only the range of notes in the new variation. Specify a range, as above, in the range variable as a NumericRange object, using modal representations of the low and high notes. MIDI note numbers are not OK here.</p>
+<p class="p3"><b>\eugRangeTest:</b> Performs the same test as in eugTest, plus the range test.</p>
+<p class="p3"><b>\eugTest:</b> Each segment calculates some metrics to try to describe the melody in terms of overall contour, angularity and similar factors. This function is a crude attempt to match the metrics from the new variation against those of the original material. It's too crude to be really musically useful at this point.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Rhythm profiles</b></p>
+<p class="p2"><br></p>
+<p class="p3">You might want to replace the source material's rhythm with algorithmically generated note values.</p>
+<p class="p2"><br></p>
+<p class="p3">Before chucking the melody in, set which rhythm profile you would like to use:</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s2">BP</span>(<span class="s4">\mel</span>).rhythmProfileProto = <span class="s4">\randRhythm</span>;<span class="Apple-tab-span">	</span><span class="s5">// e.g.</span></p>
+<p class="p2"><br></p>
+<p class="p3">Then, before playback, set the <b>useRh</b> flag to activate the rhythm profile for sequencing.</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s2">BP</span>(<span class="s4">\mel</span>).useRh = <span class="s2">true</span>;</p>
+<p class="p2"><br></p>
+<p class="p3"><b>PR(\randRhythm):</b> For each note, randomly choose a note value from any of the source melody's notes.</p>
+<p class="p3"><b>PR(\markovRhythm):</b> Uses Julian Rohrhuber's MarkovSet class to build a first order Markov chain of the note values in the source melody, and streams out rhythmic values according to the chain. Before constructing the Markov chain, the melody is quantized by the factor given in BP(\mel).rhythmQuant; by default it is 0.25, or 16th notes. (If the melody is not quantized, likely every duration will be slightly different, defeating the purpose of Markov analysis!)</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Other parameters</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>BP(\mel).adaptProb</b> -- By default this is 1.0. The probability of generating a new variation upon entering a segment.</p>
+<p class="p3"><b>BP(\mel).variantThreshold</b> -- The maximum number of variants one segment can hold before variants get killed off.</p>
+<p class="p3"><b>BP(\mel).repeats</b> -- How many times to play through all segments before stopping. Normally inf.</p>
+<p class="p3"><b>BP(\mel).storageProto</b> -- The name of the PR object to use for storage of melody components. Usually <i>\melodyStorage</i>, but you could use <i>\melRandStorage</i> to shuffle the phrases at play time in random order.</p>
+<p class="p3"><b>BP(\mel).mel.makePhrPattern</b> -- A function creating a pattern to output the phrase objects in the order desired for play. By default it returns a Pseq. You could replace it with a different function, to output the phrases in any arbitrary order. If you change this function, do it after chucking in the source melody but before play.</p>
+</body>
+</html>

@@ -1,0 +1,165 @@
+TITLE:: NPVoicerL
+summary:: a voicer with stealing
+categories:: Libraries/JITLib
+related:: Classes/NPVoicer, Classes/Ndef
+
+DESCRIPTION::
+A voicer that can limit the maximum number of playing voices.
+Also, it can handle voices with fixed-duration synths reasonably well.
+
+Mainly code examples and tests for now:
+
+code::
+
+s.boot; s.latency = nil;
+
+	// make an NPVoicer with an Ndef in it
+	// prime it to play the \default synthdef
+(
+g = NPVoicerL(Ndef(\piano));
+g.prime(\default);
+g.hasGate;
+g.play;
+)
+	// play 4 notes in it, and post voiceHistory
+(
+g.maxVoices = 4;
+g.put(36, [\freq, 36.midicps, \amp, 0.2]); g.postHist;
+g.put(46, [\freq, 46.midicps, \amp, 0.15]); g.postHist;
+g.put(55, [\freq, 55.midicps, \amp, 0.12]); g.postHist;
+g.put(63, [\freq, 63.midicps]); g.postHist;
+)
+	// try releasing a note
+g.release(46); g.postHist;
+g.releaseAll; g.postHist;
+
+	// repeat notes individually
+	// - the previous instance of that note goes away
+g.put(46, [\freq, 46.midicps, \amp, 0.15]);g.postHist;
+g.put(55, [\freq, 55.midicps, \amp, 0.12]);g.postHist;
+g.put(36, [\freq, 36.midicps, \amp, 0.2]);g.postHist;
+g.put(63, [\freq, 63.midicps]);g.postHist;
+
+	// try the steal modes:
+g.stealMode = \oldest; g.checkLimit; g.postHist;
+g.put(74, [\freq, 74.midicps, \amp, 0.1]);g.postHist;
+
+g.stealMode = \lowest; g.checkLimit; g.postHist;
+g.put(38, [\freq, 38.midicps, \amp, 0.1]);g.postHist;
+
+g.stealMode = \softest; g.checkLimit; g.postHist;
+g.put(84, [\freq, 84.midicps, \amp, 0.05]);g.postHist;
+
+
+	// test self-ending voices with fixed durations:
+	// the NPVoicerL tries to find out when the note will end,
+	// and removes it from the list and the proxy.
+(
+SynthDef(\prring, { |out, freq = (60.midicps), amp = 0.1, pan, sustain = 1.234|
+	Out.ar(out,
+		Pan2.ar(
+			Formant.ar(freq, freq * 2, freq * 5),
+			pan,
+			XLine.kr(amp, amp * 0.001, sustain)
+		)
+	);
+}).add;
+)
+
+g.prime(\prring);
+g.hasGate;
+
+g.put(64, [\freq, 64.midicps]);g.postHist;
+g.put(64, [\freq, 64.midicps, \sustain, 10]);g.postHist;
+fork { 10.do { |i| 1.wait; (" " + i + ": ").post; g.postHist; } };
+
+
+
+g = NPVoicerL(Ndef(\piano));     // make an NPVoicer with an Ndef in it
+g.prime(\default);            // prepare it with the default synthdef
+g.play;                    // play it
+
+
+       // TEST SUSTAIN PEDAL:
+       // sustain pedal holds all keys that were held, 
+       // and new keys that are plyed while sustain is on.
+       
+g.put(48, [\freq, 48.midicps]);
+g.put(51, [\freq, 51.midicps]);
+g.sustain (true);
+    // cant release them while sost-held
+g.release(48);
+g.release(51);
+    // cant release new notes either
+g.put(55, [\freq, 55.midicps]);
+g.release(55);
+
+// play a note and hold it while releasing sustain
+g.put(60, [\freq, 60.midicps]);
+// and retrigger a note and hold it
+g.put(55, [\freq, 55.midicps]);
+
+g.sustainedKeysToKeep;
+g.sustain (false); // release them now, 60 and 55 stay
+g.release(55);
+g.release(60);
+
+
+        // TEST SOSTENUTO PEDAL:
+// sostenuto holds only the keys that were held down
+// when sostenuto pedal gets pressed - new ones can be released.
+
+g.put(48, [\freq, 48.midicps]);
+g.put(51, [\freq, 51.midicps]);
+g.sostenuto (true);
+    // cant release them while sost-held
+g.release(48);
+g.release(51);
+    // can release a new note though!
+g.put(55, [\freq, 55.midicps]);
+g.release(55);
+
+// play a note and hold it while releasing sostenuto
+g.put(60, [\freq, 60.midicps]);
+
+g.sostenuto (false); // release them now, 60 stays
+
+g.sostenutoKeysToKeep;
+g.playingKeys;
+
+
+::
+
+
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: maxVoices
+get and set the maximum number of voices
+
+METHOD:: limitVoices
+get and set flag whether to limit maximum number of voices
+
+METHOD:: stealMode
+get and set mode of voice stealing. Can be \oldest, \lowest, \softest.
+
+METHOD:: defParamValues
+the default parameter values of the current synthdef.
+
+METHOD:: voiceHistory
+the current history of sounding voices
+
+METHOD:: postHist
+prettypost the current history of sounding voices
+
+METHOD:: prime, put, release, releaseAll
+see NPVoicer
+
+private:: cmdPeriod, trackVoice, checkLimit, removeVoiceAt, findSoftestIndex
+
+EXAMPLES::
+
+To do ...

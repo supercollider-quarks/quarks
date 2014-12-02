@@ -1,0 +1,155 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf410
+{\fonttbl\f0\fnil\fcharset77 Monaco;}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green0\blue191;\red96\green96\blue96;
+\red0\green115\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs18 \cf2 // might still need fixing.\cf0 \
+\
+\
+(\
+\cf2 // sync your computers by ending a clock around.\cf0 \
+\cf2 // this should be done without anything running, as it replaces the TempoClock.default\cf0 \
+\cf2 // but it can be done any time.\cf0 \
+\
+\cf2 // rohrhuber 2005\cf0 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf3 var\cf0  quant = [4.0, 0];\
+\cf3 var\cf0  clockURL, myName;\
+\cf3 var\cf0  coll, chat, sync;\
+\cf3 var\cf0  w, v, chatout, syncBut, chatWin;\
+\
+\cf3 var\cf0  width = 304;\
+\cf3 var\cf0  height = 304;\
+\cf3 var\cf0  font = \cf3 Font\cf0 (\cf4 "Monaco"\cf0 , 9);\
+\cf3 var\cf0  log = \cf3 true\cf0 ;\
+\cf3 var\cf0  file;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 /////////////////////////////////////////////\cf0 \
+\cf2 // myName = ; // chat nick name\cf0 \
+\
+clockURL = \cf4 "192.168.178.23"\cf0 ; 			\cf2 // the clock url to which to sync\cf0 \
+\cf2 ///////////////////////////////////////////\cf0 \
+\
+clockURL = clockURL ? \cf3 Library\cf0 .at(\cf5 \\kirchturmURL\cf0 ) ? \cf4 "127.0.0.1"\cf0 ; \
+myName = myName ?? \{\cf4 "Henry"\cf0  + [\cf4 "I"\cf0 , \cf4 "II"\cf0 , \cf4 "III"\cf0 , \cf4 "IV"\cf0 , \cf4 "V"\cf0 ].choose\};\
+\
+coll = \cf3 Collective\cf0 .default;\
+sync = \cf3 ClockSync\cf0 .new;\
+chat = \cf3 Chat\cf0 .new; \
+\
+if(log) \{ \
+	file = \cf3 File\cf0 (\cf4 "chat_log_"\cf0  ++ \cf3 Date\cf0 .localtime.stamp, \cf4 "w"\cf0 );\
+	file.write(format(\cf4 "-------------%-------------\\n"\cf0 , \cf3 Date\cf0 .getDate.asString) )\
+\};\
+\
+\
+\cf2 ////////////////////////// GUI ///////////////////////////////\cf0 \
+\
+w = \cf3 SCWindow\cf0 (\cf4 "ensemble"\cf0  + myName, \cf3 Rect\cf0 (\cf3 SCWindow\cf0 .screenBounds.width - width - 6, 10, width, height));\
+\
+w.onClose = \{ sync.stop; chat.stop; if(log) \{ file.close \}; \};\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf0 w.view.decorator = \cf3 FlowLayout\cf0 (w.view.bounds);\
+w.view.background = \cf3 Color\cf0 .grey(0.8);\
+\
+w.view.decorator.shift(10, 0);\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf3 SCButton\cf0 (w, \cf3 Rect\cf0 (0,0, 60, 35)).states_([\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf0 	[\cf4 "ping"\cf0 , \cf3 Color\cf0 .black, \cf3 Color\cf0 .clear]\
+]).action_(\{ sync.ping(4) \});\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 syncBut = \cf3 SCButton\cf0 (w, \cf3 Rect\cf0 (0,0, 60, 35)).states_([\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf0 	[\cf4 "sync"\cf0 , \cf3 Color\cf0 .black, \cf3 Color\cf0 .clear],\
+	[\cf4 "wait..."\cf0 , \cf3 Color\cf0 .black, \cf3 Color\cf0 .clear],\
+	[\cf4 "OK."\cf0 , \cf3 Color\cf0 (0.3, 0.9, 0.8), \cf3 Color\cf0 .black]\
+]).action_(\{ \
+	sync.sync(quant);\
+\});\
+\
+w.view.decorator.shift(3, 0);\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf3 SCNumberBox\cf0 (w, \cf3 Rect\cf0 (0,0, 25, 20)).value_(quant[0]).action_(\{ \cf3 |v|\cf0  quant[0] = v.value \});\
+\cf3 SCNumberBox\cf0 (w, \cf3 Rect\cf0 (0,0, 25, 20)).value_(quant[1]).action_(\{ \cf3 |v|\cf0  quant[1] = v.value \});\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf2 //SCTextView(w, Rect(0,0, 80, 16)).string_(myName).font_(Font("Helvetica", 11))\cf0 \
+\cf2 //				.action_(\{|v| \cf0 \
+\cf2 //					myName = v.string \cf0 \
+\cf2 //				\});\cf0 \
+\
+\
+w.view.decorator.nextLine.shift(10, 4);\
+\
+v = \cf3 SCTextView\cf0 (w, \cf3 Rect\cf0 (0,0, 120, 21)).string_(clockURL).font_(\cf3 Font\cf0 (\cf4 "Helvetica-Oblique"\cf0 , 14));\
+v.stringColor = \cf3 Color\cf0 .grey(0.3);\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf3 SCButton\cf0 (w, \cf3 Rect\cf0 (0,0, 30, 21)).states_([\
+	[\cf4 "set"\cf0 , \cf3 Color\cf0 .black, \cf3 Color\cf0 .clear]\
+]).action_(\{\'ca\
+	clockURL = v.string;\
+	coll.hubIP = clockURL;\
+	\cf3 Library\cf0 .put(\cf5 \\kirchturmURL\cf0 , clockURL);\
+\});\
+\
+\cf3 SCStaticText\cf0 (w, \cf3 Rect\cf0 (0, 0, 120, 21)).string_(\cf4 "I'm"\cf0  + coll.myIP).font_(\cf3 Font\cf0 (\cf4 "Helvetica"\cf0 , 12)).mouseDownAction_(\{ coll.myIP.postln \});\
+\
+w.view.decorator.nextLine.shift(10, 4);\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 chatWin = \cf3 SCTextView\cf0 (w, \cf3 Rect\cf0 (0,0, width - 25, height - 126))\
+	.resize_(5)\
+	.font_(font)\
+	.hasVerticalScroller_(\cf3 true\cf0 )\
+	.autohidesScrollers_(\cf3 true\cf0 );\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf0 \
+w.view.decorator.nextLine.shift(10, 4);\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 chatout = \cf3 SCTextView\cf0 (w, \cf3 Rect\cf0 (0,0, width - 25, 30))\
+	.resize_(8)\
+	.font_(font)\
+	.usesTabToFocusNextView_(\cf3 false\cf0 );\
+\
+chatout.keyDownAction_(\{\'ca\cf3 arg\cf0  view, char;\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf0 	 if(char === \cf3 Char\cf0 .tab) \
+	 \{ \
+	 	chat.talk(view.string);\
+	 	\cf3 AppClock\cf0 .sched(0.01, \{ view.string = \cf4 ""\cf0  \});\
+	 \}\
+\});\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 chatout.focus;\
+w.front;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 ///////////////////////////// actions ///////////////////////////////\cf0 \
+\
+chat.recvMsgAction = \{ \cf3 |x|\cf0  \
+	defer \{\
+		chatWin.string = chatWin.string ++ x\
+	\};\
+	if(log) \{\'cafile.write(x.asString) \};\
+\};\
+sync.waitingAction = \{ defer \{\'caw.view.background = \cf3 Color\cf0 (0.9, 0.7, 0.6).vary; syncBut.value = 1\} \};\
+sync.setClockAction = \{\'cadefer \{ w.view.background = \cf3 Color\cf0 .grey(0.7); \
+				r \{\'casyncBut.value = 2; 1.wait; syncBut.value = 0; \}.play(\cf3 AppClock\cf0 )\
+			\};\
+\};\
+sync.recvPingAction = \{\
+		defer \{ r \{\
+			w.view.background = \cf3 Color\cf0 .grey(1);\
+			0.2.wait;\
+			w.view.background = \cf3 Color\cf0 .grey(0.8);\
+		\}.play(\cf3 AppClock\cf0 ) \};\
+\}\
+)\
+}

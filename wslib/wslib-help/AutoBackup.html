@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000c1}
+span.s1 {text-decoration: underline ; color: #0051c7}
+span.s2 {text-decoration: underline}
+span.s3 {color: #000000}
+</style>
+</head>
+<body>
+<p class="p1"><b>AutoBackup</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">backups every move you make</p>
+<p class="p3"><br></p>
+<p class="p2">AutoBackup creates a folder called "_Backup" inside your "~/scwork" folder. A copy of every open document is saved there and saved again after a key is pressed. This will save your work whenever SC crashes. If SC is quit the regular way AutoBackup will remove all backup files. Also as soon as a window is closed its corresponding backup file is deleted. This way, files are only kept if the SC app actually crashes or is force-quit.<span class="Apple-converted-space">  </span>This Class saved me a *lot* of work, especially with those nasty infinite loops one sometimes gets when coding.</p>
+<p class="p3"><br></p>
+<p class="p2">It is wise to put a line "AutoBackup.start" in your startup.rtf file.</p>
+<p class="p3"><br></p>
+<p class="p2">Backups are saved as .sc files, named after the title of the document.</p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="s2">Creation</span></b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>AutoBackup.start</b></p>
+<p class="p2">starts AutoBackup process. Creates the _Backup folder if not there</p>
+<p class="p3"><br></p>
+<p class="p4">AutoBackup<span class="s3">.start;</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>AutoBackup.stop ( deleteAll )</b></p>
+<p class="p2">stops AutoBackup process. if <b>deleteAll </b>== true (default) deletes all backup files</p>
+<p class="p3"><br></p>
+<p class="p4">AutoBackup<span class="s3">.stop;</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>AutoBackup.show</b></p>
+<p class="p2">show _Backup folder in Finder</p>
+<p class="p3"><br></p>
+<p class="p2"><b>AutoBackup.backupFolder</b></p>
+<p class="p2">gets and sets the path of the backup folder</p>
+<p class="p3"><br></p>
+<p class="p2"><b>active</b></p>
+<p class="p2">true if active</p>
+<p class="p3"><br></p>
+<p class="p2"><b>AutoBackup.cleanBackupFolder</b></p>
+<p class="p2">delete all files in the backup folder (including leftovers from crashes)</p>
+</body>
+</html>

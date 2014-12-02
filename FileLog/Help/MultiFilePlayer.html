@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: MultiFilePlayer</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>MultiFilePlayer</h1>
+<h2>reading back multiple files as created by MultiFileWriter with a FilePlayer</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> : <strong>MultiFileReader</strong> </p>
+
+<p>This class allows you to read back files that you created with MultiFileWriter. It reads the files back with a (subclass of) FilePlayer, thus allowing to read any data from any line out of any file.</p>
+
+<p>See also: <a href="MultiFileWriter.html">MultiFileWriter</a>, 
+<a href="MultiFileReader.html">MultiFileReader</a>, and
+<a href="FilePlayer.html">FilePlayer</a>
+</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*new(fn,fc)</STRONG></DT>
+<DD>Create a new instance.<DL>
+<DT><EM>fn</EM></DT>
+<DD>The filename, this is either the path to the tarfile, or to the folder containing all files.</DD>
+<DT><EM>fc</EM></DT>
+<DD>The fileClass to use for reading the individual files (default TabFilePlayer). This must be a (subclass of) FilePlayer.</DD>
+</DL>
+
+</DD>
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+<DT><STRONG>readAtLine(line)</STRONG></DT>
+<DD>Read at (cumulative) line number <em>line</em></DD>
+
+<DT><STRONG>readAtLineInterpret(line)</STRONG></DT>
+<DD>As readAtLine, but interpret the result.</DD>
+
+<DT><STRONG>readAt(line,fileid)</STRONG></DT>
+<DD>Read from file with <em>fileid</em>, at line number <em>line</em></DD>
+
+<DT><STRONG>readAtInterpret(line,fileid)</STRONG></DT>
+<DD>Read from file with <em>fileid</em>, at line number 
+<em>line</em>, and interpret the result (element by element).</DD>
+
+
+<DT><STRONG>makeGui</STRONG></DT>
+<DD>Create a MultiFilePlayerGui for this MultiFilePlayer.</DD>
+
+
+<DT><STRONG>fileClass_</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>fileClass</STRONG></DT>
+<DD>The Class used to open the individual files; this has to be a <a href="FilePlayer.html">FilePlayer</a>, or one of its subclasses.</DD>
+
+
+<DT><STRONG>headerSize_</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>headerSize</STRONG></DT>
+<DD>Size of the file header (data labels).</DD>
+
+<DT><STRONG>readHeader(fileid, hs)</STRONG></DT>
+<DD>Read the header of file <em>fileid</em>. <em>hs</em> will set the headerSize.</DD>
+
+<DT><STRONG>lineMap</STRONG></DT>
+<DD>A map of which cumulative line index is at the start of which file. Used internally.</DD>
+
+
+<DT><STRONG>currentLine</STRONG></DT>
+<DD>Get the current line we are at, adjusted for the header size.</DD>
+
+<DT><STRONG>goToLine( lineid )</STRONG></DT>
+<DD>Go to the specified line.</DD>
+
+
+
+
+</DL>
+
+<h3> Example 1 </h3>
+    <pre>
+m = <span class="type">MultiFileWriter</span>.new( <span class="string">"testfile15.txt"</span>);
+
+<span class="type">Task</span>({
+
+    3.do{
+        m.open;
+
+        20.do{
+            m.writeLine( <span class="type">Array</span>.fill( 10, { 1.0.rand }));
+            0.25.wait;
+        };
+        m.close;
+        
+        1.0.wait;
+    };
+    <span class="string">"done"</span>.postln;
+    
+}).play;
+
+n = <span class="type">MultiFilePlayer</span>.new( <span class="string">"testfile15.tar"</span>);
+
+n.readAt( 4, 2 );
+
+n.readAt( 10 , 2 );
+
+n.readAt( 2, 0 );
+
+n.readAt( 4, 1 );
+
+n.closeFile;
+
+n.close;
+</pre>
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

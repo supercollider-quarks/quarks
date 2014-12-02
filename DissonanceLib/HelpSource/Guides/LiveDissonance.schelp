@@ -1,0 +1,80 @@
+TITLE:: Live Dissonance
+summary:: A guide to making dissonance curves out from live audio input
+categories::SpecialTopic>DissonanceLib
+related:: Classes/Dissonance, Classes/PitchSet, Classes/HarmonicVector, Classes/HarmonicMetric, Overviews/numberExtras
+
+
+Here's an example of how to obtain dissonance curves from live input, either by triggering or through onset detection. 
+
+There are a few methods added to DissonanceLib that aid in converting FFT data, such as the one obtained from a buffer with the help of PV_FreqBuffer and PV_MagBuffer (from JoshUgens in sc3-plugins), into n-highest partials in arrays of frequency and amplitude pairs. 
+
+These methods are additions to link::Classes/Array#-maxima:: and link::Classes/Array#-findNlargest::.
+
+
+code::
+
+s = Server.internal; // etc all the rest 
+SynthDef(\liveFFT, {|in=8,fftbuf=0,magbuf=1,freqbuf=2|
+			var fft, inp;
+			inp =  SoundIn.ar(0); // your input. Also can be In.ar(in);
+			fft = FFT(fftbuf, inp, wintype: 1); // wintype: hanning. Does a better job than the default
+			fft = PV_FreqBuffer(fft, freqbuf); // you need JoshUGens for these two
+			fft = PV_MagBuffer(fft, magbuf);
+			IFFT(fft); 	// in theory you don't need this line, in practice, don't know why but you do
+}).add;
+
+
+w = 8192; // the window size (experiment according to your needs); 
+b = Buffer.alloc(s, w); // fft buffer
+c = Buffer.alloc(s, w div: 2); // mag buffer
+d = Buffer.alloc(s, w div: 2); // freq buffer
+a = Synth(\liveFFT, [\in, 8, \fftbuf, b.bufnum, \magbuf, c.bufnum, \freqbuf, d.bufnum]);
+
+~analysis = {		
+	// get data from freqbuf
+	d.getn(0, d.numFrames, {|w| 
+		~freqs = w;
+		// get data from magbuf
+		c.getn(0, c.numFrames, {|x| 
+			~mags = x;
+		});
+	});
+};	
+
+
+~analysis.value
+
+// here are the raw frequencies and magnitudes obtained from the fft buffer: 
+[~freqs, ~mags].postln;
+::
+
+A more complete example that calculates a dissonance curve from the fft:
+code::
+~minInt = 0.48; // minimum interval for the dissonance analysis
+~maxInt = 4.01; // maximum interval
+//Bn (k) = 20log10(ζ ∗ |Xn (k)|) where ζ = 184268; from Nick Collins PhD thesis. 
+~bintodb = {|mag| 20 *( 8 * mag.abs).log10}; // ζ = 8 is enough for this
+
+~analysisDiss = {		
+	// get data from freqbuf
+	d.getn(0, d.numFrames, {|w| 
+		~freqs = w;
+		// get data from magbuf
+		c.getn(0, c.numFrames, {|x| 
+			~mags = x;
+			~max = [~freqs, ~mags].maxima; // this method gets all the maxima
+			~max = ~max.findNlargest(8); // this one gets the 8 highest partials
+			~max[1] = ~max[1].collect{|x| ~bintodb.value(x)}; // convert the bin values to dB
+			// convert the amplitudes from dB to sones:
+			~sones = [~max[0], ~max[1]].flop.asSone(20).round(0.01);
+			// make the dissonance curve
+			k = Dissonance.make(~max[0], ~sones, ~minInt, ~maxInt, 0.01, \parncutt, false);
+			// rationalize, calculate harmonic metrics and make PitchSet:
+			k.harmonicAnalysis(16, \harmonicity, \size, [729, 512], PitchSet.unisons.dim3.et31[1]);
+		});
+	});
+};	
+
+~analysisDiss.value; // 'trigger' the analysis
+k.postln; //here's your diss curve from the fft
+::

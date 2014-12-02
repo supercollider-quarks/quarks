@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.27">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #050000; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ac1c17}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ac1c17; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #981f19}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #004392}
+span.s1 {text-decoration: underline}
+span.s2 {color: #004392}
+span.s3 {color: #000000}
+span.s4 {color: #3b3b3b}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SETOServer</b></p>
+<p class="p2">superclass: <b>[</b><b><span class="s1">Object</span></b><b>]</b></p>
+<p class="p3"><br></p>
+<p class="p4">/*</p>
+<p class="p4">Author:<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>Till Bovermann<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>2007</p>
+<p class="p4"><span class="Apple-tab-span">	</span>Neuroinformatics Group</p>
+<p class="p4"><span class="Apple-tab-span">	</span>Bielefeld University</p>
+<p class="p4"><span class="Apple-tab-span">	</span>Germany</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>2006</p>
+<p class="p4"><span class="Apple-tab-span">	</span>SonEnvir IEM</p>
+<p class="p4"><span class="Apple-tab-span">	</span>KUG Graz</p>
+<p class="p4"><span class="Apple-tab-span">	</span>Austria</p>
+<p class="p4">*/</p>
+<p class="p6"><br></p>
+<p class="p2">a server fulfilling the TUIO-Specs.</p>
+<p class="p2">drawbacks:</p>
+<p class="p2"><span class="Apple-tab-span">	</span>no 'P' symbols are yet handled...</p>
+<p class="p7"><br></p>
+<p class="p2"><b>*new(formatString, setoClass)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>formatString<span class="Apple-tab-span">	</span>a format String (explained in [<b><span class="s1">SETObject</span></b>])</p>
+<p class="p2"><span class="Apple-tab-span">	</span>netaddr<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a netaddr default nothing, listening to all.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>setoClass<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the Class of the created objects.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Must be a subclass of [<b><span class="s1">SETObject</span></b>], defaults to SETObject.</p>
+<p class="p6"><br></p>
+<p class="p2"><b>set(id, args)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>id<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the unique id of the object to be set</p>
+<p class="p2"><span class="Apple-tab-span">	</span>args<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>list of arguments in the order as determined by the formatString</p>
+<p class="p7"><br></p>
+<p class="p2"><b>alive(ids)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>ids<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>list of ids of all visible objects</p>
+<p class="p6"><br></p>
+<p class="p2"><b>allAlive</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>indicates that all objects visible before are still visible.</p>
+<p class="p6"><br></p>
+<p class="p2"><b>visibleObjs</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns a list of all currently visible objects.</p>
+<p class="p6"><br></p>
+<p class="p2"><b>gui</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>creates a gui representing recognized objects</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p8"><b><span class="s1">Examples</span></b></p>
+<p class="p6"><br></p>
+<p class="p9"><span class="s2">GUI</span>.swing;</p>
+<p class="p9"><span class="s2">GUI</span>.cocoa;</p>
+<p class="p9"><span class="s2">SwingOSC</span>.default.boot;</p>
+<p class="p9"><span class="s2">SwingOSC</span>.default.quit;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p10">// add and remove some objects</p>
+<p class="p11"><span class="s3">t = </span>SETOServer<span class="s3">(</span><span class="s4">"_ixyzuvw"</span><span class="s3">, </span>SETObject<span class="s3">);</span></p>
+<p class="p9">t.gui</p>
+<p class="p6"><br></p>
+<p class="p9">t.set(0, [3, 0.3, 0.7, 0.5, 0.2, 0.4, 0.1])</p>
+<p class="p9">t.alive([0])</p>
+<p class="p9">t.set(1, [1, 0.41, 0.72, 0.5, 0.2, 0.4, 0.1])</p>
+<p class="p9">t.alive([0,1])</p>
+<p class="p9">t.visibleObjs</p>
+<p class="p6"><br></p>
+<p class="p9">t.set(1, [3, 0, 0.17, 0.5, 0.2, 0.4, 0.1]);</p>
+<p class="p9">t.set(2, [1, 0.15, 0.19, 0.5, 0.2, 0.4, 0.1]);</p>
+<p class="p9">t.alive([0, 1, 2]);</p>
+<p class="p9">t.visibleObjs;</p>
+<p class="p6"><br></p>
+<p class="p9">t.alive([]);</p>
+<p class="p9">t.visibleObjs;</p>
+<p class="p9">t.visibleObjs</p>
+<p class="p6"><br></p>
+<p class="p10">// rotated objects in euler mode</p>
+<p class="p11"><span class="s3">t = </span>SETOServer<span class="s3">(</span><span class="s4">"_ixya"</span><span class="s3">, </span>SETObject<span class="s3">);</span></p>
+<p class="p9">t.gui;</p>
+<p class="p6"><br></p>
+<p class="p9">t.set(0, [3, 0.3, 0.7, 0<span class="Apple-converted-space">      </span>]); t.alive([0])</p>
+<p class="p9">t.set(0, [3, 0.3, 0.7, 0.25pi ]); t.alive([0])</p>
+<p class="p9">t.set(0, [3, 0.3, 0.7, 0.125pi]); t.alive([0])</p>
+<p class="p9">t.set(0, [2, 0.3, 0.7, 0]); t.alive([0])</p>
+<p class="p6"><br></p>
+<p class="p9">t.alive([]);</p>
+<p class="p9">t.visibleObjs;</p>
+</body>
+</html>

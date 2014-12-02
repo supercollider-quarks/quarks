@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0021e7}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {color: #205ecf}
+span.s2 {text-decoration: underline ; color: #134eca}
+span.s3 {color: #1454d9}
+span.s4 {text-decoration: underline}
+span.s5 {color: #0033f1}
+span.s6 {color: #0000ff}
+</style>
+</head>
+<body>
+<p class="p1"><b>SVGObject</b></p>
+<p class="p2">Part of <a href="../wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">see also: <a href="SVG.html"><span class="s2">SVG</span></a>, <a href="SVGFile.html"><span class="s3">SVGFile</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">The SVGObject is an abstract superclass for the following classes:</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s4"><a href="SVGGroup.html">SVGGroup</a></span></p>
+<p class="p4"><span class="s4"><a href="SVGEllipse.html">SVGEllipse</a></span></p>
+<p class="p4"><span class="s4"><a href="SVGRect.html">SVGRect</a></span></p>
+<p class="p4"><span class="s4"><a href="SVGLine.html">SVGLine</a></span></p>
+<p class="p4"><span class="s4"><a href="SVGCircle.html">SVGCircle</a></span></p>
+<p class="p4"><span class="s4"><a href="SVGPolyLine.html">SVGPolyLine</a></span></p>
+<p class="p4"><span class="s4"><a href="SVGPolygon.html">SVGPolygon</a></span></p>
+<p class="p4"><span class="s4"><a href="SVGPath.html">SVGPath</a></span></p>
+<p class="p4"><span class="s4"><a href="SVGText.html">SVGText</a></span></p>
+<p class="p3"><br></p>
+<p class="p2">these are all possible objects for use in a <a href="SVGFile.html"><span class="s5">SVGFile</span></a></p>
+<p class="p3"><br></p>
+<p class="p2"><i>note: in a recent change the abstract SVGGraphicObject class was added, which is the actual superclass of all SVGObjects except SVGText and SVGGroup.<span class="Apple-converted-space"> </span></i></p>
+<p class="p3"><br></p>
+<p class="p5"><b><span class="s4">instance variables</span></b></p>
+<p class="p6"><br></p>
+<p class="p2"><b>name</b></p>
+<p class="p2">All objects in a SVG formatted file can have a name as identifier.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>transform</b></p>
+<p class="p2">can hold a <a href="SVGTransform.html"><span class="s5">SVGTransform</span></a> object, containing data about transformations like rotate, scale, translate etc.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5"><b><span class="s4">instance methods</span></b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>opacity</b></p>
+<p class="p2"><i>for all objects except </i><a href="SVGGroup.html"><span class="s6"><i>SVGGroup</i></span></a></p>
+<p class="p2">Changes the opacity of the colors and writes / reads the opacity element from SVG files.</p>
+<p class="p2">Opacity is not an instance variable, but can be used as if it were one.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>plot<span class="Apple-converted-space"> </span></b></p>
+<p class="p2">creates a <a href="SC://SCWindow"><span class="s3">SCWindow</span></a><span class="s3"> </span>(or a JSCWindow if GUI.scheme.id == 'swing' ) and plots the object in it.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>draw</b></p>
+<p class="p2">to be used inside a drawHook or drawFunc; draws the object.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asPenFunction</b></p>
+<p class="p2">returns a function for drawing</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asGUICode ( penClass )</b></p>
+<p class="p2">returns GUI.pen style code as a compile string. <b>penClass</b> can be a Class or a String ( default "GUI.pen" ).</p>
+<p class="p2">Running .interpret on the result should draw the object correctly</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asRect</b></p>
+<p class="p2">returns a Rect derrived from the outer bounds the object</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p5"><b><span class="s4">accessing / testing</span></b></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p2"><b>allObjects</b></p>
+<p class="p2">returns the object itself, or it's contents if the object is an SVGGroup as a flat Array (used by SVGFile:allObjects).</p>
+<p class="p3"><br></p>
+<p class="p2"><b>elementName</b></p>
+<p class="p2">the name of the SVG XML element associated with the object</p>
+</body>
+</html>

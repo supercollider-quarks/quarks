@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {color: #0000ff}
+span.s2 {color: #001ab2}
+</style>
+</head>
+<body>
+<p class="p1"><b>SequenceNote : AbstractFunction</b></p>
+<p class="p2"><br></p>
+<p class="p3">SequenceNote is the base class for a set of three classes to allow more intelligent handling of grace notes and chord notes for sequence manipulation.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Important:</b> Some of the implementation will change in the future. The gate, or velocity, parameter needs to be handled specially for Voicers, but currently this is not done well. The changes will simplify the requirements for your code!</p>
+<p class="p2"><br></p>
+<p class="p3">It is a subclass of AbstractFunction so that you can do math on a SequenceNote and get a SequenceNote back. This is especially helpful for transposition. Only the freq variable will undergo the math operation; others remain unchanged.</p>
+<p class="p2"><br></p>
+<p class="p3">See <a href="SeqChordNote.html"><span class="s1">SeqChordNote</span></a> and <a href="SequenceItem.html"><span class="s1">SequenceItem</span></a> for compound note objects.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>*new(freq, dur, length, args)</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>freq:</b> The pitch value. This may be whatever representation you choose: frequency in Hz, MIDI note number, modal index, etc.</p>
+<p class="p3"><b>dur:</b> Delta to the next note event (in beats).</p>
+<p class="p3"><b>length:</b> Sustain time for this note (in beats).</p>
+<p class="p3"><b>args:</b> An array of key/value pairs with other synthesis parameters that should be sent along with the note event.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>gate:</b> Currently, a "virtual" instance variable. Eventually I will change this to a real instance variable; however, there might be code that depends on the current implementation (in which the gate value is stored either in the args instance variable as a simple float, or as a "\gate, value" pair in the args array). So there is a getter and setter that interfaces with the backend data storage.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>add(note)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Create a SeqChordNote with the note argument added to the chord note list.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>++ notes</b></p>
+<p class="p2"><br></p>
+<p class="p3">Create a SeqChordNote with the note argument array added to the chord note list.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>addGraceNotes</b></p>
+<p class="p2"><br></p>
+<p class="p3">Create a SequenceItem with the supplied grace notes.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>asPlayableNote</b></p>
+<p class="p2"><br></p>
+<p class="p3">A no-op for this class. For SeqChordNote and SequenceItem, all chord notes will be compacted into one SequenceNote with arrays for the parameters.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>asSequenceNote</b></p>
+<p class="p2"><br></p>
+<p class="p3">A no-op for this class. For SeqChordNote and SequenceItem, the main note object will be returned.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>asNoteArray</b></p>
+<p class="p2"><br></p>
+<p class="p3">^[this]</p>
+<p class="p2"><br></p>
+<p class="p4"><b>asArray</b></p>
+<p class="p2"><br></p>
+<p class="p3">^[freq, dur, length, args]</p>
+<p class="p2"><br></p>
+<p class="p4"><b>asPattern</b></p>
+<p class="p4"><b>asStream</b></p>
+<p class="p2"><br></p>
+<p class="p3">Assists with streaming notes. The resulting stream returns only one item. For SeqChordNote and SequenceItem, the stream will output all required note objects.</p>
+<p class="p2"><br></p>
+<p class="p3">This is the recommended way to use sequence note and the related classes for playing note data back.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Examples:</b></p>
+<p class="p2"><br></p>
+<p class="p5">// middle C, 1 beat</p>
+<p class="p6">n = <span class="s2">SequenceNote</span>(60, 1, 1);</p>
+<p class="p7"><br></p>
+<p class="p5">// math operations work on the freq variable -- easy transposition</p>
+<p class="p6">(n + 1).dump</p>
+<p class="p6">Instance of SequenceNote {<span class="Apple-converted-space">    </span>(0F20BD90, gc=3C, fmt=00, flg=00, set=02)</p>
+<p class="p6"><span class="Apple-converted-space">  </span>instance variables [4]</p>
+<p class="p6"><span class="Apple-converted-space">    </span>freq : Integer 61</p>
+<p class="p6"><span class="Apple-converted-space">    </span>dur : Integer 1</p>
+<p class="p6"><span class="Apple-converted-space">    </span>length : Integer 1</p>
+<p class="p6"><span class="Apple-converted-space">    </span>args : nil</p>
+<p class="p6">}</p>
+<p class="p7"><br></p>
+<p class="p6">n = [60, 62, 64, 65, 67, 69, 71, 72].collect(<span class="s2">SequenceNote</span>(<span class="s2">_</span>, 1, 1));</p>
+<p class="p6">[ a SequenceNote, a SequenceNote, a SequenceNote, a SequenceNote, a SequenceNote, a SequenceNote, a SequenceNote, a SequenceNote ]</p>
+<p class="p7"><br></p>
+<p class="p6">n.do(<span class="s2">_</span>.postln);</p>
+<p class="p6">[ 60, 1, 1, nil ]</p>
+<p class="p6">[ 62, 1, 1, nil ]</p>
+<p class="p6">[ 64, 1, 1, nil ]</p>
+<p class="p6">[ 65, 1, 1, nil ]</p>
+<p class="p6">[ 67, 1, 1, nil ]</p>
+<p class="p6">[ 69, 1, 1, nil ]</p>
+<p class="p6">[ 71, 1, 1, nil ]</p>
+<p class="p6">[ 72, 1, 1, nil ]</p>
+<p class="p7"><br></p>
+<p class="p5">// whole sequences can be transposed</p>
+<p class="p6">(n + 5).do(<span class="s2">_</span>.postln);</p>
+<p class="p6">[ 65, 1, 1, nil ]</p>
+<p class="p6">[ 67, 1, 1, nil ]</p>
+<p class="p6">[ 69, 1, 1, nil ]</p>
+<p class="p6">[ 70, 1, 1, nil ]</p>
+<p class="p6">[ 72, 1, 1, nil ]</p>
+<p class="p6">[ 74, 1, 1, nil ]</p>
+<p class="p6">[ 76, 1, 1, nil ]</p>
+<p class="p6">[ 77, 1, 1, nil ]</p>
+<p class="p7"><br></p>
+<p class="p5">// asFloat simplifies conversion to note numbers</p>
+<p class="p6">n.asFloat;</p>
+<p class="p6">[ 60, 62, 64, 65, 67, 69, 71, 72 ]</p>
+<p class="p7"><br></p>
+<p class="p5">// comparisons are legal</p>
+<p class="p6">(n[0] &lt; n[1])</p>
+<p class="p6">true</p>
+<p class="p7"><br></p>
+<p class="p5">// works easily with patterns</p>
+<p class="p6">p = <span class="s2">Pseq</span>(n, 1).asStream;</p>
+<p class="p6">while { p.next.postln.notNil };</p>
+<p class="p7"><br></p>
+<p class="p6">[ 60, 1, 1, nil ]</p>
+<p class="p6">[ 62, 1, 1, nil ]</p>
+<p class="p6">[ 64, 1, 1, nil ]</p>
+<p class="p6">[ 65, 1, 1, nil ]</p>
+<p class="p6">[ 67, 1, 1, nil ]</p>
+<p class="p6">[ 69, 1, 1, nil ]</p>
+<p class="p6">[ 71, 1, 1, nil ]</p>
+<p class="p6">[ 72, 1, 1, nil ]</p>
+<p class="p6">nil</p>
+</body>
+</html>

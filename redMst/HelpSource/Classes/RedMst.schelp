@@ -1,0 +1,293 @@
+CLASS:: RedMst
+SUMMARY:: a sort of timeline - master controller
+CATEGORIES:: Red>redMst
+RELATED:: Classes/RedTrk, Classes/RedTrk2, Classes/RedSeq, Classes/RedGrandMst, Classes/RedMstGUI, Classes/RedMstGUI2, Classes/RedMstGUI3
+
+DESCRIPTION::
+RedMst controls track objects (i.e. link::Classes/RedTrk::). It does so by sending play and stop messages to them synced to a clock. RedMst also has a global counter for sections. If a track is not already playing and is activated to play for a certain section, it gets sent a play message when RedMst reaches that section, else the track is stopped.
+The section counter is driven manually by user input ( link::#*next::, link::#*goto::, etc.) or by link::Classes/RedSeq::. All messages controlling playback ( link::#*next::, link::#*prev::, link::#*goto::, link::#*play::, link::#*stop:: ) are scheduled to happen on the next quant beat.
+
+NOTE::
+When you replace/overwrite a link::Classes/RedTrk:: as it is running, it will stop playing and not start until you goto a new RedMst section.
+::
+
+CLASSMETHODS::
+
+PRIVATE:: initClass
+
+METHOD:: play
+Play activated tracks on the next quant beat.
+
+METHOD:: goto
+Play activated and stop non-activated tracks on the next quant beat.
+
+METHOD:: next
+Go to the next section (section= section+1) on the next quant beat.
+
+METHOD:: prev
+Go to the previous section (section= section-1) on the next quant beat.
+
+METHOD:: isJumping
+True if about to go somewhere on the next quant beat.
+
+METHOD:: stop
+Stop all tracks on the next quant beat.
+
+METHOD:: clear
+Stop and remove all tracks, reset section counter and stop the clock. Clears action function.
+
+METHOD:: tracks
+Dictionary of all tracks. Tracks (i.e. link::Classes/RedTrk:: objects) add themselves here when created.
+
+METHOD:: clock
+Master clock. If not set code::TempoClock.default:: is used.
+
+METHOD:: quant
+Master quant beat. The default is 4.
+
+METHOD:: section
+Counter for current section.
+
+METHOD:: maxSection
+Highest section found among all tracks.
+
+METHOD:: jumpSection
+This is code::nil:: if not going somewhere. And it will equal the next section index if about to go to that section on the next quant beat.
+
+METHOD:: stopAheadTime
+How much time ahead play the stop message will be scheduled. The default is 0.05 seconds.
+
+METHOD:: skipEmpty
+Next and previous methods skip over sections that does not have active tracks. The default is false.
+
+METHOD:: action
+A function to be evaluated when section changes.
+
+METHOD:: isPlaying
+Returns a boolean.
+
+METHOD:: at
+Returns track for key.
+
+METHOD:: add
+Done automatically for all new instances of link::Classes/RedTrk::.
+
+METHOD:: remove
+Usually done with link::#*clear::. Removes a track from master controller.
+
+METHOD:: makeWindow
+Convenience method. See link::Classes/RedMstGUI::
+
+EXAMPLES::
+
+CODE::
+//note: if you press cmd+. then you'll need to start the clock again
+
+
+//--simple example with 3 pbind tracks
+(
+s.waitForBoot{
+RedMst.clear;						//remove all tracks and clock from previous
+RedMst.clock= TempoClock(150/60);			//create and set a new clock
+RedMst.quant= 4;					//set quant beat
+
+RedTrk(
+	\bass,						//track name
+	Pbind(\degree, Pseq([0, 5], inf), \octave, 4),	//track item
+	#[0, 1, 2, 3]					//track active sections (when to play)
+);
+RedTrk(
+	\melody,
+	Pbind(\degree, Pseq([0, 5, 2, 3, 3, 1], inf), \dur, Pseq([0.25, 0.25, 0.5], inf)),
+	#[1, 2, 5]
+);
+RedTrk(
+	\melody2,
+	Pbind(\degree, Pseq([7, 6, 4, 3], inf), \dur, 2, \octave, 6),
+	#[2, 3]
+);
+}
+)
+
+RedMst.play;
+RedMst.next;
+RedMst.next;
+RedMst.next;
+RedMst.next;						//nothing in section 4 so quiet.  see skipEmpty
+RedMst.next;
+RedMst.stop;
+RedMst.clear;
+
+
+
+
+//--more advanced example with 7 pbind tracks and custom synthdefs
+(
+s.waitForBoot{
+RedMst.clear;					//start afresh - remove tracks
+RedMst.clock= TempoClock(150/60);		//set master clock
+RedMst.quant= 4;
+
+//--synths
+SynthDef(\hat, {|out= 0, tuesday= 5000, amp= 0.5, pan= 0|
+	var e, z;
+	e= EnvGen.kr(Env.perc(0.01, 0.1), 1, amp, doneAction:2);
+	z= BPF.ar(PinkNoise.ar, tuesday*(e+0.5));
+	Out.ar(out, Pan2.ar(z*e, pan));
+}).add;
+SynthDef(\bas, {|out= 0, freq= 70, gate= 1, amp= 0.5, pan= 0|
+	var e, z;
+	e= EnvGen.kr(Env.adsr(0.01, 0.6, 0.4, 0.1), gate, amp, doneAction:2);
+	z= LPF.ar(LFSaw.ar(freq), freq*2*(e+1));
+	Out.ar(out, Pan2.ar(z*e, pan));
+}).add;
+SynthDef(\pad, {|out= 0, freq= 700, gate= 1, amp= 0.5, pan= 0|
+	var e, z;
+	e= EnvGen.kr(Env.asr(0.01, 0.5, 0.1), gate, amp, doneAction:2);
+	z= LPF.ar(LFSaw.ar(freq*[1, SinOsc.kr(3, 0, 0.008, 2)]).mean, freq*3, 0.4);
+	Out.ar(out, Pan2.ar(z*e, pan));
+}).add;
+
+//--patterns
+RedTrk(\hatSimple, Pbind(				//track name
+	\instrument, \hat,
+	\dur, Pseq([0.6, 0.4], inf),
+	\amp, Pseq([0.2, 0.5], inf)
+), #[0, 1, 3, 4]);					//which sections track active
+RedTrk(\basIntro, Pbind(
+	\instrument, \bas,
+	\dur, Pseq([0.6, 1, 1, 1, 0.4], inf),
+	\amp, 0.5,
+	\sustain, 0.6,
+	\degree, Pseq([0, 5, 4, 5, 1], inf),
+	\octave, 3
+), #[0, 3]);
+RedTrk(\padA, Pbind(
+	\instrument, \pad,
+	\dur, Pseq([2, 3, 1, 1], inf),
+	\amp, 0.5,
+	\degree, Pseq([[0, 5], [0, 4], [3, 5], [3, 5]], inf),
+	\octave, 4
+), #[1, 4]);
+RedTrk(\basA, Pbind(
+	\instrument, \bas,
+	\dur, 1,
+	\amp, 0.5,
+	\degree, Pseq([Pseq([-3, -2, 2, 1], 3), -3, 1], inf),
+	\octave, 3
+), #[1, 4]);
+RedTrk(\basBreak, Pbind(
+	\instrument, \bas,
+	\dur, 4,
+	\amp, 0.4,
+	\degree, Pseq([-2, -3], inf),
+	\octave, [3, 4],
+	\strum, 0.1
+), #[2]);
+RedTrk(\hatBreak, Pbind(
+	\instrument, \hat,
+	\dur, Pseq([0.2, 0.2, 0.2, 0.4], inf),
+	\amp, Pseq([0.5, 0.3, 0.3, 0.5], inf)
+), #[2]);
+RedTrk(\padTrem, Pbind(
+	\instrument, \pad,
+	\dur, Pseq([0.2, 0.2, 0.2, 0.4], inf),
+	\amp, Pseq([0.5, 0.3, 0.3, 0.5], inf),
+	\degree, 0
+), #[2, 3]);
+}
+)
+
+RedMst.play		//start from beginning
+RedMst.next		//goto section A (index 1) on next beat1.  activated tracks will play
+RedMst.next		//goto next section (break = index 2)
+RedMst.next		//and so on... (index 3...)
+
+RedMst.goto(2)	//jump back to break
+RedMst.next
+RedMst.stop
+
+RedMst.tracks
+RedMst.tracks.keys
+RedMst.maxSection
+
+RedMst.play
+RedMst.section
+RedMst.action= {("action! tempo:"+RedMst.clock.tempo+"section:"+RedMst.section).postln}
+RedMst.next
+RedMst.goto(0)
+RedMst.goto(1)
+RedMst.goto(2)
+RedMst.goto(3)
+RedMst.goto(4)
+
+RedMst.stop
+RedMst.clear		//free all tracks and remove them from RedMst.  clears action function
+			//note: does not stop the clock
+
+
+
+
+
+//--example with some different items
+//if crucial, bbc, redmod etc libraries not installed just comment out those lines (f, k, l, m, n)
+(
+var a, b, c, d, e, f, g, h, i, j, k, l, m, n;
+s.waitForBoot{
+RedMst.clear;
+RedMst.clock= TempoClock(150/60);
+RedMst.quant= 4;
+
+//--items (just comment out any 3rd party classes you don't have installed)
+a= Pbind(\freq, Pseq([500, 600], inf));
+b= Pdef(\pdef, Pbind(\degree, Pseq([0, 1, 2, 3, 5], inf)));
+c= Tdef(\tdef, {inf.do{|i| i.postln; 1.wait}});
+d= Ndef(\ndef, {SinOsc.ar([900, 909], 0, 0.3)});
+e= Routine({inf.do{|i| (i*10).postln; 1.wait}});
+f= Patch(Instr(\test, {SinOsc.ar([400, 404], 0, 0.1)}));
+g= NodeProxy.audio(s, 2).source= {SinOsc.ar([500, 505], 0, 0.1)};
+h= {SinOsc.ar([600, 606], 0, 0.1)};
+i= SynthDef(\def, {|gate= 1| Out.ar(0, SinOsc.ar([700, 707], 0, 0.1*EnvGen.kr(Env.asr, gate, doneAction:2)))}).add;
+j= {"testing, testing".postln}.asRoutine;		//wrap functions in routines to play them
+k= BBCut2(CutStream1.new, BBCutProc11.new);
+l= BBCut2(CutBuf2(BBCutBuffer(Platform.resourceDir +/+ "sounds/break")), BBCPPermute.new);	//(bad style as buffer not freed)
+m= RedMOD.read("~/mods/lukas/eva.mod").prepareForPlay;
+n= RedXM.read("~/mods/4-mat_-_rose.xm").prepareForPlay;
+
+//--tracks
+RedTrk(\steady, Pbind(\legato, 0.1, \freq, 800), #[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
+RedTrk(\test01, a, #[1]);
+RedTrk(\test02, b, #[2]);
+RedTrk(\test03, c, #[3]);
+RedTrk(\test04, d, #[4]);
+RedTrk(\test05, e, #[5]);
+RedTrk(\test06, f, #[6]);
+RedTrk(\test07, g, #[7]);
+RedTrk(\test08, h, #[8]);
+RedTrk(\test09, i, #[9]);
+RedTrk(\test10, j, #[10]);
+RedTrk(\test11, k, #[11]);
+RedTrk(\test12, l, #[12]);
+RedTrk(\test13, m, #[13]);
+RedTrk(\test14, n, #[14]);
+}
+)
+
+RedMst.play(0)	//section 0 - only steady reference pulse
+RedMst.goto(1)	//pbind
+RedMst.goto(2)	//pdef
+RedMst.goto(3)	//tdef
+RedMst.goto(4)	//ndef
+RedMst.goto(5)	//routine
+RedMst.goto(6)	//patch
+RedMst.goto(7)	//nodeproxy
+RedMst.goto(8)	//{}.play
+RedMst.goto(9)	//synthdef
+RedMst.goto(10)	//function as routine - just posting once
+RedMst.goto(11)	//bbcut2 stream - uses audio input
+RedMst.goto(12)	//bbcut2 buffer
+RedMst.goto(13)	//redmod
+RedMst.goto(14)	//redxm
+RedMst.stop
+RedMst.clear
+::

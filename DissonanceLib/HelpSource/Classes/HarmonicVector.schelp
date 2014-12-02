@@ -1,0 +1,293 @@
+title::HarmonicVector
+summary::Represents an interval in Harmonic Space	
+categories:: Overviews/DissonanceLib
+related:: Classes/Dissonance, Classes/PitchSet, Classes/HarmonicVector, Classes/HarmonicMetric, Overviews/numberExtras
+
+description::
+A pitch interval can be represented as an integer vector, an n-tuple of integers in an n-dimensional lattice, also known as Harmonic Space. The base of the lattice consists of prime numbers up to the nth prime. These primes are fundamental intervals from which other, composite ones, derive. Every interval can be expressed as a vector of exponents to these primes, representing the fundamental intervals composing the ratio.
+
+
+For example, with math::n = 3::, the base is math::\{2, 3, 5\},:: (a 5-limit tuning, its fundamental intervals being octaves, fifths and thirds):
+ 
+
+math::<0,0,0> \quad \qquad 2^0,  3^0, 5^0 \qquad	= 	1 \qquad = \frac{1}{1}::
+
+
+math::<-1, 1,0> \qquad  		2^{-1}, 3^1, 5^0  \quad	= 	\frac{3}{2} \qquad = \frac{3}{2}::
+
+
+math::<-4, 4, -1> \quad		2^{-4}, 3^4, 5^{-1} 	= 	\frac{3^4}{2^4 \times \,5} = \frac{81}{80}::
+
+
+When created, HarmonicVectors calculate several representations of the interval. They are made from either ratios or directly as vectors. If the latter, it assumes that it is an octave reduced vector, that is, its first dimension is the prime 3 of fifths instead of 2, of octaves, which is calculated. This is called 'octave completion'. When creating HarmonicVectors from ratios, the full ratio is given and the octave reduced version is calculated.
+
+A HarmonicVector has instance variables representing the interval both as a ratio and vector, plus the corresponding octave reduced versions. Plus, it stores its pitch-distance magnitude (in cents), its several harmonic metrics and, for 7-limit configurations, its harmonic functions. 
+
+HarmonicVectors are the elements of a link::Classes/PitchSet::. They are usefull for doing harmonic arithmetic and having  multiple representations for a single harmonic interval. For more on harmonic space, see James Tenney's "John Cage and the Theory of Harmony" ( http://www.plainsound.org/pdfs/JC&ToH.pdf)
+
+
+Note:: This class requires a Vector class which is available in the VectorSpace quark.::
+
+classmethods::
+
+method::with
+	
+Makes an instance of HarmonicVector from an octave-reduced vector (whose starting prime is 3). A reduced interval is invariant with respect to octaves, corresponding to the psychoacoustic phenomenon of 'octave equivalence'. Ignoring octaves in harmonic arithmetic can be quite useful as fundamental intervals are considered independent of their register. 
+
+argument::reduced
+An array of powers of primes. The highest primes base defined is 43, far above what is musically useful. If nil is given as the argument, it returns an HarmonicVector of [0], which is the ratio 1/1.
+
+code::
+g = HarmonicVector.with([2]); // 9/8, two fifths
+::		
+useful information:
+code::
+g.cents			// octave reduced pitch distance
+g.magnitude		// distance to origin
+g.harmonicDistance	// City-block metric distance to origin (Tenney)
+g.harmonicity		// Weighted prime-bases measure (Barlow)
+g.gradusSuavitatis	// Degree of sweetness (Euler)
+::	
+
+method::from
+	
+Makes an instance of HarmonicVector from a ratio. 
+
+argument::ratio
+The ratio should be in the form of a [p,q] array.
+
+
+code::
+HarmonicVector.from([1,1]);
+HarmonicVector.from([3,2]);
+HarmonicVector.from([5,6]);	// se how it reduces to 5/3 but keeps both representations
+HarmonicVector.from([7,6]);
+HarmonicVector.from([14,11]);	// this is represented by a 5 dimensional vector
+::	
+
+instancemethods::
+
+method::katapykne
+See the helpfile for link::Overviews/numberExtras::.
+Example:
+code::
+g = HarmonicVector.from([16,15])
+g.katapykne(4); //outputs and array of [p,q] pairs
+::
+
+method::magnitude		
+Magnitude of the vector in harmonic space. It is another kind of harmonic metric
+	
+code::
+g.magnitude;	
+::
+
+method::harmonicDistance		
+Tenney's harmonic distance (see link::Overviews/numberExtras:: and link::Classes/HarmonicMetric:: for more) of the interval.
+	
+code::
+g.harmonicDistance;	
+::
+
+method::harmonicity		
+Barlow's harmonicity of the interval (see link::Overviews/numberExtras:: and link::Classes/HarmonicMetric:: for more). It is calculated from the complete, not the octave reduced ratio. 
+	
+code::
+g.harmonicity;	
+::
+
+method::complete
+This method completes the octaves for a reduced ratio or vector. It is usually used under the hood when creating harmonic vectors. 
+
+
+method::toRatio
+
+
+method::toVector
+	
+	
+method::adjustOctave
+
+
+method::makeOperands
+
+	
+method::+
+Adding is an intervallic operation. The addition of two harmonic vectors is equivalent to the product of their ratios. The addition is performed on the vectors, not the ratios. 
+argument::that
+another harmonic vector. If both have different dimensions, they will be made of the same size before the operation.
+
+
+Example:
+code::
+g = HarmonicVector.from([5,4]);
+h = HarmonicVector.from([3,2]);
+g + h;	// 5/4 + 3/2 = 15/8 
+// (a maj third plus a fifth = a maj seventh)
+::
+
+method::-
+Subtraction is performed on the vectors, it is equivalent to subtracting the intervals, that is, to dividing their ratios. 
+argument::that 
+is another harmonic vector. If both have different dimensions, they will be made of the same size before the operation.
+
+		
+Example:
+code::
+g = HarmonicVector.from([2,1]);
+h = HarmonicVector.from([10,9]);
+g - h;
+::
+
+method::*
+I am not sure what this means musically. It multiplies two vectors by multiplying each coordinate. This is not even defined properly for vector spaces, so it is an experimental method.  
+argument::that
+another harmonic vector. If both have different dimensions, they will be made of the same size before the operation.
+
+		
+Example:
+code::
+g = HarmonicVector.from([3,4]);
+h = HarmonicVector.from([6,5]);
+g * h
+::
+
+method::/
+The same as above, with the addition that the results of division are even more perplexing than those of multiplication. Many combinations produce Division by Zero errors.
+argument::that
+another harmonic vector. If both have different dimensions, they will be made of the same size before the operation.
+
+Example:
+code::
+g = HarmonicVector.from([2,1]);
+h = HarmonicVector.from([3,2]);
+g / h
+::
+	
+method::**
+This one is useful: raising an interval to an integer power means adding it to itself in series. If the scalar is real you can obtain interesting experimental results.
+
+argument:: scalar
+An integer, although you can obtain interesting experimental results with fractions. 
+		
+Example:
+code::
+g = HarmonicVector.from([7,5]);
+g ** 3;
+g ** 1.25;
+g = HarmonicVector.from([5,6]);
+g ** 2;
+g ** 1.5;
+g ** 1.25;
+::	
+	
+method::cents
+Returns the cent value. 
+method::reduced
+If true, returns the cent value of  the reduced interval, otherwise the complete one.
+		
+		
+method::isInIsland
+This method returns a boolean stating whether the vector lies inside a periodicity block (as defined by a unisonmatrix). It is used by PitchSet to separate its intervals into timbral and harmonic ones. See its help file for more info. 
+		
+code::
+g = HarmonicVector.from([7,4]);
+g.isInIsland;
+g = HarmonicVector.from([4,3]);
+g.isInIsland;
+::
+section::ClassVariables
+	
+method::base
+		
+This classvar is used for internal calculations. It is initialized up to prime 43 which is pretty much beyond human harmonic perception.				
+		
+section::Instance variables 
+	
+A harmonic vector has the following attributes: 
+	
+method::vector				
+The complete integer vector of that interval, including the dimension of 2. It is a vector class and not an array or a number. 
+	
+method::reduced
+The octave reduced vector, beginning from the dimension of prime 3.  
+	
+method::ratio
+The calculated ratio, it is not octave reduced.
+	
+method::reducedRatio
+The calculated octave reduced ratio.
+	
+method::pow2				
+This is used internally in calculations and corresponds to the ammount of octaves that have been reduced.
+		
+
+					
+section::Working with arrays of HarmonicVectors
+
+For making harmonic vectors from arrays, use the following added methods to Array:
+
+code::
+g = [ [1,1],[16,15],[9,8],[6,5],[5,4],[4,3],[45,32],[3,2] ].asHvector;
+g.do(_.postln); 
+g = Array.fill(8, {[3.rand2,3.rand2,3.rand2]}).toHvector;
+g.do(_.postln); 
+::	
+
+
+section::Examples of harmonic arithmetic: 
+code:: 	
+g = HarmonicVector.with([-2,-1]);
+g.ratio; 	// ratio: 1/45 
+g.reducedRatio;	// octave reduced ratio: 64/45
+g.vector;	// the complete vector [2**6, 3**2.neg, 5**1.neg]
+g.reduced;	// octave reduced vector (the input argument)				
+::
+
+A lengthier example:
+
+code::
+a = HarmonicVector.from([4,3]); // a fourth
+b = HarmonicVector.from([15,16]); // a just minor second below 1/1
+c = HarmonicVector.from([64,45]); // a just higher tritone (Gb if 1/1 is C)
+d = HarmonicVector.from([45,32]); // a just lower tritone (F# if 1/1 is C)
+a - b; // the interval between the fourth and the semitone below is a higher tritone
+c - b; // but between the tritone and the lower semitone there is a wolf fifth
+d - b; // it forms a perfect fifth from the other tritone
+a ** 5; // a fourth raised to the fifth is a smaller semitone (imagine a series of fourths)
+::
+The last field in the vector's string representation is its (Hugo) Riemann function, another way to represent the vector: D stands for dominant, d for subdominant (1/D), M & m for mediant and submediant and S,s for septimal and subseptimal, respectively. The numbers next to them denote the number of times they are stacked. For example, the wolf fifth is a 3d2m, i.e. a triple subdominant double submediant: 3 inverse fifths plus 2 inverse thirds (C-F-Bb-Eb--Cb-Abb, so the interval is really a lowered sixth, not a fifth!)
+
+Another example. Finding commas, execute line by line: 
+code::
+a = HarmonicVector.with([-2]);	 // 16/9 (a 3-limit minor seventh)
+b = HarmonicVector.with([2,-1]); // 9/5 (a 5-limit minor seventh)
+a + b;			// sum is a 5-limit minor sixth
+a - b;			// difference between 16/9 and 9/5: inverted syntonic comma
+b - a ;			// difference between 9/5 and 16/9: a syntonic comma
+
+// division and multiplication of harmonic ratios are very difficult to conceptualize:
+a * b;			// Multiplication gives a Pithagorean minor sixth (why?)
+a / b;			// Perfect fourth (also why?) 
+b / a;			// Error: division by zero
+
+(b - a).cents;		// size of syntonic comma
+(a + b).cents;
+1.addCents(813.6862).asRatio;
+
+(a * b).cents;		// what does mult mean?
+1.addCents(792.17999).asRatio;	// a low sixth?
+(a + b) - (a * b);	// which is a syntonic comma away from the sum? Mult as a symmetric sum?
+
+(a/b).cents;	// and what about division? It gives a 4/3?
+
+// the following is very interesting:
+(a / b) * (b - a);	// a fourth times a comma: a sixth lowered by a syntonic comma
+(a / b) / (b - a);	// fourth dividied by comma: unison! [its vector should be integer!]
+(a / b) + a;		// fourth plus a 3 limit min 7: pythagorean maj6
+(a / b) + b;		// fourth plus a 5 limit min 7: 5 limit min3
+(a / b) * a;		// fourth times a 3 limit min 7: a 3 limit second
+
+(a * b) * (a / b); 
+(a * b) / (b - a)
+::

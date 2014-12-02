@@ -1,0 +1,40 @@
+CLASS:: RedBitStream
+SUMMARY:: stream bits
+CATEGORIES:: Red>redTools
+RELATED:: Classes/CollStream, Classes/RedBitStream2
+
+DESCRIPTION::
+Modeled after link::Classes/CollStream::. Produces a bit stream out if an array of integers. The least significant bit comes first in each byte (LSB). Use class link::Classes/RedBitStream2:: for most significant bit first (MSB).
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: collection
+An link::Classes/Array:: of integers.
+
+ARGUMENT:: byte
+Number of bits per byte in this collection of integers. If byte is 8 then integers should not be greater than 255.
+
+EXAMPLES::
+
+CODE::
+a= RedBitStream((0..255), 8);
+a.nextN(8);
+a.nextN(8);
+a.nextN(8);
+a.nextN(8);
+a.nextN(8);
+a.nextN(16);
+
+//--count from 0 to 255 lsb.  the process takes 4min and 25sec
+s.boot;
+a= RedBitStream((0..255), 8);
+b= Pbind(\degree, a, \dur, 0.125, \amp, 0.3, \legato, 0.4).play;
+b.stop
+
+//--same but msb
+a= RedBitStream2((0..255), 8);
+b= Pbind(\degree, a, \dur, 0.125, \amp, 0.3, \legato, 0.4).play;
+b.stop
+::

@@ -1,0 +1,61 @@
+CLASS:: RedUniverse
+SUMMARY:: fundamental object in the redUniverse toolkit
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview, Classes/RedObject, Classes/RedWorld
+
+DESCRIPTION::
+
+NOTE::
+First read the strong::readme.txt:: and then see the file link::Overviews/redUniverseExamplesOverview:: for the fun stuff.
+::
+
+This is a global class for dealing with worlds. There is only ever one universe. All worlds register themselves in the universe when created.
+
+CLASSMETHODS::
+
+METHOD:: clear
+Clear all worlds.
+
+METHOD:: add
+Manually add a world to the universe. Usually never needed.
+
+METHOD:: remove
+Manually remove a world from the universe.
+
+METHOD:: migrate
+Move one object from its world to another.
+
+METHOD:: migrateAll
+Move all objects in one world to another.
+
+METHOD:: interpolate
+Return a new world in-between two other. All world parameters are interpolated but objects stay.
+
+METHOD:: interpolateMigrate
+Interpolates and also move over all objects. Usually you will want to remove the old worlds manually.
+
+METHOD:: write
+Save all worlds and objects and their respective state to disk.
+
+METHOD:: read
+Import worlds and objects and their respective state from disk.
+
+METHOD:: worlds
+Return an array of all available worlds.
+
+EXAMPLES::
+
+CODE::
+a= RedWorld.new
+b= RedObject(a)
+
+RedUniverse.worlds
+RedUniverse.remove(a)
+RedUniverse.worlds
+
+RedUniverse.write("testsave")
+RedUniverse.clear
+RedUniverse.worlds
+RedUniverse.read("testsave")
+RedUniverse.worlds
+::

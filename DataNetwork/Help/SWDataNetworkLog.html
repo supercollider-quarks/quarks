@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWDataNetworkLog</TITLE>
+<META NAME="description" CONTENT="SWDataNetworkLog">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="previous" HREF="node10.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY >
+
+
+<H2><A NAME="SECTION00047000000000000000">
+SWDataNetworkLog</A>
+</H2>
+If data from a network has been recorded, the file can be played back, using this class.
+
+<DL>
+<DT><STRONG>*new ( fn, netw )</STRONG></DT>
+<DD>Create a new instance. <em>fn</em> is the filename. <em>netw</em> is the SWDataNetwork to set the data to. If none is given, the class will create a new instance.</DD>
+
+<DT><STRONG>play (  )</STRONG></DT>
+<DD>Start playing back the log data</DD>
+<DT><STRONG>stop (  )</STRONG></DT>
+<DD>Stop playing back the log data</DD>
+<DT><STRONG>reset (  )</STRONG></DT>
+<DD>Reset to the beginning of the log data</DD>
+
+<DT><STRONG>goToTime ( newtime )</STRONG></DT>
+<DD>Go to a specific time in the data. This assumes the delta time is constant across the whole log, and estimates the line to jump to accordingly.</DD>
+
+<DT><STRONG>close (  )</STRONG></DT>
+<DD>Close the file. After this you cannot playback the data anymore.</DD>
+
+<DT><STRONG>network (  )</STRONG></DT>
+<DD>Access to the SWDataNetwork that is used to play the data to.</DD>
+
+<DT><STRONG>readHeader (  )</STRONG></DT>
+<DD><em>private</em> - read the header of the file</DD>
+<DT><STRONG>readLine (  )</STRONG></DT>
+<DD><em>private</em> - read one line of data from the file. Returns the delta time as recorded in the data.</DD>
+
+<DT><STRONG>open ( fn )</STRONG></DT>
+<DD><em>private</em> - Opens the file and checks all properties of the file format.</DD>
+
+<DT><STRONG>checkFileClass ( fn )</STRONG></DT>
+<DD><em>private</em> - Checks what type of file the log is in (plain text, tar, or a folder), and sets the fileClass accordingly.</DD>
+
+<DT><STRONG>fileClass</STRONG></DT>
+<DD><em>private</em> - TabFilePlayer (to read the old format - v0.2 and lower) or MultiFilePlayer (v0.3 and up).</DD>
+
+<DT><STRONG>hasStamp</STRONG></DT>
+<DD><em>private</em> - Whether or not a Date stamp is used at the beginning of each line.</DD>
+
+<DT><STRONG>hasExtraTab</STRONG></DT>
+<DD><em>private</em> - Whether or not there is an extra tab at the end of each line (as was the case in the old file format).</DD>
+
+</DL>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+	HREF="SWDataNetworkGui.html">SWDataNetworkGui</A>
+</LI>
+<LI>
+<I> Previous: </I> <A NAME="tex2html79"
+	HREF="SWDataNetworkClient.html">SWDataNetworkClient</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+
+<P>
+<BR><HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</BODY>
+</HTML>

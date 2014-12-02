@@ -1,0 +1,56 @@
+CLASS:: ScalarField
+SUMMARY:: A function that takes a vector and returns a real valued number
+CATEGORIES:: Math
+RELATED:: Overviews/VectorSpace
+
+DESCRIPTION::
+func of type { |vector,t|  a scalar value }
+
+NOTE::
+It's up to the user to make sure that they are passing a vector with the correct size.
+::
+
+INSTANCEMETHODS::
+
+PRIVATE:: prGradElem, prUnipolar, prBipolar, prGetGridValuesArray
+
+METHOD:: gradFieldF
+As a VectorFieldF.
+
+EXAMPLES::
+
+code::
+// Mathematical operations
+
+// *
+(
+a = ScalarField({|v,t| if(v.x < 0.75){1}{0} },360,0.2).plotUni(Rect(0,0,1,1),360,0.2);
+b = ScalarField({|v,t| if(v.x > 0.25){1}{0} },360,0.2).plotUni(Rect(0,0,1,1),360,0.2);
+c = a*b;
+c.plotUni(Rect(0,0,1,1),360,0.2);
+)
+
+// +
+(
+a = ScalarField({|v,t| if(v.x > 0.75){1}{0} },360,0.2).plotUni(Rect(0,0,1,1),360,0.2);
+b = ScalarField({|v,t| if(v.x < 0.25){1}{0} },360,0.2).plotUni(Rect(0,0,1,1),360,0.2);
+c = a+b;
+c.plotUni(Rect(0,0,1,1),360,0.2);
+)
+
+// min
+(
+a = ScalarField({|v,t| v.x },360,0.2).plotUni(Rect(0,0,1,1),360,0.2);
+b = ScalarField({|v,t| 0.5 },360,0.2).plotUni(Rect(0,0,1,1),360,0.2);
+c = a.min(b);
+c.plotUni(Rect(0,0,1,1),360,0.2);
+)
+
+// div
+(
+a = ScalarField({|v,t| v.x*10 },360,0.2).plotUni(Rect(0,0,1,1),360,0.2);
+b = ScalarField({|v,t| if(v.y<0.5){2}{4} },360,0.2).plotUni(Rect(0,0,1,1),360,0.2);
+c = a.div(b);
+c.plotUni(Rect(0,0,1,1),360,0.2);
+)
+::

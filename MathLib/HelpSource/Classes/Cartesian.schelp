@@ -1,0 +1,205 @@
+CLASS:: Cartesian
+summary:: Cartesian point in 3D space
+categories:: Geometry
+related:: Classes/Spherical, Classes/Point, Classes/Polar
+
+DESCRIPTION::
+Defines a point in 3D Cartesian space.
+
+NOTE::
+Part of SpherCoords, a spherical and 3D cartesian coordinate support library.
+::
+subsection:: Credits
+Joseph Anderson, 2011 [j.anderson[at]ambisonictoolkit.net]
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Defines a new Cartesian point.
+
+
+INSTANCEMETHODS::
+
+subsection:: Accessing
+
+METHOD:: x
+Get or set the x coordinate value.
+
+METHOD:: y
+Get or set the y coordinate value.
+
+METHOD:: z
+Get or set the z coordinate value.
+
+
+METHOD:: set
+Sets the Cartesian point x, y and z values.
+
+subsection:: Testing
+
+METHOD:: ==
+Answers a Boolean whether the receiver equals the argument.
+
+METHOD:: hash
+Returns a hash value for the receiver.
+
+
+subsection:: Math
+
+METHOD:: +
+Addition.
+
+argument:: delta
+May be a link::Classes/Number::, a link::Classes/Point::, an link::Classes/Array:: or a Cartesian point.
+
+METHOD:: -
+Subtraction.
+
+argument:: delta
+May be a link::Classes/Number::, a link::Classes/Point::, an link::Classes/Array:: or a Cartesian point.
+
+METHOD:: *
+Multiplication.
+
+argument:: scale
+May be a link::Classes/Number::, a link::Classes/Point::, an link::Classes/Array:: or a Cartesian point.
+
+returns:: Cartesian.new(this.x * scale.x, this.y * scale.y, this.z * scale.z)
+
+discussion:: Note that the result of * for a 3D Cartesian point does not match that of link::Classes/Point::, where the result is interpreted as the multiplication of complex numbers.
+
+METHOD:: /
+Division.
+
+argument:: scale
+May be a link::Classes/Number::, a link::Classes/Point::, an link::Classes/Array:: or a Cartesian point.
+
+returns:: Cartesian.new(this.x / scale.x, this.y / scale.y, this.z / scale.z)
+
+discussion:: Note that the result of / for a 3D Cartesian point does not match that of link::Classes/Point::, where the result is interpreted as the division of complex numbers.
+
+
+METHOD:: translate
+Addition by a Cartesian point.
+
+METHOD:: scale
+Multiplication by a Cartesian point.
+
+METHOD:: div
+Division by a Cartesian point.
+
+
+METHOD:: rotate
+Rotation about the origin in the XY plane by the angle given in radians.
+
+discussion:: Positive values rotate from +X towards +Y
+
+METHOD:: tilt
+Rotation about the origin in the YZ plane by the angle given in radians.
+
+discussion:: Positive values rotate from +Y towards +Z
+
+METHOD:: tumble
+Rotation about the origin in the XZ plane by the angle given in radians.
+
+discussion:: Positive values rotate from +X towards +Z
+
+
+METHOD:: rotateXY
+Rotation about the origin in the XY plane by the angle given in radians.
+
+discussion:: A synonym for rotate.
+
+METHOD:: rotateYZ
+Rotation about the origin in the YZ plane by the angle given in radians.
+
+discussion:: A synonym for tilt.
+
+METHOD:: rotateXZ
+Rotation about the origin in the XZ plane by the angle given in radians.
+
+discussion:: A synonym for tumble.
+
+
+METHOD:: mirrorX
+Mirror x, reflecting across the YZ plane.
+
+METHOD:: mirrorY
+Mirror y, reflecting across the XZ plane.
+
+METHOD:: mirrorZ
+Mirror z, reflecting across the XY plane.
+
+METHOD:: mirrorO
+Mirror across the origin.
+
+METHOD:: abs
+Absolute value of the point.
+
+METHOD:: rho
+Return the spherical coordinate radius of the receiver.
+
+METHOD:: theta
+Return the spherical coordinate azimuth angle of the receiver.
+
+METHOD:: phi
+Return the spherical coordinate elevation angle of the receiver.
+
+METHOD:: angle
+Return the spherical coordinate azimuth angle of the receiver.
+
+METHOD:: angles
+Return the spherical coordinate azimuth and elevation angles of the receiver.
+
+returns:: [ theta, phi]
+
+METHOD:: dist
+Return the distance from the receiver to aCart.
+
+METHOD:: transpose
+Return a Cartesian point whose x and y coordinates are swapped.
+
+discussion:: Matches the return value for link::Classes/Point#-transpose::.
+
+METHOD:: transposeXY
+Return a Cartesian point whose x and y coordinates are swapped.
+
+discussion:: A synonym for transpose.
+
+METHOD:: transposeYZ
+Return a Cartesian point whose y and z coordinates are swapped.
+
+METHOD:: transposeXZ
+Return a Cartesian point whose x and z coordinates are swapped.
+
+METHOD:: round
+Round the coordinate values to a multiple of quantum.
+
+METHOD:: trunc
+Truncate the coordinate values to a multiple of quantum.
+
+
+subsection:: Conversion
+
+METHOD:: asCartesian
+Returns the receiver.
+
+METHOD:: asPoint
+Returns a link::Classes/Point::, discarding z.
+
+METHOD:: asComplex
+Returns a link::Classes/Complex:: with x as the real part and y as the imaginary part, discarding z.
+
+METHOD:: asPolar
+Returns a link::Classes/Polar::, discarding z.
+
+METHOD:: asSpherical
+Returns a link::Classes/Spherical::.
+
+METHOD:: asArray
+Returns an link::Classes/Array::.
+
+returns:: [ x, y, z ]
+
+

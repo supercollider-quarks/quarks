@@ -1,0 +1,59 @@
+CLASS:: TraerParticleSystem
+SUMMARY:: takes care of gravity, drag, making particles, applying forces and advancing the simulation
+CATEGORIES:: TraerPhysics
+RELATED:: Overviews/TraerPhysicsOverview, Classes/TraerAttraction, Classes/TraerParticle, Classes/TraerSpring
+
+DESCRIPTION::
+The particle system is in charge of everything. It makes particles and forces for you and you tell it to advance the simulation using LINK::#-tick::.
+
+NOTE::
+Documentation is only very slightly adapted to comply with the SuperCollider port. See the original by Jeffrey Traer Bernstein here... http://murderandcreate.com/physics/
+::
+
+CLASSMETHODS::
+
+METHOD::new
+Construct a new particle system with some downward (positive y) or 3D gravity and some drag. You can make as many of these as you'd like as long as forces from one system don't refer to particles from another. I don't know what would happen if you connected particles from one system to another.
+
+INSTANCEMETHODS::
+
+PRIVATE::initTraerParticleSystem
+
+METHOD::setIntegrator
+pass this either: CODE::\RUNGE_KUTTA:: or CODE::\MODIFIED_EULER:: as a LINK::Classes/Symbol::.
+
+DISCUSSION::
+Runge-Kutta is the default. It takes about 4 times as many cycles as Modified Euler. In return the system gets very stable. If you plan to have have over 1000 particles interacting with each other try Modified Euler. If you will have fewer particles and want tight springs and quicker responses use Runge-Kutta. Stick with the default and if things get slow try switching to Euler. You may have to add more drag or reduce the strength of springs and attractions to keep it stable. The example Random Arboretum has sections of code you can uncomment to experiment with this.
+
+METHOD::setGravity
+set the strength of gravity, down (in the positive y direction) or in whatever 3D direction you feel like. You probably want the magnitude of this to be in the range of CODE::0-5::.
+
+METHOD::setDrag
+set the drag force that acts on all objects equally, and proportional to velocity.
+
+METHOD::tick
+advance the simulation by some time CODE::t::, or by the default CODE::1.0::. You'll want to call this in LINK::Classes/UserView#-drawFunc:: or LINK::Classes/Window#-drawFunc::. You probably want to keep this the same at all times unless you want speed up or slow things down.
+
+METHOD::clear
+this deletes all the particles and all the forces in the system (except the omnipresent gravity and drag even if there are 0).
+
+METHOD::makeParticle
+Create a new particle in the system with some mass and at some x, y, z position. The default is a new particle with mass CODE::1.0:: at CODE::(0, 0, 0)::.
+
+METHOD::removeParticle
+
+NOTE::removing things shifts the indices and the library does not take responsibility for you deleting particles that forces refer to. e.g. if you have a spring between two particles and remove one things will definitely break.::
+
+METHOD::makeSpring
+make a spring in the system between 2 particles you have previously created. Look at LINK::Classes/TraerSpring:: for what the parameters mean.
+
+METHOD::removeSpring
+
+NOTE::removing things shifts the indices.::
+
+METHOD::makeAttraction
+Make an attraction (or repulsion) force between two particles. If the strength is negative they repel each other, if the strength is positive they attract. There is also a minimum distance that limits how strong this force can get close up.
+
+METHOD::removeAttraction
+
+NOTE::removing things shifts the indices.::

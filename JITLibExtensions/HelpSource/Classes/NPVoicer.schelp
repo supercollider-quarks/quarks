@@ -1,0 +1,243 @@
+TITLE:: NPVoicer
+summary:: handle polyphony with nodeproxies
+categories:: Undocumented classes
+related:: JITLib, NodeProxy, Ndef
+
+DESCRIPTION::
+NPVoicer simplifies the use of polyphony in NodeProxies. One can flexibly play, access and release multiple voices of the same synth source with this wrapper around a nodeproxy.
+
+code::
+s.boot;
+s.latency = nil;			// for immediate response;
+
+g = NPVoicer(Ndef(\piano)); 	// make an NPVoicer with an Ndef in it
+g.prime(\default);			// prepare it with the default synthdef
+
+g.play;					// play it
+
+	// start a sound with key 48, with its won set of params
+g.put(48, [\freq, 48.midicps]);
+
+	// a second note at 51
+g.put(51, [\freq, 51.midicps]);
+
+	// release them
+g.release(48);
+g.release(51);
+
+// test with MIDI if you have a controller around:
+MIDIdef.noteOn(\pianOn, { |note, vel, chan|
+	g.put(note, [\freq, note.midicps, amp: (vel/127).squared * 0.25 ]);
+}, nil, 1);
+MIDIdef.noteOff(\pianOff, { |note, vel, chan| g.release(note); }, nil, 1);
+
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+make a new NPVoicer
+
+ARGUMENT:: proxy
+required - a nodeproxy to play voices in.
+
+ARGUMENT:: indivParams
+which params will be set for each new voice individually.
+this protects these params from accidental global setting.
+
+INSTANCEMETHODS::
+
+METHOD:: prime
+prepare proxy for playing voices.
+
+ARGUMENT:: obj
+can be anything a nodeproxy accepts  as source :
+a SynthDef, a Symbol (synthdef name), a function, ...
+
+ARGUMENT:: useSpawn
+a flag whether to put obj into slot 0. As voicers usually have 
+individual voices and not a preferred front synth, default = false.
+
+METHOD:: synCtl
+internal - a SynthDefControl created when priming, and used for the voices.
+
+METHOD:: indivParams
+the list of param used individually and not globally.
+
+METHOD:: usesSpawn
+the flag whether a new nodeproxy object will play in slot 0 or not.
+
+
+METHOD:: put
+put a new voice into the objects list at 
+
+ARGUMENT:: key
+at this key, typically a note number. (replaces a playing object there)
+
+ARGUMENT:: args
+with these starting individual arguments.
+
+METHOD:: release
+release voice playing at key with given fadeTime.
+
+METHOD:: playingKeys
+return the keys of all currently playing voices.
+
+METHOD:: releaseAll
+return all currently playing voices withgiven fadetime.
+
+METHOD:: spawn
+if NPVoicer usesSpawn, spawn will create new voices that are only triggered and then take care of themselves, i.e. end automatically and do not allow control settings.
+see example.
+
+ARGUMENT:: args
+args for the spawned voice.
+
+ARGUMENT:: addAction
+addAction for the spawned voice.
+
+
+/* Interfacing to nodeproxy */
+
+METHOD:: proxy
+the nodeproxy used to play the voices
+
+METHOD:: play
+play the nodeproxy. see NodeProxy:play for full info
+
+METHOD:: playN
+playN the nodeproxy. see NodeProxy:playN for full info
+
+METHOD:: pause
+pause the nodeproxy
+
+METHOD:: resume
+resume the nodeproxy
+
+METHOD:: stop
+stop the nodeproxy with fadeTime and reset options.
+
+METHOD:: end
+end the nodeproxy with fadeTime.
+
+METHOD:: set, unset
+set and unset global params of the nodeproxy.
+
+METHOD:: map, unmap
+map and unmap global params of the nodeproxy.
+
+METHOD:: setAt, unsetAt
+set and unset params at individual playing voices.
+
+
+
+EXAMPLES::
+
+	// ToDo - more examples - e.g.: 
+	list::
+## with KeyPlayer
+## with MultiTouchPad
+## with NanoKey - MIDI, play and hold notes
+## NanoPad - MIDI, trigger perc notes only
+## with Manta controller 
+##any others?
+::
+
+code::
+
+	// trigger percussion-style notes from computer keyboard while above window.
+	// could also be done without NPVoicer, but it is convenient with NPVoicer.
+(
+s.latency = nil;
+g = NPVoicer(Ndef(\x));
+g.prime({ |freq = 400| SinOsc.ar(freq) * EnvGen.ar(Env.perc(0.001, 0.03, 0.4), doneAction:2) }, true);
+g.play;
+
+w = Window("ascii player - clickies").front;
+w.view.keyDownAction = { |view, char|
+	g.spawn([\freq, char.ascii.midicps])
+};
+)
+
+	// play, hold, and release notes from computer keyboard
+    // see also the KeyPlayer quark
+(
+s.latency = nil;
+g = NPVoicer(Ndef(\x), [\freq, \amp, \pan]);
+g.prime(\default, false);
+g.play;
+
+w = Window("ascii player2 - it IS a keyboard after all...").front;
+w.view.keyDownAction = { |view, char|
+	var key = char.ascii;
+		// no retriggering
+	if (g.playingKeys.includes(key).not) {
+		g.put(key, [\freq, key.midicps])
+	};
+};
+w.view.keyUpAction = { |view, char|
+	var key = char.ascii;
+	if (g.playingKeys.includes(key)) { g.release(key) };
+};
+)
+
+
+// test setting and mapping global vs individual params:
+
+g.play;
+s.scope; // to see panning
+
+// play a note
+g.put(60, [\freq, 60.midicps]);
+
+// global set
+g.set(\amp, 0.5);
+g.set(\amp, 0.1);
+g.set(\pan, -1);
+g.set(\pan, 1);
+g.unset(\pan); // only works the second time?
+
+// add a second note
+g.put(79, [\freq, 79.midicps]);
+// set indiv notes 60 to pan left/right
+g.setAt(60, \pan, -1);
+g.setAt(79, \pan, 1);
+
+// autopan
+Ndef(\lfPan, { |lofreq = 0.3| SinOsc.kr(lofreq) * 2 });
+// and map to global
+g.map(\pan, Ndef(\lfPan));
+// set indiv. afterwards unmaps them
+g.setAt(60, \pan, -1);
+g.setAt(79, \pan, 1);
+
+// a new note still gets autopan
+g.put(87, [\freq, 87.midicps]);
+
+g.release(60);
+g.release(79);
+
+g.unmap(\pan); // autopan should stop ... not working yet! (why?)
+
+
+// for comparison, test with a plain Ndef:
+
+Ndef(\a, { |amp=0.1, pan| Pan2.ar(PinkNoise.ar(amp), pan) });
+Ndef(\a).play;
+
+Ndef(\a).set(\pan, 1);
+Ndef(\a).set(\pan, -1);
+Ndef(\a).map(\pan, Ndef(\lfPan));
+Ndef(\a).unmap(\pan); // stops wherever lfo ended
+Ndef(\a).unset(\pan); // unset to default
+
+Ndef(\a).set(\pan, 1); // this does unset properly
+
+
+
+// do post-processing on the proxy: 
+g.proxy.filter(150, { |in| (in * 10).distort * 0.2 });
+g.proxy.put(150);
+
+::

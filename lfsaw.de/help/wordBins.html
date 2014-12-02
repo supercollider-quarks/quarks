@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {color: #0000bf}
+span.s2 {color: #606060}
+span.s3 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>wordBins</b></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p4"><span class="s1">var</span> str = <span class="s2">""</span>;</p>
+<p class="p4"><span class="s1">Array</span>.fill(27, {<span class="s1">|i|</span> ((i+97).asAscii!i ++ <span class="s2">" "</span>)!i}).flatten(2).do{<span class="s1">|it|</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>str = str ++ it</p>
+<p class="p4">};<span class="Apple-converted-space"> </span></p>
+<p class="p4">d = str.wordBins(3)</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// use SwingOSC for proper umlauts in visualization</p>
+<p class="p3">(</p>
+<p class="p3"><span class="s1">var</span> win, extX, extY, winRect, view, fontName, strings, numbers, countSpec, sizeSpec, alphaSpec, colorSpec, sFactor = 0.25;</p>
+<p class="p3">#numbers, strings = (d.flop);</p>
+<p class="p2"><br></p>
+<p class="p3">strings = strings.collect{|str|</p>
+<p class="p3"><span class="Apple-tab-span">	</span>var y = "\"\"";<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>str.do({|char|<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>y = y ++ " ++ 0x" ++ char.ascii.asHexString.copyToEnd( 6 )++".asAscii"<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>});</p>
+<p class="p3">};</p>
+<p class="p2"><br></p>
+<p class="p3">countSpec = [numbers.minItem, numbers.maxItem].asSpec;</p>
+<p class="p3">sizeSpec<span class="Apple-converted-space">  </span>= [10, 60].asSpec;</p>
+<p class="p3">alphaSpec = [1, 0.2].asSpec;</p>
+<p class="p3">colorSpec = [0.2, 1].asSpec;</p>
+<p class="p2"><br></p>
+<p class="p3">extX = 1440;</p>
+<p class="p3">extY = 900;</p>
+<p class="p3">winRect = <span class="s1">GUI</span>.window.screenBounds;</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s3">fontName = </span>"GillSans-Light"<span class="s3">;</span></p>
+<p class="p2"><br></p>
+<p class="p3">win = <span class="s1">GUI</span>.window.new(<span class="s2">""</span>, winRect, border: <span class="s1">false</span>);</p>
+<p class="p3">win.view.keyDownAction_{<span class="s1">|me, char|</span><span class="Apple-converted-space">  </span>(char == $q).or{char == 27.asAscii}.if{win.close}};</p>
+<p class="p3">win.view.background = <span class="s1">Color</span>.white;</p>
+<p class="p2"><br></p>
+<p class="p3">view = <span class="s1">GUI</span>.userView.new(win, win.view.bounds);</p>
+<p class="p3">view.drawFunc = {</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s1">var</span> numAppearance, val;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>strings.do{<span class="s1">|str, i|</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>numAppearance = numbers[i];</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>val = countSpec.unmap(numAppearance);</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>GUI.pen.font = GUI.font.new(fontName, (sizeSpec.map(val)).asInteger);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">GUI</span>.pen.color = <span class="s1">Color</span>.red(colorSpec.map(val), alphaSpec.map(val));</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>GUI.pen.stringCenteredIn(str, <span class="s1">Rect</span>((extX*(1-sFactor)).rand, (extY*(1-sFactor)).rand, extX*sFactor, extY*sFactor));</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/*str.drawCenteredIn(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Rect((extX*0.5 -50).rand, (extY*0.5 -250).rand, 50, 250),<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Font(fontName, (sizeSpec.map(val)).asInteger),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Color.red(colorSpec.map(val), alphaSpec.map(val))</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);*/</p>
+<p class="p3"><span class="Apple-tab-span">	</span>};</p>
+<p class="p3">};</p>
+<p class="p3">view.keyDownFunc_(win.view.keyDownAction);</p>
+<p class="p3">win.fullScreen;</p>
+<p class="p3">win.front;</p>
+<p class="p3">win.view.focus</p>
+<p class="p3">)</p>
+</body>
+</html>

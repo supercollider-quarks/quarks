@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWDataNetworkOSC</TITLE>
+<META NAME="description" CONTENT="SWDataNetworkOSC">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node10.html">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+</HEAD>
+
+<BODY >
+
+
+<H2><A NAME="SECTION00045000000000000000">
+SWDataNetworkOSC</A>
+</H2>
+These classes implement the OSC interface of the host.
+
+Most of the methods of this class are only used by the class itself in response to incoming OSC messages, or are called from the network to send OSC messages out. Only a few of the methods should be used directly.
+
+Care is taken that no other client can set data to a node, once it has been defined by a certain client as ``his'' node.
+
+
+<h4>- Example - </h4>
+
+    <pre>
+
+<span class="comment-delimiter">// </span><span class="comment">Define the network
+</span>x = <span class="type">SWDataNetwork</span>.new;
+
+<span class="comment-delimiter">// </span><span class="comment">Add an OSC interface to it
+</span>x.addOSCInterface;
+
+<span class="comment-delimiter">// </span><span class="comment">Access to the OSC interface:</span>
+x.osc
+
+<span class="comment-delimiter">// </span><span class="comment">Create a GUI for the OSC interface:</span>
+x.osc.makeGui;
+
+</span></pre>
+
+
+<h3> - Methods - </h3>
+
+<DL>
+
+<DT><STRONG>*httppath (  )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>*httppath_ (  )</STRONG></DT>
+<DD>Set the base path where the host machine stores its http accessible files. Default is <tt>"/var/www/"</tt>. On OSX it should be set to: <tt>"/Library/WebServer/Documents/"</tt>
+</DD>
+
+<DT><STRONG>*new( netw )</STRONG></DT>
+<DD>Create a new instance of SWDataNetworkOSC, working together with the SWDataNetwork <em>netw</em></DD>
+
+<DT><STRONG>stop(  )</STRONG></DT>
+<DD>This effectively stops the network, it removes the OSC responders, sends all clients the message that they're unregistered, and that the datanetwork has quit. This method is called automatically upon shutdown of sclang (or recompiling the library).</DD>
+
+
+<DT><STRONG>makeGui (  )</STRONG></DT>
+<DD>Create a GUI for the OSC interface. This shows the connected clients, and a transcript of their interactions with the host.</DD>
+
+<DT><STRONG>verbose (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>verbose_ ( level )</STRONG></DT>
+<DD>The higher the verbosity level, the more messages will be posted about what is going on. This is useful for debugging the network connections. 0 - no posts, 1 - errors/warning messages, 2 - all incoming osc messages, except /pong and /set/data, 3 - data sent out and coming in (/set/data), 4 - /pong messages.</DD>
+
+
+<h4> - Autoconnection and recovery support - </h4>
+
+<DT><STRONG>announce ( ports )</STRONG></DT>
+<DD>Announce the network on the given ports. If none are given, the defaults <code>(6000..6009) ++ (57120..57129);</code> are used. It sends the message out as a broadcast message over the local area network, and as a separate message to all stored client IPs (backup solution, in case broadcasting is not allowed on the network). This method also writes the publicly accessible file with the port on which the interface is listening. This method is called automatically, as the OSC interface is instantiated.</DD>
+
+<DT><STRONG>maxMissedPongs (  )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>maxMissedPongs_ (  )</STRONG></DT>
+<DD>When a client does not respond to this many pings, it will be removed from the registered clients. Ping messages are sent every second, so this is the amount of seconds after which a client automatically gets removed. Default value is 60.</DD>
+
+<DT><STRONG>backupClients ( name )</STRONG></DT>
+<DD>Backup the currently connected clients and their properties to a file with name. The file is placed in the userAppSupportDir.</DD>
+
+<DT><STRONG>restoreClients ( name )</STRONG></DT>
+<DD>Restore clients from a file with name, that is in the userAppSupportDir.</DD>
+
+<DT><STRONG>backupClientsIPs ( name )</STRONG></DT>
+<DD>Backup the currently connected client IPs. Is called from backupClients.</DD>
+
+<DT><STRONG>restoreClientsIPs ( name )</STRONG></DT>
+<DD>Restore client IPs from a file with name, that is in the userAppSupportDir.</DD>
+
+
+<h4> - Kind of private methods and variables (useful for inspection) - </h4>
+
+<DT><STRONG>clients (  )</STRONG></DT>
+<DD>Array with the current clients.</DD>
+
+<DT><STRONG>setters (  )</STRONG></DT>
+<DD>IdentityDictionary that keeps track of which clients are setters for which nodes.</DD>
+
+<DT><STRONG>network (  )</STRONG></DT>
+<DD>The SWDataNetwork to which this OSC interface belongs.</DD>
+
+<DT><STRONG>watcher (  )</STRONG></DT>
+<DD>The SkipJack which regularly sends the pings to all clients.</DD>
+
+<DT><STRONG>sendPings (  )</STRONG></DT>
+<DD>Send pings to all clients.</DD>
+
+<DT><STRONG>createResponders (  )</STRONG></DT>
+<DD>Creates all OSC responders.</DD>
+
+<DT><STRONG>removeResponders (  )</STRONG></DT>
+<DD>Removes all OSC responders.</DD>
+
+
+
+<h4> - Methods called by the network (SWDataNetwork) - </h4>
+
+
+<DT><STRONG>newExpected ( node )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>newNode ( node )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>newSlot ( slot )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>sendData ( id, data )</STRONG></DT>
+<DD>-- old version --</DD>
+<DT><STRONG>sendDataNode ( node )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>nodeRemoved ( id )</STRONG></DT>
+<DD></DD>
+
+
+<h4> - Methods called from OSC messages - client management </h4>
+
+<DT><STRONG>findClient ( addr )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>addClient ( addr )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>removeClient ( addr )</STRONG></DT>
+<DD></DD>
+
+<h4> - Methods called from OSC messages - queries </h4>
+
+<DT><STRONG>expectedQuery ( addr )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>nodeQuery ( addr )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>slotQuery ( addr )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>clientQuery ( addr )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>subscriptionQuery ( addr )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>setterQuery ( addr )</STRONG></DT>
+<DD></DD>
+
+<h4> - Methods called from OSC messages - subscriptions and data retrieval </h4>
+
+<DT><STRONG>allNodeSubscribe ( addr )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>nodeSubscribe ( addr, msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>slotSubscribe ( addr, msg )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>allNodeUnsubscribe ( addr )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>nodeUnsubscribe ( addr, msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>slotUnsubscribe ( addr, msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>getNode ( addr, msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>getSlot ( addr, msg )</STRONG></DT>
+<DD></DD>
+
+<h4> - Methods called from OSC messages - node control by clients </h4>
+
+<DT><STRONG>setData ( addr, msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>removeAll ( addr )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>removeNode ( addr, msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>labelNode ( addr, msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>labelSlot ( addr, msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>addExpected ( addr, msg )</STRONG></DT>
+<DD></DD>
+
+<h4> - Error handling - </h4>
+
+<DT><STRONG>getErrorString ( addr, id, msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>errorMsg ( addr, request, id, msg )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>warnMsg ( addr, request, id, msg )</STRONG></DT>
+<DD></DD>
+
+<h4> - Recording and logging - </h4>
+
+
+<DT><STRONG>logMsg ( string )</STRONG></DT>
+<DD>Sends a log message to the gui (if present), or to the file (if logging). Called from various methods.</DD>
+<DT><STRONG>initLog ( fn )</STRONG></DT>
+<DD>Create a logfile with filename <em>fn</em>.</DD>
+<DT><STRONG>writeLogLine ( line )</STRONG></DT>
+<DD>Write one line into the log. (format: localtime stamp - line)</DD>
+<DT><STRONG>closeLog (  )</STRONG></DT>
+<DD>Close the logfile and stop logging.</DD>
+
+
+</DL>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+    HREF="SWDataNetworkOSCClient.html">SWDataNetworkOSCClient</A>
+</LI>
+<LI><I> Previous:</I> <A 
+  HREF="SWDataNetworkSpec.html">SWDataNetworkSpec</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<BR><HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</BODY>
+</HTML>

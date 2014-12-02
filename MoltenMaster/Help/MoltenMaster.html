@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ff}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #0000ff}
+span.s3 {color: #000000}
+span.s4 {color: #1311bf}
+span.s5 {font: 9.0px Monaco}
+span.s6 {color: #007300}
+span.s7 {color: #0000bf}
+span.s8 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>MoltenMaster<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>playback manager for generative albums</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="SC://Object"><span class="s2"><b>Object</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p1">MoltenMaster is a playback manager for generative sound albums, which one might want to distribute as software instead of realized and finished (in some sense "Gold Mastered" at some stage of production) recordings. It manages the initialization and deallocation of resources relevant to your pieces in a simple manner.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><b>See also:</b> <a href="MoltenPiece.html">MoltenPiece</a></span><span class="s4"> <a href="MoltenPlayer.html"><span class="s2">MoltenPlayer</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (argNumPieces)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argNumPieces </b>- Number of piece slots to allocate. Should be an Integer.</p>
+<p class="p6"><br></p>
+<p class="p10"><b>Accessing Instance and Class Variables</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>pieces</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This is a List of pieces that are of type <a href="MoltenPiece.html"><span class="s2">MoltenPiece</span></a>. The size of this array is the number of pieces supplied as an argument at instance creation.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>isPlaying</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Boolean. Indicates the current playback status.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>lockAction_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>lockAction</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>When you build a GUI around this class (see <a href="MoltenPlayer.html"><span class="s2">MoltenPlayer</span></a> for the simple one), you will want to lock the GUI widgets at initialization (before playback) and probably "deallocation of resources" stages. The class runs this function when it is suitable to lock GUI input, so if you supply one, it will be executed at appropriate stages.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>unlockAction_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>unlockAction</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>See lockAction above. This function, if supplied, is executed when it is meaningful to interact with your instance again.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>currentlyPlaying</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The index of the piece that is currently playing. If isPlaying is false, this is -1.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b>Doing Some Task</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>playPiece (argIndex)</b></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Initializes and plays the piece with the given index. If there is a piece already on playback, it is stopped and its resources are deallocated before playing back the new piece.</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>stopPlayback</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Stops the playback and deallocates the resources of the playing piece.</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>signal</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>To see what this does, see the help for <a href="MoltenPiece.html"><span class="s2">MoltenPiece</span></a>.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p10"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p11">// to make sense of all that is going on here</p>
+<p class="p11">// be sure to check MoltenPiece help too.</p>
+<p class="p12"><br></p>
+<p class="p13">s.boot;</p>
+<p class="p12"><br></p>
+<p class="p13">(</p>
+<p class="p14">SynthDef<span class="s3">(</span><span class="s6">\piece1</span><span class="s3">,</span></p>
+<p class="p13">{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">arg</span> buf, hold = 1;</p>
+<p class="p12"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> env = <span class="s7">EnvGen</span>.ar(<span class="s7">Env</span>([0, 1, 0], [0.01, 3], 2, 1), hold, doneAction: 2);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> trig = <span class="s7">Impulse</span>.ar(8);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> needle = (<span class="s7">Sweep</span>.ar(trig, 44100) % <span class="s7">TRand</span>.ar(100,22050,trig));</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> snd = <span class="s7">BufRd</span>.ar(1, buf, ([44100, 44600] * <span class="s7">LFNoise0</span>.ar(8,9,9)) + needle) * env;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">Out</span>.ar(0, snd);</p>
+<p class="p13">}).memStore;</p>
+<p class="p12"><br></p>
+<p class="p14">SynthDef<span class="s3">(</span><span class="s6">\piece2</span><span class="s3">,</span></p>
+<p class="p13">{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">arg</span> hold = 1;</p>
+<p class="p12"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> env = <span class="s7">EnvGen</span>.ar(<span class="s7">Env</span>([0, 1, 0], [1, 3], 2, 1), hold, doneAction: 2);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> snd =<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>SinOsc<span class="s3">.ar</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">Impulse</span>.ar(2).lagud(0,0.4)*360,</p>
+<p class="p14"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Integrator<span class="s3">.ar</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">Integrator</span>.ar(Impulse.ar(64).lag(<span class="s7">LFNoise1</span>.ar(2!2,2,2))*99,0.9),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.99</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>).fold2(pi)</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>) * env;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">Out</span>.ar(0, snd);</p>
+<p class="p13">}).memStore;</p>
+<p class="p13">)</p>
+<p class="p12"><br></p>
+<p class="p13">(</p>
+<p class="p14"><span class="s3">a = </span>MoltenMaster<span class="s3">(2);</span></p>
+<p class="p13">a.pieces[0].nameString = <span class="s8">"HoustonWarp"</span>;</p>
+<p class="p13">a.pieces[0].durationString = <span class="s8">"infinite"</span>;</p>
+<p class="p13">a.pieces[1].nameString = <span class="s8">"Ugly Dance"</span>;</p>
+<p class="p13">a.pieces[1].durationString = <span class="s8">"infinite"</span>;</p>
+<p class="p12"><br></p>
+<p class="p13">a.pieces[0].initAction =</p>
+<p class="p13"><span class="Apple-tab-span">	</span>{</p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fork </span>//a thread is necessary!</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b = </span><span class="s7">Buffer</span><span class="s3">.read(s, </span>"sounds/a11wlk01.wav"<span class="s3">);</span></p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>s.sync; </span>//make sure it is fully loaded at init;</p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.signal; </span>//signal a to proceed to playback.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span>};</p>
+<p class="p12"><br></p>
+<p class="p13">a.pieces[0].playAction =</p>
+<p class="p13"><span class="Apple-tab-span">	</span>{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fork</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~piece1 = <span class="s7">Synth</span>(<span class="s6">\piece1</span>, [<span class="s6">\buf</span>, b]);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.signal;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span>};</p>
+<p class="p12"><br></p>
+<p class="p13">a.pieces[0].finishAction =</p>
+<p class="p13"><span class="Apple-tab-span">	</span>{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fork</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~piece1.set(<span class="s6">\hold</span>, 0);</p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3.wait; </span>//wait for fadeout of env.</p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//~piece1.free; //not necessary here, env has doneAction: 2</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.signal;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span>};</p>
+<p class="p12"><span class="Apple-tab-span">	</span></p>
+<p class="p13">a.pieces[1].initAction =</p>
+<p class="p13"><span class="Apple-tab-span">	</span>{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fork<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//nothing to init, hust signal. We could omit setting this action.</p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.signal; </span>//signal a to proceed to playback.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span>};</p>
+<p class="p12"><br></p>
+<p class="p13">a.pieces[1].playAction =</p>
+<p class="p13"><span class="Apple-tab-span">	</span>{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fork</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~piece2 = <span class="s7">Synth</span>(<span class="s6">\piece2</span>);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.signal;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span>};</p>
+<p class="p12"><br></p>
+<p class="p13">a.pieces[1].finishAction =</p>
+<p class="p13"><span class="Apple-tab-span">	</span>{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fork</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~piece2.set(<span class="s6">\hold</span>, 0);</p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3.wait; </span>//wait for fadeout of env.</p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//~piece2.free; //not necessary here, env has doneAction: 2</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.signal;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span>};</p>
+<p class="p13">)</p>
+<p class="p12"><br></p>
+<p class="p13">a.playPiece(0);</p>
+<p class="p11"><span class="s3">a.stopPlayback; </span>//blocks further input for 3 seconds, given our finishAction</p>
+<p class="p13">a.playPiece(1);</p>
+<p class="p13">a.stopPlayback;</p>
+<p class="p12"><br></p>
+<p class="p11">//changing tracks:</p>
+<p class="p11"><span class="s3">a.playPiece(0); </span>//while playing execute the code below</p>
+<p class="p13">a.playPiece(1);</p>
+<p class="p12"><br></p>
+<p class="p13">a.stopPlayback;</p>
+<p class="p12"><br></p>
+<p class="p11">//a simple GUI that plays MoltenMasters...</p>
+<p class="p14"><span class="s3">p = </span>MoltenPlayer<span class="s3">(a);</span></p>
+</body>
+</html>

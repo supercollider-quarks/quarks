@@ -1,0 +1,78 @@
+CLASS:: RedMstGUI
+SUMMARY:: gui window for RedMst
+CATEGORIES:: Red>redMst
+RELATED:: Classes/RedMst, Classes/RedMstGUI2, Classes/RedMstGUI3
+
+DESCRIPTION::
+Use this class for lowest CPU usage. link::Classes/RedMstGUI2:: and link::Classes/RedMstGUI3:: adds metronome and transport view but takes a little bit more to update.
+
+The GUI takes the following keyboard commands...
+table::
+## escape key || go to next section. Same as code::RedMst.next::
+## left arrow key || go to previous section. Same as code::RedMst.prev::
+## right arrow key || go to next section. Same as code::RedMst.next::
+## space key || toggle RedMst play and stop
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: size
+Fontsize. The default is 24.
+
+ARGUMENT:: skin
+This is a GUI.skin. If not gives a special 'red' skin will be provided.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedMstGUI, prInitInterface, prInitMetro, prInitUser, prInitTask, prInitCleanUp
+
+METHOD:: dur
+How often to redraw the window in beats. The default is 0.25 which means every 16th note. It uses code::RedMst.clock::.
+
+METHOD:: win
+Handle to the actual window created.
+
+EXAMPLES::
+
+CODE::
+//--simple example
+(
+s.waitForBoot{
+RedMst.clear;
+RedMst.clock= TempoClock(140/60);
+RedMst.quant= 8;
+RedMstGUI(20);
+
+RedTrk(
+	\bass,
+	Pbind(\degree, Pseq([0, 5], inf), \octave, 4),
+	#[0, 1, 2, 3]								
+);
+RedTrk(
+	\melody,
+	Pbind(\degree, Pseq([0, 5, 2, 3, 3, 1], inf), \dur, Pseq([0.25, 0.25, 0.5], inf)),
+	#[1, 2, 5]
+);
+RedTrk(
+	\melody2,
+	Pbind(\degree, Pseq([7, 6, 4, 3], inf), \dur, 2, \octave, 6),
+	#[2, 3]
+);
+}
+)
+
+RedMst.play;
+RedMst.next;
+RedMst.next;
+RedMst.quant= 2;
+
+RedMstGUI(64);						//add more guis
+RedMstGUI(24, GUI.skins.default);
+RedMstGUI(9);
+
+RedMst.next;
+RedMst.stop;
+RedMst.clear;
+::

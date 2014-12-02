@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {text-decoration: underline ; color: #0000ff}
+span.s3 {color: #0000bf}
+span.s4 {color: #606060}
+span.s5 {color: #000000}
+span.s6 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>AutoRand<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>animating a controller with randomsteps.<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="adclib/AutoLoop.html"><span class="s2">AutoLoop</span></a><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Creation / Class Methods</b></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>*new (ctl, spec, rd, exp, dt)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>make an AutoRand</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>ctl </b>-<span class="Apple-converted-space">  </span>the controller to randomize. e.g. an NumberBox, or EZSlider etc.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>spec </b>- its controlSpec,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>rd </b>- the normalized random offset (between 0 and 1) by which to mutate.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>exp </b>- the exponent for the random distribution:<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1 is linear distribution,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2 is quadratically nearer the previous value</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dt </b>- a number, function or stream for the wait time between random moves.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w = <span class="s3">Window</span>(<span class="s4">"autorand"</span>).front; w.addFlowLayout;</p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>e = </span><span class="s3">EZSlider</span><span class="s5">(w, 300@20, </span><span class="s6">\freq</span><span class="s5">, </span><span class="s6">\freq</span><span class="s5">); </span>// the controller to randomize</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a = <span class="s3">AutoRand</span>(e, e.controlSpec,<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rd: 0.2, <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// normalized variation is 0.2</p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>exp: 1, <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// distrib is linear</p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dt: 0.5<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// every half second</p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>); <span class="Apple-tab-span">	</span></span>// the autorand:</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.makeButton(w, <span class="s3">Rect</span>(0,0,20,20));</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p11"><b>Accessing Instance and Class Variables</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>ctl<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the control to be randomly animated</p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>tpx</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the taskproxy doing the random jumps</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>spec<span class="Apple-tab-span">	</span></b>the controlspec by which to unmap</p>
+<p class="p6"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>rd_(val)<span class="Apple-tab-span">	</span> </b>set the maximum random jump value, between 0 and 1</p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>rd</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>get the maximum random jump value</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13">a.rd_(1.0);<span class="Apple-tab-span">	</span></p>
+<p class="p6"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>exp_(val)<span class="Apple-tab-span">	</span></b>set the exponent for the distribution shape : 1 is lin, 2 is quadratic etc.</p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>exp<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>set the exponent for the distribution shape</p>
+<p class="p6"><b></b><br></p>
+<p class="p14">a.exp_(3);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// higher exponents mean: prefer smaller jumps, big ones rarely</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>dt_(val)<span class="Apple-tab-span">	</span></b>set the function or value for the wait time between random moves.</p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>dt</b></p>
+<p class="p6"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>instance methods:<span class="Apple-converted-space"> </span></b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>play</b></p>
+<p class="p4"><br></p>
+<p class="p14">a.play;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>stop</b></p>
+<p class="p4"><br></p>
+<p class="p14">a.stop;</p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>makeButton (parent, bounds)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Put a stop/start button on a parent view or window</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>parent </b>-<span class="Apple-converted-space">  </span>the parent view (window or compositeview)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>bounds </b>- a rect with the button size.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+</body>
+</html>

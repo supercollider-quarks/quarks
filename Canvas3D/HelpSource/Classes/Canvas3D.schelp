@@ -1,0 +1,676 @@
+CLASS:: Canvas3D
+summary:: 3D vector graphics canvas
+categories:: GUI>3D
+related:: Classes/Canvas3DItem
+
+DESCRIPTION::
+Canvas3D provides a simple wire-frame 3D vector graphics canvas. It displays a list of link::Classes/Canvas3DItem::s, and can be transformed and animated.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new canvas view.
+
+argument:: parent
+Parent link::Classes/View::
+
+argument:: bounds
+A link::Classes/Rect:: describing the position and size of this view inside the parent.
+
+returns:: A new Canvas3D instance.
+
+subsection:: Matrix transforms
+The following methods are used to create and apply matrix transforms, for translating, scaling and rotating.
+
+METHOD:: mIdentity
+Create an identity matrix.
+
+METHOD:: mTranslate
+Create a matrix for translation.
+
+argument:: tx
+X translation
+
+argument:: ty
+Y translation
+
+argument:: tz
+Z translation
+
+METHOD:: mScale
+Create a matrix for scaling.
+
+argument:: sX
+X scaling
+
+argument:: sY
+Y scaling
+
+argument:: sZ
+Z scaling
+
+METHOD:: mRotateX
+Create a matrix for rotating around X axis.
+
+argument:: ax
+X rotation
+
+METHOD:: mRotateY
+Create a matrix for rotating around Y axis.
+
+argument:: ay
+Y rotation
+
+METHOD:: mRotateZ
+Create a matrix for rotating around Z axis.
+
+argument:: az
+Z rotation
+
+METHOD:: matrixMatrixMul
+Multiply a matrix with another matrix.
+
+returns:: A matrix.
+
+METHOD:: vectorMatrixMul
+Multiply a vector with a matrix.
+
+argument:: vector
+A 3-element link::Classes/Array:: describing a 3D vector: code::[x,y,z]::
+
+argument:: matrix
+A matrix
+
+returns:: A vector.
+
+
+INSTANCEMETHODS::
+private:: init
+
+subsection:: Managing items
+
+METHOD:: items
+Get/set the array of items in this canvas. The items should be instances of link::Classes/Canvas3DItem::
+
+METHOD:: add
+Add an item to the canvas.
+
+argument:: item
+An instance of link::Classes/Canvas3DItem::
+
+METHOD:: remove
+Remove an item from the canvas.
+
+argument:: item
+An instance of link::Classes/Canvas3DItem::
+
+subsection:: Global settings and transforms
+
+METHOD:: background
+Set the background color.
+
+argument:: b
+A link::Classes/Color::
+
+METHOD:: scale
+Get/set the global pixel scale.
+
+METHOD:: perspective
+Get/set the perspective factor. Useful range is 0.0 (no perspective) to below 1.0.
+
+METHOD:: distance
+Get/set the view distance. Useful range is around 2.0.
+
+METHOD:: transforms
+Get/set an array of transformation matrices to be applied to the whole canvas.
+
+subsection:: Displaying
+
+METHOD:: refresh
+Update the canvas.
+
+METHOD:: preDrawFunc
+Function to evaluate at the beginning of the draw function.
+
+METHOD:: postDrawFunc
+Function to evaluate at the end of the draw function.
+
+METHOD:: animate
+Start animation.
+
+argument:: rate
+Animation rate in frames per second. If code::nil::, stop animation.
+
+argument:: func
+Animation callback. This function is called once for each frame, and is passed the frame count as argument.
+
+discussion::
+See link::#animated_canvas:: example below.
+
+EXAMPLES::
+subsection:: Hello cube
+First a very simple example. Set up a canvas and add a slightly rotated cube.
+code::
+(
+    var w, width = 500, height = 400, rate = 0.005;
+
+    w = Window("3d canvas demo", Rect(128, 64, width, height), false)
+        .front;
+
+    Canvas3D(w, Rect(0, 0, width, height))
+        .scale_(200)
+        .perspective_(0.3)
+        .distance_(2)
+        .add(
+            Canvas3DItem.cube
+            .transform(Canvas3D.mRotateY(pi/3))
+            .transform(Canvas3D.mRotateX(pi/8))
+        );
+)
+::
+
+subsection:: Rotate canvas with mouse
+In this example, we add a cube and a custom spiral-shape, and set up a mouseMoveAction to rotate the canvas.
+code::
+(
+    var width = 500, height = 400, rate = 0.005;
+    var w, u;
+
+    w = Window("3d canvas demo", Rect(128, 64, width, height), false)
+        .front;
+
+    u = Canvas3D(w, Rect(0, 0, width, height))
+        .background_(Color.black)
+        .scale_(200)
+        .perspective_(0.4)
+        .distance_(2);
+
+    // add triangular spiral
+    u.add(Canvas3DItem()
+        .color_(Color.green)
+        .width_(1.5)
+        .paths_([30.collect {|i|v = [sin(pi/1.5*i)*0.5,cos(pi/1.5*i)*0.5,i.linlin(0,30,-1,1)]}])
+    );
+
+    // add cube
+    u.add(Canvas3DItem.cube
+        .color_(Color.white)
+        .width_(2)
+    );
+
+    // spin canvas on mouse move
+    u.mouseMoveAction = {|v,x,y|
+        u.transforms = [
+            Canvas3D.mRotateY(x / -200 % 2pi),
+            Canvas3D.mRotateX(y / 200 % 2pi)
+        ];
+        u.refresh;
+    };
+
+    u.mouseMoveAction.value(nil, 50, 50); // initial rotation
+)
+::
+
+subsection:: Animated canvas
+A more advanced example, with three items and animation where we spin both the canvas and one of the items.
+code::
+(
+    var width = 500, height = 400, rate = 0.005;
+    var w, u, item;
+
+    w = Window("3d canvas demo", Rect(128, 64, width, height), false)
+        .front;
+
+    u = Canvas3D(w, Rect(0, 0, width, height))
+        .scale_(200)
+        .perspective_(0.5)
+        .distance_(2);
+
+    // add a spiral
+    u.add(Canvas3DItem()
+        .color_(Color.grey)
+        .width_(1.5)
+        .paths_([
+            50.collect {|i|
+                v = [sin(pi/3*i),cos(pi/3*i),i.linlin(0,50,-1,1)] * 0.5
+            },
+            [[0,0,-1],[0,0,1]]
+        ])
+    );
+
+    // add a red cube
+    u.add(item = Canvas3DItem.cube
+        .color_(Color.red)
+        .width_(2)
+        .transform(Canvas3D.mScale(0.65))
+    );
+
+    // add a custom shape
+    u.add(Canvas3DItem()
+        .color_(Color.black)
+        .width_(3)
+        .paths_([#[0,4,6,2,3,7,5,1,0].collect{|i|i.asBinaryDigits(3)*2-1}])
+    );
+
+    // animate
+    u.animate(40) {|t|
+        u.transforms = [ // spin the canvas
+            Canvas3D.mRotateY(t*rate*1.0 % 2pi),
+            Canvas3D.mRotateX(t*rate*1.5 % 2pi)
+        ];
+        item.transforms = [ // spin the red cube
+            Canvas3D.mRotateZ(t*rate*7 % 2pi)
+        ];
+    };
+)
+::
+
+subsection:: Drawing realtime sound
+Another more advanced example.
+code::
+//use mouse to rotate canvas
+//add your own sounds to x, y, z (maybe with InFeedback.ar)
+(
+//--settings
+var width= 640, height= 480;
+var fps= 60;
+var buffersize= 1024;
+var scale= 250;
+var perspective= 0.3;
+var distance= 2;
+
+//--
+var win= Window("3d soundwave canvas", Rect(128, 64, width, height), false).front;
+var can= Canvas3D(win, Rect(0, 0, width, height)).scale_(scale).perspective_(perspective).distance_(distance);
+var itemCube= Canvas3DItem.cube;
+var itemWave= Canvas3DItem.new;
+var path= [];
+var buffer;
+can.add(itemCube);
+can.add(itemWave);
+s.waitForBoot{
+	buffer= Buffer.alloc(s, buffersize, 3);
+	s.sync;
+	{
+		var x= SinOsc.ar(42);//sound x
+		var y= SinOsc.ar(83);//sound y
+		var z= SinOsc.ar(164);//sound z
+		RecordBuf.ar([x, y, z], buffer);
+		Silent.ar;
+	}.play;
+	s.sync;
+	can.animate(fps, {|frame|
+		buffer.getn(0, buffersize-1*3, {|data| path= data.clump(3)});
+		itemWave.paths= [path];
+	});
+	can.mouseMoveAction= {|v, x, y|
+		can.transforms= [
+			Canvas3D.mRotateY(x/scale.neg%2pi),
+			Canvas3D.mRotateX(y/scale%2pi)
+		];
+	};
+	CmdPeriod.doOnce({win.close; buffer.free});
+};
+)
+::
+
+subsection:: spinning toruses
+examples by redFrik
+code::
+(
+	var width = 500, height = 400;
+	var w, u;
+	
+	var segments= 40;
+	var minorRadius= 0.667;
+	var majorRadius= 1;
+	
+	w = Window("spinning doughnut", Rect(128, 64, width, height), false)
+		.front;
+	u = Canvas3D(w, Rect(0, 0, width, height));
+	u.add(Canvas3DItem()
+		.paths_(
+			Array.fill(segments+1, {|i|
+				var u= i/segments*2pi;
+				Array.fill(segments+1, {|j|
+						var v= j/segments*2pi;
+						var x= (minorRadius*cos(v)+majorRadius)*cos(u);
+						var y= (minorRadius*cos(v)+majorRadius)*sin(u);
+						var z= minorRadius*sin(v);
+						[x, y, z];
+					});
+				})
+		)
+	);
+	u.animate(40, {|t|
+		u.transforms = [
+			Canvas3D.mRotateY(t/52%2pi*sin(t/30)),
+			Canvas3D.mRotateX(t/50%2pi),
+			Canvas3D.mScale(1, 1, sin(t/32)*2)
+		];
+	});
+)
+
+//--with trails
+(
+	var width = 500, height = 400;
+	var w, u;
+	
+	var segments= 40;
+	var minorRadius= 2;
+	var majorRadius= 1;
+	
+	w = Window("spinning doughnut", Rect(128, 64, width, height), false)
+		.front;
+	u = Canvas3D(w, Rect(0, 0, width, height));
+	u.view.clearOnRefresh= false;
+	u.add(Canvas3DItem()
+		.paths_(
+			Array.fill(segments+1, {|i|
+				var u= i/segments*2pi;
+				Array.fill(segments+1, {|j|
+						var v= j/segments*2pi;
+						var x= (minorRadius*cos(v)+majorRadius)*cos(u);
+						var y= (minorRadius*cos(v)+majorRadius)*sin(u);
+						var z= minorRadius*sin(v);
+						[x, y, z];
+					});
+				})
+		)
+	);
+	u.view.drawFunc= {
+		Pen.fillColor= Color.grey(1, 0.1);	//alpha set trail amount
+		Pen.fillRect(Rect(0, 0, width, height));
+	}<>u.view.drawFunc;
+	u.animate(40, {|t|
+		u.transforms = [
+			Canvas3D.mRotateY(t/22),
+			Canvas3D.mRotateX(t/25*sin(t/23)),
+			Canvas3D.mScale(1, 1, sin(t/24))
+		];
+	});
+)
+
+//--screensaver like
+(
+	var width = 500, height = 400;
+	var w, u, temp;
+	
+	var segments= 50;
+	var minorRadius= 2.3;
+	var majorRadius= 2.2;
+	
+	w = Window("spinning doughnut screensaver", Rect(128, 64, width, height), false)
+		.front;
+	u = Canvas3D(w, Rect(0, 0, width, height));
+	u.view.clearOnRefresh= false;
+	u.add(Canvas3DItem()
+		.width_(0.1)
+		.paths_(
+			Array.fill(segments+1, {|i|
+				var u= i/segments*2pi;
+				Array.fill(segments+1, {|j|
+						var v= j/segments*2pi;
+						var x= (minorRadius*cos(v)+majorRadius)*cos(u);
+						var y= (minorRadius*cos(v)+majorRadius)*sin(u);
+						var z= minorRadius*sin(v);
+						[x, y, z];
+					});
+				})
+		)
+	);
+	temp= u.view.drawFunc;
+	u.view.drawFunc= u.view.drawFunc<>{
+		Pen.fillColor= Color.grey(1, 0.01);
+		Pen.fillRect(Rect(0, 0, width, height));
+		u.items.do{|x| x.color= Color.hsv(sin(u.view.frame/220), sin(u.view.frame/230), sin(u.view.frame/240))};
+		u.transforms = [
+			Canvas3D.mRotateY(u.view.frame/220),
+			Canvas3D.mRotateX(u.view.frame/230),
+			Canvas3D.mRotateZ(u.view.frame/240),
+			Canvas3D.mScale(sin(u.view.frame/260), sin(u.view.frame/250), sin(u.view.frame/24))
+		];
+	};
+	u.view.animate= true;
+	CmdPeriod.doOnce{if(w.isClosed.not, {w.close})};
+)
+
+//--sound reactive
+(
+	var width = 500, height = 400;
+	var w, u, amp= 0;
+	
+	var segments= 25;
+	var minorRadius= 0.5;
+	var majorRadius= 1.5;
+	
+	w = Window("spinning wireframe doughnut", Rect(128, 64, width, height), false)
+		.front;
+	u = Canvas3D(w, Rect(0, 0, width, height));
+	u.add(Canvas3DItem()
+		.paths_(
+			Array.fill(segments+1, {|i|
+				var u= i/segments*2pi;
+				Array.fill(segments+1, {|j|
+					var v= j/segments*2pi;
+					var x= (minorRadius*cos(v)+majorRadius)*cos(u);
+					var y= (minorRadius*cos(v)+majorRadius)*sin(u);
+					var z= minorRadius*sin(v);
+					[x, y, z];
+				});
+			})
+			++
+			Array.fill(segments+1, {|i|
+				var u= i/segments*2pi;
+				Array.fill(segments+1, {|j|
+					var v= j/segments*2pi;
+					var x= (minorRadius*cos(u)+majorRadius)*cos(v);
+					var y= (minorRadius*cos(u)+majorRadius)*sin(v);
+					var z= minorRadius*sin(u);
+					[x, y, z];
+				});
+			})
+		)
+	);
+	u.animate(40, {|t|
+		u.transforms = [
+			Canvas3D.mRotateY(sin(t/42)*sin(t/53)),
+			Canvas3D.mRotateX(sin(t/31)*sin(t/64)),
+			Canvas3D.mRotateX(sin(t/20)*sin(t/75)),
+			Canvas3D.mScale(amp, amp, sin(t/9)*sin(t/86))
+		];
+	});
+	
+	//--sound input
+	s.waitForBoot{
+		OSCFunc({|m| amp= m[3].explin(0.01, 1, 0.667, 1.25)}, '/tr');
+		{SendTrig.kr(Impulse.kr(40), 0, Amplitude.kr(SoundIn.ar, 0.1, 0.4).lagud(0.1, 0.5)); DC.ar(0)}.play;
+	};
+)
+::
+
+subsection:: knots
+examples by jhr
+code::
+// real knots, finally.
+
+(
+	var width = 500, height = 400, rate = 0.005;
+	var w, u;
+	var a = { rrand(1000.0, 2000.0).round(10) } ! 3;
+	var b = { rrand(100.0, 400.0) } ! 3;
+	var c = { rrand(8000.0, 10000.0).round(10) } ! 3;
+	
+	//thisThread.randSeed = Date.seed;
+
+	w = Window("lissajous", Rect(128, 64, width, height), false)
+		.front;
+
+	u = Canvas3D(w, Rect(0, 0, width, height))
+		.background_(Color.black)
+		.scale_(200)
+		.perspective_(0.4)
+		.distance_(1.8);
+
+	// add triangular spiral
+	u.add(Canvas3DItem()
+		.color_(Color.green)
+		.width_(0.5)
+		.paths_([2000.collect {|i|
+			// sin(i / a * 40 + b) + sin(i / c * 10 + b.reverse) * 0.3
+			sin(i / a * 40 + b + (sin(i / c * a / 3 + b.reverse) * 0.4)) * 0.5
+
+			}
+		])
+	);
+
+	// add cube
+	u.add(Canvas3DItem.cube
+		.color_(Color.white)
+		.width_(0.2)
+	);
+
+	u.keyTyped = { "hello".postln };
+
+	// spin canvas on mouse move
+	u.mouseMoveAction = {|v,x,y, mod|
+	
+		u.transforms = [
+			Canvas3D.mRotateY(x / -200 % 2pi),
+			Canvas3D.mRotateX(y / 200 % 2pi)
+		];
+		u.refresh;
+	};
+
+	u.mouseMoveAction.value(nil, 50, 50); // initial rotation
+)
+
+
+// strange knots
+
+(
+	var width = 500, height = 400, rate = 0.005;
+	var w, u, knot;
+	var a = { rrand(1000.0, 2000.0).round(10) } ! 3;
+	var b = { rrand(100.0, 400.0) } ! 3;
+	var c = { rrand(8000.0, 10000.0).round(10) } ! 3;
+	
+	//thisThread.randSeed = Date.seed;
+
+	w = Window("lissajous", Rect(128, 64, width, height), false)
+		.front;
+
+	u = Canvas3D(w, Rect(0, 0, width, height))
+		.background_(Color.black)
+		.scale_(200)
+		.perspective_(0.4)
+		.distance_(1.8);
+
+	// add triangular spiral
+	u.add(knot = Canvas3DItem()
+		.color_(Color.green)
+		.width_(0.5)
+		.paths_([200.collect {|i|
+			// sin(i / a * 40 + b) + sin(i / c * 10 + b.reverse) * 0.3
+			sin(i / a * 40 + b + (sin(i / c * a / 3 + b.reverse) * 0.4)) * 0.5
+
+			}
+		])
+	);
+
+	// add cube
+	u.add(Canvas3DItem.cube
+		.color_(Color.white)
+		.width_(0.2)
+	);
+
+	u.keyTyped = { "hello".postln };
+
+	// spin canvas on mouse move
+	u.mouseMoveAction = {|v,x,y, mod|
+	
+		u.transforms = [
+			Canvas3D.mRotateY(x / -200 % 2pi),
+			Canvas3D.mRotateX(y / 200 % 2pi)
+		];
+		knot.paths_([1000.collect {|i|
+			// sin(i / a * 40 + b) + sin(i / c * 10 + b.reverse) * 0.3
+			sin(i / a * 80 + b + (sin(i / c * (y / 115000) * a / 3 + b.reverse * (x / 8000)) * 0.4)) * 0.5
+
+			}
+		]);
+	u.refresh;
+	};
+
+	u.mouseMoveAction.value(nil, 50, 50); // initial rotation
+)
+::
+
+subsection:: demoscene
+examples by kymatica
+code::
+(
+	var width = 500, height = 400;
+	var w, u, item;
+
+	var majorSegments= 16;
+	var minorRadius= 0.3;
+	var majorRadius= 1.2;
+	var minorSegments= 6;
+
+	w = Window("spinning doughnut", Rect(128, 64, width, height), false)
+		.front;
+	u = Canvas3D(w, Rect(0, 0, width, height))
+		.background_(Color.black);
+	u.add(Canvas3DItem()
+		.color_(Color(0.5,0.7,0.5,0.6))
+		.paths_(
+			Array.fill(majorSegments+1, {|i|
+				var u= i/majorSegments*2pi;
+				Array.fill(minorSegments+1, {|j|
+					var v= j/minorSegments*2pi;
+					var x= (minorRadius*cos(v)+majorRadius)*cos(u);
+					var y= (minorRadius*cos(v)+majorRadius)*sin(u);
+					var z= minorRadius*sin(v);
+					[x, y, z];
+				});
+			})
+		)
+	);
+	u.add(item = Canvas3DItem.cube
+		.color_(Color.white)
+		.transform(Canvas3D.mScale(0.5))
+	);
+
+	u.view.drawFunc = u.view.drawFunc <> {
+		Pen.fillColor = Color(0,0,0,0.1);
+		Pen.addRect(u.view.bounds);
+		Pen.fill
+	};
+	u.view.clearOnRefresh = false;
+	u.animate(40, {|t|
+		u.transforms = [
+			Canvas3D.mRotateY(t/50 + (sin(t/30)*2) %2pi),
+			Canvas3D.mRotateX(t/50%2pi),
+			Canvas3D.mScale(sin(t/40*4)*0.3+1)
+		];
+		item.transforms = [
+			Canvas3D.mRotateY(t/20%2pi)
+		];
+	});
+
+	// soundtrack
+	(
+	play {
+		clip2(Pulse.ar(
+			(Demand.kr(Impulse.kr(40),0,Dseq([48,63,67,69],inf))
+			+Demand.kr(Impulse.kr(1),0,Dseq([0,7,0,5,3,4,2,1],inf))).midicps
+		*[1,0.99]) * Decay.kr(TDuty.kr(Dseq(1/[8,8,8,8,4,2,2],inf)),0.7) * 0.4
++(Ringz.ar(TDuty.ar(Dseq([1/6,1/6,1/6,1-(1/4),1/2+(1/4)],inf)),45,0.4)*2).tanh
++(SinOsc.ar(Demand.kr(Impulse.kr(2),0,Dseq([48,48,55,54,46,47,53,52]-12,inf)).midicps,0,LFTri.kr(3,2)*4).sin*0.6)
++HPF.ar(LPF.ar(PinkNoise.ar(Decay.kr(Impulse.kr([1,1/7],[0.5,0]).sum,0.3)*4),12000),500).tanh)
+	}
+	);
+
+)
+::

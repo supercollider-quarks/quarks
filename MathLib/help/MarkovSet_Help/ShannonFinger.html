@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica; min-height: 16.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #0000bf}
+span.s4 {color: #606060}
+span.s5 {color: #bf0000}
+span.s6 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>ShannonFinger<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>shannon implementation of a markov set</b></p>
+<p class="p2"><b></b><br></p>
+<p class="p1">superclass: ShannonMarkovSet</p>
+<p class="p3"><b></b><br></p>
+<p class="p4"><br></p>
+<p class="p5">The basic <i>shannon</i> implementation of a markov set is to simply leave the data as it is and to</p>
+<p class="p5">iterate over it by doing random jumps and looking for the next matching item. The item that</p>
+<p class="p5">follows that one is the next item of the chain. As this requires searching the data, which can</p>
+<p class="p5">be of very irregular efficiency, this current implementation uses an identity dictionary to find</p>
+<p class="p5">the indices of items in constant time. Higher order is slightly more costly, but still this is a major</p>
+<p class="p5">speed increase.</p>
+<p class="p4"><br></p>
+<p class="p5">This implementation allows to vary the order at each step and it is very fast in reading.</p>
+<p class="p5">In difference to <b>MarkovSet</b> and <b>MarkovSetN</b> it can only read data as a chain, not as single nodes.<span class="Apple-converted-space"> </span></p>
+<p class="p5">Also it does not compress data, as the standard implementation does.</p>
+<p class="p3"><b></b><br></p>
+<p class="p3"><b></b><br></p>
+<p class="p5"><i>instance creation:</i></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>*new(size)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>*fill(size, stream)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><i>instance methods:</i></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>next(obj, order)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>return the next node for the input obj, using nth order (default = 1)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>put(index, obj)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>put object in the data at index i</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>wrapPut(index, obj)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>wrapPut object in the data at index i</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>parse(stream, length)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>read <i>length</i> items of stream</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>asStream(order, repeats)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>return a stream that reads from this set.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>order</b> can be any object that returns a stream on .asStream, returning integers.</p>
+<p class="p4"><b></b><br></p>
+<p class="p4"><b></b><br></p>
+<p class="p4"><b></b><br></p>
+<p class="p4"><b></b><br></p>
+<p class="p4"><b></b><br></p>
+<p class="p5"><b><i>setting the data</i></b></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s2">m = </span><span class="s3">ShannonFinger</span><span class="s2">(16); </span>// create a new instance with 16 slots.</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s4">"abc"</span>.do { <span class="s3">|item,i|</span> m.put(i, item) }; <span class="s5">// fill the first 3 slots</span></p>
+<p class="p6"><br></p>
+<p class="p8">m.data;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s4">"abcdefghij"</span>.do { <span class="s3">|item,i|</span> m.put(i, item) }; <span class="s5">// fill all 10 slots</span></p>
+<p class="p6"><br></p>
+<p class="p8">m.data;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p7">// fill the set directly:</p>
+<p class="p6"><br></p>
+<p class="p9"><span class="s2">m.data = </span>"abcdefghij"<span class="s2">;</span></p>
+<p class="p6"><br></p>
+<p class="p7">// setting higher indices throws an error:</p>
+<p class="p6"><br></p>
+<p class="p8">m.put(20, $x);</p>
+<p class="p6"><br></p>
+<p class="p7">// wrapPut:</p>
+<p class="p6"><br></p>
+<p class="p8">m.wrapPut(20, $x);</p>
+<p class="p8">m.data;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5"><b><i>using the set with the message 'next'</i></b></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s2">m.next($b); </span>// returns c.</p>
+<p class="p7"><span class="s2">m.next($c); </span>// returns d</p>
+<p class="p10"><br></p>
+<p class="p7">// now put a "c" at index 8:</p>
+<p class="p6"><br></p>
+<p class="p8">m.put(8, $c);</p>
+<p class="p8">m.data;</p>
+<p class="p6"><br></p>
+<p class="p7">// generate some output on basis of c:</p>
+<p class="p6"><br></p>
+<p class="p8">10.do { m.next($c).postln }; <span class="s5">// returns sometimes j and d</span></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5"><b><i>generating a stream:</i></b></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">// crete a new, independent stream from m:</p>
+<p class="p8">x = m.asStream;</p>
+<p class="p8">60.do { x.next.post; <span class="s3">Char</span>.tab.post }</p>
+<p class="p6"><br></p>
+<p class="p7">// whenever there is no next (at the last index), a random index is chosen</p>
+<p class="p7">// to notify of this, set notify to true:</p>
+<p class="p6"><br></p>
+<p class="p8">m.notify = <span class="s3">true</span>;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">// minimal test:</p>
+<p class="p8">m.data = (0..20);</p>
+<p class="p8">m.next(2);</p>
+<p class="p8">m.next(3);</p>
+<p class="p8">m.data</p>
+<p class="p8">m.lookUp;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p8">x = m.asStream;</p>
+<p class="p8">60.do { x.next.post; <span class="s3">Char</span>.tab.post }</p>
+<p class="p6"><br></p>
+<p class="p7">// minimal test:</p>
+<p class="p9"><span class="s2">m.data = </span>"abcdefghij"<span class="s2">;</span></p>
+<p class="p8">m.next($a);</p>
+<p class="p8">m.next($i);</p>
+<p class="p8">m.data</p>
+<p class="p8">m.lookUp;</p>
+<p class="p8">m.put(0, $x);</p>
+<p class="p6"><br></p>
+<p class="p8">x = m.asStream;</p>
+<p class="p8">60.do { x.next.post; <span class="s3">Char</span>.tab.post }</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">// with stream</p>
+<p class="p6"><br></p>
+<p class="p8">m = <span class="s3">ShannonFinger</span>.fill(30, <span class="s3">Pseq</span>([1, 2, <span class="s3">Prand</span>([3, 7])],<span class="s3">inf</span>).asStream);</p>
+<p class="p8">m.data</p>
+<p class="p8">m.lookUp;</p>
+<p class="p8">x = m.asStream;</p>
+<p class="p8">60.do { x.next.post; <span class="s3">Char</span>.tab.post }</p>
+<p class="p6"><br></p>
+<p class="p11">SynthDescLib<span class="s2">.read;</span></p>
+<p class="p6"><br></p>
+<p class="p7">// listen to the set</p>
+<p class="p8">(</p>
+<p class="p11">Pbind<span class="s2">(</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s6">\degree</span>, <span class="s3">Pn</span>(x),</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s6">\dur</span>, 0.25</p>
+<p class="p8">).play;</p>
+<p class="p8">)</p>
+<p class="p6"><br></p>
+<p class="p7">// change the data slowly</p>
+<p class="p6"><br></p>
+<p class="p8">m.parse(<span class="s3">Pseq</span>([1, 2, <span class="s3">Prand</span>([6, 9], 2)], <span class="s3">inf</span>), 20);</p>
+<p class="p8">m.parse(<span class="s3">Pseq</span>([1, 5], <span class="s3">inf</span>), 20);</p>
+<p class="p8">m.parse(<span class="s3">Pseq</span>([5, 0, -2], <span class="s3">inf</span>), 20);</p>
+<p class="p8">m.data = [3, 4, 5, 4, 5, 6];</p>
+<p class="p8">m.data</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+</body>
+</html>

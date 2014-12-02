@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.27">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #6e1916; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {color: #0000ff}
+span.s2 {font: 12.0px Helvetica}
+span.s3 {color: #0000bf}
+span.s4 {color: #000000}
+span.s5 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>JInT_Wacom</b></p>
+<p class="p2"><b>superclass: JInT</b></p>
+<p class="p3"><br></p>
+<p class="p2">2007, 2008<span class="Apple-converted-space">  </span>Till Bovermann (Bielefeld University)</p>
+<p class="p4"><br></p>
+<p class="p2">implements <a href="JInT.html"><span class="s1">JInT</span></a> for a Wacom Tablet (supported: Intuos, Graphire, Bamboo)</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2"><img src="attachments/JInT_Wacom/Pasted Graphic 4.png" alt="attachments/JInT_Wacom/Pasted Graphic 4.png"></span></p>
+<p class="p4"><br></p>
+<p class="p6"><span class="s3">Server</span>.default = s = <span class="s3">Server</span>.internal;<span class="Apple-converted-space"> </span></p>
+<p class="p6">s.boot;</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s4">k = </span>JInT_Wacom<span class="s4">.new;</span></p>
+<p class="p6">k.start;</p>
+<p class="p7"><br></p>
+<p class="p9">// get information on device</p>
+<p class="p6">k.info</p>
+<p class="p7"><br></p>
+<p class="p6">k[<span class="s5">\pos</span>].action = {<span class="s3">|me|</span> me.value.postln}</p>
+<p class="p6">k[<span class="s5">\pos</span>].action = <span class="s3">nil</span></p>
+<p class="p7"><br></p>
+<p class="p6">k[<span class="s5">\x</span>].action = {<span class="s3">|me|</span> me.value.postln};</p>
+<p class="p6">k[<span class="s5">\y</span>].action = {<span class="s3">|me|</span> me.value.postln};</p>
+<p class="p6">k[<span class="s5">\g</span>].action = {<span class="s3">|me|</span> me.value.postln};</p>
+<p class="p6">k[<span class="s5">\h</span>].action = {<span class="s3">|me|</span> me.value.postln};</p>
+<p class="p6">k[<span class="s5">\u</span>].action = {<span class="s3">|me|</span> me.value.postln};</p>
+<p class="p6">k[<span class="s5">\d</span>].action = {<span class="s3">|me|</span> me.value.postln};</p>
+<p class="p6">k[<span class="s5">\r</span>].action = {<span class="s3">|me|</span> me.value.postln};</p>
+<p class="p6">k[<span class="s5">\l</span>].action = {<span class="s3">|me|</span> me.value.postln};</p>
+<p class="p6">k[<span class="s5">\t</span>].action = {<span class="s3">|me|</span> me.value.postln};</p>
+<p class="p6">k[<span class="s5">\z</span>].action = {<span class="s3">|me|</span> me.value.postln};</p>
+<p class="p7"><br></p>
+<p class="p6">k[<span class="s5">\y</span>].action = <span class="s3">nil</span>;</p>
+<p class="p6">k[<span class="s5">\x</span>].action = <span class="s3">nil</span>;</p>
+<p class="p6">k[<span class="s5">\g</span>].action = <span class="s3">nil</span>;</p>
+<p class="p6">k[<span class="s5">\h</span>].action = <span class="s3">nil</span>;</p>
+<p class="p6">k[<span class="s5">\u</span>].action = <span class="s3">nil</span>;</p>
+<p class="p6">k[<span class="s5">\d</span>].action = <span class="s3">nil</span>;</p>
+<p class="p6">k[<span class="s5">\r</span>].action = <span class="s3">nil</span>;</p>
+<p class="p6">k[<span class="s5">\l</span>].action = <span class="s3">nil</span>;</p>
+<p class="p6">k[<span class="s5">\t</span>].action = <span class="s3">nil</span>;</p>
+<p class="p6">k[<span class="s5">\z</span>].action = <span class="s3">nil</span>;</p>
+<p class="p7"><br></p>
+<p class="p6">k[<span class="s5">\z</span>].inspect;</p>
+<p class="p6">k[<span class="s5">\t</span>].inspect;</p>
+<p class="p6">k[<span class="s5">\l</span>].inspect;</p>
+<p class="p6">k[<span class="s5">\r</span>].inspect;</p>
+<p class="p6">k[<span class="s5">\d</span>].inspect;</p>
+<p class="p6">k[<span class="s5">\h</span>].inspect;</p>
+<p class="p6">k[<span class="s5">\g</span>].inspect;</p>
+<p class="p6">k[<span class="s5">\x</span>].inspect;</p>
+<p class="p6">k[<span class="s5">\y</span>].inspect;</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6">k.controllers[6]</p>
+<p class="p6">set(0, 0)</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6">p = <span class="s3">ProxySpace</span>.push(s)</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6">~a = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span>k[<span class="s5">\pos</span>].kr.poll;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">SinOsc</span>.ar!2;</p>
+<p class="p6">}</p>
+<p class="p7"><br></p>
+<p class="p6">(</p>
+<p class="p6">~a = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">var</span> ctls = k[<span class="s5">\pos</span>].kr;</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">Splay</span>.ar(<span class="s3">SinOsc</span>.ar(<span class="s3">Array</span>.geom(ctls.size, 150, 1.5).reverse) * <span class="s3">LFPulse</span>.ar(ctls.range(1, 20)).lag(0.01))</p>
+<p class="p6">}</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p6">~a.play</p>
+<p class="p6">~a.stop</p>
+<p class="p6">(</p>
+<p class="p6">~a = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">var</span> ctl = k[<span class="s5">\pos</span>].kr;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">var</span> pFreq = k[<span class="s5">\press</span>].kr.range(0, 10).poll;</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">Splay</span>.ar(({<span class="s3">|i|</span> <span class="s3">SinOsc</span>.ar(ctl.exprange((10 - (i+1)) * 50, (10 - (i+1)) * 100).lag(i*1), mul: 0.05)}!20).scramble) * <span class="s3">LFPulse</span>.ar(pFreq).lag(0.01) * k[<span class="s5">\press</span>].kr.range(0,1);</p>
+<p class="p6">}</p>
+<p class="p6">)</p>
+<p class="p6">~a.play</p>
+<p class="p6">g</p>
+<p class="p6">k.stop</p>
+</body>
+</html>

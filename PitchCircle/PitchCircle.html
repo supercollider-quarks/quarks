@@ -1,0 +1,381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #b42a27}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #807b7b; min-height: 12.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #606060}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #162bc4}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #cf0c0c}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0026ad}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #b42a27}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #0026ad}
+span.s4 {font: 12.0px Helvetica; color: #000000}
+span.s5 {font: 12.0px Helvetica}
+span.s6 {font: 9.0px Monaco; color: #807b7b}
+span.s7 {color: #606060}
+span.s8 {color: #1226ad}
+span.s9 {color: #b42a27}
+span.s10 {color: #737373}
+span.s11 {font: 9.0px Monaco}
+span.s12 {color: #162bc4}
+span.s13 {color: #cf0c0c}
+span.s14 {color: #236b22}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PitchCircle<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>visual representation of cycle of fifths sets</b></p>
+<p class="p2"><br></p>
+<p class="p1">PitchCircle is intended to provide a visual representation of 12-tone equal temperament C7 segments and subsets, entered as arrays of integers. It is not intended to provide pitch-class operations (other than a simple complementation method). Note that microtonal representations are possible, but do not work with many instance methods. See the example at the end of the file.</p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p3"><b>Creation / Class Methods</b></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>*new (steps, tonic, mod, offset, drawints, size, win, num)</b></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>steps </b>- number of steps in circle. Default value is 12.<b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>tonic </b>- as an integer, default value is 0 ("C major" collection) if number of steps is 7.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>mod </b>- circle generator, either scalic/chromatic (1),<span class="Apple-converted-space">  </span>circle of 5ths (7), or thirds (3). Default value is 1</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>offset </b>- rotates the circle in steps. Default value is 0, where the "tonic" is at the<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>top of the circle. Positive values rotate anti-clockwise. Negative offset values are valid.<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>drawints </b>- boolean as to whether to display note names or pc integers.<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is false. Note that PitchCircle may not provide correct<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>diatonic note spellings for complex keys (or natural minor modes). See spell method for adjusting spellings.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>size </b>- window size in pixels if a window is not passed in. Default value is 300.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>win </b>- a window can be passed in, default is a new window. PitchCircle expects win to have a<span class="Apple-converted-space">  </span><b>FlowLayout</b> decorator for positioning.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>num </b>- an Integer. Default is 1; the number of PitchCircles in the default window.</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">PitchCircle</span>.new(num: 2);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>u = <span class="s3">PitchCircle</span>.new(win: p.win);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>u.dotsColFn = { <span class="s3">Color</span>.red };<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>u.drawSet(p.complement)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p11"><b>Instance variables</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>set_(aSet)<span class="Apple-converted-space"> </span></b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>set</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>set or access the primary pc array for display. Its type is an Array, but Sets can be used. Can be bypassed using the <b>drawSet</b> method. Default is the diatonic set [0, 2, 4, 5, 7, 9, 11], transposed to <b>tonic</b>.</p>
+<p class="p6"><br></p>
+<p class="p9"><span class="s4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span>// example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">PitchCircle</span>.new(7, 2);</p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set </span>// default here is [ 2, 4, 6, 7, 9, 11, 1 ]</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_([2, 4, 6]);<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>dotsColFn_(aFunction)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>dotsColFn</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>set or access the function that determines the color for the display dots.<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The function is passed in the set as an argument when evaluated upon drawing the set.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The default function is { Color.blue }.<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Takes effect when circle is next drawn.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example</p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>p = <span class="s3">PitchCircle</span>.new;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.dotsColFn = {<span class="s3">|set|</span> if(set.size&lt;4, {<span class="s3">Color</span>.red}, {<span class="s3">Color</span>.green})};</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_([2, 4, 6]);<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet([2, 4, 6, 7, 8]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p12"><br></p>
+<p class="p12"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>drawInts_(boolean)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>drawInts</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>see the corresponding argument in <b>*new</b>.<span class="Apple-converted-space">  </span>Takes effect when circle is next drawn.</p>
+<p class="p6"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>hlDots_(dots)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>hlDots</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>set or return the current dots Array. A dot will have an extra circle around if if is included in set.<span class="Apple-converted-space">  </span>Default is nil.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>lines_(boolean)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>lines</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>toggle between drawing lines between pc elements. Default is true.</p>
+<p class="p6"><span class="s6"><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>steps</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>steps_(integer)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span>see the corresponding argument in <b>*new</b>. <span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>tonic</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>tonic_(integer)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>see the corresponding argument in <b>*new</b>. Note that if <b>steps</b> is 12, changing the tonic has the effect only of altering the offset, and possibly respelling the note names.</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>mod_(arg1)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>mod</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>see the corresponding argument in <b>*new</b>.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>offset_(arg1)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>offset</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>see the corresponding argument in <b>*new</b>.<span class="Apple-converted-space">  </span>If steps is 12, the clock will rotate so that arg1 is at the top.</p>
+<p class="p6"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>labelAlign_(aSymbol)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>labelAlign</b></p>
+<p class="p6"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Sets or returns the label text alignment. Default value is \center.</p>
+<p class="p6"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>labelSize_(integer)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>labelSize</b></p>
+<p class="p6"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Sets or returns the label font size. Takes effect when circle is next drawn.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>labelAlign_(aSymbol)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>labelAlign</b></p>
+<p class="p6"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns or sets the label text alignment. Default value is \center.</p>
+<p class="p6"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Instance variables example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">PitchCircle</span>.new(7, 3, 3);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawInts_(<span class="s3">true</span>);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s5"><span class="Apple-tab-span">	</span></span>p.drawSet;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawInts_(<span class="s3">false</span>);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.offset_(5);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_([10, 2, 5, 8]);<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet;</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawLabel(</span>"Bb Major 7th chord"<span class="s2">);</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b>Instance methods</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>drawSet (aSet, aLabel, aDotsCol)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aSet </b>- an Array or Set. Default value is the <b>set</b> instance variable.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aLabel </b>- a String. Default value is <b>aSet</b>.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aDotsCol </b>-<span class="Apple-converted-space">  </span>Default value is the <b>dotsColFn</b> instance variable</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">PitchCircle</span>.new;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_(<span class="s3">Set</span>[ 0, 2, 4, 6, 8, 10 ]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet(aLabel: format(<span class="s7">"A wholetone scale %"</span>, p.set.asArray)) ;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>note_(note)<span class="Apple-converted-space"> </span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Shortcut for p.set_([note]); p.drawSet.</p>
+<p class="p6"><br></p>
+<p class="p9"><span class="s4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span>// example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s8">PitchCircle</span>.new(7, 0);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.note_(0);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>drawLabel (aString, align)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aString </b>- a String. Default value is <b>aSet</b>.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>align </b>-<span class="Apple-converted-space">  </span>Default value is the <b>dotsColFn</b> instance variable</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>spell (pc, noteStr)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>pc </b>- an integer, e.g. the pc-name for the note that requires respelling.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>noteStr </b>- a String that will replace the curren note name.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>NB. Respelling will not survive a change mod,<span class="Apple-converted-space">  </span>steps or tonic.</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example</p>
+<p class="p14"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">p = </span>PitchCircle<span class="s2">.new;</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_([2, 4, 5, 7, 9, 10, 1]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.offset_(2);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.spell(10, <span class="s10">"Bb"</span>)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet(aLabel: format(<span class="s7">"D harmonic minor %"</span>, p.set.asArray));</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>spellAll (arr)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>arr </b>- an Array of pc and note name pairs. See spell method.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>NB. Respelling will not survive a change mod,<span class="Apple-converted-space">  </span>steps or tonic.</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example</p>
+<p class="p14"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">p = </span>PitchCircle<span class="s2">.new;</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_([8, 10, 11, 1, 3, 5, 7]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.offset_(8);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.spellAll([10, <span class="s10">"</span>A#<span class="s10">", 5, "</span>E#", 7, <span class="s10">"</span>F##"]);<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>setAll (mod, tonic, offset, steps)</b></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Resets arguments. Existing set is preserved and drawn where it is a subset of the new collection, error otherwise.</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s12">PitchCircle</span>.new;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_([6, 8, 10, 1, 3]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet;</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.setAll(1, 1, 0, 7); </span>// mod, tonic, offset, steps</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set </span>// =&gt; [ 1, 3, 6, 8, 10 ]<span class="Apple-tab-span">	</span>// same set</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.setAll(1, 0, 0, 7); </span>// error as existing set is not common to new collection</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_([2, 4, 5]); <span class="s13">// no error</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>drawSets (aSets, aLabel, colsArr)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>draws an array or arrays (sets) in different colors.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aSets </b>- an array of Arrays or Sets.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aLabel </b>- default is aSets.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>colsArr </b>- an optional Array of colours.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">PitchCircle</span>.new;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a = [0, 1, 5];</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSets([a, a+3, a+6]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>addSet (aSet, aLabel, aDotsCol)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>an alternative to drawSets. Superimposes a second set over the set instance variable.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aSet </b>- an Array or Set.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aDotsCol </b>- default value is Color.green.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">PitchCircle</span>.new;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_([0, 2, 7]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet(p.set)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.addSet([4, 5, 6]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>addSpacing (num, aDotsCol)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>This is designed to be used to demonstrate "maximal evenness" (see the writings of John Clough).<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Like <b>addSet, </b>the result is superimposed over the <b>set </b>instance variable.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>num </b>- number of divisions of the circle. Default value is 7.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aDotsCol </b>-<span class="Apple-converted-space">  </span>default value is Color.green.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">PitchCircle</span>.new;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_([10, 0, 2, 5, 7])</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.addSpacing(5);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>complement (aSet)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>returns the complement of an Array or Set.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aSet </b>- set to complement. Default value is the <b>set </b>instance variable.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">PitchCircle</span>.new;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_([10, 0, 2, 5, 7])</p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// See post window</p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.complement; </span>// =&gt; [ 1, 3, 4, 6, 8, 9, 11 ]</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.complement([0, 2, 4, 6, 8, 10]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>drawCompl (aDotsCol, aLabel)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>A shorthand method for drawing<span class="Apple-converted-space">  </span><b>set </b>and its complement.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">PitchCircle</span>.new;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.set_([10, 0, 2, 5, 7]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawCompl;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>front</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>brings the PitchCircle window to the front.</p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>p.front;</p>
+<p class="p6"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>close</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>close the PitchCircle window.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Examples</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> newSet;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">PitchCircle</span>.new;</p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Routine<span class="s2"> {</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.labelAlign_(<span class="s14">\left</span>);</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>24.do({ <span class="s3">|i|</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(i.even, {</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>newSet = p.complement.scramble.keep(rrand(4, 6)).sort;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.hlDots_(newSet.sect([11, 0, 1]).choose);</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet(newSet);</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}.defer;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}, {</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ p.complement(p.set);</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>p.drawCompl(</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>aLabel: format(<span class="s7">"%<span class="Apple-converted-space">  </span>compl.: %"</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>p.set, p.complement(p.set))</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}.defer;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.5.wait;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1.wait;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.close;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}.play;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// 19-ET microtonal example</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">PitchCircle</span>.new(19);</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>i = (0..18);</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n = [</span>"C"<span class="s2">, </span>"C#"<span class="s2">, </span>"Db"<span class="s2">, </span>"D"<span class="s2">, </span>"D#"<span class="s2">, </span>"Eb"<span class="s2">, </span>"E"<span class="s2">, </span>"E#"<span class="s2">, </span>"F"<span class="s2">, </span>"Gb"<span class="s2">, </span>"F#"<span class="s2">, </span>"Gb"<span class="s2">, </span>"G"<span class="s2">, </span>"G#"<span class="s2">, </span>"Ab"<span class="s2">, </span>"A"<span class="s2">, </span>"A#"<span class="s2">, </span>"B"<span class="s2">, </span>"B#"<span class="s2">];</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.notes = n;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.integers = i;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.hlDots_(2);</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawInts_(<span class="s3">true</span>);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet([0, 2, 4, 6, 8, 10]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the offset variable cannot be used directly</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> rotn=5.neg;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.notes = n.rotate(rotn);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.integers = i.rotate(rotn);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawInts_(<span class="s3">false</span>);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.hlDots_((2 + rotn)%19);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.drawSet;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p18"><br></p>
+<p class="p18"><br></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><br></p>
+</body>
+</html>

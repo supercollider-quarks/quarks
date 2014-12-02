@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    span.s1 {color: #000000}
+    span.s2 {color: #007300}
+    span.s3 {color: #0000bf}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>DebugPbind : Pbind</b></p>
+<p class="p2"><br></p>
+<p class="p3">DebugPbind works just like Pbind, but outputs a wealth of debugging information for each .next call:</p>
+<p class="p2"><br></p>
+<p class="p3">- The input event</p>
+<p class="p3">- For each key/value pair:</p>
+<p class="p3"><span class="Apple-tab-span">	</span>- The key (name)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>- The event as it has been modified thus far</p>
+<p class="p3"><span class="Apple-tab-span">	</span>- The stream value to be placed into the event</p>
+<p class="p3">- The resulting event</p>
+<p class="p2"><br></p>
+<p class="p3">Very useful for identifying Pbind execution problems, especially early termination due to a child stream returning nil unexpectedly.</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p5"><span class="s1">p = </span>DebugPbind<span class="s1">(</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">\key1</span>, <span class="s3">Pwhite</span>(0.0, 1.0, 2),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">\key2</span>, <span class="s3">Pseries</span>(15, 1, <span class="s3">inf</span>)</p>
+<p class="p4">).asStream;</p>
+<p class="p6"><br></p>
+<p class="p4">while { p.next(()).notNil };</p>
+<p class="p4">)</p>
+<p class="p6"><br></p>
+<p class="p4">Source event: (<span class="Apple-converted-space">  </span>)</p>
+<p class="p4">stream ID: key1</p>
+<p class="p4">Event going in: (<span class="Apple-converted-space">  </span>)</p>
+<p class="p4">key1: 0.65337550640106</p>
+<p class="p4">streamout: 0.65337550640106</p>
+<p class="p4">stream ID: key2</p>
+<p class="p4">Event going in: ( 'key1': 0.65337550640106 )</p>
+<p class="p4">key2: 15</p>
+<p class="p4">streamout: 15</p>
+<p class="p4">Result event: ( 'key1': 0.65337550640106, 'key2': 15 )</p>
+<p class="p6"><br></p>
+<p class="p4">Source event: (<span class="Apple-converted-space">  </span>)</p>
+<p class="p4">stream ID: key1</p>
+<p class="p4">Event going in: (<span class="Apple-converted-space">  </span>)</p>
+<p class="p4">key1: 0.3543187379837</p>
+<p class="p4">streamout: 0.3543187379837</p>
+<p class="p4">stream ID: key2</p>
+<p class="p4">Event going in: ( 'key1': 0.3543187379837 )</p>
+<p class="p4">key2: 16</p>
+<p class="p4">streamout: 16</p>
+<p class="p4">Result event: ( 'key1': 0.3543187379837, 'key2': 16 )</p>
+<p class="p6"><br></p>
+<p class="p4">Source event: (<span class="Apple-converted-space">  </span>)</p>
+<p class="p4">stream ID: key1</p>
+<p class="p4">Event going in: (<span class="Apple-converted-space">  </span>)</p>
+<p class="p4">streamout: nil</p>
+</body>
+</html>

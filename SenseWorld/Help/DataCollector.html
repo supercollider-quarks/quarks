@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: DataCollector</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>DataCollector</h1>
+<h2>collects Data with timestamps</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> </p>
+
+<p>DataCollector collects data with timestamps, as it is added to the collection. It provides backup mechanism to recover from stored data. The data can be used for realtime or offline analysis in the same or in a later session.
+inspired by MemoryRecorder developed by Alberto de Campo and Marije Baalman for the Institute of Predictive Sonobotanics (www.sonobotanics.org)</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*new(name,collection)</STRONG></DT>
+<DD>Creates a new data collector with the <em>name</em>. <em>collection</em> is an optional argument and can be from another DataCollector, the elements of which are then added to the new one.</DD>
+
+<DT><STRONG>*fromFile(path)</STRONG></DT>
+<DD>Load a stored DataCollector from file</DD>
+
+<DT><STRONG>*makeBackupFolder</STRONG></DT>
+<DD>creates the backup folder in the working directory for stored DataCollectors. This is called from *initClass.</DD>
+
+<DT><STRONG>*folder_</STRONG></DT>
+<DD>Set the folder which will be used for backups</DD>
+
+<DT><STRONG>*folder</STRONG></DT>
+<DD>The folder which will be used for backups.</DD>
+
+<DT><STRONG>*makeList</STRONG></DT>
+<DD>create a SortedList sorted by date</DD>
+
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+<DT><STRONG>addData(data,date,overwrite)</STRONG></DT>
+<DD>Add data to the collection<DL>
+<DT><EM>data</EM></DT>
+<DD>The data to be added.</DD>
+<DT><EM>date</EM></DT>
+<DD>The time stamp of the data. If non is given, one is created.</DD>
+<DT><EM>overwrite</EM></DT>
+<DD>Overwrite a previous entry with the same datestamp. Default is true.</DD>
+</DL>
+
+</DD>
+
+<DT><STRONG>addMetaData(mdata,date)</STRONG></DT>
+<DD>Add metadata to the collection. This can be for example higher level data or a comment.<DL>
+<DT><EM>date</EM></DT>
+<DD>The time stamp</DD>
+<DT><EM>mdata</EM></DT>
+<DD>The metadata to add</DD>
+</DL>
+
+</DD>
+
+
+<DT><STRONG>getLast(howmany)</STRONG></DT>
+<DD>Get the last <em>howmany</em> entries from the collection</DD>
+
+<DT><STRONG>backup</STRONG></DT>
+<DD>Create a backup in the backup folder.</DD>
+
+<DT><STRONG>recover</STRONG></DT>
+<DD>Recover the last saved backup with the same name.</DD>
+
+<DT><STRONG>printAll</STRONG></DT>
+<DD>Print all data in the collector</DD>
+
+
+<DT><STRONG>at(index)</STRONG></DT>
+<DD>Access an trace in the collection by <em>index</em></DD>
+
+<DT><STRONG>name</STRONG></DT>
+<DD>Name of the collector.</DD>
+
+<DT><STRONG>name_</STRONG></DT>
+<DD>Set the name for this DataCollector</DD>
+
+<DT><STRONG>collection</STRONG></DT>
+<DD>A SortedList sorted by date</DD>
+
+<DT><STRONG>collection_</STRONG></DT>
+<DD>Set the SortedList</DD>
+
+<DT><STRONG>addTrace(trace,overwrite)</STRONG></DT>
+<DD>Adds a trace of data to the collection. Called by addData or addMetaData</DD>
+
+<DT><STRONG>storeArgs</STRONG></DT>
+<DD>This is what is stored in the file.</DD>
+
+<DT><STRONG>saveTo(path)</STRONG></DT>
+<DD>Save the DataCollector to file.</DD>
+
+<DT><STRONG>lastBackupPath</STRONG></DT>
+<DD>Finds the most recently saved backup.</DD>
+
+</DL>
+
+<h3> Example 1 </h3>
+    <pre>
+<span class="comment-delimiter">// </span><span class="comment">create a new DataCollector:
+</span>d = <span class="type">DataCollector</span>.new( <span class="string">"test"</span> );
+d.collection; <span class="comment-delimiter">// </span><span class="comment">empty sorted list
+</span>
+d.addData( [1,2,3] );
+d.collection <span class="comment-delimiter">// </span><span class="comment">now we have one entry with data in it and a timestamp
+</span>   
+d.addMetaData( [5,6,7], d.collection.first[<span class="constant">\date</span>] ); <span class="comment-delimiter">// </span><span class="comment">add some metadata to it
+</span>d.collection
+
+d.addData( [3,4.5,6] );
+d.collection
+
+<span class="comment-delimiter">// </span><span class="comment">create a backup:
+</span>d.backup
+
+<span class="comment-delimiter">// </span><span class="comment">create a new collector:
+</span>e = <span class="type">DataCollector</span>.new( <span class="string">"test"</span> );
+
+<span class="comment-delimiter">// </span><span class="comment">recover from the backup
+</span>e.recover
+
+<span class="comment-delimiter">// </span><span class="comment">we have the same data again:
+</span>e.collection;
+
+</pre>
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

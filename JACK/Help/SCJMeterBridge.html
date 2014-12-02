@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>SCJMeterBridge</title>
+</head>
+<body bgcolor="#ffffff" text="#000000" link="#0000ee" alink="#ff0000" vlink="#551a8b">
+<h2>SCJMeterBridge</h2>
+A Class to automatically start and connect the JACK Meterbridge to the SC outputs.<br>
+(note: you need to have the program "meterbridge" installed on your system)<br>
+ <br>
+ Just call<br>
+ <br>
+<pre>SCJMeterBridge(channels,meter_type,reflevel,prepend,io)</pre><br>
+channels : an array of SC output channels you want to get connected.<br>
+meter_type : type of meter<br>
+reflevel : reference level for the meter (can normally be left to default option)<br>
+prepend : prepend to the command "meterbridge", e.g. "/my/installation/location/", so that meterbridge gets called with "/my/installation/location/meterbridge".<br>
+io : can be either 'out', 'in' or 'inout'. In the last case, channels has to be a two element array with the first entry for output and the second entry for input channels to monitor.
+<br>
+
+<br>
+Note that to stop the meterbridge, you need to close its window. There is no method provided to do this from SC.<br>
+<br>
+Other methods:<br>
+<br>
+<pre>SCJMeterBridge.prepend</pre><br>
+sets the prepend, so that you do not have to call it for the instantation<br>
+<pre>SCJMeterBridge.info</pre><br>
+gives the info output of meterbridge if called with no arguments<br>
+<pre>SCJMeterBridge.typelist</pre> <br>
+ gives the possible types<br>
+<br>
+<p>Example (this opens a 2 channel digital peak meter bridge, connected to channels 0 and 1 of SC):</p>
+<pre>SCJMeterBridge( [0,1], "dpm" );</pre> <br>
+
+<p>Convenience method:</p>
+<pre>
+s = Server.default;
+s.meterbridge;
+</pre> <br>
+
+
+</body>
+</html>

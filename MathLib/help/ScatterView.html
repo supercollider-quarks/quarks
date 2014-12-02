@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a51617}
+span.s1 {color: #0000bf}
+span.s2 {font: 12.0px Helvetica; color: #007300}
+span.s3 {color: #606060}
+span.s4 {color: #0040b0}
+span.s5 {color: #000000}
+span.s6 {color: #2a5606}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>ScatterView</b></p>
+<p class="p2">2005 by till bovermann</p>
+<p class="p2">bielefeld university</p>
+<p class="p3"><br></p>
+<p class="p2">plots a dataset into a view.</p>
+<p class="p4"><br></p>
+<p class="p2"><b>*new (parent, bounds, data, specX, specY)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns a new ScatterView</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>parent</b><span class="Apple-tab-span">	</span>the Parent GUI element</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>bounds</b><span class="Apple-tab-span">	</span>the bounds (a Rect)</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>data</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the data; format: [[aX, aY],[bX, bY],[cX, cY],[dx, dy], ... ]</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>specX</b><span class="Apple-tab-span">	</span>the ControlSpec indicating the Specification of the X-Axis</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>specY</b><span class="Apple-tab-span">	</span>the ControlSpec indicating the Specification of the Y-Axis</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>background(color)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>set background-color</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>symbolColor(color)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>set color of symbols</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>drawMethod(aSymbol)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>set the method used to draw an item; either</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>aSymbol</b><span class="Apple-tab-span">	</span>one of \fillRect, \fillOval, \lineTo</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isHighlight(bool)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>switch for highlight on/off</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>highlightItem(index)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>set item to be highlighted.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Index could be either index or array of indices.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>highlightItemRel(val)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>set highlighted item relative</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>val</b><span class="Apple-tab-span">	</span>in [0 .. 1.0]</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>highlightSize(point)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>set highlight extend</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>highlightColor(color)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>set color of highlighted item</p>
+<p class="p3"><br></p>
+<p class="p5"><b>Examples</b></p>
+<p class="p4"><br></p>
+<p class="p6">// you may want to use Swing or Cocoa</p>
+<p class="p7"><span class="s1">SwingOSC</span>.default.boot</p>
+<p class="p7"><span class="s1">GUI</span>.swing</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p8">(</p>
+<p class="p7"><span class="s1">var</span> data = 1000.collect{ [1.0.rand, exprand(0.01, 1)]};</p>
+<p class="p7">w = <span class="s1">GUI</span>.window.new(bounds: <span class="s1">Rect</span>(40, 40, 800, 800)).front;</p>
+<p class="p7">a = <span class="s1">ScatterView</span>(w, <span class="s1">Rect</span>(10, 10, 760, 760), data, [0,1].asSpec, [0,1].asSpec);</p>
+<p class="p7">a.drawAxis_(<span class="s1">true</span>).drawMethod_(<span class="s2">\fillOval</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.symbolColor_(<span class="s1">Color</span>.blue(0.5, 0.5)).symbolSize_(5)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.xAxisName_(<span class="s3">"uniform"</span>).yAxisName_(<span class="s3">"exponential"</span>);</p>
+<p class="p9">)</p>
+<p class="p4"><br></p>
+<p class="p9">(</p>
+<p class="p9"><span class="s4">var</span> numItems = 630;</p>
+<p class="p9">w = <span class="s4">GUI</span>.window.new(bounds: <span class="s4">Rect</span>(40, 40, 800, 150)).front;</p>
+<p class="p9">a = <span class="s4">ScatterView</span>(w, <span class="s4">Rect</span>(10, 10, 760, 100), {<span class="s4">|i|</span> [sin(i/50), sin(0.05*i)]}!numItems, [-1,1].asSpec, [-1,1].asSpec);</p>
+<p class="p9">a.isHighlight = <span class="s4">true</span>;</p>
+<p class="p9"><span class="s4">GUI</span>.slider.new(w, <span class="s4">Rect</span>(10, 120, 760, 20)).action_{<span class="s4">|me|</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>a.highlightItemRel = me.value;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>a.refresh;</p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span></span>// a.highlightItem = (me.value*numItems).asInteger.min(numItems-1);</p>
+<p class="p9">};</p>
+<p class="p9">a.drawMethod = <span class="s6">\lineTo</span>;</p>
+<p class="p9">a.symbolColor = <span class="s4">Color</span>.blue(0.7, 0.3);</p>
+<p class="p9">a.highlightSize = 10@10;</p>
+<p class="p9">a.refresh;</p>
+<p class="p9">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p9">a.highlightItem = (1, 3..99);</p>
+<p class="p9">w.refresh;</p>
+<p class="p9">a.highlightRangeRel(0, 0.3);</p>
+<p class="p9">w.refresh;</p>
+<p class="p9">a.highlightRange(0, 100);</p>
+<p class="p9">w.refresh;</p>
+<p class="p4"><br></p>
+<p class="p9">(</p>
+<p class="p9">a.symbolSize = 30@3;</p>
+<p class="p9">a.drawMethod = <span class="s6">\strokeOval</span>;</p>
+<p class="p9">a.isHighlight = <span class="s4">false</span>;</p>
+<p class="p9">w.refresh;</p>
+<p class="p9">)</p>
+<p class="p4"><br></p>
+<p class="p9">a.symbolColor = <span class="s4">Color</span>.red(0.2, 0.2);</p>
+<p class="p9">w.refresh</p>
+<p class="p4"><br></p>
+<p class="p10">// dynamics</p>
+<p class="p9">(</p>
+<p class="p9">l = {<span class="s4">inf</span>.do{<span class="s4">|i|</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>a.symbolSize = (cos(i*0.1)*40+3)@(cos(i*0.1+1)*40+3);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>{w.refresh}.defer;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>0.1.wait;</p>
+<p class="p9">}}.fork</p>
+<p class="p9">)</p>
+<p class="p9">l.stop;</p>
+<p class="p10">// end dynamics</p>
+<p class="p4"><br></p>
+<p class="p9">(</p>
+<p class="p9">a.background = <span class="s4">Color</span>.gray(1,0.5);</p>
+<p class="p9">a.isHighlight = <span class="s4">true</span>;</p>
+<p class="p9">a.highlightSize = 6000@500;</p>
+<p class="p9">a.highlightColor = <span class="s4">Color</span>.green;</p>
+<p class="p9">a.symbolSize = 1;</p>
+<p class="p9">a.drawMethod = <span class="s6">\lineTo</span>;</p>
+<p class="p9">w.refresh;</p>
+<p class="p9">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p10">// reset the Data</p>
+<p class="p9">(</p>
+<p class="p9">a.data = {<span class="s4">|i|</span> [cos(i/50), sin(0.05*i)]}!150;</p>
+<p class="p9">w.refresh;</p>
+<p class="p9">)</p>
+<p class="p4"><br></p>
+<p class="p10">// use other drawMethods</p>
+<p class="p9">a.drawMethod = <span class="s6">\fillOval</span>;</p>
+<p class="p9">w.refresh</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p10">// use two views stacked</p>
+<p class="p9">(</p>
+<p class="p9"><span class="s4">var</span> numItems = 630;</p>
+<p class="p9">w = <span class="s4">SCWindow</span>.new(bounds: <span class="s4">Rect</span>(40, 40, 800, 150)).front;</p>
+<p class="p9">a = <span class="s4">ScatterView</span>(w, <span class="s4">Rect</span>(10, 10, 760, 100), {<span class="s4">|i|</span> [sin(i/50), sin(0.05*i)]}!numItems, [-1,1].asSpec, [-1,1].asSpec);</p>
+<p class="p9">b = <span class="s4">ScatterView</span>(w, <span class="s4">Rect</span>(10, 10, 760, 100), {<span class="s4">|i|</span> [sin(i/21), sin(0.05*i)]}!numItems, [-1,1].asSpec, [-1,1].asSpec);</p>
+<p class="p9">a.background = <span class="s4">Color</span>.gray(0, 0);</p>
+<p class="p9">a.isHighlight = <span class="s4">true</span>;</p>
+<p class="p9"><span class="s4">SCSlider</span>(w, <span class="s4">Rect</span>(10, 120, 760, 10)).action_{<span class="s4">|me|</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>a.highlightItemRel = me.value;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>w.refresh;</p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span></span>//a.highlightItem = (me.value*numItems).asInteger.min(numItems-1);</p>
+<p class="p9">};</p>
+<p class="p9">a.drawMethod = <span class="s6">\lineTo</span>;</p>
+<p class="p9">a.symbolColor = <span class="s4">Color</span>.blue(0.7, 0.3);</p>
+<p class="p9">a.highlightSize = 10@10;</p>
+<p class="p9">w.refresh;</p>
+<p class="p9">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p9">(</p>
+<p class="p9"><span class="s4">var</span> numItems = 630;</p>
+<p class="p9">w = <span class="s4">SCWindow</span>.new(bounds: <span class="s4">Rect</span>(40, 40, 800, 150)).front;</p>
+<p class="p9">a = <span class="s4">ScatterView</span>(w, <span class="s4">Rect</span>(10, 10, 760, 100), {<span class="s4">|i|</span> [sin(i/50), sin(0.05*i)]}!numItems, [-1,1].asSpec, [-1,1].asSpec);</p>
+<p class="p9">a.isHighlight = <span class="s4">true</span>;</p>
+<p class="p9"><span class="s4">SCRangeSlider</span>(w, <span class="s4">Rect</span>(10, 120, 760, 10)).action_{<span class="s4">|me|</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>a.highlightRangeRel(me.lo, me.hi);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>w.refresh;</p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span></span>// a.highlightItem = (me.value*numItems).asInteger.min(numItems-1);</p>
+<p class="p9">};</p>
+<p class="p9">a.drawMethod = <span class="s6">\lineTo</span>;</p>
+<p class="p9">a.symbolColor = <span class="s4">Color</span>.blue(0.7, 0.3);</p>
+<p class="p9">a.highlightSize = 10@10;</p>
+<p class="p9">w.refresh;</p>
+<p class="p9">)</p>
+</body>
+</html>

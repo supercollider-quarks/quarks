@@ -1,0 +1,45 @@
+
+
+
+INSTANCEMETHODS::
+
+subsection:: Accessing
+
+METHOD:: z
+Answer the cartesian coordinate z of the receiver, 0.
+
+subsection:: Math
+
+METHOD:: angle
+Return the polar coordinate angle of the receiver.
+
+METHOD:: angles
+Return the spherical coordinate azimuth and elevation angles of the receiver.
+
+METHOD:: mirrorX
+Mirror x, reflecting across Y axis.
+
+METHOD:: mirrorY
+Mirror y, reflecting across the X axis.
+
+METHOD:: mirrorO
+Mirror across the origin.
+
+discussion:: A synonym for neg.
+
+
+
+subsection:: Conversion
+
+METHOD:: phi
+Return the spherical coordinate elevation angle of the receiver.
+
+returns:: 0
+
+METHOD:: asCartesian
+Convert to link::Classes/Cartesian::, with z = 0.
+
+method:: @
+If aValue is link::Classes/Number::, create a new link::Classes/Cartesian:: whose x coordinate is this.x, y coordinate is this.y and whose z coordinate is aValue. If aValue is a link::Classes/Point::, create a new link::Classes/Rect::.
+
+argument:: aValue

@@ -1,0 +1,42 @@
+CLASS:: RedInterpolator
+SUMMARY:: holds a value and interpolates to new target
+CATEGORIES:: Red>redScore
+RELATED:: Classes/RedTween
+
+DESCRIPTION::
+Interpolator.
+
+CLASSMETHODS::
+
+INSTANCEMETHODS::
+
+METHOD::goto
+
+ARGUMENT::target
+The target value to go to.
+
+ARGUMENT::dur
+Duration in seconds.
+
+ARGUMENT::curve
+Curvature. If code::nil:: then linear. Can also be a link::Classes/SimpleNumber::, a custom link::Classes/Function:: or an link::Overviews/EaseOverview##Ease:: object.
+
+METHOD::action
+An optional link::Classes/Function:: that will be evaluated for each step. The arguments passed in are: current value, current ramp position (0.0-1.0), current step index, total number of steps.
+
+PRIVATE::initRedInterpolator
+
+EXAMPLES::
+
+CODE::
+a= RedInterpolator.new
+a.action= {|val, ramp, i, steps| [val, ramp, i, steps].postln};
+a.goto(20, 1)    //go to 20 over 1 second (the the default 60 ticks per second)
+a.goto(-10, 2)    //go from current value (20) to -10 over 2 seconds
+a.value= 3    //jump to value 3
+a.goto(100, 4, -4);//goto 100 over 4 seconds with a curvature of -4
+a.goto(0, 1, {|t| t*t*t})//go to 0 over 1 second with a custom mapping function
+a.goto(1, 1, EaseInAtan)//go to 1 over 1 second with an Ease object
+a.value	//report current value
+a.clock	//report which clock
+::

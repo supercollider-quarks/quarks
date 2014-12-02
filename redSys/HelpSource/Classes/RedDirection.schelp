@@ -1,0 +1,35 @@
+CLASS:: RedDirection
+SUMMARY:: detects inc/dec of a signal
+CATEGORIES:: Red>redUGens
+RELATED:: Classes/RedAutoScale
+
+DESCRIPTION::
+Outputs 1 if previous sample was less than current, outputs -1 if previous sample was more than current, else outputs 0 - i.e. when no change.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: in
+Signal to track.
+
+INSTANCEMETHODS::
+
+METHOD:: direction
+Language side.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+
+a= {SinOsc.ar(RedDirection.kr(MouseX.kr).poll*100+400, 0, 0.1)}.play
+a.free
+
+//--
+a= RedDirection(10)
+a.direction(9)
+a.direction(10)
+a.direction(10)
+a.direction(50)
+::

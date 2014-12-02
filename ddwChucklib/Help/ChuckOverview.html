@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #a41919}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco}
+span.s1 {color: #0000ff}
+span.s2 {text-decoration: underline}
+</style>
+</head>
+<body>
+<p class="p1"><b>Chucklib overview<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Chucklib is a framework designed for realtime algorithmic sequencing. It takes its name from the ChucK programming language created by Perry Cook and Ge Wang at Princeton, whose chuck operator I have brazenly stolen (though for a different purpose).<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">The following help files explain the framework in more detail:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1"><a href="GettingStartedWithChucklib.html">GettingStartedWithChucklib</a></span> - how to begin using chucklib techniques in your pieces</p>
+<p class="p3"><span class="s1"><a href="ChuckStorageClasses.html">ChuckStorageClasses</a></span> - lists the available chuckable storage classes.</p>
+<p class="p3"><span class="s1"><a href="ChuckHacking.html">ChuckHacking</a></span> - explains some of the internals to help you write your own processes.</p>
+<p class="p3"><span class="s1"><a href="ChuckPrototypes.html">ChuckPrototypes</a></span> - explains the process prototypes provided in the distribution.</p>
+<p class="p3"><span class="s1"><a href="ChuckExamples.html">ChuckExamples</a></span> - some brief examples to give you a taste of typical usage.</p>
+<p class="p2"><br></p>
+<p class="p3">___________________________________</p>
+<p class="p2"><br></p>
+<p class="p4"><b>NOTE: Installation instructions have changed as of September 30, 2007.</b></p>
+<p class="p2"><br></p>
+<p class="p5"><b>To install:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Installation is now handled by the Quarks package manager. You need only install the ddwChucklib quark. Chucklib depends on a few other quarks, which will be installed automatically.</p>
+<p class="p2"><br></p>
+<p class="p3">Some specific, optional features depend on other ddw quarks that are not automatically installed. MIDI features depend on ddwMIDI, and the GUI depends on ddwVoicer, for instance. Some errors with these features might be resolved by installing the rest of dewdrop_lib. In general, it's assumed that if you want to use chucklib, if you will also have installed all of dewdrop_lib.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Files:</b></p>
+<p class="p2"><br></p>
+<p class="p3">In addition to the class files, chucklib relies on a number of prototype definitions that are loaded whenever the class library is compiled. The prototypes live in the Prototypes directory in the ddwChucklib folder. The file extension must be .txt rather than .sc, because .sc will be compiled as part of the class library, but the prototypes are not class definitions.</p>
+<p class="p2"><br></p>
+<p class="p3">At startup, chucklib locates the Prototypes directory based on the quark's path. You shouldn't have to do anything to make sure the prototypes get loaded.</p>
+<p class="p2"><br></p>
+<p class="p3">If chucklib is loading successfully, you should see messages like the following after (re)compiling the library.</p>
+<p class="p2"><br></p>
+<p class="p6">Loaded 11 chucklib files from [path].</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Interface design:</b></p>
+<p class="p2"><br></p>
+<p class="p3">The file devEnvironment.rtf includes code to load a couple of control panels and arrange text windows to use the screen space efficiently (1024 x 768). It can also give you some ideas on making your own GUI if you don't like this one.</p>
+<p class="p2"><br></p>
+<p class="p3">You can have the GUI adapt to your screen size by supplying a file in the chucklib startup directory called "windowbounds[screenwidth].sc" where "[screenwidth]" is replaced with the integer screen width. A 1024x768 screen would use the file windowbounds1024.sc. See the example files for the environment variables that must be set for this to work.</p>
+<p class="p2"><br></p>
+<p class="p3">___________________________________</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Design considerations:</b></p>
+<p class="p2"><br></p>
+<p class="p3">Artificial intelligence sequencing, as I envision it, means the creation of sequencing processes that modify their own materials while playing. These algorithms are necessarily complex. I created this framework to speed up development and testing of new algorithms by providing an open-ended environment of processes made up of various components that can be swapped in and out, and replaced, on the fly.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">As kind of a teaser for the next release, below follows a brief overview of the process prototype framework currently in development. It's largely functional, but not entirely stable yet and I don't consider it ready for release.</p>
+<p class="p2"><br></p>
+<p class="p3">Process prototypes define the general flow of control. A small handful of prototypes come with the library; however, the modular design means that you can use the same process prototype for processes that sound radically different. If the out of the box prototypes don't suit your needs, you can clone prototypes and create your own at will.</p>
+<p class="p2"><br></p>
+<p class="p3">To illustrate the approach, these are the handles in the existing process prototypes into which you can insert your own algorithms into the predefined flow:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Melodic processes:</b></p>
+<p class="p3"><i>Func</i>: Defines how a melodic phrase will crossbreed with a second phrase to produce new material. Any methodology may be used: genetic algorithms, Markov chains, neural nets--the sky's the limit.</p>
+<p class="p3"><i>adaptPattern</i>: The process references Funcs by name. This pattern determines the order in which Funcs will be used.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Chordal processes:</b></p>
+<p class="p3"><i>Func</i>: Defines how a chord form (set of notes or intervals) will adapt to fit the current harmonic context. Currently you get the harmonic context from a bass note supplied by another process, and a top note supplied by an AI melodic process (which may itself be adapting).</p>
+<p class="p3"><i>MacRh</i> (macrorhythm): Defines the pacing between each chord.</p>
+<p class="p3"><i>MicRh</i> (microrhythm): Defines the rhythm over which each chord will be arpeggiated.</p>
+<p class="p3"><i>ArpegPat</i> (arpeggiation pattern): Defines the order in which the chord notes will be arpeggiated.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Macrorhythm, microrhythm and arpeggiation pattern use patterns, like adaptPattern above, to determine in which order the named components will be used.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">There is also rudimentary functionality to input material via MIDI directly into a process, and resume the process with the new material with the touch of a button.</p>
+<p class="p2"><br></p>
+<p class="p3">Part of the composition process, then, is creating your own components and trying them out with different materials until you find combinations you like. Rather than writing dense pattern definitions and stopping and restarting them to make changes, you can play with the composition of patterns and hear the results immediately. It allows a more fluid and experimental approach to composing and performing.</p>
+<p class="p2"><br></p>
+<p class="p3">Please contact me via my website (<span class="s2">http://www.dewdrop-world.net</span>) with questions or problems.</p>
+<p class="p2"><br></p>
+<p class="p3">License:</p>
+<p class="p3">___________________________________</p>
+<p class="p2"><br></p>
+<p class="p3">Chucklib, along with the rest of dewdrop_lib, is distributed in accordance with the GNU Public License. Any derivative code that you release must also be under the GPL.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">James Harkins, <span class="s2">http://www.dewdrop-world.net</span></p>
+</body>
+</html>

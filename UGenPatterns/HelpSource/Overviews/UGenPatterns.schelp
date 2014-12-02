@@ -1,0 +1,113 @@
+TITLE:: UGenPatterns
+SUMMARY:: a library of patterns acting as ugens
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns
+
+The main idea behind the ugenpatterns quark is to take advantage of the interface we've already learned by using the normal audio ugens. It simplifies things like lfo modulation on a stream of numbers. No need to do the math - just reuse the knowledge you have about how for example SinOsc works.
+
+SECTION:: Generators
+
+LIST::
+## link::Classes/PClipNoise::
+## link::Classes/PDC::
+## link::Classes/PExpRand::
+## link::Classes/PFSinOsc::
+## link::Classes/PImpulse::
+## link::Classes/PIRand::
+## link::Classes/PLFPulse::
+## link::Classes/PLFSaw::
+## link::Classes/PLFTri::
+## link::Classes/PLine::
+## link::Classes/PMouseX::
+## link::Classes/PMouseY::
+## link::Classes/PMouseButton::
+## link::Classes/PPulse::
+## link::Classes/PRand::
+## link::Classes/PSaw::
+## link::Classes/PSilent::
+## link::Classes/PSinOsc::
+## link::Classes/PWhiteNoise::
+## link::Classes/PXLine::
+::
+
+SECTION:: Modifiers
+
+LIST::
+## link::Classes/PBPZ2::
+## link::Classes/PBRZ2::
+## link::Classes/PClip::
+## link::Classes/PCombN::
+## link::Classes/PDelay1::
+## link::Classes/PDelay2::
+## link::Classes/PDelayN::
+## link::Classes/PFold::
+## link::Classes/PGate::
+## link::Classes/PHPZ1::
+## link::Classes/PHPZ2::
+## link::Classes/PInRange::
+## link::Classes/PInRect::
+## link::Classes/PIntegrator::
+## link::Classes/PLastValue::
+## link::Classes/PLatch::
+## link::Classes/PLinExp::
+## link::Classes/PLinLin::
+## link::Classes/PLPZ1::
+## link::Classes/PLPZ2::
+## link::Classes/POnePole::
+## link::Classes/POneZero::
+## link::Classes/PPeak::
+## link::Classes/PPulseCount::
+## link::Classes/PRunningMax::
+## link::Classes/PRunningMin::
+## link::Classes/PSchmidt::
+## link::Classes/PTDelay::
+## link::Classes/PToggleFF::
+## link::Classes/PTrig::
+## link::Classes/PTrig1::
+## link::Classes/PWrap::
+::
+
+EXAMPLES::
+
+code::
+s.boot
+
+//slow variation (+/- 10hz) on switching frequencies
+a= Pbind(\freq, PLFPulse(8).linlin(0, 1, 400, 800)+PSinOsc(40).linlin(-1, 1, -10, 10), \dur, 0.25).play
+a.stop
+
+//or the same thing without using linlin
+a= Pbind(\freq, PLFPulse(8, 0, 0.5, 400, 400)+PSinOsc(40, 0, 10), \dur, 0.25).play
+a.stop
+
+
+//--comparison
+
+//the equivalent without this ugenpatterns quark would be something like this... (only standard patterns)
+a= Pbind(\dur, 0.25, \freq, Pn(Pstutter(4, Pseq([800, 400])))+(sin(Ptime()/Pkey(\dur)*2pi*(1/40))*10).trace).play
+a.stop
+
+
+//and the equivalent (well, roughly) synth as well... (compare how time is handled differently in the original examples above)
+(
+a= {
+	var dur= 0.25;
+	var env= Decay2.ar(Impulse.ar(1/dur), 0.01, 0.5);
+	SinOsc.ar(LFPulse.kr(1/(8*dur), 0, 0.5, 400, 400)+SinOsc.ar(1/(40*dur), 0, 10))*env;
+}.play
+)
+a.free
+
+
+//--nesting
+
+//here a PSinOsc is modulating the amount of lfo
+a= Pbind(\freq, PLFPulse(8, 0, 0.5, 400, 400)+PSinOsc(40, 0, PSinOsc(30, 0, 100)), \dur, 0.25).play
+a.stop
+
+
+//--binary ops
+
+//here duration is controlled by two 'ring modulated' sinosc patterns
+a= Pbind(\freq, PLFPulse(8, 0, 0.5, 400, 400)+PSinOsc(40, 0, 10), \dur, PSinOsc(50, 0, 0.2, 0.25)*PSinOsc(20, 0, 0.2, 0.5), \legato, Pkey(\dur)).play
+a.stop
+::

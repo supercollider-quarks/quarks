@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+    span.s1 {color: #0000bf}
+    span.s2 {color: #000000}
+    span.s3 {text-decoration: underline}
+    span.s4 {color: #007300}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>TuningOffset : EqualTemperament</b></p>
+<p class="p2"><br></p>
+<p class="p3">TuningOffset allows you to specify deviations from equal temperament in terms of fractions of note indices.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>*new(stepsPerOctave, calibratefreq, calibratenote, tunings)</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>stepsPerOctave:</b> How many notes per octave.</p>
+<p class="p3"><b>calibratefreq:</b> What frequency to calibrate to.</p>
+<p class="p3"><b>calibratenote:</b> What note number should match the calibratefreq.</p>
+<p class="p3"><b>tunings:</b> An array with stepsPerOctave numbers containing the offset from equal temperament. 0.01 = one cent above equal temperament (where cent = 1/100 of one note index, with stepsPerOctave * 100 cents per octave).</p>
+<p class="p2"><br></p>
+<p class="p4"><b>calibrate(freq, noteindex)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Behaves as in EqualTemperament.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>cps(noteindex)</b></p>
+<p class="p4"><b>value(noteindex)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Compute frequency in Hz for the given note index. If you use a fractional indices, the offset from the array will be interpolated using blendAt. That is, if note 0 has an offset of 0 and note 1 has an offset of 0.1, note 0.5 will have an offset of 0.05.</p>
+<p class="p2"><br></p>
+<p class="p5">t = <span class="s1">TuningOffset</span>(12, 60.midicps, 60, ([0, 0.1] ! 6).flat);</p>
+<p class="p6"><span class="s2">t.cps(0).cpsmidi<span class="Apple-tab-span">	</span></span>// note 0 has no offset</p>
+<p class="p5">0</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s2">t.cps(1).cpsmidi<span class="Apple-tab-span">	</span></span>// note 1 has offset 0.1 (1.1 = 1.0 + 0.1)</p>
+<p class="p5">1.1</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s2">t.cps(0.5).cpsmidi<span class="Apple-tab-span">	</span></span>// note 0.5 has offset 0.05 (0.55 = 0.5 + 0.05)</p>
+<p class="p5">0.55</p>
+<p class="p7"><br></p>
+<p class="p5">t.cps(0.75).cpsmidi</p>
+<p class="p6"><span class="s2">0.82499999999999<span class="Apple-tab-span">	</span></span>// or 0.825 = 0.75 + 0.075</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s2">t.cps((0.0, 0.02 .. 4.0)).plot;<span class="Apple-tab-span">	</span></span>// observe that the plot is just off of a straight line</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6">// Example: Kirnberger III (?)</p>
+<p class="p6">// cents values from <span class="s3">http://tonalsoft.com/enc/k/kirnberger.aspx</span></p>
+<p class="p7"><br></p>
+<p class="p5">c = [0, 90.225, 193.157, 294.135, 386.314, 498.045, 590.224, 696.578, 792.18, 889.735, 996.09, 1088.27];</p>
+<p class="p7"><br></p>
+<p class="p6">// convert to offsets from intervals of 100 cents, then divide by 100 for tuning values</p>
+<p class="p5">c = (c - (0, 100 .. 1100)) * 0.01;</p>
+<p class="p7"><br></p>
+<p class="p5">t = <span class="s1">TuningOffset</span>(12, 60.midicps, 60, c);</p>
+<p class="p7"><br></p>
+<p class="p6">// play white-key music using 12ET</p>
+<p class="p6">// also include debugging output to show scale degree --&gt; Hz mapping</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s1">SynthDescLib</span>.global.read;</p>
+<p class="p7"><br></p>
+<p class="p5">(</p>
+<p class="p5">p = <span class="s1">Pbind</span>(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s4">\degree</span>, <span class="s1">Pwhite</span>(0, 11, <span class="s1">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s4">\delta</span>, <span class="s1">Pwrand</span>(#[0.125, 0.25, 0.5], #[1, 4, 2].normalizeSum, <span class="s1">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s4">\sustain</span>, <span class="s1">Pkey</span>(<span class="s4">\delta</span>) * <span class="s1">Pwhite</span>(0.8, 1.8, <span class="s1">inf</span>),</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\default</p>
+<p class="p5">).collect({ <span class="s1">|ev|</span> [ev.degree, ev.use({ ~freq.value })].postln; ev }).play;</p>
+<p class="p5">)</p>
+<p class="p7"><br></p>
+<p class="p5">p.stop;</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6">// play the same using the Kirnberger tuning</p>
+<p class="p6">// I rewrite the protoevent to use a tuning object rather than midicps</p>
+<p class="p7"><br></p>
+<p class="p5">(</p>
+<p class="p5">p = <span class="s1">Pbind</span>(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s4">\degree</span>, <span class="s1">Pwhite</span>(0, 11, <span class="s1">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s4">\delta</span>, <span class="s1">Pwrand</span>(#[0.125, 0.25, 0.5], #[1, 4, 2].normalizeSum, <span class="s1">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s4">\sustain</span>, <span class="s1">Pkey</span>(<span class="s4">\delta</span>) * <span class="s1">Pwhite</span>(0.8, 1.8, <span class="s1">inf</span>),</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\default<span class="s2">,</span></p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>\tuning<span class="s2">, t</span></p>
+<p class="p5">).collect({ <span class="s1">|ev|</span> [ev.degree, ev.use({ ~freq.value })].postln; ev })</p>
+<p class="p5">.play(protoEvent: <span class="s1">Event</span>.default.copy.put(<span class="s4">\freq</span>, #{ ~tuning.cps(~midinote.value + ~ctranspose) * ~harmonic }));</p>
+<p class="p5">)</p>
+<p class="p7"><br></p>
+<p class="p5">p.stop;</p>
+</body>
+</html>

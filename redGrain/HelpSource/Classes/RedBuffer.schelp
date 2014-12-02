@@ -1,0 +1,44 @@
+CLASS:: RedBuffer
+SUMMARY:: buffer a segment of a soundfile
+CATEGORIES:: Red>redGrain
+RELATED:: Classes/RedAGrain, Classes/RedGrain, Classes/RedGrain2, Classes/RedGrainController, Classes/RedKGrain
+
+DESCRIPTION::
+This class creates buffers with segments from soundfiles.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+create, load and return a buffer
+
+ARGUMENT:: server
+where to create the buffer
+
+ARGUMENT:: path
+which soundfile
+
+ARGUMENT:: segmentOffset
+in percent
+
+ARGUMENT:: segmentLength
+in seconds
+
+
+EXAMPLES::
+
+CODE::
+s.boot;
+
+//load a 1 second long segment from 10% into the file
+b= RedBuffer(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav", 0.1, 1);
+b.plot;
+b.play;
+b.free;
+
+//load a 200 milliseconds long segment from 90% into the file
+b= RedBuffer(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav", 0.9, 0.2);
+b.plot;
+b.play;
+b.free;
+::

@@ -1,0 +1,70 @@
+CLASS:: InspManager
+summary:: a global manager for all Insp displaying them in a sidebar navigation and a main display area
+categories:: Debugging, Language
+related:: Guides/insp, Classes/Insp, Classes/InspButton
+
+DESCRIPTION::
+In debugging code you can call .insp quite often and each call will result in a snapshot being added to the global manager's sidebar.  You can navigate through different snapshots using the sidebar.
+
+When clicking on an InspButton it will bring the manager to the front it if isn't already.
+
+See Insp
+
+
+CLASSMETHODS::
+
+METHOD:: global
+This will get or create the global InspManager
+
+returns:: the global InspManager
+
+
+
+METHOD:: front
+bring the global InspManager to the front if it isn't already
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: insps
+All active Insp objects
+
+returns:: an array
+
+METHOD:: currentInsp
+The currently viewed Insp
+
+returns:: an Insp
+
+METHOD:: window
+The window that the InspManager is on
+
+returns:: a Window
+
+METHOD:: watch
+called internally to add an Insp to the manager.
+
+argument:: insp
+an Insp
+
+returns:: this
+
+METHOD:: showInsp
+shows this insp in the main viewing area, hiding any other
+
+argument:: insp
+
+
+returns:: this
+
+METHOD:: remove
+internal cleanup function for when the window shuts
+
+returns:: this
+
+
+EXAMPLES::
+
+See Insp
+

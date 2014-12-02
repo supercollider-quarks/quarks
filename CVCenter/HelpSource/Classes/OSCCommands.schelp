@@ -1,0 +1,92 @@
+CLASS:: OSCCommands
+summary:: A utility-class that let's you collect OSC command-names form incoming OSC
+categories:: External Control>OSC
+related:: Classes/OSCresponder, Classes/OSCresponderNode, Classes/OSCFunc, Classes/OSCdef, Classes/CVWidgetEditor, Guides/OSC_communication
+
+DESCRIPTION::
+OSCCommands implements a couple of methods that let the user collect OSC command-names (including their path/namespace - e.g. '/my, super/long/and/winding/pth/to/cmdname' - resp. the number of addressable msg-slots. E.g. from an orientation-sensor: code::[ '/cmdname', <x-value>, <y-value>, <z-value> ]:: (one command-name, 3 slots). Collected command-names can be stored to disk under a name set by the user.
+For convenience OSCCommands has its own GUI which shows the user which names have already been collected resp. allowing her/him to remove unwanted names from the list.
+Command-names will be stored to disk in a file named "OSCCommands" in the same directory as the class-file itself.
+
+CLASSMETHODS::
+
+private:: initClass
+METHOD:: collect
+Starts the collection-process when set to code::true::. Stop the process by calling the same method, argument code::play:: set to code::false::
+
+argument:: play
+a link::Classes/Boolean:: indicating whether the process shall be started or stopped - default: code::true::
+
+returns:: this (OSCCommands)
+
+METHOD:: saveCmdSet
+Save the current list of commands to disk.
+
+argument:: deviceName
+a link::Classes/String:: or a link::Classes/Symbol:: representing the name of the current collection. If the collection-process is still active it will be stopped.
+
+returns:: this (OSCCommands)
+
+METHOD:: makeWindow
+Open the interactive GUI that shows the user all currently collected command-names resp. remove unwanted names.
+
+returns:: this (OSCCommands)
+
+METHOD:: deviceCmds
+If a code::deviceName:: has been given return an link::Classes/Event:: with command-names stored to disk under the device-name code::deviceName::. Else return an link::Classes/Event:: with all currently stored commands resp. their keys.
+
+argument:: deviceName
+a link::Classes/String:: or a link::Classes/Symbol:: representing the name under which the list of commands has been stored.
+
+returns:: an link::Classes/Event::
+
+METHOD:: clearCmdsAt
+Removes all commands stored to disk under the name given in code::deviceName::.
+
+argument:: deviceName
+a link::Classes/String:: or a link::Classes/Symbol::
+
+returns:: this (OSCCommands)
+
+METHOD:: storedDevices
+Returnes a link::Classes/Set:: of all currently stored device-names.
+
+returns:: a link::Classes/Set::
+
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+For the following example you will have to have installed an application capable of sending OSC-messages somewhere in your local network (it might be e.g. an application on your computer or some OSC-controller on a mobile phone). Very likely you will have to tell this application to send its output to the IP-address of the computer where SuperCollider is running resp. to the receiving port of SC which is by default code::57120:: (setting a non-standard port should work using SC >= 3.5).
+
+code::
+// most easy
+OSCCommands.makeWindow;
+
+// start the collecting-process
+// the application sending OSC-commands should be up and running
+OSCCommands.collect(true);
+
+/**************************************************************************
+wiggle your phone, slide over your touchpad,
+do anything with your device that could make it send an OSC-message
+
+do this for at least a few seconds...
+**************************************************************************/
+
+// save the collected commands to disk
+// the collection-process will stop automatically
+// you may replace \myAppOrDeviceName with e.g. \TouchOSC or whatever seems suitable
+OSCCommands.saveCmdSet(\myAppOrDeviceName);
+
+// see what's been stored under \myAppOrDeviceName
+// if no deviceName is given return ALL stored commands
+OSCCommands.deviceCmds(\myAppOrDeviceName);
+
+// see stored deviceNames
+OSCCommands.storedDevices;
+
+// delete a stored device including its command-names
+OSCCommands.clearCmdsAt(\myAppOrDeviceName);
+::

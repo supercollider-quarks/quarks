@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; min-height: 22.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0054d9; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times; min-height: 19.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {color: #0002ff}
+span.s2 {color: #0054d9}
+span.s3 {color: #0000bf}
+span.s4 {color: #606060}
+span.s5 {font: 12.0px Helvetica}
+span.s6 {text-decoration: underline}
+span.s7 {color: #000000}
+</style>
+</head>
+<body>
+<p class="p1"><b>checkDo</b></p>
+<p class="p2"><b>an extension for </b><a href="SC://File"><span class="s1"><b>File</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p4">part of <a href="wslib.html"><span class="s2">wslib</span></a></p>
+<p class="p5"><br></p>
+<p class="p4">opens a file ro write to and checks if it already exists. If yes, a dialog appears with lots of options.</p>
+<p class="p4">checkDo opens and closes the file internally, the only thing you need to provide is a <b>function</b> for things to be written to the file, which gets the opened file as an argument.</p>
+<p class="p5"><br></p>
+<p class="p4">Similar to File:use, but with overwrite check.</p>
+<p class="p6"><br></p>
+<p class="p4"><b>File:checkDo ( pathName, function, overwrite, ask, mode )</b></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s3">File</span>.checkDo( <span class="s4">"~/Desktop/testFile.txt"</span>, { <span class="s3">|file|</span> file.putString( <span class="s4">"test"</span> ); } );</p>
+<p class="p8"><br></p>
+<p class="p4">If you run this line for the second time the following <a href="SCAlert.html"><span class="s1">SCAlert</span></a> dialog will appear:</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s5"><img src="attachments/checkDo/checkDoAlert.png" alt="attachments/checkDo/checkDoAlert.png"></span></p>
+<p class="p10"><br></p>
+<p class="p4"><b><i>cancel </i></b>: the file wil not be written and the <b>function </b>will never be executed</p>
+<p class="p4"><b><i>overwrite </i></b>: the file will overwrite the existing file</p>
+<p class="p4"><b><i>auto rename </i></b>: the file will be renamed automatically using <b>realNextName </b>(<a href="file-management.html"><span class="s1">file-management</span></a>)</p>
+<p class="p4"><b><i>new name </i></b>: a <a href="SCRequestString.html"><span class="s1">SCRequestString</span></a><span class="s1"> </span>dialog will appear where you can specify a new filename. if that also exists you will get the above again</p>
+<p class="p4"><b><i>browse </i></b>: a CocoaDialog.savePanel will appear where you can name and locate your file</p>
+<p class="p5"><br></p>
+<p class="p4"><b><span class="s6">arguments:</span></b></p>
+<p class="p5"><br></p>
+<p class="p4"><b>pathName</b></p>
+<p class="p4">the file path (standardizePath is called internally).<span class="Apple-converted-space"> </span></p>
+<p class="p4">If the dirname doesn't exist a directory will be created using <b>makeDir</b>.</p>
+<p class="p5"><br></p>
+<p class="p4"><b>function</b></p>
+<p class="p4">function to be executed when file is opened. The first argument is the opened file. The file is closed after the function is executed. The function can also be a string, which will be written to the file. easy does it..</p>
+<p class="p5"><br></p>
+<p class="p11"><span class="s3">File</span><span class="s7">.checkDo( </span>"~/Desktop/testFile.txt"<span class="s7">, </span>"this is a String"<span class="s7"> );</span></p>
+<p class="p5"><br></p>
+<p class="p4"><b>overwrite </b>( default false )</p>
+<p class="p4">if true no dialog will appear, and the file will simply overwrite any existing files</p>
+<p class="p5"><br></p>
+<p class="p4"><b>ask </b>( default true )</p>
+<p class="p4">if ask is false and <b>overwrite</b> as well, checkDo will automatically choose <b><i>auto rename</i></b><i> </i>option from the dialog above, which will then in fact never appear.</p>
+<p class="p5"><br></p>
+<p class="p4"><b>mode </b>(default "w" )</p>
+<p class="p4">the mode in which the File is opened</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+</body>
+</html>

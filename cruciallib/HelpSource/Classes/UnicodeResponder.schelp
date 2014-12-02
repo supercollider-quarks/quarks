@@ -1,0 +1,439 @@
+CLASS:: UnicodeResponder
+summary:: register responder functions for unicode and modifier combinations
+categories:: External Control>Keyboard, Libraries>crucial>Keyboard
+related:: Classes/KeyCodeResponder, Classes/KeyResponder
+
+DESCRIPTION:: This can be used to replace a function in a view's keydownAction.
+It matches modifier/unicode combinations and then evaluates the matched handler.
+
+This is one of the simplest ways to accurately match the exact modifier combination you want.
+
+
+If you merely check the modifier like so:
+	(modifer & optionModifier ) == optionModifier
+or
+	modifier.isAlt
+
+then you will detect the presence of the options key,
+but not if ONLY the option key is present ( ie. it will match for shift-option as well )
+
+
+
+see link::Classes/KeyCodeResponder::
+
+
+true:
+	must be pressed
+false:
+	must not be pressed
+nil:
+	can be either pressed or not pressed
+
+code::
+(
+k = UnicodeResponder.new;
+
+// option down arrow
+k.register( 63233, false,false,true,false, {
+    	"option down".postln;
+});
+
+// shift-option down arrow
+k.register( 63233 , true,false,true,false, {
+	"shift option down".debug;
+});
+
+w = GUI.window.new.front;
+v = GUI.slider.new(w,Rect(10,10,100,100));
+
+v.keyDownAction = k;
+
+v.focus;
+)
+::
+
+Use this to post the codes:
+code::
+(
+
+UnicodeResponder.tester
+
+)
+
+//it prints a code template for you:
+
+//  shift :
+k.register(   41  ,   true, false, false, false, {
+
+});
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+
+METHOD:: register
+
+
+argument:: unicode
+
+
+argument:: shift
+
+
+argument:: caps
+
+
+argument:: opt
+
+
+argument:: cntl
+
+
+argument:: function
+
+
+
+METHOD:: clear
+
+
+
+METHOD:: remove
+
+
+
+METHOD:: registerUnicode
+
+
+argument:: modifier
+
+
+argument:: unicode
+
+
+argument:: function
+
+
+
+METHOD:: registerUnicodeAll
+
+
+argument::  ... sets
+
+
+
+METHOD:: registerAll
+
+
+argument::  ... sets
+
+
+
+METHOD:: tester
+
+
+
+METHOD:: at
+
+
+argument:: address
+
+
+
+METHOD:: put
+
+
+argument:: address
+
+
+argument:: val
+
+
+
+METHOD:: pushForUnicode
+
+
+argument:: unicode
+
+
+argument:: requireMask
+
+
+argument:: denyMask
+
+
+argument:: function
+
+
+argument:: description
+
+
+
+METHOD:: resetUnicode
+
+
+argument:: unicode
+
+
+
+METHOD:: value
+
+
+argument:: view
+
+
+argument:: char
+
+
+argument:: modifiers
+
+
+argument:: unicode
+
+
+argument:: keycode
+
+
+
+METHOD:: global
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: dict
+
+
+
+METHOD:: value
+
+
+argument:: view
+
+
+argument:: char
+
+
+argument:: modifier
+
+
+argument:: unicode
+
+
+argument:: keycode
+
+
+
+METHOD:: normal
+
+
+argument::  ... assns
+
+
+
+METHOD:: shift
+
+
+argument::  ... assns
+
+
+
+METHOD:: control
+
+
+argument::  ... assns
+
+
+
+METHOD:: option
+
+
+argument::  ... assns
+
+
+
+METHOD:: register
+
+
+argument:: unicode
+
+
+argument:: shift
+
+
+argument:: caps
+
+
+argument:: opt
+
+
+argument:: cntl
+
+
+argument:: function
+
+
+argument:: description
+
+
+
+METHOD:: ++
+
+
+argument:: that
+
+
+
+METHOD:: registerUnicode
+
+
+argument:: modifier
+
+
+argument:: unicode
+
+
+argument:: function
+
+
+
+METHOD:: registerUnicodeAll
+
+
+argument::  ... sets
+
+
+
+METHOD:: clear
+
+
+
+METHOD:: remove
+
+
+
+METHOD:: at
+
+
+argument:: key
+
+
+
+METHOD:: put
+
+
+argument:: key
+
+
+argument:: value
+
+
+
+METHOD:: pushForUnicode
+
+
+argument:: unicode
+
+
+argument:: requireMask
+
+
+argument:: denyMask
+
+
+argument:: function
+
+
+argument:: description
+
+
+
+METHOD:: guiClass
+
+
+
+METHOD:: report
+
+
+
+
+EXAMPLES::
+
+The view in this example is merely to have something to focus on, it
+does nothing else.
+code::
+(
+var w, l;
+w= GUI.window.new("test").front;
+l= GUI.listView.new(w, Rect(10, 10, 350, 350))
+	.items_({"eggs".scramble}.dup(12))
+	.focus
+	.keyDownAction_(
+		UnicodeResponder.new
+			.normal(63232 -> {
+				"normal arrow".postln;
+			})
+			.shift(63232 -> {
+				"shift arrow".postln;
+			})
+			.register( 63232, true, nil, false, true, {
+				"shift control, with or without CAPS".postln;
+			})
+			.normal( 97 -> {
+				"normal a".postln
+			})
+			.shift( $A -> {
+				"shift a".postln
+			})
+	)
+)
+::
+Note that to match shift-a you have to specify "A", not "a"
+
+
+You can also specify with ascii characters
+code::
+(
+
+var w, l;
+w= GUI.window.new("test").front;
+l= GUI.listView.new(w, Rect(10, 10, 350, 350))
+	.items_({"eggs".scramble}.dup(12))
+	.focus
+	.keyDownAction_(
+		UnicodeResponder.new
+			.normal(
+				$a -> {
+					"a ".postln;
+				},
+				$b -> {
+					"b".postln;
+				},
+				$; -> {
+					";".postln;
+				},
+				$' -> {
+					"'".postln;
+				}
+			)
+			.shift(
+				$A -> {
+					"shift a".postln;
+				},
+				$B -> {
+					"shift b".postln;
+				},
+				$: -> {
+					"shift ;".postln;
+				},
+				$" -> {
+					"shift '".postln;
+				}
+			);
+
+	)
+)
+::

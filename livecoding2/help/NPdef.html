@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p3 {margin: 0.0px 0.0px 16.0px 0.0px; font: 16.0px Times}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; color: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; color: #000000; min-height: 16.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; color: #d00c0c}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; color: #008323}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; color: #b88627; min-height: 16.0px}
+span.s1 {font: 16.0px 'Lucida Grande'}
+span.s2 {color: #162bc4}
+span.s3 {color: #008323}
+span.s4 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<h1 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 32.0px Times"><b>NPdef</b></h1>
+<h2 style="margin: 0.0px 0.0px 19.0px 0.0px; font: 24.0px Times"><b>a shortcut for a Pdef controlling a node proxy</b></h2>
+<p class="p3"><i>Inherits from:</i>: <b>Object</b> : <b>AbstractFunction</b> : <b>Pattern</b> : <b>PatternProxy</b> : <b>TaskProxy</b> : <b>EventPatternProxy</b> : <b>Pdef</b></p>
+<p class="p3">NPdef creates a shortcut for creating a Pdef that controls a NodeProxy. Instead of sending arguments directly to the server, this uses the 'npset' event type, which uses the <i>set</i> method of the NodeProxy.<span class="s1"><br>
+</span>After you have created an NPdef, you can also access it by using Pdef and the symbol of the nodeproxy's variable name (at least in proxyspace).<span class="s1"><br>
+</span>Since the actual lookup is done in the Pdef's dictionary, you can easily interchange NPdef and NPxdef with one another, to change the event type. <span class="s1"><br>
+</span><b>See also NPxdef</b> which is similar but crossfades.</p>
+<h3 style="margin: 0.0px 0.0px 18.0px 0.0px; font: 19.0px Times"><b>Creation / Class Methods</b></h3>
+<p class="p5"><b>*initClass</b></p>
+<p class="p5">This adds the event type 'npset' to the list of possible events.</p>
+<p class="p5"><b>*new(proxy,src)</b></p>
+<p class="p5">Create an instance of NPdef, or access an old one, if one with the same name already exists.</p>
+<p class="p5"><i>proxy</i></p>
+<p class="p5">The nodeproxy, which you want to control with this pattern stream. This pattern is chained to ( type: 'npset', id: 'proxy')</p>
+<p class="p5"><i>src</i></p>
+<p class="p5">The pattern (Pbind or so)</p>
+<h3 style="margin: 0.0px 0.0px 18.0px 0.0px; font: 19.0px Times"><b>The event type 'npset''</b></h3>
+<p class="p3">The event type 'npset' is used to set arguments of a NodeProxy. The key <i>id</i> should be used to indicate which NodeProxy is going to be controlled. It automatically checks which arguments are relevant to the NodeProxy and only sets these, using the method <i>set</i> of NodeProxy.</p>
+<h3 style="margin: 0.0px 0.0px 18.0px 0.0px; font: 19.0px Times"><b>Example 1</b></h3>
+<p class="p6">s.boot;</p>
+<p class="p6">p = <span class="s2">ProxySpace</span>.push(s);</p>
+<p class="p7"><br></p>
+<p class="p6">~sine = { <span class="s2">|freq=300|</span> <span class="s2">SinOsc</span>.ar( freq, 0, 0.3 )};</p>
+<p class="p6">~sine.play;</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s2">NPdef</span>( ~sine, <span class="s2">Pbind</span>( <span class="s3">\freq</span>, <span class="s2">Pseq</span>( (3..10)*100, <span class="s2">inf</span>)));</p>
+<p class="p6"><span class="s2">Pdef</span>(<span class="s3">\sine</span>).play;</p>
+<p class="p6"><span class="s2">Pdef</span>(<span class="s3">\sine</span>).stop;</p>
+<p class="p6">~sine.stop;</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span></span>// you can give the NPdef a different name/key:</p>
+<p class="p6"><span class="s2">NPdef</span>( ~sine, <span class="s2">Pbind</span>( <span class="s3">\freq</span>, <span class="s2">Pseq</span>( (6..20)* 50, <span class="s2">inf</span>), <span class="s3">\dur</span>, 0.25), key: <span class="s3">\sineFast</span>);</p>
+<p class="p6">~sine.play;</p>
+<p class="p9"><span class="s2">Pdef</span><span class="s4">(</span>\sineFast<span class="s4">).play;</span></p>
+<p class="p9"><span class="s2">Pdef</span><span class="s4">(</span>\sineFast<span class="s4">).stop;</span></p>
+<p class="p6">~sine.stop;</p>
+<p class="p7"><br></p>
+<p class="p6">p.free;</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span></span>// with Ndefs:<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s2">Ndef</span>(<span class="s3">\imp</span>, { <span class="s2">|freq=300|</span> <span class="s2">LPF</span>.ar(<span class="s2">Impulse</span>.ar( freq ), 1500)}).play;</p>
+<p class="p6"><span class="s2">NPdef</span>( <span class="s2">Ndef</span>(<span class="s3">\imp</span>), <span class="s2">Pbind</span>( <span class="s3">\freq</span>, <span class="s2">Pseq</span>( (3..10)*100, <span class="s2">inf</span>)));</p>
+<p class="p6"><span class="s2">Pdef</span>(<span class="s3">\imp</span>).play;</p>
+<p class="p6"><span class="s2">Pdef</span>(<span class="s3">\imp</span>).stop;</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span></span>// you can give the NPdef a different name/key:<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s2">NPdef</span>( <span class="s2">Ndef</span>(<span class="s3">\imp</span>), <span class="s2">Pbind</span>( <span class="s3">\freq</span>, <span class="s2">Pseq</span>( (3..10)*100, <span class="s2">inf</span>), <span class="s3">\dur</span>, 0.2), key: <span class="s3">\impCtl</span>);</p>
+<p class="p6"><span class="s2">Pdef</span>(<span class="s3">\impCtl</span>).play;</p>
+<p class="p6"><span class="s2">Ndef</span>(<span class="s3">\imp</span>).end;</p>
+<p class="p10"><span class="Apple-converted-space"> </span></p>
+<p class="p3">This helpfile was created with the class HelpFile2</p>
+</body>
+</html>

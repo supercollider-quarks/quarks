@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>SenseWorld Quark</title>
+</head>
+<body>
+<h1>SenseWorld</h1>
+
+<p>This quark provides some classes to deal with sensor data on a higher level. It assumes you capture the data with one of the available low level methods (GeneralHID, WiiMote, SerialPort), and allows you to perform certain actions upon the data, such as statistical analysis, dynamic scaling, trigger thresholds.</p>
+<p>The classes in this quark have evolved out of several projects dealing with realtime sensor data in the areas of interactive (sound) installations, musical performance and dance/theatre. As I continue working in this field, some methods will consolidate themselves more into fixed frameworks. Other approaches may be obsoleted in the coarse of time, though they will remain available in this Quark.
+</p>
+
+<h3>Available classes</h3>
+
+<dl>
+<dt><a href="DataCollector.html"><b>DataCollector</b></a></dt>
+<dd>collects data with timestamps.</dd>
+
+<dt><a href="DataBus.html"><b>DataBus</b></a></dt>
+<dd>Put data from a function onto a bus.</dd>
+
+<dt><a href="OSCBus.html"><b>OSCBus</b></a></dt>
+<dd>Put data from an incoming OSC message onto a bus.</dd>
+
+
+<dt><a href="ParameterSpace.help.scd"><b>ParameterSpace</b></a></dt>
+<dd>a 2D space where you can assign a set of parameters to a point and interpolate between them through the space.</dd>
+
+<dt><a href="StatUGens.help.scd"><b>StatUGens</b></a></dt>
+<dd>UGens to perform statistical operations on the server.</dd>
+
+<dt><a href="SensorData.help.scd"><b>SensorData</b></a></dt>
+<dd>provides mean, standard deviation, fluctuation, integrals, peak information</dd>
+
+<dt><b>SensorControl</b></dt>
+<dd>provides an interface to perform different actions, depending on crossing a threshold</dd>
+
+<dt><a href="SensorSonificator.help.scd"><b>SensorSonificator</b></a></dt>
+<dd>Class to sonify sensor data.</dd>
+
+<dt><b>DynamicScaleData</b></dt>
+<dd>dynamically adapts the scaling according to fluctuation of one SensorData stream</dd>
+
+<dt><b>DynamicScaleSystem</b></dt><dd>dynamically adapts the scaling of a set of SensorData streams, based on the largest fluctuation in one of them.</dd>
+
+<dt><a href="SensorLog.help.scd"><b>SensorLog</b></a></dt><dd>Class to log and playback sensor data. Requires the Logger and ListTrig2 UGen from sc3-plugins. <em>warning: experimental and buggy</em></dd>
+
+</dl>
+<p class="p2"><br></p>
+<p class="p3">(Further Documentation is pending)</p>
+<p class="p3">(c) 2008-9, nescivi</p>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.46">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+span.s1 {text-decoration: underline}
+span.s2 {color: #1a27ed}
+span.s3 {color: #0000ff}
+span.s4 {color: #323dd4}
+span.s5 {color: #2e3ad9}
+span.s6 {color: #202de8}
+span.s7 {color: #3640cf}
+span.s8 {color: #3f48c3}
+span.s9 {color: #3a41ad}
+span.s10 {color: #3f459d}
+</style>
+</head>
+<body>
+<p class="p1"><b>Hadron Changelog</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>v1.6 (July 14, 2009)</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">other:</span></p>
+<p class="p3">* HadronPlugins <a href="SC://Quark"><span class="s2">Quark</span></a> is released with 2 plugins, <a href="../../HadronPlugins/Help/HrPresetMorph.html"><span class="s3">HrPresetMorph</span></a> and <a href="../../HadronPlugins/Help/HrCodeSequencer.html"><span class="s3">HrCodeSequencer</span></a>.</p>
+<p class="p3">* <a href="HadronPlugin.html"><span class="s4">HadronPlugin</span></a> window has acceptsMouseOver set to true now.</p>
+<p class="p3">* <a href="../hrplugins/Help/HrWrapSynth.html"><span class="s5">HrWrapSynth</span></a> synth instance has a getter now.</p>
+<p class="p3">* Collide button in main GUI is an HrButton now for midi triggering.</p>
+<p class="p3">* Some little GUI tweaks.</p>
+<p class="p3">* HrFreeVerb is removed from the default plugins, as such a plugin can easily be made as a <a href="SC://SynthDef"><span class="s6">SynthDef</span></a> and wrapped for the environment with the <a href="../hrplugins/Help/HrWrapSynth.html"><span class="s6">HrWrapSynth</span></a> plugin.</p>
+<p class="p3">* All plugins now defer their GUI updates when they are being modulated from outside sources. The actual sending of messages to synths is not affected by the deferring operation. This done so that the modulatable values can be called from clocks other than the <a href="SC://AppClock"><span class="s6">AppClock</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>v1.5 (July 4, 2009)</b></p>
+<p class="p3"><span class="s1">fixed bugs:</span></p>
+<p class="p3">* Refixed the save/load mechanism, hopefully properly this time.</p>
+<p class="p3">* The UserView code now uses the new coordinates system. So Hadron now requires SC 3.3.1 minimum, and SwingOSC 0.62 on systems that use it.</p>
+<p class="p3">* Fixed the code that was spitting a harmless error message that would sometimes appear some seconds after Hadron quits.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">added features:</span></p>
+<p class="p3">* A new widget <a href="../widgets/Help/HrButton.html"><span class="s7">HrButton</span></a>, which is essentially the same with <a href="SC://Button"><span class="s8">Button</span></a>, but can do midi learn.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>v1.4 (June 16, 2009)</b></p>
+<p class="p3"><span class="s1">fixed bugs:</span></p>
+<p class="p3">* Now conforming to the new relativeOrigin change in views.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">other:</span></p>
+<p class="p3">* An addition to the plugin interface to be able to get the values for modulatable parameters from running plugins (needed for implementing plugins that do preset management etc. that needs access to those values). So the modulatables variable is changed to modSets, and the new modGets is introduced. See <a href="HadronPlugin.html"><span class="s9">HadronPlugin</span></a> help and <a href="Writing-Hadron-Plugins.html"><span class="s9">Writing-Hadron-Plugins</span></a><span class="s9">.</span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>v1.3 (June 03, 2009)</b></p>
+<p class="p3"><span class="s1">added features:</span></p>
+<p class="p3">* New plugin <a href="../hrplugins/Help/HrWrapSynth.html"><span class="s10">HrWrapSynth</span></a> which wraps SynthDefs and integrates them to te Hadron system by auto-generating their GUI, and handling in / out connections.</p>
+<p class="p3">* General usability additions</p>
+<p class="p3">* Connection manager is intelligent now. The text box for typing in / out pairs now show the most likely connection prewritten for less typing.</p>
+<p class="p3">* "Collide" button added to main gui, when pressed, collide method of all alive plugin instances are executed.<span class="Apple-converted-space"> </span></p>
+<p class="p3">* "Shift + d" duplicates selected items now.</p>
+<p class="p3">* When the canvas is in focus, pressing "h" hides the canvas now.</p>
+<p class="p3">* When a plugin window is in focus, "Shift + h" opens the Help for the plugin.</p>
+<p class="p3">* The status bar provides visual feedback with colors now.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">fixed bugs:</span></p>
+<p class="p3">* Fixed a bug with the save mechanism where plugins with String and Symbol arguments were being saved incorrectly.</p>
+<p class="p3">* Various GUI tweaks and fixes</p>
+<p class="p3">* Fixed the bug where keys that were being typed in the text box on canvas were being interpreted by the canvas keydown handler. Now they don't bubble up to the parent view.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">other:</span></p>
+<p class="p3">* A little addition to the plugin interface (*initClass addition, see <a href="Writing-Hadron-Plugins.html"><span class="s10">Writing-Hadron-Plugins</span></a> help)</p>
+<p class="p2"><br></p>
+<p class="p3">-----------</p>
+<p class="p3"><b>v1.2 (May 29, 2009)</b></p>
+<p class="p3"><span class="s1">added features:</span></p>
+<p class="p3">* You can load a new project without having to exit and relaunch Hadron now.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">fixed bugs:</span></p>
+<p class="p3">* Further SwingOSC compatibility fixes.</p>
+<p class="p3">* Small GUI fixes.</p>
+<p class="p2"><br></p>
+<p class="p3">----------</p>
+<p class="p3"><b>v1.1 (May 29, 2009)</b></p>
+<p class="p3"><span class="s1">added features:</span></p>
+<p class="p3">* When the canvas view is focused, when you press the "o" key, the node graph is reordered according to the vertical placement of instances on canvas. The top item is on the top of the graph etc.</p>
+<p class="p3">* Pressing the "q" key when the canvas is focused executes Server.default.queryAllNodes</p>
+<p class="p3">* SwingOSC compatibility fixes. Works fine on Linux (tested under Ubuntu) now (also under Mac swing), but on Windows no texts appear in the GUI, don't really know why (yet).</p>
+<p class="p3">* Save dialog is the one provided by the GUI kit now, instead of the custom window.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">fixed bugs:</span></p>
+<p class="p3">* HrDIYSynth is using TextView instead of SCTextView now.</p>
+<p class="p3">* Fixed the bug in HrDIYSynth where it was spawning 2 synths mistakenly on init.</p>
+<p class="p3">* Fixed a bug in the save procedure</p>
+<p class="p2"><br></p>
+<p class="p3">----------</p>
+<p class="p3"><b>v1.0 (May 28, 2009)</b></p>
+<p class="p3">* first public release</p>
+</body>
+</html>

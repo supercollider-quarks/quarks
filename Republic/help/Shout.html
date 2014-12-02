@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.25">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a92f2e; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #00159f; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a92f2e}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #00159f}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco; color: #a92f2e}
+span.s3 {color: #00159f}
+span.s4 {color: #000000}
+span.s5 {color: #606060}
+span.s6 {color: #356d30}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Shout</b></span><span class="s2"> <span class="Apple-tab-span">	</span></span><b>loud visual messaging<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><br></p>
+<p class="p4"><br></p>
+<p class="p1"><b>Shout is intended for showing messages (e.g. timed from a script,<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b>or from networked players) very prominently on screen.<span class="Apple-converted-space"> </span></b></p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s3">Shout</span><span class="s4">(</span>"A message that is hard to miss"<span class="s4">);</span></p>
+<p class="p4"><br></p>
+<p class="p1">// Shout can be added to codeDump:<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="s3">Shout</span>.add;<span class="Apple-tab-span">	</span></p>
+<p class="p3"><br></p>
+<p class="p1">// Then, comments beginning with a tag ...</p>
+<p class="p3"><br></p>
+<p class="p8"><span class="s3">Shout</span><span class="s4">.tag <span class="Apple-tab-span">	</span></span>// -&gt; //!!</p>
+<p class="p3"><br></p>
+<p class="p1">// get shouted:</p>
+<p class="p3"><br></p>
+<p class="p8">//!! like this!</p>
+<p class="p3"><br></p>
+<p class="p1">// to remove it again:</p>
+<p class="p7"><span class="s3">Shout</span>.remove;</p>
+<p class="p3"><br></p>
+<p class="p8">//!! this is silent again.</p>
+<p class="p3"><br></p>
+<p class="p7">Shout.win.close;</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p1">For setups in shared coding networks (e.g. in powerbooks_unplugged),<span class="Apple-converted-space"> </span></p>
+<p class="p1">it is best to add shouting to an oscresponder listening to shared code, e.g.:</p>
+<p class="p3"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>// one machine listens</p>
+<p class="p7">(</p>
+<p class="p7">n = <span class="s3">NetAddr</span>(<span class="s5">"127.0.0.1"</span>, 57120);<span class="Apple-converted-space"> </span></p>
+<p class="p7">o.remove;<span class="Apple-converted-space"> </span></p>
+<p class="p9">OSCresponder<span class="s4">(n, </span><span class="s6">'/share'</span><span class="s4">, { </span>|time, resp, msg|<span class="s4"><span class="Apple-converted-space"> </span></span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">var</span> nametag = msg[1];<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">var</span> messageStr = msg[2].asString;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>msg.postcs;</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span></span>// ...<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>if (messageStr.beginsWith(<span class="s3">Shout</span>.tag)) {<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>defer { <span class="s3">Shout</span>(messageStr.drop(<span class="s3">Shout</span>.tag.size) + <span class="s5">"-"</span> ++ nametag) }</p>
+<p class="p7"><span class="Apple-tab-span">	</span>};<span class="Apple-converted-space"> </span></p>
+<p class="p7">}).add;</p>
+<p class="p7">)</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span></span>// another machine sends</p>
+<p class="p7">m = <span class="s3">NetAddr</span>(<span class="s5">"127.0.0.1"</span>, 57120);</p>
+<p class="p6"><span class="s4">m.sendMsg(</span>"/share"<span class="s4">, </span>"me"<span class="s4">, </span>"quiet"<span class="s4">);<span class="Apple-tab-span">	</span></span></p>
+<p class="p7">m.sendMsg(<span class="s6">'/share'</span>, <span class="s5">"me"</span>, <span class="s5">"//!! loud?"</span>);<span class="Apple-tab-span">	</span></p>
+<p class="p3"><br></p>
+</body>
+</html>

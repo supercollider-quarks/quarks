@@ -1,0 +1,45 @@
+CLASS:: RedLFSR4BitStream
+SUMMARY:: 4-bit linear feedback shift register
+CATEGORIES:: Red>redUGens
+RELATED:: Classes/RedLFSR4, Classes/RedNoise
+
+DESCRIPTION::
+4-bit fibonacci LFSR.
+see https://en.wikipedia.org/wiki/Linear_feedback_shift_register
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: trig
+Trigger that will calculate a new value.
+
+ARGUMENT:: iseed
+Initial seed. Use code::8 (2r1000):: to get the common sequence:
+code::[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [1, 0, 0, 1], [1, 1, 0, 0], [0, 1, 1, 0], [1, 0, 1, 1], [0, 1, 0, 1], [1, 0, 1, 0], [1, 1, 0, 1], [1, 1, 1, 0], [1, 1, 1, 1], [0, 1, 1, 1], [0, 0, 1, 1], [0, 0, 0, 1]]::
+
+RETURNS::
+Pseudo random waveform 0/1.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+//just post the bit stream
+{var trig= Impulse.ar(4); RedLFSR4BitStream.ar(1).poll(trig); DC.ar(0)}.play;
+//sounding example
+{RedLFSR4BitStream.ar(K2A.ar(MouseX.kr(100, 1000, 1)))!2}.play;
+::
+
+CODE::
+//language side
+(
+b= 2r1000;
+a= [];
+15.do{
+	a= a.add(b.asBinaryDigits(4));
+	b= (b>>1)|((b&1).bitXor(b&2>>1)<<3);
+};
+a;
+)
+::

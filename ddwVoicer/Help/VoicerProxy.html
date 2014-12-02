@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+span.s1 {color: #0000ff}
+span.s2 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>VoicerProxy</b></p>
+<p class="p2"><br></p>
+<p class="p3">A place-holder for a <a href="Voicer.html"><span class="s1">Voicer</span></a>. Created automatically when a Voicer is .gui'ed.</p>
+<p class="p2"><br></p>
+<p class="p3">VoicerProxy makes it easy to replace the voicer represented in a particular GUI. There is no need to destroy GUI objects for one voicer and create new ones for the next. Simply assign a new voicer to the proxy, and the proxy takes responsibility for synchronizing the GUI.</p>
+<p class="p2"><br></p>
+<p class="p3">A VoicerProxy may also be used to stand in for voicer everywhere the voicer may be used. For example, if you attach a voicer MIDI socket directly to the voicer, the socket belongs to that voicer. But if you attach the socket to a VoicerProxy, you can change the target voicer by updating the proxy, with no need to touch the socket.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">A VoicerGUI cannot exist without a VoicerProxy. User actions in the GUI pass through the proxy before taking effect. For instance, if you click the "panic" button, the GUI tells the proxy to panic, whereupon the proxy sends the message along to the voicer.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Voicer ------- VoicerProxy ------- VoicerProxyGui</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">The GUI knows only about proxies for the GlobalControls, so that the gui objects can be reassigned easily. The control proxies may be addressed directly through aVoicerProxy.controlProxies[0...] -- the array matches the order of controls in the GUI. You can also clear out the control proxies using the clearControlProxies method.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>VoicerProxyGui ------- [VoicerGCProxy]s ------- [VoicerGlobalControl]s</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">MIDI sockets can cling to one Voicer for dear life, or can be remapped through the proxy.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>VoicerMIDISocket<span class="Apple-tab-span">	</span>-------<span class="Apple-tab-span">	</span>Voicer</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>-------<span class="Apple-tab-span">	</span>VoicerProxy</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>VoicerMIDIController<span class="Apple-tab-span">	</span>-------<span class="Apple-tab-span">	</span>VoicerGlobalControl</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>-------<span class="Apple-tab-span">	</span>VoicerGCProxy</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Creation:</b></p>
+<p class="p2"><br></p>
+<p class="p3">A VoicerProxy is created by:</p>
+<p class="p2"><br></p>
+<p class="p4">aVoicer.gui;</p>
+<p class="p4">aVoicer.proxify;</p>
+<p class="p2"><br></p>
+<p class="p3">After these operations, the proxy can be accessed by aVoicer.proxy, or:</p>
+<p class="p2"><br></p>
+<p class="p4">aProxy = aVoicer.proxify;</p>
+<p class="p2"><br></p>
+<p class="p3">Proxify returns the existing proxy if it exists, or creates a new one if needed.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Assignment:</b></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2">aProxy.voicer = aVoicer;<span class="Apple-tab-span">	</span></span>// everything updates: gui, MIDI, controls, etc.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Freeing:</b></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2">aProxy.free;<span class="Apple-tab-span">	</span></span>// assigns the Voicer's proxy to nil (and global controls) and removes gui</p>
+<p class="p2"><br></p>
+</body>
+</html>

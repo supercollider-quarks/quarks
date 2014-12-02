@@ -1,0 +1,73 @@
+CLASS:: RedLZW
+SUMMARY:: lzw compression/decompression
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedBase64, Classes/RedHuffman, Classes/RedLZ77, Classes/RedLZ78, Classes/RedLZSS, Classes/RedRLE
+
+DESCRIPTION::
+See http://en.wikipedia.org/wiki/LZW and http://marknelson.us/1989/10/01/lzw-data-compression/
+
+A dictionary look-up compressor that performs well with both highly repetitive data and repeating patterns e.g. [0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3].
+
+NOTE::
+Only works with 8bit link::Classes/Integer:: (0-255) values.
+::
+
+CLASSMETHODS::
+
+METHOD:: compress
+Expects an array of 8bit integers. Returns an array of integers.
+
+METHOD:: decompress
+Array of integers. Returns an array of 8bit integers.
+
+EXAMPLES::
+
+CODE::
+a= [0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3];
+b= RedLZW.compress(a);
+b.size/a.size;		//compressed to 60%
+c= RedLZW.decompress(b);
+a==c
+
+
+a= "TOBEORNOTTOBEORTOBEORNOT".ascii;
+b= RedLZW.compress(a);
+b.size/a.size;		//compressed to 66%
+c= RedLZW.decompress(b);
+a==c;
+
+
+a= "/WED/WE/WEE/WEB/WET".ascii;
+b= RedLZW.compress(a);
+b.size/a.size;		//compressed to 63%
+c= RedLZW.decompress(b);
+a==c;
+
+
+a= "JOEYNJOEYNJOEYJOEYNJOEYNJOEYJOEYNJOEYNJOEYJOEYNJOEYNJOEY".ascii;
+b= RedLZW.compress(a);
+b.size/a.size;		//compressed to 37.5%
+c= RedLZW.decompress(b);
+a==c;
+
+
+a= "Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.".ascii;
+b= RedLZW.compress(a);
+b.size/a.size;			//compressed to 69%
+c= RedLZW.decompress(b);
+a==c;
+
+
+a= "this_is_his_thing".ascii;
+b= RedLZW.compress(a);
+b.size/a.size;			//compressed to 76%
+c= RedLZW.decompress(b);
+a==c;
+
+
+a= "abcabcabcabcabcabc".ascii;
+b= RedLZW.compress(a);
+b.size/a.size;			//compressed to 50%
+c= RedLZW.decompress(b);
+a==c;
+::

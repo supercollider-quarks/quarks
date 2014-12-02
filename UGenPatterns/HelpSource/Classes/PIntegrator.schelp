@@ -1,0 +1,29 @@
+CLASS:: PIntegrator
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Modifiers
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/Integrator::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: pattern
+
+ARGUMENT:: coef
+
+ARGUMENT:: mul
+
+ARGUMENT:: add
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PIntegrator(Pseq([12, 0, 0, 0, 0, 0, 0, 0, 0, 0], inf), 0.1).trace+50).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \amp, PIntegrator(PImpulse(8), PSaw(64)).trace).play
+a.stop
+::

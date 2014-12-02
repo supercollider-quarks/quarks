@@ -1,0 +1,94 @@
+CLASS:: Canvas3DItem
+summary:: A 3D vector graphics item
+categories:: GUI>3D
+related:: Classes/Canvas3D
+
+DESCRIPTION::
+Canvas3DItem provides wire-frame 3D vector graphics items for use with link::Classes/Canvas3D::
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new item.
+
+returns:: A new instance.
+
+METHOD:: cube
+Create a 2x2x2 cube centered around [0,0,0]. You can then use link::#-transform:: to change it's size, position and rotation.
+
+returns:: A new instance.
+
+METHOD:: grid
+Create a flat NxN grid centered around [0,0,0], spanning [-1,-1,0] to [1,1,0].
+
+returns:: A new instance.
+
+METHOD:: regPrism
+Create a prism.
+
+returns:: A new instance.
+
+INSTANCEMETHODS::
+private:: init
+
+subsection:: Properties
+
+METHOD:: paths
+Get/set the array of paths, where each path is an array of 3D vectors: code::[x,y,z]::
+
+discussion::
+For example, two lines:
+code::
+#[
+    [ [-1,-1,-1], [ 1, 1, 1] ],
+    [ [ 1,-1,-1], [-1,-1, 1] ]
+]
+::
+
+METHOD:: color
+Get/set the item link::Classes/Color::
+
+METHOD:: width
+Get/set the item line-width.
+
+METHOD:: fill
+Get/set the link::Classes/Boolean:: flag for stroking versus filling the item's path. See link::Classes/Pen#*stroke:: and link::Classes/Pen#*fill::.
+
+subsection:: Transformations
+
+METHOD:: transforms
+An array of transformation matrices to be applied when displayed in the canvas.
+
+See link::Classes/Canvas3D#matrix_transforms::.
+
+discussion::
+These transforms are applied dynamically in the canvas each time it's refreshed. They don't alter the items paths in place.
+
+Example:
+code::
+item.transforms = [
+    Canvas3D.mRotateY(0.5),
+    Canvas3D.mScale(2,3,1.5),
+    Canvas3D.mTranslate(0,2,1),
+];
+::
+
+METHOD:: transform
+Apply a transformation matrix on this items paths.
+
+argument:: matrix
+A matrix. See link::Classes/Canvas3D#matrix_transforms::.
+
+discussion::
+This transform is applied on the actual paths, and is a static one-time operation.
+
+Example:
+code::
+item.transform(Canvas3D.mRotateY(0.5));
+item.transform(Canvas3D.mScale(2,3,1.5));
+item.transform(Canvas3D.mTranslate(0,2,1));
+::
+
+EXAMPLES::
+See link::Classes/Canvas3D#examples::
+

@@ -1,0 +1,152 @@
+CLASS:: TempoPlayer
+summary:: a control rate player that plays the TempoBus [which is the current Tempo]
+categories:: Libraries>crucial>Players, Libraries>crucial>Scheduling
+related:: Classes/Tempo, Classes/TempoBus
+
+DESCRIPTION:: Outputs the current tempo in beats per seconds.  All TempoPlayers share the same TempoBus, and so don't incur any additional resources.
+
+
+The TempoPlayer is an input to the patch, and creates a TempoBus and supplies that control to the instr synth def.
+Move the tempo slider.
+
+code::
+(
+	Instr(\helpTempoPlayer,{ arg tempo;
+		tempo.dump;
+		Impulse.ar( tempo )
+	},[
+		\tempo
+	]);
+
+	Patch(\helpTempoPlayer,[
+		TempoPlayer.new
+	]).gui
+)
+::
+
+A TempoBus belongs to a specific server for its whole object-lifetime.  A TempoPlayer is only told which server it is to play on when it is asked to prepare for play by its parent object.   A TempoPlayer can be saved in a larger musical structure and that structure is capable of being played on disparate servers.
+
+the symbol \tempo is registered in Spec.specs as a TempoSpec
+
+code::
+\tempo.asSpec.insp
+::
+
+whose defaultControl is a TempoPlayer
+
+code::
+\tempo.asSpec.defaultControl.insp=
+::
+
+so that the argname tempo in an Instr would by default result in a TempoPlayer for a Patch using that Instr.
+
+code::
+Patch({ arg tempo;
+	Impulse.ar( tempo )
+}).gui
+::
+
+execute this many times
+code::
+(
+
+Patch({ arg tempo;
+	Impulse.ar( tempo )
+},[
+	TempoPlayer.new
+
+]).play(atTime: 1)
+
+)
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: tempo
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: tempo
+
+
+
+METHOD:: kr
+
+
+
+METHOD:: synthArg
+
+
+
+METHOD:: makeResourcesToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: makePatchOut
+
+
+
+METHOD:: freeResourcesToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: spawnAtTime
+
+
+
+METHOD:: spawnToBundle
+
+
+
+METHOD:: loadDefFileToBundle
+
+
+
+METHOD:: asSynthDef
+
+
+
+METHOD:: spec
+
+
+
+
+
+EXAMPLES::
+
+You can also create the player inside the synth def:
+code::
+(
+	Instr(\helpTempoPlayer,{
+		var t;
+		t = TempoPlayer.new; // default global tempo
+		Impulse.ar( t.kr )
+	});
+
+	Patch(\helpTempoPlayer).play(atTime:1)
+)
+::
+
+You can even just use Tempo.kr
+code::
+(
+	Instr(\helpTempoPlayer,{
+		Impulse.ar( Tempo.kr )
+	});
+
+	Patch(\helpTempoPlayer).play(atTime:1)
+)
+::

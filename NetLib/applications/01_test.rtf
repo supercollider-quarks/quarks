@@ -1,0 +1,43 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf410
+{\fonttbl\f0\fnil\fcharset77 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red0\green115\blue0;\red96\green96\blue96;
+\red191\green0\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs18 \cf0 \
+(\
+f = \cf2 Collective\cf0 .default.start;\
+e = \cf2 ChatWindow\cf0 .new.start;\
+g = \cf2 Participation\cf0 (f).start;\
+g.addResponder(\cf3 \\hallo\cf0 , \{ \cf2 |t,r,m|\cf0  m.postln \});\
+)\
+\
+\
+\
+f.sendToAll(\cf3 \\hallo\cf0 , \cf3 \\it\cf0 , \cf3 \\is\cf0 , \cf3 \\the\cf0 , \cf3 \\forum\cf0 );\
+g.removeResponder(\cf3 \\hallo\cf0 );\
+\
+f.sendToAll(\cf3 \\hallo\cf0 , \cf3 \\forum\cf0 );\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf0 (\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf2 SynthDef\cf0 (\cf4 "gabor"\cf0 , \{ \cf2 arg\cf0  out=0, freq=1000, sustain=0.01, amp=0.1, pan;\
+		\cf2 var\cf0  env, u;\
+		env = \cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .sine(sustain, amp), doneAction:2);\
+		u = \cf2 Pan2\cf0 .ar(\cf2 SinOsc\cf0 .ar(freq), pan, env);\
+		\cf2 OffsetOut\cf0 .ar(out, u)\
+\}).store;\
+);\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 \
+\
+g.addResponder(\cf3 \\grain\cf0 , \{ \cf2 |t,r,m|\cf0  \cf2 Synth\cf0 .grain(\cf3 \\gabor\cf0 , m[1..]) \});\
+f.sendToAll(\cf3 \\grain\cf0 );\
+f.sendToAll(\cf3 \\grain\cf0 , \cf3 \\freq\cf0 , 8000 + 4000.rand);\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf5 // maybe change sendNamedMsg?\cf0 \
+fork \{ f.addresses.scramble.do \{ \cf2 |x|\cf0  x.postln.sendNamedMsg(\cf3 \\grain\cf0 , \cf3 \\freq\cf0 , 8000 + 4000.rand); 0.1.wait; \} \};\
+\
+}

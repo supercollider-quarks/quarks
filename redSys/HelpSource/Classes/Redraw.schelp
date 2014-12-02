@@ -1,0 +1,57 @@
+CLASS:: Redraw
+SUMMARY:: simple drawing with the mouse
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedGIF
+
+DESCRIPTION::
+
+The GUI takes the following modifier keys…
+TABLE::
+## shift || straight line from last mouse position
+## alt || rectangle from last mouse position
+## ctrl || oval from last mouse position
+::
+(try to use emphasis::alt:: and emphasis::ctrl:: in combination with emphasis::shift::)
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: bounds
+A link::Classes/Rect:: that defines window size and position.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedraw
+
+METHOD:: win
+The window.
+
+METHOD:: mouse
+Current mouse position as a link::Classes/Point::.
+
+METHOD:: clear
+Clears the drawing.
+
+METHOD:: close
+Close the window if open.
+
+METHOD:: width
+Set link::Classes/Pen:: stroke width.
+
+METHOD:: strokeColor
+Set link::Classes/Pen:: stroke colour.
+
+METHOD:: background
+Set drawing background colour.
+
+EXAMPLES::
+
+CODE::
+a= Redraw.new
+a.background= Color.grey
+a.strokeColor= Color.red
+a.width= 5
+a.clear
+a.close
+::

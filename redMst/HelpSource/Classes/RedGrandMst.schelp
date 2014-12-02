@@ -1,0 +1,76 @@
+CLASS:: RedGrandMst
+SUMMARY:: switch between different RedMst settings
+CATEGORIES:: Red>redMst
+RELATED:: Classes/RedMst, Classes/RedSeq, Classes/RedTrk, Classes/RedTrk2
+
+DESCRIPTION::
+NOTE::
+experimental class!
+::
+
+CLASSMETHODS::
+
+PRIVATE:: initClass
+
+METHOD:: song
+save current link::Classes/RedMst:: settings in link::#*songDict:: and switch to a new song, or return current song as a link::Classes/Symbol::
+
+METHOD:: songDict
+all available songs
+
+EXAMPLES::
+
+CODE::
+//--don't press cmd+. during the example.  it will stop the clocks
+s.boot;
+
+(	//set up first song
+RedGrandMst.song= 'fast';			//set song name
+RedMst.clear;
+RedMst.clock= TempoClock(150/60);
+RedMst.quant= 2;
+SynthDef(\fast, {|freq| Out.ar(0, SinOsc.ar(freq, 0, Line.kr(0.2, 0, 0.1, doneAction: 2)))}).add;
+RedTrk(\a, Pbind(\instrument, \fast, \dur, 1, \degree, Pseq(#[0, 4, 2, 3], inf)), #[0, 1]);
+RedTrk(\b, Pbind(\instrument, \fast, \dur, 1/3, \degree, Pn(Pshuf(#[10, 6, 5, 8], 4), inf)), #[1]);
+)
+RedMst.play
+RedMst.next
+RedMst.stop
+
+(	//set up second song
+RedGrandMst.song= 'slow';			//set song name to store old + start afresh
+RedMst.clear;
+RedMst.clock= TempoClock(80/60);
+RedMst.quant= 1;
+SynthDef(\slow, {|freq| Out.ar(0, LPF.ar(Blip.ar(freq, 20, Line.kr(1, 0, 2, doneAction:2))))}).add;
+RedTrk(\a, Pbind(\instrument, \slow, \dur, 3, \degree, Pseq(#[0, 0, 1, 2], inf)), #[0, 1]);
+RedTrk(\b, Pbind(\instrument, \slow, \dur, 2, \degree, Pn(Pshuf(#[5, 4, 3, 3], 2), inf)), #[1]);
+)
+RedMst.play
+RedMst.next
+RedMst.stop
+
+//--now switch between them by setting RedGrandMst.song
+RedGrandMst.song= 'fast';
+RedMst.play
+RedMst.stop
+RedGrandMst.song= 'slow';
+RedMst.play
+RedMst.stop
+
+RedGrandMst.songDict.keys
+
+
+//--you can also overlap songs
+//note that it's very important to keep track of which song you're currently in
+RedGrandMst.song= 'fast';
+RedMst.play
+RedMst.next
+RedGrandMst.song= 'slow';
+RedMst.play
+RedMst.next
+RedGrandMst.song= 'fast';
+RedMst.stop
+RedGrandMst.song= 'slow';
+RedMst.stop
+::

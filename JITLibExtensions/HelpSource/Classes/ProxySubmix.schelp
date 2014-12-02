@@ -1,0 +1,92 @@
+TITLE:: ProxySubmix
+summary:: a proxy for submixing other proxies
+categories:: Libraries>JITLib
+related:: NodeProxy, Ndef, ProxySpace, ProxyMixer, ProxyChain
+
+DESCRIPTION::
+For effects proxies, it is useful to create submixes of proxies.
+as the proxy monitor does not create a separate final signal
+of the proxy (for efficiency reasons), ProxySubmix can create
+this flexibly when needed to provide a post-fader signal.
+
+code::
+// best explained by examples:
+
+p = ProxySpace.push(s.boot);
+
+// make a ProxySubmix
+m = ProxySubmix(\revin);
+
+// initialise num channels, here to mono
+m.ar(1);
+
+// one can add it to the proxyspace if desired:
+p.envir.put(\revin, m);
+
+// make two example sources
+~a = { Dust.ar(4) };   ~a.play;
+~b = { Impulse.ar(2) }; ~b.play;
+
+// make post fader sends for them
+m.addMix(~a, postVol: true); // include vol value of ~a
+m.addMix(~b, postVol: true); //
+
+// make a crummy reverb
+~rev = { CombL.ar(m.ar, 0.05, [0.03, 0.02], 3) };
+~rev.play;
+
+
+
+// internal - check they are registered
+m.proxies;
+m.volBusses;
+
+
+
+NdefGui(m, 8); // gets these params automagically:
+//	snd_a
+//	snd_b
+//	// new ones show up here when added:
+~c = { Ringz.ar(Impulse.ar(1), LFDNoise3.kr(1, 800, 1200), 0.02) }; ~c.play;
+m.addMix(~c);
+
+// and one can add send level control if desired
+m.addLevel;
+
+//	which shows up at the end, as lev_ALL.
+
+::
+
+INSTANCEMETHODS::
+
+METHOD:: proxies
+the proxies it submixes
+
+METHOD:: sendNames
+the names of the send level controls
+
+private:: makeSkip, skipjack, updateVols, checkInit
+
+METHOD:: volBusses
+the volume busses for the proxies. may disappear
+
+METHOD:: addMix
+add a proxy to be mixed in
+ARGUMENT:: proxy
+the proxy to add a send signal of
+
+ARGUMENT:: sendLevel
+start value for the send level
+
+ARGUMENT:: postVol
+flag whether to add pre- or post proxy volume level
+ARGUMENT:: mono
+flag whether to create mono sends
+
+METHOD:: ar
+used to initialise number of channes
+
+ARGUMENT:: numChannels
+
+ARGUMENT:: addMasterSend
+flag whether to add a global send level at the end

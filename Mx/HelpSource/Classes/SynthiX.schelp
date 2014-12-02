@@ -1,0 +1,158 @@
+CLASS:: SynthiX
+summary:: A patching matrix for Mx inspired by the EMS Synthi A
+categories:: Mx
+related:: Classes/Mx
+
+DESCRIPTION:: A patching matrix for Mx inspired by the EMS Synthi A
+
+http://en.wikipedia.org/wiki/EMS_Synthi_A
+http://www.thesynthi.de/data/SYNTHIA/A2011_1.jpg
+
+	The Mx patchbay uses cables, which does't scale very well once a network gets large. It turns into the usual tangled mess of cables.
+
+	SynthiX is another way to connect outlets to inlets.
+
+code::
+x = Mx.new.app;
+SynthiX(x.outlets, x.inlets).gui
+::
+
+	[Needs a big example with lots of sounds and efx]
+
+	The SynthiX grid shows Outlets x Inlets.  An outlet may connect to multiple inlets, but an inlet may only accept one outlet.
+
+
+	Outlets and inlets should be iterables, preferrably MxQuery
+
+
+	Some inlets and outlets support getting and setting value on a one-time basis without needing a cable.  This is mainly simple connections that just have a float value like an control rate inlet, a CC outlet, a SplineFr outlet
+
+	Usage:
+
+		Click in a square to connect or disconnect. If you look in the Mx patchbay you can see the cables connecting or disconnecting.
+
+		Control-click in the header column to set the value of the inlet for testing/wiggling purposes (where supported by the inlet)
+
+		Outlet values are shown in the row header (where supported by the outlet)
+
+		Clicking in the row header will update the whole view, useful if the outlet values have changed.
+
+		Control-click in top left corner will toggle the auto-refresh task so that values will be continuously updated. This uses a fair bit of CPU.
+
+		Resize the window or use full screen for best results.
+
+	Note: the original synthi pegs are red yellow white : varying resistance.
+
+	Varying the mapping range is planned for a future release.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+argument:: outlets
+An MxQuery : x.outlets
+
+argument:: inlets
+An MxQuery : x.inlets
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: outlets
+You may dynamically set the outlets query. Call update and refresh.
+
+returns:: (returnvalue)
+
+METHOD:: inlets
+You may dynamically set the inlets query.  Call update and refresh.
+
+returns:: (returnvalue)
+
+METHOD:: labelSize
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: on
+Color for on, default is yellow
+
+returns:: (returnvalue)
+
+METHOD:: off
+Color for off, default is black
+
+returns:: (returnvalue)
+
+METHOD:: cant
+Color for a square where connection between outlet and inlet is impossible. Default grey.
+
+returns:: (returnvalue)
+
+METHOD:: font
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: updateRate
+Rate of the auto-updater. Control-click in top left corner to toggle the auto-update task.
+
+returns:: (returnvalue)
+
+METHOD:: gui
+(describe method here)
+
+argument:: parent
+(describe argument here)
+
+argument:: bounds
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: update
+Rechecks the inlets and outlets.  At the moment MxQuery are not-lazy: they evaluate their query and save the results.  When they are changed to allow lazy evaluation then update will be more interesting because the SynthiX could update if units are added or removed.
+
+	returns:: (returnvalue)
+
+METHOD:: draw
+private
+
+	returns:: (returnvalue)
+
+METHOD:: mouseDownAction
+private
+
+	argument:: view
+	(describe argument here)
+
+	argument:: x
+	(describe argument here)
+
+	argument:: y
+	(describe argument here)
+
+	argument:: modifiers
+	(describe argument here)
+
+	argument:: buttonNumber
+	(describe argument here)
+
+	argument:: clickCount
+	(describe argument here)
+
+	returns:: (returnvalue)
+
+METHOD:: refresh
+refresh the view.  Also updates any values (the little yellow lines)
+
+	returns:: (returnvalue)
+
+
+EXAMPLES::
+
+code::
+x = Mx.new.app;
+SynthiX(x.outlets, x.inlets).gui
+::

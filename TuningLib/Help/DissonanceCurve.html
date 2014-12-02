@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.11">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Helvetica; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; color: #000000}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #e10000}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; color: #000000}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; color: #000000; min-height: 17.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Monaco; color: #000000; min-height: 16.0px}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p18 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p19 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p22 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p23 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p24 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #1100d0}
+p.p25 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #008900}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #1100d0}
+span.s4 {color: #737373}
+span.s5 {font: 11.0px Helvetica}
+span.s6 {font: 9.0px Monaco}
+span.s7 {font: 12.0px Helvetica; color: #000000}
+span.s8 {color: #1100cf}
+span.s9 {color: #008900}
+span.s10 {color: #e10000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>DissonanceCurve<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Analyzes timbres in order to create tunings</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><br></p>
+<p class="p1">Uses Bill Seathares' Dissoncance Curve algorithm in order to compute tunings for a given timbre.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-converted-space"> </span>http://eceserv0.ece.wisc.edu/~sethares/consemi.html</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (freqs, amps, highInterval )</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Create a new curve based on arrays of data. This would mostly be used for additive synthesis.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>freqs </b>- An array of signficant frequencies of a timbre.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>amps </b>- An array of amplitudes for the given frequencies.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>highInterval </b>- The largest interval to compute in cents. For octave-based systems, you would usually use 1200. Default value is 1902.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*fm (carrier, modulator, depth, highInterval )</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Create a curve based on the timbre of a given FM specification</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>carrier </b>- The carrier frequency in Hz.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>modulator </b>- The modulation frequency in Hz.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>depth </b>- The depth (or delta range) of the modulator, in Hz.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>highInterval </b>- The largest interval to compute in cents. For octave-based systems, you would usually use 1200. Default value is 1902.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Example</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// This example shows how a fm synthdef might be related to a curve</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">SynthDef</span>(<span class="s4">"fm"</span>, {<span class="s3">arg</span> out, amp, carrier, modulator, depth;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> sin;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sin = <span class="s3">SinOsc</span>.ar(<span class="s3">SinOsc</span>.ar(modulator, 0, depth, carrier));</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(out, sin * amp);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).memStore;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> carrier, modulator, depth, curve, scale;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>carrier = 440;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>modulator = 600;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>depth = 100;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>curve = <span class="s3">DissonanceCurve</span>.fm(carrier, modulator, depth, 1200);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>scale = curve.scale;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*fft (buffer, size, cutoff , highInterval , action)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Create a curve based on the timbre of a given FFT buffer. THIS IS VERY SLOW and uses a lot of system resources</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>buffer </b>- An FFT Buffer.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>size </b>- The size of the Bufer in Frames.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>cutoff </b>- The lower cutoff amplitude for a bin. Defaults to -60 dB.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>highInterval </b>- The largest interval to compute in cents. For octave-based systems, you would usually use 1200. Default value is 1902.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p13"><b>Accessing Instance and Class Variables</b></p>
+<p class="p14"><br></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>tuning<span class="Apple-converted-space"> </span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Return a <a href="../../../../../../../../Applications/Media/pro/audio/SuperCollider/Help/Collections/Tuning.html"><b>Tuning</b></a> based on the minima of the Dissonance Curve</p>
+<p class="p15"><br></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span></span><b>scale (size)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns a <a href="../../../../../../../../Applications/Media/pro/audio/SuperCollider/Help/Collections/Scale.html"><b>Scale</b></a> in which the <a href="../../../../../../../../Applications/Media/pro/audio/SuperCollider/Help/Collections/Tuning.html"><b>Tuning</b></a> is the minima of the curve.</p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>size </b>- The number of degrees in the scale. For size n, it picks the n most consonant degrees. Defaults<span class="Apple-converted-space"> </span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>to inf, which makes a Scale degree for every degree of the <a href="../../../../../../../../Applications/Media/pro/audio/SuperCollider/Help/Collections/Tuning.html"><b>Tuning</b></a>.</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Example</p>
+<p class="p19"><br></p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d = <span class="s8">DissonanceCurve</span>.fm(1563, 560, 1200, 1200);</p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c = d.scale(3);</p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c.degrees.postln;</p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p21"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>plot</b></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Plots the DissonanceCurve</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Example</p>
+<p class="p6"><br></p>
+<p class="p22"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p22"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d = <span class="s3">DissonanceCurve</span>.fm(1563, 560, 1200, 1200);</p>
+<p class="p22"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d.plot;</p>
+<p class="p22"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p1"><span class="s6"><span class="Apple-tab-span">	</span></span><b>digestibleTuning (window)</b></p>
+<p class="p3"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns a <a href="../../../../../../../../Applications/Media/pro/audio/SuperCollider/Help/Collections/Tuning.html"><b>Tuning</b></a> related to Sethares' algorithm, but calculated using a modification of Calrence<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Barlow's Digestibility Formula. <span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Basically, it<span class="Apple-converted-space">  </span>does a comparison of every partial at every tuning, but instead of looking at Plomp and<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Levit's ideas<span class="Apple-converted-space">  </span>of local consonance, it compares the ratio relationships between the partials.<span class="Apple-converted-space">  </span>The<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>numerator and denominator of this ratio is summed and then multiplied by the amplitude of the<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>quieter partial.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This algorythm just gives a list of the relative dissonance at all possible tunings. To figure out scale<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>degrees, the most consonant tuning is picked from it's neighbors, given the window size.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The tuning generated by this way and by the Sethares / Plomp and Levit algorithms may have<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>nothing to do with each other.</p>
+<p class="p3"><br></p>
+<p class="p1"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>window </b>- The idealized step size, in cents. To do normal-ish semitones, this would be set to 100,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which is the default.</p>
+<p class="p3"><br></p>
+<p class="p11"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Example</p>
+<p class="p22"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p22"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d = <span class="s3">DissonanceCurve</span>.fm(100, 200, 300, 1200);</p>
+<p class="p22"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t = d.digestibleTuning(100);</p>
+<p class="p22"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t.cents.postln;</p>
+<p class="p22"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>digestibleScale (window, size)</b><span class="s6"><span class="Apple-tab-span">	</span></span></p>
+<p class="p3"><br></p>
+<p class="p1"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Returns a <a href="../../../../../../../../Applications/Media/pro/audio/SuperCollider/Help/Collections/Scale.html"><b>Scale</b></a> based on the digestibleTuning. <span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>window </b>- The window size used to compute the digestibleTuning. Defaults to 100.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>size </b>- The number of degrees in the scale. For size n, it picks the n most consonant degrees. Defaults<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>to inf, which makes a Scale degree for every degree of the <a href="../../../../../../../../Applications/Media/pro/audio/SuperCollider/Help/Collections/Tuning.html"><b>Tuning</b></a>.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p11"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Example</p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p23"><span class="Apple-tab-span">	</span></p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d = <span class="s8">DissonanceCurve</span>.fm(100, 200, 300, 1200);</p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c = d.digestibleScale(100, 5);</p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c.degrees.postln;</p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><br></p>
+<p class="p13"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p6"><br></p>
+<p class="p11">// Use this SynthDef for all examples<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12">(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s3">SynthDef</span>(<span class="s4">"fm"</span>, {<span class="s3">arg</span> out = 0, amp = 0.2, dur = 1, midinote = 0, carrier, modulator, depth;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> sin, env, ratio;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the ratios between the carrier, modulaor and depth should stay the same</p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// so multiply all of them by the current note</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ratio = midinote.midiratio;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>carrier = carrier * ratio;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>modulator = modulator * ratio;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>depth = depth * ratio;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>env = <span class="s3">EnvGen</span>.kr(<span class="s3">Env</span>.sine(dur, amp), doneAction: 2);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sin = <span class="s3">SinOsc</span>.ar(<span class="s3">SinOsc</span>.ar(modulator, 0, depth, carrier), 0, env);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(out, sin);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>}).memStore;</p>
+<p class="p12">)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p11">// Using a Tuning from a DissonanceCurve</p>
+<p class="p12">(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s3">var</span> carrier, modulator, depth, curve, tuning, note;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>carrier = 700;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>modulator = 600;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>depth = 800;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>curve = <span class="s3">DissonanceCurve</span>.fm(carrier, modulator, depth, 1200);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>tuning = curve.tuning;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p24"><span class="s2"><span class="Apple-tab-span">	</span></span>Task<span class="s2">({</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>6.do({</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>note = tuning.semitones.choose;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Synth</span>(<span class="s9">\fm</span>, [<span class="s9">\dur</span>, 0.7, <span class="s9">\midinote</span>, note,<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\carrier</span>, carrier,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\modulator</span>, modulator,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\depth</span>, depth]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.5.wait;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p12"><span class="Apple-tab-span">	</span>}).play;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p12">)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p11">// Use a Scale from a DissonanceCurve with a Pbind</p>
+<p class="p12">(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s3">var</span> carrier, modulator, depth, curve, scale, degrees;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>carrier = 440;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>modulator = 600;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>depth = 100;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>curve = <span class="s3">DissonanceCurve</span>.fm(carrier, modulator, depth, 1200);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>scale = curve.scale(5);</p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span>degrees = (0..scale.size); </span>// make an array of all the scale degrees</p>
+<p class="p6"><br></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span></span>// We don't know how many pitches per octave<span class="Apple-converted-space">  </span>will be until after the<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span></span>// DissonanceCurve is calculated.<span class="Apple-converted-space">  </span>However, deprees outside of the range</p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span></span>// will be mapped accordingly.</p>
+<p class="p6"><br></p>
+<p class="p24"><span class="s2"><span class="Apple-tab-span">	</span></span>Pbind<span class="s2">(</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p25"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">,<span class="Apple-tab-span">	</span></span>\fm<span class="s2">,</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\octave</span>,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\scale</span>,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>scale,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\degree</span>,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pseq</span>([</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pseq</span>(degrees, 1), <span class="s10">// play one octave</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pseq</span>([-3, 2, 0, -1, 3, 1], 1)], 1), <span class="s10">// play other notes</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\carrier</span>,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>carrier,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\modulator</span>,<span class="Apple-tab-span">	</span>modulator,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\depth</span>,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>depth</p>
+<p class="p12"><span class="Apple-tab-span">	</span>).play</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12">)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p11">// Use the digestible Scale</p>
+<p class="p12">(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s3">var</span> carrier, modulator, depth, curve, scale, degrees;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>carrier = 350;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>modulator = 710;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>depth = 505;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>curve = <span class="s3">DissonanceCurve</span>.fm(carrier, modulator, depth, 1200);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>scale = curve.digestibleScale(100, 7); <span class="s10">// pick the 7 most consonant tunings</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span>degrees = (0..(scale.size - 1)); </span>// make an array of all the scale degrees</p>
+<p class="p6"><br></p>
+<p class="p24"><span class="s2"><span class="Apple-tab-span">	</span></span>Pbind<span class="s2">(</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p25"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">,<span class="Apple-tab-span">	</span></span>\fm<span class="s2">,</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\octave</span>,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\scale</span>,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>scale,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\degree</span>,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pseq</span>([</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pseq</span>(degrees, 1), <span class="s10">// play one octave</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pseq</span>([-7, 2, 0, -5, 4, 1], 1)], 1), <span class="s10">// play other notes</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\carrier</span>,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>carrier,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\modulator</span>,<span class="Apple-tab-span">	</span>modulator,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\depth</span>,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>depth</p>
+<p class="p12"><span class="Apple-tab-span">	</span>).play</p>
+<p class="p12">)</p>
+</body>
+</html>

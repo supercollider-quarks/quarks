@@ -1,0 +1,155 @@
+CLASS:: MxCable
+summary:: a connection between an MxUnit's outlet and another MxUnit's inlet
+categories:: Mx
+
+
+DESCRIPTION::
+Cables represent a connection between an outlet and an inlet.  These may be audio, control or frame rate, but also event stream (Pbind), FFT chains or objects types like Env, Rect or Image.  Currently implemented are audio, control and frame rate.
+
+Note: In addition to cabling objects together, scripts, documents or units may communicate directly or via shared environment variables.  This allows ad hoc communication, while the cables represent fixed links.  See MxUnit varPooling.
+
+Cables may be freely connected and disconnected while playing.
+
+Connections are made using MxCableStrategy objects.  These objects solve the connecting and disconnecting from two objects based on the behavior of the outlet and inlet as defined in the objects MxInlet and MxOutlet which are created in the driver file for that object.
+
+MxCableStrategy are defined in MxCable.initClass.  More connection types will be solved and become available as the project progresses.
+
+An MxCable has a little environment in which it stores state.  The cable strategy functions are invoked in this environment and may store variables like ~synth.
+
+CLASSMETHODS::
+
+METHOD:: new
+
+argument:: outlet
+The outlet that the cable starts from.
+
+argument:: inlet
+The inlet that the cable goes to.
+
+argument:: mapping
+See mapping below
+
+argument:: active
+Activate or deactivate a cable without deleting it.
+
+returns:: boolean
+
+METHOD:: hasStrategy
+Checks if the it is possible to cable from the outlet to the inlet.
+
+argument:: outlet
+MxOutlet
+
+argument:: inlet
+MxInlet
+
+returns:: boolean
+
+METHOD:: register
+Registers an MxCableStrategy
+
+argument:: outAdapterClassName
+an AbsMxAdapter subclass
+
+argument:: inAdapterClassName
+an AbsMxAdapter subclass
+
+argument:: strategy
+an MxCableStrategy
+
+returns:: this
+
+METHOD:: instr
+This is an internally used Instr, created on demand.
+
+returns:: Instr
+
+
+INSTANCEMETHODS::
+
+METHOD:: outlet
+the outlet where the cable starts
+
+returns:: MxOutlet
+
+METHOD:: inlet
+the inlet where the cable goes to
+
+returns:: MxInlet
+
+METHOD:: mapping
+This allows customized scaling and shaping of values from the outlet spec to the inlet spec. A mapping of nil (which is the default) will scale from the outlet spec to the inlet spec.  eg.  \freq => \pchRatio will automatically map correctly, as will \unipolar => \freq.   mapping, if set, should be a function that take a value and returns a value.
+
+returns:: mapping function or nil if not set.
+
+METHOD:: active
+Set or get active status of cable.  It is possible to deactivate a cable without deleting it.
+
+returns:: boolean
+
+METHOD:: pending
+internal.  if the cable has been attached but the Mx has not yet updated
+
+returns:: boolean
+
+METHOD:: state
+an Environment used by the MxCableStrategy connect and disconnect functions.  This stores any state or resources like ~synth so they are available for the disconnect.
+
+returns:: an Environement
+
+METHOD:: init
+
+
+
+
+
+METHOD:: asString
+
+
+
+
+
+METHOD:: strategy
+the MxCableStrategy for this connection.
+
+returns:: MxCableStategy
+
+METHOD:: setInitial
+Some cable strategies need to set an initial value on the target inlet at the time that the changes are being enacted.  For instance when a cable is connected it does not immediately set the value on the target inlet until the Mx calls .update and the first the units are spawned and then the cables are spawned.  setInitial allows the cable to set a value for the unit which the unit needs when it spawns, because the unit must spawn before the cable.
+
+returns:: this
+
+METHOD:: spawnToBundle
+Not all cables use synths on the server.  For relationships that exist only in the language, functions may be added to the bundle which enact the actual connection.
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+returns:: this
+
+METHOD:: stopToBundle
+Disconnecting the cable, stopping any cable synthsetcc.
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+returns:: this
+
+METHOD:: freeToBundle
+Free any resources.  In practice everything is freed at stop and no resources are kept around.
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+returns:: this
+
+METHOD:: map
+Map the value from the outlet spec to the inlet spec.  Audio to audio does not perform any mapping.  If a mapping function is set then it is used instead.
+
+argument:: v
+input value.
+
+returns:: mapped value
+
+
+

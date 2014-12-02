@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ff}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #95221c}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a2302b}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0e17b6}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #416f16}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #1320f3}
+span.s3 {color: #000000}
+span.s4 {color: #0000ff}
+span.s5 {color: #416f16}
+span.s6 {color: #0e17b6}
+span.s7 {color: #606060}
+span.s8 {color: #95221c}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>GAPmatch<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a parameter estimation system that uses genetic algorithms</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="SC://Object"><span class="s2"><b>Object</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p1">GAPmatch is a fast parameter estimation system that intends to work at near-interactive speeds to aid sound design and maybe live performances. To achieve this, it uses a fast search technique called "Genetic Algorithm" which mimics the evolutionary continuum that we observe in nature. It wraps a <a href="GAWorkbench.html"><span class="s2">GAWorkbench</span></a> instance for a specific purpose.</p>
+<p class="p2"><br></p>
+<p class="p1">In terms of its functionality in the SC environment, parameter estimation means this: You have a SynthDef that is<span class="Apple-converted-space">  </span>known to be capable of synthesizing a particular type of sound, but finding the right parameters is a time consuming and in some situations a tedious task. Or you have built a raw SynthDef for a synthesis algorithm which exposes a few dozens of parameters and it's impossible to conduct them at that state. Or you are trying to tune a physical modelling instrument... Situations can vary. This parameter estimation system basically takes an input sound, an input SynthDef and its parameter ranges, and it tries to find the parameters for this particular synthesizer so that the output of the synth is faithful to the attributes of your input sound. From that stage on, you can alter the<span class="Apple-converted-space">  </span>parameters by yourself to change the synthesized sound in various ways.</p>
+<p class="p2"><br></p>
+<p class="p1">Execution of genetic algorithms demands heavy computing resources, and this class can parallelize the task across multiple scservers on your local machine and networked machines.</p>
+<p class="p2"><br></p>
+<p class="p1">An article that describes the inner workings of the system in depth will be provided when I have the permission to do so.</p>
+<p class="p2"><br></p>
+<p class="p1">(You need to have BatUGens and BatPVUgens installed from sc3-plugins for this to work)</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><b>See also:</b> <a href="GAWorkbench.html">GAWorkbench</a></span></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (argPoolSize, argSynthDef, argSampleLoc, argSynthParams, argParamSpace, argNumThreads, argServers)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>All arguments except argServers must be provided.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argPoolSize </b>- Pool size for the genetic algorithm (Integer). See <a href="GAWorkbench.html"><span class="s4">GAWorkbench</span></a>.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argSynthDef </b>- The SynthDef whose parameter space is to be searched (SynthDef).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argSampleLoc </b>- Path for the input sample whose attributes you are trying to match (String).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argSynthParams </b>- Array of Symbols. The argument names of the provided SynthDef.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argParamSpace </b>- This should be a function, returning an array of values (most likely in a random range) that match with the parameters provided with argSynthParams (i.e. in the same order). For example, if you have a hypothetical synth with two parameters with names "freq" and "amp", your <i>argSynthParams</i> should be [<span class="s5">\freq</span>, <span class="s5">\amp</span>] and <i>argParamSpace</i> might be { [rrand(10, 8000), rrand(0.0, 1.0)] }. The random ranges you provide for the parameters will directly influence the complexity of the problem (area of the search space), so if you can provide meaningful ranges for the parameters, you will find a good solution sooner.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argNumThreads </b>- Number of simultaneous synthesizers to run and test on a single server. If you don't provide any servers, the default server will be used, so set this value to a number f synth instances you can run simultaneously on your computer. This value cannot be bigger than <i>argPoolSize </i>as fitness of only one generation of parameters can be tested simultaneously before the system applies other genetic operators such as crossover and mutation (Integer).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argServers </b>- An Array of Servers. If you provide this argument, the instance will parallelize the work across all the provided servers. Make sure that:</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* argNumThreads is evenly divisible by number of supplied servers,</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* argPoolSize isn't smaller than (argNumThreads * argServers.size),</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* argPoolSize is evenly divisible by (argNumThreads * argServers.size)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Don't worry if you make an error, in such a case, the class will post an error and stop.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p11"><b>Accessing Instance and Class Variables</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>tLatency_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>tLatency</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The system runs the synthesizer and the source sound simultaneously and a third synth compares the similarity these two sounds to provide data for the GA algorithm. For accurate analysis, accurate timing for spawning these synths is necessary, so the class makes a bundle and sends them to the server with the same timestamp to make sure they are created simultaneously. This member variable defines the scheduling latency, if you happen to see "late" messages on your post window, consider increasing this value. Default is 0.1.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>lastGen</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns an array of parameters (values in argParamSpace order). These are the parameters for the latest generation and ordered from fittest to weakest. instance.lastGen[0] therefore is the fittest parameter set at any time.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>defaultBuffer</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The input sound buffer. You can call .play on it to hear the source sound.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>gaInstance</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The <a href="GAWorkbench.html"><span class="s4">GAWorkbench</span></a> instance this class wraps. See its help to access the internals.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b>Doing Some Task (optional)</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>startJob</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Once everything is initialized, call this on the instance to start the GA search operation.</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>pauseJob</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Pauses the GA search.</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>resumeJob</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Resumes the GA search.</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>playBest</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Plays the supplied synth with the best parameters available (lastGen[0]). If you are running the GA search on your local computer and if there is heavy CPU load, you might want to call .pauseJob prior to listening, or you will hear dropouts.</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>cleanUp</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Frees all the server side resources the instance uses (buffers, busses, groups etc).</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>showGui</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Shows the GUI, makes things easier.</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>hideGui</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Hides the GUI.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p11"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p12">//don't forget to provide your own sample below!</p>
+<p class="p12">//(preferably an e-drum type sound, but can be other things to try)</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="s3">s.boot; </span>//boot the default server</p>
+<p class="p3"><br></p>
+<p class="p12"><span class="s3">(</span>//2 local servers</p>
+<p class="p14">~servers = 2.collect({<span class="s6">|cnt|</span> <span class="s6">Server</span>.new(<span class="s7">"s"</span>++cnt, <span class="s6">NetAddr</span>(<span class="s7">"localhost"</span>, 51000 + cnt), <span class="s6">Server</span>.default.options); });</p>
+<p class="p14">fork</p>
+<p class="p14">({</p>
+<p class="p14"><span class="Apple-tab-span">	</span>~servers.do</p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span>({</span>|srv|</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>srv.boot;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1.wait;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>});</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>~servers.do(<span class="s6">_</span>.makeWindow);</p>
+<p class="p14">}, clock: AppClock);</p>
+<p class="p14">)</p>
+<p class="p3"><br></p>
+<p class="p14">(</p>
+<p class="p14">~sDef = <span class="s6">SynthDef</span>(<span class="s5">\dSynth</span>,</p>
+<p class="p12"><span class="s3">{</span>//an electronic drum synthesizer</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s6">arg</span> outBus, bodyIFreq = 100, bodyEFreq = 45, sweepTime = 0.1,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>bodyAttack = 0.001, bodySustain = 0.1, bodyRelease = 0.3, pMod = 0.15,</p>
+<p class="p14"><span class="Apple-tab-span">	</span>noiseAmp = 4, noiseDecay = 0.07, noiseFreq = 200, noiseRQ = 0.15,</p>
+<p class="p14"><span class="Apple-tab-span">	</span>distMix = 0.1, distAmt = 5;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s6">var</span> bodyEnv, fed, body, noise, noiseEnv, finOut;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s6">var</span> t_ktrig = <span class="s6">Impulse</span>.ar(0);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>bodyEnv = <span class="s6">EnvGen</span>.ar(<span class="s6">Env</span>([0.1, 0.8, 0.7, 0.1], [bodyAttack, bodySustain, bodyRelease], <span class="s5">\exponential</span>), t_ktrig) - 0.1;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>noiseEnv = <span class="s6">EnvGen</span>.ar(<span class="s6">Env</span>([0.1, noiseAmp, 0.1], [0.001, noiseDecay], <span class="s5">\exponential</span>), t_ktrig) - 0.1;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>fed = <span class="s6">LocalIn</span>.ar(1);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>body = <span class="s6">SinOsc</span>.ar</p>
+<p class="p14"><span class="Apple-tab-span">	</span>(</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">EnvGen</span>.ar(<span class="s6">Env</span>([0, bodyIFreq, bodyEFreq], [0, sweepTime]), t_ktrig),<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(fed * pMod).fold(0, 2*pi),<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bodyEnv</p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>noise = <span class="s6">BPF</span>.ar(<span class="s6">PinkNoise</span>.ar(1) * noiseEnv, noiseFreq, noiseRQ);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s6">LocalOut</span>.ar(body + noise);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>finOut = <span class="s6">SelectX</span>.ar(distMix.clip(0,1), [(body + noise), ((body + noise) * (1 + distAmt)).tanh]).dup;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s6">DetectSilence</span>.ar(finOut, doneAction: 2);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s6">Out</span>.ar(outBus, finOut.mean);</p>
+<p class="p14">});</p>
+<p class="p3"><br></p>
+<p class="p14">if(a.species == <span class="s6">GAPmatch</span>, { a.cleanUp; });</p>
+<p class="p3"><br></p>
+<p class="p14">a = <span class="s6">GAPmatch</span>.new</p>
+<p class="p14"><span class="Apple-tab-span">	</span>(</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>600, </span>//poolSize</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~sDef, </span>//our clueless synthdef</p>
+<p class="p16"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"~/Desktop/sounds/kick.wav"<span class="s3">.standardizePath, </span><span class="s8">//provide your sample here</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\bodyIFreq<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\bodyEFreq<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\sweepTime<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\bodyAttack<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\bodySustain<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\bodyRelease<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\pMod<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\noiseAmp<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\noiseDecay<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\noiseFreq<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\noiseRQ<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\distMix<span class="s3">,</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\distAmt</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>], </span>//synth parameters</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{[</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(1, 500), <span class="s8">//bodyIFreq</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(1, 500), <span class="s8">//bodyEFreq</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(0, 2.0), <span class="s8">//sweepTime</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>exprand(1e-5, 0.5), <span class="s8">//bodyAttack</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>exprand(1e-5, 1), <span class="s8">//bodySustain</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>exprand(1e-5, 1), <span class="s8">//bodyRelease</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(0, 1.0), <span class="s8">//pMod</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(0, 20.0), <span class="s8">//noiseAmp</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>exprand(1e-3, 4), <span class="s8">//noiseDecay</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>exprand(1, 15e3), <span class="s8">//noiseFreq</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(0.01, 0.99), <span class="s8">//noiseRQ</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(0, 1.0), <span class="s8">//distMix</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(0, 20.0), <span class="s8">//distAmt</span></p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]}, </span>//random values for parameters limited in a range (function returning array)</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>100, </span>//number of threads per server</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~servers </span>//our servers</p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14">)</p>
+</body>
+</html>

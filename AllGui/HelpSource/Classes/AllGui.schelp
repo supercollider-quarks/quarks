@@ -1,0 +1,105 @@
+CLASS:: AllGui
+summary:: Overview of many globally stored objects
+categories:: JITGui
+related:: Classes/Interpreter, Overviews/JITLib, Classes/ProxySpace, Classes/Ndef, Classes/Tdef, Classes/Pdef, Classes/Pdefn, Classes/GlobalsGui
+
+DESCRIPTION::
+AllGui shows many of the global storage locations in SC3:
+list::
+##global variables in the interpreter (a-z)
+##objects in the currentEnvironment
+##some classvars that keep all instances of that class: 
+##link::Classes/Pdef::.all, link::Classes/Tdef::.all, link::Classes/Pdefn::.all,
+##link::Classes/ProxySpace::.all, link::Classes/Ndef::.all,
+##and potentially others, such as MKtl.
+:: 
+
+For each location, the number of items there is displayed, 
+and a gui can be opened to display it in more detail.
+
+code::
+a = AllGui.new;
+	// test adding things that should show up: 
+a = 12;
+z = 42;
+~bar = 345;
+~foo = 345;
+Tdef(\a);	
+Tdef(\b);	
+Pdef(\a);
+Pdef(\b);
+Pdefn(\trala);
+Pdefn(\hopsa);
+Ndef(\a);
+Ndef(\b);
+	// then try clicking the open button on one!
+
+	// all these guis are reasonably non-overlapping / tiled:
+a = AllGui(12);
+AllGui.openFuncs.do(_.value(8)); // small screens
+AllGui.openFuncs.do(_.value(12));
+
+::
+
+EXAMPLES::
+
+code::
+	// the guis are reasonably non-overlapping / tiled:
+a = AllGui(12);
+AllGui.openFuncs.do(_.value(8)); // small screens
+AllGui.openFuncs.do(_.value(12));
+::
+
+CLASSMETHODS::
+
+private:: countGlobals, findProxySpace, inited
+
+METHOD:: globalNames
+the interpreter global variables as a list of symbols.
+
+METHOD:: labels
+the names of the currently watched storage locations.
+
+METHOD:: countFuncs
+the functions for counting the objects in each location
+
+METHOD:: openFuncs
+the functions to run when the open button is pressed, 
+which typically opens the appropriate gui.
+
+METHOD:: new
+create a new AllGui
+
+argument:: numItems
+the number of items to show on each subgui
+
+argument:: parent
+an optional parent view
+
+argument:: bounds
+optional bounds 
+
+returns:: the new AllGui.
+
+METHOD:: add
+add an item (e.g. a collection/location of global objects) to display on AllGui
+
+argument:: name
+the name under which to display it
+
+argument:: countFunc
+a function for counting the objects of interest
+
+argument:: openFunc
+a function that creates a GUI for that collection/location
+
+METHOD:: remove
+remove an item from the display 
+
+argument:: name
+the name of the item to remove
+
+InstanceMethods:: 
+private:: winName, texts, setDefaults, makeViews, getState, checkUpdate
+
+

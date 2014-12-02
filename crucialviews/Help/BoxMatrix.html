@@ -1,0 +1,468 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; color: #000628}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000628}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000628; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #7c210d}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #00139d}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #5e1d0b}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #00128a}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Arial}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Arial; min-height: 14.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+span.s1 {color: #000628}
+span.s2 {color: #000000}
+span.s3 {color: #00139d}
+span.s4 {color: #00128a}
+span.s5 {color: #2b2b2b}
+span.s6 {color: #5e1d0b}
+span.s7 {color: #23350c}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>BoxMatrix</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>a 2D grid of boxes/buttons</b></p>
+<p class="p4"><br></p>
+<p class="p3">boxes can be styled, titled, clicked, double clicked, dragged, copied, moved, swapped</p>
+<p class="p4"><br></p>
+<p class="p3">cascading style system allows display of different states for whatever is in the box</p>
+<p class="p5"><span class="Apple-tab-span">	</span>default style</p>
+<p class="p5"><span class="Apple-tab-span">	</span>individual box styling</p>
+<p class="p5"><span class="Apple-tab-span">	</span>named styles (eg playing)</p>
+<p class="p5"><span class="Apple-tab-span">	</span>mouse events / dragging styles</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="s1">Each</span> box is an environment and stores variables.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>These are used to set display style<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>and to hold sounds, patterns, players, functions etc.</p>
+<p class="p6"><br></p>
+<p class="p3"><span class="s1">Supports</span> easy dragging, copying, moving, swapping of boxes with or without modifiers</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3">This was designed initially with the goal of playing with patterns or parts, though it can also be used for sequencing, patching things together or pixel painting.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p3"><b>BoxMatrix(parent,bounds,numCols,numRows)</b></p>
+<p class="p2"><br></p>
+<p class="p7">// 6 by 10 with no bounds set</p>
+<p class="p8"><span class="s2">x = </span>BoxMatrix<span class="s2">(</span>nil<span class="s2">,</span>nil<span class="s2">,6,10);</span></p>
+<p class="p2"><br></p>
+<p class="p7">// scales boxes to fit in the bounds</p>
+<p class="p9">x = <span class="s3">BoxMatrix</span>(<span class="s3">nil</span>,1000@600,6,10);</p>
+<p class="p2"><br></p>
+<p class="p7">// user views are not that fast</p>
+<p class="p7">// you won't want to make it this big</p>
+<p class="p7">// especially if its mostly empty space</p>
+<p class="p9">x = <span class="s3">BoxMatrix</span>(<span class="s3">nil</span>,1000@600,60,100);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">Handlers are similar to view handlers but instead of x,y they are passed a 'box' which is an environment object.</p>
+<p class="p2"><br></p>
+<p class="p9">(</p>
+<p class="p10">// 6 by 10 with no bounds set</p>
+<p class="p11"><span class="s2">x = </span>BoxMatrix<span class="s2">(</span>nil<span class="s2">,</span>nil<span class="s2">,6,10);</span></p>
+<p class="p2"><br></p>
+<p class="p9">x.mouseDownAction = { <span class="s4">arg</span> box,modifiers,buttonNumber,clickCount;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>[<span class="s5">"down"</span>,box,modifiers,buttonNumber,clickCount].postln;<span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>box.title = clickCount.asString;</p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p9">x.mouseUpAction = { <span class="s4">arg</span> box,modifiers;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>[<span class="s5">"up"</span>,box,modifiers].postln;<span class="Apple-tab-span">	</span></p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p9">x.mouseMoveAction = { <span class="s4">arg</span> box,modifiers;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>[<span class="s5">"move"</span>,box,modifiers].postln;<span class="Apple-tab-span">	</span></p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p10">// SCUserView doesnt implement mouse over yet</p>
+<p class="p9">x.mouseOverAction = { <span class="s4">arg</span> box,modifiers;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>[<span class="s5">"over"</span>,box,modifiers].postln;<span class="Apple-tab-span">	</span></p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p9">)</p>
+<p class="p2"><br></p>
+<p class="p9">x.defaultStyle holds the default display variables for every box:</p>
+<p class="p2"><br></p>
+<p class="p9"><span class="Apple-converted-space">        </span>defaultStyle = (</p>
+<p class="p9"><span class="Apple-converted-space">            </span>font: <span class="s4">GUI</span>.font.new(*skin.fontSpecs),</p>
+<p class="p9"><span class="Apple-converted-space">            </span>fontColor: skin.fontColor,</p>
+<p class="p9"><span class="Apple-converted-space">            </span>boxColor: skin.offColor,</p>
+<p class="p9"><span class="Apple-converted-space">            </span>borderColor: skin.foreground,</p>
+<p class="p9"><span class="Apple-converted-space">            </span>center: <span class="s4">false // text align</span></p>
+<p class="p9"><span class="Apple-converted-space">            </span>); <span class="Apple-converted-space">       </span></p>
+<p class="p2"><br></p>
+<p class="p9">// set the default color</p>
+<p class="p9">x.defaultStyle.boxColor = Color.white;</p>
+<p class="p9">x.refresh;</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">Each</span> box has standard display variables that can override the matrix's defaultStyle:</p>
+<p class="p4"><br></p>
+<p class="p3">title</p>
+<p class="p3">font</p>
+<p class="p3">fontColor</p>
+<p class="p3">boxColor</p>
+<p class="p3">borderColor</p>
+<p class="p3">center = true/false text align</p>
+<p class="p2"><br></p>
+<p class="p9">(</p>
+<p class="p9">x.at(1@1).title = <span class="s5">"dom7"</span>;</p>
+<p class="p9">x.at(1@1).boxColor = <span class="s4">Color</span>.rand;</p>
+<p class="p9">x.refresh</p>
+<p class="p9">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p10">// setting a default box style and an individual box's style</p>
+<p class="p9">(</p>
+<p class="p9">x = <span class="s4">BoxMatrix</span>(<span class="s4">nil</span>,100@500,2,10);</p>
+<p class="p2"><br></p>
+<p class="p10">// what a default box looks like</p>
+<p class="p9">x.defaultStyle.center = <span class="s4">true</span>;</p>
+<p class="p9">x.defaultStyle.boxColor = <span class="s4">Color</span>.white;</p>
+<p class="p2"><br></p>
+<p class="p9">x.mouseMoveAction = { <span class="s4">arg</span> box,modifiers;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>if(box.title != <span class="s5">"x"</span>,{</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.title = <span class="s5">"x"</span>;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.boxColor = <span class="s4">Color</span>.rand;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>})</p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p10">// control click to clear</p>
+<p class="p9">x.mouseDownAction = { <span class="s4">arg</span> box,modifiers,buttonNumber,clickCount;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>if(modifiers.isCtrl,{</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.title = <span class="s5">""</span>;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.boxColor = x.defaultStyle.boxColor;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>})</p>
+<p class="p9">};</p>
+<p class="p9">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">You can store musical settings in the box environment</p>
+<p class="p2"><br></p>
+<p class="p9">(</p>
+<p class="p9">x = <span class="s4">BoxMatrix</span>(<span class="s4">nil</span>,400@400,4,4);</p>
+<p class="p2"><br></p>
+<p class="p9">4.do { <span class="s4">|i|</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>b = x.at(i@i);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.title = i.asString;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.center = <span class="s4">true</span>;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.pattern = i;</p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p10">// play the pattern on click</p>
+<p class="p9">x.mouseDownAction = { <span class="s4">arg</span> box,modifiers,buttonNumber,clickCount;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>if(box.pattern.notNil) {</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if((box.playing ? <span class="s4">false</span>).not,{</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s5">"play this pattern:"</span>,box.pattern].postln; <span class="s6">// launch a sound</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.playing = <span class="s4">true</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},{</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s5">"stop this pattern:"</span>,box.pattern].postln; <span class="s6">// launch a sound</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.playing = <span class="s4">false</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>};</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span></span>/* could even do this usage:</p>
+<p class="p10"><span class="Apple-tab-span">	</span>box.use {</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~playing = true</p>
+<p class="p10"><span class="Apple-tab-span">	</span>} */</p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p9">x.refresh</p>
+<p class="p9">)</p>
+<p class="p2"><br></p>
+<p class="p3">To show the box's playing/stopped state you will want to use a named style rather then set each box's individual colors.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p12"><b>Named Styles</b></p>
+<p class="p2"><br></p>
+<p class="p3">A style is a dictionary that is used to transform the default box style.</p>
+<p class="p3">A style is referred to by its name (a symbol)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p13">There are existing style transforms for:</p>
+<p class="p14"><br></p>
+<p class="p13"><b>focused</b> (the last clicked or activated box)</p>
+<p class="p9"><span class="Apple-tab-span">	</span>// this simply sets the borderColor</p>
+<p class="p9"><span class="Apple-converted-space">        </span>styles[<span class="s7">'focused'</span>] = (</p>
+<p class="p9"><span class="Apple-converted-space">            </span>borderColor: <span class="s4">Color</span>(0.2499443083092, 0.55516802266236, 0.76119402985075)</p>
+<p class="p9"><span class="Apple-converted-space">            </span>);</p>
+<p class="p14"><br></p>
+<p class="p13"><b>down</b> (when button is pushed. aka. active in html speak)</p>
+<p class="p13"><b>dragging</b> (while dragging the box)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>// an example of a more complex style using a function</p>
+<p class="p13"><span class="Apple-tab-span">	</span>// this blends the box's color with a translucent blue</p>
+<p class="p13"><span class="Apple-tab-span">	</span>// and set the borderColor to blue</p>
+<p class="p9"><span class="Apple-converted-space">        </span>styles[<span class="s7">'dragging'</span>] = (</p>
+<p class="p9"><span class="Apple-converted-space">            </span>boxColor: { <span class="s4">arg</span> c; c.blend(<span class="s4">Color</span>.blue(alpha:0.2),0.8) },</p>
+<p class="p9"><span class="Apple-converted-space">            </span>borderColor: <span class="s4">Color</span>.blue(alpha:0.5)</p>
+<p class="p9"><span class="Apple-converted-space">            </span>);</p>
+<p class="p3"><b>over</b> (mouse over, but user view doesn't implement that yet)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p3">There are also styles predefined for these common semantic usages:</p>
+<p class="p4"><br></p>
+<p class="p3"><b>playing</b></p>
+<p class="p3"><b>selected</b></p>
+<p class="p3"><b>deactivated</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>makes everything translucent</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p9">You can set the default style transforms as you like:</p>
+<p class="p2"><br></p>
+<p class="p9">x.styles['down'] = (</p>
+<p class="p9"><span class="Apple-tab-span">	</span>boxColor: { arg c; c.darken(Color.red,0.9) }</p>
+<p class="p9"><span class="Apple-tab-span">	</span>);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">So now we can make use of these styles:</p>
+<p class="p9">(</p>
+<p class="p9">x = <span class="s4">BoxMatrix</span>(<span class="s4">nil</span>,400@400,4,4);</p>
+<p class="p2"><br></p>
+<p class="p9">x.defaultStyle.center = <span class="s4">true</span>;</p>
+<p class="p2"><br></p>
+<p class="p9">4.do { <span class="s4">|i|</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>b = x.at(i@i);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.title = i.asString;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.pattern = i;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.boxColor = <span class="s4">Color</span>.rand;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.playing = <span class="s4">false</span>;</p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p10">// play the pattern on click</p>
+<p class="p9">x.mouseDownAction = { <span class="s4">arg</span> box,modifiers,buttonNumber,clickCount;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>if(box.pattern.notNil) {</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if((box.playing).not,{</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s5">"play:"</span>,box.pattern].postln; <span class="s6">// launch a sound</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.playing = <span class="s4">true</span>;</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// add the playing style</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x.addStyle(box,<span class="s7">'playing'</span>);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},{</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s5">"stop:"</span>,box.pattern].postln; <span class="s6">// kill a sound</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.playing = <span class="s4">false</span>;</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// remove style</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x.removeStyle(box,<span class="s7">'playing'</span>);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>}</p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p9">x.refresh</p>
+<p class="p9">)</p>
+<p class="p4"><br></p>
+<p class="p3">Notice that style transforms are additive.</p>
+<p class="p4"><br></p>
+<p class="p3">eg.</p>
+<p class="p3">default + playing + focused</p>
+<p class="p3">default + selected + dragging</p>
+<p class="p4"><br></p>
+<p class="p3">so borders may be changed, colors may be made more saturated or more translucent</p>
+<p class="p4"><br></p>
+<p class="p3">cascade order:</p>
+<p class="p4"><br></p>
+<p class="p3">defaultStyle</p>
+<p class="p3">+</p>
+<p class="p3">box's custom style settings: eg box.boxColor = Color.red</p>
+<p class="p3">+</p>
+<p class="p3">styles applied by name to the box: eg x.addStyle(box,'playing')</p>
+<p class="p3">+</p>
+<p class="p3">dynamic styles added by the matrix : focused, down, over, dragging</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">You can also declare your own custom styles to represent any states you wish</p>
+<p class="p4"><br></p>
+<p class="p3">like 'pending', 'terminal','verrückt'</p>
+<p class="p4"><br></p>
+<p class="p3">you can layer multiple style transforms on a box:</p>
+<p class="p4"><br></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x.addStyle(box,<span class="s7">'frenzied'</span>);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x.addStyle(box,<span class="s7">'playing'</span>);</p>
+<p class="p4"><br></p>
+<p class="p3">and use any of the methods in Color to generate useful visual transforms.</p>
+<p class="p3">you can change font face, size, color</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p2"><br></p>
+<p class="p12"><b>Dragging</b></p>
+<p class="p2"><br></p>
+<p class="p3">You can drag boxes to other boxes and implement that as moving, copying, layering, connecting to or whatever you like.</p>
+<p class="p4"><br></p>
+<p class="p3">You cannot drag views from outside of a user view onto a specific box on the user view.<span class="Apple-converted-space">  </span>This is an SCUserView limitation and will be fixed at some point.<span class="Apple-converted-space">  </span>The last focused box will receive any drags.</p>
+<p class="p4"><br></p>
+<p class="p3">Dragging a box (using command drag) off the matrix will call the begingDragHandler with the last focused box, or if none is set will return the focused box's environment as the dragged object.</p>
+<p class="p2"><br></p>
+<p class="p9">(</p>
+<p class="p2"><br></p>
+<p class="p9">x = <span class="s4">BoxMatrix</span>(<span class="s4">nil</span>,500@500,5,5);</p>
+<p class="p2"><br></p>
+<p class="p9">x.onBoxDrag = { <span class="s4">arg</span> fromBox,toBox,modifiers;</p>
+<p class="p2"><br></p>
+<p class="p9"><span class="Apple-tab-span">	</span>[fromBox,toBox].postln;</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span></span>// in this case move the contents of the box</p>
+<p class="p9"><span class="Apple-tab-span">	</span>x.move(fromBox.point,toBox.point);</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p9">};</p>
+<p class="p9">x.mouseDownAction = { <span class="s4">arg</span> box,modifiers,buttonNumber,clicks;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>[box,modifiers,buttonNumber,clicks].debug;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>if(clicks==2,{</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.title = 100.rand.asString</p>
+<p class="p9"><span class="Apple-tab-span">	</span>})</p>
+<p class="p9">};</p>
+<p class="p9">)</p>
+<p class="p2"><br></p>
+<p class="p10">// other methods for moving things</p>
+<p class="p9">x.move(f,t)</p>
+<p class="p9">x.copy(f,t)</p>
+<p class="p9">x.swap(f,t)</p>
+<p class="p9">x.clear(f)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p10">// set how far you have to drag before dragging kicks in</p>
+<p class="p9">x.dragOn = 20</p>
+<p class="p2"><br></p>
+<p class="p10">// or drag only on a modifier</p>
+<p class="p9">x.dragOn = <span class="s7">'isAlt'</span></p>
+<p class="p9">x.dragOn = <span class="s7">'isCntrl'</span></p>
+<p class="p9">x.dragOn = <span class="s7">'isCmd'</span></p>
+<p class="p9">x.dragOn = <span class="s7">'isShift'</span></p>
+<p class="p2"><br></p>
+<p class="p10">// back to non-modifier drag</p>
+<p class="p9">x.dragOn = 20</p>
+<p class="p2"><br></p>
+<p class="p10">// disable dragging completely</p>
+<p class="p9">x.dragOn = <span class="s4">inf</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p10">// the keyboard modifier on mouse up (drop time) is passed in</p>
+<p class="p10">// so you can differentiate between alt drag and shift-alt drag</p>
+<p class="p2"><br></p>
+<p class="p10">// drag got move, option-drag to copy</p>
+<p class="p9">(</p>
+<p class="p2"><br></p>
+<p class="p11"><span class="s2">x = </span>BoxMatrix<span class="s2">(</span>nil<span class="s2">,</span>nil<span class="s2">,15,32);</span></p>
+<p class="p2"><br></p>
+<p class="p9">x.at(3@3).title = <span class="s5">"purr"</span>;</p>
+<p class="p9">x.at(3@3).boxColor = <span class="s4">Color</span>.rand;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p9">x.onBoxDrag = { <span class="s4">arg</span> fromBox,toBox,modifier;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="s4">var</span> newTitle;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>[fromBox,toBox].debug;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>if(modifier.isAlt,{</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// option drag copies</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x.copy(fromBox.point,toBox.point);</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>newTitle = (fromBox.title ? <span class="s5">""</span>) + <span class="s5">"copy"</span>;</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// won't work: we just copied into that location</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// so the toBox we have here has been replaced</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// toBox.title = newTitle;</p>
+<p class="p2"><br></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>toBox = x.at(toBox.point);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>toBox.title = newTitle;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x.refresh</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>},{</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// else move it</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x.move(fromBox.point,toBox.point);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>});</p>
+<p class="p2"><br></p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p9">)</p>
+<p class="p3">Yes, something has to be done about the text overlaps</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p15"><b>keyDownAction</b></p>
+<p class="p2"><br></p>
+<p class="p9">the handler is passed the focused box</p>
+<p class="p2"><br></p>
+<p class="p9">delete key deletes</p>
+<p class="p9">(</p>
+<p class="p9">x = <span class="s4">BoxMatrix</span>(<span class="s4">nil</span>,400@400,16,16);</p>
+<p class="p2"><br></p>
+<p class="p9">x.defaultStyle.center = <span class="s4">true</span>;</p>
+<p class="p2"><br></p>
+<p class="p9">16.do { <span class="s4">|i|</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>b = x.at(16.rand@16.rand);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.title = i.asString;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.pattern = i;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.boxColor = <span class="s4">Color</span>.rand;</p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p9">x.keyDownAction = { arg box, char,modifiers,unicode,keycode;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>[ box, char,modifiers,unicode,keycode].debug;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>if(unicode == 127) {</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.title = "";</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.pattern = nil;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.boxColor = x.defaultStyle.boxColor;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>box.refresh;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>}</p>
+<p class="p9">};</p>
+<p class="p2"><br></p>
+<p class="p9">x.refresh;</p>
+<p class="p2"><br></p>
+<p class="p9">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p12"><b>Public methods</b></p>
+<p class="p2"><br></p>
+<p class="p9">mouseDownAction</p>
+<p class="p9">mouseUpAction</p>
+<p class="p9">mouseOverAction</p>
+<p class="p9">mouseMoveAction</p>
+<p class="p9">onBoxDrag</p>
+<p class="p9">copy(fromPoint,toPoint)</p>
+<p class="p9">move(fromPoint,toPoint)</p>
+<p class="p9">swap(fromPoint,toPoint)</p>
+<p class="p9">clear(point)</p>
+<p class="p9">keyUpAction</p>
+<p class="p9">keyDownAction</p>
+<p class="p9">keyModifiersChangedAction</p>
+<p class="p9">at(point)</p>
+<p class="p9">set(point,attribute,value)</p>
+<p class="p9">setAll(point,dict)</p>
+<p class="p9">withBox(point,function)</p>
+<p class="p9">get(point,key)</p>
+<p class="p9"><span class="Apple-tab-span">	</span>from the box envir at point, fetch the value for key</p>
+<p class="p9">getBox(point)</p>
+<p class="p9">focusedBox</p>
+<p class="p9"><span class="Apple-tab-span">	</span>returns the last clicked box</p>
+<p class="p9">transferFocus(toPoint)</p>
+<p class="p9"><span class="Apple-tab-span">	</span>set focus to box at this point</p>
+<p class="p9">addStyle(box,styleName)</p>
+<p class="p9"><span class="Apple-tab-span">	</span>append the named style to the box's list of styles</p>
+<p class="p9">removeStyle(box,styleName)</p>
+<p class="p9"><span class="Apple-tab-span">	</span>remove the named style if it is in the box's list of styles</p>
+<p class="p9">refresh</p>
+<p class="p9">draggingPoint</p>
+<p class="p9"><span class="Apple-tab-span">	</span>the point that the currently active drag started from</p>
+<p class="p9">dragOn</p>
+<p class="p9"><span class="Apple-tab-span">	</span>a big mythical fire breathing creature.</p>
+<p class="p9"><span class="Apple-tab-span">	</span>number: distance to drag before dragging kicks in</p>
+<p class="p9"><span class="Apple-tab-span">	</span>inf: drag disabled</p>
+<p class="p9"><span class="Apple-tab-span">	</span>symbol: selector to match the modifier: isCtrl isShift isAlt etc</p>
+<p class="p9">styles</p>
+<p class="p9"><span class="Apple-tab-span">	</span>a dictionary of style transformers</p>
+<p class="p9">defaultStyle</p>
+<p class="p9"><span class="Apple-tab-span">	</span>a dictionary of the colors, font etc for a default box with no named style applied</p>
+<p class="p9">numRows</p>
+<p class="p9">numCols</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

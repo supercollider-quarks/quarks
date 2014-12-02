@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+    span.s1 {color: #0000bf}
+    span.s2 {color: #007300}
+    span.s3 {color: #000000}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>PbindArrayDefault : Pbind</b></p>
+<p class="p2"><br></p>
+<p class="p3">PbindArrayDefault differs from Pbind in its handling of array items in the key/value pairs.</p>
+<p class="p2"><br></p>
+<p class="p3">Consider a Pbind as follows (a bit contrived, but it could happen). Note that the event prototype e contains default values for a, b, c and d.</p>
+<p class="p2"><br></p>
+<p class="p4">p = <span class="s1">Pbind</span>(</p>
+<p class="p4"><span class="Apple-tab-span">	</span>[<span class="s2">\a</span>, <span class="s2">\b</span>, <span class="s2">\c</span>, <span class="s2">\d</span>], <span class="s1">Pfunc</span>({</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span><span class="Apple-tab-span">	</span>out = <span class="s1">Array</span>.newClear(4);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3.do({ out[4.rand] = 10.rand + 1 });</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>out</p>
+<p class="p4"><span class="Apple-tab-span">	</span>})</p>
+<p class="p4">).asStream;</p>
+<p class="p5"><br></p>
+<p class="p4">e = (a: 0, b: 0, c: 0, d: 0);</p>
+<p class="p5"><br></p>
+<p class="p4">p.next(e);</p>
+<p class="p5"><br></p>
+<p class="p4">( 'c': 3, 'a': 5, 'b': 5 )</p>
+<p class="p4">( 'd': 5 )</p>
+<p class="p4">( 'a': 8, 'b': 8, 'd': 5 )</p>
+<p class="p4">( 'd': 3 )</p>
+<p class="p2"><br></p>
+<p class="p3">Some of the defaults are lost because they are overwritten by nil values in the Pfunc result array.</p>
+<p class="p2"><br></p>
+<p class="p3">With PbindArrayDefault, nil values in the array will preserve the default values set in the event.</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s3">p = </span>PbindArrayDefault<span class="s3">(</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>[<span class="s2">\a</span>, <span class="s2">\b</span>, <span class="s2">\c</span>, <span class="s2">\d</span>], <span class="s1">Pfunc</span>({</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span><span class="Apple-tab-span">	</span>out = <span class="s1">Array</span>.newClear(4);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3.do({ out[4.rand] = 10.rand + 1 });</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>out</p>
+<p class="p4"><span class="Apple-tab-span">	</span>})</p>
+<p class="p4">).asStream;</p>
+<p class="p5"><br></p>
+<p class="p4">p.next(e);</p>
+<p class="p5"><br></p>
+<p class="p4">( 'c': 0, 'a': 6, 'b': 0, 'd': 6 )</p>
+<p class="p4">( 'c': 0, 'a': 3, 'b': 5, 'd': 5 )</p>
+<p class="p4">( 'c': 0, 'a': 0, 'b': 4, 'd': 3 )</p>
+<p class="p4">( 'c': 0, 'a': 1, 'b': 2, 'd': 0 )</p>
+<p class="p2"><br></p>
+<p class="p3">I will be honest that I'm not sure how useful this is, but it does work.</p>
+</body>
+</html>

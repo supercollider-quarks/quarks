@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+    p.p5 {margin: 0.0px 0.0px 0.0px 29.0px; text-indent: -29.0px; font: 12.0px Helvetica}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    span.s1 {color: #000000}
+    span.s2 {color: #0000bf}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>MixerGUIDef<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Defines the appearance of a MixerChannel in a mixing board.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Usage:</b></p>
+<p class="p2"><br></p>
+<p class="p3">MixerGUIDefs may be stored in two places for easy retrieval. Both of these are illustrated in MixerGUIDef's *initClass method.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>aMixerChannelDef.guidef = aMixerGUIDef;</b></p>
+<p class="p2"><br></p>
+<p class="p3">If assigned, all channels made from this mixer definition will use this MixerGUIDef.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>MixerChannelGUI.defaultDef =<span class="Apple-converted-space">  </span>aMixerGUIDef;</b></p>
+<p class="p2"><br></p>
+<p class="p3">If a MixerChannelDef does not have a GUI definition associated with it, the defaultDef will be used.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(channelSize, viewProtos, viewKeys, viewBounds)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Creates an instance. Unlike MixerChannelDef, this is not stored automatically in the global library.</p>
+<p class="p2"><br></p>
+<p class="p5">channelSize: A Point defining the total height and width of the channel's GUI.</p>
+<p class="p5">viewProtos: An Array, listing the object prototypes that will be used for each view in the channel GUI. The object prototypes may be classes or instances of AdhocClass.</p>
+<p class="p5">viewBounds: An Array of Rect objects specifying the bounds of each view, relative to the top left corner of the channel.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Example:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">This is the default MixerGUIDef, suitable for stereo mixer channels.</p>
+<p class="p2"><br></p>
+<p class="p6">MixerGUIDef<span class="s1">(</span>Point<span class="s1">(50, 290),</span></p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span>[</span>MixerMuteWidget<span class="s1">, </span>MixerRecordWidget<span class="s1">, </span>MixerPresendWidget<span class="s1">, </span>MixerPanWidget<span class="s1">,</span></p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>MixerLevelSlider<span class="s1">, </span>MixerLevelNumber<span class="s1">, </span>MixerPostsendWidget<span class="s1">, </span>MixerNameWidget<span class="s1">,</span></p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>MixerOutbusWidget<span class="s1">],</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>[<span class="s2">Rect</span>(0, 0, 20, 20), <span class="s2">Rect</span>(30, 0, 20, 20), <span class="s2">Rect</span>(0, 25, 50, 30), <span class="s2">Rect</span>(0, 65, 50, 15),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Rect</span>(10, 85, 30, 100), <span class="s2">Rect</span>(0, 190, 50, 15), <span class="s2">Rect</span>(0, 210, 50, 30),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Rect</span>(0, 245, 50, 20), <span class="s2">Rect</span>(0, 270, 50, 20)]);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Notes:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">The viewProtos and viewBounds are parallel: Rect(0, 0, 20, 20) corresponds to the MixerMuteWidget, etc.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">It is possible to display more than one pre- and post-send. To do this, include the pre- or post-send widget more than once in the viewProtos array, and assign appropriate bounds so they don't overlap. When the widgets are created, they will get unique indices: the first presend gets the key \presend0, the second \presend1, etc.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Mixer widgets<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">The system depends on objects to maintain the individual views for mixer parameters. These have a very simple interface, so it is easy to write new widgets to support different usages.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Most widgets will have a single view to reflect a single numeric value. These widgets should inherit from the MixerWidgetBase class and should implement the following methods:</p>
+<p class="p2"><br></p>
+<p class="p5"><i>makeView(layout, bounds)</i> -- create the view in the <i>view</i> variable, and initialize the spec (<i>spec</i> variable)</p>
+<p class="p5"><i>doAction(view)</i> -- update the mixer's control with the new value from the GUI</p>
+<p class="p5"><i>updateView(value)</i> -- update the GUI to match the mixer's state</p>
+<p class="p5"><i>clearView</i> -- if the mixer GUI is released (is no longer pointing to a mixer), the views may want to reflect that state. For instance, the default views make the backgrounds clear.</p>
+<p class="p5"><i>restoreView</i> -- update the view to show that the mixer GUI is active again.</p>
+<p class="p5"><i>updateKeys</i> -- return an object that will be used to update only the proper widgets when a mixer's control changes programmatically or by MIDI. matchItem() performs the matching, so the object can be a symbol, an array of symbols, or a function.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">MixerPanWidget is a good example; use this pattern when writing your own single-view widgets.</p>
+<p class="p2"><br></p>
+<p class="p3">Other widgets, such as the default pre- and post-send widgets, need to maintain two or more views. In these cases, it may not be helpful to inherit from MixerWidgetBase. Review MixerPresendWidget to see which methods need be implemented.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Another type of multiview widget would be a multi-dimensional panner. There is not presently an example of this in the library, but I will post one on the dewdrop world tutorial site.</p>
+</body>
+</html>

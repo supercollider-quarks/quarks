@@ -1,0 +1,122 @@
+TITLE:: AdCVerb2
+summary:: Schroeder/Moorer-Loy reverb with internal animation.
+categories:: UGens (pseudo)
+related:: Classes/AdCVerb
+
+DESCRIPTION::
+Like AdCVerb, AdCVerb2 is a bank of comb filters going through a bank of allpass filters, with optional predelay; for more info and discussion of its topology see link::Classes/AdCVerb::.
+
+In addition, AdCVerb2 offers flexible random modulation of the comb delay times for more animated reverb character.
+
+CLASSMETHODS::
+
+METHOD:: verbose
+if true, post the random-generated allpass times for precise rebuilding of specific times.
+
+METHOD:: maxTime
+get and set the maximum delay time for predelay, combs and allpasses. When maxTime is changed, the next instance of AdCVerb will have this maxdelaytime for combs, allpasses and predelay. Default value is 0.2.
+
+METHOD:: ar
+create an ar instance of AdCVerb.
+
+ARGUMENT:: in
+the audio inputs or inputs, which are converted to mono.
+
+ARGUMENT:: revTime
+reverb time for -60 db decay of the comb filters
+
+ARGUMENT:: animRate
+the rate at which comb times will be random-modulated (by LFDNoise3s)
+
+ARGUMENT:: animDepth
+the depth with which comb times will be random-modulated (by LFDNoise3s)
+
+ARGUMENT:: hfDamping
+higher frequencies can be rolled of in the combs: 0.0 is no damping, 1.0 means high frequencies roll off significantly faster. (This uses the mild rolloff introduced by linear interpolation in CombL.)
+
+ARGUMENT:: nOuts
+number of output channels; each output gets its own group of allpass filters for density and decorrelation
+
+ARGUMENT:: predelay
+predelay before reverb tail begins, in seconds
+
+ARGUMENT:: numCombs
+number of combs used in reverb tail
+
+ARGUMENT:: numAllpasses
+number of allpasses used for decorrelating each out channel
+
+ARGUMENT:: inFilter
+a coefficient for reverb input filtering (OnePole); 0.0 is no filtering, 0.99 is very dark.
+
+ARGUMENT:: leakCoeff
+coefficient for a LeakDC which filters DC in the input sum, in order to avoid DC drift. default of 0.995 introduces rather little LF rolloff.
+
+ARGUMENT:: combScale
+scales all combTimes up to maxTime; can be used to adjust room size. default = 1.0
+
+ARGUMENT:: apScale
+scales all allpassTimes up to maxTime; can be used to adjust room size. default = 1.0
+
+ARGUMENT:: allpassPrimes
+an optional list of prime numbers for the allpass filters; providing them overrides numAllpasses and nOuts.
+
+returns:: an instance of AdCVerb
+
+
+EXAMPLES::
+
+code::
+	// simple use:
+(
+Ndef(\adcverb2_help).play;
+Ndef(\adcverb2_help, {
+	var src, verb;
+	src = Decay2.ar(Impulse.ar(0.5, 0.99), 0.001, 0.03, PinkNoise.ar(1));
+	verb = AdCVerb2.ar(src * 0.1);
+	src + verb;
+});
+)
+
+    // tune all params:
+Ndef(\adcverb2_help).play;
+Ndef(\adcverb2_help).gui;
+
+(	// all params open for tuning:
+Spec.add(\revTime, [0.01, 100, \exp]);
+Spec.add(\animRate, [0.01, 10, \exp]);
+Spec.add(\animDepth, [0, 1, \amp]);
+Spec.add(\hfDamping, [0, 1]);
+Spec.add(\predelay, [0.0, 0.2, \amp]);
+Spec.add(\revTime, [0.01, 100, \exp]);
+Spec.add(\inFilter, [-0.99, 0.99]);
+Spec.add(\leakCoeff, [0.8, 1.0]);
+Spec.add(\combScale, [0.1, 2, \exp]);
+Spec.add(\apScale, [0.1, 2, \exp]);
+
+Ndef(\adcverb2_help, { |revTime = 3, animRate = 0.1, animDepth = 0.03,
+	hfDamping = 0.1, predelay = 0.02,
+	inFilter = 0.6, leakCoeff = 0.995,
+	combScale = 1, apScale = 1|
+
+	var src, verb;
+
+	// replace with any sources you like
+	src = Decay2.ar(Impulse.ar(0.5), 0.001, 0.03, PinkNoise.ar(1));
+
+	verb = AdCVerb2.ar(src * 0.1,
+		revTime: revTime.lag(0.5),
+		hfDamping: hfDamping.lag(0.5),
+		nOuts: 2, 		// fixed number of decorrelated output channels
+		predelay: predelay.lag(0.5),
+		numCombs: 	8, 	// fixed number - increase for more density
+		numAllpasses: 4, 	// fixed number - increase for more diffuseness
+		inFilter: inFilter,
+		leakCoeff: leakCoeff,
+		combScale: combScale.lag(0.5), // lagged to
+		apScale: apScale.lag(0.5)
+	);
+	src + verb;
+});
+)
+::

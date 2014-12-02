@@ -1,0 +1,113 @@
+TITLE:: ProxyChainGui
+summary:: a gui for ProxyChain
+categories:: Libraries>JITLib
+related:: Classes/ProxyChain, Classes/Ndef, Classes/MasterFX
+
+DESCRIPTION::
+A Gui class for ProxyChain. For more example uses, see link::ProxyChain::.
+
+code::
+		// prepare for making a proxy chain
+(
+q = ();
+q.numChans = 2;
+
+ProxyChain.add(
+	\dust, \mix -> { |dens=20, dustdec=0.02, dustfreq= 600| 
+		Ringz.ar(Dust.ar(dens).lag(0.0001), dustfreq, dustdec) 
+	}
+);
+
+ProxyChain.add(	
+	\ringmod, \filter -> { |in, randrate=5| 
+		in.asArray[0] 	// force mono inputs
+		* SinOsc.ar(LFNoise0.kr([randrate, randrate]).exprange(300, 3000)).sum 
+	}, 
+	\dist, \filter -> { |in, drive=10, amp=0.2| (in.asArray[0] * drive).clip2(0.5) * amp }
+);
+	// add specs for the controls used (for NodeProxyEditor).
+Spec.add(\dens, [0.1, 1000, \exp]);
+Spec.add(\dustamp, [0, 1, \amp]);
+Spec.add(\dustdec, [0.0001, 0.1, \exp]); 
+Spec.add(\dustfreq, \freq); 
+
+c = ProxyChain(\test, [\dust, \ringmod, \dist, \riseComb5 ]);
+
+s.boot;
+)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+make a new ProxyCHainGui.
+
+code::
+g = ProxyChainGui.new(c, 12);
+c.key.postcs;
+c.proxy.key;
+
+	// define buttons more specifically
+(
+g = c.gui(20, 
+[ 	
+	[ \generators, \label ],  	// a label only
+	[ \dust, \slotCtl, 0.25 ], 		// a control for a slot, and initial volume
+
+	[ 'mono FX', \label ],  
+	[ \ringmod, \slotCtl, 0.5 ], 	// initial mix level
+	[ \dist, \slotCtl ], 
+
+	[ 'multichan', \label ],  		
+	[ \riseComb5, \slotCtl ], 		// off (0) by default.
+	[],
+		// extras:
+		// e.g. an editor with more space for controls
+	[\phatEdit, \extra, { c.gui(40) } ],
+	
+		// or maybe bigger buttons play, end buttons
+	[\play, \extra, { c.playN } ],	 
+	[\end, \extra, { c.end } ],
+	
+]
+)
+)
+::
+
+ARGUMENT:: chain
+the proxychain to show 
+
+ARGUMENT:: numItems
+the number of param sliders to prepare.
+
+ARGUMENT:: parent
+the parent to put it into
+
+ARGUMENT:: bounds
+bounds within which to display it. 
+
+INSTANCEMETHODS::
+
+METHOD:: chain
+the proxychain 
+
+METHOD:: buttonSpecs
+the specs for the buttons to make
+
+METHOD:: butZone
+the CompositeView where the buttons live
+METHOD:: editGui
+the NdefGui built into the view
+
+METHOD:: buttons, guiFuncs, namedButtons
+
+strong:: usual JITGui methods ::
+
+METHOD:: setDefaults
+METHOD:: accepts
+METHOD:: getState
+METHOD:: checkUpdate
+METHOD:: makeViews
+METHOD:: makeEditGui
+
+

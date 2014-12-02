@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: Laptop</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>Laptop</h1>
+<h2>class to allow you to access various internal sensors of your laptop.</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> </p>
+
+<p>Laptop allows you to access the various internal sensors of your laptop, such as your keyboard, touchpad, but also the status of the running processes and temperature sensors. You can subclass this class to add sensors specific to your laptop (see <b>Thinkpad</b> for an example).<br>This class uses the external program <b>motiontrackosc</b> to access the laptop's camera. This program is available from <a href="http://www.nescivi.nl">www.nescivi.nl</a>.<br>It uses the program <b>sensors</b> to check the temperature and fan readings (only tested on Linux).<br>It uses <b>ps</b> to check the process statistics, which is probably POSIX specific too.</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*new</STRONG></DT>
+<DD>Create a new instance of Laptop</DD>
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+<DT><STRONG>init</STRONG></DT>
+<DD>Initialization of any laptop. Processes, temperature, camera.</DD>
+
+<DT><STRONG>myInit</STRONG></DT>
+<DD>Laptop specific initialization. Should be overloaded in subclasses.</DD>
+
+<DT><STRONG>internals</STRONG></DT>
+<DD>An instance of <b>SWDataNetwork</b>, containing all the data for the laptop.</DD>
+
+<DT><STRONG>at(key)</STRONG></DT>
+<DD>Shortcut to access a key in the internals datanetwork.</DD>
+
+<DT><STRONG>initTouchpad</STRONG></DT>
+<DD>Initializes the touchpad. It looks at touchpadID for the right GeneralHID.findBy array.</DD>
+
+<DT><STRONG>touchpadID</STRONG></DT>
+<DD>  </DD>
+
+<DT><STRONG>touchpadID_</STRONG></DT>
+<DD>An array specifying the location of the touchpad HID (see GeneralHID to find out how to find this Array).</DD>
+
+<DT><STRONG>touchpad</STRONG></DT>
+<DD>The touchpad GeneralHIDDevice.</DD>
+
+
+<DT><STRONG>initKeyboard</STRONG></DT>
+<DD>Initializes the touchpad. It looks at touchpadID for the right GeneralHID.findBy array.</DD>
+
+<DT><STRONG>keyboardID</STRONG></DT>
+<DD>  </DD>
+
+<DT><STRONG>keyboardID_</STRONG></DT>
+<DD>An array specifying the location of the touchpad HID (see GeneralHID to find out how to find this Array).</DD>
+
+<DT><STRONG>keyboard</STRONG></DT>
+<DD>The keyboard GeneralHIDDevice.</DD>
+<DT><STRONG>key</STRONG></DT>
+<DD>Shortcut to get <em>keyboard</em></DD>
+
+
+<DT><STRONG>initProcesses</STRONG></DT>
+<DD>Initialize reading the process statistics.</DD>
+
+<DT><STRONG>processes</STRONG></DT>
+<DD>The processes that will be checked.</DD>
+
+<DT><STRONG>procStats</STRONG></DT>
+<DD>The process statistics</DD>
+
+<DT><STRONG>processWatcher</STRONG></DT>
+<DD>SkipJack that checks the process statistics.</DD>
+
+
+<DT><STRONG>initTemperature</STRONG></DT>
+<DD>Initialize the temperature readings. This calls the external program <b>sensors</b>.</DD>
+
+<DT><STRONG>tempWatcher</STRONG></DT>
+<DD>SkipJack that checks the temperature readings.</DD>
+
+
+
+<DT><STRONG>initCamera</STRONG></DT>
+<DD>Initializes the camera by starting MotionTrackOSC.</DD>
+
+<DT><STRONG>camera</STRONG></DT>
+<DD>The instance of the class MotionTrackOSC, interacting with the external program.</DD>
+
+
+</DL>
+
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

@@ -1,0 +1,45 @@
+CLASS:: RedLive
+SUMMARY:: sample and repeat
+CATEGORIES:: Red>redUGens
+RELATED:: Classes/RedTapeRecorder, Classes/RedOverdub
+
+DESCRIPTION::
+Trigger increases counter. If counter%repeats= 0 then record, else playback
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: buffer
+
+ARGUMENT:: in
+Input signal.
+
+ARGUMENT:: trigger
+Trigger to increase counter.
+
+ARGUMENT:: repeats
+Maximum counter.
+
+ARGUMENT:: interpol
+1= no, 2= linear, 4= cubic.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+b= Buffer.alloc(s, 44100*3, 2);
+
+{RedLive.ar(b, Dust.ar([4, 4]), K2A.ar(MouseButton.kr), 2)}.play;
+{RedLive.ar(b, Dust.ar([4, 4]), Impulse.ar(0.5), 2)+Impulse.ar(0.5)}.play;
+{RedLive.ar(b, SoundIn.ar([0, 1]), Impulse.ar(0.5), 2)+Impulse.ar(0.5)}.play;
+{RedLive.ar(b, Pulse.ar(3.dup), Impulse.ar(10), 7, 4)}.play;
+{Resonz.ar(Decay.ar(RedLive.ar(b, Pulse.ar(2.99.dup), Impulse.ar(10), 7, 4), 0.1), 3000, 0.3)}.play;
+{Resonz.ar(Decay.ar(RedLive.ar(b, Pulse.ar(2.99.dup), Impulse.ar(10), 9, 4), 0.1), 50, 0.25)}.play;
+b.free
+
+b= Buffer.alloc(s, 44100*3, 1);
+{SinOsc.ar(RedLive.kr(b, LFNoise1.kr(2, 100, 400), Impulse.kr(0.5), 2), 0, 0.1)}.play;
+{SinOsc.ar(RedLive.kr(b, SinOsc.kr(2, 0, 100, 400), Dust.kr(0.2), 2), 0, 0.1)}.play;
+b.free
+::

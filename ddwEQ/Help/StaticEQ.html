@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #001ab2}
+span.s2 {color: #36701f}
+</style>
+</head>
+<body>
+<p class="p1"><b>MultiEQ</b></p>
+<p class="p1"><b>StaticEQ</b></p>
+<p class="p2"><br></p>
+<p class="p3">A container for several EQBand's. In MultiEQ, individual bands can be changed, added and removed in real time with immediate results on the server.</p>
+<p class="p2"><br></p>
+<p class="p3">StaticEQ is similar, but compiles all the EQ bands into a single synthdef for efficiency. StaticEQ is noticeably faster than MultiEQ, but the specs of a StaticEQ cannot be changed in real time. StaticEQ is designed for "Set it and forget it" filters (which is the usual use of EQ in a mixing context).</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-converted-space"> </span>-- H. James Harkins, jamshark70@dewdrop-world.net</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Methods that apply to MultiEQ and StaticEQ:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(numChan ... z)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">z gives the specifications for the EQ bands as follows: <i>type, freq, k, rq, type2, freq2, k2, rq2...</i>. rq may be omitted if the filter type is high or low shelving.</p>
+<p class="p2"><br></p>
+<p class="p5">// a slight midrange cut, low-shelf cut (rq is omitted), and a slight high-frequency boost</p>
+<p class="p6">e = <span class="s1">MultiEQ</span>.new(2, <span class="s2">\eq</span>, 600, 0.7, 1.8, <span class="s2">\loshelf</span>, 200, 0.1, <span class="s2">\eq</span>, 11000, 1.5, 1.5);<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>play(targ, b, addAction = \addToTail, amp)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Plays all the EQ bands on the server, relative to the target (targ) and bus (b). As with the EQ band, if the target is a group, the EQ synths go at the tail of the group. If the target is a synth, the bands go after the synth. If the target is a MixerChannel, the synths go into the channel's effects group and it automatically uses the channel's bus. If you use MixerChannel, you can get away with specifying only the target, which is a very quick and convenient syntax.</p>
+<p class="p2"><br></p>
+<p class="p3">amp is applied only to the first filter. Be careful: if you remove the first filter (.removeAt(0)), this volume control will disappear.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Methods that apply only to MultiEQ:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>add( ... z)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Adds new filters to the MultiEQ. The new specs are written in the same format as in *new. You can't specify the number of channels, because it has to be the same as the other bands.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>removeAt(i)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Removes the filter pointed to by the index i. If the MultiEQ is playing, the band is also removed from the server.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>at(i)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Returns the EQBand object at the index i.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>asString<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Could also be called asCompileString.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>edit(targ, b, addAct = \addToTail, amp)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Takes the same arguments as .play, but opens a GUI window for real-time editing of the eq specs. If the eq is not playing, it will be played now. Closing the window stops the eq and prints out the specs in the form of a statement you can use in your code.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Methods that apply only to StaticEQ:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>prepareForPlay(targ, b, addAction)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Makes the synthdef and sends it to the server. The synthdef is not written to disk and will be forgotten when the server quits. At present, .prepareForPlay is called automatically by .play, so you should never need to call this method yourself.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>move(targ, moveAction = \moveAfter)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Places the existing EQ synth relative to a new target.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>asSynthDef(numChan = 1)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Returns the synthdef that will be used when this StaticEQ is played.</p>
+</body>
+</html>

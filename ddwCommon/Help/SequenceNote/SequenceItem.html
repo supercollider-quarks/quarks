@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+span.s1 {color: #0000ff}
+</style>
+</head>
+<body>
+<p class="p1"><b>SequenceItem : SeqChordNote</b></p>
+<p class="p2"><br></p>
+<p class="p3">Adds grace note representation to SeqChordNote. Grace notes are different from chord notes in that they precede the main sequence note, whereas chord notes follow the main note.</p>
+<p class="p2"><br></p>
+<p class="p3">SequenceItem preserves the array of chord notes from SeqChordNote, and adds a second array for grace notes. For grace notes in a purely melodic context, the chord note array may be nil.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>*new(freq, dur, length, args, graceNotes, chordNotes)</b></p>
+<p class="p2"><br></p>
+<p class="p3">graceNotes and chordNotes are arrays of SequenceNote objects. When streaming, the grace notes will be streamed first, then the main note, followed by any chord notes that might be there.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>add(note)</b></p>
+<p class="p4"><b>++ notes</b></p>
+<p class="p2"><br></p>
+<p class="p3">These methods inherit from SeqChordNote and add <i>chord notes only</i>. To add grace notes, use addGraceNotes.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>addGraceNotes</b></p>
+<p class="p2"><br></p>
+<p class="p3">Add the supplied grace notes to the existing SequenceItem object (preserving the chord notes as well).</p>
+<p class="p2"><br></p>
+<p class="p4"><b>asPlayableNote</b></p>
+<p class="p2"><br></p>
+<p class="p3">All chord notes will be compacted into one SequenceNote as in SeqChordNote. Grace notes are dropped from the result. This is because the playable note destroys the temporal relationships between the chord notes, resulting in a block chord. This is okay for chords, but grace notes are meaningless without time information; thus they are not preserved.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>asNoteArray</b></p>
+<p class="p2"><br></p>
+<p class="p3">A flattened representation, not useful for streaming. Note order is preserved.</p>
+<p class="p2"><br></p>
+<p class="p3">See <a href="SeqChordNote.html"><span class="s1">SeqChordNote</span></a> for other applicable methods.</p>
+</body>
+</html>

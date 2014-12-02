@@ -1,0 +1,279 @@
+CLASS:: OpenObject
+SUMMARY:: talk to objects over the network
+CATEGORIES:: OpenSoundControl
+RELATED:: Classes/OSCresponder, Classes/NetAddr
+
+DESCRIPTION::
+Publish any object for remote access via network (OSC, see http://opensoundcontrol.org/). This allows to create easy access for other languages and systems, such as Pd, Processing or Max.
+
+OpenObject API has two levels:
+list::
+## access to registered objects and to send results back to the sender (safe)
+## use the sc interpreter to execute code and to send results back to the sender (unsafe)
+::
+
+There is only one instance for each instance of sc-lang. Any functionality within sclang can be remote controlled, for instance by using environments with functions (example below).
+
+NOTE::
+There are examples for Processing, Max/MSP and PureData bundled with this Quark. You'll find them next to where you installed this class.
+CODE::
+OpenObject.filenameSymbol	//post the installation filepath of this class
+::
+::
+
+CLASSMETHODS::
+
+PRIVATE:: initClass, addResponder, removeResponder, getObject, oscPerform, oscPerformKeyValuePairs, setProxySource, interpretOSC, sendReply
+
+METHOD:: start
+Start listening to addr (if code::nil::, it listens to all addresses). SClang strong::listens on the port 57120::. If for some reason it was given a different one by the OS, an error message is posted. Restarting SuperCollider helps.
+
+METHOD:: replyPort
+Some applications do not allow to receive messages through the same port they are passing in the OSC message as reply port. As a workaround, this port can be explicitly overridden here.
+
+METHOD:: end
+Stop listening.
+
+METHOD:: clear
+Remove all objects.
+
+METHOD:: isListening
+Check if listening.
+
+code::
+OpenObject.start;
+OpenObject.isListening;
+OpenObject.end;
+OpenObject.isListening;
+::
+
+METHOD:: put
+Add an object for remote access under a name.
+
+code::
+a = [1, 2, 3];
+OpenObject.put(\foo, a);
+
+// alternatively, any object may be made accessable directly:
+a.publish(\foo);
+::
+
+METHOD::keyFor
+The key under which object is published.
+
+code::
+a = [1, 2, 3];
+OpenObject.put(\sans, a);
+OpenObject.keyFor(a);
+::
+
+METHOD::remove
+Remove an object.
+
+code::
+OpenObject.remove(a);
+
+// alternatively, any object may be made unaccessable again directly:
+a.unpublish;
+::
+
+METHOD::removeAt
+Remove an object published under name.
+
+SUBSECTION:: Remote controlling proxies and environments
+
+METHOD::lookup
+The default is false, but if set to true, any objects or classes that implement the message " strong::at:: " can be accessed remotely. As name, use the scheme: name_key, e.g. Tdef_x for Tdef(\x).
+
+METHOD::openProxies
+Register the proxy classes link::Classes/Tdef::, link::Classes/Ndef::, link::Classes/Pdef::, link::Classes/Pdefn::, link::Classes/Ndef:: and link::Classes/Fdef:: (convenience method).
+
+link::#*lookup:: is set to true.
+
+code::
+s.boot;
+OpenObject.start;
+OpenObject.openProxies;			// register all proxy classes
+n = NetAddr("127.0.0.1", 57120);	// loopback IP for this test
+
+Pdef(\xx, Pbind(\dur, Pseries(0.2, 0.1, 6), \note, Prand([0, 2, 3, 4, 8, 9], inf)));
+n.sendMsg("/oo", \Pdef_xx, \play);
+
+Ndef(\zz, { |freq=20, numharm = 200| Blip.ar(freq * [1, 1.2], numharm) * 0.3 } );
+n.sendMsg("/oo", \Ndef_zz, \play);
+n.sendMsg("/oo", \Ndef_zz, \fadeTime_, 2);
+n.sendMsg("/oo", \Ndef_zz, \xset, \freq, rrand(17, 80), \numharm, rrand(3, 100));
+n.sendMsg("/oo", \Ndef_zz, \end);
+
+p = ProxySpace.push(s);
+p.publish(\psp);
+
+~zz =  { |freq=30, numharm = 200| Blip.ar(freq * [1, 1.2], numharm) * 0.3 };
+n.sendMsg("/oo", \psp_zz, \play);
+n.sendMsg("/oo", \psp_zz, \fadeTime_, 2);
+n.sendMsg("/oo", \psp_zz, \xset, \freq, exprand(20, 1000), \numharm, rand(80, 500));
+n.sendMsg("/oo", \psp_zz, \end, 3);
+::
+
+SUBSECTION:: Interpreting
+For remote code execution, OpenObject can be opened to the interpreter.
+WARNING::
+Use with care! Any code can be executed from the network, so the connection should be trustworthy.
+::
+
+definitionList::
+## /oo_i || Interpret the string on the remote sclang interpreter.
+## /oo_p || Set the proxy source with the interpreted code string (used for remote live coding).
+::
+
+code::
+s.boot;
+OpenObject.start;
+OpenObject.openInterpreter;
+n = NetAddr("127.0.0.1", 57120); // loopback IP for this test
+
+// oo_i
+n.sendMsg("/oo_i", "a = { Dust.ar(1000 ! 2, 0.1) }.play;");
+n.sendMsg("/oo_i", "a.free;");
+
+// sending back a reply (emulating the remote call)
+r = OSCresponder(nil, "/oo_reply", {|t,r,msg| msg.postln }).add;
+n.sendMsg("/oo_i", 99, "[7 + 14, pi / 2]"); // provide a replyID: 99
+
+// oo_p
+Ndef(\zz, { |freq=40, numharm = 200| Blip.ar(freq * [1, 1.2], numharm) * 0.3 } );
+Ndef(\zz).publish(\zz);
+n.sendMsg("/oo", \zz, \play);
+n.sendMsg("/oo_p", \zz, "{ |freq=300| SinOsc.ar(freq, Blip.ar([3, 4], 4) * 6, 0.1) }");
+n.sendMsg("/oo_p", \zz, "{ |freq=300| Saw.ar(freq * Blip.ar([3, 4], 4, 6, 1), 0.1) }");
+n.sendMsg("/oo", \zz, \stop, 3);
+
+// in combination with proxy lookup, remote conversational programming:
+OpenObject.openProxies;
+
+n.sendMsg("/oo", \Ndef_out, \play);
+n.sendMsg("/oo_p", \Ndef_out, "{ |freq=300| SinOsc.ar(freq, Blip.ar([3, 4], 4) * 6, 0.1) }");
+n.sendMsg("/oo", \Ndef_out, \xset, \freq, exprand(200, 800));
+n.sendMsg("/oo", \Ndef_out, \clear, 3);
+
+OpenObject.closeInterpreter;
+OpenObject.clear.end;
+::
+
+METHOD::openInterpreter
+Open the interpreter for external access. Do this only if you know what you are doing.
+
+ARGUMENT::addr
+Address from which the messages come. code::nil:: means any.
+
+If a replyID (an link::Classes/Integer::) is given, sends back a reply: The results are sent back to the sender under the OSC command code::"/oo_reply" replyID val1 val2 …::
+
+code::
+"/oo_i" string
+"/oo_i" replyID string
+"/oo_p" name string
+::
+
+METHOD::closeInterpreter
+Close the interpreter.
+
+SECTION::OpenSoundControl API
+Once an object has been published under a strong::name::, methods can be called via OSC messages:
+
+code::
+"/oo" name selector arg1 arg2 …
+"/oo" replyID name selector arg1 arg2 …
+::
+
+code::
+"/oo_k" name selector argname1 arg1 argname2 arg2 …
+"/oo_k" replyID name selector argname1 arg1 argname2 arg2 …
+::
+
+definitionList::
+## name || The name under which the object has been published.
+## selector || The message to be called on the object.
+## arg || a float, integer, symbol. (strings are converted to symbols). Array arguments can be nested by strong::bracket chars as type tags:: (see example below).
+## replyID || If a replyID (an link::Classes/Integer::) is given, sends back a reply: The results are sent back to the sender under the OSC command code::"/oo_reply" replyID val1 val2 ...::
+::
+
+definitionList::
+## /oo || passes arguments in sequence
+## /oo_k || passes keyword arguments, in pairs of argument name and value.
+::
+
+code::
+// example
+
+OpenObject.start;
+n = NetAddr("127.0.0.1", 57120); // loopback IP for this test
+// for replies (normally on the remote system):
+r = OSCresponder(nil, "/oo_reply", {|t,r,msg| msg.postln }).add;
+
+
+a = [1, 2, 3, 3, 4]; // an object ...
+a.publish(\paris); // accessible via \paris
+
+n.sendMsg("/oo", \paris, \put, 2, 1974); // equivalent of a.put(2, 1974)
+a.postln;
+n.sendMsg("/oo", 1, \paris, \at, 2); // equivalent of a.put(2, 1974)
+a.postln;
+
+n.sendMsg("/oo", \paris, \put, 2, "hello paris"); // equivalent of a.put(2, 1974)
+a.postln;
+
+// arrays:
+n.sendMsg("/oo", \paris, \put, 2, $[, 1974, 1975, 1976, $]); // a.put(2, [1974, 1975, 1976])
+a.postln;
+n.sendMsg("/oo", \paris, \put, $[, 2, 3, $], 500); // a.put([2, 3], 500)
+a.postln;
+n.sendMsg("/oo", \paris, \put, 0, $[, 2, $[, 3, 4, $], $]); // a.put(0, [ 2, [ 3, 4 ] ])
+a.postln;
+
+// sound example
+
+s.boot;
+
+Ndef(\y, { |freq=10, numharm = 200| Blip.ar(freq * [1, 1.2], numharm) * 0.3 } );
+Ndef(\y).publish(\brussels); // accessible via \brussels
+// play and stop
+n.sendMsg("/oo", \brussels, \play);
+n.sendMsg("/oo", \brussels, \stop);
+// using keyword args (/ook)
+n.sendMsg("/oo_k", \brussels, \play, \fadeTime, 3);
+// setting args
+n.sendMsg("/oo", \brussels, \xset, \freq, 30, \numharm, 200);
+n.sendMsg("/oo", \brussels, \stop);
+
+
+// talk to the current environment
+currentEnvironment.publish(\envir); // accessible via \envir
+n.sendMsg("/oo", \envir, \put, \x, 1914);
+~x.postln;
+currentEnvironment.unpublish;
+
+// use an environment to extend functionality by calling functions
+(
+q = ();
+q.publish(\madrid);
+q.openWindow = { |q|
+	defer {
+	try { q.window.close };
+	q.window = Window("remote", Rect(800, 300, 400, 250));
+	q.slider = Slider(q.window.view, Rect(50, 30, 300, 30));
+	q.window.front;
+	}
+};
+q.closeWindow = { |q| defer { try { q.window.close } } };
+q.setColor = {  |q, r, g, b| defer { q.window.view.background_(Color.new255(r,g,b)) } };
+q.setSlider = { |q, val| defer { q.slider.value = val } };
+)
+
+n.sendMsg("/oo", \madrid, \openWindow);
+n.sendMsg("/oo", \madrid, \setColor, 122, 45, 67);
+n.sendMsg("/oo", \madrid, \setColor, *{ 255.rand } ! 3);
+n.sendMsg("/oo", \madrid, \setSlider, 1.0.rand);
+n.sendMsg("/oo", \madrid, \closeWindow);
+
+q.unpublish;
+::

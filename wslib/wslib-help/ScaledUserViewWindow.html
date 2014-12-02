@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0018e6}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #990099}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {text-decoration: underline ; color: #072bbc}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {color: #001ff6}
+span.s5 {color: #0000bf}
+span.s6 {color: #990099}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>ScaledUserViewWindow</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">a user configurable but standardized window containing a ScaledUserView<span class="Apple-converted-space"> </span></p>
+<p class="p2">and sliders for scrolling and zooming.</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s2">also see: <a href="ScaledUserView.html"><span class="s3">ScaledUserView</span></a></span></p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="s3">Creation</span></b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>ScaledUserViewWindow ( name, bounds, fromBounds, viewOffset )</b></p>
+<p class="p2"><b>ScaledUserView.window ( name, bounds, fromBounds, viewOffset )</b></p>
+<p class="p3"><br></p>
+<p class="p2">the <b>name </b>and <b>bounds </b>arguments<b> </b>work the same way as in every <a href="SC://SCWindow"><span class="s4">SCWindow</span></a></p>
+<p class="p2">The<b> fromBounds </b>are passet through to the ScaledUserView.</p>
+<p class="p2">The <b>viewOffset </b>can be a Point, a Number or an Array. It describes the position of the leftTop corner of the ScaledUserView.</p>
+<p class="p3"><br></p>
+<p class="p2">All methods which can be called to ScaledUserView can also be called to ScaledUserViewWindow, which will route them to its ScaledUserView.</p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s2">w = </span>ScaledUserViewWindow<span class="s2">( );</span></p>
+<p class="p5"><br></p>
+<p class="p7">w.drawFunc = { <span class="s5">Pen</span>.width = <span class="s6">0.05</span>; <span class="s5">Pen</span>.line( <span class="s6">0.1</span>@<span class="s6">0.1</span>, <span class="s6">0.9</span>@<span class="s6">0.9 </span>).stroke; };</p>
+<p class="p8">// now move the sliders and see what happens</p>
+<p class="p9"><br></p>
+<p class="p7">w.gridLines = [<span class="s6">10</span>, <span class="s6">4</span>];</p>
+<p class="p5"><br></p>
+<p class="p7">(</p>
+<p class="p8">// grab and move points</p>
+<p class="p7">w.clearDrawFuncs;</p>
+<p class="p7">w.fromBounds = Rect(0,0,100,100);</p>
+<p class="p10"><span class="s2">p = { </span><span class="s5">Point</span><span class="s2">.rand( </span>100.0.rand<span class="s2">, </span>100.0.rand <span class="s2">) } ! </span>10<span class="s2">;</span></p>
+<p class="p8"><span class="s2">a = </span><span class="s5">nil</span><span class="s2">; </span>// selected point</p>
+<p class="p5"><br></p>
+<p class="p7">w.drawFunc = {<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s5">Pen</span>.color = <span class="s5">Color</span>.green(<span class="s6">0.5</span>).alpha_(<span class="s6">0.75</span>);<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>p.do({ <span class="s5">|pt|</span> <span class="s5">Pen</span>.addArc( pt, <span class="s6">5</span>, <span class="s6">0</span>, <span class="s6">2</span>pi ).fill; });</p>
+<p class="p7"><span class="Apple-tab-span">	</span>if( a.notNil ) { <span class="s5">Pen</span>.color = <span class="s5">Color</span>.red; <span class="s5">Pen</span>.addArc( p[a], <span class="s6">5</span>, <span class="s6">0</span>, <span class="s6">2</span>pi ).stroke };</p>
+<p class="p7"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5"><br></p>
+<p class="p7">w.mouseDownAction = { <span class="s5">|v, sx, sy|</span> a = p.detectIndex({ <span class="s5">|pt|</span> pt.dist( sx@sy ) &lt;= <span class="s6">5 </span>}); };</p>
+<p class="p7">w.mouseMoveAction = { <span class="s5">|v, sx, sy, m, x, y, inside|</span> if(inside and: a.notNil) { p[a] = (sx@sy) }; };</p>
+<p class="p7">)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p2"><b><span class="s3">instance variables</span></b></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p2"><b>window</b></p>
+<p class="p2">holds to the SCWindow itself. Use it to add your own views, set the bounds, change the background etc.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>userView</b></p>
+<p class="p2">holds to the ScaledUserView inside the window.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>scaleSliders</b></p>
+<p class="p2">holds the two (small) scale sliders in an array. The sliders are all <a href="SmoothSlider.html"><span class="s4">SmoothSlider</span></a>.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>moveSliders</b></p>
+<p class="p2">holds the two scroll sliders in an array</p>
+<p class="p3"><br></p>
+<p class="p2"><b>viewOffset</b></p>
+<p class="p2">holds the view offset as set at creation. Cannot be changed.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>maxZoom</b></p>
+<p class="p2">maximum scaling for the sliders (default 8 )</p>
+<p class="p3"><br></p>
+<p class="p2"><b>onClose</b></p>
+<p class="p2">gets and sets an onClose action (don't replace that of the <b>window </b>directly; use this one)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>drawHook</b></p>
+<p class="p2">gets and sets a drawHook function (don't replace that of the <b>window </b>directly; use this one)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

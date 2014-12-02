@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.25">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #540b0d}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica; min-height: 19.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad3413}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #467f13}
+span.s1 {color: #005bfb}
+span.s2 {text-decoration: underline}
+span.s3 {color: #000000}
+span.s4 {color: #241bc8}
+span.s5 {color: #717171}
+span.s6 {color: #467f13}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SETO_OSCServer</b></p>
+<p class="p2"><b>superclass: SETOServer</b></p>
+<p class="p3"><br></p>
+<p class="p4">/*</p>
+<p class="p4">Author:<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>2004, 2005, 2006, 2007, 2008</p>
+<p class="p4"><span class="Apple-tab-span">	</span>Till Bovermann<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>Neuroinformatics Group<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>Faculty of Technology<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>Bielefeld University</p>
+<p class="p4"><span class="Apple-tab-span">	</span>Germany</p>
+<p class="p4">*/</p>
+<p class="p5"><br></p>
+<p class="p2">a server fullfilling the TUIO-Specs (bielefeld flavour).</p>
+<p class="p2">For a server to be used with e.g. reacTIVision, see <a href="SETO_OSCTUIOServer.html"><span class="s1"><b>SETO_OSCTUIOServer</b></span></a></p>
+<p class="p2">drawbacks:</p>
+<p class="p2"><span class="Apple-tab-span">	</span>no 'P' symbols are yet handled...</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>*new(formatString, netaddr, setoClass)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>formatString<span class="Apple-tab-span">	</span>a format String (explained in [<b><span class="s2">SETObject</span></b>])</p>
+<p class="p2"><span class="Apple-tab-span">	</span>netaddr<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a netaddr default nothing, listening to all.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>setoClass<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the Class of the created objects.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Must be a subclass of [<b><span class="s2">SETObject</span></b>], defaults to SETObject.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>start</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>starts listening</p>
+<p class="p2"><b>stop</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>stops litening</p>
+<p class="p2"><b>gui</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>creates a gui representing recognized objects</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">Examples / Tests:</p>
+<p class="p3"><br></p>
+<p class="p6">// create a server and start it...</p>
+<p class="p7">(</p>
+<p class="p6">// ... listening to all messages from priamos</p>
+<p class="p6">//t = SETO_OSCServer('_ixya', NetAddr("priamos.techfak.uni-bielefeld.de", nil));<span class="Apple-converted-space"> </span></p>
+<p class="p6">// ... or</p>
+<p class="p6"><span class="s3">t = </span><span class="s4">SETO_OSCServer</span><span class="s3">(</span><span class="s5">"_ixya"</span><span class="s3">, </span><span class="s4">nil</span><span class="s3">, </span><span class="s4">SETObject</span><span class="s3">); </span>// listen to all messages from anywhere</p>
+<p class="p7">t.start;</p>
+<p class="p6">// inspect its behavior</p>
+<p class="p6">//i = t.inspect;</p>
+<p class="p8"><br></p>
+<p class="p7">g = t.gui;</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p6">// send him messages</p>
+<p class="p7">a = <span class="s4">NetAddr</span>.localAddr;</p>
+<p class="p8"><br></p>
+<p class="p7">a.sendMsg(<span class="s5">"/tuio/_ixya"</span>, <span class="s6">\set</span>, 1, 42, 0.5, 0.5, 2pi.rand, 0, 0, 0);<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="s3">a.sendMsg(</span>'/tuio/_ixya'<span class="s3">, </span>\alive<span class="s3">, 1);</span></p>
+<p class="p7">i.update;</p>
+<p class="p8"><br></p>
+<p class="p7">)</p>
+<p class="p8"><br></p>
+<p class="p7">a.sendMsg(<span class="s6">'/tuio/_ixya'</span>, <span class="s6">\set</span>, 2, 42, 0.5, 0.8, 2pi.rand, 0, 0, 0);</p>
+<p class="p7">a.sendMsg(<span class="s6">'/tuio/_ixya'</span>, <span class="s6">\alive</span>, 1, 2);</p>
+<p class="p7">i.update;</p>
+<p class="p8"><br></p>
+<p class="p7">a.sendMsg(<span class="s6">'/tuio/_ixya'</span>, <span class="s6">\set</span>, 3, 42, 0.5, 0.6, 2pi.rand, 0, 0, 0);</p>
+<p class="p7">a.sendMsg(<span class="s6">'/tuio/_ixya'</span>, <span class="s6">\alive</span>, 1, 2, 3);</p>
+<p class="p7">i.update;</p>
+<p class="p8"><br></p>
+<p class="p7">a.sendMsg(<span class="s6">'/tuio/_ixya'</span>, <span class="s6">\set</span>, 4, 42, 0.5, 0.5, 2pi.rand, 0, 0, 0);</p>
+<p class="p7">a.sendMsg(<span class="s6">'/tuio/_ixya'</span>, <span class="s6">\alive</span>, 1, 2, 3, 4);</p>
+<p class="p7">i.update;</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p6">// send alive messages</p>
+<p class="p7">a.sendMsg(<span class="s6">'/tuio/_ixya'</span>, <span class="s6">\alive</span>, 1, 2);</p>
+<p class="p7">i.update</p>
+<p class="p6">// 5 does not exist</p>
+<p class="p7">a.sendMsg(<span class="s6">'/tuio/_ixya'</span>, <span class="s6">\alive</span>, 1, 2, 5);</p>
+<p class="p7">i.update</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s3">a.sendMsg(</span>'/tuio/_ixya'<span class="s3">, </span>\alive<span class="s3">);</span></p>
+<p class="p7">i.update;</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7">t.stop</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p6">// create a server and start it... now using 3D axis notation</p>
+<p class="p7">(</p>
+<p class="p6">// ... listening to all messages from priamos</p>
+<p class="p6">//t = SETO_OSCServer('_ixya', NetAddr("priamos.techfak.uni-bielefeld.de", nil));<span class="Apple-converted-space"> </span></p>
+<p class="p6">// ... or</p>
+<p class="p6"><span class="s3">t = </span><span class="s4">SETO_OSCServer</span><span class="s3">(</span><span class="s5">"_ixyzuvw"</span><span class="s3">, </span><span class="s4">nil</span><span class="s3">, </span><span class="s4">SETObject</span><span class="s3">); </span>// listen to all messages from anywhere</p>
+<p class="p7">t.start;</p>
+<p class="p6">// inspect its behavior</p>
+<p class="p7">i = t.inspect;</p>
+<p class="p8"><br></p>
+<p class="p7">g = t.gui;</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p6">// send him messages</p>
+<p class="p7">n = <span class="s4">NetAddr</span>.localAddr;</p>
+<p class="p8"><br></p>
+<p class="p7">n.sendMsg(<span class="s6">'/tuio/_ixyzuvw'</span>, <span class="s6">\set</span>, 1, 42, 0.7.rand, 0.5, 2pi.rand, 10, 20, 30.rand);<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="s3">n.sendMsg(</span>'/tuio/_ixyzuvw'<span class="s3">, </span>\alive<span class="s3">, 1);</span></p>
+<p class="p7">i.update;</p>
+<p class="p8"><br></p>
+<p class="p7">)</p>
+<p class="p8"><br></p>
+</body>
+</html>

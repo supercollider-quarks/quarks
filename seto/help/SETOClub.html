@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+span.s1 {color: #0000ff}
+span.s2 {color: #0000bf}
+span.s3 {color: #000000}
+span.s4 {color: #007300}
+span.s5 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SETOClub</b></p>
+<p class="p2">superclass:<b> </b><a href="JITseto.html"><span class="s1">JITseto</span></a></p>
+<p class="p3"><br></p>
+<p class="p4">/*</p>
+<p class="p4">Author:<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>2006, 2007</p>
+<p class="p4"><span class="Apple-tab-span">	</span>Till Bovermann<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>SonEnvir IEM</p>
+<p class="p4"><span class="Apple-tab-span">	</span>KUG Graz</p>
+<p class="p4"><span class="Apple-tab-span">	</span>Austria</p>
+<p class="p4">*/</p>
+<p class="p5"><br></p>
+<p class="p2">juggling-clubs</p>
+<p class="p6"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s2">var</span> posSpecs;</p>
+<p class="p6"><br></p>
+<p class="p7">posSpecs = <span class="s2">Array</span>.fill(3, {[-10, 10].asSpec});</p>
+<p class="p7">posSpecs = [</p>
+<p class="p7"><span class="Apple-tab-span">	</span>[-3000, 3000].asSpec,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>[-3000, 3000].asSpec,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>[0, 6000].asSpec,</p>
+<p class="p7">];</p>
+<p class="p6"><br></p>
+<p class="p7">posSpecs.do{<span class="s2">|spec, i|</span> <span class="s2">SpecGUI</span>(spec, i)};</p>
+<p class="p6"><br></p>
+<p class="p7">t = <span class="s2">SETOTarsusServer</span>(<span class="s2">nil</span>, <span class="s2">Club</span>, specs: posSpecs);</p>
+<p class="p7">t.start;</p>
+<p class="p6"><br></p>
+<p class="p7">g = t.gui;</p>
+<p class="p7">)</p>
+<p class="p6"><br></p>
+<p class="p8"><br></p>
+<p class="p7">t.stop;</p>
+<p class="p7">t.start;</p>
+<p class="p6"><br></p>
+<p class="p9">SETOClub<span class="s3">.action = {</span>|me|</p>
+<p class="p7"><span class="Apple-tab-span">	</span>me.flipAngleVel.isNaN.if({[me.id, me.symAxis-me.lastSymAxis].postln});</p>
+<p class="p7">}</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">p = <span class="s2">ProxySpace</span>.push(s);</p>
+<p class="p7">s.boot</p>
+<p class="p6"><br></p>
+<p class="p7">~a = <span class="s4">\control</span> -&gt; (0!3);</p>
+<p class="p7">~height = <span class="s4">\control</span> -&gt; (0!3)</p>
+<p class="p6"><br></p>
+<p class="p9">SETOClub<span class="s3">.action = {</span>|me|</p>
+<p class="p7"><span class="Apple-tab-span">	</span>me.flipAngleVel.isNaN.not.if({</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~a.set(me.id, me.flipAngleVel);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~height.set(me.id, me.pos.last);</p>
+<p class="p7"><span class="Apple-tab-span">	</span>}, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~a.set(me.id, 0);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~height.set(me.id, me.pos.last)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">}</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">~b = {<span class="s2">BPF</span>(<span class="s2">Impulse</span>.ar(~a.kr).poll, (~height.kr * 1000), 0.1) * 0.75}</p>
+<p class="p6"><br></p>
+<p class="p7">~b.clear</p>
+<p class="p7">~b = {<span class="s2">Impulse</span>.ar(~a.kr) * 0.075}</p>
+<p class="p6"><br></p>
+<p class="p7">~b.play</p>
+<p class="p7">~b.playN([0,4,[8, 20]]);</p>
+<p class="p6"><br></p>
+<p class="p7">~b = {<span class="s2">BPF</span>.ar(<span class="s2">Impulse</span>.ar(~a.kr), (~height.kr * 120 + 36).midicps, 0.1) * 2 }</p>
+<p class="p6"><br></p>
+<p class="p7">(</p>
+<p class="p7">~b = { <span class="s2">BPF</span>.ar(<span class="s2">Impulse</span>.ar(~a.kr),<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(~height.kr * 120 + 36 + [[0, 7], [0, 12], [0, 16]]).midicps.postln,<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.2)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.collect({ <span class="s2">|pair|</span> (pair * [1, 0.5]).sum }) <span class="Apple-tab-span">	</span><span class="s5">// no net</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* 2<span class="Apple-converted-space"> </span></p>
+<p class="p7">}</p>
+<p class="p7">)</p>
+</body>
+</html>

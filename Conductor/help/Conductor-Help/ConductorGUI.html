@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica; color: #070707}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #070707; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0a0111}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #070707}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; color: #070707}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0a0111; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0a0111}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0a0111; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; color: #bf0000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+span.s1 {font: 12.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {font: 14.0px Helvetica; color: #000000}
+span.s4 {color: #bf0000}
+span.s5 {color: #007300}
+span.s6 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>ConductorGUI</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>Superclass: GUIEvent</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span>related classes: Conductor</b></p>
+<p class="p2"><br></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span></b>ConductorGUI is an Enivronment whose parent environment (defined by <b>[GUIEvent]</b>) is a 'style sheet'<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>of default gui functions that determine how a Conductor is to be displayed.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span>Instance Variables</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>conductor<span class="Apple-tab-span">	</span></b>the conductor to be displayed</p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>keys<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>an array of keys and arrays of keys of items in the Conductor to be displayed.</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Each item in the array is displayed on its own line, so arrays of keys share a line.</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Unless overridden in <b>guis </b>each item identified by a key is sent a <b>draw</b> message.</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>header<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>an array of keys of items to be displayed before those in <b>keys.<span class="Apple-converted-space">  </span></b>Defaults to</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>#[player, settings, preset]</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>guis<span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>an IdentityDictionary of gui functions that override the normal draw method</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>of an item in the Conductor</p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>stopOnClose<span class="Apple-tab-span">	</span></b>flag determines if Conductor is stopped when gui window is closed</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span>Instance Methods</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>draw (win, name, key)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><span class="s1"><span class="Apple-tab-span">	</span></span><b>Using ConductorGUI<span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><b></b><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>ConductorGUI<span class="Apple-converted-space">  </span>defines default gui functions for the most commonly used classes within a Conductor:</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>cvGUI<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// ~nslider, for single-valued CV's</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>multicvGUI<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// ~multislider, for multi-valued CV's</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>svGUI<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// ~popup, for SV's</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>settingsGUI<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// for ConductorSettingsGUI</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>presetGUI<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// for CVPreset</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>interpolatorGUI<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// for CVInterpolator</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>The dictionary in <b>guis</b> can redefine how a particular key is to be drawn.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>Entries in this dictionary can be:</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> a Symbol: <span class="Apple-tab-span">	</span>the symbol selects a gui function defined in ConductorGUI,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> an Array:<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>the first element of the array selects the gui function which is<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>used to draw the remaining elements of the array.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a Function:<span class="Apple-tab-span">	</span>the function receives window, name and Conductor[name] as arguments</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Here are some examples of how these features can be used:</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><b>(<span class="Apple-tab-span">	</span>// Default case</b></p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span>c = </span>Conductor<span class="s2">.make { </span>| conductor, a, b, c, d|<span class="s2"> }.show</span></p>
+<p class="p9"><b>)</b></p>
+<p class="p9"><b>(<span class="Apple-tab-span">	</span>// Redefine default GUI, place items on one line</b></p>
+<p class="p10"><span class="s3"><b><span class="Apple-tab-span">	</span></b></span><span class="s2">c = </span>Conductor<span class="s2">.make { </span>| conductor, a, b, c, d|<span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>conductor.gui.use { ~cvGUI = ~knob };<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">// change default GUI</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>conductor.gui.keys = #[[a, b, c, d]];<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// place them in a single row</p>
+<p class="p11"><span class="Apple-tab-span">	</span>}.show</p>
+<p class="p9"><b>)</b></p>
+<p class="p9"><b>(<span class="Apple-tab-span">	</span>// Override default GUI</b></p>
+<p class="p10"><span class="s3"><b><span class="Apple-tab-span">	</span></b></span><span class="s2">c = </span>Conductor<span class="s2">.make { </span>| conductor, a, b, c, d|<span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>conductor.gui.guis = (</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>vsliders:<span class="Apple-tab-span">	</span>[\vslider, a, b, c, d]<span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>conductor.gui.keys = #[vsliders];<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// place them in a single row</p>
+<p class="p11"><span class="Apple-tab-span">	</span>}.show</p>
+<p class="p9"><b>)</b></p>
+<p class="p13"><br></p>
+<p class="p14"><span class="s2"><b>(<span class="Apple-tab-span">	</span></b></span><b>// Use dummy keys to display CVs many different ways</b></p>
+<p class="p10"><span class="s3"><b><span class="Apple-tab-span">	</span></b></span><span class="s2">c = </span>Conductor<span class="s2">.make { </span>| conductor, a, b|</p>
+<p class="p11"><span class="Apple-tab-span">	</span>a<span class="Apple-tab-span">	</span>.sp(0, 0, 16, 1);</p>
+<p class="p11"><span class="Apple-tab-span">	</span>b<span class="Apple-tab-span">	</span>.sp(200, 20, 20000, 0, <span class="s5">'exp'</span>);</p>
+<p class="p13"><span class="Apple-tab-span">	</span></p>
+<p class="p12">// note: the fields below are defined in the environment of the conductor,</p>
+<p class="p12">// but the functions are actually evaluated in the environment of conductor.gui</p>
+<p class="p11"><span class="Apple-tab-span">	</span>conductor.gui.guis = (</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b:<span class="Apple-tab-span">	</span></span>\numerical<span class="s2">,</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c:<span class="Apple-tab-span">	</span>[<span class="s5">\rslider</span>, [a, b] ],</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d: <span class="Apple-tab-span">	</span>[<span class="s5">\vslider</span>, a,b,a,b],</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>e: <span class="Apple-tab-span">	</span>[<span class="s5">\vrslider</span>, [a,b], [a,b]],</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f: <span class="Apple-tab-span">	</span>[<span class="s5">\tdslider</span>, [a, b],[a, b] ],</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g:<span class="Apple-tab-span">	</span>[<span class="s5">\numerical</span>, a,b],</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>h:<span class="Apple-tab-span">	</span>[</span>\radiobuttons<span class="s2">, a],</span></p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zz: <span class="Apple-tab-span">	</span>{</span>| win, name, cv |<span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~numerical.value(win, name, [a,b,a,b,a,b]); <span class="Apple-converted-space">  </span><span class="s4">// using functions defined in GUIEvent<span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.connect(<span class="s6">Slider</span>(win,<span class="s6">Rect</span>(0,0,100,20)));<span class="Apple-converted-space">    </span><span class="s4">// writing GUI function directly</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p13"><br></p>
+<p class="p11"><span class="Apple-tab-span">	</span>);</p>
+<p class="p13"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span></span>// define the order of displaying those items</p>
+<p class="p11"><span class="Apple-tab-span">	</span>conductor.gui.keys = #[a,b,c, [d, e, f], g, h, zz];</p>
+<p class="p11">};</p>
+<p class="p11">c.show(w:1000)</p>
+<p class="p11">)</p>
+<p class="p13"><br></p>
+<p class="p16"><b></b><br></p>
+</body>
+</html>

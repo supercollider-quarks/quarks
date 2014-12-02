@@ -1,0 +1,51 @@
+title:: Players internals
+summary:: The process and order of starting and stopping play
+categories:: Libraries>crucial>Players
+
+	what happens when you call .play :
+
+
+section::	prepareToBundle(group,bundle)
+		set group, server
+
+subsection:: loadDefFileToBundle(bundle,server)
+			children loadDefFileToBundle(bundle,server)
+			asSynthDef
+
+subsection:: makePatchOut(group,isPrivate,bus,bundle)
+			create a PatchOut object
+			isPrivate: a public bus is one of the main audio outputs of your soundcard.
+				a private bus is one that will be patched and mixed further down the line.
+				When makePatchOut is called on the top player (the one that actually was sent .play)
+				it plays to a public (main audio output), and any internal children are told to
+				allocate and play onto a private bus.
+
+subsection:: makeResourcesToBundle(bundle)
+
+"resources" include
+
+	groups - some players create groups into which they spawn events or
+			groups where they run effects (that must be kept in processing order after
+			the player's primary synth)
+	busses - some players maintain busses for internal use
+
+
+subsection:: prepareChildrenToBundle(bundle)
+			each of the children prepares into the bundle (and they prepare their children)
+
+subsection:: loadBuffersToBundle(bundle)
+			samples, buffers needed for efx, sequencing etc.
+
+
+
+
+section::	spawnAtTime(atTime)
+
+subsection:: spawnToBundle(bundle)
+			each child: spawnToBundle
+
+subsection:: didSpawn
+			called after the player has spawned on the server
+
+
+

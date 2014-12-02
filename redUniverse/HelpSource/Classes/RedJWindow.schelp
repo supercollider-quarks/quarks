@@ -1,0 +1,77 @@
+CLASS:: RedJWindow
+SUMMARY:: wrapper for JSCWindow
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview, Classes/RedWindow, Classes/Window
+
+DESCRIPTION::
+Adding some functionality to the standard link::Classes/Window:: class. Requires link::Classes/RedVector:: and SwingOSC. (This class can also be used with osx-swing. Copy the class file RedJWindow.sc into the osx folder.)
+
+INSTANCEMETHODS::
+
+PRIVATE:: initSCWindow
+
+METHOD:: draw
+Alias for link::Classes/UserView#-drawFunc::.
+
+METHOD::play
+Starts an internal thread on the link::Classes/AppClock:: updating at rate strong::fps::.
+
+METHOD:: stop
+Stop internal thread.
+
+METHOD:: resize
+Change window size while keeping x and y position. The argument can also be a link::Classes/RedVector::
+
+METHOD:: background
+Set window background. Alias for view.background_
+
+METHOD:: isOpen
+Boolean.
+
+METHOD:: mouse
+Returns a link::Classes/RedVector:: for mouse x and y position. Click&drag in window to set position.
+
+METHOD:: isPlaying
+If the window is updating.
+
+METHOD:: userView
+Access to the embedded view.
+
+METHOD:: animate
+Start automatic refresh. Default at 60fps (although swingosc seems capped at 50).
+
+METHOD:: frame
+Current frame.
+
+METHOD:: frameRate
+Current average framerate.
+
+EXAMPLES::
+
+CODE::
+GUI.swing;
+w= RedJWindow.new.front;
+w.resize(RedVector2D[200, 200])
+w.background= Color.red
+
+w.draw{Pen.fillColor= Color.black; Pen.fillOval(Rect.aboutPoint(175.rand@175.rand, 50, 50))}
+w.play			//start drawing
+w.stop
+
+(			//mouse control
+w.draw{
+	var radius= 100.rand;
+	Pen.fillColor= Color.blue(0.5, radius/100);
+	Pen.fillOval(Rect.aboutRedVector2D(w.mouse, radius))
+}
+)
+w.play(25)		//25fps
+w.mouse
+w.isPlaying
+w.isOpen
+w.stop
+w.animate= true;	//60fps
+w.frame
+w.frameRate
+w.close
+::

@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; color: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; min-height: 22.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #c50000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {text-decoration: underline ; color: #0001ee}
+span.s2 {text-decoration: underline}
+span.s3 {color: #0000bf}
+span.s4 {color: #00730a}
+span.s5 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>interpolate</b></p>
+<p class="p2"><b>SCView extensions</b></p>
+<p class="p3"><br></p>
+<p class="p4">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p5"><br></p>
+<p class="p4">a number of interpolation functions.</p>
+<p class="p3"><br></p>
+<p class="p4">there are a number of types of interpolation available, and a number of ways to do it.</p>
+<p class="p6"><br></p>
+<p class="p2"><b><span class="s2">interpolation types</span></b></p>
+<p class="p6"><br></p>
+<p class="p2"><b>cubic interpolation:</b></p>
+<p class="p2"><b><i>'spline' </i></b>: basic spline interpolation with automatic control points; extra argument: <b>amt</b> for the control points.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amt = 0 will result in sine-like interpolation.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the default amt is ( 0.75 / (1.9**0.5) ), for 2D circle approximation</p>
+<p class="p2"><b><i>'hermite' </i></b>: simplified spline interpolation with fixed amt = 1/3, as used by many UGens ( DelayC, PlayBuf etc)</p>
+<p class="p2"><b><i>'bspline' </i></b>: better curves but higher cpu. bspline also has an <b>amt</b> argument, which defines the order.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the default amt is 4.</p>
+<p class="p6"><br></p>
+<p class="p2"><b>other interpolation:</b></p>
+<p class="p2"><b><i>'quad' </i></b>: <i>not correct yet</i></p>
+<p class="p2"><b><i>'sine' </i></b>: wraps s-shaped sine curves between steps</p>
+<p class="p2"><b><i>'linear' </i></b>: linear interpolation</p>
+<p class="p2"><b><i>'step' </i></b>: step interpolation</p>
+<p class="p6"><br></p>
+<p class="p2">There is also the possibility of entering your own control points for the cubic interpolation.</p>
+<p class="p6"><br></p>
+<p class="p2"><b><span class="s2">methods</span></b></p>
+<p class="p6"><br></p>
+<p class="p4"><b>Array:intAt( index, type, loop, extra )</b></p>
+<p class="p4">returns an interpolated value from the array at <b>index</b> with <b>type </b>interpolation. if <b>loop </b>== <span class="s3">true</span> the curve after the last point will bend towards the first. <b>extra </b>contains the extra arguments for specific types.</p>
+<p class="p3"><br></p>
+<p class="p7">[0,1,5,2].intAt( 2.5 );</p>
+<p class="p7">[0,1,5,2].intAt( 2.5, <span class="s4">\hermite</span> );</p>
+<p class="p7">[0,1,5,2].intAt( 2.5, <span class="s4">\bspline</span> );</p>
+<p class="p8"><br></p>
+<p class="p4"><b>Array:atL ( index, loop ), atH ( index, loop ), atS ( index, loop, extra ),<span class="Apple-converted-space"> </span></b></p>
+<p class="p4"><b>atB ( index, loop, extra ), atSin ( index, loop )</b></p>
+<p class="p4">shortcuts for all intAt types</p>
+<p class="p3"><br></p>
+<p class="p4"><b>Array:resize ( newSize, type, loop, extra )</b></p>
+<p class="p4">resizes the array to <b>newSize</b> with <b>type </b>interpolation.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p7">[0,1,5,2].resize( 100, <span class="s4">\hermite</span> ).plot;</p>
+<p class="p3"><br></p>
+<p class="p7">(</p>
+<p class="p7">a = { 1.0.rand2 } ! 10;</p>
+<p class="p7">({ <span class="s3">|i|</span> a.resize( 200, [<span class="s4">\linear</span>, <span class="s4">\step</span>, <span class="s4">\hermite</span>, <span class="s4">\spline</span>, <span class="s4">\bspline</span>][i]<span class="Apple-converted-space">  </span>) } ! 5)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.flop.flat.plot(numChannels: 5);</p>
+<p class="p7">)</p>
+<p class="p3"><br></p>
+<p class="p4"><b>Array:interpolate ( division, type, loop, extra )</b></p>
+<p class="p4">expands the array to <b>division </b>values per input value with <b>type </b>interpolation.</p>
+<p class="p3"><br></p>
+<p class="p7">[0,1,5,2].interpolate( 10, <span class="s4">\hermite</span> ).size;</p>
+<p class="p7">[0,1,5,2].interpolate( 10, <span class="s4">\hermite</span> ).plot;</p>
+<p class="p8"><br></p>
+<p class="p2"><b>Array:splineIntFunction ( i, x1, x2 )</b></p>
+<p class="p2">the basic cubic interpolation function with user given control points. The input aray should be of size = 2.</p>
+<p class="p2">If you use an array for i, the function will run optimized ( calculates controls only once ).</p>
+<p class="p3"><br></p>
+<p class="p7">[0,1].splineIntFunction( (0,0.01..1), 0.125, 1.75 ).plot;</p>
+<p class="p8"><br></p>
+<p class="p4"><b><span class="s2">examples</span></b></p>
+<p class="p8"><br></p>
+<p class="p7">(</p>
+<p class="p9">// hands on interpolation</p>
+<p class="p9">// move the points around..</p>
+<p class="p10"><span class="s5">w = </span><span class="s3">SCWindow</span><span class="s5">( </span>"y-axis interpolation"<span class="s5"> ).front;</span></p>
+<p class="p7">u = <span class="s3">SCUserView</span>( w, w.view.bounds ).resize_(5);</p>
+<p class="p7">w.decorate;</p>
+<p class="p7">w.view.background_( <span class="s3">Color</span>.white );</p>
+<p class="p7">m = <span class="s3">SCPopUpMenu</span>( w, 160@20 ).items_([<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"cubic with controls"<span class="s5">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"bspline"<span class="s5">,</span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"spline"<span class="s5">,</span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"hermite"<span class="s5">,</span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"linear"<span class="s5">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"sine"<span class="s5">,</span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"step"<span class="s5"> ])</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>.action_({ <span class="s3">|pu|</span><span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if( (pu.value == 2) or: (pu.value == 1) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ c.visible = <span class="s3">true</span> }</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ c.visible = <span class="s3">false</span> };</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.refresh; });</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7">c = <span class="s3">SCSlider</span>( w, 200@20 )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( (0.75 / (1.9**0.5)) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.action_({ w.refresh })</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.visible_( <span class="s3">false</span> );</p>
+<p class="p8"><br></p>
+<p class="p7">p = [ 12@200, 138@50, 262@50, 388@200 ];</p>
+<p class="p7">j = <span class="s3">nil</span>;</p>
+<p class="p7">r = 7;</p>
+<p class="p8"><br></p>
+<p class="p7">u.drawFunc_({ <span class="s3">|uvw|</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Color</span>.black.alpha_(0.5).set;<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.line( 0@200, 400@200 ).stroke;</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>p[[0,3]].do({ <span class="s3">|point, i|</span> <span class="s3">Pen</span>.addArc( point, r, 0, 2pi ).stroke; });</p>
+<p class="p7"><span class="Apple-tab-span">	</span>if( m.value == 0 )<span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s3">Color</span>.red.set;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.line( p[0], p[1] ).stroke;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.line( p[2], p[3] ).stroke;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>p[[1,2]].do({ <span class="s3">|point, i|</span> <span class="s3">Pen</span>.addArc( point, r, 0, 2pi ).stroke; });</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Color</span>.blue.set;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.moveTo( p[0] );</p>
+<p class="p7"><span class="Apple-tab-span">	</span>switch( m.value,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0, { p[[0,3]].collect( <span class="s3">_</span>.y )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.splineIntFunction( (0,1/50..1), p[1].y, p[2].y )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item, i|</span><span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="s3">Pen</span>.lineTo(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>i.linlin( 0, 50, p[0].x, p[3].x, <span class="s4">\none</span> )@item )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1, { p.collect(<span class="s3">_</span>.y).interpolate(15, <span class="s4">'bspline'</span>, <span class="s3">false</span>, c.value.linlin( 0,1,2,8 ).asInt )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item, i|</span> <span class="s3">Pen</span>.lineTo( i.linlin( 0, 59, p[0].x, p[3].x, <span class="s4">\none</span> )@item ) });<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2, { p.collect(<span class="s3">_</span>.y).interpolate(15, <span class="s4">'spline'</span>, <span class="s3">false</span>, c.value )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item, i|</span> <span class="s3">Pen</span>.lineTo( i.linlin( 0, 59, p[0].x, p[3].x, <span class="s4">\none</span> )@item ) });<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p8"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3, { p.collect(<span class="s3">_</span>.y).interpolate(15, <span class="s4">'hermite'</span>, <span class="s3">false</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item, i|</span> <span class="s3">Pen</span>.lineTo( i.linlin( 0, 59, p[0].x, p[3].x, <span class="s4">\none</span> )@item ) });<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>4, { p.collect(<span class="s3">_</span>.y).interpolate(10, <span class="s4">'linear'</span>, <span class="s3">false</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item, i|</span> <span class="s3">Pen</span>.lineTo( i.linlin( 0, 39, p[0].x, p[3].x, <span class="s4">\none</span> )@item ) });</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span>},</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>5, { p.collect(<span class="s3">_</span>.y).interpolate(15, <span class="s4">'sine'</span>, <span class="s3">false</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item, i|</span> <span class="s3">Pen</span>.lineTo( i.linlin( 0, 59, p[0].x, p[3].x, <span class="s4">\none</span> )@item ) });</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span>},</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>6, { p.collect(<span class="s3">_</span>.y).interpolate(15, <span class="s4">'step'</span>, <span class="s3">false</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item, i|</span> <span class="s3">Pen</span>.lineTo( i.linlin( 0, 59, p[0].x, p[3].x, <span class="s4">\none</span> )@item ) });</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span>}</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>);</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.stroke;</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7">u.mouseBeginTrackFunc_({ <span class="s3">|uvw, x, y|</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">var</span> distances;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>distances = p.collect({ <span class="s3">|pt|</span> pt.dist( x@y ) });</p>
+<p class="p7"><span class="Apple-tab-span">	</span>j = distances.detectIndex( <span class="s3">_</span> &lt; (r+1) );</p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span></span>//j.postln;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7">u.mouseTrackFunc_({ <span class="s3">|uvw, x,y|</span> if( j.notNil ) { p[j] = (p[j].x)@(y.max(0)); w.refresh; }; });</p>
+<p class="p7">)</p>
+<p class="p8"><br></p>
+<p class="p9">///////////////////</p>
+<p class="p8"><br></p>
+<p class="p7">(</p>
+<p class="p9">// 2 dimensional interpolation</p>
+<p class="p10"><span class="s5">w = </span><span class="s3">SCWindow</span><span class="s5">( </span>"2D interpolation"<span class="s5"> ).front;</span></p>
+<p class="p7">u = <span class="s3">SCUserView</span>( w, w.view.bounds ).resize_(5);</p>
+<p class="p7">w.decorate;</p>
+<p class="p7">m = <span class="s3">SCPopUpMenu</span>( w, 160@20 ).items_([<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"cubic with controls"<span class="s5">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"bspline"<span class="s5">,</span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"spline"<span class="s5">,</span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"hermite"<span class="s5">,</span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"linear"<span class="s5"> ])</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>.action_({ <span class="s3">|pu|</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if( (pu.value == 2) or: (pu.value == 1) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ c.visible = <span class="s3">true</span> }</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ c.visible = <span class="s3">false</span> };</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.refresh; });</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7">c = <span class="s3">SCSlider</span>( w, 200@20 )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( (0.75 / (1.9**0.5)) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.action_({ w.refresh })</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.visible_( <span class="s3">false</span> );</p>
+<p class="p8"><br></p>
+<p class="p7">p = [ 10@200, 100@50, 300@50, 390@200 ];</p>
+<p class="p7">j = <span class="s3">nil</span>;</p>
+<p class="p7">r = 7;</p>
+<p class="p8"><br></p>
+<p class="p7">u.drawFunc_({ <span class="s3">|uvw|</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Color</span>.black.alpha_(0.5).set;<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>p[[0,3]].do({ <span class="s3">|point, i|</span> <span class="s3">Pen</span>.addArc( point, r, 0, 2pi ).stroke; });</p>
+<p class="p7"><span class="Apple-tab-span">	</span>if( m.value == 0 )<span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s3">Color</span>.red.set;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.line( p[0], p[1] ).stroke;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.line( p[2], p[3] ).stroke;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>p[[1,2]].do({ <span class="s3">|point, i|</span> <span class="s3">Pen</span>.addArc( point, r, 0, 2pi ).stroke; });</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Color</span>.blue.set;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.moveTo( p[0] );</p>
+<p class="p7"><span class="Apple-tab-span">	</span>switch( m.value,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0, {<span class="Apple-tab-span">	</span>p[[0,3]].collect( <span class="s3">_</span>.asArray )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.flop.collect({ |item,i|</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>item.splineIntFunction( (0,1/50..1), p[1].asArray[i], p[2].asArray[i] )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).flop</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item|</span> <span class="s3">Pen</span>.lineTo( item.asPoint ) });</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>/*</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0, { 50.do({ |i| Pen.lineTo( p[[0,3]].collect( _.asArray )</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.splineIntFunction( i/49, p[1].asArray, p[2].asArray ).asPoint )</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}); },</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>*/</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1, { p.collect(<span class="s3">_</span>.asArray).interpolate(15, <span class="s4">'bspline'</span>, <span class="s3">false</span>, c.value.linlin( 0,1,2,8) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item, i|</span> <span class="s3">Pen</span>.lineTo( item.asPoint ) });<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2, { p.collect(<span class="s3">_</span>.asArray).interpolate(15, <span class="s4">'spline'</span>, <span class="s3">false</span>, c.value )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item, i|</span> <span class="s3">Pen</span>.lineTo( item.asPoint ) });<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3, { p.collect(<span class="s3">_</span>.asArray).interpolate(15, <span class="s4">'hermite'</span>, <span class="s3">false</span>, c.value )</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item, i|</span> <span class="s3">Pen</span>.lineTo( item.asPoint ) });<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p8"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>4, { p.collect(<span class="s3">_</span>.asArray).interpolate(10, <span class="s4">'linear'</span>, <span class="s3">false</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s3">|item, i|</span> <span class="s3">Pen</span>.lineTo( item.asPoint ) });</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span>}</p>
+<p class="p7"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>);</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.stroke;</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7">u.mouseBeginTrackFunc_({ <span class="s3">|uvw, x, y|</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">var</span> distances;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>distances = p.collect({ <span class="s3">|pt|</span> pt.dist( x@y ) });</p>
+<p class="p7"><span class="Apple-tab-span">	</span>j = distances.detectIndex( <span class="s3">_</span> &lt; (r+1) );</p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span></span>//j.postln;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7">u.mouseTrackFunc_({ <span class="s3">|uvw, x,y|</span> if( j.notNil ) { p[j] = x@y; w.refresh; }; });</p>
+<p class="p7">)</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

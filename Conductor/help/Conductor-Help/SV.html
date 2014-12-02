@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SV</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>superclass: CV</b></p>
+<p class="p3"><b>related classes: CV, Conductor</b></p>
+<p class="p3">An <b>SV</b> is a CV that models an index into an array stored in the SV's instance variable <b>items</b>.</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p3">SV's are typically used within a Conductor to specify a symbol out of an array of Symbols that can be<span class="Apple-converted-space"> </span></p>
+<p class="p3">displayed with a PopupMenu or an SCListView.<span class="Apple-converted-space">  </span>Below is an example, see <b>Conductor </b>for more details.</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p4">Conductor.make{ | conductor, a, b |</p>
+<p class="p4"><span class="Apple-tab-span">	</span>~y = <span class="s1">SV</span>(<span class="s1">Font</span>.availableFonts);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>~z = <span class="s1">SV</span>(<span class="s1">Font</span>.availableFonts);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>a.spec_(~y.spec);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>b.spec_(~z.spec);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>~y.action_({|y| a.value_(y.value)});</p>
+<p class="p4"><span class="Apple-tab-span">	</span>~z.action_({|y| b.value_(y.value)});</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span>// define custom gui properties</p>
+<p class="p4"><span class="Apple-tab-span">	</span>conductor.gui.use{<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~popupRect = <span class="s1">Rect</span>(0,0,200, ~h);<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~listRect = <span class="s1">Rect</span>(0,0,200, 400);<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>};</p>
+<p class="p4"><span class="Apple-tab-span">	</span>// An SV is a CV whose value is an index into an associated array.</p>
+<p class="p4"><span class="Apple-tab-span">	</span>// ~popup and ~listview display the entries in the array.</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>conductor.gui.keys = #[[y,a], [z,b]];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>conductor.gui.guis = (z: \list, a: \numerical, b: \numerical);</p>
+<p class="p4">}.show(w: 450)<span class="Apple-tab-span">	</span></p>
+<p class="p4">)</p>
+</body>
+</html>

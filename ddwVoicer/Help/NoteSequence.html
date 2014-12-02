@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 36.0px; text-indent: -36.0px; font: 12.0px Helvetica}
+    p.p5 {margin: 0.0px 0.0px 0.0px 36.0px; text-indent: -36.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1"><b>NoteSequence<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">A container for pattern streams giving frequency, duration, length Information and streams for other arguments of your choosing. Used by <b>[VoicerSequencer]</b> and <b>[LinkedVoicerSequencer]</b>.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(freqs, durs, lengths, absLengths = true, maxPlayBeats = inf ... args)</b></p>
+<p class="p2"><br></p>
+<p class="p4"><i>freqs</i>: A Stream or Pattern returning frequency values you want to use. Chords can be played by including an array in the stream. Rests should be written as an empty array (i.e. a chord of zero notes).</p>
+<p class="p4"><i>durs</i>: A Stream or Pattern returning the number of beats until the next note or chord should sound. This must be an integer or float; arrays are not allowed here.</p>
+<p class="p4"><i>lengths</i>: A Stream or Pattern returning the length of each note (which may be longer or shorter than the duration of this note, since Voicer is polyphonic).<span class="Apple-converted-space"> </span></p>
+<p class="p4"><i>absLengths</i>: if true, the values returned by the length stream will be used as is. If false, the values will be multiplied by the note's duration, allowing you to treat the length stream as a legato/staccato/overlap parameter.</p>
+<p class="p4"><i>maxPlayBeats</i>: The maximum number of beats this NoteSequence will play before returning nil. If this argument is supplied as <i>nil</i>, it will be replaced by <i>inf</i> and the sequence will therefore play indefinitely.</p>
+<p class="p4"><i>args</i>: An array of pairs: [\argname, Stream/Pattern, \argname, Stream/Pattern, etc.]</p>
+<p class="p5"><br></p>
+<p class="p3"><b>next</b></p>
+<p class="p3"><b>value<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Return the next note in the sequence, as a sequence note object. SequenceNote has four instance variables: freq, dur, length, args, which may be used directly with voicer.gate. When any of the streams (except lengths) returns nil, next will also return nil.</p>
+<p class="p2"><br></p>
+<p class="p3">Note that NoteSequence is not a subclass of Stream, even though it implements <i>next</i>. This is because LinkedVoicerSequencer depends on NoteSequences <i>not </i>being embedded in Streams.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>freqs_(newStream, quant, offset)</b></p>
+<p class="p3"><b>durs_(newStream, quant, offset)</b></p>
+<p class="p3"><b>lengths_(newStream, quant, offset)</b></p>
+<p class="p3"><b>absLengths_(absL = true)</b></p>
+<p class="p3"><b>putArg_(name, newStream, quant, offset)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Change a stream on the fly. If you do putArg on an argument that already has a stream, the old stream will be thrown out first.</p>
+</body>
+</html>

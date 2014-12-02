@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.25">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1612}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0b28c5}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #00831c}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1612; min-height: 12.0px}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #737373}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #0000bf}
+span.s3 {color: #1135f9}
+span.s4 {color: #000000}
+span.s5 {color: #0b28c5}
+span.s6 {color: #cd1612}
+span.s7 {color: #00831c}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>ListeningClock<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a clock that listens to other clocks</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="../../Core/Object.html"><span class="s2"><b>Object</b></span></a><b> : </b><a href="SC://Clock"><span class="s3"><b>Clock</b></span></a><b> : </b><a href="SC://TempoClock"><span class="s3"><b>TempoClock</b></span></a><b> : </b><a href="SoftClock.html"><span class="s3"><b>SoftClock</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p1">ListeningClock implements phase and frequency adjustment to a number of other clocks. This can be useful to synchronise ensembles in a fluent way. Together, they behave like cartoonified musicians who entrain to<span class="Apple-converted-space">  </span>each other.</p>
+<p class="p2"><br></p>
+<p class="p1">It takes inspiration from the intricate improvisation practice of Javanese and Balinese Gamelan playing and was developed for the project <i>Virtual Gamelan Graz</i> by Rainer Schütz, Alberto de Campo, and Julian Rohrhuber.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new(tempo, beats, seconds, queueSize)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new instance with the given tempo and starting times. If not supplied, <b>tempo</b> defaults to 1.0, <b>beats</b> defaults to 0.0 and <b>seconds</b> defaults to the current elapsed time since SuperCollider startup. The default <b>queueSize</b> is 256, see <b>queue</b> (see <a href="SC://TempoClock"><span class="s3">TempoClock</span></a>).</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>*all</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Like TempoClock, ListeningClock keeps track of its instances so that they may be stopped globally. To keep a clock running, set <b>permanent</b> = true.<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>To remove a permanent clock, use the message <b>stop</b>.</p>
+<p class="p5"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><b>Instance Methods</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>others</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>An array of other clocks which this clock listens to.</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>weights</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>An array of degrees which determines how much this clock listens to each other clock<span class="Apple-converted-space">  </span>(0.0..1.0)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>setClocks(clocks, argWeights, start)</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determine the other clocks and their weights. If start is true (default: true), listening begins immediately.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>startListen</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Start to listen to the clocks in <b>others</b>.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>stopListen</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Stop listening. The clock continues to work, but without interaction to the others.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>isListening</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns true if clock is listening</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>verbose</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>verbose_(boolean)</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If verbose is set to true, clock posts a lot of information on its current state.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>dt</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>dt_(val)</b></p>
+<p class="p5"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Time difference between adjustments, at which the clock tempo and phase are updated (default: 0.1)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><b>Empathy and Confidence</b></p>
+<p class="p9"><br></p>
+<p class="p1">Two parameters are responsible for the clock's adaptive behavior: empathy and confidence. <b>Empathy</b> is related to the degree of phase adjustment: If empathy is high, the clock remains tight in phase with the others. <b>Confidence</b>, on the other hand, is connected with tempo (frequency): If confidence is high, the clock keeps its own tempo, if it is low, it quickly adjusts to the other tempi. Basis for these adjustments is the weighted average of phase and tempo of the other clocks.</p>
+<p class="p9"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>empathy</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>empathy_(val)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Set the degree of empathy within a range between 0 (no empathy) and 1 (total empathy). Default: 0.5.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>confidence</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>confidence_(val)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Set the degree of confidence within a range between 0 (zero confidence) and 1 (total self confidence). Default: 0.5.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><b>Changing tempo directly.</b></p>
+<p class="p10"><br></p>
+<p class="p7">A ListeningClock implements slow direct tempo adjustments.<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>tempo_(newTempo)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Move to new tempo given.<span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>fadeTempo(newTempo, dur, warp, clock)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Move to new tempo over a given time (<b>dur </b>- default: 1.0) and in a given transition shape (<b>warp</b> - default: \cos). This transition normally happens within the frame of reference of SystemClock (seconds), however a different clock may be passed in the <b>clock</b> argument.</p>
+<p class="p12"><br></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span>warpTempo(frac, beats, warp)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Modify the tempo to a fraction (<b>frac</b>) of the current tempo over a given duration (<b>beats</b> - default: 1.0) and with a given shape (<b>warp</b> - default: \cos). The time base is the clock itself.</p>
+<p class="p12"><br></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span>pause(dur)</b></p>
+<p class="p12"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Set the tempo to zero over <b>dur</b> (default: immediately)</p>
+<p class="p12"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span>rateOfChange</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns the current change rate.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>beatWrap</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>beatWrap_(nBeats)</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If <b>nBeats</b> is given, the clock will not catch up with the absolute phase of the others, but only within the given number of beat cycles. This is useful to avoid confusion after fast tempo changes given that the music has a circular event structure where absolute phase does not matter.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p8"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span></span>// make three listening clocks.</p>
+<p class="p14">(</p>
+<p class="p14">t = <span class="s5">ListeningClock</span>.new.permanent_(<span class="s5">true</span>);</p>
+<p class="p14">u = <span class="s5">ListeningClock</span>.new.permanent_(<span class="s5">true</span>);</p>
+<p class="p14">v = <span class="s5">ListeningClock</span>.new.permanent_(<span class="s5">true</span>);</p>
+<p class="p3"><br></p>
+<p class="p14">u.setClocks([t]); <span class="Apple-tab-span">	</span><span class="s6">// u listens to t.</span></p>
+<p class="p14">v.setClocks([t]);<span class="Apple-tab-span">	</span><span class="s6">// v listens to t.</span></p>
+<p class="p14">);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p14">(</p>
+<p class="p14">(</p>
+<p class="p15">SynthDef<span class="s4">(</span><span class="s7">\ping</span><span class="s4">, {</span>|freq, pan, amp=0.3|</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">var</span> e, z;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>e= <span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>.perc(0, 0.1, amp), doneAction:2);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>z= <span class="s5">SinOsc</span>.ar(freq, 0, 0.2);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">OffsetOut</span>.ar(0, <span class="s5">Pan2</span>.ar(z*e, pan));</p>
+<p class="p14">}).memStore;</p>
+<p class="p14">);</p>
+<p class="p14">)</p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span></span>// play a pattern on clock t:</p>
+<p class="p14">(</p>
+<p class="p15">Pdef<span class="s4">(</span><span class="s7">\a</span><span class="s4">,</span></p>
+<p class="p16"><span class="s4"><span class="Apple-tab-span">	</span></span><span class="s5">Pbind</span><span class="s4">(</span>\instrument<span class="s4">, </span>\ping<span class="s4">,</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\degree</span>, <span class="s5">Pseq</span>((0..7), <span class="s5">inf</span>),</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, 0.25, <span class="s7">\pan</span>, -0.5, <span class="s7">\amp</span>, 0.5</p>
+<p class="p14"><span class="Apple-tab-span">	</span>)</p>
+<p class="p14">).play(t);</p>
+<p class="p14">)</p>
+<p class="p3"><br></p>
+<p class="p13">// fadeTempo(newTempo, time, warp); //</p>
+<p class="p17"><br></p>
+<p class="p13">// makes a smooth tempo change on a listening clock</p>
+<p class="p13">// newTempo is the tempo to go to,<span class="Apple-converted-space"> </span></p>
+<p class="p13">// time is the transition time,<span class="Apple-converted-space"> </span></p>
+<p class="p13">// and warp the warp of the interpolation from current to new tempo.</p>
+<p class="p17"><span class="Apple-tab-span">	</span></p>
+<p class="p14">t.verbose_(<span class="s5">true</span>);</p>
+<p class="p14">t.fadeTempo(exprand(0.5, 2.0), 4);<span class="Apple-converted-space"> </span></p>
+<p class="p14">t.fadeTempo(exprand(0.5, 2.0), 4);<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p14">t.fadeTempo(0.5, 2);<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="s4">t.fadeTempo(1, 4, </span><span class="s7">\cos</span><span class="s4">);<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span>// cosine shape (default): starts slow, ends slow</p>
+<p class="p13"><span class="s4">t.fadeTempo(2, 4, </span><span class="s7">\sin</span><span class="s4">); <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// sine shape, starts faster, ends slow</p>
+<p class="p13"><span class="s4">t.fadeTempo(3, 4.2, </span><span class="s7">\exp</span><span class="s4">);<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span></span>// exp is not recommended; it would require fixes in</p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// ExponentialWarp.</p>
+<p class="p14">t.fadeTempo(0.5, 4.5, <span class="s7">\amp</span>);</p>
+<p class="p14">t.fadeTempo(2, 3.21, <span class="s7">\amp</span>);<span class="s6"><span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><br></p>
+<p class="p14">((0..100)/100).collect(<span class="s7">\cos</span>.asWarp.map(<span class="s5">_</span>)).plot;</p>
+<p class="p14">((0..100)/100).collect(<span class="s7">\sin</span>.asWarp.map(<span class="s5">_</span>)).plot;</p>
+<p class="p14">((0..100)/100).collect(<span class="s7">\amp</span>.asWarp.map(<span class="s5">_</span>)).plot;</p>
+<p class="p14">((0..100)/100).collect(<span class="s7">\exp</span>.asWarp.map(<span class="s5">_</span>)).plot;</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="s4">t.fadeTempo(1, 4, -4);<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span></span>// more change happens at the start</p>
+<p class="p13"><span class="s4">t.fadeTempo(2, 4, 4);<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span>// more change happens at the end</p>
+<p class="p3"><br></p>
+<p class="p14">((0..100)/100).collect(-4.asWarp.map(<span class="s5">_</span>)).plot;</p>
+<p class="p14">((0..100)/100).collect(4.asWarp.map(<span class="s5">_</span>)).plot;</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span>// a new tempofade stops an ongoing fade,<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>// and continues from there:</p>
+<p class="p3"><br></p>
+<p class="p14">(</p>
+<p class="p14">fork {<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>t.fadeTempo(1, 4, -4);<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>2.03.wait;</p>
+<p class="p18"><span class="s4"><span class="Apple-tab-span">	</span></span>"XXX new fade XXX"<span class="s4">.postln;</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>t.fadeTempo(2, 4, 4); <span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p14">};</p>
+<p class="p14">)</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span></span>// clock U following clock t:<span class="Apple-converted-space"> </span></p>
+<p class="p14">(</p>
+<p class="p14"><span class="s5">Pdef</span>(<span class="s7">\a</span>).play(t);</p>
+<p class="p3"><br></p>
+<p class="p15">Pdef<span class="s4">(</span><span class="s7">\b</span><span class="s4">,</span></p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>Pbind<span class="s4">(</span></p>
+<p class="p16"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\instrument<span class="s4">, </span>\ping<span class="s4">,</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\degree</span>, <span class="s5">Pseq</span>((0..7), <span class="s5">inf</span>) + 7,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, 0.25, <span class="s7">\pan</span>, 0.5, <span class="s7">\amp</span>, 0.5</p>
+<p class="p14"><span class="Apple-tab-span">	</span>)</p>
+<p class="p14">).play(u);</p>
+<p class="p14">)</p>
+<p class="p14">t.verbose_(<span class="s5">false</span>); u.verbose_(<span class="s5">true</span>);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p14">t.fadeTempo(2, 4, -2);<span class="Apple-converted-space"> </span></p>
+<p class="p14">t.fadeTempo(0.5, 4, -2);<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span></span>// clock u's following behaviour depends on 2 variables:</p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span></span>// empathy - how much does 'u' care about being off in time (from t, or several others)?<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span></span>// confidence - how much does 'u' want to keep its own tempo?<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span></span>// default settings for both: 0.5.</p>
+<p class="p14">u.empathy.postln;<span class="Apple-tab-span">	</span>u.confidence.postln;</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span></span>// high empathy: follows quickly.<span class="Apple-converted-space"> </span></p>
+<p class="p14">u.empathy_(0.8);<span class="Apple-tab-span">	</span>u.confidence_(0.2);</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span></span>// very stubborn<span class="Apple-converted-space"> </span></p>
+<p class="p14">u.empathy_(0.2);<span class="Apple-tab-span">	</span>u.confidence_(0.8);</p>
+<p class="p3"><br></p>
+<p class="p14">u.empathy_(0.8);<span class="Apple-tab-span">	</span>u.confidence_(0.8);</p>
+<p class="p14">u.empathy_(0.2);<span class="Apple-tab-span">	</span>u.confidence_(0.2);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p14">(</p>
+<p class="p14"><span class="s5">Pdef</span>(<span class="s7">\a</span>).play(t);</p>
+<p class="p14"><span class="s5">Pdef</span>(<span class="s7">\b</span>).play(u);</p>
+<p class="p15">Pdef<span class="s4">(</span><span class="s7">\c</span><span class="s4">,</span></p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>Pbind<span class="s4">(</span></p>
+<p class="p16"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\instrument<span class="s4">, </span>\ping<span class="s4">,</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\degree</span>, <span class="s5">Pseq</span>((0..7), <span class="s5">inf</span>) + 9,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, 0.25, <span class="s7">\pan</span>, 0.0, <span class="s7">\amp</span>, 0.5</p>
+<p class="p14"><span class="Apple-tab-span">	</span>)</p>
+<p class="p14">).play(v);</p>
+<p class="p14">)</p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// u follows closely,<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// v is more stubborn</p>
+<p class="p14">u.empathy_(0.7).confidence_(0.3);</p>
+<p class="p14">v.empathy_(0.4).confidence_(0.6);</p>
+<p class="p3"><br></p>
+<p class="p14">t.fadeTempo(2, 4, -2);<span class="Apple-converted-space"> </span></p>
+<p class="p14">t.fadeTempo(0.5, 4, -2);<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p17"><br></p>
+<p class="p17"><span class="Apple-tab-span">	</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span></p>
+</body>
+</html>

@@ -1,0 +1,82 @@
+TITLE:: SWDataMonitor
+summary:: Monitor data by evaluating a function regularly
+categories:: Plotting, Logging
+related:: Classes/SWPlotterMonitor
+
+DESCRIPTION::
+SWDataMonitor evaluates a function regularly and keeps track of the data that is output by the function.
+This class is primarily used underneath link::Classes/SWPlotterMonitor:: but can be useful for other applications as well.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of SWDataMonitor.
+
+ARGUMENT:: updater
+The Function to evaluate to generate new data. This Function should either return a SimpleNumber, or an Array of numbers.
+
+ARGUMENT:: length
+The amount of points to plot.
+
+ARGUMENT:: plotter
+The function to plot or otherwise use the data obtained from the update function.
+
+ARGUMENT:: nc
+The number of channels in the data - this should match what the updater function returns.
+
+ARGUMENT:: dt
+The deltatime with which to evaluate the function.
+
+ARGUMENT:: skip
+How often to plot, in multiples of dt. So if you set this to 5, the updater function will be evaluated 5 times at a time interval of dt, and then update the plot.
+
+
+INSTANCEMETHODS::
+
+private:: init, counter
+
+METHOD:: dt
+The time interval for evaluating the function.
+
+METHOD:: updateFunction
+The function to obtain the data to be monitored.
+
+METHOD:: plotFunction
+The function that uses the data, e.g. to plot it in a Plotter window.
+
+METHOD:: skip
+The amount of updates to skip before executing the plotFunction.
+
+
+METHOD:: data
+The gathered data.
+
+METHOD:: length
+The maximum length of the data.
+
+METHOD:: numChan
+The number of channels of the data.
+
+
+
+
+
+METHOD:: reset
+Resets all data points with the value 0, and resets the skip counter.
+
+
+METHOD:: start
+Starts the SWDataMonitor.
+
+METHOD:: isPlaying
+Boolean to indicate whether the SWDataMonitor is currently running.
+
+METHOD:: stop
+Stop the SWDataMonitor
+
+
+
+METHOD:: watcher
+The SkipJack that executes the code::updateFunction::, and every code::skip:: times the code::plotFunction::
+
+returns:: an instance of SkipJack.

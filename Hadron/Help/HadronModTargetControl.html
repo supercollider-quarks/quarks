@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0b15e8}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #131db2}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #131db2; min-height: 12.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #842821}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #1320f3}
+span.s3 {color: #000000}
+span.s4 {text-decoration: underline}
+span.s5 {color: #842821}
+span.s6 {color: #131db2}
+span.s7 {color: #1a27ed}
+span.s8 {font: 12.0px Helvetica}
+span.s9 {font: 12.0px Helvetica; color: #000000}
+span.s10 {font: 9.0px Monaco}
+span.s11 {color: #0c16f9}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>HadronModTargetControl<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a simple control view for Hadron modulator plugins</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><br></p>
+<p class="p1">HadronModTargetControl is a custom view that integrates itself with the rest of <a href="Hadron.html"><span class="s2">Hadron</span></a> system for your modulator plugins. To see it in action, check out the help file for <a href="../plugins/Help/HrSimpleModulator.html"><span class="s2">HrSimpleModulator</span></a> plugin, and use the plugin in the Hadron environment.</p>
+<p class="p2"><br></p>
+<p class="p1">This control consists of 2 <a href="SC://PopUpMenu"><span class="s2">PopUpMenu</span></a>s, the left one holding the active plugins in the environment, and the right one holding the modulatable parameters for the selected plugin instance from the left menu. With the methods provided to you by the <a href="HadronPlugin.html"><span class="s2">HadronPlugin</span></a> interface, you need to keep your control instance up to date with what is happening with the rest of the environment, and it is an easy task. You just need to notify the control about the changes and it will adjust itself accordingly.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><b>See also: </b><a href="Hadron.html"><span class="s4">Hadron</span></a> <a href="Writing-Hadron-Plugins.html"><span class="s4">Writing-Hadron-Plugins</span></a> <a href="../plugins/Help/HrSimpleModulator.html"><span class="s4">HrSimpleModulator</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Notifying the Control</b></p>
+<p class="p2"><br></p>
+<p class="p1">Notifying the control about the changes in the Hadron environment is easy. You need to use some methods provided to you by the HadronPlugin interface. Let's say you have a HadronModTargetControl instance stored in the variable called "modControl". In your plugin, you should make sure you add these methods to your class:</p>
+<p class="p2"><br></p>
+<p class="p6">notifyPlugKill</p>
+<p class="p7"><span class="s3">{</span>|argPlug|</p>
+<p class="p6"><span class="Apple-tab-span">	</span>modControl.plugRemoved(argPlug);</p>
+<p class="p6">}</p>
+<p class="p3"><br></p>
+<p class="p6">notifyPlugAdd</p>
+<p class="p7"><span class="s3">{</span>|argPlug|</p>
+<p class="p6"><span class="Apple-tab-span">	</span>modControl.plugAdded;</p>
+<p class="p6">}</p>
+<p class="p3"><br></p>
+<p class="p6">wakeFromLoad</p>
+<p class="p6">{</p>
+<p class="p6"><span class="Apple-tab-span">	</span>modControl.doWakeFromLoad;</p>
+<p class="p6">}</p>
+<p class="p2"><br></p>
+<p class="p1">To get more detailed info about the methods here, check out the help file for <a href="HadronPlugin.html"><span class="s2">HadronPlugin</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p1">To save the state of the control, there are special methods provided for you to use inside saveGets and saveSets arrays. If you want to have the ability to save the state of your "modControl", you need to add these into your saveGets and saveSets array:</p>
+<p class="p2"><br></p>
+<p class="p6">saveGets = [ { modControl.getSaveValues; } <span class="s5">/* additional items here */ </span>];</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p6">saveSets = [ {<span class="s6">|argg|</span> modControl.putSaveValues(argg); } <span class="s5">/* additional items here */ </span>];</p>
+<p class="p3"><br></p>
+<p class="p1">All the rest will be handled for you. To see all of them coming together check the source of the <a href="../plugins/Help/HrSimpleModulator.html"><span class="s2">HrSimpleModulator</span></a> plugin.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>*new (argParentView, argBounds, argParentApp)</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argParentView </b>- The parent view for the control. Should be set to <b>window</b>.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argBounds </b>- Type is <a href="SC://Rect"><span class="s7">Rect</span></a><span class="s7">.</span> The bounds of the control, 2 menus would be placed automatically inside these bounds.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argParentApp </b>- The parent Hadron instance. Should be set to <b>parentApp</b>.</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>plugAdded</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>You should call this method in your plugins notifyPlugAdd method. Does not take any arguments.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>notifyPlugAdd</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</span>|argPlug|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>modControl.plugAdded;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>plugRemoved (argPlug)</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>You should call this method in your plugins notifyPlugKill method. Takes the killed plugin as the argument.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>notifyPlugKill</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</span>|argPlug|</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>modControl.plugRemoved(argPlug);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>modulateWithValue (argVal)</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>This method sends the value to your designated target selected from the control GUI.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//somewhere in your code</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>modControl.modulateWithValue(aValue);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>If the value you are modulating affects a GUI widget and you are in a <a href="SC://Routine"><span class="s11">Routine</span></a>, you might need to use { }.defer around it.</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>getSaveValues</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Should be used to get values for saving the patch into a file, using the saveGets variable provided by HadronPlugin interface.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>saveGets = [ { modControl.getSaveValues; } <span class="s5">/* additional items here */</span>];</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>putSaveValues (argValArray)</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Should be used to put the saved values back into the plugin, when the state is loaded from a file.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>saveSets = [ {<span class="s6">|argg|</span> modControl.putSaveValues(argg); } <span class="s5">/* additional items here */ </span>];</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>doWakeFromLoad</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>You should call this method in your plugins wakeFromLoad method.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>wakeFromLoad</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>modControl.doWakeFromLoad;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+</body>
+</html>

@@ -1,0 +1,60 @@
+CLASS:: RedLine
+SUMMARY:: resettable line generator
+CATEGORIES:: Red>redUGens
+RELATED:: Classes/Line
+
+DESCRIPTION::
+Generates a line from the start value to the end value. It can be reset and paused.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: start
+starting value
+
+ARGUMENT:: end
+ending value
+
+ARGUMENT:: dur
+duration in seconds
+
+ARGUMENT:: curve
+curvature. use 0.693147 (2.log) for exponential line.
+
+ARGUMENT:: run
+pause and resume the line
+
+ARGUMENT:: reset
+a trigger to reset the line
+
+ARGUMENT:: mul
+
+ARGUMENT:: add
+
+EXAMPLES::
+
+CODE::
+s.boot
+
+a= {|start= 400, end= 800, t_reset| SinOsc.ar(RedLine.ar(start, end, 1, 0, 1, t_reset))}.play
+
+a.set(\t_reset, 1)			//retrigger
+a.set(\start, 5000)			//change start position
+a.set(\t_reset, 1)
+a.set(\end, 500)			//jump
+a.set(\t_reset, 1)
+a.free
+
+
+a= {|start= 400, end= 800, dur= 3, curve= -4, run= 1, t_reset| SinOsc.ar(RedLine.ar(start, end, dur, curve, run, t_reset))}.play
+
+a.set(\t_reset, 1)			//retrigger
+a.set(\run, 0)				//pause
+a.set(\run, 1)				//resume
+a.set(\t_reset, 1)
+a.set(\start, 700, \end, 600, \curve, 4, \dur, 1, \t_reset, 1)
+a.set(\start, 900, \end, 1200, \curve, -4, \dur, 0.5, \t_reset, 1)
+a.set(\start, 300, \end, 700, \curve, 0.01, \dur, 0.5, \t_reset, 1)	//do not set curve to 0 via argument
+a.free
+::

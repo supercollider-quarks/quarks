@@ -1,0 +1,25 @@
+TITLE:: PathFollowing
+summary:: Implementation of the path following steering behaviour
+categories:: Class
+related:: Overviews/Gameloop_Overview, Reference/SteeringBehaviors, Classes/Path
+
+DESCRIPTION::
+Creates a steering force that moves a vehicle along a series of waypoints forming a path. An example can be found at the link::Guides/QuickStart::.
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: entity
+the entity on which the steering force will be applied
+
+ARGUMENT:: path
+an instance of link::Classes/Path::
+
+ARGUMENT:: seekDistance
+Since the path following behavior internally uses a combination of arrive and seek behaviours the seekDistance argument defines how close to the target the arrive should change to seek for the next waypoint
+
+INSTANCEMETHODS::
+
+METHOD:: value
+Get the calculated force. To be used in the .force_ method of the entity. This is how the steering forces are applied.

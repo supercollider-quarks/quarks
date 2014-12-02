@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #5f2c21}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1c469a}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #5e6338}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0026b4}
+span.s1 {color: #000000}
+span.s2 {color: #5e6338}
+span.s3 {color: #0026b4}
+span.s4 {color: #3d6d1d}
+span.s5 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>scaleStream</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">scaleStreams aka chord changes</p>
+<p class="p3">each scale is a FloatArray</p>
+<p class="p3">a stream of scales is a sequential series of these arrays</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p3">// random pentatonics</p>
+<p class="p3">p = Instr("scaleStream.randpentas");</p>
+<p class="p2"><br></p>
+<p class="p4">// returns a pattern when valued</p>
+<p class="p3">x = p.value(4,16,0);</p>
+<p class="p2"><br></p>
+<p class="p5">Pbind<span class="s1">(</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">\degree</span>, Pseq([1,3,5,7,9,11,3,2],inf),</p>
+<p class="p3"><span class="Apple-tab-span">	</span>\scale, x,</p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span></span>\octave<span class="s1">, 3,</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">\dur</span>,0.25</p>
+<p class="p3"><span class="Apple-tab-span">	</span>).play;</p>
+<p class="p2"><br></p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">By using a Patch you get gui sliders to try out different settings.</p>
+<p class="p3">You should examine the source code at the same time.</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p2"><br></p>
+<p class="p7">Sheet<span class="s1">({ </span>arg<span class="s1"> f;</span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s3">Instr</span>.leaves(<span class="s4">'scaleStream'</span>).do({ <span class="s3">|instr|</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">ActionButton</span>(f.startRow,instr.name,{</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> p;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s3">Patch</span>( instr );</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Sheet</span>({ <span class="s3">arg</span> f;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> esp,tf;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tf = <span class="s3">SCTextField</span>(f,<span class="s3">Rect</span>(0,0,500,350));</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tf.string = instr.func.def.sourceCode;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.gui(f.startRow);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">ActionButton</span>(f.startRow,<span class="s5">"PLAY Pbind"</span>,{</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(esp.isPlaying,{ esp.stop });</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>esp = <span class="s3">Pbind</span>(</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">\degree</span>, Pseq([1,3,5,7,9,11,12,17],inf),</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>//\degree, Patch(Instr.choose(\degreeStream)).rand.value,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\scale, p.value,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">\octave</span>, 3,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1"><span class="Apple-tab-span">	</span></span>\dur<span class="s1">,0.125</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>).play</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">ActionButton</span>(f.startRow,<span class="s5">"STOP Pbind"</span>,{</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>esp.stop;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},instr.name)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},minWidth: 300);</p>
+<p class="p3"><span class="Apple-tab-span">	</span>})<span class="Apple-tab-span">	</span></p>
+<p class="p3">})</p>
+<p class="p2"><br></p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Apache setup for the SenseWorldDataNetwork</TITLE>
+<META NAME="description" CONTENT="SenseWorldDataNetwork">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00041000000000000000">
+Apache setup for the SenseWorld Data Network</A>
+</H2>
+
+
+<P>
+You need to install a webserver such as Apache on the host system.
+(package apache2 on Debian/Ubuntu; usually available on OSX)<br>
+The general files will be put in /var/www. You have to make this directory
+writable by the user by executing (as root)<br>
+
+<pre>
+$ cd /var/www
+$ chmod 775 .
+$ chgrp netdev .
+</pre>
+
+Assuming that the user running SuperCollider is member of the group netdev.
+You can check this by:
+<pre>
+$ groups
+</pre>
+</P>
+<P>
+
+To add yourself to the group, execute as root (with instead of "nescivi" your
+username):
+<pre>$ adduser nescivi netdev</pre>
+You may need to logout and log back in for this to take effect.
+</P>
+
+<P>
+You should also make sure that apache is running. The following command should give you a number of processes named apache2
+<pre>
+$ ps -A | grep apache
+</pre>
+If it is not running, you can start it with (path shown as it is on Debian)
+<pre>
+$ (sudo) /etc/init.d/apache2 start
+</pre>
+</P>
+
+<P>
+On OSX the default path for http files is: /Library/WebServer/Documents/.
+You may have to enable "Web Sharing" in the "Sharing" settings in the System
+Preferences.
+
+</P>
+<BR><HR>
+<UL>
+<LI><A 
+  HREF="SWDataNetwork.html">SWDataNetwork</A></LI>
+</UL>
+
+
+
+<P>
+<HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</P>
+
+
+
+</BODY>
+</HTML>

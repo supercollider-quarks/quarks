@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: Dimple</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>Dimple</h1>
+<h2>Class to interface with the program Dimple</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> </p>
+
+<p>This is a class to interface with Dimple, created by the IDMIL (McGill University, Montreal).</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+
+<DT><STRONG>*dimplePath_</STRONG></DT>
+<DD>  </DD>
+<DT><STRONG>*dimplePath</STRONG></DT>
+<DD>This is the path that points to where your version of dimple resides. It should point to the executable, e.g. /usr/local/dimple</DD>
+
+<DT><STRONG>*new</STRONG></DT>
+<DD>Create a new instance of Dimple and start the program.</DD>
+
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+<DT><STRONG>start</STRONG></DT>
+<DD>Start dimple with the right sender port (sclang's port). Called automatically when creating a new instance.</DD>
+
+<DT><STRONG>createSphere(x,y,z)</STRONG></DT>
+<DD>Create a sphere at position (x,y,z)</DD>
+
+<DT><STRONG>createPrism(x,y,z)</STRONG></DT>
+<DD>Create a prism at position (x,y,z)</DD>
+
+<DT><STRONG>createMesh(meshfile,x,y,z)</STRONG></DT>
+<DD>Create a mesh at position (x,y,z)<DL>
+<DT><EM>meshfile</EM></DT>
+<DD>The filename of the .3ds mesh file</DD>
+</DL>
+</DD>
+
+<DT><STRONG>createConstraint(type,a,b,argVector)</STRONG></DT>
+<DD>Create a constraint between two objects.<DL>
+<DT><EM>a</EM></DT>
+<DD>Object one</DD>
+<DT><EM>b</EM></DT>
+<DD>Object two</DD>
+<DT><EM>argVector</EM></DT>
+<DD>Additional arguments for the constraint (should be an Array).</DD>
+<DT><EM>type</EM></DT>
+<DD>The type of constraint (ball,hinge,hinge2,universal,fixed,slide,piston)</DD>
+</DL>
+
+</DD>
+
+
+<DT><STRONG>world</STRONG></DT>
+<DD>Access to the DimpleWorld</DD>
+
+<DT><STRONG>camera</STRONG></DT>
+<DD>Access to the camera in dimple</DD>
+
+<DT><STRONG>cursor</STRONG></DT>
+<DD>Access to the cursor in dimple</DD>
+
+
+<DT><STRONG>drop</STRONG></DT>
+<DD>Drop the current object</DD>
+
+<DT><STRONG>clear</STRONG></DT>
+<DD>Clear all objects and contraints from the world.</DD>
+
+<DT><STRONG>doesNotUnderstand(selector,args)</STRONG></DT>
+<DD>This forwards any other method to world</DD>
+
+<DT><STRONG>recvaddr</STRONG></DT>
+<DD>  </DD>
+<DT><STRONG>recvaddr_</STRONG></DT>
+<DD>The address from which messages are received (currently 'nil')</DD>
+
+<DT><STRONG>addr</STRONG></DT>
+<DD>  </DD>
+<DT><STRONG>addr_</STRONG></DT>
+<DD>The NetAddr that dimple is listening at.</DD>
+
+
+</DL>
+
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

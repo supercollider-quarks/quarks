@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+    span.s1 {color: #0000bf}
+    span.s2 {color: #000000}
+    span.s3 {color: #007300}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>TuningRatios : EqualTemperament</b></p>
+<p class="p2"><br></p>
+<p class="p3">TuningRatios allows you to specify a ratio above the base for each note in an octave. Useful for simplified just intonation schemes.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>*new(stepsPerOctave, calibratefreq, calibratenote, tunings)</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>stepsPerOctave:</b> How many notes per octave.</p>
+<p class="p3"><b>calibratefreq:</b> What frequency to calibrate to.</p>
+<p class="p3"><b>calibratenote:</b> What note number should match the calibratefreq.</p>
+<p class="p3"><b>tunings:</b> An array with stepsPerOctave numbers containing the ratio above the base. The base is the frequency at note 0. The array should begin with 1.0 (the ratio for the base is always 1.0), and all ratios should be less than 2.0.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>calibrate(freq, noteindex)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Behaves as in EqualTemperament.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>cps(noteindex)</b></p>
+<p class="p4"><b>value(noteindex)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Compute frequency in Hz for the given note index. If you use fractional indices, the offset from the array will be interpolated using blendAt. That is, if note 0 has an offset of 0 and note 1 has an offset of 0.1, note 0.5 will have an offset of 0.05.</p>
+<p class="p2"><br></p>
+<p class="p5">// build a Pythagorean C tuning, no correction for the comma</p>
+<p class="p6"><br></p>
+<p class="p7">(</p>
+<p class="p7">r = <span class="s1">Array</span>.newClear(12);</p>
+<p class="p7">x = 1.0;</p>
+<p class="p7">12.do({ <span class="s1">|i|</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>r.wrapPut(i * 7, x);</p>
+<p class="p7"><span class="Apple-tab-span">	</span>x = x * 1.5;</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span>if(x &gt;= 2.0) { x = x * 0.5 };<span class="Apple-tab-span">	</span></span>// keep all ratios within the octave</p>
+<p class="p7">});</p>
+<p class="p5"><span class="s2">r.postln;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// see the ratios as floating point</p>
+<p class="p5"><span class="s2">r.asRational;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// see the ratios as integer fractions</p>
+<p class="p7">)</p>
+<p class="p6"><br></p>
+<p class="p7">t = <span class="s1">TuningRatios</span>(12, 440, 69, r);</p>
+<p class="p6"><br></p>
+<p class="p5">// show deviations from 12ET</p>
+<p class="p5">// note 9 corresponds to 69 used for calibration -- and (correctly) has no deviation</p>
+<p class="p6"><br></p>
+<p class="p7">t.cps((0..11)).cpsmidi;</p>
+<p class="p6"><br></p>
+<p class="p7">[ -0.058650025961612, 1.0782000346155, 1.9804499913461, 3.1173000519233, 4.0195500086539, 5.156400069231, 6.0586500259616, 6.9608999826923, 8.0977500432694, 9, 10.136850060577, 11.039100017308 ]</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">// play white-key music using 12ET</p>
+<p class="p5">// also include debugging output to show scale degree --&gt; Hz mapping</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s1">SynthDescLib</span>.global.read;</p>
+<p class="p6"><br></p>
+<p class="p7">(</p>
+<p class="p7">p = <span class="s1">Pbind</span>(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">\degree</span>, <span class="s1">Pwhite</span>(0, 11, <span class="s1">inf</span>),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">\delta</span>, <span class="s1">Pwrand</span>(#[0.125, 0.25, 0.5], #[1, 4, 2].normalizeSum, <span class="s1">inf</span>),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">\sustain</span>, <span class="s1">Pkey</span>(<span class="s3">\delta</span>) * <span class="s1">Pwhite</span>(0.8, 1.8, <span class="s1">inf</span>),</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\default</p>
+<p class="p7">).collect({ <span class="s1">|ev|</span> [ev.degree, ev.use({ ~freq.value })].postln; ev }).play;</p>
+<p class="p7">)</p>
+<p class="p6"><br></p>
+<p class="p7">p.stop;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">// play the same using the above Pythagorean tuning</p>
+<p class="p5">// I rewrite the protoevent to use a tuning object rather than midicps</p>
+<p class="p6"><br></p>
+<p class="p7">(</p>
+<p class="p7">p = <span class="s1">Pbind</span>(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">\degree</span>, <span class="s1">Pwhite</span>(0, 11, <span class="s1">inf</span>),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">\delta</span>, <span class="s1">Pwrand</span>(#[0.125, 0.25, 0.5], #[1, 4, 2].normalizeSum, <span class="s1">inf</span>),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">\sustain</span>, <span class="s1">Pkey</span>(<span class="s3">\delta</span>) * <span class="s1">Pwhite</span>(0.8, 1.8, <span class="s1">inf</span>),</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\default<span class="s2">,</span></p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>\tuning<span class="s2">, t</span></p>
+<p class="p7">).collect({ <span class="s1">|ev|</span> [ev.degree, ev.use({ ~freq.value })].postln; ev })</p>
+<p class="p7">.play(protoEvent: <span class="s1">Event</span>.default.put(<span class="s3">\freq</span>, #{ ~tuning.cps(~midinote.value + ~ctranspose) * ~harmonic }));</p>
+<p class="p7">)</p>
+<p class="p6"><br></p>
+<p class="p7">p.stop;</p>
+</body>
+</html>

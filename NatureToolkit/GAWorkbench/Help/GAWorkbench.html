@@ -1,0 +1,341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #0000ff}
+span.s3 {color: #0000bf}
+span.s4 {color: #000000}
+span.s5 {color: #606060}
+span.s6 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>GAWorkbench<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a general purpose modular genetic algorithm class</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="SC://Object"><span class="s2"><b>Object</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p1">This is a general purpose modular genetic algorithm class for SuperCollider. Genetic algorithm is a search technique used for finding approximate solutions to search and optimization problems. They use techniques derived from evolutionary biology like inheritance, mutation, (artificial) selection and crossover.</p>
+<p class="p2"><br></p>
+<p class="p1">For more info on the subject see:</p>
+<p class="p1">http://en.wikipedia.org/wiki/Genetic_algorithm</p>
+<p class="p2"><br></p>
+<p class="p1">GAWorkbench is a general purpose class that provides an easy interface to interact with your data to be used with GA's. It can be used for solving general computational search problems and can also be used for exploring sound spaces, finding suitable parameters for synthesis networks etc.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (argPoolSize, argRandomChromosomeFunc, argFitnessFunc, argMutationFunc)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argPoolSize </b>- Number of items in the gene pool. Should be tuned for each problem. Default: 100</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argRandomChromosomeFunc </b>- A Function. This function should return a randomly generated</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>chromosome formatted in your chosen way of<span class="Apple-converted-space">  </span>encoding for the problem.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argFitnessFunc </b>- A Function. Each member defined by the chromosomes in your gene pool</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>will pass through this function in each GA iteration, and this function will be passed in the chromosome as an argument. You should rate the fitness of the member with this function and return the fitness value.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argMutationFunc </b>- When a chromosome will be mutated, it will be sent into this func, you should</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>grab it as an argument, mutate it in the way you want it and return the mutated chromosome.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b>Accessing Instance and Class Variables</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>randomChromosomeFunc_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>randomChromosomeFunc</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>fitnessFunc_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>fitnessFunc</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>mutationFunc_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>mutationFunc</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The functions provided at initialization can be changed and accessed with these at any time. This for example, allows implementation of increasingly demanding fitness functions.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>mutationProb_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>mutationProb</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The mutation probability, should be between 0 and 1. Default: 0.08</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>coProb_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>coProb</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Crossover probability. The default crossover operator uses a multi-point crossover method where the number of split points is determined proportionally to the crossover probability. The user can provide his/her own crossover function by setting externalCrossover member variable to true and provide a userCrossover function.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>externalCrossover_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>externalCrossover</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The crossover functionality provided with this class is simple. If you need to craft and use</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a custom crossover function, you should set <b>arg1</b> to <i>true</i> (boolean) and provide a</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>userCrossover</b> function as an instance variable.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The external crossover function will be passed in this arguments:</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>genePool: </b>The whole gene pool as an Array.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>mutationProb:</b> Value of the mutation probability for the instance.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>You should grab those arguments in your custom crossover function, and return the</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>new genePool from your function. Default value is false.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>userCrossover_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>userCrossover</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Custom crossover function to be supplied by the user. See the help for externalCrossover</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>variable. Default is nil.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>genePool</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The whole gene pool as a List ordered from fittest (with higher fitness score) to weakest.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>fitnessScores</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The fitness scores for the items in the gene pool in the same order. So the fitness rating of the chromosome in genepool[10] would be fitnessScores[10].<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b>Doing Some Task (optional)</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>rateFitness</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Rates the fitness of the genePool and sorts the chromosomes inside genePool from the</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>highest fitness to lowest (used inside the crossover -&gt; rateFitness GA loop).</p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>crossover</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Applies the crossover function to the members of the genePool (used inside the crossover -&gt; rateFitness GA loop). The selection and mutation also happens at this stage. The default selection scheme is tournament selection, you can override these by providing your own crossove function (see userCrossover).</p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>injectFitness (argFitness)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>If you want to calculate the fitness values for the members of the genePool outside the instance,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and supply them by your own, you should use this method. argFitness is an array, which contains<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the fitness scores of the members in the genePool. The members of the genePool is ordered automatically, according to their fitness scores (as it is with the rateFitness method) automatically inside this method.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>You might want to execute your fitness function outside a GAWorkbench instance to implement interactive GA applications. When you get the fitness ratings from the user, you may just inject the values with this method and GAWorkbench takes care of the ordering of the members.</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p10"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p6">A simple example: We want to reach to a target value (4242) with a mathematical expression composed of</p>
+<p class="p6">17 operators and digits. So the expression is composed in [digit operator digit operator ...] formation. We are<span class="Apple-converted-space"> </span></p>
+<p class="p6">searching for the expression. poolSize is 100, and we will find the fittest expression after 100 generations.</p>
+<p class="p7"><br></p>
+<p class="p11">(</p>
+<p class="p12">//this will take a few seconds to complete.</p>
+<p class="p13"><br></p>
+<p class="p12"><span class="s3">var</span><span class="s4"> digits = </span><span class="s5">"0123456789"</span><span class="s4">; </span>//allowed digits</p>
+<p class="p12"><span class="s3">var</span><span class="s4"> operators = </span><span class="s5">"+-*/%"</span><span class="s4">; </span>//allowed operators</p>
+<p class="p14"><span class="s3">var</span> poolSize = 100, chromLength = 17;</p>
+<p class="p14"><span class="s3">var</span> target = 4242;</p>
+<p class="p14"><span class="s3">var</span> numGenerations = 100;</p>
+<p class="p12"><span class="s3">var</span><span class="s4"> inGeneration = 0; </span>//current generation</p>
+<p class="p13"><br></p>
+<p class="p14"><span class="s3">var</span> randChromFunc =</p>
+<p class="p14"><span class="Apple-tab-span">	</span>{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> randChrom = <span class="s3">List</span>.new;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>chromLength.do</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</span>|cnt|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(cnt.even,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>randChrom.add(digits.choose);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>randChrom.add(operators.choose);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>randChrom;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>};</p>
+<p class="p13"><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s3">var</span> fitnessFunc =<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span>{</span>|chrom|</p>
+<p class="p13"><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> result;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>chrom = chrom.as(<span class="s3">String</span>);</p>
+<p class="p12"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//if the result is inf (divide by zero etc), bigger numbers are</p>
+<p class="p12"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//weaker (we return the reciprocal) here so they won't be fit.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//We set NaN's as inf.</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>result = (chrom.interpret - target).abs;<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(result.isNaN, { result = <span class="s3">inf</span>; });</p>
+<p class="p12"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>result.reciprocal; </span>//smaller results (difference from target) should be fitter</p>
+<p class="p14"><span class="Apple-tab-span">	</span>};</p>
+<p class="p13"><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s3">var</span> mutationFunc =</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span>{</span>|chrom|</p>
+<p class="p13"><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> index = chromLength.rand;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(index.even, { chrom[index] = digits.choose; }, { chrom[index] = operators.choose; });</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>chrom;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>};</p>
+<p class="p13"><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s3">var</span> gaInstance = <span class="s3">GAWorkbench</span>(poolSize, randChromFunc, fitnessFunc, mutationFunc);</p>
+<p class="p13"><br></p>
+<p class="p14">gaInstance.mutationProb = 0.1;</p>
+<p class="p13"><br></p>
+<p class="p14">block</p>
+<p class="p15"><span class="s4">({</span>|break|</p>
+<p class="p13"><br></p>
+<p class="p14"><span class="Apple-tab-span">	</span>numGenerations.do</p>
+<p class="p14"><span class="Apple-tab-span">	</span>({</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>gaInstance.rateFitness;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//if an exact solution is found, break the loop.</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(gaInstance.genePool[0].as(<span class="s3">String</span>).interpret == target, { break.value; });</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>gaInstance.crossover;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>inGeneration = inGeneration + 1;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>});</p>
+<p class="p14">});</p>
+<p class="p13"><br></p>
+<p class="p13"><br></p>
+<p class="p14">gaInstance.rateFitness;</p>
+<p class="p16">"Target value was % and reached value after % generations is: %"</p>
+<p class="p14"><span class="Apple-tab-span">	</span>.format(target, inGeneration, gaInstance.genePool[0].as(<span class="s3">String</span>).interpret).postln;</p>
+<p class="p14">(<span class="s5">"The operation was:"</span> + gaInstance.genePool[0].as(<span class="s3">String</span>)).postln;</p>
+<p class="p13"><br></p>
+<p class="p11">)</p>
+<p class="p3"><br></p>
+<p class="p6">It can be observed that the algorithm sometimes converges to an exact solution pretty quickly, and other times<span class="Apple-converted-space"> </span></p>
+<p class="p6">it gets stuck in a local optimum. To overcome that, one can use parallel GA's where more than one</p>
+<p class="p6">GAWorkbench instance works on the same problem with different initial random pools for a few generations,</p>
+<p class="p6">and then their fittest members can be mixed into a new pool to be iterated further.</p>
+<p class="p7"><br></p>
+<p class="p6"><b>Another example:</b></p>
+<p class="p7"><br></p>
+<p class="p6">Travelling salesman problem. We have 25 cities to visit, we start from the red city and want to visit each city</p>
+<p class="p6">only and only once, then come back to our origin in the shortest path possible. With a brute-force approach,<span class="Apple-converted-space"> </span></p>
+<p class="p6">one needs to check 15511210043330985984000000 different paths to find the shortest route (for 25 cities),</p>
+<p class="p6">(which is not feasible) so genetic algorithms provides us an easy search method for finding a nice<span class="Apple-converted-space"> </span></p>
+<p class="p6">enough path in very little time. This code will show the fittest route in each generation for randomly selected<span class="Apple-converted-space"> </span></p>
+<p class="p6">points in a 2d space. Be aware that there is no way to find out that a given solution is the global optimum. In<span class="Apple-converted-space"> </span></p>
+<p class="p6">fact, the method used here converges to a local optimum pretty quickly but hopefully the route will converge to<span class="Apple-converted-space"> </span></p>
+<p class="p6">something with an high fitness. The chromosome encoding scheme here is left as an exercise for the reader. :)</p>
+<p class="p7"><br></p>
+<p class="p11">(</p>
+<p class="p14"><span class="s3">var</span> numPoints, points, randChromFunc, mutationFunc, fitnessFunc,<span class="Apple-converted-space"> </span></p>
+<p class="p14">chromInterpreter, gaInstance, win, view, drawPaths, routine;</p>
+<p class="p12">//problem</p>
+<p class="p14">numPoints = 25;</p>
+<p class="p14">points = { 500.0.rand@500.0.rand } ! numPoints;</p>
+<p class="p13"><br></p>
+<p class="p12">//ga funcs</p>
+<p class="p14">randChromFunc =<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>{<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(numPoints - 1, (numPoints - 2) .. 1).collect</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({<span class="s3">|cnt|</span><span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(exprand(1, cnt) - 1).floor;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p14"><span class="Apple-tab-span">	</span>};</p>
+<p class="p14">mutationFunc =<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span>{</span>|chrom|<span class="s4"><span class="Apple-converted-space"> </span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> randIndex = (chrom.size - 1).rand;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>chrom[randIndex] = (exprand(1, (numPoints - randIndex - 2)) - 1).floor;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>chrom;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>};</p>
+<p class="p14">fitnessFunc =</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span>{</span>|chrom|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> pathIndexes = chromInterpreter.value(chrom);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> totalDistance = 0;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(numPoints).do</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</span>|cnt|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>totalDistance = totalDistance + points[pathIndexes[cnt]].dist(points[pathIndexes[(cnt+1) % numPoints]]);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>totalDistance.reciprocal; <span class="s6">//shorter paths are better</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>};</p>
+<p class="p13"><br></p>
+<p class="p12"><span class="s4">chromInterpreter = </span>//this chunk of code is shared between fitness function and visualization</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span>{</span>|chrom|</p>
+<p class="p13"><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> ptsToGo = (1, 2 .. numPoints - 1);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> travellerIsIn = 0;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> currentDistances, curDistOrders;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> pathIndexes = <span class="s3">List</span>.new;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(numPoints - 1).do</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</span>|inHop|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>currentDistances =<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ptsToGo.collect</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</span>|pntIndex|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>points[travellerIsIn].dist(points[pntIndex]);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>curDistOrders = currentDistances.order.order;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>pathIndexes.add(ptsToGo[curDistOrders.detectIndex({<span class="s3">|item|</span> item == chrom[inHop]; })]);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ptsToGo.remove(pathIndexes.last);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>travellerIsIn = pathIndexes.last;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>pathIndexes.add(0);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>pathIndexes;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>};</p>
+<p class="p13"><br></p>
+<p class="p14">gaInstance = <span class="s3">GAWorkbench</span>.new(100, randChromFunc, fitnessFunc, mutationFunc);</p>
+<p class="p14">gaInstance.mutationProb = 0.2;</p>
+<p class="p13"><br></p>
+<p class="p14">win = <span class="s3">Window</span>.new(<span class="s5">"TSP"</span>, <span class="s3">Rect</span>(300, 300, 500, 500));</p>
+<p class="p14">view = <span class="s3">UserView</span>(win, win.view.bounds).background_(<span class="s3">Color</span>.black)</p>
+<p class="p14"><span class="Apple-tab-span">	</span>.drawFunc_</p>
+<p class="p14"><span class="Apple-tab-span">	</span>({</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> fittest = gaInstance.genePool[0];</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>points.do</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</span>|pnt, cnt|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.color = if(cnt == 0, { <span class="s3">Color</span>.red; }, { <span class="s3">Color</span>.white; });</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.fillOval(<span class="s3">Rect</span>(pnt.x - 4, pnt.y - 4, 8, 8));</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>drawPaths.value(fittest);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span></p>
+<p class="p14">drawPaths =</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span>{</span>|chrom|</p>
+<p class="p13"><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> pathIndexes = chromInterpreter.value(chrom);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(numPoints).do</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</span>|cnt|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.line(points[pathIndexes[cnt]], points[pathIndexes[(cnt+1) % numPoints]]);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.stroke;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>};</p>
+<p class="p13"><span class="Apple-tab-span">	</span></p>
+<p class="p14">win.front;</p>
+<p class="p14">win.onClose_({ routine.stop; });</p>
+<p class="p13"><br></p>
+<p class="p14">routine = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s3">inf</span>.do</p>
+<p class="p14"><span class="Apple-tab-span">	</span>({</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>gaInstance.crossover;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>gaInstance.rateFitness;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>win.refresh;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.1.wait;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>});</p>
+<p class="p14">}.fork(<span class="s3">AppClock</span>);</p>
+<p class="p11">)</p>
+</body>
+</html>

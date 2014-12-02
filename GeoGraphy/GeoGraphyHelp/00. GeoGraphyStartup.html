@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica}
+span.s1 {color: #0019ba}
+span.s2 {color: #0030f2}
+span.s3 {font: 9.0px Monaco}
+span.s4 {font: 12.0px Helvetica}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>GeoGraphy: Startup</b></p>
+<p class="p2"><br></p>
+<p class="p3">The discussed documents are related to GeoGraphy, a system for algorithmic composition based on graphs, developed by andrea valle (andrea.valle@unito.it).</p>
+<p class="p3">Some (old) infos are here under:</p>
+<p class="p3">http://www.cirma.unito.it/andrea/geoGraphy/</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Requirements</b></p>
+<p class="p5"><br></p>
+<p class="p3">GeoGraphy has been tested under MacOSX 10.4, with SC 3.1. It uses SwingOSC 0.56.</p>
+<p class="p3">The core is platform indepedent and GUI pattern is used (but at the moment works properly only with SwingOSC): it is highly unprobable that you can have it working properly with other setups.</p>
+<p class="p3">So, please start working by evaluating this:</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s1">GUI</span>.swing ;</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Other issues</b></p>
+<p class="p5"><br></p>
+<p class="p3">Due to event message traffic it can happent that the default scheduler queue size of <a href="SC://TempoClock"><span class="s2">TempoClock</span></a> (which is used by GeoGraphy) is not large enough.</p>
+<p class="p3">In that case SC can complain with a <span class="s3">scheduler queue is full </span>message. The solution is to increase the queue size. Open class def (from Lang menu) of <b>TempoClock</b> and in the <span class="s3">*new</span> method increase <span class="s3">queueSize</span> which is by default 256. I am using <span class="s3">queueSize=65536.</span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Documentation</b></p>
+<p class="p2"><br></p>
+<p class="p3">You can proceed in the documentation following:</p>
+<p class="p2"><br></p>
+<p class="p3">1. <span class="Apple-tab-span">	</span><b>GeoGraphyIntro</b></p>
+<p class="p3">2. <span class="Apple-tab-span">	</span><b>GeoGraphyStructure</b></p>
+<p class="p3">2. <span class="Apple-tab-span">	</span><b>GeoGraphyAudio</b></p>
+<p class="p3">4.<span class="Apple-tab-span">	</span><b>GeoGraphyGrammar</b></p>
+<p class="p2"><br></p>
+<p class="p7"><br></p>
+<p class="p8"><br></p>
+<p class="p3">Then, help files related to classes are obviously available.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Screenshots</b></p>
+<p class="p2"><br></p>
+<p class="p3">The following screenshot shows the Painter (Grand Verre), the GraphParser interface (God bless Nim Cimpsky), the Runner interface (The Parallax View). Post window is resized and its color scheme is customized.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p9"><span class="s4"><img src="attachments/GeoGraphyStartup/screen.png" alt="attachments/GeoGraphyStartup/screen.png"></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Licence et al.</b></p>
+<p class="p2"><br></p>
+<p class="p3">GeoGraphy is licensed as SuperCollider under GPL. Indeed, use at your own risk.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Bugs and ToDo List</b></p>
+<p class="p2"><br></p>
+<ul>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica"><b>GUI</b></li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">Actually GUI does not work properly with Cocoa.<span class="Apple-converted-space"> </span></li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">- the GraphParser GUI is messy</li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">- curveto called on drawHook in the Painter raises an exception</li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica"></li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica"><b>GraphParser</b></li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">- a exception catching mechanism should be studied so that no errors would prevent the parser from working</li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">- s+ without<span class="Apple-converted-space">  </span>a set IOPath raises an error</li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">- a log mechanism (which is partially present) should be developed so to record a time-stamped sequence of iXno messages for archiving/NRT rendering<span class="Apple-converted-space"> </span></li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">- some new commands would be interesting: e.</li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica"><span class="Apple-tab-span">	</span> tow+ dur id/name: generate from all vertices an edge to id/name.</li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica"><span class="Apple-tab-span">	</span> circ+ dur id/name id/name ... id/name: generate a circuit woth unitary dur between adjacent vertices.<span class="Apple-converted-space"> </span></li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica"><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> </span></li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica"><b>Painter</b></li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">- the absence of arrows is a big trouble</li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">- moving the vertices via mouse raises a set error message, even if the behaviour is the expected one</li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">- setting background of vertices sometimes raises an error</li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">- vertex label updating (i.e. when the actant is passing) should be made optional (it sucks a lot of cpu)</li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica"></li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica"><b>GeoAudio</b></li>
+<li style="margin: 0.0px 0.0px 0.0px 0.0px; line-height: 20.0px; font: 12.0px Helvetica">The mechanism in iteself is still very primitive. A better exploitation of server structure is needed.</li>
+</ul>
+</body>
+</html>

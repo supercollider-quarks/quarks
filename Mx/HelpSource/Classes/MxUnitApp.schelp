@@ -1,0 +1,187 @@
+CLASS:: MxUnitApp
+summary:: scripting interface object for a unit
+categories:: Mx
+related:: Classes/MxApp
+
+DESCRIPTION::
+A unit holds an object like an Instr, NDef, Bus, Spline, SFP (soundfile player) etc.
+
+Each unit
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: name
+Name is implemented by the object driver and should usually return a useful unique readable name.
+
+returns:: string
+
+METHOD:: source
+The object you added
+
+returns:: the object
+
+METHOD:: inlets
+returns an MxIOletsApp which can be used to access specific the units inlets by name or iterated over like an array.
+
+code::
+freqInlet = u.inlets.freq;
+// this is how connections are made, by referencing an outlet and inlet
+u.outlets.out >> v.inlets.in;
+u.inlets.at('1'); // if your inlet is named "1"
+::
+
+returns:: an MxIOletsApp
+
+METHOD:: outlets
+returns an MxIOletsApp which can be used to access specific outlets by name or iterated over like an array.
+
+METHOD:: i
+shorthand for .inlets
+
+returns:: an MxIOletsApp
+
+METHOD:: o
+shorthand for .outlets
+
+returns:: an MxIOletsApp
+
+METHOD:: >>
+Connect the default out of this unit to "that".
+
+code::
+u >> v.i.input;
+u >> x.channel(3).fader;
+::
+
+argument:: that
+an inlet, a channel fader
+
+
+
+METHOD:: point
+channel@slot position on the grid.  master channel is inf
+
+returns:: Point
+
+
+METHOD:: remove
+Disconnect and remove the unit from the grid
+
+returns:: this
+
+METHOD:: moveTo
+Move the unit to a different position.  This moves it to a new Group as well.  Overwrites anything that might be there.
+
+argument:: point
+channel@slot
+
+returns:: this
+
+METHOD:: moveBy
+Move the unit by a channel@slot offset.  Overwrites anything that might be there.
+
+argument:: vector
+Point representing the offset.  eg. 1@0 will move it to the next channel
+
+
+
+METHOD:: dup
+Duplicate the object to the slot directly below it, insert an open space if there is already something there.
+
+argument:: num
+How many times to duplicate
+
+returns:: unit or array of units
+
+METHOD:: copy
+Copies the unit to a specific point, overwriting anything that might be there.
+
+argument:: toPoint
+destination point
+
+returns:: new unit
+
+METHOD:: copyBy
+Copies the unit by a channel@slot offset, overwriting anything that might be there.
+
+argument:: vector
+channel@slot offset Point
+
+returns:: new unit
+
+METHOD:: disconnect
+Disconnect all inlets and outlets of this unit
+
+returns:: this
+
+
+
+METHOD:: channel
+the channel object that this unit is in
+
+returns:: an link::Classes/MxChannelApp::
+
+
+METHOD:: use
+Each unit has an environment which the driver can use to store state variables.  The proto of this environment is the driver handler functions, so these methods are also available. This can be used by a unit (for instance a Document for live coding) to enter the variable space of another unit.  see also MxUnit varPooling
+
+argument:: function
+like Environmenent.use, a function executed in the unit's environment.
+
+returns:: result of the function
+
+METHOD:: stop
+Stop the unit from playing. The Mx will continue to play
+
+returns:: this
+
+METHOD:: play
+Play the unit if it is not already playing.  Does not start the Mx
+
+returns:: this
+
+METHOD:: respawn
+Stops then restarts the unit.  An Instr will automatically restart itself if its source code is edited.  Accuracy of the respawn depends on the implementation in the object's driver, but in the worst case it just stops and then plays the object.
+
+returns:: this
+
+METHOD:: isPlaying
+is unit playing ?
+
+returns:: boolean
+
+METHOD:: spec
+Spec of the unit itself.  Note that a unit may have multiple outlets of varying spec.  ~spec is implemented by the driver and it depends how the object wishes to declare itself.  Most objects in super collider have a single spec.
+
+returns:: Spec subclass
+
+METHOD:: beatDuration
+Of interest to the timeline to know how long you are going to play for
+
+returns:: float or nil (meaning endless)
+
+METHOD:: gui
+Open a gui.  The gui implementation is defined in the object driver file.
+
+argument:: parent
+parent view, window or nil
+
+argument:: bounds
+bounds rect or nil
+
+returns:: this
+
+METHOD:: printOn
+
+
+argument:: stream
+
+
+
+
+
+
+

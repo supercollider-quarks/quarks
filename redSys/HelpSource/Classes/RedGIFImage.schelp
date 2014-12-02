@@ -1,0 +1,37 @@
+CLASS:: RedGIFImage
+SUMMARY:: helper class for RedGIF
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedGIF, Classes/RedGIFControl
+
+DESCRIPTION::
+Holds the actual pixel data and other image specific settings. A link::Classes/RedGIF:: consist of one or more RedGIFImage objects.
+
+NOTE::
+Do not instantiate. It is only a helper class for link::Classes/RedGIF::.
+::
+
+INSTANCEMETHODS::
+
+METHOD:: bounds
+Image dimensions as a link::Classes/Rect::.
+
+METHOD:: flags
+Semi-private image settings. Use the methods link::#-depth::, link::#-hasColorMap::, link::#-interlaced:: below instead.
+
+METHOD:: colorMap
+Image specific (a.k.a. local) array of colours.
+
+METHOD:: data
+The pixel data as a 1-dimensional array of link::Classes/Color:: objects. Reading from left to right, top to bottom.
+
+METHOD:: control
+A link::Classes/RedGIFControl:: object.
+
+METHOD:: depth
+Colour depth.
+
+METHOD:: hasColorMap
+A boolean. true if local link::#-colorMap::.
+
+METHOD:: interlaced
+A boolean. Indicates that this image needs to be drawn in separate passes.

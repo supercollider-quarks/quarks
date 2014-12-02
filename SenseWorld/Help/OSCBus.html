@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: OSCBus</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>OSCBus</h1>
+<h2>Put data from an incoming OSC message onto a bus</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> </p>
+
+<p>OSCBus creates an OSC responder for a specific OSC tag, and puts incoming data onto a bus. The data is assumed to be all floats or integers.<br><em>See also <strong>OSCresponderNode</strong> for issues regarding the NetAddr to supply.</em></p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*new(addr,cmdName,nchan,server)</STRONG></DT>
+<DD>Creates a new OSCBus<DL>
+<DT><EM>nchan</EM></DT>
+<DD>Number of channels the bus will be. The incoming OSC messages should have a lengt equal to this.</DD>
+<DT><EM>cmdName</EM></DT>
+<DD>OSC tag to listen for.</DD>
+<DT><EM>server</EM></DT>
+<DD>An instance of Server. If none is given the default server is used.</DD>
+<DT><EM>addr</EM></DT>
+<DD>NetAddr from which the OSC message comes</DD>
+</DL>
+
+</DD>
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+<DT><STRONG>renew</STRONG></DT>
+<DD>Create the bus, and add the responder. This is called automatically when a new instance is created, but it may be used if the method free was called previously during the session.</DD>
+
+<DT><STRONG>free</STRONG></DT>
+<DD>Free the bus, and remove the responder.</DD>
+
+<DT><STRONG>scale</STRONG></DT>
+<DD>Scale factor with which the incoming OSC values is scaled before putting the values on the bus.</DD>
+
+<DT><STRONG>scale_</STRONG></DT>
+<DD>Set the scaling.</DD>
+
+<DT><STRONG>bus</STRONG></DT>
+<DD>The Bus object to which the data is set.</DD>
+
+<DT><STRONG>nc</STRONG></DT>
+<DD>Number of channels of the bus.</DD>
+
+<DT><STRONG>server</STRONG></DT>
+<DD>The Server object on which the bus is.</DD>
+
+</DL>
+
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

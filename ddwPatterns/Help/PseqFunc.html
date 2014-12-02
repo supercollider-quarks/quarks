@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+    span.s1 {color: #000000}
+    span.s2 {color: #007300}
+    span.s3 {color: #0000bf}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>PseqFunc : Pseq</b></p>
+<p class="p2"><br></p>
+<p class="p3">PseqFunc executes a function on each list item before embedding the item in the stream. This is different from Pattern:collect, which executes the function on the values yielded by the stream.</p>
+<p class="p2"><br></p>
+<p class="p3">This is useful for manipulating SequenceNote objects prior to embedding in the stream. SequenceNotes may be compound; thus manipulations after .yield can be incorrect.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(list, repeats, offset, func)</b></p>
+<p class="p2"><br></p>
+<p class="p3">The arguments are the same as Pseq, with the addition of func, which is the function to execute.</p>
+<p class="p2"><br></p>
+<p class="p3">Example:</p>
+<p class="p2"><br></p>
+<p class="p4">// create a sequence with compound notes -- parsing turns 0.03 durations into grace notes</p>
+<p class="p5"><span class="s1">x = </span>MIDIRecBuf<span class="s1">(</span><span class="s2">\pseqfunc</span><span class="s1">, [</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>#[60, 63, 60, 65, 66, 65, 62, 63, 60],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>#[0.4, 0.6, 0.4, 0.03, 0.57, 0.4, 0.03, 0.57, 1],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>#[0.4, 0.6, 0.4, 0.03, 0.57, 0.4, 0.03, 0.57, 1],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>0.5</p>
+<p class="p6">].asNotes).parse;</p>
+<p class="p7"><br></p>
+<p class="p4">// stream the notes out</p>
+<p class="p6">p = <span class="s3">Pseq</span>(x.notes, 1).asStream;</p>
+<p class="p6">p.nextN(10).do(<span class="s3">_</span>.postln);</p>
+<p class="p7"><br></p>
+<p class="p6">[ 60, 0.4, 0.4, 0.5 ]</p>
+<p class="p6">[ 63, 0.6, 0.6, 0.5 ]</p>
+<p class="p6">[ 60, 0.4, 0.4, 0.5 ]</p>
+<p class="p4"><span class="s1">[ 65, 0.03, 0.03, 0.5 ]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// grace notes are preserved</p>
+<p class="p6">[ 66, 0.57, 0.57, 0.5 ]</p>
+<p class="p6">[ 65, 0.4, 0.4, 0.5 ]</p>
+<p class="p6">[ 62, 0.03, 0.03, 0.5 ]</p>
+<p class="p6">[ 63, 0.57, 0.57, 0.5 ]</p>
+<p class="p6">[ 60, 1, 1, 0.5 ]</p>
+<p class="p5">nil</p>
+<p class="p7"><br></p>
+<p class="p4">// play it, hear the grace notes</p>
+<p class="p6">p = <span class="s3">Pbind</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s2">\note</span>, <span class="s3">Pseq</span>(x.notes, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>#[midinote, delta, sustain], <span class="s3">Pfunc</span>({ <span class="s3">|ev|</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>#[freq, dur, length].collect({ <span class="s3">|key|</span> ev[<span class="s2">\note</span>].tryPerform(key) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span>}),</p>
+<p class="p8"><span class="s1"><span class="Apple-tab-span">	</span></span>\instrument<span class="s1">, </span>\default<span class="s1">,</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s2">\amp</span>, 0.4</p>
+<p class="p6">).play;</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p4">// apply arbitrary duration with Pseq and .collect -- grace note relationships are lost</p>
+<p class="p6">p = <span class="s3">Pseq</span>(x.notes, 1).collect({ <span class="s3">|n|</span> n.copy.dur_(rrand(1, 8) * 0.25) }).asStream;</p>
+<p class="p6">p.nextN(10).do(<span class="s3">_</span>.postln);</p>
+<p class="p7"><br></p>
+<p class="p6">[ 60, 1, 0.4, 0.5 ]</p>
+<p class="p6">[ 63, 1, 0.6, 0.5 ]</p>
+<p class="p6">[ 60, 1.75, 0.4, 0.5 ]</p>
+<p class="p4"><span class="s1">[ 65, 0.75, 0.03, 0.5 ]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// grace note durations are destroyed</p>
+<p class="p6">[ 66, 1.5, 0.57, 0.5 ]</p>
+<p class="p6">[ 65, 1.5, 0.4, 0.5 ]</p>
+<p class="p6">[ 62, 1, 0.03, 0.5 ]</p>
+<p class="p6">[ 63, 2, 0.57, 0.5 ]</p>
+<p class="p6">[ 60, 1.25, 1, 0.5 ]</p>
+<p class="p5">nil</p>
+<p class="p7"><br></p>
+<p class="p6">p = <span class="s3">Pbind</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s2">\note</span>, <span class="s3">Pseq</span>(x.notes, 1).collect({ <span class="s3">|n|</span> n.copy.dur_(rrand(1, 8) * 0.25) }),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>#[midinote, delta, sustain], <span class="s3">Pfunc</span>({ <span class="s3">|ev|</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>#[freq, dur, length].collect({ <span class="s3">|key|</span> ev[<span class="s2">\note</span>].tryPerform(key) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span>}),</p>
+<p class="p8"><span class="s1"><span class="Apple-tab-span">	</span></span>\instrument<span class="s1">, </span>\default<span class="s1">,</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s2">\amp</span>, 0.4</p>
+<p class="p6">).play;</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p4">// apply arbitrary duration with PseqFunc -- grace note relationships are kept</p>
+<p class="p6">p = <span class="s3">PseqFunc</span>(x.notes, 1, func: { <span class="s3">|n|</span> n.copy.dur_(rrand(1, 8) * 0.25) }).asStream;</p>
+<p class="p6">p.nextN(10).do(<span class="s3">_</span>.postln);</p>
+<p class="p7"><br></p>
+<p class="p6">[ 60, 1, 0.4, 0.5 ]</p>
+<p class="p6">[ 63, 0.25, 0.6, 0.5 ]</p>
+<p class="p6">[ 60, 0.5, 0.4, 0.5 ]</p>
+<p class="p4"><span class="s1">[ 65, 0.025, 0.03, 0.5 ]<span class="Apple-tab-span">	</span></span>// grace note is still here</p>
+<p class="p6">[ 66, 0.475, 0.57, 0.5 ]</p>
+<p class="p6">[ 65, 0.5, 0.4, 0.5 ]</p>
+<p class="p6">[ 62, 0.0125, 0.03, 0.5 ]</p>
+<p class="p6">[ 63, 0.2375, 0.57, 0.5 ]</p>
+<p class="p6">[ 60, 0.5, 1, 0.5 ]</p>
+<p class="p5">nil</p>
+<p class="p7"><br></p>
+<p class="p6">p = <span class="s3">Pbind</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s2">\note</span>, <span class="s3">PseqFunc</span>(x.notes, 1, func: { <span class="s3">|n|</span> n.copy.dur_(rrand(1, 8) * 0.25) }),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>#[midinote, delta, sustain], <span class="s3">Pfunc</span>({ <span class="s3">|ev|</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>#[freq, dur, length].collect({ <span class="s3">|key|</span> ev[<span class="s2">\note</span>].tryPerform(key) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span>}),</p>
+<p class="p8"><span class="s1"><span class="Apple-tab-span">	</span></span>\instrument<span class="s1">, </span>\default<span class="s1">,</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s2">\amp</span>, 0.4</p>
+<p class="p6">).play;</p>
+</body>
+</html>

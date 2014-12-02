@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.29">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1000d0}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008a00}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #dc0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #000000}
+span.s2 {color: #008a00}
+span.s3 {color: #1000d0}
+span.s4 {color: #737373}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">SoundBlock</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1">b = </span>SoundBlock<span class="s1">(</span><span class="s2">\red</span><span class="s1">, 0)</span></p>
+<p class="p2"><br></p>
+<p class="p3">w = <span class="s3">SoundBlock</span>.allIds.red.first[1]; v = <span class="s3">true</span>;</p>
+<p class="p3">w = <span class="s3">SoundBlock</span>.allIds.red.first[3]; v = <span class="s3">true</span>;</p>
+<p class="p3">w = <span class="s3">SoundBlock</span>.allIds.red.first[2]; v = <span class="s3">false</span>;</p>
+<p class="p3">w = <span class="s3">SoundBlock</span>.allIds.red.first[0]; v = <span class="s3">true</span>;</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">Tdef</span><span class="s1">(</span>\simulation<span class="s1">, {loop{</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>0.01.wait;</p>
+<p class="p5"><span class="s1"><span class="Apple-tab-span">	</span></span>// assume that we saw the first marker of the 0th red cube:</p>
+<p class="p3"><span class="Apple-tab-span">	</span>b.faceSeen(w, v);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>//b.faceSeen(w+ 2.rand, v)</p>
+<p class="p3">}});</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">Tdef</span><span class="s1">(</span>\simulation<span class="s1">).play;</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">Tdef</span><span class="s1">(</span>\observation<span class="s1">, {loop{</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>0.1.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s4">"upFace(%) vis(%) states: %\n"</span>.postf(b.upFace, b.visible, b.faceStates);</p>
+<p class="p3">}});</p>
+<p class="p4"><span class="s3">Tdef</span><span class="s1">(</span>\observation<span class="s1">).play</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// set time the cube needs to disappear</p>
+<p class="p3">b.faceLag = 1</p>
+<p class="p2"><br></p>
+<p class="p6">b.fUpThresh = 0.15</p>
+</body>
+</html>

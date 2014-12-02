@@ -1,0 +1,65 @@
+CLASS:: RedEffectsRackGUI
+SUMMARY:: gui for RedEffectsRack
+CATEGORIES:: Red>redEffectsRack
+RELATED:: Classes/RedEffectsRack, Classes/RedMatrixMixerGUI, Classes/RedMixerGUI
+
+DESCRIPTION::
+NOTE::
+Requires the link::Classes/Conductor:: and the link::Classes/TabbedView:: quarks.
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: redEffectsRack
+A link::Classes/RedEffectsRack:: object.
+
+ARGUMENT:: position
+A link::Classes/Point::.
+
+METHOD:: numEffectsBeforeScroll
+The number of link::Classes/RedEffectModuleGUI:: to fit before adding a vertical scroller. The default is 9. This fits well with a screensize of 1440x900. For smaller screens use a lower value.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedEffectsRackGUI
+
+METHOD:: close
+Closes the window if open.
+
+METHOD:: time
+Slider to go from now to later.
+
+EXAMPLES::
+
+CODE::
+a= RedEffectsRack();
+b= Pbind(\degree, Pseq([0, 1, 5, 4, 3, 4], inf), \dur, 0.25).play;
+c= RedEffectsRackGUI(a);
+a.cvs.ringMix.value_(0.5);
+a.free;
+b.stop;
+c.close;
+
+//--
+a= RedEffectsRack([RedEfxRing, RedEfxGuit, RedEfxVerb, RedEfxRing]);
+b= Pbind(\degree, Pseq([0, 1, 5, 4, 3, 4], inf), \dur, 0.25).play;
+c= RedEffectsRackGUI(a);
+c.redEffectsRack.efxs;
+a.cvs.verbMix.value= 0.5;
+a.cvs.verbDamp.value= 0.7;
+a.free;
+b.stop;
+c.close;
+
+//--
+a= RedEffectsRack(RedEffectModule.subclasses);
+b= Pbind(\degree, Pseq([0, 1, 5, 4, 3, 4], inf), \dur, 0.25).play;
+c= RedEffectsRackGUI(a);
+c.redEffectsRack.efxs;
+a.cvs.verbMix.value= 0.5;
+a.free;
+b.stop;
+c.close;
+::

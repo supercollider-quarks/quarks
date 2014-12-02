@@ -1,0 +1,115 @@
+class:: ScoreClock
+summary:: Create a Score by capturing OSC and timings
+categories:: Scheduling>Clocks, External Control>OSC
+related:: Classes/Score, Guides/Non-Realtime-Synthesis
+
+Description::
+ScoreClock simplifies NRT synthesis by capturing OSC messages and timings of anything sent to the default server, and returns a Score object that can then be rendered to file or played back.
+
+2011 Jonatan Liljedahl
+
+ClassMethods::
+private:: initClass
+
+method:: beginScore
+Start capturing. This strong::must:: be called once before the code that you want to capture.
+
+method:: makeScore
+Create a Score object by running all items scheduled on this clock, capturing OSC messages and timings.
+argument:: maxTime
+The maximum duration in seconds of the score.
+
+argument:: padding
+Add this many seconds of padding after the last activity.
+
+returns:: A new link::Classes/Score:: object.
+
+method:: default
+A global default ScoreClock, similar to TempoClock.default. ScoreClock has classmethods that redirects to the default clock, so you can use simply code::ScoreClock::.
+
+method:: new
+Create a new individual ScoreClock, mainly useful when there is need to run serveral clocks with different tempo.
+argument:: tmp
+Tempo in beats per second.
+discussion::
+Even if you create several ScoreClocks, they all capture to a global score object.
+
+method:: score
+The current score object. You can add events manually to this if you want.
+
+InstanceMethods::
+
+Examples::
+
+It works on Pbinds, Routines, etc:
+code::
+(
+ScoreClock.beginScore;
+ScoreClock.tempo = 100/60;
+Pbind(
+    \freq, 100*Pwhite(1,10,8),
+    \dur, 0.5,
+    \legato, 0.5
+).play(ScoreClock);
+~score = ScoreClock.makeScore;
+)
+// print it
+~score.score.do(_.postln);""
+
+// render to file
+~score.recordNRT("~/score.osc".standardizePath,"~/score.aiff".standardizePath);
+::
+
+You can create individual ScoreClocks with different tempo:
+code::
+(
+ScoreClock.beginScore;
+
+Routine {
+    thisThread.clock.tempo = 0.5;
+    4.do {
+        x = Synth(\default,[\freq,100*rrand(1,10),\pan,1]);
+        1.wait;
+        x.release;
+    };
+    thisThread.clock.tempo = 2;
+    8.do {
+        x = Synth(\default,[\freq,200*rrand(1,10),\pan,1]);
+        1.wait;
+        x.release;
+    };
+    thisThread.clock.tempo = 1;
+    4.do {
+        x = Synth(\default,[\freq,150*rrand(1,10),\pan,1]);
+        1.wait;
+        x.release;
+    };
+    x = Synth(\default,[\freq,150,\pan,1]);
+    z = Synth(\default,[\freq,200,\pan,-1]);
+    4.wait;
+    x.release;
+    z.release;
+    1.wait;
+}.play(ScoreClock.new);
+
+Routine {
+    64.do {
+        y = Synth(\default,[\freq,50*rrand(1,10),\pan,-1]);
+        0.25.wait;
+        y.release;
+    }
+}.play(ScoreClock.new);
+
+~score = ScoreClock.makeScore;
+)
+
+// print the score
+~score.score.do(_.postln);""
+
+// play it
+~score.play
+
+// render to file
+~score.recordNRT("~/score.osc".standardizePath,"~/score.aiff".standardizePath);
+::
+

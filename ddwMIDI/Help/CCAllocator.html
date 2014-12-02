@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 36.0px; text-indent: -36.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0024a6}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #8d2222}
+span.s1 {font: 12.0px Helvetica}
+span.s2 {color: #496d2c}
+span.s3 {color: #0024a6}
+span.s4 {color: #000000}
+span.s5 {color: #0022ed}
+span.s6 {color: #8d2222}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>CCAllocator</b><span class="s1"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><br></p>
+<p class="p3">Maintains a list of available MIDI controllers on a given device and returns an available one when asked. Certain controls may be designated as reserved controls (such as pitch bend and modulation wheel); these will not be allocated until you specifically ask for them by name.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">In my MIDI classes, each MIDI channel upon creation initializes its own CCAllocator. In other MIDI classes, if you ask for a MIDI controller (such as in VoicerMIDISocket-addControl) but do not specify a controller number, it will go to the channel's CCAllocator for the next available controller.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">If you aren't using my MIDI classes, you can still create your own instances and ask for controllers on your own.</p>
+<p class="p2"><br></p>
+<p class="p3">-hjh, jamshark70@dewdrop-world.net</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(controlNums, controlTypes, reservedTypes)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Creates a new instance.</p>
+<p class="p2"><br></p>
+<p class="p4">controlNums: an array of all the controller numbers on your device. A default setting is provided in the init method, which can be customized for your needs.</p>
+<p class="p4">controlTypes: a list of the types to be associated with these controller numbers. For example, the Novation ReMOTE 25 has knobs, encoders, sliders, pitch bend, a modulation wheel, and a touch sensitive pad. If several controllers in a row have the same type, you can specify the first one and give nil for the rest of them.</p>
+<p class="p4">reservedTypes: the types in the control types list that should be treated as reserved. If a control is reserved, there should be only one of that type in control types.</p>
+<p class="p2"><br></p>
+<p class="p3">For the ReMOTE 25, my default settings are:</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>controlNums = #[5, 80, 82, 83, 85, 104, 106, 105,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>70, 40, 41, 72, 44, 43, 107, 102,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>108, 109, 110, 111, 114, 115, 116, 117, 1, <span class="s2">\wheel</span>];</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>controlTypes = #[<span class="s2">\knob</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span>,</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">\encoder</span><span class="s4">, </span>nil<span class="s4">, </span>nil<span class="s4">, </span>nil<span class="s4">, </span>nil<span class="s4">, </span>nil<span class="s4">, </span>nil<span class="s4">, </span>nil<span class="s4">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">\slider</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s2">\mw</span>, <span class="s2">\pb</span>];</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>reservedTypes = #[<span class="s2">\mw</span>, <span class="s2">\pb</span>];</p>
+<p class="p7"><br></p>
+<p class="p3">Giving the pitch bend a control number of <span class="s2">\wheel</span> means that this control will be displayed in a voicer GUI as "pb wheel."<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">In normal usage, you should define allocator prototypes to be associated with MIDI sources. Each MIDI device may have a different prototype. The definitions should go into MIDIPort's onInitAll function. See the <a href="MIDIPort.html"><span class="s5">MIDIPort</span></a> help file for details.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">To create a MIDI channel that overrides the default CCAllocator for the port, you must explicitly create the channel before putting MIDI responders into it.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p8">// port 0, channel 1 will now use a custom CCAllocator</p>
+<p class="p8">// other ports/channels will still use the default</p>
+<p class="p5"><span class="s3">MIDIChannel</span>([0, 1], <span class="s3">nil</span>, (50..60), [<span class="s2">\newtest</span>]);</p>
+<p class="p7"><br></p>
+<p class="p8">// uses the MIDIChannel created above</p>
+<p class="p8">// no need to save the MIDIChannel in a variable (MIDIPort does that for you)</p>
+<p class="p6"><span class="s4">b = </span>BasicMIDIControl<span class="s4">(1, </span>nil<span class="s4">, { 0 });</span></p>
+<p class="p7"><br></p>
+<p class="p5">b.ccnum.dump;</p>
+<p class="p5">Instance of CControl {<span class="Apple-converted-space">    </span>(04E6B170, gc=40, fmt=00, flg=00, set=02)</p>
+<p class="p5"><span class="Apple-converted-space">  </span>instance variables [4]</p>
+<p class="p8"><span class="s4"><span class="Apple-converted-space">    </span>ccnum : Integer 50 <span class="Apple-converted-space">  </span></span>// this is the first ccnum specified when the MIDIChannel was created</p>
+<p class="p5"><span class="Apple-converted-space">    </span>type : Symbol 'newtest'</p>
+<p class="p5"><span class="Apple-converted-space">    </span>buttonnum : nil</p>
+<p class="p5"><span class="Apple-converted-space">    </span>index : Integer 0</p>
+<p class="p5">}</p>
+<p class="p2"><br></p>
+<p class="p3"><b>get(type, name)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Get an available controller of the given type (or reserved name). The object returned will be of the type CControl, which contains the controller number as ccnum and the type as type. A CControl also responds to .value with the controller number as an integer (or, if it's a symbol, it's assumed to be the pitch bend wheel). Therefore, your classes can also accept an integer control number as well as CControls by valuing the argument.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>free(ccnum)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Locate a MIDI controller that's in use by number and release it for future use. ccnum may be either an integer or a CControl.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>freeAll<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Re-initializes the allocator.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Example</b> (with my default settings above; output is shown):</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s4">a = </span>CCAllocator<span class="s4">.new;</span></p>
+<p class="p7"><br></p>
+<p class="p5">a CCAllocator</p>
+<p class="p7"><br></p>
+<p class="p5">b = <span class="s3">Array</span>.fill(4, { a.get(<span class="s2">\encoder</span>) });<span class="Apple-tab-span">	</span><span class="s6">// get 4 encoders</span></p>
+<p class="p7"><br></p>
+<p class="p5">[ a CControl, a CControl, a CControl, a CControl ]</p>
+<p class="p7"><br></p>
+<p class="p5">b.do({ <span class="s3">arg</span> cc; cc.postln });</p>
+<p class="p7"><br></p>
+<p class="p5">[ 70, encoder ]</p>
+<p class="p5">[ 40, encoder ]</p>
+<p class="p5">[ 41, encoder ]</p>
+<p class="p5">[ 72, encoder ]</p>
+<p class="p5">[ a CControl, a CControl, a CControl, a CControl ]</p>
+<p class="p7"><br></p>
+<p class="p5">c = <span class="s3">Array</span>.fill(25, { a.get });<span class="Apple-tab-span">	</span><span class="s6">// get 25 of any type</span></p>
+<p class="p7"><br></p>
+<p class="p5">[ a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CC...etc...</p>
+<p class="p7"><br></p>
+<p class="p5">c.do({ <span class="s3">arg</span> cc; cc.postln });</p>
+<p class="p7"><br></p>
+<p class="p5">[ 5, knob ]</p>
+<p class="p5">[ 80, knob ]</p>
+<p class="p5">[ 82, knob ]</p>
+<p class="p5">[ 83, knob ]</p>
+<p class="p5">[ 85, knob ]</p>
+<p class="p5">[ 104, knob ]</p>
+<p class="p5">[ 106, knob ]</p>
+<p class="p5">[ 105, knob ]</p>
+<p class="p8"><span class="s4">[ 44, encoder ]<span class="Apple-tab-span">	</span></span>// 4 encoders are gone, so they don't show up here</p>
+<p class="p5">[ 43, encoder ]</p>
+<p class="p5">[ 107, encoder ]</p>
+<p class="p5">[ 102, encoder ]</p>
+<p class="p5">[ 108, slider ]</p>
+<p class="p5">[ 109, slider ]</p>
+<p class="p5">[ 110, slider ]</p>
+<p class="p5">[ 111, slider ]</p>
+<p class="p5">[ 114, slider ]</p>
+<p class="p5">[ 115, slider ]</p>
+<p class="p5">[ 116, slider ]</p>
+<p class="p5">[ 117, slider ]</p>
+<p class="p8"><span class="s4">nil<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// there weren't enough controls, so you get nil when you run out</p>
+<p class="p5">nil</p>
+<p class="p5">nil</p>
+<p class="p5">nil</p>
+<p class="p5">nil</p>
+<p class="p5">[ a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CControl, a CC...etc...</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s4">d = a.get(</span><span class="s2">\mw</span><span class="s4">); d<span class="Apple-tab-span">	</span></span>// getting a reserved type gives you the right controller number</p>
+<p class="p5">[ 1, mw ]</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s4">e = a.get(name: </span><span class="s2">\pb</span><span class="s4">)<span class="Apple-tab-span">	</span></span>// getting a reserved name</p>
+<p class="p5">[ wheel, pb ]</p>
+<p class="p7"><br></p>
+<p class="p5">a.free(110);</p>
+<p class="p7"><br></p>
+<p class="p5">a CCAllocator</p>
+<p class="p7"><br></p>
+<p class="p5">a.get;</p>
+<p class="p7"><br></p>
+<p class="p5">[ 110, slider ]</p>
+<p class="p7"><br></p>
+<p class="p5">a.freeAll;</p>
+<p class="p7"><br></p>
+<p class="p5">a CCAllocator</p>
+<p class="p7"><br></p>
+<p class="p5">a.get;</p>
+<p class="p7"><br></p>
+<p class="p5">[ 5, knob ]</p>
+</body>
+</html>

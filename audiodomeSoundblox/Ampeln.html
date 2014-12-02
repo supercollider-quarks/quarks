@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+span.s3 {color: #606060}
+span.s4 {color: #007300}
+span.s5 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">(</p>
+<p class="p1"><span class="s1">Server</span>.default = s = <span class="s1">Server</span>.internal;</p>
+<p class="p1">s.waitForBoot{</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>q = ();</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="s2"><span class="Apple-tab-span">	</span>q.directory = </span>"/localvol/sound/share/audiosamples/koelnKalk/ampel"<span class="s2">;</span></p>
+<p class="p3"><span class="s2"><span class="Apple-tab-span">	</span>q.directory = </span>"/Users/till/Documents/koelnKalk/ampel"<span class="s2">;</span></p>
+<p class="p3"><span class="s2"><span class="Apple-tab-span">	</span>q.filenames = [</span>"2010-ampel-klack.aif"<span class="s2">, </span>"2010-ampel-mechanic-loop.aif"<span class="s2">];</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>q.buffers = q.filenames.collect{<span class="s1">|name|</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Buffer</span>.readChannel(s, <span class="s3">"%/%"</span>.format(q.directory, name), channels: [0, 1], action:{<span class="s3">"file % read.\n"</span>.postf(name) })</p>
+<p class="p1"><span class="Apple-tab-span">	</span>};</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>q.blockChannels = (</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>yellow:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>6,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lightGreen:<span class="Apple-tab-span">	</span>1,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>blue:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>orange:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>red:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>4</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>//green:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>5</p>
+<p class="p1"><span class="Apple-tab-span">	</span>);</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2"><span class="Apple-tab-span">	</span></span>SynthDef<span class="s2">(</span><span class="s4">\ampel</span><span class="s2">, {</span>|klackBufnum = 0, mechaBufnum = 1, out = 0, freq = 0.5, inter = 4, mechaPitch = 1, mechaMaxDur = 1.1, isGreen = 0, greenAmp = 0.0125, greenPitch = 1, amp = 1, masterAmp = 1, mute = 0, masterMute = 0|</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> klack, mecha, greenSignal, trig;</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig = <span class="s1">Impulse</span>.ar(freq);</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//trig = DelayN.ar(trig, 1, freq.reciprocal * 0.99, -1); // add gate closing</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>klack = <span class="s1">BufRd</span>.ar(</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>klackBufnum,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">EnvGen</span>.ar(<span class="s1">Env</span>([0, <span class="s1">BufFrames</span>.ir(klackBufnum), 0], [<span class="s1">BufSampleRate</span>.kr(klackBufnum).reciprocal * (<span class="s1">BufFrames</span>.ir(klackBufnum)), 0]), gate: trig),<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0, </span>// no loop<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>inter</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>).sum;</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>klack = trig;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mecha = <span class="s1">BufRd</span>.ar(</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mechaBufnum,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Phasor</span>.ar(trig, (<span class="s1">BufRateScale</span>.kr(mechaBufnum)) * mechaPitch, 1000, <span class="s1">BufFrames</span>.kr(mechaBufnum)),</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1, </span>// loop<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>inter</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mecha = (mecha * <span class="s1">EnvGen</span>.ar(<span class="s1">Env</span>.linen(0, max(0, min(mechaMaxDur, freq.reciprocal - 0.05)), 0.01), gate: trig)).sum;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>greenSignal = greenAmp * (<span class="s1">SinOsc</span>.ar([1200, 2400] * greenPitch, 0, [3, 5]).tanh * [0.5, 1] * <span class="s1">LFPulse</span>.ar(8, 0, 0.25).lag(0.0125)).sum * isGreen;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Out</span>.ar(out, [klack, mecha * 0.1, greenSignal].sum<span class="Apple-converted-space">  </span>* amp * masterAmp * (1 - masterMute) * (1-mute));<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>}).memStore</p>
+<p class="p1">}</p>
+<p class="p1">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">(</p>
+<p class="p1">{</p>
+<p class="p1"><span class="Apple-tab-span">	</span>q.ampeln = q.blockChannels.collect{<span class="s1">|channel|</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1.0.rand.wait;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s4">\ampel</span>, [</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>out: channel,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>klackBufnum: q.buffers.first,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mechaBufnum: q.buffers.last,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freq: rrand(0.995, 1.05)*0.5,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mechaPitch: 1, //rrand(0.9, 1.1),<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">\mechaMaxDur</span>, rrand(0.8, 0.9)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p1"><span class="Apple-tab-span">	</span>}</p>
+<p class="p1">}.fork;</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s1">Tdef</span><span class="s2">(</span>\greenLight<span class="s2">, {</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="s1">var</span> greenAmpeln;</p>
+<p class="p1"><span class="Apple-tab-span">	</span>loop{</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(20, 30.0).wait;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>greenAmpeln = q.ampeln.asArray.scramble[0..1];</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>greenAmpeln.do{<span class="s1">|ampel|</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.2.rand.wait;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ampel.set(<span class="s4">\isGreen</span>, 1);</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(5, 10).wait;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>greenAmpeln.do{<span class="s1">|ampel|</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.2.rand.wait;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ampel.set(<span class="s4">\isGreen</span>, 0);</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p1">}}).play</p>
+<p class="p1">)</p>
+<p class="p2"><br></p>
+<p class="p5">/////////////////////////////////////////////</p>
+<p class="p2"><br></p>
+<p class="p5">// q.buffers.last.play</p>
+<p class="p2"><br></p>
+<p class="p1">x = <span class="s1">Synth</span>(<span class="s4">\ampel</span>, [klackBufnum: q.buffers.first, mechaBufnum: q.buffers.last, freq: 0.25])</p>
+<p class="p2"><br></p>
+<p class="p1">x.set(<span class="s4">\freq</span>, 1.1)</p>
+<p class="p2"><br></p>
+<p class="p1">x.set(<span class="s4">\isGreen</span>, 1);</p>
+<p class="p1">x.set(<span class="s4">\isGreen</span>, 0);</p>
+<p class="p1">x.set(<span class="s4">\greenPitch</span>, 3);</p>
+<p class="p1">x.set(<span class="s4">\greenPitch</span>, 1.01);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s2">x.set(</span>\mechaPitch<span class="s2">, 4, </span>\mechaMaxDur<span class="s2">, 0.2)</span></p>
+<p class="p6"><span class="s2">x.set(</span>\mechaPitch<span class="s2">, 0.5, </span>\mechaMaxDur<span class="s2">, 0.2)</span></p>
+<p class="p6"><span class="s2">x.set(</span>\mechaPitch<span class="s2">, 1, </span>\mechaMaxDur<span class="s2">, 1.1)</span></p>
+<p class="p6"><span class="s2">x.set(</span>\mechaPitch<span class="s2">, 0.9, </span>\mechaMaxDur<span class="s2">, 0.2)</span></p>
+<p class="p2"><br></p>
+<p class="p1">x.free</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">///////////////////////////////////////</p>
+<p class="p5">// Midi Mixer</p>
+<p class="p2"><br></p>
+<p class="p4">MIDIClient<span class="s2">.init;</span></p>
+<p class="p1"><span class="s1">MIDIIn</span>.connect;</p>
+<p class="p2"><br></p>
+<p class="p1">(</p>
+<p class="p4">MIDIIn<span class="s2">.control = {</span>|port, chan, ctlNum, val|<span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>[chan, ctlNum, val].postln;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>(ctlNum == 7).if{ <span class="s5">// fader</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(chan == 8).if{ </span>// master (right-most)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.ampeln.do{<span class="s1">|ampel|</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ampel.set(<span class="s4">\masterAmp</span>, val.linlin(0, 127, 0, 1))<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(chan &lt; 8).if{ </span>// red (left-most)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[chan, val].postln;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.ampeln[q.blockChannels.findKeyForValue(chan)].set(<span class="s4">\amp</span>, val.linlin(0, 127, 0, 1))<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p1"><span class="Apple-tab-span">	</span>};</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span>(ctlNum == 17).if{ </span>// lower button -&gt; mute</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(chan == 8).if{ </span>// master (right-most)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.ampeln.do{<span class="s1">|ampeln|</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ampeln.set(<span class="s4">\masterMute</span>, val.linlin(0, 127, 0, 1))<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(chan &lt; 8).if{ </span>// red (1- rightmost)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.ampeln[q.blockChannels.findKeyForValue(chan)].set(<span class="s4">\mute</span>, val.linlin(0, 127, 0, 1))<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p1"><span class="Apple-tab-span">	</span>};</p>
+<p class="p1">}</p>
+<p class="p1">)</p>
+</body>
+</html>

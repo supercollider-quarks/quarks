@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Verdana; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #002eaf; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #8f2116}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #8f2116; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Helvetica; color: #8f2116; min-height: 13.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #9d1c12}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #9d1c12; min-height: 12.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Helvetica; min-height: 13.0px}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Helvetica; color: #9d1c12; min-height: 13.0px}
+span.s1 {text-decoration: underline ; color: #002fe0}
+span.s2 {color: #0024f8}
+span.s3 {color: #002eaf}
+span.s4 {color: #000000}
+span.s5 {color: #0026b4}
+span.s6 {color: #9d1c12}
+span.s7 {color: #3d6d1d}
+span.s8 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SMPTE</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">The SMPTE object holds timecode values and provides noumerous ways for handling timecode.</p>
+<p class="p2">The object shows in the post window as an array with hours, minutes, seconds, frames and subFrames.</p>
+<p class="p2">All values are rounded to whole numbers except the subframes.</p>
+<p class="p4"><br></p>
+<p class="p2">Used by SMPTEView, TransportWindow and <a href="SimpleMIDIFile.html"><span class="s2">SimpleMIDIFile</span></a></p>
+<p class="p4"><br></p>
+<p class="p2">By default the frameRate is 25 (25 per second), and the subFrameRate 100 (100 per frame).</p>
+<p class="p4"><br></p>
+<p class="p2"><i>please note: the SMPTE class does not generate nor recognise SMPTE timecode signals.</i></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p5"><b>Creation</b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>SMPTE( inSeconds, fps )</b></p>
+<p class="p2">Generates a new SMPTE object</p>
+<p class="p4"><br></p>
+<p class="p2"><b>inSeconds</b> - raw seconds from which SMPTE will calculate hours, minutes, seconds, frames and subframes.</p>
+<p class="p2"><b>fps</b> - frame rate (defaults to 25, standard for europe). Dropped frames are not supported, but the frame rate doesn't have to be a whole number.</p>
+<p class="p6"><br></p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s3">SMPTE</span><span class="s4">( 5 );<span class="Apple-converted-space">  </span></span>// -&gt; SMPTE[ 0, 0, 5, 0, 0 ]</p>
+<p class="p9"><br></p>
+<p class="p8"><span class="s3">SMPTE</span><span class="s4">( 65.5);<span class="Apple-converted-space">  </span></span>// -&gt; SMPTE[ 0, 1, 5, 12, 50 ] (1 minute, 5 seconds, 12 frames, 50 subFrames (1/100))</p>
+<p class="p10"><br></p>
+<p class="p11"><br></p>
+<p class="p2"><b>SMPTE[ hours, minutes, seconds, frames, subFrames ]</b></p>
+<p class="p2">Creates a SMPTE object directly. This only works when all five values are entered.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">[ 0, 10, 30, 5, 0 ]; </span>// -&gt; SMPTE[ 0, 10, 30, 5, 0 ]</p>
+<p class="p9"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">[ 0, 10, 70, 5, 0 ]; </span>// -&gt; SMPTE[ 0, 10, 70, 5, 0 ] (does not recalculate)</p>
+<p class="p9"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>[ 0, 10, 70, 5, 0 ].reCalculate; <span class="s6">// -&gt; SMPTE[ 0, 11, 10, 5, 0 ]</span></p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p2"><b>SMPTE.hours( inHours, fps ), SMPTE.minutes( inMinutes, fps ),<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><b>SMPTE.frames( inFrames, fps ), SMPTE.subFrames( inSubFrames, fps )</b></p>
+<p class="p2">Generates a new SMPTE object with raw values as input</p>
+<p class="p6"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">.hours( 1.25 );<span class="Apple-converted-space">  </span></span>// -&gt; SMPTE[ 1, 15, 0, 0, 0 ] (1 hour, 15 minutes)</p>
+<p class="p14"><br></p>
+<p class="p10"><br></p>
+<p class="p2"><b>SMPTE.type( input, type, fps )</b></p>
+<p class="p2">Generates a new SMPTE object with raw values with specified types as input</p>
+<p class="p4"><br></p>
+<p class="p2"><b>type </b>- a Symbol, can be:</p>
+<p class="p2"><span class="Apple-tab-span">	</span>\hours, \minutes, \seconds, \frames, \subFrames</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">.type( 1.25, </span><span class="s7">\hours</span><span class="s4"> ); </span>// -&gt; SMPTE[ 1, 15, 0, 0, 0 ] (1 hour, 15 minutes)</p>
+<p class="p6"><br></p>
+<p class="p4"><br></p>
+<p class="p2"><b>SMPTE.minSec( minutes, seconds )</b></p>
+<p class="p2">Generates a new SMPTE object with raw minutes and seconds as input</p>
+<p class="p6"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">.minSec( 10, 5 ); </span>// -&gt; SMPTE[ 0, 10, 5, 0, 0 ]</p>
+<p class="p14"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">.minSec( 70, 80.5 ); </span>// -&gt; SMPTE[ 1, 11, 20, 12, 50 ]</p>
+<p class="p10"><br></p>
+<p class="p11"><br></p>
+<p class="p2"><b>SMPTE.fromString( string, fps )</b></p>
+<p class="p4"><br></p>
+<p class="p2"><b>string</b> - a string with ":" characters as dividers for hours, minutes, seconds and frames</p>
+<p class="p6"><br></p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s3">SMPTE</span><span class="s4">.fromString( </span><span class="s8">"00:10:05:00"</span><span class="s4"> ); </span>// -&gt; SMPTE[ 0, 10, 5, 0, 0 ]</p>
+<p class="p9"><br></p>
+<p class="p15"><br></p>
+<p class="p2"><b>SMPTE.localtime</b></p>
+<p class="p2">Creates a new SMPTE object with the current system time</p>
+<p class="p6"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p2"><b>Methods:</b></p>
+<p class="p4"><br></p>
+<p class="p2"><b>asSeconds</b></p>
+<p class="p2">returns the raw seconds</p>
+<p class="p6"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>( 65.5).asSeconds; <span class="s6">// -&gt; 65.5</span></p>
+<p class="p15"><br></p>
+<p class="p2"><b>asHours, asMinutes, asFrames, asSubframes</b></p>
+<p class="p2">returns raw values for hours, minutes, frames or subFrames</p>
+<p class="p6"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">( 65.5).asMinutes; </span>// -&gt; 1.0916666666667</p>
+<p class="p9"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>( 65.5).asSubFrames; <span class="s6">// -&gt; 163750</span></p>
+<p class="p14"><br></p>
+<p class="p4"><br></p>
+<p class="p2"><b>hours, minutes, seconds, frames, subFrames</b></p>
+<p class="p2">acces values directly</p>
+<p class="p6"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>( 65.5).minutes; <span class="s6">// -&gt; 1</span></p>
+<p class="p14"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>( 65.5).seconds; <span class="s6">// -&gt; 5</span></p>
+<p class="p14"><br></p>
+<p class="p2"><b>hours_ , minutes_ , seconds_ , frames_ , subFrames_</b></p>
+<p class="p2">set values directly. Does recaclulate internally.</p>
+<p class="p6"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">( 0 ).minutes_( 5.5 ); </span>// -&gt; SMPTE[ 0, 5, 30, 0, 0 ]</p>
+<p class="p14"><br></p>
+<p class="p16"><br></p>
+<p class="p2"><b>fps_( newFps )</b></p>
+<p class="p2">set framerate and recalculate</p>
+<p class="p9"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>( 65.5).frames; <span class="s6">// -&gt; 12</span></p>
+<p class="p9"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>( 65.5).fps_(30).frames; <span class="s6">// -&gt; 15</span></p>
+<p class="p16"><br></p>
+<p class="p2"><b>setFps( newFps )</b></p>
+<p class="p2">set framerate without recalculation</p>
+<p class="p9"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>( 65.5).setFps(30).frames; <span class="s6">// -&gt; 12</span></p>
+<p class="p14"><br></p>
+<p class="p2"><b>toString</b></p>
+<p class="p2">returns a time string separated by ":" characters. Subframes are ignored</p>
+<p class="p6"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>( 65.5 ).toString; <span class="s6">// -&gt; 00:01:05:12</span></p>
+<p class="p9"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>( 65.5, fps: 1000).toString; <span class="s6">// -&gt; 00:01:05:500</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p2"><b>reCalculate</b></p>
+<p class="p2">recalculates any invalid time values to valid time values. This is called internally in most methods.</p>
+<p class="p4"><br></p>
+<p class="p2"><b>asMinSec</b></p>
+<p class="p2">returns an array with raw minutes and seconds (as used by the *minSec creation method)</p>
+<p class="p6"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>.minSec(10, 21.1).asMinSec; <span class="s6">// -&gt; [10, 21.1]</span></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4"><br></p>
+<p class="p2"><b>Operators:</b></p>
+<p class="p4"><br></p>
+<p class="p2"><b>+, -, *, /</b></p>
+<p class="p2">SMPTE objects can be added, substracted, multiplied<b> </b>and divided with other SMPTE objects, Numbers or Arrays. For numbers the type can be specified with an adverb (.hours, .minutes, .seconds, .frames, .subFrames).</p>
+<p class="p2">The framerate (fps) of the first object will be used for the output object.</p>
+<p class="p6"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">( 20 ) + </span><span class="s5">SMPTE</span><span class="s4">( 50 ); </span>// -&gt; SMPTE[ 0, 1, 10, 0, 0 ]</p>
+<p class="p9"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">( 20 ) + 50;<span class="Apple-tab-span">	</span></span>// -&gt; SMPTE[ 0, 1, 10, 0, 0 ]</p>
+<p class="p14"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">( 20 ) +.minutes 2.5; </span>// -&gt; SMPTE[ 0, 2, 50, 0, 0 ] (plus 2 minutes and 30 seconds)</p>
+<p class="p14"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>[ 0, 10, 5, 0, 0 ] + [0, 1, 2, 3 ]; <span class="s6">// -&gt; SMPTE[ 0, 11, 7, 3, 0 ]</span></p>
+<p class="p14"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">( 0.1 ) + </span><span class="s5">SMPTE</span><span class="s4">.frames( 3, fps: 30 ); </span>// -&gt; SMPTE[ 0, 0, 0, 5, 0 ] (fps = 25)</p>
+<p class="p14"><br></p>
+<p class="p12"><span class="s5">SMPTE</span><span class="s4">( 20 ) * 2; </span>// -&gt; SMPTE[ 0, 0, 40, 0, 0 ]</p>
+<p class="p9"><br></p>
+<p class="p13">( <span class="s5">SMPTE</span>.minSec( 4, 33 ) + <span class="s5">SMPTE</span>.minSec( 10, 55 ) ).asMinSec; <span class="s6">// -&gt; [ 15, 28 ] (here you go Sciss!)</span></p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p16"><br></p>
+<p class="p2"><b>&lt;, &lt;=, ==, =&gt;, &gt;, !=</b></p>
+<p class="p2">Binary operators</p>
+<p class="p6"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>( 10 ) &gt; <span class="s5">SMPTE</span>( 5 ); <span class="s6">// -&gt; true</span></p>
+<p class="p14"><br></p>
+<p class="p13"><span class="s5">SMPTE</span>.hours( 1.1 ) == <span class="s5">SMPTE</span>.frames( 99000 ); <span class="s6">// -&gt; true</span></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p9"><br></p>
+</body>
+</html>

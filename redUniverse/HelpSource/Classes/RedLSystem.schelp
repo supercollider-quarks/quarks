@@ -1,0 +1,69 @@
+CLASS:: RedLSystem
+SUMMARY:: rewrite strings
+CATEGORIES:: Red>redUniverse>additional
+RELATED:: Classes/RedLTurtle
+
+DESCRIPTION::
+A simple string rewrite class.
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: axiom
+The starting string / seed.
+
+ARGUMENT:: rules
+Should be a dictionary in the form of (character : replacement string).
+
+INSTANCEMETHODS::
+
+PRIVATE:: prRewrite
+
+METHOD:: next
+Rewrite and go to next generation.
+
+METHOD:: reset
+Reset generation counter to zero and the production to the axiom.
+
+METHOD:: rules
+Change the rules during the game - not recommended.
+
+ARGUMENT:: dict
+A dictionary in the form of (character : replacement string).
+
+METHOD:: asString
+Convert nested production array into a single string.
+
+METHOD:: axiom
+Starting string.
+
+METHOD:: rules
+A dictionary in the form of (character : replacement array of characters).
+NOTE::
+There is a difference from the dictionary used for link::#*new:: and link::#-rules::.
+::
+
+METHOD:: production
+The current production as a nested array.
+
+METHOD:: generation
+A counter.
+
+EXAMPLES::
+
+CODE::
+a= RedLSystem("F", ($F: "FO"))	//a single rule - replace all F with FO
+a.next
+a.next
+a.next
+
+a= RedLSystem("F", ($F: "FO", $O: "O-F"))	//multiple rules
+a.next
+a.next
+a.next
+a.next
+a.generation
+a.production		//the nested array
+a.rules			//rules
+::

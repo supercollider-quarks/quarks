@@ -1,0 +1,301 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf480
+{\fonttbl\f0\fnil\fcharset77 Monaco;\f1\fswiss\fcharset77 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green0\blue0;\red0\green0\blue191;
+\red96\green96\blue96;\red0\green115\blue0;}
+\deftab720
+\pard\pardeftab720\ql\qnatural
+
+\f0\fs18 \cf2 // jedem W\'9frfel ist eine Geraeuschfamilie zugeordnet\cf3 \
+\cf2 /*\
+Es gibt (nach bodo und norbert):\
+\
+-1- Rhythmus\
+-2- Tiere\
+-3- Akkorde\
+-4- Sprache\
+-5- Spielekonsole\
+\
+*/\cf3 \
+\
+\pard\pardeftab560\ql\qnatural
+\cf3 \
+\cf4 Server\cf3 .default = s = \cf4 Server\cf3 .internal;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf4 Server\cf3 .default = s = \cf4 Josef\cf3 .startServer;\
+s.makeGui;\
+\pard\pardeftab560\ql\qnatural
+\cf3 \
+s.freeAll\
+\
+s.boot;\
+\
+\
+(\
+q = ();\
+\
+q.filenamebase = \cf5 "/Users/till/Documents/animaxsamples/"\cf3 ;\
+\
+\cf2 // be sure to have wav or aiff files here.\cf3 \
+\
+\
+q.filenames = (\
+	red: \
+		[ \cf2 // Tiere\cf3 \
+			\cf5 "SoundIdeas6000/6003 - Animals/97.wav"\cf3 ,\
+			\cf5 "SoundIdeas6000/6003 - Animals/93.wav"\cf3 ,\
+			\cf5 "SoundIdeas6000/6003 - Animals/92.wav"\cf3 ,\
+			\cf5 "SoundIdeas6000/6003 - Animals/91.wav"\cf3 ,\
+			\cf5 "SoundIdeas6000/6003 - Animals/88.wav"\cf3 ,\
+			\cf5 "SoundIdeas6000/6003 - Animals/35.wav"\cf3 \
+		],\
+	green:\
+		[ \cf2 // chords\cf3 \
+			\cf5 "LFSaw-chords/echo.aif"\cf3 ,\
+			\cf5 "LFSaw-chords/bells.aif"\cf3 ,\
+			\cf5 "LFSaw-chords/guitar.aif"\cf3 ,\
+			\cf5 "LFSaw-chords/Synthie.aif"\cf3 ,\
+			\cf5 "LFSaw-chords/Oboe.aif"\cf3 ,\
+			\cf5 "LFSaw-chords/Piano.aif"\cf3 \
+		],\
+	blue: \cf2 // crowd\cf3 \
+		[\
+			\cf5 "SoundIdeas6000/6014 - Crowd #2/Track 01.aiff"\cf3 ,\
+			\cf5 "SoundIdeas6000/6014 - Crowd #2/Track 02.aiff"\cf3 ,\
+			\cf5 "SoundIdeas6000/6014 - Crowd #2/Track 03.aiff"\cf3 ,\
+			\cf5 "SoundIdeas6000/6014 - Crowd #2/Track 04.aiff"\cf3 ,\
+			\cf5 "SoundIdeas6000/6014 - Crowd #2/Track 05.aiff"\cf3 ,\
+			\cf5 "SoundIdeas6000/6014 - Crowd #2/Track 16.aiff"\cf3 \
+		],\
+	yellow: \cf2 // water\cf3 \
+		[\
+			\cf5 "SoundIdeas6000/6035 - Water/Track  1.aiff"\cf3 ,\
+			\cf5 "SoundIdeas6000/6035 - Water/Track  2.aiff"\cf3 ,\
+			\cf5 "SoundIdeas6000/6035 - Water/Track  3.aiff"\cf3 ,\
+			\cf5 "SoundIdeas6000/6035 - Water/Track  4.aiff"\cf3 ,\
+			\cf5 "SoundIdeas6000/6035 - Water/Track  5.aiff"\cf3 ,\
+			\cf5 "SoundIdeas6000/6035 - Water/Track 16.aiff"\cf3 \
+		],\
+	orange: \cf2 // drums\cf3 \
+		[\
+			\cf5 "LFSaw-chords/drum01.aif"\cf3 ,\
+			\cf5 "LFSaw-chords/drum02.aif"\cf3 ,\
+			\cf5 "LFSaw-chords/drum03.aif"\cf3 ,\
+			\cf5 "LFSaw-chords/drum04.aif"\cf3 ,\
+			\cf5 "LFSaw-chords/drum05.aif"\cf3 ,\
+			\cf5 "LFSaw-chords/drum06.aif"\cf3 \
+		]\
+\
+);\
+\
+\
+\
+(s.name == \cf6 'Josef1'\cf3 ).if(\{\
+	q.filenamebase = \cf5 "/Network/Servers/stitch/srv/nfs/volume1/home/till/samples/"\cf3 ;\
+	q.buffers = q.filenames.collect\{\cf4 |cubefiles|\cf3 \
+		cubefiles.collect\{\cf4 |name|\cf3 \
+			\cf4 Buffer\cf3 .readChannel(s, q.filenamebase ++ name, channels: [0], action:\{\cf5 "file % read.\\n"\cf3 .postf(name) \})\
+		\}\
+	\};\
+\},\{\
+	q.buffers = q.filenames.collect\{\cf4 |cubefiles|\cf3 \
+		cubefiles.collect\{\cf4 |name|\cf3 \
+			\cf4 var\cf3  sfile, buf;\
+			\cf2 //MP3.readToBuffer(s, q.filenamebase ++ name)\cf3 \
+			name.postln;\
+			sfile = \cf4 SoundFile\cf3 .openRead(q.filenamebase ++ name);\
+			buf = (sfile.
+\f1\b\fs24 numChannels > 1).if(\{
+\f0\b0\fs18 \
+				\cf4 Buffer\cf3 .readChannel(s, q.filenamebase ++ name, channels: [0], action:\{\cf5 "file % read.\\n"\cf3 .postf(name) \})\
+			\}, \{\
+				\cf4 Buffer\cf3 .read(s, q.filenamebase ++ name, action:\{\cf5 "file % read.\\n"\cf3 .postf(name) \})\
+			\});\
+			sfile.close;\
+			buf\
+		\}\
+	\};\
+\});\
+\
+\cf2 // only first channel of the file is read \cf3 \
+\
+\cf2 /* test\
+q.buffers.choose.choose.play \
+\
+q.sfile = SoundFile.openRead(q.filenamebase ++ q.filenames[\\green][6]);\
+\
+q.sfile.numChannels\
+q.sfile.close;\
+\
+\
+// */\cf3 \
+\
+)\
+\
+\
+\
+(\
+q.cubes = [\cf6 \\red\cf3 , \cf6 \\green\cf3 , \cf6 \\blue\cf3 , \cf6 \\orange\cf3 , \cf6 \\yellow\cf3 ].collect\{\cf4 |color, i|\cf3  \cf4 BufferBlock\cf3 (color, 0, q.buffers[color], i)\};\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf4 BufferBlock\cf3 .sendSynth;\
+\pard\pardeftab560\ql\qnatural
+\cf3 q.buffers.asArray.flatten.do\{\cf4 _\cf3 .normalize\};\
+)\
+\
+(\
+s.bind\{\
+q.cubes[0].play;\
+q.cubes[1].play;\
+q.cubes[2].play;\
+q.cubes[3].play;\
+q.cubes[4].play;\
+\}\
+)\
+\
+q.cubes[0].stop;\
+q.cubes[1].stop;\
+q.cubes[2].stop;\
+q.cubes[3].stop;\
+q.cubes[4].stop;\
+\
+\
+\
+\cf2 /*\
+q.cubes[0].setFace(108, \\amps, 1)\
+q.cubes[0].set(\\amps, 1, 0)\
+\
+q.cubes[0].synth.set(\\amps2, 1)\
+*/\cf3 \
+\
+q.cubes[0].set(\cf6 \\amp\cf3 , 0.5) \cf2 // red\cf3 \
+q.cubes[1].set(\cf6 \\amp\cf3 , 0.1) \cf2 // green\cf3 \
+q.cubes[2].set(\cf6 \\amp\cf3 , 0.5) \cf2 // blue\cf3 \
+q.cubes[3].set(\cf6 \\amp\cf3 , 0.8) \cf2 // orange\cf3 \
+q.cubes[4].set(\cf6 \\amp\cf3 , 0.5) \cf2 // yellow\cf3 \
+\
+\
+\
+\
+\
+\cf2 /*\
+q.cubes.do\{|cube|\
+	cube.set(\\amp, 1);\
+	cube.out = 0\
+\}\
+*/\cf3 \
+\
+\cf2 //////////////////////\cf3 \
+\cf2 // Start SETO\cf3 \
+\
+(\
+q.seto = \cf4 SETO_OSCTUIOServer\cf3 (\cf5 "2Dobj"\cf3 , \cf4 nil\cf3 , \cf4 JITseto\cf3 , \cf4 SETOIDistance\cf3 ); \
+q.seto.start;\
+\
+\
+\cf4 JITseto\cf3 .action = \{\cf4 |me|\cf3 \
+	\cf4 var\cf3  cube = q.cubes.detect\{\cf4 |cube|\cf3  cube.ids.includes(me.id)\};\
+	cube.notNil.if\{\
+		\
+		\cf2 //cube.color.postln;\cf3 \
+		cube.setFace(me.id, \cf6 \\amps\cf3 , ((sin(me.rotEuler.first) * 0.95).abs + 0.05))\
+		\cf2 //cube.setFace(me.id, \\amps, 0.9)\cf3 \
+	\}\
+\};\
+\
+\cf2 /*\
+JITseto.action = nil; // */\cf3 \
+)\
+\
+\
+\cf2 ///////////////////////\cf3 \
+\cf2 // Midi Mixer\cf3 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
+\cf4 MIDIClient\cf3 .init;\
+\cf4 MIDIIn\cf3 .connect;\
+\
+(\
+\cf4 MIDIIn\cf3 .control = \{\cf4 |port, chan, ctlNum, val|\cf3  \
+	[chan, ctlNum, val].postln;\
+	\
+	(ctlNum == 7).if\{ \cf2 // fader\cf3 \
+		(chan == 8).if\{ \cf2 // master (right-most)\cf3 \
+			q.cubes.do\{\cf4 |cube|\cf3 \
+				cube.set(\cf6 \\masterAmp\cf3 , val.linlin(0, 127, 0, 1))	\
+			\}\
+		\};\
+\
+		(chan < 8).if\{ \cf2 // red (left-most)\cf3 \
+			q.cubes[chan].set(\cf6 \\amp\cf3 , val.linlin(0, 127, 0, 1))	\
+		\};\
+	\};\
+	\
+	(ctlNum == 17).if\{ \cf2 // lower button -> mute\cf3 \
+		(chan == 8).if\{ \cf2 // master (right-most)\cf3 \
+			q.cubes.do\{\cf4 |cube|\cf3 \
+				cube.set(\cf6 \\masterMute\cf3 , val.linlin(0, 127, 0, 1))	\
+			\}\
+		\};\
+\
+		(chan < 8).if\{ \cf2 // red (left-most)\cf3 \
+			q.cubes[chan].set(\cf6 \\mute\cf3 , val.linlin(0, 127, 0, 1))	\
+		\};\
+	\};\
+	\
+\}\
+\pard\pardeftab560\ql\qnatural
+\cf3 )\
+\
+q.cubes.do\{\cf4 |cube|\cf3 \
+	cube.synthParams.add(\cf6 \\masterMute\cf3  -> [0]);\
+	cube.synthParams.add(\cf6 \\mute\cf3  -> [0]);\
+\}\
+\
+q.cubes[3].play\
+q.cubes[3].out = 0\
+\
+q.cubes[3].stop\
+\
+\
+\
+\
+\
+\
+\
+q.cubes.do\{\cf4 |cube|\cf3 \
+	cube.set(\cf6 \\amps\cf3 , 3);\
+\}\
+\
+q.cubes.do\{\cf4 |cube|\cf3 \
+	cube.stop;\
+\}\
+\
+q.cubes[3].play\
+q.cubes[3].out = 0\
+q.cubes[3].stop\
+\
+q.cubes[1].set(side: 2, what: \cf6 \\rates\cf3 , val: 0.5);\
+\
+6.do\{\cf4 |i|\cf3 \
+	q.cubes[1].set(side: i, what: \cf6 \\amps\cf3 , val: 0.5);\
+\}\
+\
+6.do\{\cf4 |i|\cf3 \
+	q.cubes[1].set(side: i, what: \cf6 \\rates\cf3 , val: rrand(0.5, 2.0));\
+\}\
+\
+\
+6.do\{\cf4 |i|\cf3 \
+	q.cubes[0].set(side: i, what: \cf6 \\rates\cf3 , val: rrand(1, 4.0));\
+\}\
+\
+\
+\
+x.setn(\cf6 \\amps\cf3 , [1, 0, 0, 0, 0, 0])\
+x.setn(\cf6 \\amps\cf3 , [0, 0, 1, 0, 0, 0])\
+x.setn(\cf6 \\amps\cf3 , 1!6)\
+\
+x.setn(\cf6 \\amps\cf3 , [10, 0, 0, 0, 0, 0, 0])\
+\
+\
+x.setn(\cf6 \\amps\cf3 , [1, 1, 1, 1, 1, 1, 1])}

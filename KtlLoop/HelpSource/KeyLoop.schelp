@@ -1,0 +1,50 @@
+TITLE:: KeyLoop
+summary:: an EventLoop for recording KeyPlayer actions
+categories:: Libraries>JITLib
+related:: Classes/EventLoop, Classes/KeyPlayer, Reference/KeyPlayerGui
+
+DESCRIPTION::
+
+KeyLoop inherits almost everything from EventLoop, so please read general info there.
+
+code::
+(
+k = KeyPlayer(\rd);
+"qwertzuiopasdfghjklyxcvbnm".do { |char|
+    var note = (midinote: rrand(36, 96), dur: rrand(0.1, 1.0));
+    k.put(char, { |char| char.postln; note.postln.play });
+};
+)
+    // make a big gui for it - see KeyPlayerGui.help
+g = KeyPlayerGui(k);
+
+
+
+l = EventLoopGui();
+
+// type
+
+::
+
+
+CLASSMETHODS::
+
+METHOD:: keyPlayerFunc
+make a function appropriate for attaching to a KeyPlayer
+
+INSTANCEMETHODS::
+
+METHOD:: actionDict
+a dictionary of actions to perform when using defaultFunc
+
+METHOD:: defaultFunc
+default function for lookup in actionDict
+
+METHOD:: recordEvent
+record an event into a KeyLoop, by
+
+ARGUMENT:: key
+a char or uniCode key number
+ARGUMENT:: type
+'up' or 'down'
+

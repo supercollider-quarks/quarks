@@ -1,0 +1,217 @@
+CLASS:: ScatterView3d
+summary:: Plot a collection of points in 3D
+categories:: GUI>Accessories
+related:: Reference/plot, Classes/Matrix
+
+DESCRIPTION::
+Plot a collection of points in 3D
+
+CLASSMETHODS::
+
+METHOD:: new
+
+argument:: parent
+Parent view or window
+
+argument:: bounds
+Bounds
+
+argument:: data
+An array of [[x1,y1,z1], [x1,y1,z2], ...[xn,yN,zN]]
+
+argument:: specX
+ControlSpec with min/max of the plotted range of dimension X
+
+argument:: specY
+ControlSpec with min/max of the plotted range of dimension Y
+
+argument:: specZ
+ControlSpec with min/max of the plotted range of dimension Z
+
+argument:: rotX
+Initial X rotation in radians
+
+argument:: rotY
+Initial Y rotation in radians
+
+argument:: rotZ
+Initial Z rotation in radians
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: init3d
+private init
+
+METHOD:: data
+Get or set data array.
+
+argument:: data
+An array of [[x1,y1,z1], [x1,y1,z2], ...[xn,yN,zN]]
+
+returns:: (returnvalue)
+
+METHOD:: refresh
+Refresh the view. You will need to call this after making any changes to data or settings.
+
+
+METHOD:: rotX
+Rotate
+
+argument:: val
+radians
+
+
+METHOD:: rotY
+Rotate
+
+argument:: val
+radians
+
+
+METHOD:: rotZ
+Rotate
+
+argument:: val
+radians
+
+
+METHOD:: rot
+Rotate
+
+argument:: rX
+radians
+
+argument:: rY
+radians
+
+argument:: rZ
+radians
+
+
+METHOD:: drawMethod
+Set the shape that will be drawn for each point.
+
+argument:: method
+One of: [\fillRect, \fillOval, \strokeOval, \strokeRect]
+
+returns:: (returnvalue)
+
+METHOD:: symbolSize
+Size in pixels of the shape plotted for each point
+
+argument:: val
+pixels
+
+returns:: (returnvalue)
+
+METHOD:: symbolColor
+Color of the shape plotted for each point
+
+argument:: val
+Color
+
+returns:: (returnvalue)
+
+METHOD:: isHighlight
+Set highlighting mode which adds a crosshair at the selected point or points
+
+argument:: val
+Boolean
+
+returns:: Boolean
+
+METHOD:: highlightItem
+Highlight a point
+
+argument:: item
+Integer index in data array
+
+
+METHOD:: highlightRange
+Highlight multiple points
+
+argument:: start
+Integer index in data array
+
+argument:: end
+Integer index in data array
+
+
+METHOD:: highlightColor
+(describe method here)
+
+argument:: color
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: highlightSize
+(describe method here)
+
+argument:: size
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: background
+(describe method here)
+
+argument:: val
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: resize
+(describe method here)
+
+argument:: resize
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: pr_project
+(describe method here)
+
+returns:: (returnvalue)
+
+
+EXAMPLES::
+
+code::
+(
+var data;
+data = {{2.0.rand2}!3}!150;
+w = Window.new("3D Scatterplot", Rect(40,40, 500, 500)).front;
+a = ScatterView3d(w, Rect(10,10, 450, 450), data, [-2, 2].asSpec);
+a.drawMethod = \fillRect;
+a.symbolSize = 3;
+a.symbolColor = Color.blue;
+a.background = Color.black;
+
+// Y Slider
+Slider(w, Rect(10, 470, 450, 10)).action_{|me|
+	a.rotY = me.value * 2pi;
+	w.refresh;
+};
+// X Slider
+Slider(w, Rect(470, 10, 10, 450)).action_{|me|
+	a.rotX = me.value * 2pi;
+	w.refresh;
+};
+// Z Slider
+Slider(w, Rect(490, 10, 10, 450)).action_{|me|
+	a.rotZ = me.value * 2pi;
+	w.refresh;
+};
+)
+
+a.isHighlight = true;
+a.highlightColor = Color.green;
+a.highlightSize = 10@10;
+(
+a.highlightItem = 150.rand;
+w.refresh;
+)
+::

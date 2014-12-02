@@ -1,0 +1,198 @@
+TITLE:: JITView
+summary:: a modal view to show any object.
+categories:: GUI, Libraries>JITLib>GUI
+related:: Classes/MView, Classes/JITGui
+Ndef
+DESCRIPTION::
+JITView can display an object as its source code,
+change it by code, and do multiple actions with it.
+It has a UserView for configurable display and interaction modes.
+Its action is an MFunc to allow configurable actions when activated.
+For flexible display of number(s), see its subclass link::MView::.
+For modal guis for JIT-style objects, see MGui.
+
+
+code::
+// make a JITView: value, parent, bounds
+j = JITView(123, nil, Rect(10, Window.screenBounds.height - 100, 300, 40));
+
+// much of its internals are in a dict
+j.dict;
+
+// set its label (on the top left);
+j.label_(\yo);
+j.label_(\yoyoYO);
+
+// if its parent is a window:
+j.parent.name_("My JITView window");
+
+// set its value - can be anything
+j.value_(\symbol);
+j.value_(nil);
+j.value_( Pdefn(\abc, 123) );
+
+j.value_(30);
+// floats are shown as floats
+j.value_(30.0);
+j.value_([30, 300]);
+j.value_([30, 300, 3000]);
+
+
+// checkNum is a utility used to determine whether a value object
+// is a number or numbers; in effect, whether it can be rounded:
+// 0 if not a number, 1 if a single number, 2 if array of all numbers.
+// (arrays of arrays of numbers not supported yet)
+j.checkNum(12);	 // -> 1, can round
+j.checkNum(nil); // -> 0
+j.checkNum([12, 12]); // -> 2, can round
+
+j.value_(10.123456); //default round is 0.0001
+j.putDict(\round, 0.01).refresh;
+j.putDict(\round, nil).refresh; //back to default 0.0001
+j.putDict(\round, 0).refresh; // no rounding
+
+j.action.add(\test, { |jv| "jv value is: %\n".postf(jv.value) });
+
+// hitting enter on the view does action, or this:
+j.doAction;
+
+// BASIC display mode of JITView is \code;
+// subclasses like MView have others, such as \number.
+// as there is only one mode, there is no real need to switch to others
+j.mode_(\code);
+// shortcut: typing alt-c on the view also switches to code mode.
+// or code shortcut:
+j.code;
+
+/* in code mode, one can enter any valid bit of code as value,
+	and it will be shown as a compileString.
+	-> tab to display current value as editString
+	-> backspace to delete char,
+	-> shift-backspace to clear editString
+	-> return to try to enter:
+		if ok:
+			editStr becomes new value, doAction is called
+		if it does not compile, nothing happens
+			but a doAction on the previous value.
+*/
+
+// JITView can be hilited with a custom string and color,
+// e.g. to show a mapping to a control source
+j.hilite("sl1");
+j.nohilite;
+// customize hilite font and color
+j.putDict(\hiFontCol, Color.magenta(1.0, 0.6));
+j.putDict(\hiFont, Font("Inconsolata", 24));
+j.hilite("sl1");
+j.nohilite;
+
+::
+
+CLASSMETHODS::
+
+METHOD:: initClass
+prepare styleDict
+
+
+
+METHOD:: styleDict
+a dictionary with colors and fonts for display.
+it is parent to a local dict in a JITView, so many display params
+can be individually overwritten.
+code::
+JITView.styleDict.printAll;
+::
+
+METHOD:: new
+make a new JITView
+ARGUMENT:: parent
+a parent on which to display; if none is given, one is created.
+ARGUMENT:: bounds
+the bounds within which to display; if not given, bounds will be created.
+ARGUMENT:: options
+provision for display options, not used yet.
+
+
+INSTANCEMETHODS::
+
+METHOD:: value
+get and set view's value, can be any object
+
+METHOD:: valueAction
+set view's value and do its action
+
+METHOD:: action
+the view's action, a modal MFunc.
+
+METHOD:: doAction
+evaluate the action.
+
+METHOD:: parent
+the parent view or window used for display.
+
+METHOD:: bounds
+the bounds used for display
+
+METHOD:: dict
+a dict for various data useful for the display.
+
+METHOD:: putDict
+put things into dict by pairs of key, value, key value.
+
+METHOD:: uv
+the userview which handles display.
+
+METHOD:: doEnter
+evaluate the action from keys.
+
+
+METHOD:: drawFunc
+the drawFunc of the user view, an MFunc which handles all configurable aspects of display.
+
+METHOD:: prepDraw
+prepare general data for display
+
+METHOD:: drawLabel, drawValue, drawEditStr, drawHilite
+methods for drawing label, value and editStr.
+
+METHOD:: refresh
+redraw user view.
+
+
+METHOD:: hilite
+hilite a JITView with a label and a color
+
+METHOD:: nohilite
+
+METHOD:: funcs
+get all of uv's actions in one array [drawFunc, keyDownAction, mouseDownAction, mouseMoveAction]
+
+METHOD:: mode
+set and get the current mode.
+modes must be present in the various action functions.
+
+PRIVATE:: init, makeParent, makeBounds, makeDrawFunc, adjustFont, makeViews
+PRIVATE:: makeMouseActions, makeKeyDownActions
+
+METHOD:: makeVals
+make n values with a function
+
+METHOD:: checkNum
+check whether a possible next value is a number or numbers or not.
+
+RETURNS::
+0 if not a number, 1 if a single number, 2 if array of all numbers.
+
+
+EXAMPLES::
+
+code::
+// to follow - see also
+MView.openHelpFile
+
+// switch to a mode that only displays label,
+// i.e. no code string, no editing
+j.mode_(\nameOnly);
+j.mode_(\code);
+
+::

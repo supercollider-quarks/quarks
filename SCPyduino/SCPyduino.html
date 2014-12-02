@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #ff0000}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #f00000}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #de0000}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #f00000; min-height: 12.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #de0000; min-height: 12.0px}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000}
+p.p18 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #bf0000}
+p.p19 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Monaco; color: #bf0000}
+p.p22 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p23 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p24 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #de0000}
+p.p25 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #de0000; min-height: 12.0px}
+p.p26 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Monaco; color: #de0000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #0025d2}
+span.s4 {font: 12.0px Helvetica}
+span.s5 {color: #001ac7}
+span.s6 {color: #de0000}
+span.s7 {color: #0000bf}
+span.s8 {color: #bf0000}
+span.s9 {font: 11.0px Monaco}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>SCPyduino<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>interface for Firmata</b></p>
+<p class="p2"><br></p>
+<p class="p1">Class that communicates with a microcontroller running Firmata (http://www.firmata.org).<span class="Apple-converted-space">  </span>Originally written in Python by Joe Turner. ( http://code.google.com/p/pyduino/ )</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4"><b>Some Issues Regarding SCPyduino</b></p>
+<p class="p3"><br></p>
+<p class="p1">In order to use this to communicate with an Arduino, it has to be loaded with the sketch <b>Standard_Firmata.pde</b>. You should be able to find this in the Arduino software examples folder.</p>
+<p class="p3"><br></p>
+<p class="p1">This class is still in an early development stage. It's has only been tested on Arduino. Not tested on Windows.<span class="Apple-converted-space"> </span></p>
+<p class="p1">Any suggestions, corrections or comments are welcome.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (port)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Short prose description of method.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>port </b>- device path</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// List devices</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>SerialPort.listDevices</p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//choose appropriate index. You can also cut and paste the path name directly in the port argument</p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d = SerialPort.devices[6]; </span>// or "/dev/tty.usbserial-A1001NeZ"</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f = <span class="s3">SCPyduino</span>.new(d);</p>
+<p class="p5"><br></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//wait ~three secs</p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.firmataVersion; </span>// posts the version of Firmata returned from the microcontroller if</p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//connection is ok</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.close; </span>//close the SerialPort connection.</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p14"><b>Accessing Instance and Class Variables</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>digitalPorts</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>An array of two 8-bit ports. Digital pins 0..7 belongs to .digitalPorts[0], pins [8..13] belongs to .digitalPorts[1].</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The Firmata protocol supports up to 16<span class="Apple-converted-space">  </span>8-bit ports, but this is yet to be implemented in this class. Before you can read/write to a digital pin, the port has to be activated:</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>f = <span class="s5">SCPyduino</span>.new(d);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.digitalPorts[1].active_(1);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.digitalPorts.active.postln; <span class="s6">// returns 1</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.close;</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>analog</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>An array of analog pins. The Firmata protocol support up to 16 analog pins. In the current impementation the number of analog pins is 6. The pins has to be activated in order to read values from the pins.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>f = <span class="s5">SCPyduino</span>.new(d);</p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.analog[0].active_(1); </span>//activates polling for analog pin 0 on the microcontroller</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.iterate; </span>//tell microcontroller to poll activated pins/ports</p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.analog[0].value; </span>// return value stored for analog pin 0</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.close;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>digital</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>An array of digital pins. the firmata protocol supports up to 128 pins (16<span class="Apple-converted-space">  </span>* 8-bit ports). In the current implemetation the number of digital pins is set to 14.<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Each digital pin can have three modes :</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>digital_output : for writing to pin, enumerated as 0</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>digital_input : for reading pin, enumerated as 1</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>digital_pwm : for PWM output (only on pins: 3, 5, 6, 9, 10, 11), enumerated as 2</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>All modes are accessible through instance variables and can be used as argument for SCPyduino.digital[].mode():</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>f = <span class="s5">SCPyduino</span>.new(d);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.digital_input; <span class="s6">// returns 0</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.digital_output; <span class="s6">// returns 1</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.digital_pwm; <span class="s6">// returns 2</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.close;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Pins 0, 1 (Tx, Rx), 15 and 16 are set to \unavailable to prevent user to use these pins for writing/reading data.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The mode is set as follows:</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>f = <span class="s5">SCPyduino</span>.new(d);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.digital[0].mode_(f.digital_output); <span class="s6">//throws an error since we can't use Rx</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.digital[13].mode_(f.digital_output);<span class="s6"> //works</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.digital[4].mode_(f.digital_pwm); </span>//throws an error since it's not a pwm pin</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.digital[5].mode_(f.digital_pwm); <span class="s6">// works</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.digital[2].mode_(f.digital_input);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f.close;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>firmataVersion</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The version of Firmata returned from the microcontroller.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><b>Polling values from the pins</b></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>iterate</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Sends message to microcontroller to poll activated pins/ports. Results are returned and stored in</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>SCPyduino.digital[0..13].value and SCPyduino.analog[0..6].value<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>close</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Closes the SerialPort connection.</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p14"><b>Examples</b></p>
+<p class="p16"><br></p>
+<p class="p9">// List devices</p>
+<p class="p17"><span class="s7">SerialPort</span>.listDevices</p>
+<p class="p18">//choose appropriate index. You can also cut and paste the path name directly in the port argument</p>
+<p class="p18"><span class="s2">d = </span><span class="s7">SerialPort</span><span class="s2">.devices[6]; </span>//select correct index for serial port</p>
+<p class="p19"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p17">p = <span class="s7">SCPyduino</span>.new(d);</p>
+<p class="p20"><br></p>
+<p class="p21">// - Controlling digital output -</p>
+<p class="p22">//Activate digital port 1 (PORTB) on the Arduino</p>
+<p class="p23">p.digitalPorts[1].active_(1)</p>
+<p class="p20"><br></p>
+<p class="p22">//Set the mode for digital pin 13 to digital output</p>
+<p class="p23">p.digital[13].mode_(p.digital_output);</p>
+<p class="p20"><br></p>
+<p class="p23">p.digital[13].write(1);<span class="s8">//turn on LED</span></p>
+<p class="p23">p.digital[13].write(0);<span class="s8">//turn off LED</span></p>
+<p class="p20"><br></p>
+<p class="p22">//Make the LED blink</p>
+<p class="p23">(</p>
+<p class="p23">a = fork{<span class="Apple-converted-space"> </span></p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>loop{</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.digital[13].write(1);</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1.wait;</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.digital[13].write(0);</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1.wait;</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p23">};</p>
+<p class="p23">)</p>
+<p class="p24"><span class="s2">a.stop; </span>// stop blinking</p>
+<p class="p25"><br></p>
+<p class="p25"><br></p>
+<p class="p26">// - Reading a digital pin<span class="s9"> -</span></p>
+<p class="p2"><br></p>
+<p class="p24"><span class="s2"><span class="Apple-tab-span">	</span></span>// activate port 0 (PORTA)</p>
+<p class="p2"><br></p>
+<p class="p23">p.digitalPorts[0].active_(1);</p>
+<p class="p20"><span class="Apple-tab-span">	</span></p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span></span>// set the mode for digital pin 2 to digital_output</p>
+<p class="p20"><br></p>
+<p class="p23">p.digital[2].mode_(p.digital_input);</p>
+<p class="p20"><br></p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span></span>// read digital pin 2 and post value</p>
+<p class="p23">(</p>
+<p class="p23">a = fork {</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>loop {</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.iterate;</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.digital[2].value.postln;</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p23">}</p>
+<p class="p23">)</p>
+<p class="p23">a.stop</p>
+<p class="p2"><br></p>
+<p class="p26">// - Reading an analog port -</p>
+<p class="p2"><br></p>
+<p class="p24"><span class="s2"><span class="Apple-tab-span">	</span></span>//active analog pin 0</p>
+<p class="p23">p.analog[0].active_(1)</p>
+<p class="p20"><br></p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span></span>//post value of analog pin 0</p>
+<p class="p23">(</p>
+<p class="p23">a = fork{</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>loop{</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.iterate;</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.analog[0].value.postln;</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p23">};</p>
+<p class="p23">)</p>
+<p class="p23">a.stop;</p>
+<p class="p20"><br></p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span></span>//deactivate reporting analog values</p>
+<p class="p23">p.analog[0].active(0);</p>
+<p class="p2"><br></p>
+<p class="p26">// - pwm output -</p>
+<p class="p2"><br></p>
+<p class="p23">p.digitalPorts[0].active_(1);</p>
+<p class="p20"><br></p>
+<p class="p23">p.digital[3].mode_(p.digital_pwm);</p>
+<p class="p20"><br></p>
+<p class="p22">//pulsating LED</p>
+<p class="p23">(</p>
+<p class="p23"><span class="s7">var</span> i;</p>
+<p class="p23">a = fork{</p>
+<p class="p23"><span class="Apple-tab-span">	</span>5000.do { <span class="s7">|i|</span></p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>i = (((i % 500) / 500) * 2pi);</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.digital[3].write(sin(i) + 1 * 0.5);</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.005.wait;</p>
+<p class="p23"><span class="Apple-tab-span">	</span>}</p>
+<p class="p23">}</p>
+<p class="p23">)</p>
+<p class="p23">a.stop;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p24"><span class="s2">p.close </span>// close serialport</p>
+</body>
+</html>

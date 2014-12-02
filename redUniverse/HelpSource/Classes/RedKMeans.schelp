@@ -1,0 +1,89 @@
+CLASS:: RedKMeans
+SUMMARY:: k-means clustering
+CATEGORIES:: Red>redUniverse>additional
+RELATED:: Classes/RedVector
+
+DESCRIPTION::
+Group points in space. Similar to KMeans quark by Dan Stowell but this one is implemented slightly differently and also uses link::Classes/RedVector::.
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: k
+The number of centroids.
+
+ARGUMENT:: max
+The maximum number of tries in undecided/borderline situations.
+
+INSTANCEMETHODS::
+
+METHOD:: reset
+This will reset any previously calculated centroids on next update.
+
+METHOD:: classify
+Test only one vector on the current centroids. Rarely needed.
+
+METHOD:: update
+Vectors should be an array of link::Classes/RedVector:: objects. The vectors can be of any dimension.
+
+METHOD:: k
+
+METHOD:: max
+
+METHOD:: centroids
+An array containing the result after the update method is called. It holds link::#-k:: number of link::Classes/RedVector:: objects representing the found centroids.
+
+METHOD:: classifications
+An array containing the result after the update method is called. It holds indices and have the same size as the number of items in the vectors array. Each index represents which centroid each vector belongs to. So to look up the closest centroid for vector i, do centroids[classifications[i]].
+
+EXAMPLES::
+
+CODE::
+a= RedKMeans(5);
+b= {RedVector2D[640, 480].rand}.dup(1000);	//create some test 2d points
+a.update(b);			//calculate. results will be in variables centroids and classifications
+a.centroids;			//returns a list with 5 centroids
+a.classifications;		//returns a list with 1000 centroid indices. one for each vector
+
+(
+	w= Window("k-means plot", Rect(100, 100, 640, 480), false);
+	w.view.background= Color.black;
+	w.drawHook= {
+		var colors= {|i| Color.hsv(i/a.k, 1, 1)}.dup(a.k);
+		b.do{|vec, i|
+			Pen.fillColor= colors[a.classifications[i]];
+			Pen.fillRect(Rect.aboutRedVector2D(vec, 1));
+		};
+		Pen.fillColor= Color.white;
+		a.centroids.do{|cent, i|
+			Pen.strokeColor= colors[i];
+			Pen.strokeOval(Rect.aboutRedVector2D(cent, 8));
+			Pen.stringAtPoint(i.asString, Point(cent[0], cent[1]));
+		};
+	};
+	w.front;
+)
+
+a.k= 8;				//add some more centroids
+a.update(b);			//call update on the same data to recalculate and find the new centroids
+a.centroids.size		//will be 8
+w.refresh;			//now plot again. 3 new centroids added and the previous ones made room
+
+b= {RedVector2D[640, 480].rand}.dup(1000);	//replace the data completely
+a.update(b);			//call update again
+w.refresh;			//data changed and old centroids adapted by moving a bit
+
+b= b.copyRange(0, 499);		//strip away half the data
+a.update(b);			//call update again
+w.refresh;			//data loss and old centroids adapted by moving a tiny bit
+
+a.reset;			//forget centroids
+a.update(b);
+w.refresh;			//same data but new centroids found
+
+
+a.classify(RedVector2D[320, 240]);	//test middle point and see which class it would belong to
+
+w.close
+::

@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #bebebe}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #bebebe; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #bebebe; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bebebe}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {color: #000000}
+span.s2 {color: #0000bf}
+span.s3 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>MIDISyncClock</b></p>
+<p class="p2"><br></p>
+<p class="p3">A hack to try to slave sc to external MIDI clock messages.</p>
+<p class="p2"><br></p>
+<p class="p3">A singleton. No instance methods; the entire interface is through the class.</p>
+<p class="p2"><br></p>
+<p class="p3">Limitations:<span class="Apple-tab-span">	</span>All events are quantized to the nearest tick.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Timing may not be reliable in high-pressure situations.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Written in sc, not in c++, so it may be CPU hungry.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Beats counter is OK. MIDISyncClock.seconds returns elapsed seconds since clock start.</p>
+<p class="p2"><br></p>
+<p class="p3">The clock responds to three kinds of MIDI clock messages:</p>
+<p class="p3"><span class="Apple-tab-span">	</span>clock: Advances the clock by one tick (1/24 beat). The number of ticks per beat is configurable.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>start: Reset all counters to 0. This ensures that the MIDISyncClock will be synced with the MIDI clock.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>stop: Clear the queue. Since the clock is not running and times on the queue will be invalid once</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the clock restarts, the queue should be emptied.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Methods:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*init(argBeats, argSeconds)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Initialize the clock. If MIDIClient is not initialized, this method will do it and connect the sources sequentially to MIDIIn.</p>
+<p class="p2"><br></p>
+<p class="p3">Note that MIDIIn.sysrt receives clock messages ONLY from the port assigned to MIDIIn inport 0. If your clock source is not at MIDIClient.sources[0], make sure to connect it manually.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*schedAbs(when, task)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Schedule a task on a specific beat.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*sched(when, task, adjustment = 0)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Schedule a task for "when" beats from now. The adjustment argument is used internally to maintain correct timing of event streams. Normally you should not use this argument.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*play(task, when)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Play a task based on a quantization factor specified as "when." This uses <b>[TimeSpec]</b> objects in my library. Normal sc syntax (when = a simple number specifying beats to round up) will work as usual.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*clear</b></p>
+<p class="p2"><br></p>
+<p class="p3">Empty the queue.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*tempo</b></p>
+<p class="p3"><b>*beatDur</b></p>
+<p class="p2"><br></p>
+<p class="p3">Estimates of the tempo, and duration of one beat. There is some jitter in receiving MIDI messages; therefore these numbers can never be exact.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Using Event Streams with MIDISyncClock:</b></p>
+<p class="p2"><br></p>
+<p class="p3">Note, these instructions are no longer valid due to changes in the class library. I'll figure out how to make it work later but don't have time at the moment.</p>
+<p class="p2"><br></p>
+<p class="p6">To play Pbinds and such, you'll need to make some hacks to EventStreamPlayer and Event. These changes have not been approved by jmc (and I expect he'll have issues with them), so don't count on them. But they do make the clock work!</p>
+<p class="p7"><br></p>
+<p class="p6">EventStreamPlayer - add the following before the "clock.play..." line:</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>event = event.copy.put(\clock, clock);</p>
+<p class="p7"><br></p>
+<p class="p6">Event - in the schedBundle and schedBundleArray functions:</p>
+<p class="p7"><br></p>
+<p class="p6">near the bottom, change the following line:</p>
+<p class="p9"><span class="Apple-tab-span">	</span>thisThread.clock.sched(sustain) {<span class="Apple-converted-space"> </span></p>
+<p class="p6">to read:</p>
+<p class="p9"><span class="Apple-tab-span">	</span>(~clock ? thisThread.clock).sched(sustain) {<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Example:</b></p>
+<p class="p2"><br></p>
+<p class="p10">MIDIClient<span class="s1">.init;</span></p>
+<p class="p11"><span class="s2">MIDIIn</span><span class="s1">.connect(0, </span><span class="s2">MIDIClient</span><span class="s1">.sources[0]);<span class="Apple-converted-space">  </span></span>// or which device holds the clock</p>
+<p class="p12"><br></p>
+<p class="p11"><span class="s2">MIDISyncClock</span><span class="s1">.init(0, 0);<span class="Apple-tab-span">	</span></span>// 0 beats, 0 secs</p>
+<p class="p12"><br></p>
+<p class="p11">// start sending MIDI clock messages</p>
+<p class="p12"><br></p>
+<p class="p13">s.boot;</p>
+<p class="p12"><br></p>
+<p class="p13">t = <span class="s2">Task</span>({</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s2">var</span><span class="Apple-tab-span">	</span>synth;</p>
+<p class="p13"><span class="Apple-tab-span">	</span>loop {</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>#[60, 62, 64, 65, 67, 65, 64, 62].do({ <span class="s2">|note|</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>s.makeBundle(0.2, {</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>synth = <span class="s2">Synth</span>(<span class="s3">\default</span>, [freq: note.midicps])</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>s.makeBundle(0.4, {</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>synth.release;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.25.wait;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p13"><span class="Apple-tab-span">	</span>}</p>
+<p class="p13">}).play(<span class="s2">MIDISyncClock</span>, quant: 1);</p>
+<p class="p12"><br></p>
+<p class="p13"><span class="s2">SynthDescLib</span>.global.read;</p>
+<p class="p14"><br></p>
+<p class="p13">t = <span class="s2">Pbind</span>(<span class="s3">\midinote</span>, <span class="s2">Pseq</span>([60, 62, 64, 65, 67, 65, 64, 62], <span class="s2">inf</span>),</p>
+<p class="p15"><span class="s1"><span class="Apple-tab-span">	</span></span>\delta<span class="s1">, 0.25, </span>\dur<span class="s1">, 0.25, </span>\instrument<span class="s1">, </span>\default<span class="s1">)</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>.play(<span class="s2">MIDISyncClock</span>, quant:4);</p>
+<p class="p12"><br></p>
+<p class="p11">// play with the tempo of the midi clock. sc should adjust accordingly.</p>
+<p class="p12"><br></p>
+<p class="p13">t.stop;</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+</body>
+</html>

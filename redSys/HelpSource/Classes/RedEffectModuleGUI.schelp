@@ -1,0 +1,86 @@
+CLASS:: RedEffectModuleGUI
+SUMMARY:: gui for effect modules
+CATEGORIES:: Red>redModule
+RELATED:: Classes/RedEffectModule, Classes/RedInstrumentModuleGUI
+
+DESCRIPTION::
+NOTE::
+Requires link::Classes/Conductor:: quark.
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: redEffectModule
+A link::Classes/RedEffectModule::.
+
+ARGUMENT:: parent
+A link::Classes/Window::, link::Classes/CompositeView:: or code::nil::.
+
+ARGUMENT:: position
+A link::Classes/Point:: or code::nil::.
+
+METHOD:: newMirror
+Does not connect sliders and knobs to link::Classes/CV::s. For now/later functionality in effect rack gui.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prContainer, initRedEffectModuleGUI
+
+METHOD:: close
+Check if a window was created as parent and then closes it.
+
+METHOD:: mirror
+A link::Classes/Boolean::.
+
+EXAMPLES::
+
+CODE::
+s.boot
+a= RedEfxVerb.new;
+b= RedEffectModuleGUI(a);
+b.redEffectModule==a
+b.parent
+b.views
+b.mirror
+a.cvs.verbMix.input= 0.3;
+b.close
+a.free
+
+//--
+RedEfxTape.new.gui
+
+//--
+a= RedEfxGuit.new;
+b= RedEffectModuleGUI(a);
+c= RedEffectModuleGUI.newMirror(a);
+a.cvs.guitCenter.input= 0.6;
+c.views[1].value= 0.3
+b.close; c.close;
+a.free
+
+//--
+(
+var efx= [RedEfxRing.new, RedEfxDist.new, RedEfxTank.new, RedEfxGuit.new];
+var win= Window("test", Rect(100, 200, 300, 400));
+win.front;
+win.view.decorator= FlowLayout(win.view.bounds);
+efx.do{|x|
+	RedEffectModuleGUI(x, win, Point(0, 0), true);
+};
+CmdPeriod.doOnce({if(win.isClosed.not, {win.close})});
+)
+
+//--
+(
+w= Window("hgf", Rect(100, 200, 500, 500));
+w.front;
+v= CompositeView(w, Rect(10, 10, 400, 400)).background_(Color.blue).decorator= FlowLayout(Rect(0, 0, 300, 300));
+a= RedEfxGuit.new;
+Pbind(\degree, 0).play;
+a.gui(v);
+v.decorator.nextLine;
+a.gui(v);
+)
+::

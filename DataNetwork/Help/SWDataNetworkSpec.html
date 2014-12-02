@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWDataNetworkSpec</TITLE>
+<META NAME="description" CONTENT="SWDataNetworkSpec">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node9.html">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+</HEAD>
+
+<BODY >
+
+
+<H2><A NAME="SECTION00044000000000000000">
+SWDataNetworkSpec</A>
+</H2>
+This class implements the labelling of the nodes and slots of the network. An instance of this class is automatically created when an instance of a SWDataNetwork is created, and most methods are accessible directly from that class.
+
+<h3>- Example - </h3>
+    <pre>
+<span class="comment-delimiter">// </span><span class="comment">define the network
+</span>x = <span class="type">SWDataNetwork</span>.new;
+
+<span class="comment-delimiter">// </span><span class="comment">add some keys to the spec (SWDataNetwork forwards these methods to the spec):
+</span>x.add( <span class="constant">\accelerometer</span>, 1 );
+x.add( <span class="constant">\acc_x</span>, [1,0] );
+x.add( <span class="constant">\acc_y</span>, [1,1] );
+x.add( <span class="constant">\acc_z</span>, [1,2] );
+
+<span class="comment-delimiter">// </span><span class="comment">print the spec-map:
+</span>x.spec.map;
+
+<span class="comment-delimiter">// </span><span class="comment">save the map to file:
+</span>x.spec.save(<span class="string">"accelerometer-example"</span>);
+
+<span class="comment-delimiter">// </span><span class="comment">create another network: (for example's sake, normally you'd only use one at a time)
+</span>y = <span class="type">SWDataNetwork</span>.new;
+
+<span class="comment-delimiter">// </span><span class="comment">load the spec from file (SWDataNetwork forwards setSpec to spec.fromFile):
+</span>y.setSpec(<span class="string">"accelerometer-example"</span>);
+
+<span class="comment-delimiter">// </span><span class="comment">printh the spec-map:
+</span>y.spec.map;</pre>
+
+
+<h3>- Methods - </h3>
+<DL>
+
+<DT><STRONG>*new ( netw )</STRONG></DT>
+<DD>Create a new instance of SWDataNetworkSpec for the network <em>netw</em></DD>
+
+<DT><STRONG>name (  )</STRONG></DT>
+<DD>The name of the spec. This is basically a label (e.g. the name of your project).</DD>
+<DT><STRONG>name_ ( name )</STRONG></DT>
+<DD>Set the name of the spec</DD>
+
+<DT><STRONG>map (  )</STRONG></DT>
+<DD>The IdentityDictionary holding the keys and node and slot ID's to which the keys point.</DD>
+
+
+<DT><STRONG>save ( name )</STRONG></DT>
+<DD>Save an SWDataNetworkSpec to file with the given <em>name</em>. The spec will be saved in your userAppSupportDirectory in a folder called DataNetworkSpecs. The class also creates a file with an index of known data network specs.</DD>
+<DT><STRONG>fromFile ( name )</STRONG></DT>
+<DD>Load an SWDataNetworkSpec with <em>name</em> from file.</DD>
+
+<DT><STRONG>copyFile ( target )</STRONG></DT>
+<DD>Copy the current spec to another location.</DD>
+
+<DT><STRONG>fromFileName ( fn )</STRONG></DT>
+<DD>Load an SWDataNetworkSpec from file <em>fn</em>.</DD>
+
+
+<DT><STRONG>*all ()</STRONG></DT>
+<DD>View all the specs that have been stored to file.</DD>
+
+
+<DT><STRONG>findNode ( id )</STRONG></DT>
+<DD>Find the key for node with <em>id</em></DD>
+<DT><STRONG>findSlot ( id1, id2 )</STRONG></DT>
+<DD>Find the key for slot with the ID <em>[id1,id2]</em></DD>
+
+<h4>- The methods below can all be accessed from the network directly as well - </h4>
+
+<DT><STRONG>add ( key, slot )</STRONG></DT>
+<DD>Add a <em>key</em> (node or slot label) to the spec. <em>slot</em> can be the node ID (one integer), or the slot ID (an Array of two integers).</DD>
+
+<h4>- Named access to nodes, values and actions - </h4>
+
+<DT><STRONG>at ( key )</STRONG></DT>
+<DD>Returns the node or slot at <em>key</em></DD>
+<DT><STRONG>value ( key )</STRONG></DT>
+<DD>Get the value of the node or slot at <em>key</em></DD>
+<DT><STRONG>action_ ( key, action )</STRONG></DT>
+<DD>Set the action of the node or slot at <em>key</em></DD>
+
+<h4>- Node bus control - </h4>
+
+<DT><STRONG>bus ( key )</STRONG></DT>
+<DD>Get the bus of the node or slot at <em>key</em></DD>
+<DT><STRONG>createBus ( key, server )</STRONG></DT>
+<DD>Create a control bus on the <em>server</em> for the node or slot at <em>key</em>. The data that comes into the slot is automatically mapped to this bus.</DD>
+<DT><STRONG>freeBus ( key )</STRONG></DT>
+<DD>Free the bus of the node or slot at <em>key</em></DD>
+<DT><STRONG>createAllBuses ( server )</STRONG></DT>
+<DD>Creates buses for all nodes that are named in the spec on the specified <em>server</em></DD>
+<DT><STRONG>freeAllBuses (  )</STRONG></DT>
+<DD>Free all the buses that have been created.</DD>
+
+</DL>
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+  HREF="SWDataNetworkOSC.html">SWDataNetworkOSC</A>
+</LI>
+<LI><I> Previous:</I> <A 
+  HREF="SWDataSlot.html">SWDataSlot</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<BR><HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</BODY>
+</HTML>

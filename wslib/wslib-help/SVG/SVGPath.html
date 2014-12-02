@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0054da; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001bb9}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #b31400}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #99210a}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #002eaf}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #c50000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0001ee}
+span.s1 {color: #095ed0}
+span.s2 {text-decoration: underline ; color: #004ecb}
+span.s3 {color: #0054da}
+span.s4 {color: #0033f1}
+span.s5 {text-decoration: underline}
+span.s6 {color: #000000}
+span.s7 {color: #287016}
+span.s8 {color: #002eaf}
+span.s9 {color: #456b26}
+span.s10 {color: #001bb9}
+span.s11 {color: #606060}
+span.s12 {color: #0000bf}
+span.s13 {color: #00730a}
+span.s14 {color: #0026b4}
+span.s15 {color: #3b6d1e}
+span.s16 {font: 12.0px Helvetica}
+span.s17 {font: 12.0px Helvetica; text-decoration: underline}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SVGPath</b></p>
+<p class="p2">Part of <a href="../wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">see also: <a href="SVG.html"><span class="s2">SVG</span></a>, <a href="SVGFile.html"><span class="s3">SVGFile</span></a></p>
+<p class="p4"><br></p>
+<p class="p2"><b>superclass : </b><a href="SVGObject.html"><span class="s3"><b>SVGObject</b></span></a></p>
+<p class="p4"><br></p>
+<p class="p2"><b>related classes : </b><a href="SVGPathSegment.html"><span class="s4"><b>SVGPathSegment</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p2">The SVGPath object contains data of the most complex and powerful SVG object: the path. An SVGPath is constructed out of SVGPathSegment objects, wich each describe one step in the path.</p>
+<p class="p3"><br></p>
+<p class="p2">The SVG plotting option dosn't yet display all known types of SVGPathSegments.</p>
+<p class="p3"><br></p>
+<p class="p5"><b><span class="s5">creation</span></b></p>
+<p class="p6"><br></p>
+<p class="p2"><b>SVGPath ( segments, name, strokeColor, fillColor, strokeWidth, transform )</b></p>
+<p class="p2">creates a new object with the instance variables as described below and in the <a href="SVGObject.html"><span class="s3">SVGObject</span></a> helpfile</p>
+<p class="p3"><br></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>segments : </b>segments is an <b>Array</b> of objects wich should all respond to the <b>asSVGPathSegment </b>method.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>these can be:</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>SVGPathSegment</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Point </b>: will be converted to an SVGPathSegment of type 'LineTo', or will be added to<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the previous item if that has less arguments then it can have</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>Array : </b>[ type, ...values ] where type should be a Symbol.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If type starts with an upper case char, the segment is absolute, lowercase is relative to the</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>previous segment. See the <a href="SVGPathSegment.html"><span class="s4">SVGPathSegment</span></a><span class="s4"> </span>helpfile for details about types.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>SVGPath internally cleans up the array, which makes the input more flexible.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>segments can also be a <b>String</b>, formatted according to the standard SVG 1.1 implementation</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7">(</p>
+<p class="p8">SVGPath<span class="s6">( [<span class="Apple-converted-space"> </span></span></p>
+<p class="p7"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span>[ <span class="s7">\MoveTo</span>, 10, 10 ],<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="s6"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span>100@100,<span class="Apple-converted-space">  </span></span>// becomes 'LineTo' in this case</p>
+<p class="p7"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span>[ <span class="s7">\CurveTo</span>, 150, 150, 150, 250, 100, 300 ],</p>
+<p class="p7"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span>[ <span class="s7">\closePath</span> ] ],<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="s6"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></span>"my path"<span class="s6">, </span>"purple"<span class="s6"> ).plot;</span></p>
+<p class="p7">)</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s6">( </span>// same thing:</p>
+<p class="p7"><span class="s8">SVGPath</span>( [ [ <span class="s9">\M</span>, 10, 10 ], [ <span class="s9">\L</span>, 100, 100 ], [ <span class="s9">\C</span>, 150, 150, 150, 250, 100, 300 ], [ <span class="s9">\z</span> ] ],<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="s6"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></span>"my path"<span class="s6">, </span>"purple"<span class="s6"> ).plot;</span></p>
+<p class="p7">)</p>
+<p class="p11"><br></p>
+<p class="p9">// same thing:</p>
+<p class="p7"><span class="s10">SVGPath</span>( [ <span class="s7">\M</span>, 10@10, <span class="s7">\L</span>, 100@100, <span class="s7">\C</span>, 150@150, 150@250, 100@300, <span class="s7">\z</span> ], <span class="s11">"my path"</span>, <span class="s11">"purple"</span> ).plot;</p>
+<p class="p11"><br></p>
+<p class="p9">// same thing:</p>
+<p class="p10"><span class="s10">SVGPath</span><span class="s6">( </span>"M10,10 L100,100 C150,150 150,250 100,300z"<span class="s6">, </span>"my path"<span class="s6">, </span>"purple"<span class="s6"> ).plot;</span></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s6">( </span>// same thing:</p>
+<p class="p13">SVGPath<span class="s6">( [<span class="Apple-converted-space"> </span></span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s8">SVGPathSegment</span>( <span class="s9">\MoveTo</span>, 10, 10 ),<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s8">SVGPathSegment</span>(<span class="Apple-converted-space">  </span><span class="s9">\LineTo</span>, 100, 100 ),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s8">SVGPathSegment</span>(<span class="Apple-converted-space">  </span><span class="s9">\CurveTo</span>, 150, 150, 150, 250, 100, 300 ),</p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span></span>SVGPathSegment<span class="s6">(<span class="Apple-converted-space">  </span></span><span class="s9">\closePath</span><span class="s6"> ) ],<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="s6"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></span>"my path"<span class="s6">, </span>"purple"<span class="s6"> ).plot;</span></p>
+<p class="p7">)</p>
+<p class="p11"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s12">SVGPath</span>( [[ <span class="s13">\M</span>, 200, 200 ]] ++ ({ [ <span class="s13">\sCurveTo</span> ] ++ ({ 50.rand2 }!4); }!10), <span class="s11">"randomwalk"</span>,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>strokeColor: <span class="s11">"dark_blue"</span> ).plot;</p>
+<p class="p7">)</p>
+<p class="p11"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s14">SVGPath</span>( [[<span class="s15">\M</span>,200,200]] ++ ({<span class="s14">|i|</span>[[ <span class="s15">\HLineTo</span>, <span class="s15">\VLineTo</span> ].wrapAt(i), 400.rand] }! 50), <span class="s11">"rectrand"</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>strokeColor: <span class="s11">"yellow"</span>,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>fillColor: <span class="s11">"navy"</span><span class="Apple-converted-space">  </span>).plot</p>
+<p class="p7">)</p>
+<p class="p11"><br></p>
+<p class="p2"><b>asSVGPath</b></p>
+<p class="p2">this message can be called on a number of classes:</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b><i>Collection, String</i></b></p>
+<p class="p2"><b><i><span class="Apple-tab-span">	</span></i></b>uses the Collection as segments argument</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s16"><span class="Apple-tab-span">	</span></span>[[ <span class="s7">\M</span>, 10, 10 ],[ <span class="s7">\l</span>, 200, 20 ],[ <span class="s7">\c</span>, 10,100, -100, 10, -100, 50 ],[ <span class="s7">\z</span> ]].asSVGPath.plot;</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b><i><span class="Apple-tab-span">	</span>SVGCircle, SVGEllipse, SVGLine, SVGPolyLine, SVGPolygon, SVGRect</i></b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>for these classes an extra argument "relative" is available, which defaults to 'true'. If relative is true</p>
+<p class="p2"><span class="Apple-tab-span">	</span>all path segments are relative to the first \MoveTo element</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s16"><span class="Apple-tab-span">	</span></span>(</p>
+<p class="p7"><span class="Apple-tab-span">	</span>r = <span class="s12">SVGEllipse</span>( 120, 100, 100, 80, strokeColor: <span class="s11">"blue"</span> );</p>
+<p class="p7"><span class="Apple-tab-span">	</span>p = r.asSVGPath( <span class="s12">true</span> ).strokeColor_( <span class="s11">"red"</span> );</p>
+<p class="p14"><span class="s6"><span class="Apple-tab-span">	</span>p[0].xy = p[0].xy + [10,10]; </span>// changing the first element moves the whole path (relative)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s12">SVGGroup</span>( [ r, p ] ).plot;</p>
+<p class="p15"><span class="s6"><span class="Apple-tab-span">	</span>p.asArray.dopost; </span>// post the segments as an array</p>
+<p class="p7"><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><br></p>
+<p class="p5"><b><span class="s5">instance variables</span></b></p>
+<p class="p6"><br></p>
+<p class="p2"><b>segments</b></p>
+<p class="p2">an Array with SVGPathSegment objects, describing the segments of the path</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>strokeColor, fillColor</b></p>
+<p class="p2">colors for stroke and fill. These can be<span class="Apple-converted-space"> </span></p>
+<p class="p16"><span class="s6"><span class="Apple-tab-span">	</span>a <a href="SC://Color"><span class="s17">Color</span></a></span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>a String or Symbol with a color name ( e.g. "light_blue" or "#0000FF" )</p>
+<p class="p2"><span class="Apple-tab-span">	</span>"none" or nil</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>strokeWidth</b></p>
+<p class="p2">defaults to 1.</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p5"><b><span class="s5">instance methods</span></b></p>
+<p class="p6"><br></p>
+<p class="p2"><b>absoluteSegments</b></p>
+<p class="p2">returns segments converted to absolute segments</p>
+<p class="p3"><br></p>
+<p class="p2"><b>add ( segment ), addAll ( segmentsArray )</b></p>
+<p class="p2">add SVGPathSegments to the <b>segments</b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>++ anSVGPath</b></p>
+<p class="p2">Concatenate the segments of 2 SVGPaths to the first SVGPath.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>at ( index ), copySeries ( first, second, last ), put (index, item )</b></p>
+<p class="p2">calls .at and copySeries on <b>points</b>, also to provide compatibility with the ..[..] syntax in SC</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asXYArray</b></p>
+<p class="p2">returns an array containing arrays with x and y values</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asArray</b></p>
+<p class="p2">returns an with SVGPathElement arrays, in a format which could be used as input for SVGPath.</p>
+<p class="p3"><br></p>
+<p class="p7"><span class="s14">SVGPath</span>( [[ <span class="s15">\M</span>, 200, 200 ]] ++ ( { [ <span class="s15">\sCurveTo</span> ] ++ ({ 50.rand2 }!4); }!10) ).asArray;</p>
+<p class="p3"><br></p>
+<p class="p11"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

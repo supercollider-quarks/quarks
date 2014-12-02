@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Helvetica; min-height: 11.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000e5}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #006600}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 6.0px Monaco; color: #000000; min-height: 9.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 11.0px Helvetica}
+span.s3 {text-decoration: underline ; color: #333a65}
+span.s4 {text-decoration: underline}
+span.s5 {color: #000000}
+span.s6 {color: #0000e5}
+span.s7 {color: #800000}
+span.s8 {color: #006600}
+span.s9 {color: #800080}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>CtkEvent<span class="Apple-tab-span">	</span></b></span><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a event prototyping system for use with the Ctk objects.</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Part of the CompositionToolKit (Ctk) system. See Ctk help for more details</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Class Methods</b></p>
+<p class="p2"><b><span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b>*new(starttime, condition, amp, function, addAction, target, server) </b>- Creates a new instance of CtkEvent.</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>starttime<span class="Apple-tab-span">	</span>-</b> an offset from the current time (in play mode) or the starttime of the event (if NRT rendering is<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>used).</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>condition </b><span class="s2"><b>-</b> </span>a control for note event creation. If this is a number, the function will be executed that many<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>times. If an Env, the function will be executed until the duration is satisfied (or, if the Env has a<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>releaseNode, until .relase is called and the Env has finished). condition can also be a Boolean, or</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a function to be evaluated on each execution of the function. If a function is given for the condition,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the internal CtkTimer and instance var 'inc' are available as arguments. The function should return</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a Boolean.</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>amp - </b>an amplitude scaler. Defaults to 1.0.</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>function -</b> a function to evaluate for every occurance in the CtkEvent (see below for more details).</p>
+<p class="p1"><b><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span>addAction </b>- a symbol (\head, \tail, \before, \after or \replace) or an addAction id<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>(see <a href="../../../../../../../../Applications/SuperCollider_f/Help/ServerArchitecture/Server-Command-Reference.html"><span class="s3">Server-Command-Reference</span></a><span class="s4">)</span> for and the /s_new section for a more in-depth description)</p>
+<p class="p1"><b><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span>target </b>- a node ID (synth or group) or an instance of CtkGroup or CtkNote</p>
+<p class="p1"><b><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span>server </b>- the server to execute the node on. Defaults to Server.default for real-time performance.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><br></p>
+<p class="p1"><b>collect -</b> a CtkObject to be performed by this event.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><b>next_ - </b>a duration in beats for rescheduling the execution of the CtkEvent function.<span class="Apple-converted-space">  </span>Defaults to 'nil'. <b>If the value</b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>remains 'nil', no further execution will be allowed, regardless of condition. </b>0.0 is an allowable value,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>but if this is the case, your condition must terminate the execution of the event to avoid an infinite loop.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>More details below.</p>
+<p class="p1"><b>inc - </b>an instance variable telling the user how many times a function has been run.</p>
+<p class="p1"><b>score(sustain) - </b>returns an instance of CtkScore with notes that are collected from the function while condition</p>
+<p class="p1"><span class="Apple-tab-span">	</span>is true. If the condition is a sustaining envelope, the sustain duration can be passed into the method.</p>
+<p class="p1"><b>play - </b>plays the CtkEvent while the condition is true.</p>
+<p class="p1"><b>record -</b> plays the CtkEvent, and records the performance into a CtkScore. The score is returned from the<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>method.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><b>Some notes on CtkEvent functions:</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span>functions in CtkEvent will have five parameters passed into them: theCtkEvent itself, this instances<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>CtkGroup, the CtkControl where global amplitude data is written to, the current 'inc' value and the server.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>While the condition is true AND the CtkEvent's 'next' parameter is notNil, the function will be repeatedly<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>called. CtkObjects can then be collected and used by the CtkEvent. See the examples below.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Examples:</b></p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6"><span class="s5">z = </span>CtkNoteObject<span class="s5">(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">SynthDef</span>(<span class="s7">\grain</span>, {<span class="s6">arg</span> globenv = <span class="s6">1</span>, outbus, freq, dur, amp = <span class="s6">1</span>;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Out</span>.ar(outbus, <span class="s6">Pan2</span>.ar(<span class="s6">SinOsc</span>.ar(freq, <span class="s6">0</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Line</span>.kr(amp, <span class="s6">0</span>, dur) * globenv)))</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p5"><span class="Apple-tab-span">	</span>);</p>
+<p class="p7"><br></p>
+<p class="p8">// 5 iterations</p>
+<p class="p5">a = <span class="s6">CtkEvent</span>(<span class="s6">0.0</span>, <span class="s6">5</span>, <span class="s6">5</span>, server: s);</p>
+<p class="p5">a.function_({<span class="s6">arg</span> event, group, envbus, inc, server;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[event, group, envbus, inc, server].postln; <span class="s8">// see the args that are passed in</span></p>
+<p class="p8"><span class="s5"><span class="Apple-tab-span">	</span></span>// collect a new CtkNote</p>
+<p class="p5"><span class="Apple-tab-span">	</span>event.collect(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>z.new(<span class="s6">0.0</span>, <span class="s6">1.0</span>, target: group).globenv_(envbus).freq_(<span class="s6">440</span>.rrand(<span class="s6">880</span>))</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.dur_(<span class="s6">1.0</span>).amp_(<span class="s6">0.01</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p8"><span class="s5"><span class="Apple-tab-span">	</span></span>// set the 'next' time</p>
+<p class="p5"><span class="Apple-tab-span">	</span>event.next_(<span class="s6">0.2</span>.rrand(<span class="s6">1.0</span>));</p>
+<p class="p5"><span class="Apple-tab-span">	</span>});</p>
+<p class="p5">)<span class="Apple-tab-span">	</span><span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="s5">a.play; </span>// play it</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s5">b = a.record; </span>// play it AND record the performance in a CtkScore</p>
+<p class="p5">b.items;</p>
+<p class="p5">b.write(<span class="s9">"~/Desktop/trashme.aif"</span>.standardizePath, options: <span class="s6">ServerOptions</span>.new.numOutputBusChannels_(<span class="s6">1</span>));</p>
+<p class="p7"><br></p>
+<p class="p8">// using an Env to control global amplitudes and as a control</p>
+<p class="p7"><br></p>
+<p class="p5">(</p>
+<p class="p5">a = <span class="s6">CtkEvent</span>(<span class="s6">0.0</span>, <span class="s6">Env</span>([<span class="s6">0</span>, <span class="s6">1</span>, <span class="s6">0</span>], [<span class="s6">1</span>, <span class="s6">1</span>], <span class="s7">\sin</span>, <span class="s6">1</span>), <span class="s6">5</span>, server: s);</p>
+<p class="p5">a.function_({<span class="s6">arg</span> event, group, envbus, inc, server;</p>
+<p class="p8"><span class="s5"><span class="Apple-tab-span">	</span></span>// collect a new CtkNote</p>
+<p class="p5"><span class="Apple-tab-span">	</span>event.collect(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>z.new(<span class="s6">0.0</span>, <span class="s6">1.0</span>, target: group).globenv_(envbus).freq_(<span class="s6">440</span>.rrand(<span class="s6">880</span>))</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.dur_(<span class="s6">1.0</span>).amp_(<span class="s6">0.01</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p8"><span class="s5"><span class="Apple-tab-span">	</span></span>// set the 'next' time</p>
+<p class="p5"><span class="Apple-tab-span">	</span>event.next_(<span class="s6">0.2</span>.rrand(<span class="s6">1.0</span>));</p>
+<p class="p5"><span class="Apple-tab-span">	</span>});</p>
+<p class="p5">)</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s5">a.play; </span>// play it</p>
+<p class="p8"><span class="s5">a.release; </span>// release it</p>
+<p class="p8"><span class="s5">b = a.record; </span>// play it AND record the performance in a CtkScore</p>
+<p class="p5">a.release;</p>
+<p class="p8"><span class="s5">b = a.score(</span><span class="s6">10</span><span class="s5">); </span>// make a score, and use sustain portion of 10 seconds</p>
+<p class="p5">b.items;</p>
+<p class="p5">b.play;</p>
+<p class="p5">b.saveToFile(<span class="s9">"~/Desktop/trashme.sc"</span>.standardizePath);</p>
+<p class="p5">b.write(<span class="s9">"~/Desktop/trashme.aif"</span>.standardizePath, options: <span class="s6">ServerOptions</span>.new.numOutputBusChannels_(<span class="s6">1</span>));</p>
+<p class="p7"><span class="Apple-converted-space"> </span></p>
+<p class="p8">// merge the score of a CtkEvent with another CtkScore</p>
+<p class="p5">y = <span class="s6">CtkScore</span>.new;</p>
+<p class="p8"><span class="s5">y.merge(a.score(</span><span class="s6">10</span><span class="s5">)); </span>// create a CtkScore from a, and merge it with another score</p>
+<p class="p7"><br></p>
+<p class="p5">y.items;</p>
+<p class="p7"><br></p>
+<p class="p8">// Additive synthesis example - Risset Bell</p>
+<p class="p9"><br></p>
+<p class="p5">(</p>
+<p class="p5"><span class="s6">var</span> noteob;</p>
+<p class="p6"><span class="s5">noteob = </span>CtkNoteObject<span class="s5">(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">SynthDef</span>(<span class="s7">\bellpar</span>, {<span class="s6">arg</span> outbus, freq, dur, amp = <span class="s6">1</span>;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Out</span>.ar(outbus, <span class="s6">Pan2</span>.ar(<span class="s6">SinOsc</span>.ar(freq, <span class="s6">0</span>, amp) *<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">XLine</span>.kr(amp, <span class="s6">0.0001</span>, dur, doneAction: <span class="s6">0</span>)))</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p5"><span class="Apple-tab-span">	</span>);</p>
+<p class="p7"><br></p>
+<p class="p5">f = {<span class="s6">arg</span> starttime = <span class="s6">0.0</span>, basefreq = <span class="s6">440</span>, basedur = <span class="s6">10</span>, baseamp = <span class="s6">1</span>;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> ev, amps, dur, freq, freqoff, parfreqs;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>amps = [<span class="s6">0.37</span>, <span class="s6">0.25</span>, <span class="s6">0.37</span>, <span class="s6">0.67</span>, <span class="s6">1.0</span>, <span class="s6">0.62</span>, <span class="s6">0.55</span>, <span class="s6">0.5</span>, <span class="s6">0.37</span>, <span class="s6">0.5</span>] * baseamp;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>dur = [<span class="s6">1.0</span>, <span class="s6">0.9</span>, <span class="s6">0.65</span>, <span class="s6">0.55</span>, <span class="s6">0.325</span>, <span class="s6">0.35</span>, <span class="s6">0.25</span>, <span class="s6">0.2</span>, <span class="s6">0.1</span>, <span class="s6">0.075</span>] * basedur;</p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span>freq = [</span>0.56<span class="s5">, </span>0.56<span class="s5">, </span>0.92<span class="s5">, </span>0.92<span class="s5">, </span>1.19<span class="s5">, </span>1.7<span class="s5">, </span>2.0<span class="s5">, </span>2.74<span class="s5">, </span>3.76<span class="s5">, </span>4.07<span class="s5">];</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>freqoff = [<span class="s6">0</span>, <span class="s6">1</span>, <span class="s6">0</span>, <span class="s6">1.7</span>, <span class="s6">0</span>, <span class="s6">0</span>, <span class="s6">0</span>, <span class="s6">0</span>, <span class="s6">0</span>, <span class="s6">0</span>];</p>
+<p class="p5"><span class="Apple-tab-span">	</span>parfreqs = basefreq * freq + freqoff;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>parfreqs.postln;</p>
+<p class="p8"><span class="s5"><span class="Apple-tab-span">	</span></span>// creates a single bell</p>
+<p class="p5"><span class="Apple-tab-span">	</span>ev = <span class="s6">CtkEvent</span>(starttime, <span class="s6">1</span>, server: s);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>ev.function_({<span class="s6">arg</span> event, group, envbus, inc, server;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">10</span>.do({<span class="s6">arg</span> i;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>event.collect(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>noteob.new(duration: dur[i], target: group).freq_(parfreqs[i])</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.dur_(dur[i]).amp_(amps[i]);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p5"><span class="Apple-tab-span">	</span>});<span class="Apple-converted-space"> </span></p>
+<p class="p5">};</p>
+<p class="p7"><br></p>
+<p class="p5">g=f.value(baseamp: <span class="s6">0.25</span>);</p>
+<p class="p5">)</p>
+<p class="p7"><br></p>
+<p class="p5">g.play;</p>
+<p class="p7"><br></p>
+<p class="p8">// or, add it directly to a new score</p>
+<p class="p5">a = <span class="s6">CtkScore</span>.new;</p>
+<p class="p5">a.add(f.value(<span class="s6">1.0</span>, <span class="s6">660</span>, <span class="s6">20</span>, <span class="s6">0.5</span>))</p>
+<p class="p5">a.play;</p>
+<p class="p7"><br></p>
+<p class="p8">// save the osc Score out to a file</p>
+<p class="p5">h.saveToFile(<span class="s9">"~/Desktop/test.sc"</span>.standardizePath)</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p5">(</p>
+<p class="p8">// algorithmically create many instances of CtkEvent and add the to a CtkScore;</p>
+<p class="p5">a = <span class="s6">CtkScore</span>.new;</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s6">10</span>.do({<span class="s6">arg</span> i;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>a.add(f.value(<span class="s6">1.0</span>.rrand(<span class="s6">4.0</span>), <span class="s6">440 </span>* (i + <span class="s6">1</span>), i + <span class="s6">2.0</span>.rand, <span class="s6">0.3</span>));</p>
+<p class="p5"><span class="Apple-tab-span">	</span>});<span class="Apple-tab-span">	</span></p>
+<p class="p5">)</p>
+<p class="p8">// play the CtkScore</p>
+<p class="p5">a.play;</p>
+<p class="p7"><br></p>
+<p class="p8">// an example of running the CtkEvent structure by hand (bypassing the function)</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s5">z = </span>CtkNoteObject<span class="s5">(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">SynthDef</span>(<span class="s7">\grain</span>, {<span class="s6">arg</span> globenv = <span class="s6">1</span>, outbus, freq, dur, amp = <span class="s6">1</span>;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Out</span>.ar(outbus, <span class="s6">Pan2</span>.ar(<span class="s6">SinOsc</span>.ar(freq, <span class="s6">0</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Line</span>.kr(amp, <span class="s6">0</span>, dur) * globenv)))</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p5"><span class="Apple-tab-span">	</span>);</p>
+<p class="p7"><br></p>
+<p class="p5">a = <span class="s6">CtkEvent</span>(<span class="s6">0.0</span>, <span class="s6">Env</span>([<span class="s6">0</span>, <span class="s6">1</span>, <span class="s6">0</span>], [<span class="s6">1</span>, <span class="s6">1</span>], <span class="s7">\sin</span>, <span class="s6">1</span>), <span class="s6">5</span>, server: s);</p>
+<p class="p7"><br></p>
+<p class="p5">a.play;</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s5">( </span>// run as may times as you want</p>
+<p class="p5">a.collect(</p>
+<p class="p5"><span class="Apple-tab-span">	</span>z.new(<span class="s6">0.0</span>, <span class="s6">15.0</span>, target: a.group).globenv_(a.envbus).freq_(<span class="s6">440</span>.rrand(<span class="s6">880</span>))</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.dur_(<span class="s6">15.0</span>).amp_(<span class="s6">0.01</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>);</p>
+<p class="p5">)</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s5">a.release; </span>// closes the env, kills all synths running in the group</p>
+<p class="p7"><br></p>
+<p class="p8">// with .record</p>
+<p class="p7"><br></p>
+<p class="p5">a = <span class="s6">CtkEvent</span>(<span class="s6">0.0</span>, <span class="s6">Env</span>([<span class="s6">0</span>, <span class="s6">1</span>, <span class="s6">0</span>], [<span class="s6">1</span>, <span class="s6">1</span>], <span class="s7">\sin</span>, <span class="s6">1</span>), <span class="s6">5</span>, server: s);</p>
+<p class="p7"><br></p>
+<p class="p5">b = a.record;</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s5">( </span>// run as may times as you want</p>
+<p class="p5">a.collect(</p>
+<p class="p5"><span class="Apple-tab-span">	</span>z.new(<span class="s6">0.0</span>, <span class="s6">15.0</span>, target: a.group).globenv_(a.envbus).freq_(<span class="s6">440</span>.rrand(<span class="s6">880</span>))</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.dur_(<span class="s6">15.0</span>).amp_(<span class="s6">0.01</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>);</p>
+<p class="p5">)</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s5">a.release; </span>// closes the env, kills all synths running in the group</p>
+<p class="p7"><br></p>
+<p class="p5">b.items</p>
+<p class="p7"><br></p>
+<p class="p5">b.saveToFile(<span class="s9">"~/Desktop/test.sc"</span>.standardizePath)</p>
+</body>
+</html>

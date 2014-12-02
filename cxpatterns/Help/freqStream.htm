@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad140d}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001bb9}
+span.s1 {color: #001bb9}
+span.s2 {color: #2c7014}
+span.s3 {color: #000000}
+span.s4 {color: #ad140d}
+span.s5 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>freqStream</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">a small collection of <span class="s1">Instr</span> functions that create <span class="s1">Patterns</span> for <span class="s2">\freq</span></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p3"><span class="s1">var</span> pattern;</p>
+<p class="p4"><span class="s3">pattern = </span><span class="s1">Instr</span><span class="s3">(</span>"freqStream.divStutter"<span class="s3">).value([<span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>56, <span class="s4">// root</span></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s1">Instr</span><span class="s3">(</span>"scaleStream.randpenta"<span class="s3">).value, </span><span class="s4">//scale</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>16 </span>// cycleLength <span class="Apple-converted-space">   </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6">Pbind<span class="s3">(</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">\freq</span>, pattern.trace,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">\dur</span>,0.125</p>
+<p class="p3"><span class="Apple-tab-span">	</span>).play;</p>
+<p class="p2"><br></p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p5">// load your entire library</p>
+<p class="p3"><span class="s1">Instr</span>.loadAll;</p>
+<p class="p2"><br></p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p5">// choose from the degreeStream and scaleStream Instr in this package</p>
+<p class="p5">// could be ugly or pretty</p>
+<p class="p3">(</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">var</span> pattern;</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">pattern = </span><span class="s1">Instr</span><span class="s3">(</span>"freqStream.streamByDegree"<span class="s3">).value([</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Instr</span>.choose(<span class="s5">"degreeStream"</span>).value,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Instr</span>.choose(<span class="s5">"scaleStream"</span>).value</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6">Pbind<span class="s3">(</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">\freq</span>, pattern.trace,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">\dur</span>,0.125</p>
+<p class="p3">).play;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p5">// select from your entire library</p>
+<p class="p5">// any instr you add that has an outputSpec == \degreeStream</p>
+<p class="p3">(</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">var</span> pattern,degreeStreams,scaleStreams;</p>
+<p class="p2"><br></p>
+<p class="p3">degreeStreams = <span class="s1">Instr</span>.selectBySpec(<span class="s2">\degreeStream</span>);</p>
+<p class="p3">scaleStreams = <span class="s1">Instr</span>.selectBySpec(<span class="s2">\scaleStream</span>);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">pattern = </span><span class="s1">Instr</span><span class="s3">(</span>"freqStream.streamByDegree"<span class="s3">).value([</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>degreeStreams.choose.value,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>scaleStreams.choose.value</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p2"><br></p>
+<p class="p6">Pbind<span class="s3">(</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">\freq</span>, pattern.trace,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">\dur</span>,0.125</p>
+<p class="p3">).play;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">var</span> pattern,degreeStreams,scaleStreams;</p>
+<p class="p2"><br></p>
+<p class="p3">degreeStreams = <span class="s1">Instr</span>.selectBySpec(<span class="s2">\degreeStream</span>);</p>
+<p class="p3">scaleStreams = <span class="s1">Instr</span>.selectBySpec(<span class="s2">\scaleStream</span>);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">pattern = </span><span class="s1">Instr</span><span class="s3">(</span>"freqStream.streamByDegree"<span class="s3">).value([</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Patch( degreeStreams.choose ).rand.value,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Patch( scaleStreams.choose ).rand.value</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p2"><br></p>
+<p class="p6">Pbind<span class="s3">(</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">\freq</span>, pattern.trace,</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">\dur</span>,0.125</p>
+<p class="p3">).play;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">)</p>
+</body>
+</html>

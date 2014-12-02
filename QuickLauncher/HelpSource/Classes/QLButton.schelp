@@ -1,0 +1,49 @@
+TITLE:: QLButton
+summary:: A button for use with QuickLauncher
+categories:: Frontends>QuickLauncher
+related:: Classes/QuickLauncher, Classes/QLButtonAppSupportDir, Classes/QLButtonClassBrowser, Classes/QLButtonClassLibraryDir, Classes/QLButtonEQ, Classes/QLButtonInternalServer, Classes/QLButtonLocalServer, Classes/QLButtonNdefMixer, Classes/QLButtonProxyMixer, Classes/QLButtonSynthDef
+
+DESCRIPTION::
+This is a button for use with link::Classes/QuickLauncher##QuickLauncher::
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new QLButton
+
+ARGUMENT:: name
+Text to be displayed on the button
+
+ARGUMENT:: alwaysOnTop
+Should the created window always be displayed on top of other windows?
+
+ARGUMENT:: bounds
+Bounds of the window to be created
+
+ARGUMENT:: showButtonFunc
+A function to create a window.  This function should always return a Window object to allow for the rest of the class methods to work.
+
+INSTANCEMETHODS::
+
+METHOD:: alwaysOnTop
+Should the created window always be displayed on top of other windows?
+
+METHOD:: showButtonFunc
+A function to create a window.  This function should always return a Window object to allow for the rest of the class methods to work.
+
+METHOD:: bounds
+Bounds of the window to be created
+
+METHOD:: button
+Provides access to the button object
+
+METHOD:: name
+Name to display on the button
+
+METHOD:: window
+Provides access to the window created by the function
+
+METHOD:: closeWindow
+Close the window and reset the button state
+
+PRIVATE:: createButton

@@ -1,0 +1,28 @@
+CLASS:: EaseInOutQuart
+SUMMARY:: Quartic ease-in/out
+CATEGORIES:: Ease
+RELATED:: Overviews/EaseOverview
+
+DESCRIPTION::
+Easing equation for a quartic (t^4) ease-in/out, accelerating until halfway, then decelerating.
+
+Use strong::value::, strong::*value::, strong::*kr:: or strong::*ar::, all with a link::Classes/Float:: argument strong::t:: between 0.0 and 1.0. If strong::t:: is below or above this range the output will be undefined.
+
+INSTANCEMETHODS::
+
+METHOD:: value
+
+ARGUMENT:: t
+a link::Classes/Float:: between 0.0 and 1.0.
+
+EXAMPLES::
+
+CODE::
+a= EaseInOutQuart.new
+a.value(0.5)
+
+{|t| EaseInOutQuart.(t/99)}.dup(100).plot2
+
+s.boot
+{SinOsc.ar(EaseInOutQuart.kr(Line.kr(0, 1, 2, doneAction:2)).exprange(500, 1000), 0, 0.1)}.play
+::

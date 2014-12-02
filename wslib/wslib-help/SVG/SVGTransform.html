@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #606060}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #9d1c12; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #255ece}
+span.s2 {text-decoration: underline ; color: #134ec9}
+span.s3 {color: #0033f1}
+span.s4 {color: #0000bf}
+span.s5 {color: #000000}
+span.s6 {color: #606060}
+span.s7 {text-decoration: underline}
+span.s8 {color: #0026b4}
+span.s9 {color: #3d6d1d}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SVGTransform</b></p>
+<p class="p2">Part of <a href="../wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">see also: <a href="SVG.html"><span class="s2">SVG</span></a>, <a href="SVGObject.html"><span class="s3">SVGObject</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">The SVGTransform object holds transformation data. It can be added to every SVGObject, in the <b>transfom </b>slot.</p>
+<p class="p3"><br></p>
+<p class="p2">In the SVG file format the 'transform' element has a bit unusual form. It contains a string with pseudo code. For example:</p>
+<p class="p3"><br></p>
+<p class="p4">"translate( 20, 10 ) scale( 1.5 ) rotate( 45, 0, 0 )"</p>
+<p class="p3"><br></p>
+<p class="p2">this would convert into GUI.pen functions as follows:</p>
+<p class="p3"><br></p>
+<p class="p5"><span class="s4">SVGTransform</span><span class="s5">( </span>"translate( 20, 10 ) scale( 1.5 ) rotate( 45, 0, 0 )"<span class="s5"> ).asGUICode;</span></p>
+<p class="p6"><br></p>
+<p class="p7">/* result:</p>
+<p class="p7">GUI.pen.translate( 20, 10 );</p>
+<p class="p7">GUI.pen.scale( 1.5, 1.5 );</p>
+<p class="p7">GUI.pen.rotate( 0.7853981633974483, 0, 0 );</p>
+<p class="p7">*/</p>
+<p class="p8"><br></p>
+<p class="p9">All SVGObjects convert 'transform' argument internally to SVGTransform:</p>
+<p class="p6"><br></p>
+<p class="p10">(</p>
+<p class="p10"><span class="s4">SVGRect</span>( 0, 0, 100, 100,<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>strokeColor: <span class="s6">"green"</span>,</p>
+<p class="p5"><span class="s5"><span class="Apple-tab-span">	</span>transform:<span class="Apple-converted-space">  </span></span>"translate(100, 10) scale(0.5, 2.5) rotate(12.7, 0, 0)"<span class="s5"> ).plot;</span></p>
+<p class="p10">)</p>
+<p class="p11"><br></p>
+<p class="p12"><b><span class="s7">instance variables</span></b></p>
+<p class="p13"><br></p>
+<p class="p2"><b>string</b></p>
+<p class="p2">The SVG transform element formatted string</p>
+<p class="p3"><br></p>
+<p class="p2"><b>dict</b></p>
+<p class="p2">an array with sub-arrays, parsed from the string in the following format:</p>
+<p class="p3"><br></p>
+<p class="p2"><span class="Apple-tab-span">	</span><i>[ \type, [ ... arguments ] ]</i></p>
+<p class="p3"><br></p>
+<p class="p5"><span class="s8">SVGTransform</span><span class="s5">( </span>"translate( 20, 10 ) scale( 1.5 ) rotate( 45, 0, 0 )"<span class="s5"> ).dict;</span></p>
+<p class="p14"><span class="s8">SVGTransform</span>( [[ <span class="s9">\translate</span>, [ 20, 10 ]], [<span class="s9">\scale</span>, [ 1.5 ]], [<span class="s9">\rotate</span>, [ 45, 0, 0 ]]] ).string;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12"><b><span class="s7">creation</span></b></p>
+<p class="p13"><br></p>
+<p class="p2"><b>SVGTransform ( string )</b></p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>string </b>: can also be an array in the <b>dict </b>format</p>
+<p class="p13"><br></p>
+<p class="p12"><b><span class="s7">instance methods</span></b></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>string_ ( newString )</b></p>
+<p class="p2">set the string and updates the dict accordingly</p>
+<p class="p3"><br></p>
+<p class="p2"><b>dict_ ( newDict )</b></p>
+<p class="p2">set the dict and updates the string accordingly</p>
+<p class="p3"><br></p>
+<p class="p2"><b>addToString</b></p>
+<p class="p2">concatenates a string to the existing string (updates the dict accordingly)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>addToDict</b></p>
+<p class="p2">adds an element to the existing dict (updates the string accordingly)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asPenFunction</b></p>
+<p class="p2">returns a function for drawing</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asGUICode ( penClass )</b></p>
+<p class="p2">returns GUI.pen style code as a string</p>
+</body>
+</html>

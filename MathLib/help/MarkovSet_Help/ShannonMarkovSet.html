@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #000000}
+span.s2 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">//shannon markov</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">a = </span>ShannonMarkovSet<span class="s1">.new(800);</span></p>
+<p class="p4">s = <span class="s2">Pseq</span>([0,1,2,3]+10,<span class="s2">inf</span>).asStream;</p>
+<p class="p4">(</p>
+<p class="p4">120.do({ <span class="s2">arg</span> i;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>a.put(i,s.next)</p>
+<p class="p4">})</p>
+<p class="p4">);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">v = a.asStream(3);</p>
+<p class="p4">10.do({ v.next.postln });</p>
+<p class="p2"><br></p>
+<p class="p4">a.next(11).postln;</p>
+<p class="p2"><br></p>
+<p class="p4">a.data</p>
+<p class="p2"><br></p>
+<p class="p4">x = 5;</p>
+<p class="p4">a.nextIndex(x).postln;</p>
+<p class="p2"><br></p>
+<p class="p1">// empty set test.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">a = </span>ShannonMarkovSet<span class="s1">(256);</span></p>
+<p class="p4">a.chooseIndex.postln;</p>
+<p class="p4">a.nextIndex(0).postln;</p>
+<p class="p4">v = a.asStream(8,1);</p>
+<p class="p4">v.next.postln;</p>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+</style>
+</head>
+<body>
+<p class="p1">m = <span class="s1">MarkovSet</span>.new;</p>
+<p class="p2"><br></p>
+<p class="p3">// read in 2 files</p>
+<p class="p4"><span class="s2">m.parseFile(</span>"Help/More-On-Getting-Help.html".<span class="s2">standardizePath);</span></p>
+<p class="p4"><span class="s2">m.parseFile(</span>"Help/Language/Intro-to-Objects.html".<span class="s2">standardizePath);</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">// write 5 supermarkov html pages</p>
+<p class="p1">m.writeHtml(nPages:5, pagelength:120);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">// you can also create a string like this:</p>
+<p class="p1">(</p>
+<p class="p1">x = <span class="s1">Pfsm2</span>(m, <span class="s1">inf</span>).asStream;</p>
+<p class="p1">300.do { x.next.post };</p>
+<p class="p1">)</p>
+</body>
+</html>

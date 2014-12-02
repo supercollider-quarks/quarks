@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.29">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; min-height: 22.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #5a2e2e}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #483131}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #213ba1}
+p.p17 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #2024c7}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd0b0b}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008417}
+p.p20 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #cd0b0b}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #2b30fa}
+span.s4 {color: #000000}
+span.s5 {text-decoration: underline}
+span.s6 {color: #213ba1}
+span.s7 {color: #606060}
+span.s8 {color: #2024c7}
+span.s9 {color: #1433aa}
+span.s10 {color: #616822}
+span.s11 {color: #1833aa}
+span.s12 {color: #008417}
+span.s13 {color: #cd0b0b}
+span.s14 {color: #737373}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>************* Not updated for new JITGuis yet! ****************</b></p>
+<p class="p2"><b></b><br></p>
+<p class="p1"><span class="s1"><b>UC33Ktl</b></span><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>a class for handling mappings of the Evolution UC33 controller</b></p>
+<p class="p3"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="MIDIKtl.html"><span class="s3"><b>MIDIKtl</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p1">The Evolution UC33 produces only MIDI controller events. It has 4 switchable scenes,<span class="Apple-converted-space"> </span></p>
+<p class="p1">in which all controllers (sliders, knobs, upper and lower buttons) have different cc numbers.<span class="Apple-converted-space"> </span></p>
+<p class="p1">The 6 transport controls remain the same in all scenes.</p>
+<p class="p1">UC33Ktl keeps a dictionary of actions for all mapped controllers.</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s4"><b>See also: </b><a href="SC://UsingMIDI"><span class="s5">UsingMIDI</span></a>, <a href="SC://CCResponder"><span class="s5">CCResponder</span></a>, <a href="SC://MIDIIn"><span class="s5">MIDIIn</span></a></span></p>
+<p class="p4"><br></p>
+<p class="p1"><b>First example</b></p>
+<p class="p4"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>// make a ProxySpace and a mixer for it, map the NanoKtl to it</p>
+<p class="p6">p = <span class="s6">ProxySpace</span>.push(s.boot);</p>
+<p class="p7">m = <span class="s6">ProxyMixer</span>(p, 16);</p>
+<p class="p7"><span class="Apple-tab-span">	</span>// put some proxies in it<span class="Apple-converted-space"> </span></p>
+<p class="p7">(</p>
+<p class="p7">8.do { <span class="s6">|i|</span> p[(<span class="s7">"test_bla"</span> ++ i).asSymbol] = { |ring = 0.02|</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s6">Pan2</span>.ar(<span class="s6">Ringz</span>.ar(<span class="s6">Impulse</span>.ar(exprand(0.5, 4)), exprand(300, 3000), ring), 1.0.rand2, 0.2) };<span class="Apple-converted-space"> </span></p>
+<p class="p7">};</p>
+<p class="p7">Spec.add(\ring, [0.0001, 1, \exp]);</p>
+<p class="p7">)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>// make a UC33Ktl, and map it to the mixer:</p>
+<p class="p7"><span class="Apple-tab-span">	</span>// the sliders control the first 8 volumes,<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>// the lower buttons play the proxy,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>// the upper buttons send to the editor,<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>// the knobs control the editor parameters,<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>// and the last slider controls server volume!</p>
+<p class="p7">(</p>
+<p class="p7">g = <span class="s8">UC33Ktl</span>.new;</p>
+<p class="p7">g.mapToPxMix(m, 1);</p>
+<p class="p7">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p8"><b>Creation / Class Methods</b></p>
+<p class="p9"><br></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>*new (srcID, dict)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>create a UC33Ktl object.</p>
+<p class="p11"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>srcID </b>- every MIDI port (e.g. from a USB plug) gets a unique ID.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This can be used to distinguish multiple controller which may have<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>overlapping MIDI channel/controller numbers.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dict </b>- a dictionary of the actions that are mapped to controllers.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// simple example</p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = </span><span class="s9">UC33Ktl</span><span class="s4">.new;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// listen to all midi in ports</p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span></span>// <span class="Apple-tab-span">	</span>g = UC33Ktl(1643926019);<span class="Apple-tab-span">	</span>// only listen to the left USB input on my laptop</p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccDict; <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a dict where the maps will live</p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccresp;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a midi CCResponder listing to that MIDI port</p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// map transport buttons 'play' and 'rec' to simple actions:<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'play'</span>, <span class="Apple-tab-span">	</span>{ <span class="s9">|ccval|</span> <span class="s7">" 'play': %.\n"</span>.postf(ccval) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'knu1'</span>, <span class="Apple-tab-span">	</span>{ <span class="s11">|ccval|</span> <span class="s7">" '</span><span class="s10">knu1</span><span class="s7">': %.\n"</span>.postf(<span class="s11">ccval</span>) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'knm2'</span>, <span class="Apple-tab-span">	</span>{ <span class="s11">|ccval|</span> <span class="s7">" '</span><span class="s10">knm2</span><span class="s7">': %.\n"</span>.postf(<span class="s11">ccval</span>) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'knl3'</span>, <span class="Apple-tab-span">	</span>{ <span class="s11">|ccval|</span> <span class="s7">" 'knl3': %.\n"</span>.postf(<span class="s11">ccval</span>) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'sl4'</span>, <span class="Apple-tab-span">	</span>{ <span class="s9">|</span><span class="s11">ccval</span><span class="s9">|</span> <span class="s7">" 'sl4' : %.\n"</span>.postf(<span class="s11">ccval</span>) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'sl9'</span>, <span class="Apple-tab-span">	</span>{ <span class="s11">|ccval|</span> <span class="s7">" 'sl9' : %.\n"</span>.postf(<span class="s11">ccval</span>) });</p>
+<p class="p9"><br></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the actions are now in the dict:</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccDict.postcs;</p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// clean up<span class="Apple-tab-span">	</span></p>
+<p class="p6">//<span class="Apple-tab-span">	</span>(<span class="Apple-tab-span">	</span>g.free;<span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><br></p>
+<p class="p14"><b>Class Variables</b></p>
+<p class="p11"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>verbose</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span>can be set to true to post info for debugging.</p>
+<p class="p9"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">UC33Ktl</span>.verbose = <span class="s6">true</span>;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>//<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">UC33Ktl</span>.verbose = <span class="s6">false</span>;</p>
+<p class="p3"><br></p>
+<p class="p14"><b>Instance Variables</b></p>
+<p class="p9"><br></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>ctlSceneNames</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span>a dictionary of names such as \sl1 to controller keys as used for lookup.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the keys are symbols like<span class="Apple-converted-space">  </span>'0_42' meaning midichannel 0, ctl num 42.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// controls that remain the same in all scenes:</p>
+<p class="p16"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>g.ctlNames<span class="s4">[0];</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the names in scene 1<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">g.ctlNames</span>[1]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// scene 1 is quite usable</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">g.ctlNames</span>[2]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// in scene 2 buttons 4-9 and 0 turned off, some midi cc overlap...</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">g.ctlNames</span>[3]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// scene 3 is complete again, but some overlap</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">g.ctlNames</span>[4]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// scene 4: buttons 0 - 9 do nothing, again some overlap.</p>
+<p class="p9"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// unfortunately, the default control maps for the UC33<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// have quite a bit of overlap of channel/cc combinations.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// so one should make non-overlapping setups, e.g. with separate midi channels,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/// in order to be able to really use multiple scenes fully!<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s6"><span class="Apple-tab-span">	</span>g.ctlNames</span>[1].values.sect(<span class="s6">g.ctlNames</span>[2].values)</p>
+<p class="p6"><span class="s6"><span class="Apple-tab-span">	</span>g.ctlNames</span>[1].values.sect(<span class="s6">g.ctlNames</span>[3].values)</p>
+<p class="p6"><span class="s6"><span class="Apple-tab-span">	</span>g.ctlNames</span>[1].values.sect(<span class="s6">g.ctlNames</span>[4].values)</p>
+<p class="p6"><span class="s6"><span class="Apple-tab-span">	</span>g.ctlNames</span>[2].values.sect(<span class="s6">g.ctlNames</span>[3].values)</p>
+<p class="p6"><span class="s6"><span class="Apple-tab-span">	</span>g.ctlNames</span>[3].values.sect(<span class="s6">g.ctlNames</span>[4].values)</p>
+<p class="p3"><br></p>
+<p class="p14"><b>Instance Methods</b></p>
+<p class="p11"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>mapCCS (editor, scene)</b></p>
+<p class="p11"><br></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>map one of the controls in a scene to a general function.</p>
+<p class="p11"><br></p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// map transport buttons 'play' and 'rec' to simple actions:<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'play'</span>, <span class="Apple-tab-span">	</span>{ <span class="s11">|ccval|</span> <span class="s7">" 'play': %.\n"</span>.postf(ccval) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'knu1'</span>, <span class="Apple-tab-span">	</span>{ <span class="s11">|ccval|</span> <span class="s7">" '</span><span class="s10">knu1</span><span class="s7">': %.\n"</span>.postf(<span class="s11">ccval</span>) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'knm2'</span>, <span class="Apple-tab-span">	</span>{ <span class="s11">|ccval|</span> <span class="s7">" '</span><span class="s10">knm2</span><span class="s7">': %.\n"</span>.postf(<span class="s11">ccval</span>) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'knl3'</span>, <span class="Apple-tab-span">	</span>{ <span class="s11">|ccval|</span> <span class="s7">" 'knl3': %.\n"</span>.postf(<span class="s11">ccval</span>) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'sl4'</span>, <span class="Apple-tab-span">	</span>{ <span class="s11">|ccval|</span> <span class="s7">" 'sl4' : %.\n"</span>.postf(<span class="s11">ccval</span>) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'sl9'</span>, <span class="Apple-tab-span">	</span>{ <span class="s11">|ccval|</span> <span class="s7">" 'sl9' : %.\n"</span>.postf(<span class="s11">ccval</span>) });</p>
+<p class="p9"><br></p>
+<p class="p11"><br></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>mapToPxEdit (editor, scene)</b></p>
+<p class="p11"><br></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>map the knobs in a scene to a NodeproxyEditor or Ndef.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The first 8 knobs go to the parameters of the proxy, the 9th control the proxy's volume.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s8">ProxySpace</span>.push;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~test = { </span>|freq=250, intv=19, timescale=1, curve=0, loopnode=0, formfact=2, widfact=0.5, spread=1, amp=0.1|<span class="s4"><span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">var</span> env = <span class="s8">EnvGen</span>.kr(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">Env</span>(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ 1.0.rand2 }!11,<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{1.0.rand}!10 * timescale,<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>curve,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>releaseNode: 9,<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>loopNode: loopnode)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">var</span> pitch = (env * [1, 0.33, -1] * intv).midiratio * freq;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">Splay</span>.ar(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">Formant</span>.ar(pitch, pitch.scramble * formfact, pitch.scramble * widfact), spread) * amp;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p18"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// add specs for all the parameter ranges - required!</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">Spec</span>.add(<span class="s12">\intv</span>, [0, 36, <span class="s12">\lin</span>]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">Spec</span>.add(<span class="s12">\timescale</span>, [0.001, 10, <span class="s12">\exp</span>]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">Spec</span>.add(<span class="s12">\curve</span>, [-10, 10]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">Spec</span>.add(<span class="s12">\loopnode</span>, [0, 7, <span class="s12">\lin</span>, 1]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">Spec</span>.add(<span class="s12">\formfact</span>, [0.1, 10, <span class="s12">\exp</span>]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">Spec</span>.add(<span class="s12">\widfact</span>, [0.1, 10, <span class="s12">\exp</span>]);</p>
+<p class="p19"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">Spec</span><span class="s4">.add(</span>\spread<span class="s4">, </span>\unipolar<span class="s4">);</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n = <span class="s8">NodeProxyEditor</span>(~test, 12);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p3"><br></p>
+<p class="p20"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = </span><span class="s8">UC33Ktl</span><span class="s4">.new;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// make a new UC33Ktl</p>
+<p class="p18"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapToPxEdit(n, 1);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// and map its scene 1 to the editor n</p>
+<p class="p3"><br></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// shift by hand which params are mapped</p>
+<p class="p18"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.paramShift(0);<span class="Apple-tab-span">	</span></span>// show which params are mapped</p>
+<p class="p18"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.paramShift(1);<span class="Apple-tab-span">	</span></span>// shift by one; when hitting the end, jumps back.</p>
+<p class="p3"><br></p>
+<p class="p18"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// test using a second proxy, UC33Ktl scene 2:</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~test2 = ~test.source;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>o = <span class="s8">NodeProxyEditor</span>(~test2);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapToPxEdit(o, 2); <span class="s13">// scene</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>mapToPxMix (mixer, scene)</b></p>
+<p class="p3"><br></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Maps one scene of the UC33Ktl to a proxymixer.<span class="Apple-converted-space"> </span></b></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The first 8 sliders control individual proxy volumes; these can be shifted.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The rightmost slider controls server volume.</p>
+<p class="p11"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>The knobs in the scene are mapped to the proxymixer's editor:<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The first 8 knobs go to the parameters of the proxy, the 9th control the proxy's volume.</p>
+<p class="p11"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The upper buttons send the corresponding proxy to the editor,<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the lower buttons toggle play/stop of the respective proxy.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>upper button 9 - shifts the mapped proxy volumes,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lower button 9 - shifts the mapped editor's params.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>slider9 controls server volume.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p18"><span class="s4"><span class="Apple-tab-span">	</span></span>// make a proxymixer and some more proxies to test</p>
+<p class="p3"><br></p>
+<p class="p6">p = <span class="s8">ProxySpace</span>.push(s.boot);</p>
+<p class="p7">(</p>
+<p class="p7">m = <span class="s8">ProxyMixer</span>(p, 16);</p>
+<p class="p3"><br></p>
+<p class="p7">20.do { <span class="s8">|i|</span> p[(<span class="s14">"test_bla"</span> ++ i).asSymbol] = { <span class="s8">|ring = 0.02|</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s8">Pan2</span>.ar(<span class="s8">Ringz</span>.ar(<span class="s8">Impulse</span>.ar(exprand(0.5, 4)), exprand(300, 3000), ring), 1.0.rand2, 0.2) };<span class="Apple-converted-space"> </span></p>
+<p class="p7">};</p>
+<p class="p7"><span class="s8">Spec</span>.add(<span class="s12">\ring</span>, [0.0001, 1, <span class="s12">\exp</span>]);</p>
+<p class="p7">)</p>
+<p class="p7">g = <span class="s8">UC33Ktl</span>.new;</p>
+<p class="p7">g.mapToPxMix(m, 1);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p7">g.pxShift(1);<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+</body>
+</html>

@@ -1,0 +1,114 @@
+CLASS:: NamedIntegersSpec
+summary:: datatype specifying an option list with names and an integer output type
+categories:: Spec, Libraries>crucial>Spec
+related:: Classes/PopUpEditor
+
+DESCRIPTION::  Where the human readable list should have names for each option and the output supplied to the input should be an Integer.
+
+The default control is a PopUpEditor.
+
+code::
+(
+var dists;
+// the UGen takes these integer values to indicate which algo to use
+dists = NamedIntegersSpec(["LINEAR","CAUCHY","LOGIST","HYPERBCOS","ARCSINE","EXPON","SINUS"]);
+
+
+Instr("Gendy4",{ arg ampdist=1, durdist=1, adparam=1, ddparam=1, minfreq=440, maxfreq=660, ampscale=0.5, durscale=0.5, initCPs=12, knum=nil, mul=1, add=0;
+
+	Gendy4.ar(ampdist, durdist, adparam, ddparam, minfreq, maxfreq, ampscale, durscale, initCPs, knum, mul, add);
+
+},[
+	dists,
+	dists,
+	ControlSpec(0.0001, 1.0, 'linear', 0.0, 0.0, ""),
+	ControlSpec(0.0001, 1.0, 'linear', 0.0, 0.0, ""),
+	ControlSpec(40, 9000, 'exp', 0.0, 440, ""),
+	ControlSpec(40, 9000, 'exp', 0.0, 660, ""),
+	ControlSpec(0.0, 1.0, 'linear', 0.0, 0.0, ""),
+	ControlSpec(0.0, 1.0, 'linear', 0.0, 0.0, ""),
+	StaticIntegerSpec(2, 24, default: 12),
+	ControlSpec(2.0, 24, 'linear', 0.0, 12, ""),
+	ControlSpec(0.0, 1.0, 'linear', 0, 1.0, ""),
+	ControlSpec(0.0, 1.0, 'linear', 0.0, 0.0, "")
+],
+	'audio'
+);
+
+Patch("Gendy4").gui
+
+)
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: names
+
+
+argument:: default
+
+
+argument:: static
+
+
+
+METHOD:: newFrom
+
+
+argument:: similar
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: values
+
+
+
+METHOD:: names
+
+
+
+METHOD:: static
+
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: nisinit
+
+
+argument:: n
+
+
+argument:: s
+
+
+argument:: d
+
+
+
+METHOD:: canKr
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: defaultControl
+
+
+argument:: val
+
+
+
+
+

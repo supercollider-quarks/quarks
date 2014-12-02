@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.46">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #202de8}
+span.s3 {color: #0c16f9}
+span.s4 {color: #0000ff}
+span.s5 {color: #212ca9}
+span.s6 {color: #1721ae}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>HrButton<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>midi aware button widget.</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="SC://Object"><span class="s2"><b>Object</b></span></a><b> : SCViewHolder</b></p>
+<p class="p3"><br></p>
+<p class="p1">HrButton inherits all the functionality of the standard <a href="SC://Button"><span class="s3">Button</span></a><span class="s2"> </span>but is midi aware (can do midi learn).</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Midi Learn:</b></p>
+<p class="p2"><br></p>
+<p class="p1">Make sure your midi gear is connected, when the button is in focus, press the L key on your keyboard (focus ring will turn to blue meaning "in midi learn mode"), and press a note on your midi controller. Press L again to approve midi learn. The button stores two midi parameters, one for "note on" and one for "note off". So if you do a note on and off while in midi learn mode, it will learn both. If you only want note on, you should confirm learn before sending the noteoff message from your midi gear.</p>
+<p class="p2"><br></p>
+<p class="p1">To clear the midi learn data, press L and then 0 (zero).</p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="SC://Button"><span class="s3">Button</span></a><span class="s3"> <a href="HrSlider.html"><span class="s4">HrSlider</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (parent, bounds)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>parent </b>- The parent view.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>bounds </b>- An instance of <a href="../dev/sc3/build/Help/Geometry/Rect.html"><span class="s5">Rect</span></a>, or a <a href="../dev/sc3/build/Help/Geometry/Point.html"><span class="s5">Point</span></a> indicating width@height.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w = <span class="s6">Window</span>.new.front;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a = <span class="s6">HrButton</span>(w, <span class="s6">Rect</span>(20, 60, 150, 20)).states_([["1"], ["2"]]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.action = { a.value.postln };</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p11"><br></p>
+<p class="p12"><b>Accessing Instance and Class Variables</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>boundOnMidiArgs_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>boundOnMidiArgs</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>NoteOnResponder [src, chan, num] arguments as an array for the "note on" message that this widget is bound to. Populated automatically after midi learn operation.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is nil.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>boundOffMidiArgs_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>boundOffMidiArgs</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>NoteOffResponder [src, chan, num] arguments as an array for the "note off" message that this widget is bound to. Populated automatically after midi learn operation.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is nil.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6">For the rest of the standard Button methods, consult to the <a href="SC://Button"><span class="s3">Button</span></a> help.</p>
+<p class="p3"><br></p>
+</body>
+</html>

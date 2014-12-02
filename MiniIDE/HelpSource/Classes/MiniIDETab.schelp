@@ -1,0 +1,34 @@
+TITLE:: MiniIDETab
+summary:: A tab for use with MiniIDE.  This class is not meant to be used directly and should always be subclassed.
+categories:: Frontends>MiniIDE
+related:: Classes/MiniIDE
+
+DESCRIPTION::
+This is a tab for use with MiniIDE.  This class is not meant to be used directly and should always be subclassed.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new instance
+
+ARGUMENT:: bounds
+Bounds of the window. A default of Rect(0,0,512,805) will be used if not specified.
+
+METHOD:: tabLabel
+This symbol provides the display name of the tab.  Should be overridden when MiniIDETab is subclassed.
+
+INSTANCEMETHODS::
+
+METHOD:: window
+Provides access to the current window.
+
+METHOD:: bounds
+Provides access to the current bounds.
+
+METHOD:: view
+Provides access to the GUI view.
+
+METHOD:: layout
+Provides access to the current layout.  Should have a value set when MiniIDETab is subclassed.
+
+PRIVATE:: init

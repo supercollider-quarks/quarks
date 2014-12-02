@@ -1,0 +1,129 @@
+title:: Constraints
+summary:: specify a condition or logical query, further filter and refine it
+categories:: Libraries>crucial>Constraints
+
+
+Constraints let you specify conditions in an OOP fashion.
+You can perform logical operations on the constraint object itself to further
+filter or refine your query.
+
+code::
+(
+// Create a constraint.
+c =
+	Constraint({ arg obj; obj.even  })
+		and: Constraint({ arg obj; obj % 4 == 0 })
+		and: (Constraint({ arg obj; obj == 8 }).not);
+)
+::
+
+c is now a constraint object that can be used to validate that an input
+is even, divisible by 4 and is not the number 8.
+
+code::
+c.value(3)
+
+c.value(8)
+
+c.value(4)
+
+c.value(12)
+::
+
+This can be used any place a function that returns true/false is required.
+eg. select, reject, every, any
+
+code::
+(
+// run numbers through it
+50.do({
+	n = 40.rand;
+	[n,c.value(n)].postln
+});
+)
+::
+
+
+It can be used in place of a function for
+SequenceableCollections, Streams and Patterns
+
+code::
+(
+// filter a collection
+Array.fill(100,{ 100.rand })
+	.select(c) // acts like a function
+	.do({ arg num; num.postln; });
+)
+
+(
+// Use to filter a Pattern
+p = Pseries(0,1,100)
+	.select(c);
+)
+
+// Unfiltered
+Pseries(0,1,100).asStream.all.do({arg num; num.postln;})
+
+// Filtered
+p.asStream.all.do({ arg num; num.postln });
+
+
+(
+// and here is everybody that gets rejected by the constraint
+p = Pseries(0,1,100)
+	.reject(c);
+)
+
+p.asStream.all.do({ arg num; num.postln });
+::
+
+
+The below example is expressed using only Constraint.
+
+code::
+(
+c =
+	Constraint({ arg obj; obj.even  })
+		and: Constraint({ arg obj; obj % 4 == 0 })
+		and: (Constraint({ arg obj; obj == 8 }).not);
+)
+::
+
+It could also be expressed this way
+
+code::
+(
+c =
+	IsEven.new and:  Constraint({ arg obj; obj % 4 == 0 })
+		and: Constraint({ arg obj; obj != 8 });
+)
+::
+
+
+Constraints respond to
+
+	.not
+	.or(aConstraint)
+	.and(aConstraint)
+	.xor(aConstraint)
+	.reject(aConstraint)
+	.select(aConstraint)
+
+by returning a new compound constraint that expresses that logic.
+
+code::
+(
+	c = IsEven.new;
+	d = Constraint({ arg num; num == 3 });
+
+	e = c or: d; // if its even or it is the number 3
+)
+(
+	c = IsEven.new;
+	d = Constraint({ arg num; num == 4 });
+
+	e = c.reject(d); // if its even and also reject it if it is the number 4
+)
+::
+
+

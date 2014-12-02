@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+  </style>
+</head>
+<body>
+<p class="p1"><b>CompositeTuning</b></p>
+<p class="p2"><br></p>
+<p class="p3">CompositeTuning uses the fractional part of the note index to choose from an array of tuning objects. The main intended usage is just intonation, since you may need to adjust in the interval ratios to suit different harmonic contexts.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>*new(tunings)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Initializes the composite tuning object with the array of tuning objects supplied as the argument.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>cps(noteindex)</b></p>
+<p class="p4"><b>value(noteindex)</b></p>
+<p class="p2"><br></p>
+<p class="p3">For each note index (which may be a single value or an array), choose the correct tuning object from the array and ask it for the frequency value in Hz. The hundredths place determines which tuning will be used: 1.0 uses tunings[0], 1.01 uses tunings[1] and so on. Indexing is wrapped (wrapAt); if the index goes beyond the size of the array, one of the array elements will be used regardless.</p>
+<p class="p2"><br></p>
+<p class="p3">The tuning object is addressed with the "value" message, so if needed, you can place a function in the array of along with tuning objects. Of course, you will not be able to calibrate the function, but that may be okay in some circumstances.</p>
+<p class="p2"><br></p>
+<p class="p3">See the example below.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>calibrate(freq = 440, noteindex = 69)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Delegates the calibrate message to all the tuning objects in the array, so that they will all be in tune at the reference pitch. If any of the array elements do not respond to "calibrate," they will be ignored.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Array methods for easier access:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>size</b> == how many tunings in the array</p>
+<p class="p2"><br></p>
+<p class="p3"><b>at(i)</b> == tunings[i]</p>
+<p class="p3"><b>wrapAt(i)</b> == tunings.wrapAt(i)</p>
+<p class="p3"><b>clipAt(i)</b> == tunings.clipAt(i)</p>
+<p class="p3"><b>foldAt(i)</b> == tunings.foldAt(i)</p>
+<p class="p2"><br></p>
+<p class="p3"><b>put(i, tuning)</b> --&gt; tunings[i] = tuning</p>
+<p class="p3"><b>wrapPut(i, tuning)</b> == tunings.wrapPut(i, tuning)</p>
+<p class="p3"><b>clipPut(i, tuning)</b> == tunings.clipPut(i, tuning)</p>
+<p class="p3"><b>foldPut(i, tuning)</b> == tunings.foldPut(i, tuning)</p>
+<p class="p2"><br></p>
+<p class="p3"><b>do(func)</b> --&gt; tunings.do(func)</p>
+<p class="p3"><b>collect(func)</b> --&gt; tunings.collect(func)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">Example forthcoming. This class is still experimental.</p>
+<p class="p2"><br></p>
+</body>
+</html>

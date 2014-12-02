@@ -1,0 +1,80 @@
+TITLE:: GameLoop
+categories:: Class
+summary:: The interface class of the GameLoop library
+related:: Overviews/Gameloop_Overview
+
+DESCRIPTION::
+GameLoop allows for easy use of the GameLoop library as it manages the creation and setup of the basic individual components. It includes a basic GUI for common operations, monitoring and visualisation.
+
+CLASSMETHODS::
+
+METHOD:: instance
+Returns the GameLoop instance. GameLoop is a singleton (can have only one instance).
+
+METHOD:: new
+Create a new world with the given dimensions. These arguments are used for the creation of an instance of link::Classes/SpatialHashing::.
+
+ARGUMENT:: sceneWidth
+in meters
+
+ARGUMENT:: sceneHeight
+in meters
+
+ARGUMENT:: cellSize
+in meters
+
+INSTANCEMETHODS::
+
+METHOD:: guiClose
+Close the GUI.
+
+METHOD:: clear
+Clear and close everything.
+
+METHOD:: makeEdgeWalls
+Add four wall at the edge of the space.
+
+METHOD:: switchSpace
+Change the space size and cell size.
+
+METHOD:: resetCamera
+Smoothly return the camera to the center of the space.
+
+METHOD:: center
+Get the center of the space.
+
+METHOD:: entManager
+Get the EntityManager instance used.
+
+METHOD:: fastResetCamera
+Snap the camera to the center of the space.
+
+METHOD:: edgeWalls
+Make edge walls.
+
+METHOD:: clearEntities
+Clear all entities.
+
+METHOD:: removeCamera
+The camera will only be removed when this method is called.
+
+METHOD:: repManager
+Get the RepresentationManager.
+
+METHOD:: play
+Start the game loop. Set the world into motion.
+
+ARGUMENT:: rate
+The 'frame rate' of the game loop. Usually leave it as the default 0.05.
+
+METHOD:: stop
+Stop the game loop.
+
+METHOD:: clearEdgeWalls
+Remove the edge walls.
+
+METHOD:: clearWalls
+Clear all walls.
+
+METHOD:: gui
+Create the GUI and visualiser.

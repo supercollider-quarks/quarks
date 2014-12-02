@@ -1,0 +1,28 @@
+TITLE:: MiniIDEHelp
+summary:: A help tab for use with MiniIDE
+categories:: Frontends>MiniIDE
+related:: Classes/MiniIDE, Classes/MiniIDETab, Classes/MiniIDEScope, Classes/MiniIDENodeTree, Classes/MiniIDEJIT, Classes/MiniIDEEnvironment, Classes/MiniIDEGlobals, Classes/MiniIDEHistory, Classes/MiniIDELauncher, Classes/MiniIDELauncherButtonDef
+
+DESCRIPTION::
+This is a help tab for use with MiniIDE. It creates an open window to SCCode.org.  This helps to alleviate the pain caused by help not working on Windows in version 3.5.  If you are using a version of Supercollider that supports the help system you are better off using the intergrated help as it will include files for your installed Quarks.  You can run any text from the help window by highlighting it and pressing Ctrl+Enter.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new instance
+
+ARGUMENT:: bounds
+Bounds of the window. A default of Rect(0,0,512,805) will be used if not specified.
+
+METHOD:: tabLabel
+This symbol provides the display name of the tab.
+
+INSTANCEMETHODS::
+
+copymethod:: MiniIDETab, -window
+
+copymethod:: MiniIDETab, -bounds
+
+copymethod:: MiniIDETab, -layout
+
+PRIVATE:: init

@@ -1,0 +1,111 @@
+CLASS:: FancySlider
+redirect:: implClass
+summary:: An efficient Slider which substitutes a user view for a slider
+categories:: GUI>Views
+related:: Classes/Slider, Classes/EZFancySlider, Classes/EZSlider
+
+DESCRIPTION::
+This should respond just like a slider. See the documentation for Slider. You can also customize the colors of the slider, and you can even customize the draw function. See drawFunc below. EZFancySlider will wrap a FancySlider just like  EZSlider does with a Slider.
+
+
+CLASSMETHODS::
+
+Method:: new
+PRIVATE:: key
+
+
+INSTANCEMETHODS::
+
+METHOD:: drawFunc
+A user definable function for drawing the widget. You can also add a Function in order to enhance the existing function:
+CODE::
+(
+w=Window.new.front;
+v = FancySlider(w, Rect (20,90,300,20)).action_{"test".postln};
+
+v.drawFunc=v.drawFunc.addFunc({arg uview; 
+	var value_string = v.value.round(0.01).asString;
+	var string_x;
+	Pen.font = Font("Helvetica",11);
+	string_x= (v.value*300).clip(4, 300-26);
+	Pen.color = Color.white.alpha_(0.7);
+	Pen.addRect(Rect(string_x-1,1,26,12));
+	Pen.fill;
+	Pen.color = Color.black;
+	Pen.stringAtPoint(value_string,Point(string_x,0));
+	Pen.stroke;
+	
+});
+v.value_(0.4);
+)
+::
+The amount by which the value will changed when -increment or -decrement is called, or when related keys are pressed.
+METHOD:: sliderColor
+METHOD:: knobColor
+METHOD:: frameColor
+copymethod:: Slider  -thumbSize
+copymethod:: Slider -step
+copymethod:: Slider -value
+copymethod:: Slider -valueAction
+
+
+PRIVATE:: init
+PRIVATE:: getScale
+PRIVATE:: drawwidget
+PRIVATE:: mouseDown
+PRIVATE:: pixelStep
+PRIVATE:: defaultKeyDownAction
+PRIVATE:: ctrl_scale
+PRIVATE:: orientation
+PRIVATE:: increment
+PRIVATE:: zoom
+PRIVATE:: shift_scale
+PRIVATE:: mouseMove
+
+PRIVATE:: decrement
+PRIVATE:: q_defaultKeyDownAction
+
+PRIVATE:: alt_scale
+PRIVATE:: step
+PRIVATE:: thumbSize
+PRIVATE:: value
+PRIVATE:: valueAction
+
+EXAMPLES::
+
+code::
+(
+// Show the slider value in a NumberBox
+	w = Window.new.front;
+	c = NumberBox(w, Rect(20, 20, 150, 20));
+	a = FancySlider(w, Rect(20, 60, 150, 20))
+	  .action_({
+	    c.value_(a.value)
+	    });
+	a.action.value;
+)
+
+(
+// Customize the drawing function:
+w=Window.new.front;
+20.do{arg i; var v;
+
+v = FancySlider(w, Rect (0,i*20,400,20)).action_{"test".postln};
+
+v.drawFunc=v.drawFunc.addFunc({arg uview; 
+	var value_string = v.value.round(0.01).asString;
+	var string_x;
+	Pen.font = Font("Helvetica",11);
+	string_x= (v.value*400).clip(4, 400-26);
+	Pen.color = Color.white.alpha_(0.7);
+	Pen.addRect(Rect(string_x-1,1,26,12));
+	Pen.fill;
+	Pen.color = Color.black;
+	Pen.stringAtPoint(value_string,Point(string_x,0));
+	Pen.stroke;
+	
+});
+v.valueAction_(1.0.rand);
+}
+)
+::

@@ -1,0 +1,73 @@
+CLASS:: RedSlide
+SUMMARY:: logarithmic lag
+CATEGORIES:: Red>redUGens
+RELATED:: Classes/RedOnePole
+
+DESCRIPTION::
+Very similar to .lagud. Useful for smoothing sensor data.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: in
+The signal to be lagged.
+
+ARGUMENT:: up
+Lag amount for increasing numbers.
+
+ARGUMENT::down
+Lag amount for decreasing numbers. If nil then set to same as strong::up::.
+
+METHOD:: new
+
+ARGUMENT:: up
+Lag amount for increasing numbers.
+
+ARGUMENT::down
+Lag amount for decreasing numbers. If nil then set to same as strong::up::.
+
+INSTANCEMETHODS::
+
+METHOD:: slide
+
+ARGUMENT:: in
+The values to be lagged.
+
+METHOD:: up, down
+Set or get the amount of lag when using the strong::slide:: method.
+
+EXAMPLES::
+
+CODE::
+b= 1;	//target
+a= RedSlide(10, 5);	//10= upwards lag, 5= downwards
+b= a.slide(1)
+b= a.slide(1)
+b= a.slide(1)
+b= a.slide(1)
+b= a.slide(1)
+
+
+//--smoothing out an array of 0 and 1
+
+b= {|i| i.div(500)%2}.dup(3000);	//array
+a= RedSlide(100);
+b.collect{|x| a.slide(x)}.plot;
+
+
+//--audio and control rate
+
+{RedSlide.ar(LFPulse.ar(30, 0.6), 100)}.plot(0.1);
+{LFPulse.ar(30, 0.6).lagud(0.0155, 0.0155)}.plot(0.1);	//compare lagud
+
+
+{RedSlide.ar(LFPulse.ar(30, 0.6), 100)}.plot(0.1);
+{RedSlide.kr(LFPulse.kr(30, 0.6), 2)}.plot(0.1);		//rougly the same
+
+
+//--audio examples
+
+a= {SinOsc.ar(RedSlide.ar(LFPulse.ar(MouseX.kr(1, 50, 1)), MouseY.kr(50, 500, 1), 100).linexp(0, 1, 300, 3000), 0, 0.2)!2}.play
+a.free
+::

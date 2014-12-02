@@ -1,0 +1,44 @@
+TITLE:: QuickLauncher
+summary:: A GUI for toggling commonly used GUI windows
+categories:: Frontends>QuickLauncher
+related:: Classes/QLButton, Classes/QLButtonAppSupportDir, Classes/QLButtonClassBrowser, Classes/QLButtonClassLibraryDir, Classes/QLButtonEQ, Classes/QLButtonInternalServer, Classes/QLButtonLocalServer, Classes/QLButtonNdefMixer, Classes/QLButtonProxyMixer, Classes/QLButtonSynthDef
+
+DESCRIPTION::
+This is a GUI for toggling commonly used GUI windows
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new QuickLauncher window
+
+ARGUMENT:: bounds
+Bounds of the GUI window.
+
+ARGUMENT:: userButtonsDef
+Expects an array of link::Classes/QLButton##QLButton:: to control what buttons are created.  If this value is left blank it defaults to [link::Classes/QLButtonLocalServer##QLButtonLocalServer::, link::Classes/QLButtonInternalServer##QLButtonInternalServer::, link::Classes/QLButtonEQ##QLButtonEQ::, link::Classes/QLButtonClassBrowser##QLButtonClassBrowser::, link::Classes/QLButtonSynthDef##QLButtonSynthDef::, link::Classes/QLButtonNdefMixer##QLButtonNdefMixer::, link::Classes/QLButtonProxyMixer##QLButtonProxyMixer::, link::Classes/QLButtonAppSupportDir##QLButtonAppSupportDir::, link::Classes/QLButtonClassLibrarytDir##QLButtonClassLibrarytDir::]
+
+ARGUMENT:: colSize
+Number of columns to display
+
+INSTANCEMETHODS::
+
+METHOD:: layout
+Provides access to the layout.
+
+METHOD:: window
+Provides access to the GUI window.
+
+METHOD:: front
+A shortcut method for window.front.
+
+PRIVATE:: fillLayout
+
+EXAMPLES::
+
+code::
+//Simplest way to create a quicklauncher
+QuickLauncher().front
+
+//Same as above but with options explicitly specified
+QuickLauncher(bounds: 200@100, userButtonsDef: [QLButtonLocalServer(), QLButtonInternalServer(), QLButtonEQ(), QLButtonClassBrowser(), QLButtonSynthDef(), QLButtonNdefMixer(), QLButtonProxyMixer(), QLButtonAppSupportDir(), QLButtonClassLibraryDir()], colSize:3).front
+::

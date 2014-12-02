@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001076}
+span.s1 {color: #000000}
+span.s2 {color: #001076}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>BezierSpline</b></p>
+<p class="p2"><br></p>
+<p class="p3">a Bezier spline joins each point to the next by specifying control points.</p>
+<p class="p4"><br></p>
+<p class="p3">The number of control points determines the order of that segment:</p>
+<p class="p3"><span class="Apple-tab-span">	</span>0 : linear</p>
+<p class="p3"><span class="Apple-tab-span">	</span>1 : quadratic</p>
+<p class="p3"><span class="Apple-tab-span">	</span>2 : cubic</p>
+<p class="p2"><br></p>
+<p class="p3">Like other splines the points and control points may be multi-dimensional.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>BezierSpline(</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>point,</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>controlPoints,</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>point2,</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>controlPoints2,</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>...</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>pointN,</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>controlPointsN,</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>isClosed</b></p>
+<p class="p3"><b>)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Alternates points and lists of controlPoints</p>
+<p class="p4"><br></p>
+<p class="p3">The gui:</p>
+<p class="p4"><br></p>
+<p class="p3">click a knot to select that segment</p>
+<p class="p3">double click to create a point after the selected segment</p>
+<p class="p3">control-double click to create a control point in the selected segment</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p6"><span class="s1">b = </span>BezierSpline<span class="s1">(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0@0,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[],</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1@1,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[],</p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>false</p>
+<p class="p5"><span class="Apple-tab-span">	</span>);</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p5">b.gui</p>
+<p class="p2"><br></p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p5">b.asCompileString</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p6"><span class="s1">b = </span>BezierSpline<span class="s1">(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0@0,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[0.2@0.4],</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1@1,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[],</p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>false</p>
+<p class="p5"><span class="Apple-tab-span">	</span>);</p>
+<p class="p2"><br></p>
+<p class="p5">b.gui</p>
+<p class="p2"><br></p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s1">b = </span>BezierSpline<span class="s1">(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0@0,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[ 0.2@0.4, 0.5@0.9<span class="Apple-converted-space">  </span>],</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1@1,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[],</p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>false</p>
+<p class="p5"><span class="Apple-tab-span">	</span>);</p>
+<p class="p2"><br></p>
+<p class="p5">b.gui(<span class="s2">nil</span>,1000@300)</p>
+<p class="p2"><br></p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// issue: specs with step should not quantize the plotting</p>
+<p class="p5">// just the point selection</p>
+<p class="p5">(</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s1">b = </span>BezierSpline<span class="s1">(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Point(0.0,-30.0),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[ ],</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Point(1.0,30),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[],</p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>false</p>
+<p class="p5"><span class="Apple-tab-span">	</span>);</p>
+<p class="p2"><br></p>
+<p class="p5">g = b.gui(<span class="s2">nil</span>,1000@300,ControlSpec(-44,44),ControlSpec(0,8,step:0.25));</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p6"><span class="s1">b = </span>BezierSpline<span class="s1">(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0@0,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[ 0.2@0.4, 0.5@0.9<span class="Apple-converted-space">  </span>],</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1@1,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[],</p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>false</p>
+<p class="p5"><span class="Apple-tab-span">	</span>);</p>
+<p class="p2"><br></p>
+<p class="p5">g = b.gui(<span class="s2">nil</span>,1000@300);</p>
+<p class="p5">g.spec = ControlSpec(0,1,step:0.1);</p>
+<p class="p5">g.setDomainSpec( ControlSpec(0,8,step:0.25) );</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s1">b = </span>BezierSpline<span class="s1">(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Point(0.0,-30.0),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[ ],</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Point(1.0,30),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>[],</p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>false</p>
+<p class="p5"><span class="Apple-tab-span">	</span>);</p>
+<p class="p2"><br></p>
+<p class="p5">g = b.gui(<span class="s2">nil</span>,1000@300);</p>
+<p class="p5">g.spec = ControlSpec(-44,44);</p>
+<p class="p5">g.domainSpec = ControlSpec(0,8,step:0.25);</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+</body>
+</html>

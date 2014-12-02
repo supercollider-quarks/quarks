@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {font: 14.0px Helvetica}
+span.s2 {color: #0000ff}
+span.s3 {color: #001ab2}
+span.s4 {color: #36701f}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>MBM(int)</b></span> -- MIDIBufManager -- prNew<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Recording, storage and recall of note data from a MIDI device. This is a heavy object so you should not create more of them than you absolutely need.</p>
+<p class="p2"><br></p>
+<p class="p1">You must initialize the <a href="../../ddwMIDI/Help/MIDIBufManager.html"><span class="s2">MIDIBufManager</span></a> explicitly before use:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3">MIDIBufManager</span>(clock, chan, ccnum) =&gt; <span class="s3">MBM</span>.prNew(0);</p>
+<p class="p2"><br></p>
+<p class="p1">MIDI data are held in <a href="../../ddwMIDI/Help/MIDIRecBuf.html"><span class="s2">MIDIRecBuf</span></a> objects. To store it in the buffer manager, just chuck it.</p>
+<p class="p2"><br></p>
+<p class="p3">aMIDIRecBuf =&gt; <span class="s3">MBM</span>(0);</p>
+<p class="p2"><br></p>
+<p class="p1">Short form for indexing MIDIRecBufs stored within:</p>
+<p class="p1"><i>MBM(0)[0]</i></p>
+<p class="p1"><i>MBM(0)[\name]</i>: outputs the first MIDIRecBuf named 'name' in the buf manager. If you have duplicate names, only the first one sharing the name can be retrieved this way.</p>
+<p class="p2"><br></p>
+<p class="p1">To begin recording new MIDI data programmatically, chuck the placeholder object MRS into the MBM. The MRS supplies the name of the new buffer.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3">MRS</span>(<span class="s4">\newTune</span>) =&gt; <span class="s3">MBM</span>(0);</p>
+<p class="p4">// play MIDI notes on keyboard -- use the MIDI channel specified when creating the MIDIBufManager</p>
+<p class="p3"><span class="s3">MBM</span>(0).stopRecord;</p>
+<p class="p5"><br></p>
+<p class="p3"><span class="s3">MBM</span>(0)[<span class="s4">\newTune</span>].dumpSeq;</p>
+<p class="p2"><br></p>
+</body>
+</html>

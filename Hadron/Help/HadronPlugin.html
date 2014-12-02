@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0b15e8}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {color: #1f27af}
+span.s5 {color: #1a27ed}
+span.s6 {color: #252e9e}
+span.s7 {color: #616830}
+span.s8 {color: #399a14}
+span.s9 {color: #ce1b1c}
+span.s10 {color: #1320f3}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>HadronPlugin<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>base class for all Hadron plugins</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><br></p>
+<p class="p1">HadronPlugin is the base class which all user created plugins must inherit.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2"><b>See also:</b> <a href="Hadron.html"><span class="s3">Hadron</span></a> <a href="Writing-Hadron-Plugins.html"><span class="s3">Writing-Hadron-Plugins</span></a></span><span class="s4"> <a href="HadronModTargetControl.html"><span class="s5">HadronModTargetControl</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Methods and Variables Provided for Plugin Development</b></p>
+<p class="p2"><br></p>
+<p class="p1">The plugin interface is designed to get out of your way when you are writing your own classes, as much as possible. But there is some glue code you need to fill for sure. Here are the list of variables and their descriptions provided for you.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Supplied Variables:</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>inBusses: </b>This is an array of audio busses (see: <a href="SC://Bus"><span class="s5">Bus</span></a>) that holds the input busses of your plugin. The size of the array is<span class="Apple-converted-space">  </span>determined by the number of input channels you define in your *new class method. You should get the audio from these busses (in our case, there are two inputs and they are inBusses[0] and inBusses[1]) using <a href="SC://InFeedback"><span class="s5">InFeedback</span></a>. These busses should be sent as arguments to your synth.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>outBusses: </b>This is an array of audio busses (see: <a href="SC://Bus"><span class="s5">Bus</span></a>) that holds the output busses of your plugin. The size of the array is<span class="Apple-converted-space">  </span>determined by the number of output channels you define in your *new class method. You should write to those busses with <a href="SC://Out"><span class="s5">Out</span></a>. These busses should be sent as arguments to your synth.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>uniqueID: </b>An Integer between 0 and 65536 unique to the instances of your plugins. Every plugin active in a running Hadron system has a uniqueID. This number is provided to you by the <a href="HadronPlugin.html"><span class="s5">HadronPlugin</span></a> interface.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>ident: </b>The ident text as <a href="SC://String"><span class="s5">String</span></a>, if supplied by the user.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>window: </b>This is an instance of <a href="SC://CompositeView"><span class="s5">CompositeView</span></a>. You should use this as the parent view when drawing your widgets to your GUI. This window is embedded into the outerWindow (which you should not use) which shows the standard In/Outs, Kill and Hide buttons for all plugins. The bounds of the canvas are defined in your *new method.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>extraArgs: </b>If extra arguments for your objects are supplied by the user, they are stored in this variable. This is an array of <a href="SC://String"><span class="s5">String</span></a>s. You might want to check out the source codes of <a href="../plugins/Help/HrStereoMixer.html"><span class="s5">HrStereoMixer</span></a> and <a href="../plugins/Help/HrStereoSplitter.html"><span class="s5">HrStereoSplitter</span></a> to see them in action.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>saveGets: </b>An uninitialized <a href="SC://Array"><span class="s5">Array</span></a> you should fill with functions that will return the values you need to save when the user saves the state of his / her patch, when evaluated. For example, if you need to save the values of a <a href="SC://NumberBox"><span class="s5">NumberBox</span></a> and a <a href="SC://Slider"><span class="s5">Slider</span></a>, you need to say:</p>
+<p class="p2"><br></p>
+<p class="p6">saveGets = [ { myNumBox.value; }, { mySlider.value; } ];</p>
+<p class="p2"><br></p>
+<p class="p1"><b>saveSets: </b>An uninitialized <a href="SC://Array"><span class="s5">Array</span></a> you should fill with functions that will set the values of the parameters saved from obtaining the values of functions from the saveGets variable. The functions will be passed the saved value. The ordering must be same with the functions declared in the saveGets variable. So the companion for the above saveGets variable will be:</p>
+<p class="p2"><br></p>
+<p class="p6">saveSets = [{<span class="s6">|argVal|</span> myNumBox.valueAction_(argVal);}, {<span class="s6">|argVal|</span> mySlider.valueAction_(argVal);} ];</p>
+<p class="p2"><br></p>
+<p class="p1"><b>modSets: </b>This is an empty <a href="SC://Dictionary"><span class="s5">Dictionary</span></a>. If you want any of the controls / values of your plugin to be modulatable, you should fill this dictionary with key - value pairs where keys will be the descriptive names you give to the modulatable parameters, and the values will be functions (that will be passed values by the system) which should get the argument and do the relevant action for modulation. So if we have a level slider in our GUI and want it to be modulatable with the help of <a href="HadronModTargetControl.html"><span class="s5">HadronModTargetControl</span></a> (see its help for more info) we might put:</p>
+<p class="p2"><br></p>
+<p class="p6">modSets.put(<span class="s7">\level</span>, {<span class="s6">|argVal|</span> myLevelSlider.valueAction_(argVal); });</p>
+<p class="p2"><br></p>
+<p class="p1"><b>modGets: </b>This is essentially the same with modSets (a dictionary), but in the functions, you should return the value instead of setting one. So the complementary modGets for the above modSets would be:</p>
+<p class="p2"><br></p>
+<p class="p7">modGets.put(<span class="s8">\level</span>, { myLevelSlider.value; }); <span class="s9">//returns value</span></p>
+<p class="p2"><b></b><br></p>
+<p class="p1"><b>group: </b>This is a Group reserved for your synth. Your Groups and Synths should have this group in their targets. See Synth and Group help for more info.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Supplied Methods:</b></p>
+<p class="p3"><br></p>
+<p class="p1"><b>updateBusConnections: </b>This method is called when a connection change relevant to your plugins input or output busses occur. In this method, you should notify your synth instances about the change by sending the inBusses and outBusses Bus holders as arguments. To see an example of doing this, consult to the Writing-Hadron-Plugins help. You can also check out the sources of the provided plugins with your Hadron distribution.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>cleanUp: </b>This method is called when your plugin instance is being killed. You should free any private resources you allocate during the life time of your plugin. The supplied <a href="SC://Group"><span class="s5">Group</span></a> "group" is freed automatically, so any nodes attached to the group will be freed automatically for you.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>notifyPlugKill(argPlugin): </b>This method is called when ANY of the running instances is being killed. If your system and/or GUI state is dependent on other running plugins, you should take care of the removal in this method. The instance of plugin being killed is sent as an argument to this method. To see an example of how this might be necessary, check the sources of the supplied <a href="../plugins/Help/HrSimpleModulator.html"><span class="s5">HrSimpleModulator</span></a> plugin.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>notifyPlugAdd(argPlugin): </b>This is the same with notifyPlugKill, but called only when a new plugin instance is introduced to the system. the new plugin instance is sent as an argument to this method. To see an example of how this might be necessary, check the sources of the supplied <a href="../plugins/Help/HrSimpleModulator.html"><span class="s5">HrSimpleModulator</span></a> plugin.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>wakeFromLoad: </b>If your plugins saved state in the <a href="Hadron.html"><span class="s5">Hadron</span></a> environment is dependent on all other plugins being alive, you should do necessary operations in this method. This method is called when all other plugins are loaded from a saved file, and is in the active state. To see an example of how this might be necessary, check the sources of the supplied <a href="../plugins/Help/HrSimpleModulator.html"><span class="s5">HrSimpleModulator</span></a> plugin.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>collide: </b>When the user presses the "Collide" button from the main Hadron GUI, this method in all alive plugins is called.</p>
+<p class="p2"><br></p>
+<p class="p1">To find out more about plugin development by inheriting this class see: <a href="Writing-Hadron-Plugins.html"><span class="s10">Writing-Hadron-Plugins</span></a></p>
+</body>
+</html>

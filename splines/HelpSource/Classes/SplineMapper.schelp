@@ -1,0 +1,149 @@
+CLASS:: SplineMapper
+summary:: Use a spline as a mapping function.
+categories:: Splines
+related:: Classes/LinearSpline, Classes/Shaper
+
+DESCRIPTION::
+Interprets a spline as a mapping function for wave shaping or transfer functions.
+
+X will be enforced to be monotonic
+
+but Y (value) may curve back on itself resulting in non-linear effects
+
+
+CLASSMETHODS::
+
+METHOD:: new
+(describe method here)
+
+argument:: spline
+(describe argument here)
+
+argument:: dimension
+0: x is input, y is output
+1: y is input, x is output
+
+argument:: inSpec
+ControlSpec of the input range
+
+argument:: outSpec
+ControlSpec of the output range
+
+returns:: this
+
+
+INSTANCEMETHODS::
+
+
+METHOD:: kr
+Given a control input X, maps that with the spline as transfer function.
+
+argument:: x
+control rate input
+
+argument:: divisions
+Number of points in the interpolation
+
+argument:: rate
+private
+
+returns:: control rate BufRd
+
+METHOD:: ar
+Given an audio input X, maps that with the spline as a transfer function. Note that Y can have bends in it resulting in interesting non-linear distortions.  Shaper might be better, used in conjunction with makeBuf.  The implementation may change to Shaper in the future which may result in a change of sound.
+
+argument:: x
+control rate input
+
+argument:: divisions
+Number of points in the interpolation
+
+returns:: control rate BufRd
+
+METHOD:: makeBuf
+Makes a LocalBuf containing the transfer function
+
+argument:: divisions
+Number of points in the interpolation
+
+argument:: dimension
+0: x is input, y is output
+1: y is input, x is output
+
+
+returns:: link::Classes/LocalBuf::
+
+
+EXAMPLES::
+
+code::
+(
+b = BSpline([ [ 0.0, 0.0 ], [ 0.28177966101695, 0.27 ], [ 0.77118644067797, 0.932 ], [ 0.89618644067797, 0.424 ], [ 1.0, 0.132 ] ], 4.0, false);
+b.gui(nil,500@500,\unipolar,\unipolar);
+)
+
+// in case you want to print a spline to save it
+b.asCompileString
+
+(
+{
+	PinkNoise.ar * SplineMapper(b).kr( MouseX.kr(0,1),32 )
+}.play
+)
+::
+
+Note that in this version you cannot edit the mapping function in real time.
+
+The output is limited to the outputSpec, so curvatures that map to outside of the range will be clipped within.  BSpline can creates some crazy curvatures.
+
+code::
+(
+b = BSpline([ [ -1.0, -1.0 ], [ 0.36864406779661, -0.292 ], [ 1.0, 1.0 ] ], 4.0, false);
+b.gui(nil,500@500,\bipolar,\bipolar);
+)
+(
+{
+	w = LFSaw.ar(MouseX.kr(40,4000,\exponential));
+	SplineMapper(b).ar( w, 64 ) * MouseY.kr(0.7,0.0)
+}.play
+ )
+
+/*
+By passing spec and domainSpec to the gui
+it will size the display to precisely the range
+and limit the points to movement within the range.
+*/
+(
+b = BSpline([ [ 0.0, 0.028571428571429 ], [ 0.2890365448505, 0.39428571428571 ], [ 0.7641196013289, 1.0 ], [ 1.0, 0.0 ] ], 4.0, false);
+
+b.gui(nil,500@500,\unipolar,\unipolar);
+
+)
+
+
+// not working as expected
+(
+b = BezierSpline( Point(-1,-1), [], Point(1,1),[],false);
+b.gui(nil,500@500,\bipolar,\bipolar);
+)
+(
+{
+	x = MouseX.kr(-1,1,\linear);
+	y = SplineMapper(b).kr( x, 64 );
+	//Saw.ar( y.linlin(-1,1, 400,6000) )
+	Saw.ar * (y * 0.5 + 1)
+}.play
+ )
+
+
+
+
+Notes
+
+Make a SplineMapperEditor that limits visibile and points to specs.
+limits drawing to clip range
+highlights in red any reverses in domain
+highlights in yellow any reverses in level
+normalize button
+
+

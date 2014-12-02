@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #001afb; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #9f1414}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #001afb}
+span.s3 {font: 12.0px Helvetica}
+span.s4 {color: #000000}
+span.s5 {color: #0012b0}
+span.s6 {color: #741584}
+span.s7 {color: #0015a6}
+span.s8 {color: #285e08}
+span.s9 {font: 9.0px Monaco}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>MasterEQ<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a global equaliser with graphical interface</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p1">part of <a href="wslib.html"><span class="s2">wslib</span></a></p>
+<p class="p2"><br></p>
+<p class="p1"><i>** This class requires the </i><a href="../../TabbedView/TabbedView.html"><span class="s2"><i>TabbedView</i></span></a><i> </i><a href="SC://Quark"><span class="s2"><i>Quark</i></span></a><i> **</i></p>
+<p class="p3"><br></p>
+<p class="p1">MasterEQ provides a user interface for the BEQSuite filters, in the form of a parametric EQ. The MasterEQ is always inserted at the end of the processing chain, so any sound produced with SuperCollider wil go through the eq. The setting is the same for all channels.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p1">There is a preset system included which allows users to add and recall settings. The settings can also be saved to disk with the "save" button. The presets and current settings are then saved in the SuperCollider application folder in a text file named "eq-prefs.txt", and will be automatically loaded the next time MasterEQ is called.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p1">MasterEQ survives cmd-period calls.</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s3"><img src="attachments/MasterEQ/MasterEQ.png" alt="attachments/MasterEQ/MasterEQ.png"></span></p>
+<p class="p3"><br></p>
+<p class="p1"><b>See also:</b> <a href="SC://BEQSuite"><span class="s2">BEQSuite</span></a></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (numCha, server)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>This method creates a new instance of MasterEQ. There can be only one MasterEQ at a time.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>numCha </b>- number of channels. Default value is 2.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>server </b>- the server on which the EQ runs. The default is Server.default</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>s.boot;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s5">MasterEQ</span><span class="s4">(</span><span class="s6">2</span><span class="s4">); </span>// opens and runs the EQ in 2-channel mode</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s5">MasterEQ</span><span class="s4">(</span><span class="s6">4</span><span class="s4">); </span>// replaces current eq with 4-channel version</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*stop</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Stop the EQ</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s5">MasterEQ</span><span class="s4">.stop; </span>// notice the power button in the right corner turn gray</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*start</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Start the EQ. Also opens a new instance if not already opened, based on the most recently set number of channels.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">MasterEQ</span>.start;</p>
+<p class="p6"><br></p>
+<p class="p12"><b>Accessing Instance and Class Variables</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*window</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Pointer to the EQ window.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">MasterEQ</span>.window.view.background_( <span class="s5">Gradient</span>( <span class="s5">Color</span>.gray(<span class="s6">0.58</span>), <span class="s5">Color</span>.white, <span class="s8">\v</span> ) );</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span>*</span><b>eq</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>eq is a dict (<a href="SC://Event"><span class="s2">Event</span></a>) with all used variables and settings of the EQ. Please <i>study the source code</i> of this class to find out what is in there and how to acces. Easy scripting methods might be added in a later stage.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>( </span>// set random db values</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">MasterEQ</span>.eq[ <span class="s8">\frdb</span> ] = [ [ <span class="s6">100</span>, <span class="s6">10</span>.rand2, <span class="s6">1 </span>], [ <span class="s6">250</span>, <span class="s6">10</span>.rand2, <span class="s6">1 </span>], [ <span class="s6">1000</span>, <span class="s6">10</span>.rand2, <span class="s6">1 </span>],<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[ <span class="s6">3500</span>, <span class="s6">10</span>.rand2, <span class="s6">1 </span>], [ <span class="s6">6000</span>, <span class="s6">10</span>.rand2, <span class="s6">1 </span>] ];</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">MasterEQ</span>.eq[ <span class="s8">\send_current</span> ].value;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">MasterEQ</span>.eq[ <span class="s8">\uvw</span> ].refresh;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">MasterEQ</span>.eq[ <span class="s8">\tvw_refresh</span> ].value;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">MasterEQ</span>.eq[ <span class="s8">\pumenu_check</span> ].value;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+</body>
+</html>

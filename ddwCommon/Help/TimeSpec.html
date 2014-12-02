@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 28.0px; text-indent: -28.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 28.0px; text-indent: -28.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {color: #0000ff}
+span.s2 {text-decoration: underline}
+span.s3 {color: #0000bf}
+span.s4 {color: #007300}
+span.s5 {color: #000000}
+span.s6 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>TimeSpec</b></p>
+<p class="p2"><br></p>
+<p class="p3">Objects for implementing more flexible quantized scheduling using TempoClock-play. Applies to any object that plays using TempoClock (such as Pbind).</p>
+<p class="p2"><br></p>
+<p class="p3"><b>NilTimeSpec</b> -- always schedules for now.</p>
+<p class="p3"><b>BasicTimeSpec</b> -- like standard scheduling: quant, phase, timing offset (see <a href="SC://Quant"><span class="s1">Quant</span></a>).</p>
+<p class="p3"><b>AbsoluteTimeSpec</b> -- schedules for a specific, precalculated beat number. This time spec is valid until the given time passes; once the clock's beat counter goes past that time, an error will be thrown.</p>
+<p class="p3"><b>AbsoluteTimeSpecLeadTime</b> -- for use with BP in chucklib, and subtracts the leadTime of the process from the given time. See the <b>[</b><b><span class="s2">BP</span></b><b>]</b> help file for details.</p>
+<p class="p3"><b>DelayTimeSpec</b> -- schedules for the given number of beats from now. You can give a pattern instead of a constant number for a different delay on each call.</p>
+<p class="p3"><b>DelayTimeSpecLeadTime</b> -- subtracts the lead time from the delay.</p>
+<p class="p2"><br></p>
+<p class="p3">Most of the time, you will use BasicTimeSpec. The Nil, Absolute and Delay TimeSpecs are provided for cases when one process has to schedule events on the same clock that it's using. In that case, "now" is a meaningful reference. This is not true when you're starting a process interactively in the interpreter or from an external control.</p>
+<p class="p2"><br></p>
+<p class="p3">The following time spec objects have been deprecated. They still exist, but their behavior has been rolled up into BasicTimeSpec. If your code uses them, you'll see a deprecation warning but the behavior should not have changed. (There is one exception: QuantOffsetLatencyWrapTimeSpec did not prove to be useful so its behavior is no longer available.)</p>
+<p class="p2"><br></p>
+<p class="p3"><b>QuantOffsetTimeSpec</b> -- like Basic, but adds an offset to the next multiple</p>
+<p class="p3"><b>QuantOffsetLatencyTimeSpec</b> -- takes server-side latency into account; latency is in beats (not seconds)</p>
+<p class="p3"><b>QuantOffsetLatencyWrapTimeSpec</b> -- takes latency into account; if the latency pushes the onset before the current time, it will be scheduled for (quant) beats later</p>
+<p class="p2"><br></p>
+<p class="p4">-<span class="Apple-tab-span">	</span>A single TimeSpec object can be shared among multiple processes (see especially BP in the chucklib addon, where a TimeSpec can be stored in the ~quant variable). If you change the instance variables of the time spec without replacing the object, you can change the quantization of multiple processes simultaneously.</p>
+<p class="p5"><br></p>
+<p class="p6"><b>Usage:</b></p>
+<p class="p3">asTimeSpec should be implemented for every type of object that should be able to be converted into a TimeSpec by playing a process. Current implementations are:</p>
+<p class="p2"><br></p>
+<p class="p3">nil --&gt; NilTimeSpec</p>
+<p class="p3">quant --&gt; NilTimeSpec if 0, BasicTimeSpec otherwise (compatibility with standard syntax)</p>
+<p class="p3">[quant, offset] --&gt; BasicTimeSpec</p>
+<p class="p3">[quant, offset, latency] --&gt; BasicTimeSpec</p>
+<p class="p2"><br></p>
+<p class="p6"><b>Example:</b></p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s3">SynthDescLib</span>.global.read;</p>
+<p class="p7">c = <span class="s3">Pbind</span>(<span class="s4">\freq</span>, <span class="s3">Pseq</span>(#[5000, 2500, 2500, 2500], <span class="s3">inf</span>), <span class="s4">\delta</span>, 1, <span class="s4">\legato</span>, 0.01, <span class="s4">\instrument</span>, <span class="s4">\default</span>);</p>
+<p class="p7">p = <span class="s3">Pbind</span>(<span class="s4">\freq</span>, <span class="s3">Pfunc</span>({ rrand(200, 800) }), <span class="s4">\delta</span>, 0.25, <span class="s4">\legato</span>, 0.6, <span class="s4">\instrument</span>, <span class="s4">\default</span>);</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s5">c.play(quant: 4);<span class="Apple-tab-span">	</span></span>// start a metronome</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s5">e = p.play(quant: </span><span class="s3">nil</span><span class="s5">);<span class="Apple-tab-span">	</span></span>// not synced with metronome</p>
+<p class="p7">e.stop;</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s5">e = p.play(quant: 4);<span class="Apple-tab-span">	</span></span>// synced -- this is standard SC play syntax, so no old stuff is broken</p>
+<p class="p7">e.stop;</p>
+<p class="p8"><br></p>
+<p class="p7">e = p.play(quant: <span class="s3">BasicTimeSpec</span>(4));</p>
+<p class="p7">e.stop;</p>
+<p class="p8"><br></p>
+<p class="p7">[4, 2].asTimeSpec.dump;</p>
+<p class="p8"><br></p>
+<p class="p7">e = p.play(quant: [4, 2].asTimeSpec);<span class="Apple-tab-span">	</span><span class="s6">// synced, on "beat 3 of the measure"</span></p>
+<p class="p7">e.stop;</p>
+<p class="p8"><br></p>
+<p class="p9">// cmd-. to stop metronome</p>
+<p class="p2"><br></p>
+<p class="p6"><b>Extensibility:</b></p>
+<p class="p2"><br></p>
+<p class="p3">You can write your own TimeSpecs. They need to respond to <b>nextTimeOnGrid(clock)</b> and return the absolute number of beats when the event should be scheduled (suitable for TempoClock-schedAbs). See the class definitions for the above timespecs for examples of how to do it. For chucklib compatibility, you should also implement <b>bpSchedTime(bp)</b>, which gets the next time on grid and subtracts the input process's lead time. The BP process is passed into bpSchedTime so that any values in the BP object can be used to calculate the scheduling time.</p>
+</body>
+</html>

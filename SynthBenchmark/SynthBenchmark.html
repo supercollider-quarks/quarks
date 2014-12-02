@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000ebe}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #bf0000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000bf}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+span.s1 {color: #000000}
+span.s2 {color: #0029f7}
+span.s3 {text-decoration: underline ; color: #0026e6}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SynthBenchmark</b><span class="Apple-tab-span">	</span>A class for using NRT mode to benchmark synths by their time taken.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">REQUIRES GNU TIME COMMAND - on macports it's the gtime package, "sudo port install gtime".</p>
+<p class="p1">On linux it's probably available from yr package manager e.g. "sudo apt-get install time".</p>
+<p class="p2"><br></p>
+<p class="p1">Just run this to make it happen - on my system it takes about a minute to run:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1"><span class="Apple-tab-span">	</span></span>SynthBenchmark<span class="s1">().run(</span>false<span class="s1">);</span></p>
+<p class="p2"><br></p>
+<p class="p1">The output shows the CPU time (not the wallclock time) taken to execute each of the files in <a href="SC://Non-Realtime-Synthesis"><span class="s2">Non-Realtime-Synthesis</span></a> mode, thus giving some numeric indication of how efficient scsynth and its plugins are on your current setup. NRT mode is not the same as realtime mode but it's much easier to measure and is likely to give a good indication.</p>
+<p class="p2"><br></p>
+<p class="p1">You can write your own benchmarks if you like. In the quark there's a "benchmarks" folder containing files named *_bench.scd - all files of that form are expected to contain sclang code to define a <a href="SC://SynthDef"><span class="s3">SynthDef</span></a> (note that they don't .load or .store the SynthDef, they just return it). You can define benchmarks in different folders, and then pass the folder paths in as an argument to the SynthBenchmark() constructor.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">// The "compare" method returns a string with stats comparing two runs:</p>
+<p class="p5"><span class="s1">a = </span>SynthBenchmark<span class="s1">().run(</span>false<span class="s1">);</span></p>
+<p class="p4">// ...then recompile scsynth or whatever change you want to make...</p>
+<p class="p5"><span class="s1">b = </span>SynthBenchmark<span class="s1">().run(</span>false<span class="s1">);</span></p>
+<p class="p6">compare(a, b);</p>
+</body>
+</html>

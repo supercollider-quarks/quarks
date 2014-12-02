@@ -1,0 +1,28 @@
+TITLE:: KurtosisUGen
+summary:: Calculates the kurtosis of a signal over a specified time window.
+categories:: UGens>Analysis>Statistics
+related:: Classes/SkewUGen, Classes/StdDevUGen
+
+DESCRIPTION::
+KurtosisUGen is a pseudo UGen that calculates the skewness of a signal over a specified time window.
+
+Kurtosis is a measure of the "peakedness" of the probability distribution of a real-valued random variable.
+
+CLASSMETHODS::
+private:: categories
+
+METHOD:: kr
+Calculates the kurtosis of a control rate signal.
+
+ARGUMENT:: input
+The signal to calculate the kurtosis of.
+
+ARGUMENT:: length
+The length in samples of the window.
+
+ARGUMENT:: mean
+If you already calculate a mean (=RunningSum/length) in another part of your SynthDef you can supply it here, so it is not calculated again, thus safing processing power.
+
+
+INSTANCEMETHODS::
+

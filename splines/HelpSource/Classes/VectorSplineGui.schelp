@@ -1,0 +1,239 @@
+CLASS:: VectorSplineGui
+summary:: Editor for viewing splines that consist of vectorized data at positions along the x domain
+categories:: Splines>GuiClasses
+related:: Classes/LinearSpline, Classes/SplineGui
+
+DESCRIPTION::
+	Vectorizing data is a common machine learning technique
+	where many parameters are stored as dimensions of a vector.
+
+	A vector-spline is my own neologism meaning a (time) series of such vectors where the first dimension is interpreted as x and the other dimensions are the data.
+
+	Most commonly the first dimension (x) is time, but it can also be an ordered series of states or presets.  The distance along x could refer to anything.
+
+	The spline can be used to interpolate between those states or to sequence changes between states.
+
+	Note that the distance along the spline is u, but this distance varies depending on the values in each dimension of the point.  So u cannot be time as it would vary as you varied the data in the point.  It can be used for similarity, though there are much better ways to compare vectorized data.
+
+	So this gui shows each dimension overlaid and allows switching between dimensions and editing them one at a time.
+
+	For its implementation it uses an array of 2D splines, one for each dimension (except the first).
+
+code::
+(
+l = LinearSpline({ { 4.0.rand } ! 6 } ! 12);
+v = VectorSplineGui(l).gui(nil,1000@1000);
+
+v.focused = 1;
+v.focused = 2;
+)
+::
+
+
+
+INSTANCEMETHODS::
+
+
+METHOD:: focused
+Switches the currently focused data dimension. Indexing starts with the first data dimension, not the 0th (time) dimension.  So focused = 0 focuses spline dimension 1.
+
+argument:: di
+Integer
+
+returns:: Integer
+
+METHOD:: specs
+Optionally get or set specs for each dimension.  By default each dimension guesses its specs based on the data.  You may also set a single spec in a array, eg: [\unipolar.asSpec] which will be used for all
+
+returns:: array of ControlSpec
+
+
+subsection::Implementation methods
+
+These methods are essentially private and just documented here in case you are interested in how its implemented.
+
+
+METHOD:: splineGuis
+Accesses the internal spline guis
+
+returns:: (returnvalue)
+
+
+METHOD:: guiBody
+This is called by .gui(layout,bounds) and should not be called directly.
+
+code::
+(
+w = Window.new.front;
+l = LinearSpline({ { 4.0.rand } ! 6 } ! 12);
+v = VectorSplineGui(l).gui(w,Rect(10,10,200,50));
+)
+
+
+::
+
+argument:: parent
+parent view, window or FlowView
+
+argument:: bounds
+Rect
+
+returns:: this
+
+
+
+METHOD:: refresh
+Refresh the view
+
+returns:: this
+
+METHOD:: update
+The implementatation creates multiple splines with multiple spline guis and uses the dependency system to watch for messages sent by .changed .  The currently focused sub spline for a single dimension will be .changed by its gui, and that causes update message to be sent to dependents. The VectorSplineGui is a dependant of each of theh sub-splines.
+
+Changes to that spline's x/y are then passed on to the model (a multi-dimensional spline).
+
+The expected messages are:
+	\didCreatePoint,
+	\didCreateControlPoint,
+	\didDeletePoint,
+	\didDeleteControlPoint,
+	\didMovePoint
+
+
+
+
+argument:: spline
+The sub-spline or possibly the model
+
+argument:: wot
+By convention the SplineGui are sending symbols to message what was changed.
+
+argument:: i
+By convention this is the point index
+
+returns:: (returnvalue)
+
+METHOD:: didMovePoint
+(describe method here)
+
+argument:: xySpline
+(describe argument here)
+
+argument:: dim
+(describe argument here)
+
+argument:: i
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: didCreatePoint
+(describe method here)
+
+argument:: xySpline
+(describe argument here)
+
+argument:: dim
+(describe argument here)
+
+argument:: i
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: didCreateControlPoint
+(describe method here)
+
+argument:: xySpline
+(describe argument here)
+
+argument:: dim
+(describe argument here)
+
+argument:: i
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: didDeletePoint
+(describe method here)
+
+argument:: xySpline
+(describe argument here)
+
+argument:: dim
+(describe argument here)
+
+argument:: i
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: didDeleteControlPoint
+(describe method here)
+
+argument:: xySpline
+(describe argument here)
+
+argument:: dim
+(describe argument here)
+
+argument:: i
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: updateSplineGuis
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: makeSplineGuis
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: viewDidClose
+(describe method here)
+
+returns:: (returnvalue)
+
+
+EXAMPLES::
+
+code::
+(
+d = Array.fill(32,{ arg i;
+		// time       5-dims of rand data
+		[i * 0.25] ++ Array.fill(5,{ (32.rand + 32).midicps })
+    });
+l = LinearSpline(d);
+v = VectorSplineGui(l);
+v.specs = Array.fill(5,\freq.asSpec);
+
+w = Window("spliiine",Rect(0,0,1000,400));
+w.front;
+v.gui(w,Rect(0,0,800,200));
+
+PopUpMenu(w).items_( (1..(l.numDimensions-1)) ).action_({ arg pum; v.focused = pum.value })
+)
+::
+
+Note about SplineGuis: holding down shift-control while move will constrict movement to vertical.  hold down control to constrict movement to horizontal.
+
+Double click to create a new point.
+
+As with all ObjectGui subclasses you can set a different model to the view and it will update itself completely.
+
+code::
+(
+l = LinearSpline({ { 4.0.rand } ! 6 } ! 12);
+v = VectorSplineGui(l).gui(nil,1000@1000);
+
+// causes a full update
+m = LinearSpline({ { 4.0.rand } ! 6 } ! 12);
+v.model = m;
+)
+::
+
+

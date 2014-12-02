@@ -1,0 +1,170 @@
+CLASS:: PopUpTreeMenu
+SUMMARY:: hierarchical PopUp menu
+CATEGORIES:: GUI
+RELATED:: Classes/PopUpMenu
+
+DESCRIPTION::
+
+SUBSECTION::known problems / todo
+list::
+## The tree must must follow the structure described below. Later it might be possible to use e.g. code::Help.tree::
+## Screen width and height are not respected. Menus with many entries may be cut off at the borders.
+## Click once and menu should stay open so one can browse without keeping the mouse pressed. This is difficult due to mouseOverAction bug - it does not fire when already clicked somewhere else.
+## SwingOSC: scroll handles appear.  difficult to solve - something with font size calculation.
+::
+
+NOTE::
+This quark now requires sc version 3.3.1 or newer.
+::
+
+CLASSMETHODS::
+
+PRIVATE:: initClass
+
+INSTANCEMETHODS::
+
+PRIVATE:: prToScreen, prValue, prUserAction, prLookup, prSubmenu, prUserActionEnd
+
+METHOD:: tree
+Dictionary of dictionaries. Branches terminate if they have an empty dictionary as a value (= leaf). Everything have to be symbols.
+code::
+( 'symbol1': (), 'symbol2': () )		//same level
+( 'symbol': ( 'symbol': () ) )			//nested
+( '1' : ('11': () ), '2.2': ('22': () ) )	//numbers also have to be symbols
+::
+
+METHOD:: value
+Array of symbols pointing to the last selected node. code::nil:: if nothing selected.
+
+METHOD:: currentLeaf
+Array of symbols pointing to current selection (leaves only). Empty if nothing selected. See link::#-currentPath:: for reporting both nodes and leaves.
+
+METHOD:: action
+Function that gets evaluated when some leaf is selected. Arguments passed: this, value
+
+METHOD:: openAction
+Function that gets evaluated when the popup menu is clicked. Arguments passed: this, mouseX, mouseY. This can be used to automatically populate the tree to keep it in sync with files in a folder. See link::#Examples:: below.
+
+METHOD:: closeAction
+Function that gets evaluated when the popup menu closes. Arguments passed: this, mouseX, mouseY.
+
+METHOD:: sortFunc
+Sorts the dictionary in other ways than in the default alphabetic order.
+
+METHOD:: currentPath
+Array of symbols pointing to current selection. Array is empty if nothing selected.
+
+METHOD:: value
+Set the value.
+
+ARGUMENT:: path
+Should be an array of symbols.
+
+METHOD:: valueAction
+Set the value and evaluate the action.
+
+ARGUMENT:: path
+Should be an array of symbols.
+
+EXAMPLES::
+
+code::
+//--simple example
+(
+var w= Window("popuptreemenu - simple", Rect(200, 400, 300, 100)).front;
+a= PopUpTreeMenu.new(w, Rect(50, 30, 100, 20))
+	.tree_(
+		(
+			'a drum': (),
+			'bass': (
+				'funky': (),
+				'unhip': (
+					'umpahTuba': (),
+					'umpahUpright': ()
+				)
+			),
+			'melo': ()
+		)
+	);
+a.action_{|view, val| ("selected:"+val).postln};
+)
+a.value_(['bass', 'funky'])
+a.value_(['melo'])
+a.valueAction_(['bass', 'unhip', 'umpahTuba'])
+
+
+//--polling state of the menu in use - example also show custom color/font settings
+(
+var w= Window("popuptreemenu - state", Rect(400, 400, 300, 100)).front;
+a= PopUpTreeMenu.new(w, Rect(10, 20, 200, 34))
+    .tree_(('aaa': (), 'bbb': (), 'ccc': ('123': (), '456': (), '789': ('hier': ()))))
+    .font_(Font("Arial", 24))
+    .background_(Color.red(1))
+    .hiliteColor_(Color.red(0.75))
+    .stringColor_(Color.red(0.5));
+Routine({while({w.isClosed.not}, {
+    ("path:"++a.currentPath).post;
+    (" leaf:"++a.currentLeaf).post;
+    (" value:"++a.value).postln;
+	0.4.wait;
+})}).play(AppClock);
+)
+//--changing position and font while active
+a.value_(['aaa'])
+a.bounds_(Rect(30, 30, 100, 20));
+a.font_(Font("Geneva", 10));
+a.refresh
+a.value;
+a.sortFunc= {|a, b| a>b}
+a.sortFunc= nil			//the default
+//cmd period to stop
+
+
+//--scanning a folder each time menu is pressed.
+//--slightly inefficient but keeps menu/folder in sync
+(
+var root= "~/Music".standardizePath;	//edit this!
+var w= Window("popuptreemenu - scan", Rect(200, 400, 300, 100)).front;
+var buildTreeFunc;
+a= PopUpTreeMenu.new(w, Rect(10, 20, 200, 20)).items_([root.basename]);
+buildTreeFunc= {|path|
+	var deepPathMatch, syms, tree;
+	var dir= path.dirname;
+	deepPathMatch= {|pn|
+		var arr= [];
+		pn.pathMatch.do{|x|
+			if(x.last.isPathSeparator, {
+				arr= arr++deepPathMatch.value(PathName(x++"*"));
+			}, {
+				arr= arr++PathName(x);
+			})
+		};
+		arr
+	};
+	syms= deepPathMatch.value(PathName(path)).collect{|x|
+		var pathNoRoot= x.fullPath.copyToEnd(root.size);
+		pathNoRoot.split($/).collect{|y| y.asSymbol}
+	};
+	tree= ();
+	syms.do{|x|
+		var parent= tree;
+		x.do{|y, i|
+			var node= parent[y];
+			if(node.isNil, {
+				parent.put(y, ());
+				parent= parent[y];
+			}, {
+				parent= node;
+			});
+		};
+	};
+	tree;
+};
+a.openAction_{|view, x, y|
+	("rebuilding tree of"+root).postln;
+	view.tree= buildTreeFunc.value(root); //build and replace tree
+};
+a.closeAction_{|view, x, y| "closing".postln};
+a.action_{|view, val| ("selected:"+root++val.join($/)).postln};
+)
+::

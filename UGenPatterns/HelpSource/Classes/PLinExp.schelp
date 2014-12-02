@@ -1,0 +1,31 @@
+CLASS:: PLinExp
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Modifiers
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/LinExp::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: pattern
+
+ARGUMENT:: srclo
+
+ARGUMENT:: srchi
+
+ARGUMENT:: dstlo
+
+ARGUMENT:: dsthi
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PLinExp(Pseq([0, 1, 2, 3, 4], inf), 0, 4, 50, 60).trace).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \amp, PLinExp(PSinOsc(16), -1, 1, 0.001, 0.5).trace).play
+a.stop
+::

@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #2951bc; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #521e16}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #4d4d4d}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #4d4d4d; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #5b1d15}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #5b1d15; min-height: 12.0px}
+span.s1 {color: #2951bc}
+span.s2 {text-decoration: underline}
+span.s3 {color: #0000bf}
+span.s4 {color: #000000}
+span.s5 {color: #950095}
+span.s6 {color: #666666}
+span.s7 {color: #193688}
+span.s8 {color: #4d4d4d}
+span.s9 {color: #113190}
+span.s10 {color: #0d2d94}
+span.s11 {color: #5b1d15}
+span.s12 {color: #1340d4}
+span.s13 {color: #001fa4}
+span.s14 {color: #002cea}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>wslib shortcuts</b></p>
+<p class="p2">a number of syntax shortcuts featured in <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">shortcuts documented here:</p>
+<p class="p2"><b>Synth:sched</b></p>
+<p class="p2"><b>Function:render</b></p>
+<p class="p2"><b>SCWindow:decorate ( margin, gap )</b></p>
+<p class="p2"><b>Env:kr ( doneAction, gate, mul, add, timeScale )</b></p>
+<p class="p2"><b>Array:fft ( imag ), Array:ifft ( imag )</b></p>
+<p class="p2"><b>String:spth / String.spath</b></p>
+<p class="p2"><b>Synth_ID</b></p>
+<p class="p2"><b>Synth:sched</b></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="s2">shortcut methods</span></b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>Synth:sched</b> <b>( time, defName, args: [ arg1, value1, ... argN, valueN<span class="Apple-converted-space">  </span>], target, addAction )</b></p>
+<p class="p2">Same as Synth.new, but with a time offsed. Use for accurate timing from within Tasks and delayed synth starting</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s3">Synth</span><span class="s4">.sched( </span><span class="s5">0.5</span><span class="s4">, </span><span class="s6">"default"</span><span class="s4"> ); </span>//starts in 0.5 seconds</p>
+<p class="p3"><br></p>
+<p class="p2"><b>Function:render</b> <b>( path, duration, fadeTime, sampleRate, headerFormat, sampleFormat,<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>options, inputFilePath, prependScore, sfBuffer )</b></p>
+<p class="p2">Render a function to disk in the same way as Function:play works.</p>
+<p class="p4"><br></p>
+<p class="p6">{ <span class="s7">SinOsc</span>.ar( 550, 0, 0.1 ) }.render( <span class="s8">"~/Desktop/testSine550.aif"</span>, 5 );</p>
+<p class="p7"><br></p>
+<p class="p6">(<span class="Apple-converted-space"> </span></p>
+<p class="p8">// use sfBuffer argument to input a soundfile buffer, to be loaded by the NRT server</p>
+<p class="p7"><br></p>
+<p class="p9"><span class="s4">b = </span><span class="s9">Buffer</span><span class="s4">.new.path_( </span>"sounds/a11wlk01-44_1.aiff"<span class="s4"> );</span></p>
+<p class="p7"><br></p>
+<p class="p6">{<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s9">PlayBuf</span>.ar(1, b.bufnum,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">SinOsc</span>.kr(0.5).range(0.2,1.8),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>loop:1 )</p>
+<p class="p6">}.render( <span class="s8">"~/Desktop/testBuffer.aif"</span>, 5, sfBuffer: b );</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>SCWindow:decorate ( margin, gap )</b></p>
+<p class="p2">Adds a FlowLayout decorator to the window's SCTopView.</p>
+<p class="p10"><br></p>
+<p class="p6">w = <span class="s10">SCWindow</span>( ).front.decorate;<span class="Apple-converted-space">  </span><span class="s11">// typical use</span></p>
+<p class="p7"><br></p>
+<p class="p11"><span class="s4">( </span>// replaces all this with one word</p>
+<p class="p6">w = <span class="s10">SCWindow</span>( ).front;</p>
+<p class="p6">w.view.decorator = <span class="s10">FlowLayout</span>( w.view.bounds );</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p4"><br></p>
+<p class="p2"><b>Env:kr ( doneAction, gate, mul, add, timeScale )</b></p>
+<p class="p2">Wrapper for <a href="SC://EnvGen"><span class="s12">EnvGen</span></a> around <a href="SC://Env"><span class="s12">Env</span></a>. Makes the way I usually tend to use Env very easy</p>
+<p class="p10"><br></p>
+<p class="p6"><span class="s10">Env</span>([0,1,0],[1,1]).kr(2); <span class="s11">// typical use</span></p>
+<p class="p7"><br></p>
+<p class="p11">// replaces:</p>
+<p class="p6"><span class="s10">EnvGen</span>.kr( <span class="s10">Env</span>([0,1,0],[1,1]), doneAction: 2 );</p>
+<p class="p12"><br></p>
+<p class="p11">// makes way for snappy syntax:</p>
+<p class="p6">{ <span class="s10">Env</span>.perc.kr(2) * <span class="s10">BPF</span>.ar( <span class="s10">PinkNoise</span>.ar(0.2.dup), 1500 ) }.play;</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p2"><b>Array:fft ( imag ), Array:ifft ( imag ), Complex:fft, Complex:ifft<span class="Apple-converted-space"> </span></b></p>
+<p class="p2">performs an fft or ifft directly on an array. Automatically generates costables and Signals internally.<span class="Apple-converted-space"> </span></p>
+<p class="p2">Returns a Complex with Signals in real and imag slots.</p>
+<p class="p4"><br></p>
+<p class="p6">(</p>
+<p class="p6">a = { <span class="s13">|i|</span> (( i / 255 ) * 2pi * 20).sin } ! 256;</p>
+<p class="p6">a.plot;</p>
+<p class="p6">a.fft.magnitude.plot;</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p2"><b>String:spth / String:spath</b></p>
+<p class="p2">shortcuts for <b>standardizePath</b>. This is not used anywhere in the wslib classes. Only for coding speed.</p>
+<p class="p4"><br></p>
+<p class="p9">"~/scwork"<span class="s4">.spth;</span></p>
+<p class="p9">"~/scwork"<span class="s4">.spath;</span></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p2"><b><span class="s2">shortcut classes</span></b></p>
+<p class="p7"><br></p>
+<p class="p2"><b>Synth_ID</b></p>
+<p class="p2">an alternative for <a href="SC://Synth"><span class="s14">Synth</span></a>, which allows a nodeID to be specified at creation. Returns a regular Synth.</p>
+<p class="p4"><br></p>
+<p class="p6"><span class="s13">Synth_ID</span>( <span class="s8">"default"</span>, nodeID: 2000 );</p>
+<p class="p7"><br></p>
+<p class="p2">Creation methods :</p>
+<p class="p2"><b><span class="Apple-converted-space">   </span>new ( defName, args, target, addAction, nodeID )</b></p>
+<p class="p2"><b><span class="Apple-converted-space">   </span>newPaused ( defName, args, target, addAction, nodeID )</b></p>
+<p class="p2"><b><span class="Apple-converted-space">   </span>after ( aNode, defName, args, nodeID )</b></p>
+<p class="p2"><b><span class="Apple-converted-space">   </span>before ( aNode, defName, args, nodeID )</b></p>
+<p class="p2"><b><span class="Apple-converted-space">   </span>head ( aGroup, defName, args, nodeID )</b></p>
+<p class="p2"><b><span class="Apple-converted-space">   </span>tail ( aGroup, defName, args, nodeID )</b></p>
+<p class="p2"><b><span class="Apple-converted-space">   </span>replace ( nodeToReplace, defName, args, nodeID )</b></p>
+<p class="p4"><b><span class="Apple-converted-space">  </span></b></p>
+</body>
+</html>

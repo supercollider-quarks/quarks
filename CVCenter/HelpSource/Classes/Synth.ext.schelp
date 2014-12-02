@@ -1,0 +1,24 @@
+instancemethods::
+
+subsection:: Extensions by CVCenter
+
+method:: cvcGui
+Creates link::Classes/CVWidget::s for the controls of a running link::Classes/Synth::.
+
+argument:: displayDialog
+If set to code::false:: widgets will be created immediately without allowing to edit specs ahead from creation.
+
+argument:: prefix
+As link::Classes/CVCenter#*all#CVCenter.all:: cannot contain a name twice you may add a custom prefix to avoid CVCenter from trying to overwrite existing keys.
+
+argument:: pairs2D
+An link::Classes/Event:: that creates a link::Classes/CVWidget2D:: rather than a link::Classes/CVWidgetKnob:: for the given control-names and the given widget-name:
+
+code::(widgetName1: #[controlName1_lo, controlName1_hi], widgetName2: #[controlName2_lo, controlName2_hi], … widgetNameN: #[controlNameN_lo, controlNameN_hi])::
+
+argument:: environment
+If the link::Classes/Synth:: is stored in an link::Classes/Environment:: which is different from your link::Classes/Environment#-currentEnvironment#currentEnvironment:: this environment may be passed in explicitly.
+
+returns:: this (a link::Classes/Synth::)
+
+note:: If the user doesn't provide the object in a variable or the variable-name can't be determined fallback-actions will be created ( code:: s.sendBundle(s.latency, [...])::). However, these will address the object's nodeID. If the object gets removed and recreated with a new nodeID the actions will stop working.::

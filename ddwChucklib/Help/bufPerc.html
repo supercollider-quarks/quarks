@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.47">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {color: #0020ff}
+span.s2 {color: #a3240c}
+span.s3 {color: #0000bf}
+span.s4 {color: #007300}
+span.s5 {color: #bf0000}
+span.s6 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>PR(\bufPerc)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Drum machine process that uses sound files loaded into server buffers as the sound source.</p>
+<p class="p2"><br></p>
+<p class="p3">This is the basis of the other drum machine processes: <a href="defPerc.html"><span class="s1">defPerc</span></a>, <a href="defTrig.html"><span class="s1">defTrig</span></a> and <a href="break.html"><span class="s1">break</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Note:</b> Some of what is presented here might be intimidating at first. That's because it operates at a higher level of abstraction even than patterns. This is a rich process prototype, with lots of parameters and opportunities to customize behavior. The best approach is to start with the simplest usages, and dabble in more complicated behaviors only after getting comfortable with the basics.</p>
+<p class="p2"><br></p>
+<p class="p3">The parameter dictionary used at initialization can get rather long. Use a BP Factory to simplify use in performance.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Important:</b> The drum machine processes are not polyphonic and are not meant to layer several drum parts in one process. You should create separate instances of these process prototypes for each drum "part." Another process can coordinate them so that they behave as a unit.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Initialization parameters</b></p>
+<p class="p2"><br></p>
+<p class="p3">This process is designed to use the parameter dictionary in the chucking operation for almost all initialization. The reason is that the process must load buffers during preparation, so the buffers have to be specified within the chuck operation. Once you're doing that, it's a simple matter to set other parameters the same way.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>bufPaths:</b> One or more samples are permitted (for example, a high hat process might need open and closed samples). Here, give an array listing paths to the soundfile(s). If you're using only one sample, you still have to wrap the path in an array: ["sounds/a11wlk01.wav"].</p>
+<p class="p2"><br></p>
+<p class="p3"><b>bufCoords:</b> By default, the whole of each sound file will be loaded. You can override this array to load portions of each file: [ [startFrame, numFrames], [startFrame, numFrames] ... ] where each array item matches up to the corresponding path.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>deltaAdjust:</b> You might need to compensate for different attack durations -- a drum sound with a longer attack must place slightly early to be perceived on time. This array gives offsets in seconds for each buffer: positive to push the sound slightly later, negative to pull it earlier.<span class="s2"> <b>*</b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>divCycle:</b> The basic division of the beat: the default is 0.25, or 16th notes. You can swing the rhythm by giving an array such as [0.3, 0.2] -- this pattern will be propagated over the entire bar.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>beatsPerBar:</b> Self-explanatory. Defaults to 4.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>mono:</b> A Boolean flag. If false (the default), successive notes may overlap on the server. If true, notes will be truncated as soon as the next note sounds (this is useful for high hats, e.g.).</p>
+<p class="p2"><br></p>
+<p class="p3"><b>compensateEnv:</b> The default synthdefs for this process use a linear attack-sustain-release envelope. If this flag is false (the default), the sustain segment is the specified sustain time (see below). If true, the sustain is shortened by the attack and release times so that the synth's life time will be exactly the specified sustain.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>chan:</b> Optional -- if you have a specific MixerChannel already created that you want the process to use for output, specify it here in the parameter dictionary. If you omit this parameter, the following parameters will be used to create a MixerChannel for you.</p>
+<p class="p3"><b>inChannels:</b> The number of input channels for the MixerChannel.</p>
+<p class="p3"><b>outChannels:</b> The number of output channels.</p>
+<p class="p3"><b>master:</b> The target of this process MixerChannel -- may be a global mixer, or it could also be a drum submix.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>postMCCreation:</b> A user specified function that executes after creating the MixerChannel for the process. Here, you may initialize other resources, create effects etc. This takes place before loading the sound files. (If you manually supply a MixerChannel as chan, this function still executes.)</p>
+<p class="p2"><br></p>
+<p class="p3"><b>postBufferLoad:</b> A user specified function that executes after all buffer loads are complete. Useful for calculations that depend on buffer sizes.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>free:</b> If you created any extra resources in postMCCreation, you should supply a function here to release those resources.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>*</b></span> If you're using deltaAdjust to move events earlier, you must set the process' leadTime to allow enough wiggle room. Since the delta adjustment is in seconds, but leadTime is in beats, multiply the largest negative delta adjustment by the tempo; the absolute value of this is the minimum lead time. Preferably it should be just slightly higher.</p>
+<p class="p2"><br></p>
+<p class="p5">// Here is one way to calculate the right leadTime.</p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\drums</span>).leadTime = (<span class="s3">BP</span>(<span class="s4">\drums</span>).deltaAdjust.abs * clock.tempo).maxItem.roundUp(0.1);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Rhythm array specification</b></p>
+<p class="p2"><br></p>
+<p class="p3">Instead of providing rhythm data as patterns, since this is conceived as a drum machine, a set of arrays provide the primary parameters.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>~amps:</b> The amplitude at each subdivision of the beat. 0 indicates a rest. This array should have enough values to account for the entire bar: ~beatsPerBar / ~divCycle.asArray.sum * ~divCycle.asArray.size, by default = 4.0 / 0.25 = 16. The ~ampsSize method returns the result of this calculation.</p>
+<p class="p3"><b>~rates:</b> Playback rate scaling for each note.</p>
+<p class="p3"><b>~bufs:</b> A numeric index indicating which buffer to use.</p>
+<p class="p3"><b>~times:</b> How long (in beats) to sustain the sound. If this array is omitted, the buffer's duration is used.</p>
+<p class="p2"><br></p>
+<p class="p3">Of less importance:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>~def:</b> The synthdef to render the note. Normally this is just a symbol, to use the same synthdef for every note. Standard synthdefs follow. See the definitions in Prototypes/startup-14.txt; if you want to write your own synthdefs, you should follow the same basic arguments as in these.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>\bufGrain:</b> Mono sound file, outputs one channel.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>\bufGrain2:</b> Stereo sound file, outputs two channels.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>\bufGrainPan:</b> Mono sound file, outputs two channels, pans output using Pan2.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>\bufGrainPan2:</b> Stereo sound file, outputs two channels, pans output using Balance2.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>\bufGrainRLPF:</b> Like \bufGrain, but adds a resonant lowpass filter.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>\bufGrainRLPF2:</b> Like \bufGrain2, but adds a resonant lowpass filter.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>\bufGrainRLPFPan:</b> Like \bufGrainPan, but adds a resonant lowpass filter.</p>
+<p class="p3"><b>~attack:</b> Duration in seconds of the attack portion of the envelope.</p>
+<p class="p3"><b>~decay:</b> Duration in seconds of the release portion of the envelope.</p>
+<p class="p2"><br></p>
+<p class="p3">The ~amps array must always include one element for every subdivision in the bar.</p>
+<p class="p2"><br></p>
+<p class="p3">For the other arrays, do not include values for rests. That is, if the ~amps array has five nonzero values, the other parameter arrays should have five elements each, not 16. This reduces the number of events that the event stream must process. This is also strongly recommended when ~mono == true.</p>
+<p class="p2"><br></p>
+<p class="p5">// this syntax is for the chucking parameter dictionary:</p>
+<p class="p6">amps: #[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],<span class="Apple-tab-span">	</span><span class="s5">// snare on 2 and 4</span></p>
+<p class="p5"><span class="s6">rates: #[1.2, 1.0],<span class="Apple-tab-span">	</span></span>// first snare is slightly higher pitched</p>
+<p class="p2"><br></p>
+<p class="p3">If you would rather provide fully padded arrays for all parameters, you can set the <b>~compactPatterns</b> flag to false.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5">// with compactPatterns: false, this should have the same effect as above</p>
+<p class="p6">compactPatterns: <span class="s3">false</span>,</p>
+<p class="p6">amps: #[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],<span class="Apple-tab-span">	</span><span class="s5">// snare on 2 and 4</span></p>
+<p class="p6">rates: #[0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0],<span class="Apple-tab-span">	</span><span class="s5">// first snare is slightly higher pitched</span></p>
+<p class="p2"><br></p>
+<p class="p3">But there is a better way...</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Auto-generating rhythms per bar</b></p>
+<p class="p2"><br></p>
+<p class="p3">All the drum machine processes work by converting the arrays into patterns, once per bar. User hooks are provided so you can insert your own custom logic.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>pbindPreAction:</b> A function that executes before converting the arrays to patterns. If you modify the arrays here, you will hear the effect in the next bar.</p>
+<p class="p3"><b>pbindPostAction:</b> This function receives an array with all the key-value pairs that will be supplied to Pbind: [key0, pattern0, key1, pattern1...]. ("Post" in this case does not mean it executes after creating the Pbind -- rather, the function runs after the data have been converted into a form suitable for Pbind.)</p>
+<p class="p2"><br></p>
+<p class="p3">You may assign a literal function to either of these hooks, or you can use a symbol which will be looked up in the Func collection.</p>
+<p class="p2"><br></p>
+<p class="p3">See the example below for one usage of pbindPreAction to generate new rhythmic content. (I have yet to use pbindPostAction in an actual composition.)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Rhythm array manipulation functions</b></p>
+<p class="p2"><br></p>
+<p class="p3">It's often easier to generate rhythmic values in terms of a complete, padded matrix, but the compact form is recommended for playback. ("Compact form" means that arrays other than ~amps included items only for sounding notes, not rests.)</p>
+<p class="p2"><br></p>
+<p class="p3">The Func collection includes some functions to convert automatically between the two representations, and also manipulate the matrix form.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Func(\expandKeys):</b> Starting with the compact form, convert the arrays into the padded form.</p>
+<p class="p3"><b>Func(\shrinkKeys):</b> Convert the arrays from the padded form into the compact form.</p>
+<p class="p3"><b>Func(\initKeys):</b> Reset the arrays to their base (starting) values. Each array can have a different base, given as array name + "base"; if that is not provided, the array at ~base is used. If ~base is absent, a zero-filled array is the final fallback position.</p>
+<p class="p3"><b>Func(\insertIntoKeys):</b> If the arrays are in padded, matrix form, generate values for the arrays at the given index.</p>
+<p class="p2"><br></p>
+<p class="p3">You must set the <b>~usedKeys</b> variable in the process to indicate which arrays to touch. Some arrays might remain the same, or remain at default values, throughout the process lifetime. By omitting those array names from usedKeys, you can eliminate unnecessary processing.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Func(\insertIntoKeys)</b> uses "generator patterns" to produce the values to insert. Store the pattern in a process variable named after the array + "gen." (See the example that follows.) When the pattern is evaluated, it receives the subdivision index as an argument -- e.g., with 16th-note subdivisions in a 4/4 bar, index 4 represents beat 2 exactly.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Examples:</b></p>
+<p class="p2"><br></p>
+<p class="p6">s.boot;</p>
+<p class="p6"><span class="s3">TempoClock</span>.default.tempo = 2;</p>
+<p class="p7"><br></p>
+<p class="p5">// Fixed rhythm, compactPatterns == true</p>
+<p class="p6">(</p>
+<p class="p6"><span class="s3">PR</span>(<span class="s4">\bufPerc</span>).chuck(<span class="s3">BP</span>(<span class="s4">\ex1</span>), parms: (</p>
+<p class="p8"><span class="s6"><span class="Apple-tab-span">	</span>bufPaths: #[</span>"sounds/a11wlk01.wav"<span class="s6">],</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>bufCoords: #[[85300, 23800]],<span class="Apple-tab-span">	</span><span class="s5">// [[startFrame, numFrames]]</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>rates: #[1.2, 1.0, 1.0],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>amps: #[1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>times: #[1.5, 0.5, 0.5]</p>
+<p class="p6">));</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex1</span>).play;</p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex1</span>).stop;</p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex1</span>).free;</p>
+<p class="p7"><br></p>
+<p class="p5">// Fixed rhythm, compactPatterns == false</p>
+<p class="p5">// let's also add random panning per note</p>
+<p class="p5">// panning is not a standard array parameter: must use ~argPairs</p>
+<p class="p6">(</p>
+<p class="p6"><span class="s3">PR</span>(<span class="s4">\bufPerc</span>).chuck(<span class="s3">BP</span>(<span class="s4">\ex2</span>), parms: (</p>
+<p class="p8"><span class="s6"><span class="Apple-tab-span">	</span>bufPaths: #[</span>"sounds/a11wlk01.wav"<span class="s6">],</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>bufCoords: #[[85300, 23800]],<span class="Apple-tab-span">	</span><span class="s5">// [[startFrame, numFrames]]</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>rates: #[1.2, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>amps: #[1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>times: #[1.5, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0, 0],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>compactPatterns: <span class="s3">false</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span>inChannels: 2,</p>
+<p class="p9"><span class="s6"><span class="Apple-tab-span">	</span>def: </span>\bufGrainPan<span class="s6">,</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>argPairs: [pan: <span class="s3">Pwhite</span>(-1.0, 1.0, <span class="s3">inf</span>)]</p>
+<p class="p6">));</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex2</span>).play;</p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex2</span>).stop;</p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex2</span>).free;</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p5">// Auto-generated rhythm, calculating 16-element arrays then shrinking them</p>
+<p class="p5">// "Popcorn baby jmc"</p>
+<p class="p6">(</p>
+<p class="p6"><span class="s3">PR</span>(<span class="s4">\bufPerc</span>).chuck(<span class="s3">BP</span>(<span class="s4">\ex3</span>), parms: (</p>
+<p class="p8"><span class="s6"><span class="Apple-tab-span">	</span>bufPaths: #[</span>"sounds/a11wlk01.wav"<span class="s6">],</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>bufCoords: #[[85300, 23800]],<span class="Apple-tab-span">	</span><span class="s5">// [[startFrame, numFrames]]</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>amps: 0,</p>
+<p class="p6"><span class="Apple-tab-span">	</span>usedKeys: #[rates, times],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>pbindPreAction: {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span><span class="Apple-tab-span">	</span>pool = (3..15).scramble;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~amps = (0 ! 16).put(0, 1);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~rates = (0 ! 16).put(0, 1);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~times = (0 ! 16).put(0, 1.5);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(3, 7).do({ <span class="s3">|i|</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~amps[pool[i]] = rrand(0.2, 0.5);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~rates[pool[i]] = rrand(1.1, 1.25);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~times[pool[i]] = rrand(0.1, 0.4);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Func</span>(<span class="s4">\shrinkKeys</span>).value;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>}</p>
+<p class="p6">));</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex3</span>).play;</p>
+<p class="p7"><br></p>
+<p class="p5">// What's the audible difference between these settings?</p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex3</span>).mono = <span class="s3">true</span>;</p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex3</span>).mono = <span class="s3">false</span>;</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex3</span>).stop;</p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex3</span>).free;</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p5">// Auto-generated rhythm using array manipulation functions</p>
+<p class="p5">// Sounds the same but is written in a more functional, less imperative style</p>
+<p class="p6">(</p>
+<p class="p6"><span class="s3">PR</span>(<span class="s4">\bufPerc</span>).chuck(<span class="s3">BP</span>(<span class="s4">\ex4</span>), parms: (</p>
+<p class="p8"><span class="s6"><span class="Apple-tab-span">	</span>bufPaths: #[</span>"sounds/a11wlk01.wav"<span class="s6">],</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>bufCoords: #[[85300, 23800]],<span class="Apple-tab-span">	</span><span class="s5">// [[startFrame, numFrames]]</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>amps: 0,</p>
+<p class="p6"><span class="Apple-tab-span">	</span>usedKeys: #[amps, rates, times],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>ampsbase: (0 ! 16).put(0, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>ampsgen: <span class="s3">Pwhite</span>(0.2, 0.5, <span class="s3">inf</span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>ratesbase: (0 ! 16).put(0, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>ratesgen: <span class="s3">Pwhite</span>(1.1, 1.4, <span class="s3">inf</span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>timesbase: (0 ! 16).put(0, 1.5),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>timesgen: <span class="s3">Pwhite</span>(0.1, 0.4, <span class="s3">inf</span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>base: 0 ! 16,</p>
+<p class="p6"><span class="Apple-tab-span">	</span>pbindPreAction: {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span><span class="Apple-tab-span">	</span>pool = (3..15).scramble;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Func</span>(<span class="s4">\initKeys</span>).value;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(3, 7).do({ <span class="s3">|i|</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Func</span>(<span class="s4">\insertIntoKeys</span>).value(pool[i]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Func</span>(<span class="s4">\shrinkKeys</span>).value;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>}</p>
+<p class="p6">));</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex4</span>).play;</p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex4</span>).stop;</p>
+<p class="p6"><span class="s3">BP</span>(<span class="s4">\ex4</span>).free;</p>
+<p class="p2"><br></p>
+<p class="p3">In this final example, the parameter dictionary is the longest of any of the examples; but, what you lose in brevity, you gain in flexibility. In the third example, the only way to change how the rhythms are automatically generated is to replace the pbindPreAction function. Exposing more parameters allows you to change the arrays starting values as well as the possible values inserted into them, without touching the function. This might actually be easier to deal with in a live coding situation, for instance.</p>
+</body>
+</html>

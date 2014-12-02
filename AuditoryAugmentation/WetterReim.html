@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 37.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Times}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Times; min-height: 18.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cb1a18}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #707375}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0029c9}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1f8311}
+span.s1 {text-decoration: underline ; color: #0000ee}
+span.s2 {font: 12.0px Helvetica}
+span.s3 {color: #000000}
+span.s4 {color: #707375}
+span.s5 {color: #0029c9}
+span.s6 {color: #1f8311}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">WetterReim</p>
+<p class="p2">Weather Forecast at your Fingertips</p>
+<p class="p3"><br></p>
+<p class="p2">WetterReim provides you with the latest Information on your local weather; at your fingertips.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p2">You need:</p>
+<p class="p2">- a transducer microphone, e.g AKG C411 PP, or (cheaper) a piezo-based transducer like the Schaller Oyester 723</p>
+<p class="p2">- either a phantom powered line-in, or a normal line in</p>
+<p class="p2">- an audio device capable to capture and play back sound</p>
+<p class="p2">- loudspeakers</p>
+<p class="p2">- a computer keyboard</p>
+<p class="p2">- A Python installation.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Additionally requires simpleOSC by ixi.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Please, get it here <a href="http://www.ixi-software.net/content/body_backyard_python.html"><span class="s1">http://www.ixi-software.net/content/body_backyard_python.html</span></a>, and install it as explained in its README.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s2"><img src="attachments/WetterReim/Pasted Graphic.png" alt="attachments/WetterReim/Pasted Graphic.png"></span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p7">// create a Dictionary to put everything</p>
+<p class="p6">q = ();</p>
+<p class="p5"><br></p>
+<p class="p7">// set basic adjustment parameters (there are defautl values set in the loaded file below)</p>
+<p class="p6">q.server = s;</p>
+<p class="p7"><span class="s3">q.sourceChannel = 0;<span class="Apple-converted-space">  </span></span>// the audio in channel where the transducer is located (using SoundIn)</p>
+<p class="p7">//q.outChannel = [6, 7]; // channel where to play back the auditory augmentation (Using Out)</p>
+<p class="p7"><span class="s3">q.outChannel = 0; </span>// channel where to play back the auditory augmentation (Using Out)</p>
+<p class="p5"><br></p>
+<p class="p7">// load the default setup for wetterReim</p>
+<p class="p6"><span class="s4">"%/WetterReim-TrendSetup.scd"</span>.format(<span class="s5">Document</span>.current.path.dirname).load;</p>
+<p class="p7">/*</p>
+<p class="p7">Document.open("%/WetterReim-TrendSetup.scd".format(Document.current.dir)); // */</p>
+<p class="p5"><br></p>
+<p class="p6">q.prepareServer;</p>
+<p class="p6">q.startServer</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p6">q.init;</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// a GUI, currently, you have to kill the automatic acquire process by hand...</p>
+<p class="p6"><span class="Apple-tab-span">	</span>q.win = <span class="s5">Window</span>.new(<span class="s4">"The Four Noble Truths"</span>).decorate;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>q.counter = 0;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>q.data = [</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// cold, no wind</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s6">'temp'</span>, 0, <span class="s6">'hum'</span>, 45.0, <span class="s6">'wind'</span>, 0, <span class="s6">'press'</span>, 1000.0],</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// ultracold, windy</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s6">'temp'</span>, -10, <span class="s6">'hum'</span>, 55.0, <span class="s6">'wind'</span>, 40.01, <span class="s6">'press'</span>, 950.0],</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// warm, windy, humid</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s6">'temp'</span>, 30, <span class="s6">'hum'</span>, 85.0, <span class="s6">'wind'</span>, 20.01, <span class="s6">'press'</span>, 1000.0],</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// summer, approx. no wind</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s6">'temp'</span>, 16, <span class="s6">'hum'</span>, 65.0, <span class="s6">'wind'</span>, 3, <span class="s6">'press'</span>, 10016.0]</p>
+<p class="p6"><span class="Apple-tab-span">	</span>];</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// the Example Data send Button</p>
+<p class="p6"><span class="Apple-tab-span">	</span>q.button = <span class="s5">Button</span>(q.win, <span class="s5">Rect</span>(20,20,390,60))</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.states_([</p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>"Example Data"<span class="s3">]</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>q.button.action_({ <span class="s5">arg</span> butt;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.data[q.counter].postln;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">NetAddr</span>.localAddr.sendMsg(<span class="s4">"/weather"</span>, *q.data[q.counter]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.counter = (q.counter + 1) % q.data.size;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// the start acquition button</p>
+<p class="p6"><span class="Apple-tab-span">	</span>q.button = <span class="s5">Button</span>(q.win, <span class="s5">Rect</span>(20,20,390,60))</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.states_([</p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>"Start Acquisition"<span class="s3">]</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>q.button.action_({ <span class="s5">arg</span> butt;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.startAcquireProcess;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span>q.win.front;</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p7">/* (re)start a data acquisition process</p>
+<p class="p7">q.startAcquireProcess; // */</p>
+<p class="p5"><br></p>
+<p class="p7">// alternatively, you may want to send weather information by hand:</p>
+<p class="p7">/*</p>
+<p class="p7">Document.open("%/ExampleWeather.scd".format(Document.current.path.dirname)); // */</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">q.addFilterPresets;</p>
+<p class="p5"><br></p>
+<p class="p6">q.startAll</p>
+<p class="p5"><br></p>
+<p class="p7">// a preset using multiFreqReso and playing it back to outChannel</p>
+<p class="p5"><br></p>
+<p class="p7">// till</p>
+<p class="p7">//Ndef(\reims).set(\ringtime, 0.3, \amp, 0.2, \highFreq, 20000, \baseFreq, 50.midicps);</p>
+<p class="p7">//Ndef(\reimsched).set(\ringtime, 3, \amp, 0.2, \highFreq, 20000, \baseFreq, 50.midicps);</p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s5">Ndef</span>(<span class="s6">\reims</span>).set(<span class="s6">\ringtime</span>, 0.13, <span class="s6">\amp</span>, 0.2, <span class="s6">\highFreq</span>, 20000, <span class="s6">\baseFreq</span>, 62.midicps);</p>
+<p class="p6"><span class="s5">Ndef</span>(<span class="s6">\reimsched</span>).set(<span class="s6">\ringtime</span>, 3, <span class="s6">\amp</span>, 0.2, <span class="s6">\highFreq</span>, 20000, <span class="s6">\baseFreq</span>, 62.midicps);</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p7">// rene</p>
+<p class="p7">//Ndef(\reims).set(\ringtime, 0.3, \amp, 0.2, \highFreq, 20000, \baseFreq, 23.midicps);</p>
+<p class="p7">//Ndef(\reimsched).set(\ringtime, 3, \amp, 0.2, \highFreq, 20000, \baseFreq, 23.midicps);</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p9">NdefMixer<span class="s3">(s);</span></p>
+<p class="p6">(</p>
+<p class="p9">Ndef<span class="s3">(</span><span class="s6">\reims</span><span class="s3">, {</span>|amp = 1, vol = 2|</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s5">var</span> in = <span class="s5">LeakDC</span>.ar(<span class="s5">SoundIn</span>.ar(q.sourceChannel));</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s5">Mix</span>([</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">ReimFilter</span>.ar(<span class="s6">\multiFreqReso</span>, in*amp, q.reimData),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">ReimFilter</span>.ar(<span class="s6">\multiFreqReso</span>, in*amp, q.historyData) * 0.5</p>
+<p class="p6"><span class="Apple-tab-span">	</span>]) * vol</p>
+<p class="p6">}).playN(q.outChannel);</p>
+<p class="p5"><br></p>
+<p class="p7">// a preset ringing every 15 minutes</p>
+<p class="p9">Ndef<span class="s3">(</span><span class="s6">\reimsched</span><span class="s3">, {</span>|amp = 0.5, t_trig = 0|</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>/* ring every 15 minutes */</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s5">var</span> in = <span class="s5">Impulse</span>.ar(1/(15*60) , 0, 0.1) + t_trig;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>in = <span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>([0, 0.1, 0.1, 0], [0.01, 0.08, 0.01]*0.5), gate: in) * <span class="s5">BrownNoise</span>.ar;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s5">Mix</span>([</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">ReimFilter</span>.ar(<span class="s6">\multiFreqReso</span>, in*amp, q.reimData),</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//ReimFilter.ar(\multiFreqReso, in*amp, q.historyData) * 0.8</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">ReimFilter</span>.ar(<span class="s6">\multiFreqReso</span>, in*amp, q.historyData) * 0.5</p>
+<p class="p5"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span>])</p>
+<p class="p6">}).playN(q.outChannel, fadeTime: 0);</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p7">// stop playback and acquisition</p>
+<p class="p10"><span class="s5">Ndef</span><span class="s3">(</span>\reimsched<span class="s3">).stop;</span></p>
+<p class="p6"><span class="s5">Ndef</span>(<span class="s6">\reims</span>).stop;</p>
+<p class="p6">q.stopAll</p>
+<p class="p7">// currently you have to kill the data acquisition by hand. sorry for this</p>
+<p class="p6">)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9">ReimFilter<span class="s3">.write</span></p>
+</body>
+</html>

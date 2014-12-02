@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWDataNetworkOSCClient</TITLE>
+<META NAME="description" CONTENT="SWDataNetworkOSCClient">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY>
+
+
+<H2><A NAME="SECTION00045000000000000000">
+SWDataNetworkOSCClient</A>
+</H2>
+These classes implement the client representation in the OSC interface. It is used internally in the class <strong>SWDataNetworkOSC</strong>. This class rarely needs to be used directly.
+
+<h3> - Methods - </h3>
+
+<DL>
+<DT><STRONG>*new ( address )</STRONG></DT>
+<DD>Create a new OSC client with the given address.</DD>
+
+<DT><STRONG>key (  )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>key_ (  )</STRONG></DT>
+<DD>Human readable name for the client.</DD>
+
+<DT><STRONG>addr (  )</STRONG></DT>
+<DD>The NetAddr (IP address and port) of this client.</DD>
+<DT><STRONG>missedPongs (  )</STRONG></DT>
+<DD>Amount of missed pongs.</DD>
+
+<DT><STRONG>subscriptions (  )</STRONG></DT>
+<DD>Nodes and slots to which this client is subscribed.</DD>
+<DT><STRONG>setters (  )</STRONG></DT>
+<DD>Nodes of which this client is the setter.</DD>
+
+<DT><STRONG>nodeSubs (  )</STRONG></DT>
+<DD>Nodes to which this client is subscribed.</DD>
+
+<DT><STRONG>slotSubs (  )</STRONG></DT>
+<DD>Slots to which this client is subscribed.</DD>
+
+<DT><STRONG>slotNodesSubs (  )</STRONG></DT>
+<DD>Slots to which this client is subscribed, organised by nodes.</DD>
+
+
+<DT><STRONG>ping (  )</STRONG></DT>
+<DD>Send a ping</DD>
+<DT><STRONG>pong (  )</STRONG></DT>
+<DD>Received a pong, so reset the missedPongs</DD>
+
+<h4> - private methods to send out data and information to client - </h4>
+
+<DT><STRONG>addSetter ( node )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>setterQuery (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>checkForSetter ( node )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>subscriptionQuery (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>subscribeNode ( id )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>subscribeSlot ( id1, id2 )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>unsubscribeNode ( id )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>unsubscribeSlot ( id1, id2 )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>newExpected ( node )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>newNode ( node )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>newSlot ( slot )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>nodeRemoved ( id )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>sendDataNode ( node )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>sendData ( id, data )</STRONG></DT>
+<DD> --- old version --- </DD>
+
+</DL>
+
+
+<HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+    HREF="SWDataNetworkClient.html">SWDataNetworkClient</A>
+</LI>
+<LI><I> Previous:</I> <A 
+  HREF="SWDataNetworkOSC.html">SWDataNetworkOSC</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<BR><HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</BODY>
+</HTML>

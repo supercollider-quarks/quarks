@@ -1,0 +1,177 @@
+TITLE:: EaseOverview
+SUMMARY:: easing equations for sclang and scserver
+CATEGORIES:: Ease
+
+Easing and tweening classes for scserver and sclang. Ported from the Cinder C++ framework - original equations by Robert Penner.
+
+NOTE::
+All these expects an input 0-1 as first argument to strong::.value::. If you give it out-of-range values the behavior is undefined.
+::
+
+see link::Classes/EaseGallery:: helpfile for a graphical overview.
+see below for examples.
+
+SECTION:: None
+TABLE::
+## link::Classes/EaseNone:: || easing equation for a simple linear tweening with no easing
+::
+
+SECTION:: Quadratic
+TABLE::
+## link::Classes/EaseInQuad:: || easing equation for a quadratic (t^2) ease-in, accelerating from zero velocity
+## link::Classes/EaseOutQuad:: || easing equation for a quadratic (t^2) ease-out, decelerating to zero velocity
+## link::Classes/EaseInOutQuad:: || easing equation for a quadratic (t^2) ease-in/out, accelerating until halfway, then decelerating
+## link::Classes/EaseOutInQuad:: || easing equation for a quadratic (t^2) ease-out/in, decelerating until halfway, then accelerating
+::
+
+SECTION:: Cubic
+TABLE::
+## link::Classes/EaseInCubic:: || easing equation function for a cubic (t^3) ease-in, accelerating from zero velocity
+## link::Classes/EaseOutCubic:: || easing equation for a cubic (t^3) ease-out, decelerating to zero velocity
+## link::Classes/EaseInOutCubic:: || easing equation for a cubic (t^3) ease-in/out, accelerating until halfway, then decelerating
+## link::Classes/EaseOutInCubic:: || easing equation for a cubic (t^3) ease-out/in, decelerating until halfway, then accelerating
+::
+
+SECTION:: Quartic
+TABLE::
+## link::Classes/EaseInQuart:: || easing equation for a quartic (t^4) ease-in, accelerating from zero velocity
+## link::Classes/EaseOutQuart:: || easing equation for a quartic (t^4) ease-out, decelerating to zero velocity
+## link::Classes/EaseInOutQuart:: || easing equation for a quartic (t^4) ease-in/out, accelerating until halfway, then decelerating
+## link::Classes/EaseOutInQuart:: || easing equation for a quartic (t^4) ease-out/in, decelerating until halfway, then accelerating
+::
+
+SECTION:: Quintic
+TABLE::
+## link::Classes/EaseInQuint:: || easing equation function for a quintic (t^5) ease-in, accelerating from zero velocity
+## link::Classes/EaseOutQuint:: || easing equation for a quintic (t^5) ease-out, decelerating to zero velocity
+## link::Classes/EaseInOutQuint:: || easing equation for a quintic (t^5) ease-in/out, accelerating until halfway, then decelerating
+## link::Classes/EaseOutInQuint:: || easing equation for a quintic (t^5) ease-out/in, decelerating until halfway, then accelerating
+::
+
+SECTION:: Sine
+TABLE::
+## link::Classes/EaseInSine:: || easing equation for a sinusoidal (sin(t)) ease-in, accelerating from zero velocity
+## link::Classes/EaseOutSine:: || easing equation for a sinusoidal (sin(t)) ease-out, decelerating from zero velocity
+## link::Classes/EaseInOutSine:: || easing equation for a sinusoidal (sin(t)) ease-in/out, accelerating until halfway, then decelerating
+## link::Classes/EaseOutInSine:: || easing equation for a sinusoidal (sin(t)) ease-out/in, decelerating until halfway, then accelerating
+::
+
+SECTION:: Exponential
+TABLE::
+## link::Classes/EaseInExpo:: || easing equation for an exponential (2^t) ease-in, accelerating from zero velocity
+## link::Classes/EaseOutExpo:: || easing equation for an exponential (2^t) ease-out, decelerating from zero velocity
+## link::Classes/EaseInOutExpo:: || easing equation for an exponential (2^t) ease-in/out, accelerating until halfway, then decelerating
+## link::Classes/EaseOutInExpo:: || easing equation for an exponential (2^t) ease-out/in, decelerating until halfway, then accelerating
+::
+
+SECTION:: Circular
+TABLE::
+## link::Classes/EaseInCirc:: || easing equation for a circular (sqrt(1-t^2)) ease-in, accelerating from zero velocity
+## link::Classes/EaseOutCirc:: || easing equation for a circular (sqrt(1-t^2)) ease-out, decelerating from zero velocity
+## link::Classes/EaseInOutCirc:: || easing equation for a circular (sqrt(1-t^2)) ease-in/out, accelerating until halfway, then decelerating
+## link::Classes/EaseOutInCirc:: || easing equation for a circular (sqrt(1-t^2)) ease-out/in, decelerating until halfway, then accelerating
+::
+
+SECTION:: Bounce
+TABLE::
+## link::Classes/EaseInBounce::(a) || easing equation for a bounce (exponentially decaying parabolic bounce) ease-in, accelerating from zero velocity. the \a parameter controls overshoot, the default producing a 10% overshoot
+## link::Classes/EaseOutBounce::(a) || easing equation for a bounce (exponentially decaying parabolic bounce) ease-out, decelerating from zero velocity. the \a parameter controls overshoot, the default producing a 10% overshoot
+## link::Classes/EaseInOutBounce::(a) || easing equation for a bounce (exponentially decaying parabolic bounce) ease-in/out, accelerating until halfway, then decelerating. the \a parameter controls overshoot, the default producing a 10% overshoot
+## link::Classes/EaseOutInBounce::(a) || easing equation for a bounce (exponentially decaying parabolic bounce) ease-out/in, decelerating until halfway, then accelerating. the \a parameter controls overshoot, the default producing a 10% overshoot
+::
+
+SECTION:: Back
+TABLE::
+## link::Classes/EaseInBack::(a) || easing equation for a back (overshooting cubic easing: (a+1)*t^3 - a*t^2) ease-in, accelerating from zero velocity. the \a parameter controls overshoot, the default producing a 10% overshoot
+## link::Classes/EaseOutBack::(a) || easing equation for a back (overshooting cubic easing: (a+1)*t^3 - a*t^2) ease-out, decelerating from zero velocity. the \a parameter controls overshoot, the default producing a 10% overshoot
+## link::Classes/EaseInOutBack::(a) || easing equation for a back (overshooting cubic easing: (a+1)*t^3 - a*t^2) ease-in/out, accelerating until halfway, then decelerating. the \a parameter controls overshoot, the default producing a 10% overshoot
+## link::Classes/EaseOutInBack::(a) || easing equation for a back (overshooting cubic easing: (a+1)*t^3 - a*t^2) ease-out/in, decelerating until halfway, then accelerating. the \a parameter controls overshoot, the default producing a 10% overshoot
+::
+
+SECTION:: Elastic
+TABLE::
+## link::Classes/EaseInElastic::(a, p) || easing equation for an elastic (exponentially decaying sine wave) ease-in, accelerating from zero velocity. the \a parameter is amplitude and \p is period.
+## link::Classes/EaseOutElastic::(a, p) || easing equation for an elastic (exponentially decaying sine wave) ease-out, decelerating from zero velocity. the \a parameter is amplitude and \p is period.
+## link::Classes/EaseInOutElastic::(a, p) || easing equation for an elastic (exponentially decaying sine wave) ease-in/out, accelerating until halfway, then decelerating. the \a parameter is amplitude and \p is period.
+## link::Classes/EaseOutInElastic::(a, p) || easing equation for an elastic (exponentially decaying sine wave) ease-out/in, decelerating until halfway, then accelerating. the \a parameter is amplitude and \p is period.
+::
+
+SECTION:: Atan
+TABLE::
+## link::Classes/EaseInAtan::(a) || easing equation for an atan ease-in, accelerating from zero velocity. the \a parameter is curvature.
+## link::Classes/EaseOutAtan::(a) || easing equation for an atan ease-out, decelerating from zero velocity. the \a parameter is curvature.
+## link::Classes/EaseInOutAtan::(a) || easing equation for an atan ease-in/out, accelerating until halfway, then decelerating. the \a parameter is curvature.
+::
+
+EXAMPLES::
+
+CODE::
+//--
+e= EaseInAtan(15);
+e.value(0)	//0 at the start
+e.value(0.5)	//what is the value in the middle of the curve
+e.value(1)	//1 at the end
+
+//this can also be written like this to save us from storing the ease object in a variable
+EaseInAtan.value(0.5)
+
+//or shorter
+EaseInAtan.(0.5)
+
+//to set the curvature you give a second argument
+EaseInAtan.(0.5, 10)
+
+//or in the other notation
+e= EaseInAtan(10)
+e.value(0.5)
+
+
+//--ramping
+a= (0..100)/100;	//an array with 100 values 0.0-1.0
+a.collect{|t| EaseInQuad.(t)}.plot;
+a.collect{|t| EaseOutQuad.(t)}.plot;
+a.collect{|t| EaseInOutQuad.(t)}.plot;
+
+
+//--similar in sclang and inside synthdefs
+s.boot
+{SinOsc.ar(EaseInOutExpo.kr(MouseX.kr)*500+500, 0, 0.1)}.play
+a.collect{|x| EaseInOutExpo.(x)}.plot
+
+
+//--rates are flexibe when used inside synthdefs
+{SinOsc.ar(EaseInAtan.(SinOsc.kr(1)).linlin(0, 1, 500, 5000), 0, 0.1)}.play	//becomes kr
+{SinOsc.ar(EaseInAtan.kr(SinOsc.ar(1)).linlin(0, 1, 500, 5000), 0, 0.1)}.play	//kr with ar arg
+{SinOsc.ar(EaseInAtan.ar(SinOsc.kr(1)).linlin(0, 1, 500, 5000), 0, 0.1)}.play	//ar with kr arg
+
+
+//--nesting
+a= (0..100)/100;	//an array with 100 values 0.0-1.0
+a.collect{|t| EaseInAtan.(EaseInAtan.(t))}.plot
+
+
+//--creating an object style
+a= (0..100)/100;	//an array with 100 values 0.0-1.0
+e= EaseInAtan(3);
+f= EaseInAtan(30);
+a.collect{|t| [e.(t), f.(t)]}.plot
+
+
+//even this works...
+e.(a).plot
+
+
+
+//--use mouse to test
+s.boot
+a= {SinOsc.ar(EaseInOutQuint.ar(LFSaw.ar(MouseX.kr(1, 9, 1)).range(0, 1)).linexp(0, 1, 400, 800), 0, 0.1)}.play
+a.free
+a= {SinOsc.ar(EaseOutInExpo.ar(LFSaw.ar(MouseX.kr(1, 9, 1)).range(0, 1)).linexp(0, 1, 400, 800), 0, 0.1)}.play
+a.free
+a= {SinOsc.ar(EaseInAtan.ar(LFSaw.ar(MouseX.kr(1, 9, 1)).range(0, 1)).linexp(0, 1, 400, 800), 0, 0.1)}.play
+a.free
+a= {SinOsc.ar(EaseOutInElastic.ar(LFSaw.ar(MouseX.kr(1, 9, 1)).range(0, 1), MouseY.kr(1, 9, 1)).linexp(0, 1, 400, 800), 0, 0.1)}.play
+a.free
+a= {SinOsc.ar(EaseInBounce.ar(LFSaw.ar(MouseX.kr(1, 9, 1)).range(0, 1), MouseY.kr(1, 9, 1)).linexp(0, 1, 400, 800), 0, 0.1)}.play
+a.free
+::

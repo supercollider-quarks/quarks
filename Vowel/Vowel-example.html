@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #c91505}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0024b9}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0030f6}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #006f1a}
+span.s1 {color: #000000}
+span.s2 {color: #0030f6}
+span.s3 {color: #0024b9}
+span.s4 {color: #006f1a}
+span.s5 {color: #1540b9}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">// a not that serious sound example for the use of the Vowel class</p>
+<p class="p1">// 2011 Till Bovermann, using and altering a code example from the Vowel helpfile written by Florian Grond.</p>
+<p class="p2"><br></p>
+<p class="p3">q = ();</p>
+<p class="p2"><br></p>
+<p class="p4">NdefMixer<span class="s1">(s)</span></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p3">q.freqs = {<span class="s2">|i|</span> 50 * 1.5.pow(i) }!9;</p>
+<p class="p3">q.dt = 1.5 * 2.sqrt;</p>
+<p class="p3">q.numHarms = 60;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p5"><span class="s3">SynthDef</span><span class="s1">(</span><span class="s4">\impulser</span><span class="s1">, {</span>|out = 0, pan = 0, dur = 35|</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">var</span> amps = <span class="s4">\amps</span>.ir(1!q.numHarms);</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">var</span> signal = <span class="s3">Klank</span>.ar(</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>`[q.freqs,amps,amps],</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Decay</span>.ar(</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Impulse</span>.ar( exp(1)/5.0 ),<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">SinOsc</span>.kr( pi/9.0, 1.0.rand ).range(0.05,0.7)<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>) * <span class="s3">EnvGen</span>.kr(</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Env</span>.new([-40,-20, -30,-40].dbamp, [2, 1, 2].normalizeSum,<span class="s4">'exp'</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>timeScale: dur, levelScale: 0.5, doneAction: 2</p>
+<p class="p3"><span class="Apple-tab-span">	</span>).tanh;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(out, <span class="s3">Pan2</span>.ar(signal, pan));</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3">}).add</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s3">Ndef</span><span class="s1">(</span>\grainOut<span class="s1">).ar</span></p>
+<p class="p6"><span class="s3">Ndef</span><span class="s1">(</span>\grainOut<span class="s1">).play</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3">Tdef</span>(<span class="s4">\player</span>).quant = q.dt</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p6"><span class="s3">Tdef</span><span class="s1">(</span>\player<span class="s1">, {</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">var</span> harms, amps;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>loop{</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>harms = {<span class="s2">|i|</span> (i+1) * q.freqs.choose }!q.numHarms;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amps<span class="Apple-converted-space">  </span>= <span class="s3">Vowel</span>(</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s4">\a</span>,<span class="s4">\e</span>,<span class="s4">\i</span>,<span class="s4">\o</span>,<span class="s4">\u</span>].choose,</p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>\bass<span class="s1">,</span>\tenor<span class="s1">,</span>\counterTenor<span class="s1">,</span>\alto<span class="s1">,</span>\soprano<span class="s1">].choose</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>).ampAt(harms);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Synth</span>.grain(<span class="s4">\impulser</span>, [<span class="s4">\amps</span>, amps, <span class="s4">\out</span>, <span class="s3">Ndef</span>(<span class="s4">\grainOut</span>).bus.index, <span class="s4">\pan</span>, 1.0.rand2]);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.dt.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>}</p>
+<p class="p3">}).play;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3">Tdef</span>(<span class="s4">\player</span>).play</p>
+<p class="p3"><span class="s3">Tdef</span>(<span class="s4">\player</span>).stop</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3">Ndef</span>(<span class="s4">\drone</span>).fadeTime = 10;</p>
+<p class="p3"><span class="s3">Ndef</span>(<span class="s4">\drone</span>).xsetn(<span class="s4">\freqs</span>, [1, 2, 3, 4, 5] * 100)</p>
+<p class="p3"><span class="s3">Ndef</span>(<span class="s4">\drone</span>).xsetn(<span class="s4">\freqs</span>, [10, 9, 8, 7, 6] * 50)</p>
+<p class="p3"><span class="s3">Ndef</span>(<span class="s4">\drone</span>).xsetn(<span class="s4">\freqs</span>, [1, 2, 3, 4, 5] * 50)</p>
+<p class="p3"><span class="s3">Ndef</span>(<span class="s4">\drone</span>).xsetn(<span class="s4">\freqs</span>, q.freqs[0..4]);</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p6"><span class="s3">Spec</span><span class="s1">.add(</span>\filterFreq<span class="s1">, </span>\freq<span class="s1">);</span></p>
+<p class="p3"><span class="s3">Spec</span>.add(<span class="s4">\dbGain</span>, [-6, 6, <span class="s4">\db</span>]);</p>
+<p class="p3"><span class="s3">Spec</span>.add(<span class="s4">\filterSlope</span>, [0.1, 6, <span class="s4">\db</span>]);</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s3">Ndef</span><span class="s1">(</span><span class="s4">\drone</span><span class="s1">, {</span>|filterFreq = 440, filterSlope = 1, dbGain = 0|</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">var</span> freqs, signal;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>freqs = <span class="s4">\freqs</span>.kr([10, 9, 8, 7, 6] * 50);</p>
+<p class="p3"><span class="Apple-tab-span">	</span>signal = (<span class="s3">Splay</span>.ar(<span class="s3">Formants</span>.ar(freqs.scramble, <span class="s3">Vowel</span>([<span class="s4">\i</span>, <span class="s4">\a</span>, <span class="s4">\u</span>, <span class="s4">\o</span>]), unfold: <span class="s5">true</span>).flat.scramble) * 0.1).tanh;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s3">HighShelf</span>.ar(signal, filterFreq, filterSlope, dbGain)</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3">})</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p5"><span class="s3">Ndef</span><span class="s1">(</span><span class="s4">\vowel</span><span class="s1">, {</span>|filterFreq = 440, filterSlope = 1, dbGain = 0|</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">var</span> signal;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>signal = <span class="s3">Formants</span>.ar(</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(<span class="s3">LFNoise2</span>.kr(exp(1) / 20).exprange(100, 400) + <span class="s3">LFNoise0</span>.kr(exp(1) / 40).exprange(100, 400)).round(50),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s3">Vowel</span><span class="s1">(</span>\o<span class="s1">, </span>\soprano<span class="s1">)</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.brightenExp(<span class="s3">SinOsc</span>.kr(exp(1) / 50).range(0,1), 1),</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>unfold: <span class="s5">true</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>).mean * 0.5;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s3">HighShelf</span>.ar(signal, filterFreq, filterSlope, dbGain)</p>
+<p class="p3">})</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+</body>
+</html>

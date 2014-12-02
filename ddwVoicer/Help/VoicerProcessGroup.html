@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    span.s1 {font: 9.0px Monaco}
+    span.s2 {color: #606060}
+    span.s3 {color: #0000bf}
+    span.s4 {color: #bf0000}
+    span.s5 {color: #000000}
+    span.s6 {font: 9.0px Monaco; color: #007300}
+    span.s7 {color: #007300}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>VoicerProcessGroup<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b>VoicerToggleGroup</b></p>
+<p class="p2"><br></p>
+<p class="p3">Allows user-defined processes to be triggered from a button (VoicerToggleGroup) or drop down menu (VoicerProcessGroup).<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Note: In general, you should not use these classes directly. There instances should be created and destroyed using <span class="s1">aVoicer.addProcess(states, type)</span> and <span class="s1">aVoicer.removeProcess(aProcessGroup)</span>.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Syntax for states array</b></p>
+<p class="p2"><br></p>
+<p class="p3">The syntax is very similar to that for SCButton: an array of arrays, each inner array containing the information for one state. Here, however, each state also needs an action function and a task:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">[ [ "Label", { action }, { arg v; { task } } or nil, foreground color, background color ],</p>
+<p class="p3"><span class="Apple-converted-space">  </span>[ "Label", { action }, ..... ] ..... ]<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">The action function is passed two arguments: the voicer process to which it belongs, and this VoicerProcessGroup. Playing, stopping, etc. can then be directed to the first argument. In addition, you can use group.stopAll or group.stopOthers to replace a currently playing task with another:</p>
+<p class="p2"><br></p>
+<p class="p5">[ [ <span class="s2">"Seq 1"</span>, { <span class="s3">arg</span> p, g; g.stopOthers(p); p.play }, <span class="s3">VoicerSequencer</span>(...) ],</p>
+<p class="p5"><span class="Apple-converted-space">  </span>[ <span class="s2">"Stop seq 1"</span>, { <span class="s3">arg</span> p, g; p.stop } ],</p>
+<p class="p5"><span class="Apple-converted-space">  </span>[ <span class="s2">"Seq 2"</span>, { <span class="s3">arg</span> p, g; g.stopOthers(p); p.play }, <span class="s3">VoicerSequencer</span>(...) ],</p>
+<p class="p5"><span class="Apple-converted-space">  </span>[ <span class="s2">"Chg dur"</span>, { <span class="s3">arg</span> p, g; p.task.durs_([....]) } ],</p>
+<p class="p5"><span class="Apple-converted-space">  </span>[ <span class="s2">"Stop seq 2"</span>, { <span class="s3">arg</span> p, g; p.stop } ] ]<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">In the task slot, you should supply a QuantTask (or subclass), or a function whose value will be wrapped in a QuantTask. Note that carefully: if you use a function, <span class="s4"><b>the function should return another function</b></span> that will be used in the task. The outer function will be passed the voicer to use as an argument, so you should write it this way:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s5">{ </span><span class="s3">arg</span><span class="s5"> v;<span class="Apple-converted-space">          </span></span>// outer function</p>
+<p class="p5"><span class="Apple-converted-space">     </span>{<span class="Apple-converted-space">            </span><span class="s4">// inner function</span></p>
+<p class="p5"><span class="Apple-converted-space">          </span>loop({<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-converted-space">               </span>[60, 62, 64, 65, 67, 69, 71, 72].midicps.do({ <span class="s3">arg</span> f;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-converted-space">                    </span>v.gate1(f, 0.5)</p>
+<p class="p5"><span class="Apple-converted-space">               </span>})</p>
+<p class="p5"><span class="Apple-converted-space">          </span>})<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-converted-space">     </span>}</p>
+<p class="p5">}</p>
+<p class="p2"><br></p>
+<p class="p3">That's a lot of braces to keep track of--but just remember that the function that follows the argument should be written exactly the same as if you were saying QuantTask.new(func). Why? Because you can't give an argument to a Task at play time. If you use VoicerSequencer, the whole mess is avoided:</p>
+<p class="p2"><br></p>
+<p class="p6">// the same task just shown:</p>
+<p class="p5">{ <span class="s3">arg</span> v; <span class="s3">VoicerSequencer</span>(v, <span class="s3">Pseq</span>([60, 62, 64, 65, 67, 69, 71, 72], <span class="s3">inf</span>), 0.5) }</p>
+<p class="p2"><br></p>
+<p class="p3">The "arg v" here may be omitted because you know which voicer you're using to add the process to:</p>
+<p class="p2"><br></p>
+<p class="p5">myVoicer.addProcess([<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-converted-space">     </span>[ <span class="s2">"Play Cmaj"</span>, { <span class="s3">arg</span> p, g; g.play },<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">VoicerSequencer</span>(myVoicer, <span class="s3">Pseq</span>([60, 62, 64, 65, 67, 69, 71, 72], <span class="s3">inf</span>), 0.5) ],</p>
+<p class="p5"><span class="Apple-converted-space">     </span>[ <span class="s2">"Stop CMaj"</span>, { <span class="s3">arg</span> p, g; p.stop } ]</p>
+<p class="p7"><span class="s5">], </span>\toggle<span class="s5">);</span></p>
+<p class="p2"><br></p>
+<p class="p3">Note that the task is omitted in several of the example states above. This is because often you want several states in a row to act on the same task. By omitting the task, this state will use the last task that was provided.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">VoicerProcessGroup and VoicerToggleGroup are defined using the same syntax. The difference is that VoicerProcessGroup uses a pop up menu and VoicerToggleGroup uses a button. VoicerProcessGroup is more flexible because you can choose the actions out of order, but VoicerToggleGroup is more immediate because you just click and it does it. In VoicerToggleGroup, however, you always go through the actions in order (which is perfect for simple stop-start actions with only one task). To make a toggle group, use <span class="s1">aVoicer.addProcess(states, </span><span class="s6">\toggle</span><span class="s1">)</span>.</p>
+<p class="p2"><br></p>
+<p class="p3">Example:</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5">s.waitForBoot({</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">SynthDef</span>(<span class="s2">"voicerprocess"</span>, { <span class="s3">arg</span> freq, gate, ffreq, rq, outbus;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(outbus, <span class="s3">RLPF</span>.ar(<span class="s3">Pulse</span>.ar([freq, freq*0.998], 0.25), ffreq, rq, 0.5)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* <span class="s3">EnvGen</span>.kr(<span class="s3">Env</span>.adsr(0, 0.1, 0.75, 1), gate, doneAction:2))</p>
+<p class="p5"><span class="Apple-tab-span">	</span>}).send(s);</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>v = <span class="s3">Voicer</span>(15, <span class="s2">"voicerprocess"</span>).clock_(<span class="s3">TempoClock</span>.default).latency_(0.2);</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// so you can play with filter</p>
+<p class="p5"><span class="Apple-tab-span">	</span>v.mapGlobal(<span class="s7">\rq</span>, value: 0.15, spec: [0.05, 1]);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>v.mapGlobal(<span class="s7">\ffreq</span>, value: 1300, spec: <span class="s7">\freq</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>v.gui;</p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>// TempoClock.default.gui;<span class="Apple-converted-space">  </span>// optional, if you have TempoClockGui installed</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// note that play and stop are crisscrossed here with their tags</p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// this is b/c when you click play, it does the action for state #1 (not #0)</p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// and vice versa</p>
+<p class="p5"><span class="Apple-tab-span">	</span>v.addProcess([</p>
+<p class="p5"><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">    </span>[ <span class="s2">"Play CMaj"</span>, { <span class="s3">arg</span> p, g; p.stop },<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">VoicerSequencer</span>(v, <span class="s3">Pseq</span>([60, 62, 64, 65, 67, 69, 71, 72].midicps, <span class="s3">inf</span>), 0.25) ],</p>
+<p class="p5"><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">    </span>[ <span class="s2">"Stop CMaj"</span>, { <span class="s3">arg</span> p, g; p.reset; p.play } ]</p>
+<p class="p7"><span class="s5"><span class="Apple-tab-span">	</span>], </span>\toggle<span class="s5">);</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span>v.addProcess([<span class="Apple-tab-span">	</span></span>// this one will be a menu; note that actions correspond to tags here</p>
+<p class="p5"><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">    </span>[ <span class="s2">"Stop CMaj"</span>, { <span class="s3">arg</span> p, g; p.stop },</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">VoicerSequencer</span>(v, <span class="s3">Pseq</span>([60, 62, 64, 65, 67, 69, 71, 72].midicps, <span class="s3">inf</span>), 0.25) ],</p>
+<p class="p5"><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">    </span>[ <span class="s2">"Play CMaj"</span>, { <span class="s3">arg</span> p, g; p.play } ],<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">    </span>[ <span class="s2">"Reset CMaj"</span>, { <span class="s3">arg</span> p; p.reset } ]</p>
+<p class="p5"><span class="Apple-tab-span">	</span>]);</p>
+<p class="p8"><br></p>
+<p class="p5">});</p>
+<p class="p5">)</p>
+<p class="p8"><br></p>
+<p class="p6">// click the button, see what happens</p>
+<p class="p6">// try starting one, setting the offset to 0.5, then starting the other :)</p>
+<p class="p8"><br></p>
+<p class="p5">v.free;</p>
+</body>
+</html>

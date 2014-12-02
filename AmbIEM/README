@@ -1,0 +1,49 @@
+This is AmbIEM - an Ambisonics spatialisation toolkit for SuperCollider3 
+
+(c) Institute of ELectronic Music and Acoustics Graz, Austria, 2005
+	C. Frauenberger	[frauenberger@iem.at] 
+	A. de Campo	[decampo@iem.at]
+	T. Musil 	[musil@iem.at]
+
+(c) Tim Blechmann [tim@klingt.org], 2010-2011
+
+------------------------------------------------------------------------
+
+This toolkit contains class files and help files for using Ambisonics 
+spatialisation with SuperCollider3. It may be used with loudspeaker arrays
+as well as with headphones, providing binaural rendering with HRTFs. 
+
+Installation: copy Classes into your SCClassLibrary and Help into your SC3 Help folder
+
+Main Classes are:
+    PanAmbi1O/2O/3O     Ambisonics encoding 2nd/3rd order
+    DecodeAmbi1O/2O/3O  Ambisonics decoding 2nd/3rd order
+    BinAmbi3O           Ambisonics direct decoding to binaural output
+    RotateAmbi          Rotation in the Ambisonics domain
+    Binaural            Binaural rendering of multichannel audio 
+    Room2D/3D           Room simulation (early reflections)
+    VirtualRoom         Easy to use class for creation of virtual environments
+
+ambIEM encoders and decoders use the SN3D format. Note however that the channel order is not the same as recommended
+in ACN (http://ambisonics.ch/standards/channels/). The mapping is:
+
+IEM	ACN
+0	0
+2	1
+3	2
+1	3
+5	4
+7	5
+8	6
+6	7
+4	8
+10	9
+12	10
+14	11
+15	12
+13	13
+11	14
+9	15
+
+for more information visit http://sonenvir.at/downloads/sc3/ambiem or email frauenberger@iem.at
+Enjoy!

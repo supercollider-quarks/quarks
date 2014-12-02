@@ -1,0 +1,436 @@
+CLASS:: Patch
+summary:: Pairs an Instr with inputs that that will be passed to the Instr
+categories:: Libraries>crucial>Instr, Libraries>crucial>Players
+related:: Classes/Instr
+
+DESCRIPTION:: A Patch is a player that plays an Instr.
+
+An Instr (Instrument) is a named function.
+
+A Patch specifies an Instr and the inputs that will be passed to the Instr function.
+
+Note that an Instr can also be connected with other things using link::Classes/Mx:: and SynthDefs can be made from Instr in other ways than using Patch.
+
+code::
+(
+// given a simple instrument
+Instr(\Pulse,{ arg freq=440.0,width=0.5,mul=0.1;
+	Pulse.ar( freq, width, mul )
+});
+
+// a patch specifies inputs (arguments) to that instrument
+p = Patch( \Pulse, [ 300, 0.2, 0.1 ]);
+
+//the default server will be booted, the SynthDef written and loaded
+p.play;
+
+)
+
+p.stop;
+::
+
+Patch can also express arguments using argName:value dicts:
+
+code::
+p = Patch( \Pulse, (freq: 300) );
+::
+
+
+list::
+## link::Guides/Patch-inputs::
+## link::Guides/Patch-Busses-and-Groups::
+## link::Guides/Patch-spawning-and-patterns::
+## link::Guides/Patch-client-server-magic::
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: name
+The Instr can be specified as:
+
+an Instr name
+code::
+(
+	// given that an Instr is defined by name:
+	Instr(\bubbles, { arg amp=1.0;
+		var f, zout;
+		f = LFSaw.kr(0.4, 0, 24, LFSaw.kr([8,7.23], 0, 3, 80)).midicps;
+		zout = CombN.ar(SinOsc.ar(f, 0, 0.04), 0.2, 0.2, 4);
+		zout * amp
+	});
+
+	// the patch retrieves it by name
+	p = Patch(\bubbles,[0.4] );
+	p.gui
+)
+::
+
+a direct function that will be used to create an Instr in place
+code::
+(
+	p = Patch({ arg freq=100,amp=1.0;
+		SinOsc.ar([freq,freq + 30],0,amp)
+	},[
+		500,
+		0.3
+	]);
+	p.gui
+)
+::
+
+or directly pass an Instr object
+code::
+(
+	i = Instr("help-Patch",{ arg freq=100,amp=1.0;
+			SinOsc.ar([freq,freq + 30],0,amp)
+		});
+	p = Patch(i,[ 500,	0.3 ]);
+	p.gui
+)
+::
+
+
+
+argument:: inputs
+an array of arguments for the Instr function.
+
+Can also be a dictionary:  (argName: value, ... )
+
+code::
+Patch({ arg freq,amp;
+
+	SinOsc.ar(freq,amp)
+},(
+	amp: 0.4
+)).gui
+::
+
+argument:: outClass
+
+default is Out.ar You could supply ReplaceOut to do effect processing on a Bus
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: instr
+
+
+argument:: newInstr
+
+
+
+METHOD:: args
+
+
+argument:: inputs
+array or dict
+
+
+METHOD:: argsForSynth
+
+
+
+METHOD:: argNamesForSynth
+
+
+
+METHOD:: synthArgsIndices
+
+
+
+METHOD:: synthDef
+
+
+
+METHOD:: outClass
+
+
+
+METHOD:: respawnOnChange
+The Patch is a dependant of the Instr. When the Instr is redefined (you edit the func def and evaluate the Instr code, it saves it to the Library) it will call .changed on itself and the Patch can be set to automatically respawn iself.
+
+if nil (default) then it will not
+
+if a number then it is an link::Guides/atTime:: specifier:  1 means respawn on the next bar, 4 means on the next beat.  0.1 would respawn in 0.1 seconds after change.
+
+
+METHOD:: stepChildren
+private
+the children are the inputs to the Patch.  the stepChildren are hidden objects like ClientOnTrigResponder or TempoBus
+
+
+METHOD:: inputs
+
+
+
+METHOD:: setInput
+
+
+argument:: index
+
+
+argument:: newArg
+
+
+
+METHOD:: set
+
+
+argument:: index
+
+
+argument:: value
+
+
+
+METHOD:: rand
+call .rand on all inputs that support .rand; specifically NumberEditors will do a gaussian distribution randomization centered on the default value of the ControlSpec.
+
+argument:: standardDeviation
+for the gaussian randomization in NumberEditors.  default 0.15
+
+returns:: this
+
+METHOD:: doesNotUnderstand
+overides unmatched method selectors to return the inputs by name.
+eg aPatch.freq will return a KrNumberEditor
+
+argument:: selector
+
+
+argument::  ... dnuargs
+
+
+
+METHOD:: argNames
+
+
+
+METHOD:: argNameAt
+
+
+argument:: i
+
+
+
+METHOD:: specAt
+
+
+argument:: i
+
+
+
+METHOD:: spec
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: numChannels
+
+
+
+METHOD:: indexFromName
+
+
+argument:: argName
+
+
+
+METHOD:: argFromName
+
+
+argument:: argName
+
+
+
+METHOD:: loadSubject
+
+
+argument:: name
+
+
+
+METHOD:: createArgs
+
+
+argument:: argargs
+
+
+
+METHOD:: defName
+
+
+
+METHOD:: asSynthDef
+
+
+
+METHOD:: watchNoncontrols
+
+
+
+METHOD:: respawn
+
+
+argument:: atTime
+see link::Guides/atTime::
+
+
+
+METHOD:: update
+
+
+argument:: changed
+
+
+argument:: what
+
+
+
+METHOD:: removeSynthDefCache
+
+
+
+METHOD:: invalidateSynthDef
+
+
+
+METHOD:: releaseArgs
+
+
+
+METHOD:: didFree
+
+
+
+METHOD:: prepareChildrenToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: spawnToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: didSpawn
+private
+
+
+METHOD:: synthDefArgs
+
+
+
+METHOD:: stopToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: value
+value the Instr as a function returning the result
+
+argument::  ... overideArgs
+array or dict of args that should overide any of the Patch's inputs.
+
+
+METHOD:: valueArray
+
+
+argument:: overideArgs
+
+
+
+METHOD:: asEvent
+returns an Event that encapsulates the current state of the Patch.  this can be spawned with .play or further manipulated
+
+code::
+(
+s.boot;
+
+Instr("saw",{ arg freq=400; Saw.ar(freq) * EnvGen.kr(Env.perc,doneAction:2)});
+
+p = Patch("saw",[KrNumberEditor(300,\freq)]);
+
+Sheet({ arg f;
+	p.gui(f);
+	ActionButton(f,"asEvent",{
+		p.asEvent.play.postln
+	});
+});
+
+)
+::
+
+
+METHOD:: embedInStream
+
+
+argument:: event
+
+
+
+METHOD:: children
+
+
+
+METHOD:: printOn
+
+
+argument:: s
+
+
+
+METHOD:: storeParamsOn
+
+
+argument:: stream
+
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: guiClass
+
+
+
+
+
+EXAMPLES::
+
+Patch inside a patch
+
+code::
+Instr(\bubbles, { arg amp=1.0;
+	var f, zout;
+	f = LFSaw.kr(0.4, 0, 24, LFSaw.kr([8,7.23], 0, 3, 80)).midicps;
+	zout = CombN.ar(SinOsc.ar(f, 0, 0.04), 0.2, 0.2, 4);
+	zout * amp
+});
+
+Instr(\rlpf,{ arg audio=0,freq=500,rq=0.1;
+	RLPF.ar(audio, freq, rq)
+});
+
+p = Patch(\rlpf,[
+	q = Patch(\bubbles)
+]);
+
+p.gui
+::
+
+

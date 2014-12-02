@@ -1,0 +1,7 @@
+
+TestQuark {
+	
+	*sayHello { "Hello".postln; }
+	
+}
+

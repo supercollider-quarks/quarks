@@ -1,0 +1,51 @@
+CLASS:: MxOutletApp
+summary:: scripting object for a units outlet
+categories:: Mx
+related:: Classes/MxUnitApp, Classes/MxOutlet
+
+DESCRIPTION::
+An outlet may connect to multiple inlets.  On the gui you can shift drag from an outlet to an inlet. If you dont hold down shift then any previous cables are deleted.
+
+
+INSTANCEMETHODS::
+
+METHOD:: >>
+Connect this outlet to an inlet or to each item in a query set.
+
+argument:: inlet
+link::Classes/MxInletApp:: or link::Classes/MxQuery::. If it is a query then it will attempt to connect to each item.
+
+returns:: inlet
+
+METHOD:: disconnect
+Disconnect all cables
+
+returns:: this
+
+METHOD:: spec
+Spec of the outlet as defined in the objects driver file in ~make
+
+returns:: a Spec subclass
+
+METHOD:: name
+Spec of the outlet as defined in the objects driver file in ~make
+
+
+
+METHOD:: index
+Index of the outlet in the units outlets array
+
+returns:: integer
+
+METHOD:: unit
+The unit this outlet belongs to
+
+returns:: an link::Classes/MxUnitApp::
+
+METHOD:: to
+an array of inlets this outlet is connected to
+
+returns:: an array of link::Classes/MxInletApp::
+
+
+

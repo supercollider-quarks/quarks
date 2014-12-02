@@ -1,0 +1,274 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf270
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green63\blue187;\red58\green103\blue29;
+\red96\green96\blue96;\red173\green33\blue0;\red0\green31\blue190;\red186\green17\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs20 \cf2 /*\
+	Image is a simple image utility class.\
+	It is mostly intended to draw images but not to perform image processing thing...\
+	As it is using Jan Truzler's CocoaBridge underneath, it should be considered also 	experimental.\
+*/\cf0 \
+\
+\pard\pardeftab560\ql\qnatural
+\cf0 (\
+\cf3 var\cf0  \cf3 \
+\cf0 	resources=\cf3 nil\cf0 ,\
+	icon=\cf3 nil\cf0 ,\
+	recordButton=\cf3 nil\cf0 ,\
+	customIcon=\cf3 nil\cf0 ,\
+	recordButtonState=0,\
+	background, imageAlpha=1.0, imageComposition=\cf3 Compositing\cf0 .sourceIn\
+;\
+\
+resources = \cf3 Dictionary\cf0 [\
+	\cf4 'bg'\cf0  		-> \cf3 Image\cf0 (\cf5 "resources/gradient.jpg"\cf0 ),\cf5 \
+\cf0 	\cf4 'icon'\cf0  		-> \cf3 Image\cf0 (\cf5 "resources/Swamp.png"\cf0 ),\cf5 \
+\cf0 	\cf4 'recButton'\cf0 	-> [\cf4 \
+\cf0 		\cf3 Image\cf0 (\cf5 "resources/TrBtn_record_off.tiff"\cf0 ),\cf5 \
+\cf0 		\cf3 Image\cf0 (\cf5 "resources/TrBtn_record_off_p.tiff"\cf0 ),\cf5 \
+\cf0 		\cf3 Image\cf0 (\cf5 "resources/TrBtn_record_on.tiff"\cf0 ),\cf5 \
+\cf0 		\cf3 Image\cf0 (\cf5 "resources/TrBtn_record_on_p.tiff"\cf0 )\cf5 \
+\cf0 	]\
+];\
+\
+w = \cf3 SCWindow\cf0 (\cf5 "Drawing Options"\cf0 , \cf3 Rect\cf0 (310, 500, 500, 300)).front;\
+w.view.background_(\cf3 Color\cf0 .white);\
+w.onClose = \{\
+	resources.do\{\
+		\cf3 |img|\cf0  \cf3 \
+\cf0 		if(img.isKindOf(\cf3 Image\cf0 ), \{img.release\});\
+		if(img.isKindOf(\cf3 Array\cf0 ), \{img.do \{\cf3 |item|\cf0  item.release\}\});\
+	\};\
+	\cf6 //Image.releaseAll; // you can also use this to release all image instances \
+\cf0 \};\
+\
+background = \cf3 SCUserView\cf0 (w, \cf3 Rect\cf0 (0, 0, w.bounds.width, w.bounds.height)).relativeOrigin_(\cf3 false\cf0 ).canFocus_(\cf3 false\cf0 )\
+	.drawFunc_(\{resources.at(\cf4 'bg'\cf0 ).drawAtPoint(0@0)\})\
+;\
+\
+icon = \cf3 SCUserView\cf0 (w, \cf3 Rect\cf0 (20, 20, resources.at(\cf4 'icon'\cf0 ).width, resources.at(\cf4 'icon'\cf0 ).height))\
+	.relativeOrigin_(\cf3 false\cf0 )\
+	.drawFunc_(\{resources.at(\cf4 'icon'\cf0 ).drawAtPoint(icon.bounds.left@icon.bounds.top, imageAlpha, imageComposition)\})\
+;\
+	\
+recordButton = \cf3 SCUserView\cf0 (w, \cf3 Rect\cf0 (icon.bounds.left + icon.bounds.width + 10, icon.bounds.top, resources.at(\cf4 'recButton'\cf0 )[0].width, resources.at(\cf4 'recButton'\cf0 )[0].height))\
+	.relativeOrigin_(\cf3 false\cf0 )\
+	.canFocus_(\cf3 false\cf0 )\
+	.mouseDownAction_(\{\cf3 |me|\cf0  recordButtonState=recordButtonState+1; me.refresh;\})\
+	.mouseUpAction_(\{\cf3 |me|\cf0  \
+		recordButtonState=recordButtonState+1; \
+		if(recordButtonState > (resources.at(\cf4 'recButton'\cf0 ).size-1), \{recordButtonState=0\}); me.refresh;\
+	\})\
+	.drawFunc_(\{\
+		\cf3 var\cf0  img = resources.at(\cf4 'recButton'\cf0 )[recordButtonState];\
+		img.drawAtPoint(recordButton.bounds.left@recordButton.bounds.top, 1, \cf3 Compositing\cf0 .sourceIn);\
+	\})\
+;\
+\
+p = \cf3 SCSlider\cf0 (w, \cf3 Rect\cf0 (10, icon.bounds.top + icon.bounds.height + 10, icon.bounds.width, 20))\
+.action_(\{\
+	imageAlpha = p.value;\
+	icon.refresh;\
+\})\
+.value_(1.0);\
+\
+m = \cf3 SCPopUpMenu\cf0 (w, \cf3 Rect\cf0 (p.bounds.left, p.bounds.top + p.bounds.height + 5, p.bounds.width + 20, 20));\
+m.items = \
+	[\
+		\cf5 "Compositing.clear"\cf0 , \cf5 \
+\cf0 		\cf5 "Compositing.copy"\cf0 , \cf5 \
+\cf0 		\cf5 "Compositing.sourceIn"\cf0 , \cf5 \
+\cf0 		\cf5 "Compositing.sourceOver"\cf0 ,\cf5 \
+\cf0 		\cf5 "Compositing.sourceOut"\cf0 ,\cf5 \
+\cf0 		\cf5 "Compositing.sourceATop"\cf0 ,\cf5 \
+\cf0 		\cf5 "Compositing.destinationOver"\cf0 ,\cf5 \
+\cf0 		\cf5 "Compositing.destinationIn"\cf0 ,\cf5 \
+\cf0 		\cf5 "Compositing.destinationOut"\cf0 ,\cf5 \
+\cf0 		\cf5 "Compositing.destinationATop"\cf0 ,\cf5 \
+\cf0 		\cf5 "Compositing.xor"\cf0 ,\cf5 \
+\cf0 		\cf5 "Compositing.darker"\cf0 ,\cf5 \
+\cf0 		\cf5 "Compositing.highlight"\cf0 ,\cf5 \
+\cf0 		\cf5 "Compositing.lightPlus"\
+\cf0 	];\
+m.value_(2);\
+m.action_(\{\
+	\cf3 |v|\
+\cf0 	imageComposition = v.value;\
+	icon.refresh;\
+\});\
+\
+)\
+\
+\
+\cf6 /*\
+	Example 2:\
+	Kind of multi graphic state button made with one image\
+	containing the different states.\
+	Shows how to draw a part of an image\
+*/\
+\cf0 (\
+\cf3 var\cf0  	state = 0,\
+	stateArray;\
+	\
+stateArray = [\
+	0@60, \cf6 // normal state\
+\cf0 	0@15, \cf6 // normal state pressed\
+\cf0 	0@45, \cf6 // second state\
+\cf0 	0@0 \cf6 // second state pressed ...ect...\
+\cf0 ];\
+\
+w = \cf3 SCWindow\cf0 (\cf5 "Drawing Options"\cf0 , \cf3 Rect\cf0 (300, 500, 50, 50)).front;\
+w.view.background_(\cf3 Color\cf0 .new255(192, 192, 192));\
+b = \cf3 Image\cf0 (\cf5 "resources/TrackMute.tiff"\cf0 );\cf5 \
+\cf0 \
+v = \cf3 SCUserView\cf0 (w, \cf3 Rect\cf0 (10, 10, 15, 15))\
+.relativeOrigin_(\cf3 false\cf0 )\
+.drawFunc_(\{\
+	\cf3 var\cf0  coords = stateArray[state];\
+	\cf6 //("drawing state: "+state+" = "+coords.asString).postln;\
+\cf0 	b.drawRegionAtPoint(10@10, \cf3 Rect\cf0 (coords.x, coords.y, 15, 15));\
+\})\
+.canFocus_(\cf3 false\cf0 );\
+v.mouseDownAction = \{\cf3 |me|\cf0  state=state+1; me.refresh;\};\
+v.mouseUpAction = \{\cf3 |me|\cf0  state=state+1; if(state > (stateArray.size-1), \{state=0\}); me.refresh;\};\
+w.onClose = \{\
+	b.release;\
+\};\
+w.refresh;\
+)\
+\
+\cf6 /*\
+	Example 3:\
+	Navigation through an Image \
+*/\
+\cf0 (\
+\cf3 var\cf0  image, left=0, top=0, width=0, height=0;\
+image = \cf3 Image\cf0 (\cf5 "resources/earth.jpg"\cf0 );\cf5 \
+\cf0 width = image.width;\
+height = image.height;\
+\
+\
+w = \cf3 SCWindow\cf0 (\cf5 "Drawing Options"\cf0 , \cf3 Rect\cf0 (310, 500, 300, 200)).front;\
+w.view.background_(\cf3 Color\cf0 .clear);\
+y = \cf3 SCUserView\cf0 (w, \cf3 Rect\cf0 (10, 10, 150, 150)).relativeOrigin_(\cf3 false\cf0 );\
+y.drawFunc = \{\
+	image.drawRegionAtPoint(10@10, \cf3 Rect\cf0 (left, top, 150, 150));\
+\};\
+\
+v = \cf3 SC2DSlider\cf0 (w, \cf3 Rect\cf0 (150 + 20, 10, 100, 150));\
+v.x_(0); v.y_(0);\
+v.action_(\{\
+	left = v.x * (width - 150);\
+	top = v.y * (height - 150);\
+	y.refresh;\
+	\cf6 //[left, top].postln;\
+\cf0 \});\
+\
+w.onClose = \{\
+	image.release;\
+\};\
+w.refresh;\
+)\
+\
+\
+\cf6 /*\
+	Example 4:\
+	Scaling Example\
+*/\
+\cf0 (\
+\cf3 var\cf0  image, left=0, top=0, width=0, height=0, scalex = 1.0, scaley = 1.0;\
+image = \cf3 Image\cf0 (\cf5 "resources/earth.jpg"\cf0 );\cf5 \
+\cf0 width = image.width;\
+height = image.height;\
+\
+\
+w = \cf3 SCWindow\cf0 (\cf5 "Drawing Options"\cf0 , \cf3 Rect\cf0 (310, 500, 400, 400)).front;\
+w.view.background_(\cf3 Color\cf0 .clear);\
+w.drawHook = \{\
+	\cf3 Pen\cf0 .use \{\
+		\cf3 Pen\cf0 .translate(20, 20);\
+		\cf3 Pen\cf0 .scale(scalex, scaley);\
+		image.drawAtPoint(0@0);\
+	\}\
+\};\
+\
+v = \cf3 SC2DSlider\cf0 (w, \cf3 Rect\cf0 (20, image.height + 30, 100, 30));\
+v.x_(0); v.y_(0);\
+v.action = \{\
+	\cf3 |m|\
+\cf0 	scalex = 1.0 + v.x;\
+	scaley = 1.0 + v.y;\
+	w.refresh;\
+\};\
+\
+w.onClose = \{\
+	image.release;\
+\};\
+w.refresh;\
+)\
+\
+\cf6 /*\
+	Drawing inside an image:\
+	Very basic example\
+*/\
+\cf0 (\
+\cf3 var\cf0  image=\cf3 nil\cf0 , image2=\cf3 nil\cf0 , width, height;\
+image = \cf3 Image\cf0 .newClear(150@150);\
+width = image.width;\
+height = image.height;\
+\
+\
+\cf6 /* \
+the setFlipped method is the easy way to setup the image before drawing.\
+But this won't draw the image flipped. It is just a hint for the cache buffer when rendering inside of it.\
+*/\
+\cf0 image.setFlipped(\cf3 true\cf0 );\
+image.autoTransform = \cf3 false\cf0 ; \cf6 // set autoTransform to false we use setFlipped\
+\cf0 image.lockFocus; \cf6 // begins drawing\cf0 \
+\cf3 Pen\cf0 .use \{\
+	30.do \{\
+		\cf3 Pen\cf0 .fillColor_(\cf3 Color\cf0 .new(1.0.rand,1.0.rand,1.0.rand,1.0.rand));\
+		\cf3 Pen\cf0 .fillOval(\cf3 Rect\cf0 (50.rand, 50.rand, 100.rand, 100.rand));\
+	\};\
+	\cf6 // Drawing text require a specific command\
+\cf0 	image.drawStringAtPoint(\cf5 "Hello Image"\cf0 , 5@20); \cf6 // draw text in the right sense\cf0 \
+	\cf6 //"Hello".drawAtPoint(5@20); // uncomment to see otherwise...\
+\cf0 \};\
+image.unlockFocus; \cf6 // do not forget to call it when done\
+\cf0 image.recache; \cf6 // in case\cf0 \
+\
+w = \cf3 SCWindow\cf0 (\cf5 "Drawing Scale"\cf0 , \cf3 Rect\cf0 (310, 500, 400, 400)).front;\
+w.view.background_(\cf3 Color\cf0 .clear);\
+w.drawHook = \{\
+	\cf3 Pen\cf0 .use \{\
+		image.drawAtPoint(10@10, operation:\cf3 Compositing\cf0 .sourceIn);\
+	\}\
+\};\
+\
+v = \cf3 SCButton\cf0 (w, \cf3 Rect\cf0 (0, image.height + 30, 80, 20)).states_([[\cf5 "Save Me"\cf0 , \cf3 Color\cf0 .black, \cf3 Color\cf0 .white]]);\
+v.action_(\{\
+	\cf3 var\cf0  result;\
+	\cf3 var\cf0  savePath = \cf3 Document\cf0 .current.path.dirname ++ \cf5 "/SavedImage.png"\cf0 ;\
+	\
+	image2 = image.flipped; \cf6 // here this is a particular case since we created \
+\cf0 						\cf6 // a flipped cached image so we need to flip it to save it after\
+\cf0 	(\cf5 "flipping image and save at: "\cf0 ++savePath).postln;\cf5 \
+\cf0 	\cf7 CocoaDialog\cf0 .savePanel(\
+		\{\
+			\cf7 arg\cf0  path;\
+			result = image2.saveAs(path++\cf5 ".png"\cf0 , \cf7 ImageType\cf0 .png); \cf8 // to keep alpha channel\cf0 \
+			(\cf5 "saving result: "\cf0  + result.class).postln;\
+			image2.release; \cf8 // release after done\
+\cf0 		\}, \{\}\
+	);\
+\});\
+\
+w.onClose = \{\
+	image.release;\
+\};\
+w.refresh;\
+)\
+\
+\cf7 Image\cf0 .releaseAll; \cf8 // ensure all Image intances are cleared\
+}

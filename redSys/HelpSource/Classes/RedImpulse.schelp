@@ -1,0 +1,45 @@
+CLASS:: RedImpulse
+SUMMARY:: resettable impulse train
+CATEGORIES:: Red>redUGens
+RELATED:: Classes/Impulse
+
+DESCRIPTION::
+Non-bandlimited single sample impulse train with a reset feature.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: freq
+frequency in Hertz
+
+ARGUMENT:: reset
+a trigger to reset the phase
+
+ARGUMENT:: mul
+
+ARGUMENT:: add
+
+EXAMPLES::
+
+CODE::
+s.boot
+
+a= {|freq= 2, t_reset= 0| RedImpulse.ar(freq, t_reset)}.play(fadeTime:0)
+
+a.set(\freq, 1)				//change frequency
+a.set(\freq, 1, \t_reset, 1)		//change frequency and reset phase
+a.set(\t_reset, 1)			//reset phase only
+a.set(\freq, 2)
+a.free
+
+
+
+a= {|freq= 2, t_reset= 0| SinOsc.ar(400, 0, Decay.kr(RedImpulse.kr(freq, t_reset)))}.play(fadeTime:0)
+
+a.set(\freq, 1)				//change frequency
+a.set(\freq, 1, \t_reset, 1)		//change frequency and reset phase
+a.set(\t_reset, 1)			//reset phase only
+a.set(\freq, 2)
+a.free
+::

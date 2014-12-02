@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1138.23">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #d00c0c}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #737373}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #162bc4}
+span.s3 {color: #000000}
+span.s4 {color: #737373}
+span.s5 {color: #d00c0c}
+span.s6 {color: #cf0c0c}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>RePost<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>redirect posting away from the main post window.</b></p>
+<p class="p2"><br></p>
+<p class="p1">In a <span class="s2">Republic</span>, lots of post messages come in all the time, especially with many active participants.</p>
+<p class="p1"><span class="s2">RePost</span> allows redirecting debug/info posting to a special view.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p1">Note:<span class="Apple-tab-span">	</span>This is not polished yet, more of an idea for discussion.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>E.g. posting last thing on top could be discussed/switchable,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>also a button for turning off posting to main post window,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>etc etc.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// initialise RePost, creates its own little post view</p>
+<p class="p5"><span class="s2">RePost</span>.init;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s2">RePost</span>.init(nil, Rect(800, 200, 400, 320));<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// normal post</p>
+<p class="p5">3.do { <span class="s2">|i|</span> [i, (1..10).scramble].postln; };</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// post to both<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s4">"Hello\n"</span>.repost;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// post</span></p>
+<p class="p5"><span class="s4">"World!"</span>.repostln;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// postln</span></p>
+<p class="p5"><span class="s4">"note\n\n"</span>.repostc;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// postc</span></p>
+<p class="p5"><span class="s4">"ascending"</span>.repostcln;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// postcln</span></p>
+<p class="p5"><span class="s4">"order."</span>.repostcs;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// postcs</span></p>
+<p class="p5"><span class="s4">"and %.\n"</span>.repostf(\format);<span class="s6">// postcs</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// now post only to Repost</p>
+<p class="p5"><span class="s2">RePost</span>.toPost = <span class="s2">false</span>;</p>
+<p class="p5">3.do { <span class="s2">|i|</span> [i, (1..10).scramble].repostln; };</p>
+<p class="p2"><br></p>
+<p class="p6">"... the serene\n"<span class="s3">.repost;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="s4">"quietness"</span>.repostln;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6">"of the post window"<span class="s3">.repostcln;<span class="Apple-tab-span">	</span></span></p>
+<p class="p6">"lets you read errors again."<span class="s3">.repostcs;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// repost keeps a list of last &lt;numPosts&gt; post strings:</p>
+<p class="p5"><span class="s2">RePost</span>.posts;</p>
+<p class="p5"><span class="s2">RePost</span>.numPosts;</p>
+<p class="p4"><span class="s2">RePost</span><span class="s3">.clear;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// clear them</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// you can put Repost of a given window:</p>
+<p class="p5">w = <span class="s2">Window</span>(<span class="s4">"test"</span>).front;</p>
+<p class="p5"><span class="s2">RePost</span>.init(w);</p>
+<p class="p5">10.do { (1..10).scramble.postlnR; };</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// with given bounds - and a new window replaces any previous one.</p>
+<p class="p5">w = <span class="s2">Window</span>(<span class="s4">"test2"</span>).front;</p>
+<p class="p5"><span class="s2">RePost</span>.init(w, <span class="s2">Rect</span>(50, 50, 300, 300));</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

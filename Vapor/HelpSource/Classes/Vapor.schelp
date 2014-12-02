@@ -1,0 +1,244 @@
+TITLE:: Vapor
+summary:: class to control and respond to the iOS app Vapor by Rockmore Tech LLC (http://www.rockmoretech.com).
+categories:: OSC control
+
+DESCRIPTION::
+Vapor (http://itunes.apple.com/us/app/vapor./id433370498?mt=8) allows for control via OSC and also sends a number of OSC messages based on touch input. The Vapor class sets up a number of ways for this communication to happen.
+
+
+CLASSMETHODS::
+
+METHOD:: showComputerIP
+Posts your computer iP address and the port that sclang is listening on.
+
+METHOD:: dumpAllOSC
+For debugging, when set to 'true' all incoming OSC messages will be dumped to the post window. Call the method again with 'false' to turn off OSC dumping.
+
+METHOD:: new
+creates a new instance of Vapor
+
+ARGUMENT:: ip
+the ip of the device running Vapor (can be left empty - see the 'listen' method below)
+
+ARGUMENT:: port
+the port to listen on
+
+INSTANCEMETHODS::
+
+METHOD:: ip
+the ip address the SuperCollider sends Vapor messages to.
+
+ARGUMENT:: newIP
+an ip string
+
+METHOD:: listen
+listens for the '/vaporPing' message from the Vapor app. If IP is nil, the IP from the OSC message will be saved for you.
+
+ARGUMENT:: action
+a Function to evaluate when the message comes in
+
+ARGUMENT:: remove
+a boolean that tells the class whether or not to remove this responder when the message comes in.
+
+METHOD:: addResponders
+adds the necessary responders for responding to touches in the Vapor app
+
+METHOD:: removeResponders
+removes all responders listening for OSC from Vapor
+
+METHOD:: ping
+sends a /vaporPing message to Vapor after setting up an OSCresponderNode to listen for the '/pong' reply.
+
+METHOD:: pic
+sends a command for Vapor to take a screen shot and store it in the device's photo roll.
+
+METHOD:: touch
+sends an OSC message to Vapor to create a Vapor touch.
+
+ARGUMENT:: x
+a value between 0.0 and 1.0 (0.0 is left, 1.0 is right)
+
+ARGUMENT:: y
+a value between 0.0 and 1.0 (0.0 is bottom, 1.0 is top)
+
+METHOD:: cloud
+sends an OSC message to Vapor to create a Vapor cloud.
+
+ARGUMENT:: x
+a value between 0.0 and 1.0 (0.0 is left, 1.0 is right)
+
+ARGUMENT:: y
+a value between 0.0 and 1.0 (0.0 is bottom, 1.0 is top)
+
+METHOD:: bomb
+sends an OSC message to Vapor to create a Vapor bomb.
+
+ARGUMENT:: x
+a value between 0.0 and 1.0 (0.0 is left, 1.0 is right)
+
+ARGUMENT:: y
+a value between 0.0 and 1.0 (0.0 is bottom, 1.0 is top)
+
+ARGUMENT:: strength
+an optional value (between 1 and 10000) that describes how long it takes for the bomb to fade
+
+METHOD:: newTouchFunc
+a Function to evaluate when a Vapor cloud (double tap) is created. msg, time, addr, recvPort and a touchID are passed into the Function.
+
+METHOD:: touchMovedFunc
+a Function to evaluate when a tracked touch moves. msg, time, addr, recvPort and a touchID are passed into the Function.
+
+METHOD:: touchEndedFunc
+a Function to evaluate when a tracked touch ends. msg, time, addr, recvPort and a touchID are passed into the Function.
+
+METHOD:: pinchFunc
+a Function to evaluate when a pinch gesture is detected. msg, time, addr and recvPort are passed into the Function.
+
+METHOD:: accelFunc
+a Function to evaluate when a accelerometer values are calculated. msg, time, addr and recvPort are passed into the Function.
+
+METHOD:: cloudFunc
+a Function to evaluate when a Vapor cloud (double tap) is created. msg, time, addr and recvPort are passed into the Function.
+
+METHOD:: rotationFunc
+a Function to evaluate when a Vapor detects a rotation gesture. msg, time, addr and recvPort are passed into the Function.
+
+METHOD:: bombFunc
+a Function to evaluate when a Vapor bomb (triple tap) is created. msg, time, addr and recvPort are passed into the Function.
+
+METHOD:: viscosity
+sets the viscosity setting in Vapor
+
+ARGUMENT:: viscosityIn
+a value between 0.01 and 0.99
+
+METHOD:: hue
+sets the hue setting in Vapor
+
+ARGUMENT:: hueIn
+a value between 0.0 and 360.0
+
+METHOD:: speed
+sets the speed setting in Vapor
+
+ARGUMENT:: speedIn
+a value between 0.01 and 0.99
+
+METHOD:: gravity
+sets the gravity setting in Vapor
+
+ARGUMENT:: gravityIn
+a value between -1.0 and 1.0.
+
+METHOD:: fade
+sets the fade setting in Vapor
+
+ARGUMENT:: fadeIn
+a value between 0.01 and 0.99
+
+METHOD:: diffusion
+sets the diffusion setting in Vapor
+
+ARGUMENT:: diffusionIn
+a value between 0.01 and 0.99
+
+METHOD:: mode
+sets the mode setting in Vapor. 
+
+ARGUMENT:: modeIn
+an integer value between 1 and 10
+
+METHOD:: colorChange
+sets the colorChange setting in Vapor. 
+
+ARGUMENT:: colorChangeIn
+a value between -1.0 and 1.0
+
+METHOD:: reflectX
+sets the reflectX setting in Vapor
+
+ARGUMENT:: reflectXIn
+a boolean value
+
+METHOD:: reflectY
+sets the reflectY setting in Vapor
+
+ARGUMENT:: reflectYIn
+a boolean value
+
+METHOD:: reflectCenter
+sets the reflectCenter setting in Vapor
+
+ARGUMENT:: reflectCenterIn
+a boolean value
+
+EXAMPLES::
+
+code::
+a = Vapor.new(port: 51010);
+Vapor.showComputerIP; // the IP and Port info to set in Vapor
+a.listen; // from inside the OSC page - press '/vaporPing'
+
+a.addResponders;
+
+Vapor.dumpAllOSC; // to see all incoming OSC
+Vapor.dumpAllOSC(false); // turns that off;
+
+// change some settings:
+
+a.gravity_(-1);
+a.fade_(0.99);
+a.viscosity_(0.99);
+a.diffusion_(0.5);
+h = 12.0;
+// send some touches!
+Routine.run({
+	inf.do({
+		a.touch(1.0.rand, 1.0.rand);
+		a.touch(1.0.rand, 1.0.rand);
+		a.hue_(h);
+		h = h + 1;
+		0.02.wait;
+	})
+})
+
+// set up a SynthDef that takes x and y parameters, and maps them to sound
+
+SynthDef(\test, {arg gate = 1, x, y;
+	var env, src;
+	env = EnvGen.kr(Env([0, 1, 0], [0.1, 3], \sin, 1), gate, doneAction: 2);
+	src = SinOsc.ar(x * 330 + 220, 0, y * 0.5);
+	Out.ar(0, src * env);
+}).add;
+
+// a dictionary to put our notes into - keyed with the id of the touch 
+n = Dictionary.new;
+
+// add functions to respond to new, moved and end of touches
+a.newTouchFunc_({arg msg, time, addr, port, touchID;
+	[msg, touchID].postln;
+	n.add(touchID -> Synth(\test, [\x, msg[1], \y, msg[2]]));
+});
+
+a.touchMovedFunc_({arg msg, time, addr, port, touchID;
+	[msg, touchID].postln;
+	n[touchID].set(\x, msg[1], \y, msg[2]);
+});
+
+a.touchEndedFunc_({arg msg, time, addr, port, touchID;
+	// sometimes, a touch ends VERY quickly, before the node
+	// even starts - wrap in a defer to catch these
+	{
+		[msg, touchID].postln;
+		n[touchID].set(\gate, 0);
+		n[touchID] = nil;
+	}.defer(s.latency);
+});
+
+// stuck notes? (the ones above do have a 3 second decay... but if touches are lost, 
+// this may be needed)
+a.removeStuckTouches;
+
+// done? remove the responders!
+a.removeResponders;
+::

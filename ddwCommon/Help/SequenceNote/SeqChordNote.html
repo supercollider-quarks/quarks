@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #a41919}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001ab2}
+span.s1 {color: #0000ff}
+span.s2 {color: #000000}
+span.s3 {color: #001ab2}
+span.s4 {color: #a41919}
+span.s5 {color: #36701f}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SeqChordNote : SequenceNote</b></p>
+<p class="p2"><br></p>
+<p class="p3">Encapsulates all the notes of a chord into a single object. This way, manipulations on an array of note objects will not break a chord.</p>
+<p class="p2"><br></p>
+<p class="p3">See <a href="SequenceNote.html"><span class="s1">SequenceNote</span></a> for the base class, and <a href="SequenceItem.html"><span class="s1">SequenceItem</span></a> for a grace note + chord object.</p>
+<p class="p2"><br></p>
+<p class="p3">A chord includes several notes, most of which must be very short to preserve the illusion of a simultaneous attack. SeqChordNote and its subclass, SequenceItem, use a new variable, shortDur, for the duration of the main note before playing the first chord note. As before, dur represents the delta between the first note of this chord and the first note of the next sequence note object.</p>
+<p class="p2"><br></p>
+<p class="p3">In the diagram below, N1 represents the primary note of the SeqChordNote object. That is, the freq, length and args instance variables of the SeqChordNote contain data for N1. Pitch and duration of information for N2 and N3 are contained in the chordNotes array.</p>
+<p class="p2"><br></p>
+<p class="p4">/** N1-3: one chord **/<span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>/** Next distinct event **/</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*N1*<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>N2<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>N3<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>N4</b></p>
+<p class="p2"><br></p>
+<p class="p3">^<span class="Apple-tab-span">	</span><b>A</b><span class="Apple-tab-span">	</span>^</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>^<span class="Apple-tab-span">	</span><b>B</b><span class="Apple-tab-span">	</span>^</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>^<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>C</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>^</p>
+<p class="p3">^<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>D</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>^</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>A:</b> shortDur</p>
+<p class="p3"><b>B:</b> dur of chordNotes[0]</p>
+<p class="p3"><b>C:</b> dur of chordNotes[1]</p>
+<p class="p3"><b>D:</b> dur of SeqChordNote (total)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>*new(freq, dur, length, args, chordNotes)</b></p>
+<p class="p2"><br></p>
+<p class="p3">chordNotes is an array of SequenceNote objects.</p>
+<p class="p2"><br></p>
+<p class="p6">// middle C, 0.05 beats between notes</p>
+<p class="p7">n = <span class="s3">SeqChordNote</span>(60, 0.05, 3, <span class="s3">nil</span>, [<span class="s3">SequenceNote</span>(64, 0.05, 2.95), <span class="s3">SequenceNote</span>(67, 2.9, 2.9)]);</p>
+<p class="p2"><br></p>
+<p class="p3">When added to the SeqChordNote object, the freq values of the chord notes are converted to be relative to the main chord note. This simplifies transposition later. The correct values will be produced when streaming out the notes (below).</p>
+<p class="p2"><br></p>
+<p class="p7">n.chordNotes.do(<span class="s3">_</span>.postln);</p>
+<p class="p7">[ 4, 0.05, 2.95, <span class="s3">nil</span> ]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">// 64-60 = 4</span></p>
+<p class="p7">[ 7, 2.9, 2.9, <span class="s3">nil</span> ]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">// 67-60 = 7</span></p>
+<p class="p2"><br></p>
+<p class="p3">To play the chord back, use patterns and streams.</p>
+<p class="p2"><br></p>
+<p class="p7">p = n.asStream;</p>
+<p class="p7">while { p.next.postln.notNil };</p>
+<p class="p2"><br></p>
+<p class="p7">[ 60, 0.05, 3, nil ]</p>
+<p class="p7">[ 64, 0.05, 2.95, nil ]</p>
+<p class="p7">[ 67, 2.9, 2.9, nil ]</p>
+<p class="p7">nil</p>
+<p class="p2"><br></p>
+<p class="p3">This works also if the chord is in the middle of an array of SequenceNotes and SeqChordNotes.</p>
+<p class="p2"><br></p>
+<p class="p3">Transposition works also:</p>
+<p class="p2"><br></p>
+<p class="p7">p = (n + 4).asStream;</p>
+<p class="p7">while { p.next.postln.notNil };</p>
+<p class="p8"><br></p>
+<p class="p7">[ 64, 0.05, 3, nil ]</p>
+<p class="p7">[ 68, 0.05, 2.95, nil ]</p>
+<p class="p7">[ 71, 2.9, 2.9, nil ]</p>
+<p class="p7">nil</p>
+<p class="p2"><br></p>
+<p class="p3">You may .add() a single note to a SeqChordNote or concatenate (++) an array of notes at any time. The original SeqChordNote is returned with new content.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>dur_(newDur)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Modify the notes' timings to conform with the new value. The dur instance variable holds the sum of shortDur plus the durations of all the chord notes; to preserve the temporal relationships, shortDur and the chord note durations are scaled by the ratio between the new duration and the old.</p>
+<p class="p2"><br></p>
+<p class="p7">p = n.asStream;</p>
+<p class="p7">while { p.next.postln.notNil };</p>
+<p class="p2"><br></p>
+<p class="p7">[ 60, 0.05, 3, nil ]</p>
+<p class="p7">[ 64, 0.05, 2.95, nil ]</p>
+<p class="p7">[ 67, 2.9, 2.9, nil ]</p>
+<p class="p8"><br></p>
+<p class="p7">n.dur</p>
+<p class="p7">3</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s2">n.dur = 6;<span class="Apple-tab-span">	</span></span>// we would expect all durations to be * 2 (6/3 = 2)</p>
+<p class="p8"><br></p>
+<p class="p7">p = n.asStream;</p>
+<p class="p7">while { p.next.postln.notNil };</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s2">[ 60, 0.1, 3, nil ]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// 0.05 * 2 = 0.1, etc.;<span class="Apple-converted-space">  </span>0.1 + 0.1 + 5.8 = 6</p>
+<p class="p7">[ 64, 0.1, 2.95, nil ]</p>
+<p class="p7">[ 67, 5.8, 2.9, nil ]</p>
+<p class="p2"><br></p>
+<p class="p5"><b>add(note)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Adds the note argument to the chord note list -- returns the same SeqChordNote object.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>++ notes</b></p>
+<p class="p2"><br></p>
+<p class="p3">Adds the note argument array to the same SeqChordNote object, into the chord note list.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>addGraceNotes</b></p>
+<p class="p2"><br></p>
+<p class="p3">Create a SequenceItem with the supplied grace notes (preserving the chord notes as well).</p>
+<p class="p2"><br></p>
+<p class="p5"><b>asPlayableNote</b></p>
+<p class="p2"><br></p>
+<p class="p3">All chord notes will be compacted into one SequenceNote with arrays for the parameters, e.g.,</p>
+<p class="p2"><br></p>
+<p class="p7">n = <span class="s3">SeqChordNote</span>(60, 0.05, 3, <span class="s3">nil</span>, [<span class="s3">SequenceNote</span>(64, 0.05, 2.95), <span class="s3">SequenceNote</span>(67, 2.9, 2.9)]);</p>
+<p class="p8"><br></p>
+<p class="p7">n.asPlayableNote;</p>
+<p class="p7">[ [ 60, 64, 67 ], 3, [ 3, 2.95, 2.9 ], [ nil, nil, nil ] ]</p>
+<p class="p8"><br></p>
+<p class="p6">// which is the string representation of</p>
+<p class="p7"><span class="s3">SequenceNote</span>([ 60, 64, 67 ], 3, [ 3, 2.95, 2.9 ], [ <span class="s3">nil</span>, <span class="s3">nil</span>, <span class="s3">nil</span> ])</p>
+<p class="p2"><br></p>
+<p class="p5"><b>asSequenceNote</b></p>
+<p class="p2"><br></p>
+<p class="p3">The main note object will be returned, omitting the chord notes. Note that the total duration is used (0.05 + 0.05 + 2.9 = 3.0).</p>
+<p class="p2"><br></p>
+<p class="p7">n.asSequenceNote;</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s2">[ 60, 3, 3, </span><span class="s3">nil</span><span class="s2"> ]<span class="Apple-converted-space">  </span></span>// or, SequenceNote(60, 3, 3, nil)</p>
+<p class="p2"><br></p>
+<p class="p5"><b>asNoteArray</b></p>
+<p class="p2"><br></p>
+<p class="p3">A flattened representation, not useful for streaming.</p>
+<p class="p2"><br></p>
+<p class="p7">n.asNoteArray;</p>
+<p class="p2"><br></p>
+<p class="p7">[ a SeqChordNote, a SequenceNote, a SequenceNote ]</p>
+<p class="p8"><br></p>
+<p class="p7">n.asNoteArray.do(_.postln);</p>
+<p class="p7">[ 60, 3, 3, nil ]</p>
+<p class="p7">[ 64, 0.05, 2.95, nil ]</p>
+<p class="p7">[ 67, 2.9, 2.9, nil ]</p>
+<p class="p2"><br></p>
+<p class="p5"><b>asArray</b></p>
+<p class="p2"><br></p>
+<p class="p3">^[freq, dur, length, args] -- ignores the chord notes.</p>
+<p class="p2"><br></p>
+<p class="p7">n.asArray;</p>
+<p class="p7">[ 60, 3, 3, <span class="s3">nil</span> ]</p>
+<p class="p2"><br></p>
+<p class="p5"><b>asPattern</b></p>
+<p class="p5"><b>asStream</b></p>
+<p class="p2"><br></p>
+<p class="p3">For streaming the notes out in order, preserving the original time relationships.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>MIDIRecBuf and parsing</b></p>
+<p class="p2"><br></p>
+<p class="p3">MIDIRecBuf is an easy way to store a list of sequence notes. It has a method, parse, to identify groups of notes that should be chords or grace notes and it constructs the required SeqChordNotes and SequenceItems.</p>
+<p class="p2"><br></p>
+<p class="p3">This MIDIRecBuf contains a simple I-IV-V-I in C major. After parsing, the buffer has only 4 objects in the array. But, when you stream out the notes in the buffer, everything comes back as it should.</p>
+<p class="p2"><br></p>
+<p class="p3">See <b>[MIDIRecBuf]</b> for details on the parsing algorithm.</p>
+<p class="p2"><br></p>
+<p class="p9"><span class="s2">b = </span>MIDIRecBuf<span class="s2">(</span><span class="s5">\cmaj</span><span class="s2">, [</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>#[60, 64, 67, 60, 65, 69, 62, 67, 71, 64, 67, 72],</p>
+<p class="p7"><span class="Apple-tab-span">	</span>#[0.01, 0.01, 0.98, 0.01, 0.01, 0.98, 0.01, 0.01, 0.98, 0.01, 0.01, 0.98],</p>
+<p class="p7"><span class="Apple-tab-span">	</span>1</p>
+<p class="p7">].asNotes);</p>
+<p class="p8"><br></p>
+<p class="p7">b.dumpSeq;</p>
+<p class="p8"><br></p>
+<p class="p7">MIDIRecBuf("cmaj")</p>
+<p class="p7">0 : [ 60, 0.01, 1, nil ]</p>
+<p class="p7">1 : [ 64, 0.01, 1, nil ]</p>
+<p class="p7">2 : [ 67, 0.98, 1, nil ]</p>
+<p class="p7">3 : [ 60, 0.01, 1, nil ]</p>
+<p class="p7">4 : [ 65, 0.01, 1, nil ]</p>
+<p class="p7">5 : [ 69, 0.98, 1, nil ]</p>
+<p class="p7">6 : [ 62, 0.01, 1, nil ]</p>
+<p class="p7">7 : [ 67, 0.01, 1, nil ]</p>
+<p class="p7">8 : [ 71, 0.98, 1, nil ]</p>
+<p class="p7">9 : [ 64, 0.01, 1, nil ]</p>
+<p class="p7">10 : [ 67, 0.01, 1, nil ]</p>
+<p class="p7">11 : [ 72, 0.98, 1, nil ]</p>
+<p class="p8"><br></p>
+<p class="p7">c = b.parse;</p>
+<p class="p7">c.dumpSeq;</p>
+<p class="p8"><br></p>
+<p class="p7">MIDIRecBuf("cmajb")</p>
+<p class="p7">0 : [ 60, 1, 1, nil ]</p>
+<p class="p7">1 : [ 60, 1, 1, nil ]</p>
+<p class="p7">2 : [ 62, 1, 1, nil ]</p>
+<p class="p7">3 : [ 64, 1, 1, nil ]</p>
+<p class="p8"><br></p>
+<p class="p7">p = <span class="s3">Pseq</span>(c.notes, 1).asStream;</p>
+<p class="p7">while { p.next.postln.notNil };</p>
+<p class="p8"><br></p>
+<p class="p7">[ 60, 0.01, 1, nil ]</p>
+<p class="p7">[ 64, 0.01, 1, nil ]</p>
+<p class="p7">[ 67, 0.98, 1, nil ]</p>
+<p class="p7">[ 60, 0.01, 1, nil ]</p>
+<p class="p7">[ 65, 0.01, 1, nil ]</p>
+<p class="p7">[ 69, 0.98, 1, nil ]</p>
+<p class="p7">[ 62, 0.01, 1, nil ]</p>
+<p class="p7">[ 67, 0.01, 1, nil ]</p>
+<p class="p7">[ 71, 0.98, 1, nil ]</p>
+<p class="p7">[ 64, 0.01, 1, nil ]</p>
+<p class="p7">[ 67, 0.01, 1, nil ]</p>
+<p class="p7">[ 72, 0.98, 1, nil ]</p>
+<p class="p7">nil</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

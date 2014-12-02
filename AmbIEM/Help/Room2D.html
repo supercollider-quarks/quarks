@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.44">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    span.s1 {font: 9.0px Monaco}
+    span.s2 {color: #0000bf}
+    span.s3 {color: #000000}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>Room2D</b><span class="s1"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>a simple rectangular 2D room for calculating<span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><b>reflections of sound sources.<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>*new(rect);</b><span class="s1"><span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>returns a new instance of room, dimensions given by rect.</p>
+<p class="p2"><br></p>
+<p class="p4">r = <span class="s2">Room2D</span>.new</p>
+<p class="p4">r.room = [0, 0, 8, 5]</p>
+<p class="p2"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>refs8(px, py)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>returns first 8 reflections of a point source; coords are px, py,<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>output format is [ x1, y1, x2, y2, ... x8, y8] for easier use as <span class="s2">UGen</span>.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s3">a = </span><span class="s2">Point</span><span class="s3">(2, 3);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// point to be mirrored</p>
+<p class="p4">r.refs8(a.x, a.y).clump(2).printAll;<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>refs8polar(px, py, lx, ly)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>returns first 8 reflections of a point source as polar coordinates in relation to a listener</p>
+<p class="p3"><span class="Apple-tab-span">	</span>output format is [phi1, dist1, phi2, dist2....]</p>
+<p class="p6"><br></p>
+<p class="p4">r.refs8polar(a.x, a.y, 0, 0).printAll;</p>
+</body>
+</html>

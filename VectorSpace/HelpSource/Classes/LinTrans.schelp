@@ -1,0 +1,81 @@
+CLASS:: LinTrans
+SUMMARY:: Linear transformation on a vector space
+CATEGORIES:: Math
+RELATED:: Overviews/VectorSpace
+
+DESCRIPTION::
+Linear transformations in R^N or C^N. Wraps the functionality of Matrix to be able to easitly multiply matrixes with vectors (classes inheriting from AbstractVector). A LinTrans holds a matrix that represents the linear transformation.
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: matrix
+
+code::
+g = LinTrans(Matrix.with([[1,2],[2,3]]));
+::
+
+METHOD:: rotation2D
+2D rotation linear transformation for angle theta.
+
+code::
+a = LinTrans.rotation2D(pi/2);
+a.value(RealVector[1,0])
+::
+
+INSTANCEMETHODS::
+
+METHOD:: matrix
+the matrix that represents the transformation.
+
+METHOD:: *
+Linear transformation and scalar multiplication.
+
+code::
+a = LinTrans(Matrix.with([[1,2],[3,4]]));
+b = LinTrans(Matrix.with([[3,4],[5,6]]));
+
+(a*b).value(RealVector[5,6])
+
+a = LinTrans.rotation2D(pi/2);
+b = LinTrans.rotation2D(pi/2);
+
+(a*b).value(RealVector[1,0]) //rotate vector by pi
+::
+
+METHOD:: +
+addition between linear transformations.
+
+code::
+a = LinTrans(Matrix.with([[1,2],[3,4]]));
+b = LinTrans(Matrix.with([[3,4],[5,6]]));
+
+(a+b).value(RealVector[5,6])
+::
+
+METHOD:: -
+subtraciton between linear transformations.
+
+code::
+a = LinTrans(Matrix.with([[1,2],[3,4]]));
+b = LinTrans(Matrix.with([[3,4],[5,6]]));
+
+(a-b).value(RealVector[5,6])
+::
+
+METHOD:: det
+determinant of the transformation.
+
+code::
+LinTrans(Matrix.with([[1,2],[2,3]])).det
+::
+
+METHOD:: inverse
+inverse transformation.
+
+code::
+a = LinTrans(Matrix.with([[1,2],[2,3]]));
+b = a.inverse;
+(a*b).value(RealVector[1,2]) //a*b is identity
+::

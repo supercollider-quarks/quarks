@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0059d4; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0001ee}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {color: #2062ca}
+span.s2 {text-decoration: underline ; color: #0053c5}
+span.s3 {color: #0059d4}
+span.s4 {color: #0047e5}
+span.s5 {color: #0000ff}
+span.s6 {text-decoration: underline}
+span.s7 {color: #004edf}
+span.s8 {color: #001bb9}
+span.s9 {color: #606060}
+span.s10 {color: #b31400}
+span.s11 {color: #000000}
+span.s12 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SVGText</b></p>
+<p class="p2">Part of <a href="../wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">see also: <a href="SVG.html"><span class="s2">SVG</span></a>, <a href="SVGFile.html"><span class="s3">SVGFile</span></a></p>
+<p class="p4"><br></p>
+<p class="p2"><b>superclass : </b><a href="SVGObject.html"><span class="s3"><b>SVGObject</b></span></a></p>
+<p class="p4"><br></p>
+<p class="p2"><b>related classes : </b><a href="SVGTSpan.html"><span class="s4"><b>SVGTSpan</b></span></a><b>, </b><a href="AvailableFonts.html"><span class="s5"><b>AvailableFonts</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p2">The SVGText object contains data text, its printing location, font and color.</p>
+<p class="p2">an SVGText object can hold Strings and SVGTSpan objects.</p>
+<p class="p3"><br></p>
+<p class="p5"><b><span class="s6">creation</span></b></p>
+<p class="p6"><br></p>
+<p class="p2"><b>SVGText ( string, x, y, fontName, fontSize, fillColor, dx, dy, name, transform )</b></p>
+<p class="p2">creates a new object with the instance variables as described below and in the <a href="SVGObject.html"><span class="s3">SVGObject</span></a> helpfile</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>string : </b>a String with the text to be included, or an array of strings and SVGTSpan objects</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p5"><b><span class="s6">instance variables</span></b></p>
+<p class="p6"><br></p>
+<p class="p2"><b>string</b></p>
+<p class="p2">string actually doesn't hold a <a href="SC://String"><span class="s7">String</span></a>, it is an array of Strings and SVGTSpan objects.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>x, y</b></p>
+<p class="p2">x,y location where the string is printed. If these are arrays each char of the string gets printed at the next position</p>
+<p class="p2"><i>please note: Adobe Illustrator® leaves these open (nil) and uses the </i><b><i>transform</i></b><i> element (an SVGTransform) for the placement of the text in saved files.</i></p>
+<p class="p3"><br></p>
+<p class="p7"><span class="s8">SVGText</span>( <span class="s9">"bumpy text"</span>, 100, {10.rand + 100}!6, fontSize: 24 ).plot; <span class="s10">// array for y</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>dx, dy</b></p>
+<p class="p2">relative x,y location where the string is printed. Can also be array</p>
+<p class="p3"><br></p>
+<p class="p2"><b>fontName</b></p>
+<p class="p2">name of the font. If the fontName is nil, plotting will happen with Font( "Helvetica", 12 )</p>
+<p class="p3"><br></p>
+<p class="p2"><b>fontSize</b></p>
+<p class="p2">size of the font in pt</p>
+<p class="p3"><br></p>
+<p class="p2"><b>fontFound</b></p>
+<p class="p2">(getter only) boolean states wether the provided font is available on the current system.</p>
+<p class="p2">This is checked at creation, but can also be checked by hand using <b>checkFont.<span class="Apple-converted-space"> </span></b></p>
+<p class="p2">If the fontName is nil, fontFound will be true.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>fillColor</b></p>
+<p class="p2">color of the text. This can be<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="s11"><span class="Apple-tab-span">	</span>a <a href="SC://Color"><span class="s6">Color</span></a></span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>a String or Symbol with a color name ( e.g. "light_blue" or "#0000FF" )</p>
+<p class="p2"><span class="Apple-tab-span">	</span>"none" or nil</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s12">SVGText</span>( "bit of text", 100, 100, "Courier", 24, "olive", 0,0, "my text" ).plot;</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>anchor</b></p>
+<p class="p2">the anchor states where the x/y location is relative to the string</p>
+<p class="p2">SVGText only supports the default anchor ('start') for plotting, and will warn if another anchor is found</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p5"><b><span class="s6">instance methods</span></b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>fullString</b></p>
+<p class="p2">returns one string with the full text (including that from SVGTSpan objects).</p>
+<p class="p3"><br></p>
+<p class="p2"><b>fullString_ ( newString )</b></p>
+<p class="p2">replaces the string contents by a new String</p>
+<p class="p3"><br></p>
+<p class="p2"><b>font, font_ ( aFont )</b></p>
+<p class="p2">get or set the font as a regular <a href="SC://Font"><span class="s7">Font</span></a><span class="s7"> </span>object.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>checkFont</b></p>
+<p class="p2">checks if the font is available using AvailableFonts. If not it posts a message.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><i>This sets the </i><b><i>fontFound </i></b><i>variable.</i></p>
+<p class="p3"><br></p>
+<p class="p2"><b>++ anSVGText</b></p>
+<p class="p2">Concatenate the strings of two SVGText attributes, or if the other is a String, add it to the string.</p>
+<p class="p2">Creates a new SVGText object</p>
+<p class="p3"><br></p>
+<p class="p2"><b>at ( index ), copySeries ( first, second, last )</b></p>
+<p class="p2">calls .at and copySeries on <b>string</b>, also to provide compatibility with the ..[..] syntax in SC</p>
+<p class="p3"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

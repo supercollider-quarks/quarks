@@ -1,0 +1,246 @@
+CLASS:: SelectButtonSet
+summary:: a set of radio buttons
+categories:: Libraries>crucial>GUI
+related:: Classes/PopUpMenu
+
+DESCRIPTION:: Radio button style set, fashioned as a single object.
+
+code::
+(
+
+	SelectButtonSet( nil,  [ "one", "two","three","four"] ,
+		{ arg selectedIndex,selectButtonSet;
+			[ selectedIndex, selectButtonSet ].postln;
+		},width: 60
+	)
+)
+
+(
+	SelectButtonSet( nil,
+		16 , //  make 16 buttons
+		{ arg selectedIndex,selectButtonSet;
+			[ selectedIndex, selectButtonSet ].postln;
+		}
+	)
+)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: layout
+
+
+argument:: labelArrayOrQnty
+
+
+argument:: action
+
+
+argument:: color
+
+
+argument:: selectedColor
+
+
+argument:: width
+
+
+argument:: height
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: selected
+selected index
+
+
+METHOD:: action
+
+
+
+METHOD:: colorFunc
+
+
+
+METHOD:: selectedColor
+
+
+
+METHOD:: labelArray
+
+
+
+METHOD:: altAction
+
+
+
+METHOD:: init
+
+
+argument:: layout
+
+
+argument:: x
+
+
+argument:: y
+
+
+argument:: arglabelArray
+
+
+argument:: argaction
+
+
+argument:: argcolorFunc
+
+
+argument:: argselectedColor
+
+
+
+METHOD:: select
+
+
+argument:: x
+
+
+
+METHOD:: selectItem
+
+
+argument:: item
+
+
+
+METHOD:: passiveSelect
+action is not performed
+
+argument:: x
+
+
+
+METHOD:: update
+
+
+argument:: x
+
+
+
+METHOD:: refresh
+
+
+
+METHOD:: selectedIndex
+
+
+
+METHOD:: selectedLabel
+the string label of currently selected item
+
+
+METHOD:: selectedItem
+
+
+
+METHOD:: deselect
+
+
+
+METHOD:: setButtonColor
+
+
+argument:: butt
+
+
+argument:: color
+
+
+
+METHOD:: colorNormal
+
+
+argument:: i
+
+
+
+METHOD:: colorSelected
+
+
+argument:: i
+
+
+
+METHOD:: doAction
+
+
+
+METHOD:: addAction
+
+
+argument:: func
+
+
+
+METHOD:: font
+
+
+argument:: f
+
+
+
+
+EXAMPLES::
+
+code::
+
+(
+SelectButtonSet(
+	nil,
+		["1", "2"],
+		{|i| ("Input" + i).postln},
+		width: 40, height: 30
+	);
+)
+
+(
+SelectButtonSet(
+	FlowView.new,
+		["1", "2"],
+		{|i| ("Input" + i).postln},
+		width: 40, height: 30
+	);
+)
+(
+SelectButtonSet(
+	GUI.window.new.front,
+		["1", "2"],
+		{|i| ("Input" + i).postln},
+		width: 40, height: 30
+	);
+)
+(
+SelectButtonSet(
+	GUI.hLayoutView.new(GUI.window.new.front,400@400),
+		["1", "2"],
+		{|i| ("Input" + i).postln},
+		width: 40, height: 30
+	);
+)
+
+(
+// vertical
+SelectButtonSet(
+	GUI.vLayoutView.new(GUI.window.new.front,100@400),
+		["1", "2"],
+		{|i| ("Input" + i).postln},
+		width: 40, height: 30
+	);
+
+)
+::

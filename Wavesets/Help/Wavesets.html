@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.46">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #782727}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #782727}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #0428b3}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #4d4d4d}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #484d3c}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #303e67}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Lucida Grande}
+p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #6b5150}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #0428b3}
+span.s4 {color: #782727}
+span.s5 {color: #0a2eb5}
+span.s6 {color: #303e67}
+span.s7 {color: #484d3c}
+span.s8 {color: #556b17}
+span.s9 {color: #4d4d4d}
+span.s10 {font: 9.0px Monaco}
+span.s11 {color: #961e1e}
+span.s12 {color: #001db9}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Wavesets<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>analyse soundfiles into short fragments for granular synthesis</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p3"><br></p>
+<p class="p1">Wavesets analyses soundfiles into short fragments called wavesets, and keeps these waveset data.</p>
+<p class="p1">It can support a variety of waveset based synthesis instruments.</p>
+<p class="p2"><br></p>
+<p class="p1">By Trevor Wishart's definition, a waveset is a segment of an audio signal between<span class="Apple-converted-space"> </span></p>
+<p class="p1">one non-positive to positive zero crossing and the next. [ see T. Wishart (1994): Audible Design. ]</p>
+<p class="p1">Note that this definition only applies to mono signals.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*from (path, name, toBuffer)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Read a soundfile, analyse the signal, read the file to a buffer</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>path </b>- the path to the soundfile</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- a name by which to keep the new wavesets in a global dictionary</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>toBuffer </b>- a boolean whether to load the file to a buffer immediately.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a first little example</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Server</span>.default = s = <span class="s3">Server</span>.internal; s.boot;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// make a wavesets from a soundfile</p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w = </span><span class="s3">Wavesets</span><span class="s2">.from(</span>"sounds/a11wlk01.wav"<span class="s2">);<span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.dump;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// contains mainly analysis data<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.plot(200, 1);<span class="Apple-tab-span">	</span></span>// plot a single waveset</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.signal.copyRange(w.xings[600], w.xings[601]).plot;</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.plot(600, 1);<span class="Apple-tab-span">	</span><span class="s4">// a single</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.plot(600, 5);<span class="Apple-tab-span">	</span></span>// a group of five contiguous wavesets</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.buffer;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.buffer.play;</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Wavesets</span>.prepareSynthDefs;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// startWs</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.eventFor(startWs: 600, length: 5, repeats: 2).postln.play;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.eventFor(startWs: 600, length: 2, playRate: 1, repeats: 5).postln.play;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.eventFor(startWs: 600, length: 2, playRate: 0.5, repeats: 5).postln.play;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.eventFor(700, 20, 5, 1).play;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fork {<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>666.do { <span class="s3">|i|</span><span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> ev = w.eventFor(i * 5, 2, 5, exprand(0.5, 1.0));<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.put(\pan, 1.0.rand2).play;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.sustain.wait;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (name, sig, sampleRate)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Make a Wavesets from a signal directly - not typical usage, but may be needed sometimes.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- a name by which to keep the new wavesets in a global dictionary</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>sig </b>- the signal to be analysed Explanation of sig. Default value is nil. Other information.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>sampleRate </b>- Explanation of sampleRate. Default value is nil. Other information.</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>all</b><span class="Apple-tab-span">	</span>A dictionary where all the wavesets are kept by name.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Existing wavesets in .all are not re-analysed.</p>
+<p class="p14"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Wavesets<span class="s2">.all;</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*at (key)</b><span class="Apple-tab-span">	</span>Access a Wavesets by its name.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>key </b>- The name to look up</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s5">Wavesets</span>.at('a11wlk01.wav');</p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*clear<span class="Apple-tab-span">	</span></b>Clear the global dictionary</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Wavesets</span>.clear;</p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*minLength</b><span class="Apple-tab-span">	</span>set the shortest length (in frames) that will still be treated as a waveset. Shorter<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>wavesets are merged with their neighbors.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*prepareSynthDefs </b><span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>prepare some Synthdefs to be used with wavesets.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><br></p>
+<p class="p15"><b>Accessing Instance and Class Variables</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>signal <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the audio signal that was analysed.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>name <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the wavesets name in the global dictionary</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>buffer</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a buffer on the server that was created from the same soundfile</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>numFrames <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the number of frames</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>sampleRate <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the sample rate of the signal, default is Server.default.sampleRate</p>
+<p class="p3"><span class="Apple-converted-space">    </span></p>
+<p class="p7"><br></p>
+<p class="p6"><b>The following variables are analysis result lists</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>xings<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>all integer indices of the zero crossings found</p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>numXings<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>total number of zero crossings found</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>lengths<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>lengths of all wavesets</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>amps<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>peak amplitude of every waveset</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>maxima<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>indices of positive maximum value in every waveset</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>minima<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>indices of negative minimum value in every waveset</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>fracXings<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the calculated fractional zerocrossing points.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>this allows for more precise pitch information</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and waveset transitions, resulting in smoother sound.</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>fracLengths<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>fractional lengths - in effect, waveset 'pitch'.</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p1"><b>These are overall statistics of the entire wavesets<span class="Apple-tab-span">	</span></b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>minSet<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>shorted waveset</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>maxSet<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>longest waveset</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>avgLength<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>average length of all wavesets</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>sqrAvgLength<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>weighted average length - so bigger wavesets have a larger impact</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>minAmp<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>softest waveset amplitude</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>maxAmp<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>loudest waveset amplitude</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>avgAmp<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>average amplitude of the entire waveset</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>sqrAvgAmp<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>weighted average of (squared) amplitude of the entire waveset</p>
+<p class="p2"><br></p>
+<p class="p7"><br></p>
+<p class="p6"><b>Some utility instance methods:</b></p>
+<p class="p7"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>toBuffer(server)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>load the analysed soundfile to the buffer.</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>frameFor(startWs, numWs, useFrac)<span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>calculate startFrame, length in frames, and duration<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>for a waveset or group. useFrac = true means use fractional crossings.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>true by default.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>ampFor(startWs, length)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>maximum amp that occurs in a waveset or group.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>eventFor(startWs, numWs, repeats, playRate, useFrac)</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>generate an event for a given combination of start waveset index,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>number of wavesets, repeats, playback rate, and use of fractional crossings.</p>
+<p class="p2"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>plot (startWs, length)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>plot a waveset or group for a given waveset index and length.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p15"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p13">The simplest usage is to ask the waveset to prepare an event for you.</p>
+<p class="p3"><br></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w = </span><span class="s3">Wavesets</span><span class="s2">.from(</span>"sounds/a11wlk01.wav"<span class="s2">);<span class="Apple-tab-span">	</span></span></p>
+<p class="p3"><br></p>
+<p class="p10"><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fork {<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>666.do { <span class="s3">|i|</span><span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> ev = w.eventFor((i * 5).postln, 2, 5, exprand(0.5, 1.0));<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.put(\pan, 1.0.rand2).play;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.sustain.wait;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// play a single waveset or waveset group by hand</p>
+<p class="p13">(</p>
+<p class="p13">{ <span class="Apple-tab-span">	</span><span class="s6">var</span> startFr, endFr, dur;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>startFr = w.xings[800];<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>endFr = w.xings[820];</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>dur = endFr - startFr / w.buffer.sampleRate;</p>
+<p class="p13"><span class="Apple-tab-span">	</span>dur.postln;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s6">BufRd</span>.ar(1, w.buffer, <span class="s6">Line</span>.ar(startFr, endFr, dur, doneAction: 2))<span class="Apple-converted-space"> </span></p>
+<p class="p13">}.play;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>loop buffer segments with a Phasor:</p>
+<p class="p13">(</p>
+<p class="p13">x = { <span class="s6">arg</span> start = 0, end = 128, playRate = 1;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s6">BufRd</span>.ar(1, w.buffer,<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Phasor</span>.ar(0, playRate * <span class="s6">BufRateScale</span>.kr(w.buffer), start, end)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>)</p>
+<p class="p13">}.scope(zoom: 8);</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p13">x.set(<span class="s7">\start</span>, 0, <span class="s7">\end</span>, 1024);<span class="Apple-tab-span">	</span>// just some random length, may buzz</p>
+<p class="p13">x.set(<span class="s7">\start</span>, w.xings.at(100), <span class="s7">\end</span>, w.xings.at(101));</p>
+<p class="p13">x.set(<span class="s7">\start</span>, w.xings.at(101), <span class="s7">\end</span>, w.xings.at(102));</p>
+<p class="p13">x.set(<span class="s7">\start</span>, w.xings.at(100), <span class="s7">\end</span>, w.xings.at(200));</p>
+<p class="p13">x.set(<span class="s7">\start</span>, w.xings.at(780), <span class="s7">\end</span>, w.xings.at(800));</p>
+<p class="p13">x.set(<span class="s7">\playRate</span>, 0.25);</p>
+<p class="p13">x.set(<span class="s7">\playRate</span>, 1);</p>
+<p class="p3"><br></p>
+<p class="p13">x.release;</p>
+<p class="p3"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p15"><b>Doing Some Task (optional)</b></p>
+<p class="p16"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><b>Examples</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>To play a waveset (or group) for a precise number of repetitions,<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b>one can use a SynthDef with a hard cutoff envelope, as below.</b></p>
+<p class="p1"><b>Note that adding an offset outside the phasor works better;<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b>Phasor.ar(0, playRate, start, end) is sometimes off by a few samples.</b></p>
+<p class="p1"><b>This is likely a 32bit float precision problem.</b></p>
+<p class="p3"><br></p>
+<p class="p12"><span class="s2">(<span class="Apple-tab-span">	</span></span>// the simplest synthdef as implented in *prepareSynthDefs:<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="s3">SynthDef</span>(<span class="s8">\wvst0</span>, { <span class="s3">arg</span> out = 0, buf = 0, start = 0, length = 441, playRate = 1, sustain = 1, amp=0.2, pan;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s3">var</span> phasor = <span class="s3">Phasor</span>.ar(0, <span class="s3">BufRateScale</span>.ir(buf) * playRate, 0, length) + start;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s3">var</span> env = <span class="s3">EnvGen</span>.ar(<span class="s3">Env</span>([amp, amp, 0], [sustain, 0]), doneAction: 2);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s3">var</span> snd = <span class="s3">BufRd</span>.ar(1, buf, phasor) * env;</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s3">OffsetOut</span>.ar(out, <span class="s3">Pan2</span>.ar(snd, pan));</p>
+<p class="p13">}, <span class="s8">\ir</span>.dup(8)).memStore;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="s6">Synth</span>(<span class="s9">"wvst0"</span>, [<span class="s7">\bufnum</span>, b, <span class="s7">\start</span>, 0, <span class="s7">\length</span>, 5000, <span class="s7">\sustain</span>, 0.1]);</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span>// do the math by hand to understand it:</p>
+<p class="p13">(</p>
+<p class="p13"><span class="s6">var</span> startWs = 100, length = 6, rep = 10, <span class="s7">playRate</span> = 0.5;</p>
+<p class="p13"><span class="s6">var</span> startframe, endframe, sustain;</p>
+<p class="p3"><br></p>
+<p class="p13">startframe = w.xings[startWs];</p>
+<p class="p13">endframe = w.xings[startWs + length];</p>
+<p class="p13"><span class="s7">sustain</span> = (endframe - startframe) * rep / playRate / w.sampleRate;<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p17"><span class="s6">Synth</span><span class="s2">(</span>"wvst0"<span class="s2">, [</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">\bufnum</span>, w.buffer,<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">\start</span>, startframe,<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">\length</span>, endframe - startframe,<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">\playRate</span>, playRate,</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>\sustain<span class="s2">, </span>sustain<span class="s2">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">\amp</span>, 1</p>
+<p class="p13">]);</p>
+<p class="p13">)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>// the same done with eventFor:</p>
+<p class="p13">w.eventFor(100, 6, repeats: 10, playRate: 0.5).put(\amp, 1).play;</p>
+<p class="p3"><br></p>
+<p class="p13">(</p>
+<p class="p19">Task<span class="s2">({<span class="Apple-converted-space"> </span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>300.do({ <span class="s6">arg</span> i;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>var ev = w.eventFor(100 + i, 2, 10, 1);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.putPairs([\pan, [-1, 1].choose, \amp, 0.5]);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.play;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(ev.sustain).wait;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>});</p>
+<p class="p13">}).play;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p20"><span class="s10">x = </span>a11wlk01-44_1.aiff;<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p21"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// compare fractional and integer xings:</p>
+<p class="p21"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// especially for high frequency signals,<span class="Apple-converted-space"> </span></p>
+<p class="p21"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// fractional does slightly cleaner looping and finer pitch gradations.</p>
+<p class="p21"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// - better test below with ordering wavesets by length -</p>
+<p class="p13">(</p>
+<p class="p19">Task<span class="s2">({<span class="Apple-converted-space"> </span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>[true, false].do { |usefrac|<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(1250..1500).do { <span class="s6">arg</span> i;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>var ev = w.eventFor(i, 1, 100, 1, useFrac: usefrac);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.putPairs([<span class="s11">/*\pan, 0 [-1, 1].choose,*/</span> \amp, 0.5]);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.play;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(ev.sustain).wait;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1.wait;</p>
+<p class="p13"><span class="Apple-tab-span">	</span>};</p>
+<p class="p13">}).play;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// some variants waveset timestretch</p>
+<p class="p13">(</p>
+<p class="p19">Task<span class="s2">({<span class="Apple-converted-space"> </span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// segments of 10 wavesets, step by 1 =&gt; 10x longer</p>
+<p class="p13"><span class="Apple-tab-span">	</span>(300, 301 .. 900).do { <span class="s6">arg</span> start;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>var ev = w.eventFor(start, <span class="s12">numWs</span>: 10, repeats: 1);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.putPairs([\amp, 0.5]);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.play;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(ev.sustain).wait;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>};</p>
+<p class="p13"><span class="Apple-tab-span">	</span>1.wait;<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// 1 waveset at a time, loop 10 times - much more 'pitch beads'-like</p>
+<p class="p13"><span class="Apple-tab-span">	</span>(300, 301 .. 900).do { <span class="s6">arg</span> start;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>var ev = w.eventFor(start, <span class="s12">numWs</span>: 1, repeats: 10);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.putPairs([\amp, 0.5]);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.play;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(ev.sustain).wait;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>};</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p13">}).play;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span>// play them sorted by (integer) waveset length:<span class="Apple-converted-space"> </span></p>
+<p class="p13">w.lengths.plot;<span class="Apple-tab-span">	</span>// lengths are very irregular</p>
+<p class="p13">o = w.lengths.order;</p>
+<p class="p3"><br></p>
+<p class="p13">(</p>
+<p class="p19">Task<span class="s2">({<span class="Apple-converted-space"> </span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s6">var</span> start, end, startFr, endFr, dur, repeats;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s6">var</span> order;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>order = w.lengths.order;</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>[\false, \true].do { |useFrac|<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>if (useFrac) { "fractional crossings - better pitch resolution" } {</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>"integer waveset borders - pitches quantized to integer sample lengths"</p>
+<p class="p13"><span class="Apple-tab-span">	</span>}.postln;</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>order.do({ <span class="s6">arg</span> start;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>var ev = w.eventFor(start, <span class="s12">numWs</span>: 1, repeats: 5);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.putPairs([\amp, 0.5]);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev.play;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(ev.sustain).wait;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>});</p>
+<p class="p13">}).play;</p>
+<p class="p13">)</p>
+</body>
+</html>

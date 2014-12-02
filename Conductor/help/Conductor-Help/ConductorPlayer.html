@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica; color: #070707}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #070707; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #070707}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #090011}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #090011; min-height: 14.0px}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>ConductorPlayer</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>related classes: Conductor, CVEvent</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>player classes: ActionPlayer, PatternPlayer, TaskPlayer, NodeProxyPlayer<span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>see also: <b>NodeEvent</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span></b>ConductorPlayer provides unified control for any collection of 'players', which are objects that<span class="Apple-converted-space"> </span></p>
+<p class="p3">respond to<b> </b>stop/play/pause/resume.<span class="Apple-converted-space">  </span>The player classes listed above adapt standard classes to this<span class="Apple-converted-space"> </span></p>
+<p class="p3">interface.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Groups, synths, control buses, and buffers can be controlled with Events.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>The instance variable server can contain either a single Server or an array of Servers. <span class="Apple-converted-space"> </span></p>
+<p class="p3">ConductorPlayer bundles all of the OSC commands generated in response to stop/play/pause/resume<span class="Apple-converted-space"> </span></p>
+<p class="p3">for the servers in that variable.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>Instance Variables</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>conductor<span class="Apple-tab-span">	</span></b>the Conductor that is the context for its players</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>name<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the name is used in GUI display</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>server<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>A server or array of servers, all of the OSC commands generated in response to<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>stop/play/pause/resume are bundled for the server(s).</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>players<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the players controlled by the ConductorPlayer</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>Instance Methods</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>play<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>stop</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>pause</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>resume</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>add (player)<span class="Apple-tab-span">	</span></b>A player is an object that respods to stop, play, pause, resume</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>remove(player)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>action_<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(playFunc, stopFunc, pauseFunc, resumeFunc)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Adds an <b>ActionPlayer</b> which responds to play, stop, pause, and resume by evaluating<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the corresponding function with the Conductor as currentEnvironment.</p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>task_<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(function, clock, quant)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Adds a <b>TaskPlayer</b> which plays the function within a task scheduled by the specified clock<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and quantization. (On stop, tasks that block on a message port are also be deleted.)</p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>pattern_<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(pattern, clock, event, quant)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Adds a <b>PatternPlayer</b> which plays the pattern with the specified event, clock and quantization.</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>nodeProxy_(nodeProxy, args, bus, numChannels, group, multi)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Adds a NodeProxy, which uses the following bus, numChannels, and group if specified,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>otherwise uses default values.<span class="Apple-converted-space">  </span>See (BusPlug</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>group_<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>( event, args)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>The event is assigned CVEvent-groupEvent as its parent.</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>synth_<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>( event, args)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>The event is assigned CVEvent-synthEvent as its parent.</p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>The argument <b>args</b> is an interleaved array of keys and CVs (or value).<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>CVs can also be altered<span class="Apple-converted-space">  </span>before being sent to the server and combinations of CVs can</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>determine the value to be sent:</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>value <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[freq:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>440<span class="Apple-converted-space">  </span>]</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>CV<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[freq: <span class="Apple-tab-span">	</span>aCV<span class="Apple-converted-space">  </span>]</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>altered CV<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[freq: <span class="Apple-tab-span">	</span>[ aCV, aCV.midicps ] ]</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>combination<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[freq:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[ [aCV, bCV], aCV.midicps + bCV] ]</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>function<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[freq:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[ aCV, { aCV.midicps.value + 33.rand }]</p>
+<p class="p5"><br></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>The events use the same keys as note events in patterns. The keys <b>server</b>, <b>group</b>, and<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>addAction</b> and, for synths, <b>instrument</b> determine the group or synth. As in patterns, the</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>default values for these keys are<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>server: <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Server.default,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>group: <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>addAction:<span class="Apple-tab-span">	</span>0,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>instrument:<span class="Apple-tab-span">	</span>'default'<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Usually the node ID of the group or synth is dynamically allocated, but the key id can be set<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>to set the id directly.<span class="Apple-converted-space">  </span>For group events, a new group<span class="Apple-converted-space">  </span>or collection of groups is created with the</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>specified id(s).<span class="Apple-converted-space">  </span>For synth events, no synths are created, but the control values determined by<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the event are sent to the specified id(s).</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>controlBus_<span class="Apple-tab-span">	</span>( event, cvs)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>The event can specify</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>server:<span class="Apple-tab-span">	</span>aServer (defaults to Server.default)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>index: <span class="Apple-tab-span">	</span>(optional)</p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>CVs is an array of CVs that are used to determine the value of consecutive buses</p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>buffer_<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>( event)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>This event is designed primarily for small waveform buffers, it specifies:</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>server:<span class="Apple-tab-span">	</span>aServer (defaults to Server.default)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>cv:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a CV that determines the values in the buffer</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>msg:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A symbol that determines how the values are used to fill the buffer.</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Is is one of: \<b>sine1</b>, \<b>cheby</b>, \<b>wave</b>, or \<b>signa</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>display:<span class="Apple-tab-span">	</span>anotherCV</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>An optional CV used to display the contents of the buffer (as received from the server)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>size:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>integer (defaults to 512 and should not exceed 1024).</p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>makeBundles (function)</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>This is called by play,stop, pause and resume to bundle all of OSC commands sent to</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>any of the Servers listed in the instance variable <b>server</b>.</p>
+<p class="p2"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>draw (window, name)</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Draws the ConductorPlayer in a ConductorGUI.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+</body>
+</html>

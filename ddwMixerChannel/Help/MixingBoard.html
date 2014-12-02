@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001ab2}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+span.s1 {color: #0000ff}
+span.s2 {color: #001ab2}
+span.s3 {color: #606060}
+span.s4 {color: #000000}
+</style>
+</head>
+<body>
+<p class="p1"><b>MixingBoard<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Graphic interface for MixerChannels. From the graphic window, you can adjust the level and panning of each MixerChannel, as well as allocate pre- and post-fader sends, and adjust the send levels. Each channel also has mute and record buttons. Since the MixerChannels keep track of their associated synth processes on the server, freeing the MixingBoard (or closing the window) frees all the processes.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>*new(name, skin ... mixers)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Creates a MixingBoard window. Name goes into the window's title bar. Skin is a mixer skin object, which contains several variables describing the MixingBoard's appearance and layout (see <a href="MixerSkin.html"><span class="s1">MixerSkin</span></a>). If you specify nil, a default skin will be used (accessible through <b>*defaultSkin</b> and <b>*defaultSkin_</b>). For mixers, simply list all the MixerChannel objects you want to include on this board. The arguments can be individual MixerChannels or collections; they will be added together into a single collection.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5">m = <span class="s2">Array</span>.fill(5, { <span class="s2">arg</span> i; <span class="s2">MixerChannel</span>(<span class="s3">"test"</span> ++ (i+1), s) });</p>
+<p class="p6"><span class="s4">n = </span>MixerChannel<span class="s4">(</span><span class="s3">"essai"</span><span class="s4">, s);</span></p>
+<p class="p5">z = <span class="s2">MixingBoard</span>(<span class="s3">"test board"</span>, <span class="s2">nil</span>, m, n);<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Any mixer supplied to the mixers argument may also be nil. The GUI will be created, but it will be inactive. You can drag a MixerChannel into the GUI's name box to assign the mixer channel to the GUI. This makes it possible, for instance, to create a GUI containing a fixed number of mixer slots, into which you can drag-and-drop an unlimited number of mixer channels at will.</p>
+<p class="p7"><br></p>
+<p class="p4"><b>free<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Closes the MixingBoard window and terminates all synth processes associated with the channels contained therein. Closing the window activates this method as well. If any channels are recording, the files will be closed.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>add( ... mxs)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Adds channels to an existing MixingBoard window. As in *new, you can have any number of arguments, which can be a single MixerChannels or collections.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>remove( ... mxs)<span class="Apple-converted-space"> </span></b></p>
+<p class="p4"><b>removeAt( ... ind)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">This method intends to remove MixerChannels from the board. Remove takes the MixerChannel objects themselves as arguments; removeAt takes the indices to the slots on the board.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>refresh<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Updates all the views for this MixingBoard and resets all the view boundaries.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>*facelift<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Updates all the views for every open MixingBoard.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>skin_(newskin)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Replaces the skin for this MixingBoard and redraws. See <a href="MixerSkin.html"><span class="s1">MixerSkin</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p3">To change the font or color for a single MixerChannel, use aMixer.mcgui.color1_(), .color2_() or .textFont_() instead of making changes to the skin.</p>
+</body>
+</html>

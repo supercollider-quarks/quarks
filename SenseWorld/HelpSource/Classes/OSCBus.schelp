@@ -1,0 +1,57 @@
+TITLE:: OSCBus
+summary:: Put data from an incoming OSC message onto a bus
+categories:: Control
+related:: Classes/DataBus, Classes/OSCFunc
+
+
+DESCRIPTION::
+
+OSCBus creates an OSC responder for a specific OSC tag, and puts incoming data onto a bus. The data is assumed to be all floats or integers.
+
+See also link::Classes/OSCFunc:: for issues regarding the NetAddr to supply.
+
+
+CLASSMETHODS::
+
+private:: updateWarning
+
+METHOD:: new
+Creates a new OSCBus
+
+ARGUMENT:: cmdName
+OSC tag to listen for.
+
+ARGUMENT:: nchan
+Number of channels the bus will be. The incoming OSC messages should have a lengt equal to this.
+
+ARGUMENT:: addr
+NetAddr from which the OSC message comes
+
+ARGUMENT:: server
+An instance of Server. If none is given the default server is used.
+
+
+INSTANCEMETHODS::
+
+private:: init, printOn, storeOn
+
+METHOD:: renew
+Create the bus, and add the OSCFunc. This is called automatically when a new instance is created, but it may be used if the method free was called previously during the session.
+
+METHOD:: free
+Free the bus, and remove the OSCFunc.
+
+METHOD:: scale
+Scale factor with which the incoming OSC values is scaled before putting the values on the bus.
+
+METHOD:: bus
+The Bus object to which the data is set.
+
+METHOD:: oscTag
+OSC tag to listen for.
+
+METHOD:: numChannels
+Number of channels of the bus.
+
+METHOD:: server
+The Server object on which the bus is.

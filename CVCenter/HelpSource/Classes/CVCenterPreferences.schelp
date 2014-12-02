@@ -1,0 +1,67 @@
+TITLE:: CVCenterPreferences
+summary:: A class implementing persistant settings for CVCenter resp. CVWidgets
+categories:: GUI, Conductor, External Control>MIDI, External Control>OSC
+related:: Classes/CVCenter, Classes/CVWidget
+
+DESCRIPTION::
+CVCenterPreferences implements persistant preferences for link::Classes/CVCenter:: and parts of link::Classes/CVWidget:: (resp. its subclassses link::Classes/CVWidgetKnob:: and link::Classes/CVWidget2D::). Preferences may either be set via GUI or programmatically. They are stored in a file named strong::CVCenterPreferences:: in the same directory as the classfile.
+
+
+CLASSMETHODS::
+
+METHOD:: dialog
+Opens the GUI that lets user edit the preferences
+
+returns:: this (CVCenterPreferences)
+
+METHOD:: writePreferences
+lets the user set any of the following settings programmatically.
+
+ARGUMENT:: saveGuiProperties
+can be one of the following link::Classes/Integer::s
+table::
+	## code::0:: || don't save GUI-properties (left, top, width, height) on shutdown, recompilation of the class-library or when the CVCenter-GUI gets closed
+	## code::1:: || save the current GUI-properties on close, recompilation of the class-library or when SuperCollider quits.
+	## code::2:: || set the GUI-properties to fixed values. If this option is chosen the user will also have to provide appropriate values for the argument 'guiProperties'.
+::
+
+ARGUMENT:: guiProperties
+a link::Classes/Rect:: an link::Classes/Array:: providing code::left::, code::top::, code::width::, code::height:: - will be ignored if 'saveProperties is set to code::0:: or code::1::
+
+ARGUMENT:: saveClassVars
+a link::Classes/Boolean::, or an link::Classes/Integer:: ( code::0:: or code::1::), indicating whether CVCenter's classvars link::Classes/CVCenter#*midiMode#midiMode::, link::Classes/CVCenter#*midiResolution#midiResolution::, link::Classes/CVCenter#*midiMean#midiMean::, link::Classes/CVCenter#*softWithin#softWithin::, link::Classes/CVCenter#*ctrlButtonBank#ctrlButtonBank::. All these classvars have equivalent instancevars in CVWidget that will overwrite CVCenter's classvars if set. Thus the user may set global values here and tweak them within each CVWidget created in CVCenter.
+If set to code::0:: the arguments code::midiMode::, code::midiResolution::, code::midiMean::, code::softWithin:: and code::ctrlButtonBank:: will be ignored.
+
+ARGUMENT:: midiMode
+table::
+	## code::0:: || MIDI-controllers that yield values from 0-127
+	## code::1:: || MIDI-controller that yield de-/incremental values
+::
+
+ARGUMENT:: midiResolution
+a link::Classes/Float:: - only applies when midiMode is set to code::1:: - lower values result in a higher resolution and vice versa.
+
+ARGUMENT:: midiMean
+an link::Classes/Integer:: - only applies when midiMode is set to code::1:: - default: code::64::. The value stands for the value a MIDI-slider will output in neutral position.
+
+ARGUMENT:: softWithin
+a link::Classes/Float:: - only applies when midiMode is set to code::0:: - default: code::0.1::. A threshold for a MIDI-slider to react. Only if the slider comes close to the link::Classes/CV::'s actual value +/- softWithin a new value will be set. This avoids sudden jumps if a slider gets moved but the actual value of the CV differs much.
+
+ARGUMENT:: ctrlButtonBank
+CVCenter was written with a Doepfer Pocket Dial in mind which provides 16 fader-knobs and 4 different banks which sums up to 64 different slider-slots. However, it is not obvious which slider has to be moved to trigger a CCResponder initialised for controller nr. 37. Setting this argument to 16 (the number of knobs) will display controller nr. 37 as 3:5 (knob number 5 in bank 3).
+
+ARGUMENT:: removeResponders
+a link::Classes/Boolean::, or an link::Classes/Integer:: ( code::0:: or code::1::). This argument sets link::Classes/CVWidget#*removeResponders::, indicating whether MIDI- and OSC-responders shall be removed upon hitting Cmd/Ctrl-period. If it is set to code::0:: or code::false:: unreferenced ghost-responders are left that may be hard to remove.
+
+ARGUMENT:: informString
+a link::Classes/String::, used as alternative inform-message (optional) 
+
+returns:: this (CVCenterPreferences)
+
+METHOD:: readPreferences
+Reads the above set values.
+
+ARGUMENT::  ... args
+if no arguments are set all values in the current preferences are returened, otherwise those that have been requested (argument-names equal those used in writePreferences).
+
+returns:: an link::Classes/Event:: containing the current preferences if they exist.

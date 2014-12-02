@@ -1,0 +1,74 @@
+CLASS:: RedTapTempoGUI
+SUMMARY:: average tempo of the last n taps/clicks
+CATEGORIES:: Red>redTapTempo
+RELATED:: Classes/RedMixGUI
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: clock
+Provide a link::Classes/TempoClock::. code::nil:: creates a TempoClock internally.
+
+ARGUMENT:: n
+Number of taps to average.
+
+ARGUMENT:: timeout
+Time after n counter is reset.
+
+ARGUMENT:: server
+For monitor synth. The default is code::Server.default::.
+
+ARGUMENT:: parent
+A link::Classes/Window::, link::Classes/CompositeView:: or code::nil::.
+
+ARGUMENT:: position
+A link::Classes/Point:: or code::nil::.
+
+METHOD:: def
+Return the link::Classes/SynthDef::.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prContainer, initRedTapTempoGUI, prRoutine
+
+METHOD:: tempo
+Get or set tempo in bps.
+
+METHOD:: monitor
+A link::Classes/Boolean::.
+
+METHOD:: monitorAmp
+A link::Classes/Float::.
+
+METHOD:: monitorBus
+Default monitor bus is 7.
+
+METHOD:: close
+Closes the window if open and stop internal task.
+
+METHOD:: def
+Return the link::Classes/SynthDef::.
+
+EXAMPLES::
+
+CODE::
+a= RedTapTempoGUI();
+a.tempo;
+a.tempo= 2;
+a.monitor= true;
+a.monitorBus= 0;
+a.monitorAmp= 0.2;
+a.monitor= false;
+a.close;
+
+//--
+(
+w= Window("hgf", Rect(100, 200, 500, 500));
+w.front;
+v= CompositeView(w, Rect(10, 10, 400, 400)).background_(Color.blue).decorator= FlowLayout(Rect(0, 0, 300, 300));
+c= TempoClock(1.4);
+a= RedTapTempoGUI(c, parent:v);
+)
+c.tempo= 2.2
+::

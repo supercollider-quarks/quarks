@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {color: #0000ff}
+span.s2 {text-decoration: underline}
+span.s3 {color: #001ab2}
+span.s4 {color: #36701f}
+span.s5 {color: #a41919}
+span.s6 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>PR(\break)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Breakbeat slicer, based on <a href="bufPerc.html"><span class="s1">bufPerc</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p3">The handling of the rhythm arrays is fundamentally the same as in bufPerc. What is different in break is the handling of the starting playback position in the buffer. bufPerc assumes that you will start at the beginning of the buffer for every note; if you want to start elsewhere, you can specify the frame number in ~argPairs = [start: 12000] (or use a pattern to change the starting position).</p>
+<p class="p2"><br></p>
+<p class="p3">For breakbeats, it's easier to load the entire drum loop into one buffer and memorize the frame indices for interesting events in the loop that you will want to address. (Since in most cases the drum hits have to stay in sync with the beat, you probably won't start at arbitrary positions.) This calls for one additional parameter at initialization, and one new rhythm array.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Initialization</b></p>
+<p class="p2"><br></p>
+<p class="p3">In addition to the bufPerc parameters:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>segStart:</b> A two dimensional array containing, for each loaded buffer, the frame indices of useful places to start playing in the drum loop.</p>
+<p class="p2"><br></p>
+<p class="p3">[</p>
+<p class="p3"><span class="Apple-tab-span">	</span>// starting points for buffer 0</p>
+<p class="p3"><span class="Apple-tab-span">	</span>[0, 12000, 18000, ... ],</p>
+<p class="p3"><span class="Apple-tab-span">	</span>// starting points for buffer 1</p>
+<p class="p3"><span class="Apple-tab-span">	</span>[0, 22000, 35000, ... ]</p>
+<p class="p3">]</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Rhythm arrays</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>~start:</b> For each note, which one of the segStart entries to use (by array index). The ~bufs the arrays specifies which buffer to use, so the starting point lookup is ~segStart.wrapAt(bufferIndex).wrapAt(startIndex).</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Algorithmic considerations</b></p>
+<p class="p2"><br></p>
+<p class="p3">You can add whatever variables you need into the Proto to keep track of what each starting index means (kick, snare, cymbals). It's up to you to write your own pbindPreAction and create data structures to support them. One suggestion is in the example.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Example</b></p>
+<p class="p2"><br></p>
+<p class="p3">This process depends on a drum loop which you can download from <span class="s2">http://www.dewdrop-world.net/sc3/Help/096_theory-groove.aif.zip</span> -- put the file anywhere you like in your filesystem and fill in the path below.</p>
+<p class="p2"><br></p>
+<p class="p5">s.boot;</p>
+<p class="p5"><span class="s3">TempoClock</span>.default.tempo = 96/60;</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p5"><span class="s3">PR</span>(<span class="s4">\break</span>).chuck(<span class="s3">BP</span>(<span class="s4">\x</span>), parms: (</p>
+<p class="p5"><span class="Apple-tab-span">	</span>postMCCreation: { <span class="s3">|chan|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>chan.level = -8.dbamp;<span class="Apple-tab-span">	</span><span class="s5">// maybe soften it</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>},</p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// put the path here</p>
+<p class="p8"><span class="s6"><span class="Apple-tab-span">	</span>bufPaths: #[</span>"insert/path/here/096_theory-groove.aif"<span class="s6">],</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>segStart: [[0, 13416, 20554, 27348, 40592, 47816, 61404, 69144, 75766, 82474]],</p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// this is part of the algorithm to generate the rhythm</p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// it is not required - it's up to you to organize the clips as you see fit</p>
+<p class="p5"><span class="Apple-tab-span">	</span>segments: (</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>kick: [0, 2, 5, 7, 8],</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>snare: [3],</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hat: [1, 4, 6],</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>crash: [9]</p>
+<p class="p5"><span class="Apple-tab-span">	</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span>amps: 0,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>ampbase: (0 ! 16).put(0, 1),</p>
+<p class="p5"><span class="Apple-tab-span">	</span>startbase: 0 ! 16,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>usedKeys: [<span class="s4">\start</span>],</p>
+<p class="p5"><span class="Apple-tab-span">	</span>pbindPreAction: {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span><span class="Apple-tab-span">	</span>pool = (4..15), i;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~amps = ~ampbase.copy;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~start = ~startbase.copy;</p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// place a couple of snare hits on beat or 8th note</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(2, 4).do({</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>i = pool.select(<span class="s3">_</span>.even).choose;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>pool.remove(i);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~amps[i] = 1;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~start[i] = ~segments[#[<span class="s4">\snare</span>, <span class="s4">\crash</span>].choose].choose;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// throw some other kix and hats in</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(2, 5).do({</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>i = pool.takeAt(pool.size.rand);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~amps[i] = rrand(0.3, 0.7);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~start[i] = ~segments[#[<span class="s4">\kick</span>, <span class="s4">\hat</span>].choose].choose;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Func</span>(<span class="s4">\shrinkKeys</span>).value;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>}</p>
+<p class="p5">));</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s3">BP</span>(<span class="s4">\x</span>).play;</p>
+<p class="p5"><span class="s3">BP</span>(<span class="s4">\x</span>).stop;</p>
+<p class="p6"><br></p>
+<p class="p7">// crank up the tempo using rates array</p>
+<p class="p5"><span class="s3">TempoClock</span>.default.tempo = 132/60;</p>
+<p class="p7"><span class="s3">BP</span><span class="s6">(</span><span class="s4">\x</span><span class="s6">).rates = [132/96];<span class="Apple-tab-span">	</span></span>// new tempo / original sample tempo</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s3">BP</span>(<span class="s4">\x</span>).play;</p>
+<p class="p5"><span class="s3">BP</span>(<span class="s4">\x</span>).stop;</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s3">BP</span>(<span class="s4">\x</span>).free;</p>
+<p class="p2"><br></p>
+</body>
+</html>

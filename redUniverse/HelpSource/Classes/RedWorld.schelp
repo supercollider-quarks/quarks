@@ -1,0 +1,103 @@
+CLASS:: RedWorld
+SUMMARY:: fundamental object in the redUniverse toolkit
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview, Classes/RedObject, Classes/RedUniverse
+
+DESCRIPTION::
+Base for all other worlds like link::Classes/RedWorld1::, link::Classes/RedWorld2::, link::Classes/RedWorld3::. Implements simplified physical laws.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new world. See class source for more information on defaults.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedWorld, prInitSurroundings
+
+METHOD:: add
+Manually add an object to this world. Usually never needed.
+
+METHOD:: remove
+Manually remove an object from this world.
+
+METHOD:: contain
+Wrap an object around world dimensions. i.e. in a world without borders - going out on the right side brings the object back on the left.
+
+METHOD:: contains
+Check if an object is within world dimensions. Used for detecting wall bounce.
+
+RETURNS::
+A link::Classes/Boolean::.
+
+METHOD:: neighbours
+Returns an link::Classes/Array:: of objects that are in the surrounding locations. Only useful when working with discrete worlds. e.g. cellular automata.
+
+NOTE::
+Subclasses will treat the neighborhood at world borders differently. e.g. link::Classes/RedWorld3:: filters out.
+::
+
+METHOD:: surroundingLocations
+Returns an link::Classes/Array:: of link::Classes/RedVector:: objects representing the surrounding locations. Only useful when working with discrete worlds. e.g. cellular automata.
+
+NOTE::
+Subclasses will treat the neighborhood at world borders differently. e.g. link::Classes/RedWorld3:: filters out.
+::
+
+METHOD:: dim
+Size of this world ( link::Classes/RedVector:: of any dimension). i.e. the world can have any number of dimensions.
+
+METHOD:: gravity
+World gravity ( link::Classes/RedVector:: of any dimension) for each dimension.
+
+METHOD:: maxVel
+Scalar with maximum velocity. i.e. 'speed of light' for this world.
+
+METHOD:: damping
+A scalar. The cost of running into walls etc.
+
+METHOD:: objects
+An link::Classes/Array:: of all objects currently in this world.
+
+METHOD:: surroundings
+An link::Classes/Array:: containing arrays with a size that matches the current world dimensions. Only useful when working with discrete worlds. e.g. cellular automata.
+
+METHOD:: surroundingArea
+An link::Classes/Integer:: specifying how far the surroundings will stretch. A 1 here (the default) lists only the adjacent locations. e.g. a 1 gives 8 locations in the surroundings array if the world is 2D, while 2 gives 24 and 3 48. In a 3D world 1 gives 26, 2 124 and 3 342.
+
+EXAMPLES::
+
+CODE::
+a= RedWorld.new
+b= RedObject(a)
+
+a.dump
+
+RedUniverse.worlds
+RedUniverse.remove(a)
+RedUniverse.worlds
+
+
+//--
+a= RedWorld(RedVector[100, 100])
+b= RedObject(a, RedVector[50, 50])
+c= RedObject(a, RedVector[51, 50])
+a.surroundings			//adjacent locations excluding [0, 0]
+a.surroundingLocations(b)	//the neighborhood of object b
+a.neighbours(b)			//yes c is nearby
+
+a.surroundingArea= 2		//look farther away
+a.surroundingLocations(b)	//bigger neighborhood of object b
+
+//--
+a= RedWorld(RedVector[50])	//a 1d world
+b= RedObject(a, RedVector[0])
+a.surroundings			//adjacent locations excluding [0, 0, 0]
+a.surroundingLocations(b)	//the neighborhood of object b
+
+//--
+a= RedWorld(RedVector[25, 25, 25])	//a 3d world
+b= RedObject(a, RedVector[0, 0, 0])
+a.surroundings			//adjacent locations excluding [0, 0, 0]
+a.surroundingLocations(b)	//the neighborhood of object b
+::

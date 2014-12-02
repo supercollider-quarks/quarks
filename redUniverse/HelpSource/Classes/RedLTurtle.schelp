@@ -1,0 +1,308 @@
+CLASS:: RedLTurtle
+SUMMARY:: turtle graphics for RedLSystem
+CATEGORIES:: Red>redUniverse>additional
+RELATED:: Classes/RedLSystem
+
+DESCRIPTION::
+Plotting with link::Classes/Pen::. After Flake - "The Computational Beauty of Nature".
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: lsystem
+An instance of link::Classes/RedLSystem:: or a link::Classes/String::.
+
+ARGUMENT:: length
+Line segment length in pixels.
+
+ARGUMENT:: theta
+Angle in degrees.
+
+ARGUMENT:: scale
+The amount to scale all moving commands ($F, $G, $|) in percent.
+
+ARGUMENT:: noise
+The amount of uniform noise to add to all angles in radians.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prDrawSys, initRedLTurtle, prDrawStr
+
+METHOD:: draw
+Start drawing the l-system or string at current link::Classes/Pen:: position.
+
+METHOD:: defaultCommands
+Return a dictionary of default (character : function) pairs.
+
+table::
+## $F || draw forward
+## $G || go forward
+## $+ || turn right by theta
+## $- || turn left by theta
+## $[ || push state
+## $] || pop state
+## $| || draw forward scaled by depth
+::
+An link::Classes/Integer:: before each character repeats that command strong::n:: times.
+
+METHOD:: addCommand
+Make up new rules by putting a character : function pair into command dictionary. Arguments passed in to function: depth, depthLength, index.
+
+METHOD:: makeWindow
+Creates a link::Classes/Window:: and draw the l-system or string. Mainly for testing.
+
+ARGUMENT:: bounds
+A link::Classes/Rect::.
+
+ARGUMENT:: initAngle
+Sets the initial link::Classes/Pen:: rotation in radians.
+
+ARGUMENT:: initTranslate
+Sets the initial link::Classes/Pen:: translation in percent.
+
+METHOD:: lsystem
+Either a link::Classes/RedLSystem:: or a link::Classes/String::. For strings depth and thereby $| scaling is ignored. For l-systems (the preferred way) the depth is calculated ($| scaling by generation).
+
+METHOD:: length
+
+METHOD:: theta
+
+METHOD:: scale
+
+METHOD:: noise
+
+METHOD:: commands
+A dictionary of current commands.
+
+METHOD:: preCommandAction
+A general link::Classes/Function:: that gets evaluated right before each command (character in the production array). Arguments passed in to function: depth, depthLength, index.
+
+EXAMPLES::
+
+CODE::
+//--simple example using string
+RedLTurtle("FF+F").makeWindow;
+RedLTurtle("FF+F[+F[+F]]").makeWindow;
+
+//--same string but different length, angle and scale factor
+RedLTurtle("FF+F[+F[+F]]", 40, -90, 0.3).makeWindow;
+
+//--adding your own commands
+t= RedLTurtle("FF+sFsFsF");
+t.commands;		//list default commands
+t.addCommand($s, {Pen.translate(50, 0)});	//$s will shift 50 px to the right
+t.makeWindow;
+
+
+//--in combo with RedLSystem (the preferred way)
+(
+l= RedLSystem("B", ($B: "F[-B]+B", $F: "FF"));
+6.do{l.next};
+RedLTurtle(l, scale:0.94.pow(l.generation)).makeWindow;
+)
+
+//--koch curve
+(
+l= RedLSystem("F", ($F: "F-F++F-F"));
+5.do{l.next};
+RedLTurtle(l, 40, 60, 0.91.pow(l.generation)).makeWindow(Rect(100, 200, 800, 600), 0.5pi, Point(0.5, 0));
+)
+
+//--big h
+(
+l= RedLSystem("[F]--F", ($F: "|[+F][-F]"));
+9.do{l.next};
+RedLTurtle(l, 200, 90, 0.65).makeWindow;
+)
+
+//--bent big h
+(
+l= RedLSystem("[F]--F", ($F: "|[+F][-F]"));
+9.do{l.next};
+RedLTurtle(l, 200, 80, 0.65).makeWindow;
+)
+
+//--two y
+(
+l= RedLSystem("[F]4-F", ($F: "|[+F][-F]"));
+9.do{l.next};
+RedLTurtle(l, 200, 45, 0.65).makeWindow;
+)
+
+//--twig
+(
+l= RedLSystem("F", ($F: "|[-F][+F]"));
+7.do{l.next};
+RedLTurtle(l, 200, 20, 0.65, 0.2).makeWindow;
+)
+
+//--weed 1
+(
+l= RedLSystem("F", ($F: "F[-F]F[+F]F"));
+6.do{l.next};
+RedLTurtle(l, 40, 25, 0.6, 0.2).makeWindow(initTranslate: Point(0.5, 0));
+)
+
+//--weed 2
+(
+l= RedLSystem("F", ($F: "|[-F]|[+F]F"));
+7.do{l.next};
+RedLTurtle(l, 200, 25, 0.65, 0.2).makeWindow(initTranslate: Point(0.5, 0));
+)
+
+//--weed 3
+(
+l= RedLSystem("F", ($F: "|[-F]|[+F][-F]F"));
+5.do{l.next};
+RedLTurtle(l, 800, 20, 0.45, 0.2).makeWindow(initTranslate: Point(0.5, 0));
+)
+
+//--bush 1
+(
+l= RedLSystem("F", ($F: "FF+[+F-F-F]-[-F+F+F]"));
+5.do{l.next};
+RedLTurtle(l, 80, 25, 0.65, 0.1).makeWindow(initTranslate: Point(0.5, 0));
+)
+
+//--bush 2
+(
+l= RedLSystem("F", ($F: "|[+F]|[-F]+F"));
+7.do{l.next};
+RedLTurtle(l, 600, 20, 0.5, 0.1).makeWindow(initTranslate: Point(0.5, 0));
+)
+
+//--tree 1
+(
+l= RedLSystem("F", ($F: "|[3-F][3+F]|[--F][++F]|F"));
+6.do{l.next};
+RedLTurtle(l, 400, 20, 0.5, 0.1).makeWindow(initTranslate: Point(0.5, 0.1));
+)
+
+//--tree 2
+(
+l= RedLSystem("F", ($F: "|[5+F][7-F]-|[4+F][6-F]-|[3+F][5-F]-|F"));
+4.do{l.next};
+RedLTurtle(l, 300, 8, 0.5, 0.1).makeWindow(initTranslate: Point(0.5, 0.1));
+)
+
+//--tree 3
+(
+l= RedLSystem("F", ($F: "|[--F][+F]-F"));
+7.do{l.next};
+RedLTurtle(l, 400, 20, 0.65, 0.1).makeWindow(initTranslate: Point(0.5, 0));
+)
+
+//--carpet
+(
+l= RedLSystem("F-F-F-F", ($F: "F[F]-F+F[--F]+F-F"));
+4.do{l.next};
+RedLTurtle(l, 4, 90, 1).makeWindow(initTranslate: Point(2/3, 1/3));
+)
+
+//--sierpinski square
+(
+l= RedLSystem("F-F-F-F", ($F: "FF[-F-F-F]F"));
+4.do{l.next};
+RedLTurtle(l, 4, 90, 1).makeWindow(initTranslate: Point(2/3, 1/3));
+)
+
+//--rug
+(
+l= RedLSystem("F-F-F-F", ($F: "F[-F-F]FF"));
+4.do{l.next};
+RedLTurtle(l, 4, 90, 1).makeWindow(initTranslate: Point(2/3, 1/3));
+)
+
+//--koch island
+(
+l= RedLSystem("F++F++F", ($F: "F-F++F-F"));
+4.do{l.next};
+RedLTurtle(l, 5, 60, 1).makeWindow(initTranslate: Point(1/3, 1/3));
+)
+
+//--quadric koch island
+(
+l= RedLSystem("F-F-F-F", ($F: "F-F+F+FF-F-F+F"));
+4.do{l.next};
+RedLTurtle(l, 1, 90, 1).makeWindow(initTranslate: Point(2/3, 1/3));
+)
+
+//--square spikes
+(
+l= RedLSystem("F18-F18-F18-F", ($F: "F17-F34+F17-F"));
+5.do{l.next};
+RedLTurtle(l, 60, 5, 0.94.pow(l.generation)).makeWindow(initTranslate: Point(0.75, 0.25));
+)
+
+//--sierpinski gasket
+(
+l= RedLSystem("F--F--F", ($F: "F--F--F--GG", $G: "GG"));
+6.do{l.next};
+RedLTurtle(l, 5, 60, 1).makeWindow(initAngle: 0.5pi, initTranslate: Point(2/3, 1/3));
+)
+
+//--sierpinski maze
+(
+l= RedLSystem("F", ($F: "[GF][+G3-F][G+G+F]", $G: "GG"));
+6.do{l.next};
+RedLTurtle(l, 5, 60, 1).makeWindow(initAngle: 1.5pi, initTranslate: Point(1/3, 1/3));
+)
+
+//--sierpinski arrowhead
+(
+l= RedLSystem("F", ($F: "[-G+++F][-G+F][GG--F]", $G: "GG"));
+6.do{l.next};
+RedLTurtle(l, 5, 60, 1).makeWindow(initAngle: 0.5pi, initTranslate: Point(2/3, 1/3));
+)
+
+//--penrose snowflake
+(
+l= RedLSystem("F4-F4-F4-F4-F", ($F: "F4-F4-F10-F++F4-F"));
+4.do{l.next};
+RedLTurtle(l, 60, 18, 0.65).makeWindow(initTranslate: Point(0.75, 1/3));
+)
+
+//--penrose tile
+(
+l= RedLSystem("[X]++[X]++[X]++[X]++[X]", ($W: "YF++ZF4-XF[-YF4-WF]++", $X: "+YF--ZF[3-WF--XF]+", $Y: "-WF++XF[3+YF++ZF]-", $Z: "--YF4+WF[+ZF4+XF]--XF", $F: ""));
+5.do{l.next};
+RedLTurtle(l, 20, 36, 1).makeWindow;
+)
+
+//--dragon curve
+(
+l= RedLSystem("F", ($F: "[+F][+G--G4-F]", $G: "-G++G-"));
+11.do{l.next};
+RedLTurtle(l, 5, 45, 1).makeWindow(initAngle: 0.5pi, initTranslate: Point(0.5, 0.5));
+)
+
+
+
+(
+l= RedLSystem("F", ($F: "F[+F--F]+F"));
+6.do{l.next};
+RedLTurtle(l, 40, 10, 0.9, 0.1).makeWindow;
+)
+
+(
+l= RedLSystem("F", ($F: "F[-FFF--F]+F"));
+5.do{l.next};
+RedLTurtle(l, 20, 20, 0.99, 0.1).makeWindow.view.background_(Color.red);
+)
+
+//--custom preCommand action
+(
+var size;
+l= RedLSystem("F", ($F: "F[-BF-B[-F]-F]++F"));
+5.do{l.next};
+size= l.asString.size;
+t= RedLTurtle(l, 60, 66.67, 1, 0.1);
+t.preCommandAction= {|depth, depthLength, index|
+	var c= index/size;
+	Pen.strokeColor= Color.grey(c, c);
+	Pen.stroke;	//stroke needed because of colour change
+};
+t.makeWindow;
+)
+::

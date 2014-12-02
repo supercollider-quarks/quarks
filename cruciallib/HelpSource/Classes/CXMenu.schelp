@@ -1,0 +1,210 @@
+CLASS:: CXMenu
+summary:: a basic nav menu
+categories:: Libraries>crucial>deprecated
+related:: Classes/PopUpMenu
+
+DESCRIPTION::  This is an old class.  Pending deprecation.
+
+A pop up menu that does its action and closes itself after you select an item.
+
+The difference between this and PopUpMenu is that here there are separate functions for
+each menu item, and with PopUpMenu there is one action.
+
+code::
+
+(
+m = CXMenu(
+	\soup->{ "soup".postln; },
+	\pork->{ "pork".postln; },
+	\duck->{ "duck".postln; },
+	\tiramisu->{ "tiramisu".postln; }
+);
+
+
+m.gui(nil);
+
+)
+
+(
+m = CXMenu(
+	\myName->{ "you hit myName".postln; },
+	\yourName->{ "you hit yourName".postln; }
+);
+
+m.closeOnSelect = false;
+
+m.gui;
+
+)
+
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument::  ... nameFuncs
+
+
+
+METHOD:: newWith
+
+
+argument:: nameFuncs
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: nameFuncs
+
+
+argument:: nf
+
+
+
+METHOD:: layout
+
+
+
+METHOD:: backColor
+
+
+
+METHOD:: stringColor
+
+
+
+METHOD:: closeOnSelect
+
+
+
+METHOD:: gui
+
+
+argument:: parent
+
+
+argument:: windowWidth
+
+
+argument:: height
+
+
+argument:: argButtonWidth
+
+
+
+METHOD:: guiBody
+
+
+argument:: resize
+
+
+
+METHOD:: add
+
+
+argument:: nf
+
+
+
+METHOD:: addToGui
+
+
+argument:: nf
+
+
+argument:: resize
+
+
+
+METHOD:: resize
+
+
+argument:: r
+
+
+
+METHOD:: doAction
+
+
+
+METHOD:: keyDownResponder
+
+
+
+METHOD:: focus
+
+
+
+METHOD:: focusOn
+
+
+argument:: f
+
+
+
+EXAMPLES::
+
+On another layout
+
+code::
+(
+Sheet({ arg f;
+	CXLabel(f,"partials:");
+	f.startRow;
+	m = CXMenu.newWith(
+		Array.fill(15,{ arg i;
+			i.asString.asSymbol -> { i.postln }
+		})
+	);
+	m.closeOnSelect = false;
+	m.gui(f);
+})
+)
+::
+
+You can add things to the menu above
+m.add(\more->{ "more".postln; });
+
+
+On a normal Window
+
+code::
+(
+
+w = GUI.window.new;
+w.front;
+
+x = CXMenu( \a -> { "a".postln },\b -> { "b".postln },\c -> { "c".postln });
+x.closeOnSelect = false;
+x.gui(w);
+
+)
+::
+
+Note that the arrow keys work to navigate once you are focused on any of the buttons.
+
+code::
+(
+m = CXMenu(
+	\myName->{ "you hit myName".postln; },
+	\yourName->{ "you hit yourName".postln; }
+);
+
+m.closeOnSelect = false;
+
+m.gui;
+
+)
+(
+20.do({
+	m.add(\more->{ "more".postln; });
+})
+
+)
+::
+

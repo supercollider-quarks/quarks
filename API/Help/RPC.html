@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Arial}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Arial; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #4d4d4d}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Verdana; color: #171717; min-height: 15.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Verdana; color: #171717}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001af9}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001af9; min-height: 12.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #295d0e}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Arial; color: #000000; min-height: 14.0px}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0017e5}
+span.s1 {color: #000000}
+span.s2 {color: #0012af}
+span.s3 {color: #0000bf}
+span.s4 {color: #007300}
+span.s5 {color: #606060}
+span.s6 {color: #bf0000}
+span.s7 {font: 12.0px Arial}
+span.s8 {text-decoration: underline}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>RPC</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Remote Procedure Call via OSC</b></p>
+<p class="p2"><br></p>
+<p class="p3">Creates an SC object whose method calls are converted to OSC commands and sent to a remote application (Processing, Ardour, MaxMSP etc) and returns the results from the other application.<span class="Apple-converted-space">  </span>RPC allows you to work with remote applications as though they were native and local.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>RPC(name,netAddr,sendAPI,receiveAPI)</b></p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>name</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a unique name for the other app</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>netAddr</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a NetAddr object with IP and port</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>sendAPI</b> <span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>(optional)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the paths that the other app responds to</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a list of OSC paths</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If nil then actually all methods on your rpc object will be sent to the remote</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>without any safety checks.</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>receiveAPI</b> <span class="Apple-tab-span">	</span>(optional)<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>these are the commands the other app responds back to,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>either as fixed by the manufacturer or as programmed by you in the other environment.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Can be:</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a string/symbol: which looks up a registered API</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>that API will be OSC mounted at /appname</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>an API object</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>that API will be OSC mounted at /appname</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>or a dict</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which is used to make an<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and will be mounted on OSC at the root:</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/command</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/funcName</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p3"><b>mountOSC(baseCmd)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>will mount the receive API at baseCmd, overriding the defaults as stated above.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>Actually only needed if you need to receive commands and do two way communication.</p>
+<p class="p4"><br></p>
+<p class="p3"><b>METHOD CALLS</b></p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>method calls on this object are converted to OSC messages and sent</p>
+<p class="p3"><span class="Apple-tab-span">	</span>UNLESS the RPC class or its superclass Object implements a method by the same name.</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>In this case use the explicit call(selector, ... args)</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>method selectors with an underscore _ are converted to /<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s1"><span class="Apple-tab-span">	</span>a = </span><span class="s2">RPC</span><span class="s1">(</span>"ardour"<span class="s1">,</span><span class="s2">NetAddr</span><span class="s1">(</span>"127.0.0.1"<span class="s1">,3819));</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>so</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.ardour_ffwd</p>
+<p class="p9"><span class="Apple-tab-span">	</span>calls:</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/ardour/ffwd</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>if there is an underscore already in the name then you can't do this:</p>
+<p class="p12"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/ardour/transport_play</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>instead use:</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.call(</span>'/ardour/transport_play'<span class="s1">)</span></p>
+<p class="p13"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.call(</span>'/ardour/transport_stop'<span class="s1">)</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><br></p>
+<p class="p3"><b>call(oscPath, ... args)</b></p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>call the path with the given args on the remote application</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14"><b>Processing Example</b></p>
+<p class="p2"><br></p>
+<p class="p6"><br></p>
+<p class="p15">(</p>
+<p class="p16"><span class="s1">a = </span><span class="s3">API</span><span class="s1">(</span>'osctest'<span class="s1">);</span></p>
+<p class="p17"><br></p>
+<p class="p18">// define</p>
+<p class="p15">a.add(<span class="s4">'wiggle'</span>,{ <span class="s3">arg</span> x,y;</p>
+<p class="p15"><span class="Apple-tab-span">	</span>(<span class="s5">"wiggling"</span> + x + y).postln;</p>
+<p class="p17"><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s5">"wiggled"</span> + <span class="s3">Main</span>.elapsedTime <span class="s6">// return value</span></p>
+<p class="p15">});</p>
+<p class="p17"><br></p>
+<p class="p15">a.add(<span class="s4">'click'</span>,{ <span class="s3">arg</span> x,y;</p>
+<p class="p15"><span class="Apple-tab-span">	</span>[x,y].postln;</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s5">""</span>.postln;</p>
+<p class="p17"><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>p.setcolor(x,y,1);</p>
+<p class="p15"><span class="Apple-tab-span">	</span>p.response( <span class="s3">Color</span>(x,y,1).asString );</p>
+<p class="p18"><span class="s1"><span class="Apple-tab-span">	</span></span><span class="s5">"You clicked"</span><span class="s1"> + x + y </span>// return value</p>
+<p class="p15">});</p>
+<p class="p17"><br></p>
+<p class="p17"><br></p>
+<p class="p15">)</p>
+<p class="p2"><br></p>
+<p class="p3">You need the http://www.sojamo.de/oscP5 library.</p>
+<p class="p6"><br></p>
+<p class="p3"><span class="s7">Open Help/</span>osctest.pde and run it in Processing</p>
+<p class="p19"><br></p>
+<p class="p15">(</p>
+<p class="p16"><span class="s1">p = </span><span class="s3">RPC</span><span class="s1">(</span><span class="s5">"osctest"</span><span class="s1">,</span><span class="s3">NetAddr</span><span class="s1">(</span><span class="s5">"127.0.0.1"</span><span class="s1">,12000),[</span>'/setcolor'<span class="s1">,</span>'/response'<span class="s1">],</span>'osctest'<span class="s1">);</span></p>
+<p class="p17"><br></p>
+<p class="p15">p.mountOSC;</p>
+<p class="p17"><br></p>
+<p class="p15">p.setcolor(255.rand,255.rand,255.rand);</p>
+<p class="p15">)</p>
+<p class="p17"><br></p>
+<p class="p20"><span class="s1">p.response(</span>"your message here"<span class="s1">)</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14"><b>Ardour Example</b></p>
+<p class="p4"><br></p>
+<p class="p21"><span class="s8"><a href="http://ardour.org/osc_control">http://ardour.org/osc_control</a></span></p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s1">a = </span><span class="s2">RPC</span><span class="s1">(</span>"ardour"<span class="s1">,</span><span class="s2">NetAddr</span><span class="s1">(</span>"127.0.0.1"<span class="s1">,3819));</span></p>
+<p class="p8"><br></p>
+<p class="p9">Note: due to all the underscores the niceties of RPC are a bit broken here.</p>
+<p class="p9">You have to use call for these:</p>
+<p class="p8"><br></p>
+<p class="p20"><span class="s1">a.call(</span>"/ardour/transport_play"<span class="s1">)</span></p>
+<p class="p20"><span class="s1">a.call(</span>"/ardour/transport_stop"<span class="s1">)</span></p>
+<p class="p17"><br></p>
+<p class="p15">a.ardour_ffwd</p>
+<p class="p17"><br></p>
+<p class="p15">a.ardour_rewind</p>
+<p class="p8"><br></p>
+<p class="p9">I could use aliases in the sendAPI :</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p20"><span class="s1"><span class="Apple-tab-span">	</span></span><span class="s4">\stop</span><span class="s1"> -&gt; </span>"/ardour/transport_stop"<span class="s1">,</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p9">/ardour/set_transport_speed [transport_speed]</p>
+<p class="p9">where [transport_speed] is a float rangin from -8 to 8.</p>
+<p class="p9">/ardour/goto_start</p>
+<p class="p9">/ardour/goto_end</p>
+<p class="p9">/ardour/add_marker</p>
+<p class="p9">(adds marker to the current transport position)</p>
+<p class="p9">/ardour/next_marker</p>
+<p class="p9">/ardour/prev_marker</p>
+<p class="p9">/ardour/locate [sample_pos] [with_roll]</p>
+<p class="p9">where [sample_pos] is the target position and [with_roll] is a bool/integer (whether you want transport to be kept rolling or not).</p>
+<p class="p9">/ardour/loop_toggle</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p3">Ardour's OSC is quite complete and could be used to record directly from SC via jack and edit files while you sleep.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+</body>
+</html>

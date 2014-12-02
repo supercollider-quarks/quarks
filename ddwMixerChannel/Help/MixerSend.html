@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+span.s1 {font: 24.0px Helvetica}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>MixerPreSend </b></span><b>(pre-fader send)</b></p>
+<p class="p1"><span class="s1"><b>MixerPostSend </b></span><b>(post-fader send)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Allocates an auxiliary send to route a signal from a MixerChannel to another bus, in addition to the MixerChannel's regular output.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">See the mixer example for a use of post-fader sends to route several MixerChannels to the same effect MixerChannel.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(in, out, level) <span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Creates the send. In must be a MixerChannel. Out can be a MixerChannel, a Bus, or an integer representing an audio bus number. This bus must be on the same server as the input MixerChannel. Level scales the signal that is sent; it's a simple scaling factor, so decibels must be converted using .dbamp. Keep in mind that positive decibel values could result in distortion.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">This method, and <b>free</b>, can be activated using the MixingBoard window by choosing a bus identifier from the popup menu representing the destination. The popup menu takes its choices from bus names registered by BusDict. MixerChannels create their buses using BusDict, so they will appear in the list. If you want other buses to show up, use BusDict to create them.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>free<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Stop sending the signal and removes the send process from the server.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>level_(lev, updateGUI = true, stopAutomation = true)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Sets the level of the signal sent to the output bus. The Boolean flags are used internally and generally don't need to be specified by the user.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>levelAuto(synthdef ... args)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Places a control rate synth on the server, mapped to the send level. MixerSend looks for these synthdefs in mxaut/ in your synthdefs folder. This automation will not be visible on the MixingBoard.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>levelLine(start = 0, end = 1, dur = 1, warp = \linear)</b></p>
+<p class="p3"><b>levelTo(end = 1, dur = 1, warp = \linear)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Makes a linear transition from start to end, taking dur seconds. Warp can be any of the options supported by ControlSpec. These methods use a routine to make the changes and update the MixingBoard. The time between the iterations of the routine is controlled by the instance variable guiUpdateTime, which may be set by the user. The default is 0.25.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>stopLevelAuto<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Stop automation processes for this send only.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>outbus_(bus, updateGUI = true)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Repatch this sends to a different bus. The bus may be a MixerChannel, a Bus, or an integer (bus index). The send will stop sending to the old destination and start sending to the new one immediately.</p>
+</body>
+</html>

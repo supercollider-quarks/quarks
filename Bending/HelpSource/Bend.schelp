@@ -1,0 +1,116 @@
+CLASS::Bend
+summary::UGen wrapper for code bending
+categories::UGen
+
+DESCRIPTION::
+Code bending is, analogous to circuit bending, a way to reuse the internal wiring of a signal flow. This class opens up enclosed UGen inputs for such external modification and allows for interaction with them without explicit change in the code. Different class methods are provided for different ways to do this.
+
+CLASSMETHODS::
+
+method::new
+Bend enclosing UGens.
+
+argument::bendFunc
+a function that returns a UGen graph
+
+argument::ugenFunc
+a function that returns a UGen graph
+
+code::
+// given a UGen graph ...
+(
+{ Splay.ar(SinOsc.ar({ exprand(300.0, 10000.0) } ! 17, 0, { 1.0.rand } ! 17)) * 0.1 }.play
+)
+
+// ... all existing UGen inputs can be replaced or modified with an arbitrary function
+// e.g. with a modulator
+(
+{
+Bend({ |in|
+	in * LFDNoise3.kr(MouseX.kr(0.1, 200, 1), 0.1, 1)
+}, {
+	Splay.ar(SinOsc.ar({ exprand(300.0, 10000.0) } ! 17, 0, { 1.0.rand } ! 17))
+}) * 0.1
+}.play
+)
+
+::
+
+method::time
+Bend all time related values.
+
+argument::ugenFunc
+a function that returns a UGen graph, like in *new
+
+argument::freqArgNames
+Frequency related arg names (apply a bend).
+
+Default: code::\freq, \rate::
+
+argument::durArgNames
+Duration related arg names (apply a reverse bend).
+
+Default: code::\dur, \duration, \delaytime, \decaytime::
+
+code::
+(
+// time warped analog bubbles, time scale is mouse x position
+{
+
+	Bend.time(MouseX.kr(0.02, 20, 1), {
+		var f = LFSaw.kr(0.4, 0, 24, LFSaw.kr([8,7.23], 0, 3, 80)).midicps; // glissando function
+		CombN.ar(SinOsc.ar(f, 0, 0.04), 0.2, 0.2, 4) // echoing sine wave
+	})
+
+}.play
+)
+::
+
+method::controls
+Insert control multipliers (see: link::Classes/Control::) to all UGen inputs.
+
+argument::ugenFunc
+a function that returns a UGen graph, like in *new
+
+argument::applySpecs
+if set to true, try to find control specs for the bend points
+
+code::
+(
+// bend all numerical values by adding controls
+Ndef(\bubbles, {
+	Bend.controls({ |original|
+		var f = LFSaw.kr(0.4, 0, 24, LFSaw.kr([8,7.23], 0, 3, 80)).midicps; // glissando function
+		CombN.ar(SinOsc.ar(f, 0, 0.04), 0.2, 0.2, 4) // echoing sine wave
+	}, applySpecs: true)
+}).play
+)
+
+
+Ndef(\bubbles).gui(20);
+::
+
+
+EXAMPLES::
+
+code::
+(
+// bend all numerical values by adding controls
+Ndef(\bubbles, {
+	var index = 0;
+	Bend({ |original|
+		[original, original.isNumber, index].postln;
+		if(original.isNumber) {
+			original = NamedControl.kr("bend_"++index, original);
+			index = index + 1;
+		};
+		original;
+	}, {
+		f = LFSaw.kr(0.4, 0, 24, LFSaw.kr([8,7.23], 0, 3, 80)).midicps; // glissando function
+		CombN.ar(SinOsc.ar(f, 0, 0.04), 0.2, 0.2, 4) // echoing sine wave
+	})
+}).play)
+
+
+Ndef(\bubbles).gui(20);
+::

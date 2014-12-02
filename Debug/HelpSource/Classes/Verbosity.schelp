@@ -1,0 +1,159 @@
+TITLE:: Verbosity
+summary:: managing levels of verbosity
+categories:: Debugging
+
+
+DESCRIPTION::
+The Verbosity class allows you to manage different levels of verbosity easily.
+
+
+CLASSMETHODS::
+
+private:: initClass, add, remove, closedDoc, createDoc
+
+METHOD:: new
+Create an instance of Verbosity
+
+ARGUMENT:: level
+The current level of verbosity
+
+ARGUMENT:: key
+The name or label of this instance of Verbosity
+
+returns:: an instance of Verbosity
+
+
+METHOD:: globalLevel
+Get or set the global level of verbosity. This is added to the local level of verbosity of each instance of the class.
+
+
+METHOD:: target
+The target for the verbosity posts to go to, this can be either the post window, a document, or a GUI window. The document or GUI window is created automatically.
+
+ARGUMENT:: nt
+a Symbol, either code::\post:: for postwindow, code::\doc:: for a Document, or code::\win:: for a GUI Window.
+
+returns:: the Class
+
+
+METHOD:: timeStamp
+Boolean to set whether or not to use a date and time stamp with each post.
+
+
+
+
+METHOD:: all
+an IdentityDictionary of all instances of this class.
+
+
+
+METHOD:: makeGui
+Create a graphical user interface to manage the verbosity levels of all instances of Verbosity, and the global level of Verbosity.
+
+returns:: a VerbosityAllGui
+
+METHOD:: doc
+The Document or Window to which is posted (if not to the post window).
+
+returns:: a Document or Window
+
+
+
+METHOD:: post
+posts to the Verbosity output. Used internally to make the actual posts.
+
+ARGUMENT:: string
+the string to post
+
+
+INSTANCEMETHODS::
+
+private:: init
+
+
+METHOD:: value
+Post something at a certain verbosity level. This is the main method used when posting something.
+
+ARGUMENT:: lev
+The level of verbosity equal or above which the string should be posted.
+
+ARGUMENT:: string
+The string to be posted.
+
+ARGUMENT:: method
+The methodname that calls the value method, this string is prepended to the string argument.
+
+
+METHOD:: key
+The label of the instance
+
+
+METHOD:: level
+The level of verbosity
+
+
+METHOD:: makeGui
+Create a GUI window to manage the level of verbosity
+
+
+
+METHOD:: destroy
+remove this instance of Verbosity from all instances.
+
+
+EXAMPLES::
+
+code::
+// create an instance of verbosity:
+~verbose = Verbosity.new(2,"myclass");
+
+// create a gui to control the levels:
+VerbosityAllGui.new;
+Verbosity.makeGui;
+
+// create a single GUI for the levels.
+VerbosityGui( ~verbose );
+~verbose.makeGui;
+
+
+~verbose.level; // posts 2
+// evaluate only at level 3 - generating lots of informational messages - heavy debugging stage
+~verbose.value( 3, "level 3 verbosity"); // no post
+// evaluate only at level 2 - generating medium amount of informational messages
+~verbose.value( 2, "level 2 verbosity"); // posting
+// evaluate only at level 1 - generating occasional amount of informational messages
+~verbose.value( 1, "level 1 verbosity"); // posting
+
+// increase the level:
+~verbose.level_(3);
+~verbose.value( 3, "level 3 verbosity");
+
+// decrease the level:
+~verbose.level_(1);
+~verbose.value( 2, "level 2 verbosity"); // no posting
+
+// check which ones there are:
+Verbosity.all
+
+// use a timestamp
+Verbosity.timeStamp = true;
+
+~verbose.value( 1, "level 1 verbosity");
+
+// set the global level:
+Verbosity.globalLevel_( 1 );
+
+~verbose.value( 3, "level 3 verbosity"); // not posting (1 + 1 = 2)
+
+~verbose.value( 2, "level 2 verbosity"); // posting
+
+
+Verbosity.target = \win;
+~verbose.value( 2, "level 2 verbosity"); // posting in GUI window
+
+~verbose.value( 1, "level 1 verbosity"); // posting in GUI window
+
+
+Verbosity.target = \doc;
+~verbose.value( 2, "level 2 verbosity"); // posting in document (but not yet implemented in SCIDE)
+::

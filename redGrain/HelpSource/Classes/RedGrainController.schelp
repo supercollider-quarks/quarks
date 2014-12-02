@@ -1,0 +1,132 @@
+CLASS:: RedGrainController
+SUMMARY:: controller class for RedGrain
+CATEGORIES:: Red>redGrain
+RELATED:: Classes/RedAGrain, Classes/RedBuffer, Classes/RedGrain, Classes/RedGrain2, Classes/RedKGrain
+
+DESCRIPTION::
+Used for controlling link::Classes/RedGrain:: granulators.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create controller
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedGrainController, prFuncPosition, prFuncAmplitude
+
+METHOD:: gain
+Individual buffer amplitude lookup code::(bufnum : amp):: to balance the mix.
+
+METHOD:: density
+how many grains to play. 1.0= play all, 0.5= 50% chance to play a grain.
+
+
+EXAMPLES::
+
+CODE::
+s.boot;
+
+//prepare some buffers
+~length= 1.8;		//segment lengths in seconds - should be the same for positions to scan correctly
+~b1= RedBuffer(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav", 0.0, ~length);
+~b2= RedBuffer(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav", 0.1, ~length);
+~b3= RedBuffer(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav", 0.2, ~length);
+
+//create and start a grain object
+r= RedGrain(s);
+r.buf_(~b1);
+r.start;
+
+//create and start the controller object
+g= RedGrainController(r);
+g.start;
+
+//for density - position and index is passed in as arguments
+g.density_(0.1);									//10% on and 90% off
+g.density_(0.75);									//75% on and 25% off
+g.density_({|o| o});								//from 0 to 100% -depend on position
+g.density_({|o, i| [0, 0.3].asSpec.map(i%1000/1000)});	//slowly from 0% to 30%
+g.density_({|o, i| i%2});							//only every second ie 50%
+g.density_(1);									//all on
+
+//for positionStart - position and index is passed in as arguments
+g.positionStart_({|o| o});							//no change
+g.positionStart_({|o, i| [0, 0.2.rand, 0.5].foldAt(i)});//pattern with random element
+g.positionStart_({|o| o+0.0015.rand2});				//minimal drunk
+g.positionStart_({|o| o+0.01.rand2});					//little drunk
+g.positionStart_({|o| o+0.05.rand2})					//more drunk
+g.positionStart_({1.0.rand})						//total random offset start
+g.positionStart_(0.1);								//freeze
+g.positionStart_({|o| if(0.03.coin, {o+0.1}, {o})});	//small chance to skip forward
+
+//for positionSpeed - position and index is passed in as arguments
+g.positionSpeed_({|o| if(o<0.5, {0.5}, {1.1})});		//first half 50%, rest 110%
+g.positionSpeed_(0.4);								//slow forward
+g.positionSpeed_(0);								//freeze
+g.positionSpeed_(-1);								//static backwards
+g.positionSpeed_({|o| [1, 2, 'exp'].asSpec.map(o)});	//accelerate
+g.positionSpeed_({|o, i| #[0.5, 1.25, 5].wrapAt(i)});	//pattern
+g.positionSpeed_({|o| #[0.1, 1, 1.5].wrapAt(o%0.5*50)});//3 positions
+
+//for grainBuf - buffer, position and index is passed in as arguments
+g.grainBuf_(~b2);									//static buffer
+g.grainBuf_({[~b1, ~b2, ~b3].choose});				//randomise buffer
+g.grainBuf_({[~b1, ~b3].wchoose(#[0.3, 0.7])});		//weighted random
+g.grainBuf_({|buf, o, i| [~b2, ~b1, ~b2, ~b2, ~b3].wrapAt(i/50%5)});//pattern
+g.grainBuf_({|buf, o, i| [~b1, ~b2, ~b3].wchoose(FloatArray[0.1, 1.0, 0.0].blend([0.0, 0.0, 1.0], o).normalizeSum)});//interpolate -buffer depend on position
+g.grainBuf_({|buf, o, i| [~b1, ~b2, ~b3].wchoose(FloatArray[0.2, 0.8, 0.0].blend([0.0, 0.0, 1.0], i%9000/9000).normalizeSum)}) //interpolate weights slowly
+
+//for grainRate - rate, position and index is passed in as arguments
+g.grainRate_(0.9);									//transpose
+g.grainRate_({1.0+0.01.rand2});						//rate fluctuate
+g.grainRate_({|rate, o, i| o*0.5+0.75});				//transpose upwards -depend on position
+
+//for grainDur - duration, position and index is passed in as arguments
+g.grainDur_(0.03);									//static short
+g.grainDur_(0.3);									//static long duration
+g.grainDur_({0.2.rand});							//randomise duration
+g.grainDur_({|dur, o| #[0.01, 0.4, 'exp'].asSpec.map(o)});//from short to long -depend on position
+g.grainDur_({|dur| dur= (dur+0.0001).min(0.6)});		//grows and grows (independent of position)
+g.grainDur_({|dur, o, i| #[0.01, 0.02, 0.1].foldAt(i)});//pattern
+
+//for grainAmp - amplitude, position and index is passed in as arguments
+g.grainAmp_(0.1);									//quite quiet
+g.grainAmp_(1);									//unity gain
+g.grainAmp_({1.0.rand});							//randomise amplitude for each grain
+g.grainAmp_({|amp, o, i| o.rand});					//rising random -depend on position
+g.grainAmp_({|amp, o, i| #[0, 0, 0, 1, 0, 0, 1, 1].wrapAt(i/5)});//pattern
+
+//for grainPan - panning, position and index is passed in as arguments
+g.grainPan_(-1);									//static full left
+g.grainPan_({1.0.rand2});							//random panning for each grain
+g.grainPan_({|pan, o, i| sin(o*2*pi)});				//sine -depend on position
+g.grainPan_({|pan, o, i| sin(i%1000/1000*2*pi)});		//sine (not dependent on position)
+g.grainPan_({|pan, o, i| #[0, 0, 0, -1, 0, 0, 1, -1].wrapAt(i)});//pattern
+
+
+//set up a dictionary to control the gain of the different buffers
+(
+~dict= (
+	~b1.bufnum : 0.2,
+	~b2.bufnum : 1,
+	~b3.bufnum : 0.2
+);
+)
+g.gain_(~dict);
+g.grainBuf_(~b2);	//loud
+g.grainBuf_(~b1);	//soft
+
+
+//stop and clear
+g.stop;
+r.stop;
+(
+r.free;
+~b1.free;
+~b2.free;
+~b3.free;
+)
+::

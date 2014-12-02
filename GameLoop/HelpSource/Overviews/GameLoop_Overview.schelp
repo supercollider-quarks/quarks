@@ -1,0 +1,86 @@
+TITLE:: The GameLoop Library
+summary:: A Sound Oriented Game Engine
+categories:: Library
+related:: Classes/GameLoop, SoundRepresentation
+
+DESCRIPTION::
+
+NOTE::
+If you need a quick introduction without going through the trouble of getting everything go to link::Guides/QuickStart:: and follow the instruction of the first note.
+
+For full functionality:
+NUMBEREDLIST::
+##Install the VectorSpace, MathLib and the AmbIEM Quark (See 3. for how to get the AmbIEM resources). Evaluate the following to install the Quarks (note that Quarks need SVN to be installed):
+
+code::
+Quarks.install("VectorSpace");
+Quarks.install("AmbIEM");
+Quarks.install("MathLib");
+::
+
+##Get the latest SuperCollider Plugins: link::http://sourceforge.net/projects/sc3-plugins/files/::. The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit.
+
+##For AmbIEM you need the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html . Get full.tar.Z, unzip, and rename the folder as KemarHRTF. The default directory does not seem to work. I recommend you add
+code::
+BinAmbi3O.kemarPath_(Platform.userAppSupportDir ++ '/KemarHRTF');
+::
+to your startup file and place the Kemar folder in the Application Support directory of your platform.
+##Get the Kernel's for the more advanced decoding methods of the ATK Library. You can find them in the downloads section of the website at link::http://www.ambisonictoolkit.net/wiki/tiki-index.php?page=Downloads::.
+::
+::
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+strong::DEVELOPMENT STATUS:::
+LIST::
+## First version. Not tested beyond simple examples.
+## Possibility of changes in the interface of the classes.
+::
+strong::Contributions, Issues, Feature Requests:::
+link::https://github.com/dathinaios/gameloop##github.com/dathinaios/gameloop::
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+GameLoop is a library for the creation of virtual sound environments inspired by video game techniques.footnote::The design of the library was partly based on the article 'The Guerrilla Guide to Game Code' that can be found at http://www.gamasutra.com/view/feature/2280/the_guerrilla_guide_to_game_code.php:: It provides:
+LIST::
+## An agent based system for the creation of interactive sound units.
+## Spatialisation according to cartesian or polar coordinates using Ambisonics.
+## Steering behaviors.
+## A spatial index for efficient collision detection (SpatialHashing).
+::
+
+section::Overviews
+LIST::
+## link::Guides/QuickStart##Quick Start Guide::
+## link::Guides/GameLoopTutorial##GameLoop Tutorial::
+## link::Reference/SteeringBehaviors##About Steering Behaviors::
+::
+
+section::Main Classes
+
+Main structure:
+LIST::
+## link::Classes/GameLoop::
+## link::Classes/Entity::
+## link::Classes/EntityManager::
+## link::Classes/RepresentationManager::
+## link::Classes/SoundRepresentation::
+## link::Classes/GameLoopDecoder::
+## link::Classes/SpatialHashing::
+::
+
+Steering Behaviours:
+LIST::
+##link::Classes/Seek::
+##link::Classes/Arrive::
+##link::Classes/Wander::
+##link::Classes/PathFollowing::
+::
+
+UGens:
+LIST::
+##link::Classes/SpacePolarATK::
+##link::Classes/SpacePolarATKDp::
+##link::Classes/SpacePolarAmbIEM::
+##link::Classes/SpacePolarAmbIEMDp::
+::

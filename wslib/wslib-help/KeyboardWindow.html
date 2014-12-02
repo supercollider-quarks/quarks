@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000c0}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+span.s1 {color: #0000ff}
+span.s2 {color: #000000}
+span.s3 {color: #0000bf}
+span.s4 {color: #007300}
+span.s5 {color: #bf0000}
+span.s6 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>KeyboardWindow</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">a keyboard window.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>KeyboardWindow ( nKeys, startOctave, channel, bounds )</b></p>
+<p class="p2">creates a new instance.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><b></b><br></p>
+<p class="p5"><span class="s2">k = </span>KeyboardWindow<span class="s2">();</span></p>
+<p class="p3"><br></p>
+<p class="p2">The vertical clicking position equals velocity, which is visualized by the color of the key (amount of red).</p>
+<p class="p2">If the mouse is moved out of the key's area while pressed, the note will hold until clicked again.</p>
+<p class="p4"><br></p>
+<p class="p2"><b>downAction, upAction</b></p>
+<p class="p2">these variables contain Functions to be executed when a key is pressed or released.</p>
+<p class="p2">The default downAction posts an array containing the received arguments:</p>
+<p class="p4"><br></p>
+<p class="p2"><i>channel ( as defined during creation), midi note number, midi velocity (0-127)</i></p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p7">// a simple keyboard implementation using Groups for every possible note</p>
+<p class="p8">s = <span class="s3">Server</span>.default;</p>
+<p class="p9"><br></p>
+<p class="p8">36.do({ <span class="s3">|i|</span> s.sendMsg( <span class="s4">\g_new</span>, 500 + 36 + i ); }); <span class="s5">// run this line again after cmd-.</span></p>
+<p class="p9"><br></p>
+<p class="p8">k.downAction = { <span class="s3">|chan, note, velo|</span> s.sendMsg( <span class="s4">\s_new</span>, <span class="s6">"default"</span>, s.nextNodeID, 1, 500 + note,<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">\freq</span>, note.midicps,<span class="Apple-converted-space">  </span><span class="s4">\amp</span>, (velo/127) * 0.25 );</p>
+<p class="p8"><span class="Apple-tab-span">	</span> };</p>
+<p class="p9"><br></p>
+<p class="p10"><span class="s2">k.upAction = { </span>|chan, note, velo|</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span></span>// release velo changes release time (0-1s)</p>
+<p class="p8"><span class="Apple-tab-span">	</span>s.sendMsg( <span class="s4">\n_set</span>,<span class="Apple-converted-space">  </span>500 + note, <span class="s6">"gate"</span>, -1 - (velo / 127.0) )<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>pressNote ( noteNumber, velo ), unPressNote ( noteNumber, velo )</b></p>
+<p class="p2">press and unpress notes from the lang</p>
+<p class="p4"><br></p>
+<p class="p6">k.pressNote( 60, 40 );</p>
+<p class="p6">k.unPressNote( 60 );</p>
+<p class="p3"><br></p>
+<p class="p2">These can also be called driectly on the Class. Then an extra argument is added: <b>channel</b></p>
+<p class="p2">This will press or unpress notes in all open windows with the specified channel</p>
+<p class="p4"><br></p>
+<p class="p8"><span class="s3">KeyboardWindow</span>.pressNote( 59, 60, 0 );</p>
+<p class="p8"><span class="s3">KeyboardWindow</span>.unPressNote( 59, 60, 0 );</p>
+<p class="p9"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>unPressAll ( velo ), *unPressAll ( velo, channel )</b></p>
+<p class="p2">press and unpress all notes from the lang</p>
+<p class="p4"><br></p>
+<p class="p8">10.do({ k.pressNote( 36 + 36.rand, 64.rand + 1 ) }); <span class="s5">// 10 random notes</span></p>
+<p class="p8">k.unPressAll;</p>
+<p class="p9"><br></p>
+<p class="p2"><b>activeNotes</b></p>
+<p class="p2">array with currently active notes. Last item is always the last note press</p>
+<p class="p9"><br></p>
+<p class="p8">10.do({ k.pressNote( 36 + 36.rand, 64.rand + 1 ) }); <span class="s5">// 10 random notes</span></p>
+<p class="p9"><br></p>
+<p class="p8">k.activeNotes;</p>
+<p class="p11"><br></p>
+<p class="p8">k.unPressAll;</p>
+<p class="p9"><br></p>
+<p class="p4"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

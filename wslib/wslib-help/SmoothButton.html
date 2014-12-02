@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #212121}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #00149f}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #414141}
+span.s1 {text-decoration: underline ; color: #001792}
+span.s2 {color: #001ff6}
+span.s3 {color: #001afb}
+span.s4 {color: #00138d}
+span.s5 {color: #303030}
+span.s6 {color: #611211}
+span.s7 {text-decoration: underline ; color: #001dd3}
+span.s8 {color: #3b125d}
+span.s9 {color: #001cb1}
+span.s10 {color: #233707}
+span.s11 {color: #000000}
+span.s12 {color: #00117a}
+span.s13 {color: #250e49}
+span.s14 {color: #00149f}
+span.s15 {color: #561571}
+span.s16 {color: #414141}
+span.s17 {color: #294a08}
+span.s18 {color: #212121}
+span.s19 {color: #1b2705}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SmoothButton</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">a <a href="SC://Pen"><span class="s1">Pen</span></a>-based replacement for <a href="SC://SCButton"><span class="s1">SCButton</span></a>, with extra styling options.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p2">SmoothButton works the same way as SCButton. But, as the name states, it is smooth. SmoothButton is a subclass of <a href="RoundButton.html"><span class="s2">RoundButton</span></a><span class="s2"> </span>and shares all of its functionality. The difference is that SmoothButton has no bevel by default. SmoothButton was designed to be used alongside <a href="SmoothSlider.html"><span class="s2">SmoothSlider</span></a> and <a href="SmoothNumberBox.html"><span class="s3">SmoothNumberBox</span></a>.</p>
+<p class="p3"><br></p>
+<p class="p5">(</p>
+<p class="p5">w = <span class="s4">Window</span>( <span class="s5">"SmoothButton"</span> ).front.decorate;<span class="Apple-converted-space">  </span><span class="s6">// decorate -&gt; <a href="wslib-shortcuts.html"><span class="s7">wslib-shortcuts</span></a></span></p>
+<p class="p5">b = <span class="s4">SmoothButton</span>( w, <span class="s8">80</span>@<span class="s8">20 </span>).states_([[ <span class="s5">"hit me"</span> ], [ <span class="s5">"again"</span> ]] ).action_({ <span class="s5">"was hit"</span>.postln });</p>
+<p class="p5">)</p>
+<p class="p3"><br></p>
+<p class="p2">If a SmoothButton's bounds are a square, the button shape becomes a circle:</p>
+<p class="p3"><br></p>
+<p class="p5">c = <span class="s4">SmoothButton</span>( w, <span class="s8">20</span>@<span class="s8">20 </span>).states_([[ <span class="s5">"x"</span>, <span class="s4">Color</span>.red(<span class="s8">0.5</span>), <span class="s4">Color</span>.gray(<span class="s8">0.6</span>) ]] );</p>
+<p class="p3"><br></p>
+<p class="p2">SmoothButton also supports icons from <a href="DrawIcon.html"><span class="s9">DrawIcon</span></a>. If the button state name is a Symbol</p>
+<p class="p2">it is replaced by an icon with that name.</p>
+<p class="p3"><br></p>
+<p class="p5">k = <span class="s4">SmoothButton</span>( w, <span class="s8">80</span>@<span class="s8">20 </span>).states_([[ <span class="s10">\play</span> ]] );</p>
+<p class="p3"><br></p>
+<p class="p5">l = <span class="s4">SmoothButton</span>( w, <span class="s8">20</span>@<span class="s8">20 </span>).states_([[ <span class="s10">\stop</span>, <span class="s4">Color</span>.white, <span class="s4">Color</span>.black ]] );</p>
+<p class="p3"><br></p>
+<p class="p2">States can also contain instances of SCImage. They will be displayed at original size, centered in the button and not clipped.</p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s11">o = </span><span class="s12">Image</span><span class="s11">.open(</span><span class="s12">String</span><span class="s11">.scDir ++ </span>"/SuperCollider.app/Contents/Resources/SCcube.icns"<span class="s11">);</span></p>
+<p class="p5">p = <span class="s12">SmoothButton</span>(w, <span class="s13">250</span>@<span class="s13">150</span>).states_( [ [o] ] );</p>
+<p class="p3"><br></p>
+<p class="p2">Functions can also be used as a state. They will be used as drawing functions, which receive a the button, a rect and the <b>radius</b> as arguments. Drawing is always relative to the origin of the button's bounds.</p>
+<p class="p3"><br></p>
+<p class="p5">(</p>
+<p class="p5">u = <span class="s14">SmoothButton</span>(w, <span class="s15">80</span>@<span class="s15">20</span>).states_( [<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="s11"><span class="Apple-tab-span">	</span>[{ </span>|button, rect, radius|<span class="s11"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">Pen</span>.line( rect.leftBottom, rect.rightTop );</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">Pen</span>.line( rect.rightBottom, rect.leftTop );</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">Pen</span>.stroke;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}] ] );</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p2">The fillcolor of a state can also be a Gradient, or a SCImage.</p>
+<p class="p3"><br></p>
+<p class="p5">(</p>
+<p class="p5">q = <span class="s14">SmoothButton</span>(w, <span class="s15">80</span>@<span class="s15">20</span>).states_( [<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>[<span class="s16">"horizontal"</span>, <span class="s14">Color</span>.white, <span class="s14">Gradient</span>( <span class="s14">Color</span>.blue(<span class="s15">0.5</span>), <span class="s14">Color</span>.red )],</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[<span class="s16">"vertical"</span>, <span class="s14">Color</span>.white, <span class="s14">Gradient</span>( <span class="s14">Color</span>.black, <span class="s14">Color</span>.white.alpha_(<span class="s15">0.25</span>), <span class="s17">\v</span>)]] );</p>
+<p class="p5">)</p>
+<p class="p3"><br></p>
+<p class="p5">(</p>
+<p class="p8"><span class="s11">r = </span><span class="s14">Image.open</span><span class="s11">(</span>"/Library/Desktop Pictures/Ripples Blue.jpg"<span class="s11">);</span></p>
+<p class="p5">t = <span class="s14">SmoothButton</span>(w, <span class="s15">80</span>@<span class="s15">20</span>).states_( [[<span class="s16">"image"</span>, <span class="s14">Color</span>.black, r<span class="Apple-converted-space">  </span>]] );</p>
+<p class="p5">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">SmoothButton has some extra features for graphic finetuning:</p>
+<p class="p4"><br></p>
+<p class="p2"><b>radius</b></p>
+<p class="p2">the radius of the round corners in px</p>
+<p class="p3"><br></p>
+<p class="p5">d = <span class="s12">SmoothButton</span>( w, <span class="s13">80</span>@<span class="s13">20 </span>).states_([[ <span class="s18">"radius=0"</span>, <span class="s12">Color</span>.black, <span class="s12">Color</span>.gray(<span class="s13">0.7</span>) ]] ).radius_( <span class="s13">0 </span>);<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p5">e = <span class="s12">SmoothButton</span>( w,<span class="s13">80</span>@<span class="s13">20 </span>).states_([[ <span class="s18">"radius=5"</span>,<span class="s12">Color</span>.gray(<span class="s13">0.8</span>),<span class="s12">Color</span>.blue(<span class="s13">0.6</span>) ]] ).radius_( <span class="s13">5 </span>);</p>
+<p class="p3"><br></p>
+<p class="p5">f = <span class="s12">SmoothButton</span>( w, <span class="s13">80</span>@<span class="s13">20 </span>).states_([[ <span class="s18">"radius=Array"</span> ]]).radius_( [<span class="s13">0</span>,<span class="s13">10</span>,<span class="s13">4</span>,<span class="s13">7</span>] );</p>
+<p class="p3"><br></p>
+<p class="p2"><b>border</b></p>
+<p class="p2">border width in px (default 2). The color of the border cannot be changed; it is always dark grey and white when pressed (or vice versa if <b>inverse</b> == true).</p>
+<p class="p3"><br></p>
+<p class="p5">h = <span class="s12">SmoothButton</span>( w, <span class="s13">80</span>@<span class="s13">20 </span>).states_([[ <span class="s18">"border=0"</span> ]] ).border_( <span class="s13">0 </span>);</p>
+<p class="p3"><br></p>
+<p class="p5">i = <span class="s12">SmoothButton</span>( w, <span class="s13">80</span>@<span class="s13">20 </span>).states_([[ <span class="s18">"border=5"</span> ]] ).border_( <span class="s13">5 </span>);</p>
+<p class="p3"><br></p>
+<p class="p2"><b>extrude</b></p>
+<p class="p2">bevel extrusion boolean (default = false). This will make SmoothButton look like a <a href="RoundButton.html"><span class="s2">RoundButton</span></a></p>
+<p class="p3"><br></p>
+<p class="p5">j = <span class="s12">SmoothButton</span>( w, <span class="s13">80</span>@<span class="s13">20 </span>).states_([[ <span class="s18">"extrusion"</span> ]] ).extrude_( <span class="s12">true</span> );</p>
+<p class="p3"><br></p>
+<p class="p2">you can use bevel as well, which does the same thing.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>moveWhenPressed</b></p>
+<p class="p2">amount of px to move the button label by when pressed. Default = 0.</p>
+<p class="p3"><br></p>
+<p class="p5">j.moveWhenPressed_( 2 );</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>inverse</b></p>
+<p class="p2">makes the border white instead of dark grey.</p>
+<p class="p3"><br></p>
+<p class="p5">m = <span class="s12">SmoothButton</span>( w, <span class="s13">20</span>@<span class="s13">20 </span>).states_([[ <span class="s19">\speaker</span> ]] ).inverse_( <span class="s12">true</span> );</p>
+<p class="p3"><br></p>
+<p class="p5">m.inverse_( <span class="s12">false</span> );</p>
+<p class="p3"><br></p>
+<p class="p5">n = <span class="s12">SmoothButton</span>( w, <span class="s13">20</span>@<span class="s13">20 </span>).states_([[ <span class="s19">\arrow</span> ]] ).border_(<span class="s13">1</span>).inverse_( <span class="s12">true</span> );</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

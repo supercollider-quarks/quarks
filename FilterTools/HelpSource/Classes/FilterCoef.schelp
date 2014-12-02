@@ -1,0 +1,111 @@
+TITLE:: FilterCoef
+summary:: an object for calculating digital filter coefficients
+categories:: DSP
+related:: Classes/ZPlane, Classes/Polynomial
+
+DESCRIPTION::
+CODE::FilterCoef:: generates the MATH::a_n:: and MATH::b_m:: coefficients for the general linear difference equation for a digital filter:
+MATH::
+H\left(z\right) = \frac{A\left(z\right)}{B\left(z\right)} = \frac{a_0+a_1z^{-1}+\dots+a_{N-1}z^{-\left(N-1\right)}+a_{N}z^{-N}}{1+b_1z^{-1}+b_2z^{-2}+\dots+b_{M-1}z^{-\left(M-1\right)}+b_{M}z^{-M}}
+::
+in response to supplying the location of MATH::M:: poles and MATH::N:: zeros on the Z-plane. These coefficients can be used with link::Classes/SOS::, link::Classes/FOS:: or link::Classes/LTI::.
+
+NOTE::
+Unlike link::Classes/ZPlane::, CODE::FilterCoef:: does no automatic checking for identical pole/zero pairs. Neither does it check if the nr. of poles and zeros are equal or does it add a conjugate pole/zero automatically. Furthermore, normalizing the amplitude response with link::Classes/ZPlane:: does STRONG::NOT:: mean that the digital filter coefficients are normalized too. If you want the digital filter coefficient to be normalized, you have to specify this explicitly when you call the method link::#-calc:: on CODE::FilterCoef::. The default behaviour is to scale the numerator (MATH::a_n:: coefficients)  so as to ensure that the peak amplitude response of the filter is equal to unity.
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new instance of CODE::FilterCoef::.
+
+ARGUMENT:: poles
+An link::Classes/Array:: containing a number of poles of type link::Classes/Polar::.
+
+ARGUMENT:: zeros
+An link::Classes/Array:: containing a number of zeros of type link::Classes/Polar::.
+
+ARGUMENT:: real
+A link::Classes/Boolean:: indicating whether the returned filter coefficients are real or complex. Also see instance method link::#-checkIfReal::.
+
+ARGUMENT:: norm
+A link::Classes/Boolean:: indicating whether the returned filter coefficients should be normalized to unity.
+
+returns:: A new instance of CODE::FilterCoef::.
+
+METHOD:: calc
+Calculate the filter coefficients for the general linear difference equation of a digital filter. If CODE::norm:: is set to CODE::true:: (default), the MATH::a_n:: coefficients are scaled by the reciprocal of the maximum value of the amplitude response.
+
+ARGUMENT:: poles
+An link::Classes/Array:: containing a number of poles of type link::Classes/Polar::.)
+
+ARGUMENT:: zeros
+An link::Classes/Array:: containing a number of zeros of type link::Classes/Polar::.
+
+ARGUMENT:: norm
+A link::Classes/Boolean:: indicating whether the returned filter coefficients should be normalized to unity.
+
+returns:: An link::Classes/Array:: of arrays holding the MATH::a_n:: coefficients: MATH::\left(a_0,a_1,\dots,a_{N-1},a_N\right):: and the MATH::b_m:: coefficients: MATH::\left(b_0,b_1,\dots,b_{M-1},b_M\right)::.
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: acoefs
+PRIVATE:: bcoefs
+PRIVATE:: format
+PRIVATE:: norm
+PRIVATE:: poles
+PRIVATE:: zeros
+PRIVATE:: real
+PRIVATE:: returnMaxMag
+
+METHOD:: checkIfReal
+Check if the specified poles and zeros result in a real or complex valued transfer function. 
+
+NOTE::This may modify the CODE::real:: instance variable in response.::
+
+returns:: An link::Classes/Boolean:: indicating whether the specified filter is real or complex valued.
+
+METHOD:: calc
+Calculate the filter coefficients for the general linear difference equation for a digital filter. If CODE::norm:: is set to CODE::true:: (default), the MATH::a_n:: coefficients are scaled by the reciprocal of the maximum value of the amplitude response.
+
+ARGUMENT:: argNorm
+A link::Classes/Boolean:: indicating whether the filter coefficients should be normalized to unity.
+
+returns:: An link::Classes/Array:: of arrays holding the MATH::a_n:: coefficients: MATH::\left(a_0,a_1,\dots,a_{N-1},a_N\right):: and the MATH::b_m:: coefficients: MATH::\left(b_0,b_1,\dots,b_{M-1},b_M\right)::.
+
+METHOD:: calcImpResp
+Calculate the impulse response MATH::h_k:: of the digital filter.
+
+returns:: An link::Classes/Array:: holding the impulse response of the filter.
+
+
+EXAMPLES::
+
+code::
+// An allpass filter example.
+(
+a = FilterCoef.new([Polar.new(0.8, 0.25pi), Polar.new(0.8, -0.25pi)], [Polar.new(0.8.reciprocal, 0.25pi), Polar.new(0.8.reciprocal, -0.25pi)]).postln;
+
+a.calc.postln;
+a.calcImpResp.real.plot("Impulse Response", discrete: true)
+)
+
+
+// Using FilterCoef together with SOS.
+
+// Bandpass filter at 0.03 pi (corresponds roughly to 211 Hz at a sampling rate of 44.1 kHz).
+(
+c = FilterCoef.calc([Polar.new(0.9997, 0.03pi), Polar.new(0.9997, -0.03pi)], [Polar.new(0.0, 0.0pi), Polar.new(0.0, 0.0pi)])
+);
+
+Server.default = Server.internal;
+s = Server.default;
+s.boot;
+SCFreqScopeWindow.new(400, 200, 0);
+s.scope;
+
+// IMPORTANT: The b (feedback) coefficients need to be negated.
+{ SOS.ar(WhiteNoise.ar(0.9).dup(2), c[0][0].real, 0, 0, c[1][1].real.neg, c[1][2].real.neg) }.play
+::

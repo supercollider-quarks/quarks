@@ -1,0 +1,51 @@
+CLASS:: RedMixStereoMono
+SUMMARY:: mix 1 stereo channel and 1 mono channel in stereo
+CATEGORIES:: Red>redMix
+RELATED:: Overviews/redMixOverview, Classes/RedMixMono, Classes/RedMixStereo, Classes/RedMatrixMixer, Classes/RedMixer
+
+DESCRIPTION::
+
+NOTE::
+Requires link::Classes/Conductor:: quark.
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: inA
+First emphasis::stereo:: input.
+
+ARGUMENT:: inB
+Second emphasis::mono:: input.
+
+ARGUMENT:: out
+Stereo output.
+
+ARGUMENT:: group
+code::nil:: boots the default server and uses the code::defaultGroup::. Adds to tail.
+
+ARGUMENT:: lag
+Ramp for mix controllers in seconds.
+
+METHOD:: def
+Returns the link::Classes/SynthDef::.
+
+EXAMPLES::
+
+CODE::
+a= RedMixStereoMono(2, 4, 0);
+b= Pbind(\degree, Pseq([0, 1, 5, 4, 3], inf), \dur, 0.25, \pan, Pseq([-1, 1], inf), \out, 2).play;
+c= Pbind(\degree, Pseq([10, 11, 16, 15], inf), \dur, 0.25, \pan, -1, \out, 4).play;
+
+a.cvs.mix.value= -0.9;
+a.cvs.mix.value= 0.9;
+a.cvs.lag.value= 2;
+a.cvs.mix.value= 0;
+a.cvs.amp.value= 0.2;
+a.gui;
+
+b.stop;
+c.stop;
+a.free;
+::

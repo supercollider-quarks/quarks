@@ -1,0 +1,122 @@
+TITLE:: SignalCharacteristics
+summary:: Calculates properties of a timebased signal
+categories:: Control
+related:: Classes/SignalCharacteristicsGui
+
+DESCRIPTION::
+SignalCharacteristics analyses data properties and allows you to display these in a gui.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new instance.
+
+ARGUMENT:: maxsize
+Maximum number of samples to calculate the properties of.
+
+
+
+INSTANCEMETHODS::
+
+private:: init, empty
+
+
+METHOD:: addValue
+Add a value to the data set.
+
+ARGUMENT:: newval
+A new value, should be a SimpleNumber
+
+
+
+METHOD:: makeGui
+Create a graphical window displaying the signal characteristics
+
+returns:: a SignalCharacteristicsGui
+
+
+METHOD:: maxsize
+The maximum number of samples to calculate the characteristics of.
+
+
+METHOD:: range
+Returns the minimum and maximum value of the data
+
+returns:: an Array
+
+METHOD:: mean
+The mean value of the data
+
+returns:: a SimpleNumber
+
+METHOD:: stdDev
+The standard deviation, or (square root of) the variation of the data.
+
+returns:: a SimpleNumber
+
+METHOD:: median
+The median value of the data
+
+returns:: a SimpleNumber
+
+
+
+METHOD:: times
+The deltatimes between data points
+
+returns:: an Array
+
+METHOD:: totalTime
+Sum of all the deltatimes.
+
+returns:: a SimpleNumber
+
+METHOD:: lastTime
+The last time a data point was added.
+
+returns:: a SimpleNumber
+
+
+METHOD:: data
+The data values that have been gathered
+
+returns:: an Array
+
+
+METHOD:: calcResolution
+Calculate the resolution of the data, this sets code::resdata::, code::stepdata:: and code::timeresdata::.
+
+
+METHOD:: resdata
+Sorted set of the data values; this is used to calculate the resolution of the data.
+
+returns:: an Array
+
+METHOD:: stepdata
+The difference between the data values (differentiated array of code::resdata::).
+
+returns:: an Array
+
+
+METHOD:: timeresdata
+Sorted set of the delta time values.
+
+returns:: an Array
+
+
+EXAMPLES::
+
+code::
+c = SignalCharacteristics.new( 1000 );
+c.makeGui;
+
+(
+Tdef( \generateData, {
+	loop{
+		c.addValue( 1.0.rand );
+		rrand(0.05,0.1).wait;
+	}
+}).play;
+);
+::

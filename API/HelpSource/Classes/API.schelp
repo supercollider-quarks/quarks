@@ -1,0 +1,454 @@
+TITLE:: API
+summary:: API framework for inter-application and network communication
+categories:: Networking
+
+
+DESCRIPTION::
+An API is a way to encapsulate all of the publically callable functions for a single application, composition, piece, class, service etc. in one universally accessible place.
+
+Each API object has a name (eg. "server") and a dictionary of functions.
+
+These can then be called:
+
+STRONG::in SuperCollider code::
+CODE::
+API.async("server.boot", ["default"], {
+	// booted now
+	API.async("group.new", [], { arg groupID;
+		// use this group
+	})
+});
+::
+
+STRONG::over OSC (simple call of functions)::
+CODE::
+API("server").mountOSC;
+
+// send OSC message:
+// '/API/server/boot' "default"
+::
+
+STRONG::via the duplex OSC interface (call and response)::
+CODE::
+API.mountDuplexOSC;
+
+// send osc message:
+// '/API/call' "group.new"
+// reply will be sent back to the caller:
+// '/API/reply' 1001
+::
+
+STRONG::Using a client library like supercollider.js::
+CODE::
+// supercollider
+API.mountDuplexOSC;
+
+// start the webserver
+node api_server.js
+
+// point browser at http://localhost:4040
+
+// javascript in a browser or mobile device
+sc = new SCApi("localhost",4040);
+sc.call("server.boot", ["default"], function() {
+	sc.call("group.new", [], function(groupID){
+		// spawn synths into this group
+	});
+});
+::
+
+supercollider.js provides a Node.js based api_server through which you can easily communicate with SuperCollider from javascript either on the server (running under Node) or in a browser (communicating back to Node with websockets).
+
+It uses socket.io which is loads of fun and should prove quite useful for installations and pieces that allow many people to interact using mobile phones over normal webrowsers.
+
+https://github.com/crucialfelix/supercolliderjs
+
+SUBSECTION:: Defining APIs
+
+Each Quark can provide a folder called apis/ containing API handler dictionaries.
+
+Post all currently implemented API paths:
+
+CODE::
+API.loadAll.allPaths.do(_.postln);
+::
+
+
+You can easily write APIs for your own application just by putting a file containing a dictionary of handlers in:
+
+CODE::
+// {yourquark}/apis/{apiname}.api.scd
+(
+	hello: { arg reply;
+		reply.value("hello back")
+	},
+	lookup: { arg reply, query;
+		var result = ();
+		{
+			// let me think about it
+			// search lots of files for something to do with "query"
+			result['path'] = "some/path";
+			result['things'] = [1,2,3];
+			result['quantity'] = 4;
+			result['random'] = 1024.rand;
+			// the dictionary will be sent as JSON
+			// and available in the browser as a JavaScript object
+			reply.value( result );
+		}.fork
+	}
+);
+::
+
+Your quark is now on the internets.
+
+CODE::
+// javascript
+sc.call("apiname.lookup",["a query string"], function(result) {
+	console.log(result);
+	console.log(result.random);
+	result.things; // [1,2,3]
+});
+::
+
+SUBSECTION::  Backwards incompatibility
+
+I know, I hate these.
+
+API 2 always passes in a { arg reply; } callback function while API 1 just used the return value as the result.
+
+API 1 was a bit more confusing to use though for the call and response stuff.
+
+Your old APIs should you have any would take just a few minutes to add in the callback, or you can continue to use the old methods:
+
+CODE::
+oldCall
+*oldCall
+oldAddAll
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: name
+apiname eg. "server" "synthdef"
+Convention is lowercase.  It must match the case of the apis/apiname.api.scd file
+
+returns:: an API
+
+SUBSECTION:: Calling
+
+METHOD:: async
+Call API method receiving the results with a callback.
+
+CODE::
+API.async("apiname.method", [arg1, arg2, ...], { arg result;
+	// good news...
+}, { arg error;
+	// bad news...
+});
+::
+
+ARGUMENT:: path
+"apiname.method"
+
+ARGUMENT:: args
+array of arguments
+
+ARGUMENT:: callback
+Callback that receives the result
+
+ARGUMENT:: onError
+Optional onError handler. If not supplied than errors will be propagated.
+
+returns:: nothing, the result is returned to the callback
+
+
+
+METHOD:: sync
+Call API method, waiting the current thread if needed till the result is returned.  You should be inside a Routine, { }.defer {}.fork or similiar
+
+CODE::
+result = API.sync("apiname.method", [arg1, arg2, ...]);
+::
+
+ARGUMENT:: path
+"apiname.method"
+
+ARGUMENT:: args
+array of arguments
+
+ARGUMENT:: onError
+Optional onError handler. If not supplied than errors will be propagated.
+
+returns:: the result
+
+
+METHOD:: call
+Call API method, returning the result directly.  The handler must not fork or defer.  This is vaguely faster and can be used when you know there is no async.
+
+CODE::
+result = API.call("apiname.method"), [arg1,args2,...]);
+::
+
+ARGUMENT:: path
+"apiname.method"
+
+ARGUMENT::  ... args
+array of arguments
+
+returns:: return value
+
+
+SUBSECTION:: Querying
+
+METHOD:: allPaths
+All available API paths in the form "apiname.method"
+
+returns:: array of strings
+
+
+METHOD:: apis
+an array of the names of all available APIs from all /apis/ folders in all Quarks
+
+returns:: array of strings
+
+
+METHOD:: all
+Array of all loaded APIs as API objects
+
+returns:: array of API objects
+
+
+SUBSECTION:: Loading
+
+METHOD:: loadAll
+Load all APIs from apis/ folders in all quarks.
+
+ARGUMENT:: forceReload
+Force reload/reparse
+
+returns:: this
+
+METHOD:: load
+find and load an API from disk. throws an Error if not found or if failed to parse the file.
+
+ARGUMENT:: name
+apiname
+
+returns:: the API
+
+
+
+SUBSECTION:: OSC
+
+
+METHOD:: mountDuplexOSC
+Registers OSC responders.  supercollider.js uses this to communicate.
+
+There is an unfinished python implementation in the python folder of this Quark.  Any language that can speak OSC and JSON can use these endpoints.
+
+CODE::
+/API/call : client_id, request_id, fullpath ... args
+::
+	client_id and request_id : are used to identify return messages
+		and are up to the implementation of the api consumer
+
+		client_id would usually be a specific web browser, program or other independent entity.  supercollider.js uses the socket.io socket id hash
+
+		request_id would be a unique id for each request from that client.
+		supercollider.js increments a simple counter: 1,2,3 etc.
+
+	fullpath:  apiname.methodKey
+		dot separated to make it clear that its not an OSC path
+
+Replies:
+
+CODE::
+/API/reply : client_id, request_id, result
+::
+	result is sent as a JSON string: "{result:result}"
+	so the api consumer needs to have a JSON library available.
+	JSON does not distinguish between Symbol and String so all values
+	are strings.
+	Result may be string, int, float, list, dictionary.
+	Date time not yet implemented.
+	All other objects will be sent as their compile string representation.
+
+	Possibly .asJSON could allow objects to support their own JSON representations. Or the constructor arguments / storeArgs could be used to form a JSON response.
+
+CODE::
+/API/not_found : client_id, request_id, fullpath
+::
+
+CODE::
+/API/error : client_id, request_id, errorString
+::
+
+ARGUMENT:: addr
+An optional NetAddr (basically an IP address), limiting connections to that specific address.
+
+ARGUMENT:: recvPort
+Optional port to listen on, otherwise uses the language's default port NetAddr.langPort [57120]
+
+returns:: this
+
+
+METHOD:: unmountDuplexOSC
+
+
+returns:: this
+
+PRIVATE:: oldCall
+PRIVATE:: prLoadAPI
+PRIVATE:: prLoadFromPath
+PRIVATE:: prNew
+
+
+
+
+
+
+
+INSTANCEMETHODS::
+
+SUBSECTION:: Defining
+
+METHOD:: add
+add a single handler
+
+ARGUMENT:: selector
+handler name
+
+ARGUMENT:: func
+handler function
+
+returns:: this
+
+
+METHOD:: addAll
+Add a dictionary of handlers to this API.
+
+CODE::
+d = (key: { arg reply; }, another: { arg reply; });
+api.addAll( d );
+::
+
+ARGUMENT:: dict
+The dictionary or dictionary subclass. The example above uses an Event because the notation ( ) is simple to type.
+
+returns:: this
+
+
+
+METHOD:: exposeMethods
+Takes an object and turns it into an API by making each method on the object into a function of the same name.
+
+ARGUMENT:: obj
+the object
+
+ARGUMENT:: selectors
+methods to turn into handlers
+
+returns:: this
+
+
+METHOD:: exposeAllExcept
+Takes an object and turns it into an API by making each method on the object into a function of the same name.
+
+ARGUMENT:: obj
+the object
+
+ARGUMENT:: selectors
+selectors to NOT add to the API.
+
+returns:: this
+
+
+SUBSECTION:: Calling
+
+METHOD:: async
+see class method.
+
+ARGUMENT:: selector
+(describe argument here)
+
+ARGUMENT:: args
+(describe argument here)
+
+ARGUMENT:: callback
+(describe argument here)
+
+ARGUMENT:: onError
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: sync
+see class method.
+
+
+ARGUMENT:: selector
+(describe argument here)
+
+ARGUMENT:: args
+(describe argument here)
+
+ARGUMENT:: onError
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+
+
+METHOD:: call
+see class method.
+
+ARGUMENT:: selector
+(describe argument here)
+
+ARGUMENT::  ... args
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+
+SUBSECTION:: OSC
+
+METHOD:: mountOSC
+Register OSC Responders for each method in this API object.
+
+ARGUMENT:: baseCmdName
+The OSC root where the responders are installed: /baseCmdName/method
+By default /apiname/method
+
+ARGUMENT:: addr
+Optional limit to a certain NetAddr
+
+returns:: this
+
+METHOD:: unmountOSC
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+
+SUBSECTION:: Querying
+
+METHOD:: selectors
+List of installed handler names.
+
+returns:: array of symbols
+
+PRIVATE:: func
+PRIVATE:: functionNames
+PRIVATE:: make
+PRIVATE:: name
+PRIVATE:: oldAdd
+PRIVATE:: oldAddAll
+PRIVATE:: oldCall
+PRIVATE:: prFindHandler
+
+
+

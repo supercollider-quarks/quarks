@@ -1,0 +1,29 @@
+CLASS:: PChanged
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Modifiers
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/Changed::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: pattern
+
+ARGUMENT:: threshold
+
+ARGUMENT:: mul
+
+ARGUMENT:: add
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PChanged(Pseq([12, 0, 0, 0, 0, 3, 0, 0, 0, 0], inf)).trace+60).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \amp, PChanged(PWhiteNoise(10).trace, 3)).play
+a.stop
+::

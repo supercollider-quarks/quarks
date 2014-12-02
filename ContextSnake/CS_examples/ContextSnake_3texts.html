@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.33">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a91616}
+span.s1 {color: #001db9}
+span.s2 {color: #426f0e}
+span.s3 {color: #606060}
+span.s4 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="Apple-tab-span">	</span>// read in three text files</p>
+<p class="p1">(</p>
+<p class="p1">b = ();<span class="Apple-tab-span">	</span>// maybe set path by hand if needed</p>
+<p class="p1">b.folder = <span class="s1">Document</span>.current.path.dirname ++ <span class="s1">Platform</span>.pathSeparator;</p>
+<p class="p1">b.textnames = [ <span class="s2">\erlkoenig</span>, <span class="s2">\erlEng</span>, <span class="s2">\</span>billOfRights];<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">b.textnames.do { <span class="s1">|textname|</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="s1">var</span> lines;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="s1">var</span> path = b.folder ++ textname ++ <span class="s3">".txt"</span>;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="s1">var</span> file = <span class="s1">File</span>(path, <span class="s3">"r"</span>);</p>
+<p class="p1"><span class="Apple-tab-span">	</span>if (file.isOpen) {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lines = file.readAllString.split($@);<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b[textname] = lines;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>file.close;</p>
+<p class="p1"><span class="Apple-tab-span">	</span>} { };</p>
+<p class="p1">};</p>
+<p class="p1"><span class="Apple-tab-span">	</span>// make a number of new text generations,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>// and compare them for occurrence within originals.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">b.genTextSimple = { <span class="s1">arg</span> dict, numGenerations, corpus, starterLength, minDepth;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>var</span> corpusSnake = <span class="s1">ContextSnake</span>(corpus, minDepth: minDepth, starterLength: starterLength);</p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>var</span> count = 0, result;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>while({ count &lt; numGenerations },<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>result = corpusSnake.randStarter.asStream.all.join;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if (corpusSnake.isNew(result),<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>{ <span class="Apple-tab-span">	</span>count = count+1;</p>
+<p class="p1"><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>result.postcs;</p>
+<p class="p1"><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>})</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">     </span>});</p>
+<p class="p1">};</p>
+<p class="p1">)</p>
+<p class="p3"><span class="s4"><span class="Apple-tab-span">	</span></span>// check they are there</p>
+<p class="p1">b.erlkoenig.printAll;"";</p>
+<p class="p1">b.erlEng.printAll;"";</p>
+<p class="p1">b.billOfRights.printAll;"";</p>
+<p class="p2"><br></p>
+<p class="p1">7.do { b.genTextSimple(1, b.billOfRights, 4, 4) };</p>
+<p class="p1">7.do { b.genTextSimple(1, b.erlEng, 4, 4) };</p>
+<p class="p1">7.do { b.genTextSimple(1, b.erlkoenig, 4, 4) };</p>
+</body>
+</html>

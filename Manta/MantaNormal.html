@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.25">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd0b0b}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #2024c7}
+span.s1 {color: #2024c7}
+span.s2 {color: #008417}
+span.s3 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Manta - normalizing</b></p>
+<p class="p2"><br></p>
+<p class="p3">You can measure your own max controller values easily with this patch:</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4">q = q ? ();</p>
+<p class="p4">q.maxima = 1 ! 53;</p>
+<p class="p4">o.remove;<span class="Apple-converted-space"> </span></p>
+<p class="p4">o = <span class="s1">OSCresponderNode</span>(<span class="s1">nil</span>, <span class="s2">'/manta/value'</span>, { <span class="s1">|t, r, msg|</span> msg.postln }).add;</p>
+<p class="p4">o.action = { <span class="s1">|t, r, msg|</span> <span class="s1">var</span> key = msg[1], val = msg[3];<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>[key, val].postln; q[<span class="s2">\maxima</span>].put(key, q[<span class="s2">\maxima</span>][key].max(val))<span class="Apple-converted-space"> </span></p>
+<p class="p4">};</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p6">// now measure maxima: ... touch every pad until it has maxed out ...<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p4">// then, read your maxima:<span class="Apple-converted-space"> </span></p>
+<p class="p4">q.maxima.postln;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p6">// for my manta, the values are:<span class="Apple-converted-space"> </span></p>
+<p class="p4">q.maxima = [ 1, 177, 184, 187, 188, 192, 192, 183, 180, 188, 193, 197, 200, 201, 201, 193, 188, 192, 197, 202, 205, 205, 204, 199, 191, 201, 207, 210, 215, 215, 214, 209, 200, 204, 210, 215, 219, 212, 218, 212, 203, 211, 215, 221, 226, 222, 227, 221, 213, 219, 199, 199, 206 ];</p>
+<p class="p2"><br></p>
+<p class="p3">then, add your own defaultPadMaxima as an extension:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4">// --- file extManta2.sc</p>
+<p class="p5"><br></p>
+<p class="p7"><span class="s3">+ </span>Manta2<span class="s3"> {<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>defaultPadMaxima {<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// measured with AdC' Manta.</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>^[ 1,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>177, 184, 187, 188, 192, 192, 183, 180,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>188, 193, 197, 200, 201, 201, 193, 188,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>192, 197, 202, 205, 205, 204, 199, 191,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>201, 207, 210, 215, 215, 214, 209, 200,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>204, 210, 215, 219, 212, 218, 212, 203,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>211, 215, 221, 226, 222, 227, 221, 213,<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>219, 199, 199, 206<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p4">}</p>
+<p class="p4">// ---</p>
+</body>
+</html>

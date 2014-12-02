@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+span.s1 {color: #0000bf}
+span.s2 {color: #007300}
+span.s3 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>percOrc5</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">var</span> sounds;</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">Instr</span>.loadAll;</p>
+<p class="p2"><br></p>
+<p class="p3">sounds = <span class="s1">Instr</span>.leaves(<span class="s2">'percOrc5'</span>);</p>
+<p class="p2"><br></p>
+<p class="p4">Sheet<span class="s3">({ </span>arg<span class="s3"> f;</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>var p;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>sounds.do({ |instr|</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ActionButton(f.startRow,instr.name,{</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(p.isPlaying,{ p.stop });</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s1">Patch</span>( instr, [ BeatClockPlayer(8) ] );</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.play;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},minWidth: 300)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>})</p>
+<p class="p3">})</p>
+<p class="p2"><br></p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p5"><span class="s1">var</span> sounds,deltas;</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s1">Instr</span>.loadAll;</p>
+<p class="p6"><br></p>
+<p class="p3">sounds = <span class="s1">Instr</span>.leaves(<span class="s2">'percOrc5'</span>);</p>
+<p class="p5">deltas = <span class="s1">Instr</span>.selectBySpec(<span class="s2">\deltaStream</span>);</p>
+<p class="p6"><br></p>
+<p class="p4">Sheet<span class="s3">({ </span>arg<span class="s3"> f;</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">var</span> sound, delta;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>delta = deltas.first;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>sound = sounds.first;</p>
+<p class="p6"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s1">SelectButtonSet</span>(SCVLayoutView.new(f,300@100)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>,sounds.collect({ <span class="s1">|ins|</span> ins.name.asString }),</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s1">|i|</span> sound = sounds[i]; },width: 400);</p>
+<p class="p6"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s1">SelectButtonSet</span>(SCVLayoutView.new(f,300@100)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>,deltas.collect({ <span class="s1">|ins|</span> ins.name.asString }),</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s1">|i|</span> delta = deltas[i]; },width: 400);</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>ActionButton(f,"MAKE PATCH...",{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> p, deltaPatternMaker, trig;</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>deltaPatternMaker = <span class="s1">Patch</span>( delta ).rand;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig = <span class="s1">Stream2Trig</span>(1.0, deltaPatternMaker.value );</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s1">Patch</span>( sound, [ trig ] ).rand;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.gui</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>},minWidth: 300);</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5">},"Select sound and rhythm", 1600@600)</p>
+<p class="p6"><br></p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

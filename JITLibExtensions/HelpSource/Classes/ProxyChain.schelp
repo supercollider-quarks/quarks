@@ -1,0 +1,231 @@
+TITLE:: ProxyChain
+summary:: play multiple synth and filter functions flexibly in one proxy
+categories:: Libraries>JITLib>JITLibExtensions
+related:: Classes/NodeProxy, Classes/Ndef, Classes/ProxyChainGui, Classes/MasterFX, Guides/JITLib
+
+DESCRIPTION::
+ProxyChain keeps a global repertoire of sound functions by name. 
+A ProxyChain has an ordered collection of sound functions and uses a nodeproxy 
+to add or remove the sound functions to/from the signal chain individually, by name.
+
+Like Ndef, Pdef, Tdef, ProxyChain keeps all named instances in a class variable "all".
+ProxyChain(<name>) accesses a ProxyChain by name, 
+ProxyChain(<name>, slotNames, ... ) puts a new instance there. 
+
+
+CLASSMETHODS::
+
+METHOD:: allSources
+a dict of all available synth and filter functions
+
+
+METHOD:: all
+a dict of all ProxyChain instances.
+
+METHOD:: add
+put functions into global dict, by name, func, name, func ...
+
+code::
+(
+q = q ? ();
+
+q.numChans = 5; 
+
+		// add a sound source
+ProxyChain.add(
+	\dust, \mix -> { |dens=20, dustdec=0.02, dustfreq= 600| 
+		Ringz.ar(Dust.ar(dens).lag(0.0001), dustfreq, dustdec) 
+	}
+);
+
+		// an association with \filter becomes a filter,
+		// and creates a wet/dry balance on the output.
+		// several funcs can be added as key1, func1, key2, type -> func2, etc.
+ProxyChain.add(	
+	\ringmod, \filter -> { |in, randrate=5| 
+		in.asArray[0] 	// force mono inputs
+		* SinOsc.ar(LFNoise0.kr([randrate, randrate]).exprange(300, 3000)).sum 
+	}, 
+	\dist, \filter -> { |in, drive=10, amp=0.2| (in.asArray[0] * drive).clip2(0.5) * amp }
+);
+	
+		// an association with \filterIn also becomes a filter,
+		// but creates the wet/dry balance control on the filter input, 
+		// on on the output like \filter. this can be useful for delays, reverbs etc.
+ProxyChain.add(
+	\riseComb5, \filterIn -> { arg in, delay = 0.023, dlDrift = 0.02, spread=0.5, 
+		decayRise=0.5, decayFall=100;
+		
+		var delayscales = 2 ** ((0 .. q.numChans - 1) * 2 / (q.numChans - 1) - 1 * spread); 
+		
+		var dels = delayscales.scramble.collect { |dscale| 
+		
+			var timedrift = LFDNoise3.kr(0.3, dlDrift, 1) * dscale;
+			var ampcomp = (20 * decayRise).dbamp * (decayFall ** -0.25);
+			
+			var combs; 
+			in = in.asArray[0] * ampcomp.lag(0.2);
+			combs = (decayFall * [ 1, decayRise]).collect { |decay| 
+				CombL.ar(in, 1, delay * dscale, decay * delay) 
+			};
+			combs[0] - combs[1];	// combs come in slowly, like formlet. 
+			
+		};
+		Splay.ar(dels)
+	}, 
+	\ampFin, \filter -> { |in, drive=1, ampLimit=1, lAmp=1| 
+		Limiter.ar(in * drive, ampLimit) * lAmp;
+	}
+);
+
+	// add specs for the controls used (for NodeProxyEditor).
+Spec.add(\dens, [0.1, 1000, \exp]);
+Spec.add(\dustamp, [0, 1, \amp]);
+Spec.add(\dustdec, [0.0001, 0.1, \exp]); 
+Spec.add(\dustfreq, \freq); 
+
+Spec.add(\dt, [0.001, 0.2, \exp]); 
+Spec.add(\dc, [0.01, 100, \exp]); 
+
+Spec.add(\drive, [1, 100, \exp]); 
+
+Spec.add(\spread, [0, 1, \amp]); 
+Spec.add(\decayRise, [0, 0.9, \amp]); 
+Spec.add(\decayFall, [1, 1000, \exp]); 
+Spec.add(\dlDrift, [0, 0.1, \amp]); 
+
+s.boot;
+)
+::
+
+METHOD:: new
+look up an existing ProxyChain, or (if slotNames are given), 
+make a new ProxyChain which can use named functions in the order in slotNames. 
+
+code::
+	// the functions can be sources (func, \mix -> func) 
+	// or filters (\filter -> func, \filterIn -> func)
+(
+c = ProxyChain(\alpha, [\dust, \ringmod, \dist, \riseComb5, \test]);
+c.play;	// play the proxy
+g = c.gui(12);	// make a gui for it with 12 slots - see ProxyChainGui
+)
+c.add(\dust);
+::
+
+ARGUMENT:: key
+name (creates a NodeProxy of the same name)
+
+ARGUMENT:: slotNames
+the names of the functions to have available.
+
+ARGUMENT:: numChannels
+number of audio channels. default = 2.
+
+ARGUMENT:: server
+server to use. default = s.
+
+
+METHOD:: from
+same as new, but using an existing nodeproxy.
+
+code::
+Ndef(\bla).ar(2);
+ProxyChain.from(Ndef(\bla), [\dust, \ringmod, \dist, \riseComb5, \test]);
+ProxyChain(\bla).play;
+ProxyChain(\bla).add(\dust);
+
+ProxyChain.all;
+::
+
+INSTANCEMETHODS::
+
+METHOD:: proxy
+the proxy inside the chain
+
+strong::methods that get forwarded to proxy: ::
+
+METHOD:: play
+METHOD:: playN
+METHOD:: stop
+METHOD:: end
+
+METHOD:: add
+kick in a source by name.
+
+code::
+c.add(\dust, 0.123);
+c.add(\dust, 0.2);
+c.add(\ringmod, 0.5);
+c.add(\dist, 1);
+::
+
+ARGUMENT:: key
+which function to kick in
+
+ARGUMENT:: wet
+wet/dry mix ratio
+
+ARGUMENT:: func
+an optional func that can locally replace the global func with that name.
+
+METHOD:: remove
+remove a currently playing source by name.
+code::
+c.remove(\dist);	
+c.remove(\ringmod);
+c.remove(\riseComb5);	
+::
+
+METHOD:: sources
+a dict of local source funcs. 
+
+METHOD:: slotsInUse
+currently playing slots.
+
+METHOD:: setSlots
+set multiple slots at once.
+
+METHOD:: slotNames
+get slotNames, change to new slotNames.
+
+METHOD:: gui
+make a ProxyChainGui for the ProxyChain - see examples.
+
+code::
+	// by default, buttonList nil is replaced with control buttons for all slots.
+c.gui(20);
+
+	// if specified, can be friendlier
+(
+g = c.gui(20,
+[ 	
+	[ \generators, \label ],  	// a label only
+	[ \dust, \slotCtl, 0.25 ], 		// a control for a slot, starting level
+
+	[ '1 > 1', \label ],  
+	[ \ringmod, \slotCtl ], 		// 0 - dry  by default
+	[ \dist, \slotCtl, 1 ], 		// 1 - all wet
+
+	[ '1 > 5', \label ],  
+	[ \riseComb5, \slotCtl ], 
+	[ ],
+		// extras:
+		// e.g. an editor with more space for controls
+	[\phatEdit, \extra, { c.makeEdit('Test', 40) } ],
+	
+		// or maybe bigger buttons play, end buttons
+	[\play, \extra, { c.playN } ],	 
+	[\end, \extra, { c.end(2, true) } ],
+	
+]
+)
+)
+::
+
+METHOD:: informEditor
+internal method to prepare replaceKeys for the gui.
+
+METHOD:: addSlot
+internal method for adding a func. 
+

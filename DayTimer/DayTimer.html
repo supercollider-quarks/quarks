@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #001db9}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica; min-height: 16.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #961e1e}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #001db9; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #6c2a2a}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #0a2cb0; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #0014bc}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #a91616}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #606060}
+span.s1 {font: 19.0px Helvetica}
+span.s2 {font: 10.0px Monaco}
+span.s3 {color: #000000}
+span.s4 {color: #426f0e}
+span.s5 {color: #001db9}
+span.s6 {font: 13.0px Helvetica; color: #000000}
+span.s7 {color: #307109}
+span.s8 {color: #0a2cb0}
+span.s9 {color: #5a6a1b}
+span.s10 {color: #606060}
+span.s11 {color: #0014bc}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>DayTimer</b></span><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>make things happen at specific times of the day/hour/minute</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>class methods</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>*new(name, id, test, func);</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span>access or make a new DayTimer for the given name;</p>
+<p class="p1"><span class="Apple-tab-span">	</span>optionally give it an id underwhich to store a daytime task.</p>
+<p class="p2"><br></p>
+<p class="p3">DayTimer<span class="s3">(</span><span class="s4">\otto</span><span class="s3">);</span></p>
+<p class="p4"><br></p>
+<p class="p1"><b>*all</b></p>
+<p class="p5"><span class="s5">DayTimer</span><span class="s3">.all;<span class="Apple-tab-span">	</span></span>// all daytimers are stored here.</p>
+<p class="p6"><br></p>
+<p class="p1"><b>*top<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>// top is a class variable; this daytimer is for general tasks.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// for only one global control of daytime-bound tasks, this is simplest.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// when one wants to turn groups of date/tasks on and off,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// it is easiest to put them in separate named daytimers.</p>
+<p class="p3">DayTimer<span class="s3">.top;<span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// many class methods are redirected as instance methods to DayTimer.top;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// for details, see below.</p>
+<p class="p7"><span class="s6"><b>*start</b></span><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// actually does DayTimer.top.start;</p>
+<p class="p1"><b>*stop</b><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p7"><span class="s6"><b>*putDate(id, test, func)<span class="Apple-tab-span">	</span></b></span><span class="s3"><span class="Apple-tab-span">	</span></span>// add a task to DayTimer.top.</p>
+<p class="p7"><span class="s6"><b>*removeAt(key)</b></span><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// remove a task from DayTimer.top</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p1"><b>instance methods:</b></p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s3">d = </span>DayTimer<span class="s3">(</span><span class="s7">\otto</span><span class="s3">);</span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>stop, start</b></p>
+<p class="p10">d.stop;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// stop watching for dates</p>
+<p class="p10">d.start;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// start watching for dates</p>
+<p class="p4"><br></p>
+<p class="p1"><b>putDate(id, test, func);</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span>put in a date with a task:</p>
+<p class="p1"><span class="Apple-tab-span">	</span>id is a symbol (used for ID when removing or overwriting a date),</p>
+<p class="p1"><span class="Apple-tab-span">	</span>test is either a time in [&lt;hour&gt;, &lt;min&gt;, &lt;sec&gt;],</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>or a function that tests a date object with the time now (Date.getDate).</p>
+<p class="p1"><span class="Apple-tab-span">	</span>func is the task to do when test == true.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// do this every full minute - id so you can remove it again</p>
+<p class="p10"><span class="s8">d</span>.putDate(<span class="s9">\perMin</span>, { <span class="s8">|date|</span> <span class="s8">date</span>.second == 0 }, { <span class="s10">"full minute!"</span>.postln });</p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// do this every minute at seconds 25 and 35</p>
+<p class="p10"><span class="s8">d</span>.putDate(<span class="s9">\min2</span>, { <span class="s8">|date|</span> [25, 35].includes(<span class="s8">date</span>.second) }, { <span class="s10">"twice a min"</span>.postln });</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p11"><span class="s3">(<span class="Apple-tab-span">	</span></span>// do this every third minute</p>
+<p class="p10"><span class="s11">d</span>.putDate(<span class="s7">\min3</span>,</p>
+<p class="p10"><span class="Apple-tab-span">	</span>{ <span class="s11">|date|</span> (date.minute * 60 + date.second) % 180 == 60 },</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span>{ </span>"every 3 minutes"<span class="s3">.postln });</span></p>
+<p class="p10">)</p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// once a day at a specific time [h, m, s] -</p>
+<p class="p7"><span class="Apple-tab-span">	</span>// maybe set this to the next full minute for testing</p>
+<p class="p10"><span class="s8">d</span>.putDate(<span class="s9">\onceT</span>, [12, 35, 40], { <span class="s10">"once a day only!"</span>.postln } );</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// daytimer tests and posts when a function fails,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>// but continues watching.</p>
+<p class="p10"><span class="s8">d</span>.putDate(<span class="s9">\failZ</span>, { <span class="s8">|d|</span> [20, 40].includes(d.second) }, { 1.blork });</p>
+<p class="p2"><br></p>
+<p class="p1"><b>removeAt(id);</b></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// remove a date, here the failing date/task</p>
+<p class="p10"><span class="s8">d</span>.removeAt(<span class="s9">\failZ</span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><b>dates</b></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// show all dates</p>
+<p class="p10"><span class="s8">DayTimer</span>.top.dates.postcs;</p>
+<p class="p10">d.dates.postcs;</p>
+<p class="p2"><br></p>
+<p class="p1"><b>skip</b></p>
+<p class="p10">d.skip;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// the skipjack that does the watching</p>
+<p class="p2"><br></p>
+<p class="p1"><b>name<span class="Apple-tab-span">	</span></b></p>
+<p class="p10">d.name;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// the daytimer's name</p>
+</body>
+</html>

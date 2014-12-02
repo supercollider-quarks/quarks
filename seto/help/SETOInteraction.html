@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad1a17}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; min-height: 22.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #003ca9}
+span.s1 {color: #003ca9}
+span.s2 {color: #000000}
+span.s3 {color: #215717}
+span.s4 {color: #ad1a17}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SETOInteraction</b></p>
+<p class="p2">/*</p>
+<p class="p2">Author:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>2004, 2005, 2006</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Till Bovermann<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Neuroinformatics Group<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Faculty of Technology<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Bielefeld University</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Germany</p>
+<p class="p2">*/</p>
+<p class="p3"><br></p>
+<p class="p4">abstract class.</p>
+<p class="p5"><br></p>
+<p class="p4">Interaction between SETObjects.</p>
+<p class="p4">When deriving, reimplement method <b>interaction</b>.</p>
+<p class="p3"><br></p>
+<p class="p4"><b>*new(|a, b|)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span></b> creates an interaction.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span> a,b have to be of type TUIObject.</p>
+<p class="p3"><br></p>
+<p class="p4"><b>update</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span></b>update the interaction</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p6">e = e ? ();</p>
+<p class="p7"><br></p>
+<p class="p6">e.objectA = <span class="s1">SETObject</span>.new(id: 0);</p>
+<p class="p6">e.objectB = <span class="s1">SETObject</span>.new(id: 1);</p>
+<p class="p7"><br></p>
+<p class="p6">e.interaction = <span class="s1">SETOInteraction</span>(e.objectA, e.objectB)</p>
+<p class="p6">e.interaction.update</p>
+<p class="p7"><br></p>
+<p class="p6">(</p>
+<p class="p6">e = e ? ();</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2">e.t = </span>SETO_OSCServer<span class="s2">(</span><span class="s3">"_ixya"</span><span class="s2">, </span>nil<span class="s2">, </span>SETObject, SETOInteraction<span class="s2">); </span><span class="s4">// listen to all messages from anywhere</span></p>
+<p class="p6">e.t.start;</p>
+<p class="p6">e.t.inspect</p>
+<p class="p6">)</p>
+<p class="p6">e.t.stop</p>
+</body>
+</html>

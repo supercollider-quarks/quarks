@@ -1,0 +1,29 @@
+INSTANCEMETHODS::
+
+subsection:: Spherical Coordinate Support
+
+method:: rho
+Answer the spherical radius of the number.
+
+method:: theta
+Answer the spherical azimuth angle of the number.
+
+method:: phi
+Answer the spherical elevation angle of the number.
+
+
+subsection:: Conversion
+
+method:: @
+If aValue is link::Classes/Number::, create a new link::Classes/Point:: whose x coordinate is the receiver and whose y coordinate is link::Classes/Number::. If aValue is a link::Classes/Point::, create a new link::Classes/Cartesian:: whose x coordinate is the receiver, y coordinate is aValue.x and z coordinate is aValue.y.
+
+argument:: aValue
+
+method:: spherical
+Create a new link::Classes/Spherical:: number whose radius is the receiver with the given angles.
+
+argument:: theta
+azimuth angle
+
+argument:: phi
+elevation angle

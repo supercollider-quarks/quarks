@@ -1,0 +1,323 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; color: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008a00; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #dc0000}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #797979}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1000d0}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+span.s1 {text-decoration: underline ; color: #0000ee}
+span.s2 {text-decoration: underline ; color: #1000d0}
+span.s3 {color: #1000d0}
+span.s4 {color: #797979}
+span.s5 {color: #b400a7}
+span.s6 {text-decoration: underline}
+span.s7 {color: #008a00}
+span.s8 {color: #000000}
+span.s9 {color: #dc0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>RoundButton</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">a <a href="SC://Pen"><span class="s2">Pen</span></a>-based replacement for <a href="SC://SCButton"><span class="s2">SCButton</span></a>, with extra styling options.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">RoundButton works the same way as SCButton.<span class="Apple-converted-space"> </span></p>
+<p class="p5">But, as the name states, it is rounded.</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p7">w = <span class="s3">Window</span>( <span class="s4">"RoundButton"</span> ).front;</p>
+<p class="p7">w.addFlowLayout;</p>
+<p class="p7">b = <span class="s3">RoundButton</span>( w, <span class="s5">80</span>@<span class="s5">20 </span>).states_([[ <span class="s4">"hit me"</span> ], [ <span class="s4">"again"</span> ]] ).action_({ <span class="s4">"was hit"</span>.postln });</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p5">Action can be either a function or an array of functions. In cas of an array each function is called at the swich to a new state.</p>
+<p class="p8"><br></p>
+<p class="p7">b.action = [ { <span class="s4">"was hit"</span>.postln }, { <span class="s4">"was hit again"</span>.postln } ];</p>
+<p class="p3"><br></p>
+<p class="p5">If a RoundButton's bounds are a square, the button shape becomes a circle:</p>
+<p class="p8"><br></p>
+<p class="p7">c = <span class="s3">RoundButton</span>( w, <span class="s5">20</span>@<span class="s5">20 </span>).states_([[ <span class="s4">"x"</span>, <span class="s3">Color</span>.red(<span class="s5">0.5</span>), <span class="s3">Color</span>.gray(<span class="s5">0.6</span>) ]] );</p>
+<p class="p9"><br></p>
+<p class="p5">RoundButton also supports icons from <a href="DrawIcon.html"><span class="s6">DrawIcon</span></a>. If the button state name is a Symbol</p>
+<p class="p5">it is replaced by an icon with that name.</p>
+<p class="p8"><br></p>
+<p class="p7">k = <span class="s3">RoundButton</span>( w, <span class="s5">80</span>@<span class="s5">20 </span>).states_([[ <span class="s7">\play</span> ]] );</p>
+<p class="p8"><br></p>
+<p class="p7">l = <span class="s3">RoundButton</span>( w, <span class="s5">20</span>@<span class="s5">20 </span>).states_([[ <span class="s7">\stop</span>, <span class="s3">Color</span>.white, <span class="s3">Color</span>.black ]] );</p>
+<p class="p9"><br></p>
+<p class="p5">States can also contain instances of SCImage. They will be displayed at original size, centered in the button and not clipped.</p>
+<p class="p9"><br></p>
+<p class="p10">// osx only until JSCImage answers to .width and .height</p>
+<p class="p11"><span class="s8">o = </span><span class="s3">Image</span><span class="s8">.open(</span><span class="s3">String</span><span class="s8">.scDir ++ </span>"/SuperCollider.app/Contents/Resources/SCcube.icns"<span class="s8">);</span></p>
+<p class="p7">p = <span class="s3">RoundButton</span>(w, <span class="s5">250</span>@<span class="s5">150</span>).states_( [ [o] ] );</p>
+<p class="p9"><br></p>
+<p class="p5">Functions can also be used as a state. They will be used as drawing functions, which receive a the button, a rect and the <b>radius</b> as arguments. Drawing is always relative to the origin of the button's bounds.</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p6">u = <span class="s3">RoundButton</span>(w, <span class="s5">80</span>@<span class="s5">20</span>).states_( [<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="s8"><span class="Apple-tab-span">	</span>[{ </span>|button, rect, radius|<span class="s8"><span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.line( rect.leftBottom, rect.rightTop );</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.line( rect.rightBottom, rect.leftTop );</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.stroke;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}] ] );</p>
+<p class="p6">)</p>
+<p class="p13"><br></p>
+<p class="p5">The fillcolor of a state can also be a Gradient, or a SCImage.</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p6">q = <span class="s3">RoundButton</span>(w, <span class="s5">80</span>@<span class="s5">20</span>).states_( [<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>[<span class="s4">"horizontal"</span>, <span class="s3">Color</span>.white, <span class="s3">Gradient</span>( <span class="s3">Color</span>.blue(<span class="s5">0.5</span>), <span class="s3">Color</span>.red )],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>[<span class="s4">"vertical"</span>, <span class="s3">Color</span>.white, <span class="s3">Gradient</span>( <span class="s3">Color</span>.black, <span class="s3">Color</span>.white.alpha_(<span class="s5">0.25</span>), <span class="s7">\v</span>)]] );</p>
+<p class="p6">)</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p11"><span class="s8">r = </span><span class="s3">SCImage</span><span class="s8">(</span>"/Library/Desktop Pictures/Ripples Blue.jpg"<span class="s8">);</span></p>
+<p class="p6">t = <span class="s3">RoundButton</span>(w, <span class="s5">80</span>@<span class="s5">20</span>).states_( [[<span class="s4">"image"</span>, <span class="s3">Color</span>.black, r<span class="Apple-converted-space">  </span>]] );</p>
+<p class="p6">)</p>
+<p class="p3"><br></p>
+<p class="p5">There are various convenience methods for setting states and functions. The <b>label</b> setting method automatically creates one or more states:</p>
+<p class="p3"><br></p>
+<p class="p10"><span class="s8">u = </span><span class="s3">RoundButton</span><span class="s8">(w, </span><span class="s5">80</span><span class="s8">@</span><span class="s5">20</span><span class="s8">).label_( </span><span class="s4">"hello"</span><span class="s8"> ); </span>// creates a single state</p>
+<p class="p6">v = <span class="s3">RoundButton</span>(w, <span class="s5">80</span>@<span class="s5">20</span>).label_( [ <span class="s4">"hello"</span>, <span class="s4">"bye"</span> ] ); <span class="s9">// creates two states</span></p>
+<p class="p3"><br></p>
+<p class="p5">The <b>hiliteColor</b> sets the color of the second state (if available and not specified in the state itself). This corresponds with the hiliteColor setting from <a href="SmoothSlider.html">SmoothSlider</a>.</p>
+<p class="p13"><br></p>
+<p class="p6">x = <span class="s3">RoundButton</span>(w, <span class="s5">80</span>@<span class="s5">20</span>).label_( <span class="s4">"hello"</span>.dup ).hiliteColor_( <span class="s3">Color</span>.blue );</p>
+<p class="p8"><br></p>
+<p class="p5">RoundButton has some extra features for graphic finetuning:</p>
+<p class="p13"><br></p>
+<p class="p2"><b>radius</b></p>
+<p class="p2">the radius of the round corners in px</p>
+<p class="p3"><br></p>
+<p class="p6">d = <span class="s3">RoundButton</span>( w, <span class="s5">80</span>@<span class="s5">20 </span>).states_([[ <span class="s4">"radius=0"</span>, <span class="s3">Color</span>.black, <span class="s3">Color</span>.gray(<span class="s5">0.7</span>) ]] ).radius_( <span class="s5">0 </span>);<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p6">e = <span class="s3">RoundButton</span>( w, <span class="s5">80</span>@<span class="s5">20 </span>).states_([[ <span class="s4">"radius=5"</span>,<span class="s3">Color</span>.gray(<span class="s5">0.8</span>),<span class="s3">Color</span>.blue(<span class="s5">0.6</span>) ]] ).radius_( <span class="s5">5 </span>);</p>
+<p class="p3"><br></p>
+<p class="p6">f = <span class="s3">RoundButton</span>( w, <span class="s5">80</span>@<span class="s5">20 </span>).states_([[ <span class="s4">"radius=Array"</span> ]]).radius_( [<span class="s5">0</span>,<span class="s5">10</span>,<span class="s5">4</span>,<span class="s5">7</span>] );</p>
+<p class="p3"><br></p>
+<p class="p2"><b>border</b></p>
+<p class="p2">border width in px (default <span class="s5">2</span>)</p>
+<p class="p3"><br></p>
+<p class="p6">h = <span class="s3">RoundButton</span>( w, <span class="s5">80</span>@<span class="s5">20 </span>).states_([[ <span class="s4">"border=0"</span> ]] ).border_( <span class="s5">0 </span>);</p>
+<p class="p3"><br></p>
+<p class="p6">i = <span class="s3">RoundButton</span>( w, <span class="s5">80</span>@<span class="s5">20 </span>).states_([[ <span class="s4">"border=5"</span> ]] ).border_( <span class="s5">5 </span>);</p>
+<p class="p3"><br></p>
+<p class="p2"><b>extrude</b></p>
+<p class="p2">bevel extrusion boolean (default = <span class="s3">true</span>). <span class="s3">A</span>.k.a. <b>bevel</b></p>
+<p class="p3"><br></p>
+<p class="p6">j = <span class="s3">RoundButton</span>( w, <span class="s5">80</span>@<span class="s5">20 </span>).states_([[ <span class="s4">"no extrusion"</span> ]] ).extrude_( <span class="s3">false</span> );</p>
+<p class="p3"><br></p>
+<p class="p2">you can use bevel as well, which does the same thing.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>moveWhenPressed</b></p>
+<p class="p2">amount of px to move the button label by when pressed</p>
+<p class="p3"><br></p>
+<p class="p6">j.moveWhenPressed_( <span class="s5">0 </span>);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>inverse</b></p>
+<p class="p2">inverse border colors</p>
+<p class="p3"><br></p>
+<p class="p6">m = <span class="s3">RoundButton</span>( w, <span class="s5">20</span>@<span class="s5">20 </span>).states_([[ <span class="s7">\speaker</span> ]] ).inverse_( <span class="s3">true</span> );</p>
+<p class="p3"><br></p>
+<p class="p6">m.inverse_( <span class="s3">false</span> );</p>
+<p class="p3"><br></p>
+<p class="p6">n = <span class="s3">RoundButton</span>( w, <span class="s5">20</span>@<span class="s5">20 </span>).states_([[ <span class="s7">\arrow</span> ]] ).extrude_(<span class="s3">false</span>).border_(<span class="s5">1</span>).inverse_( <span class="s3">true</span> );</p>
+<p class="p3"><br></p>
+<p class="p2"><b>stringColor</b></p>
+<p class="p2">sets the default string color (if not specified in the states)</p>
+<p class="p13"><br></p>
+<p class="p6">o = <span class="s3">RoundButton</span>( w, <span class="s5">80</span>@<span class="s5">20 </span>).label_(<span class="s4">"white"</span>).background_(<span class="s3">Color</span>.black).stringColor_(<span class="s3">Color</span>.white);</p>
+<p class="p3"><br></p>
+<p class="p6">p = <span class="s3">RoundButton</span>( w, <span class="s5">80</span>@<span class="s5">20 </span>).states_([[<span class="s4">"red"</span>, <span class="s3">Color</span>.red], [<span class="s4">"blue"</span>]]).stringColor_(<span class="s3">Color</span>.blue);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><span class="s3">These</span> (and in fact all) methods can be set manually or via the <i>skin</i> system (inherited from superclass <span class="s3">RoundView</span>). <span class="s3">Skinning</span> works in varous ways. <span class="s3">A</span> skin is a <a href="SC://Dictionary"><span class="s3">Dictionary</span></a> or <a href="SC://Event"><span class="s3">Event</span></a> containing keys and values for each property to be set. <span class="s3">One</span> is to set a skin via the <b>skin</b> method:</p>
+<p class="p13"><br></p>
+<p class="p6">(</p>
+<p class="p11"><span class="s8">w = </span><span class="s3">Window</span><span class="s8">( </span>"RoundButton skins"<span class="s8"> ).front;</span></p>
+<p class="p6">w.addFlowLayout;</p>
+<p class="p3"><br></p>
+<p class="p12">RoundButton<span class="s8">.skin = (<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>radius: <span class="s5">3</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>border: <span class="s5">1</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span>font: <span class="s3">Font</span>( <span class="s3">Font</span>.defaultSansFace, <span class="s5">11 </span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>background: <span class="s3">Color</span>.gray(<span class="s5">0.9</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>stringColor: <span class="s3">Color</span>.gray(<span class="s5">0.2</span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>extrude: <span class="s3">false</span><span class="Apple-converted-space"> </span></p>
+<p class="p6">);</p>
+<p class="p3"><br></p>
+<p class="p6">a = <span class="s3">RoundButton</span>( w, <span class="s5">80</span>@<span class="s5">18 </span>).label_( <span class="s4">"hi"</span> );</p>
+<p class="p6">b = <span class="s3">RoundButton</span>( w, <span class="s5">40</span>@<span class="s5">18 </span>).label_( <span class="s4">"bye"</span> );</p>
+<p class="p6">)</p>
+<p class="p3"><br></p>
+<p class="p2"><span class="s3">Once</span> the skin is set it remains there for all future <span class="s3">RoundButtons</span>. <span class="s3">It</span> can be removed by setting it to <span class="s3">nil</span>. <span class="s3">Another</span> way is to <span class="s4">"push"</span> a skin, via <b>pushSkin</b>. <span class="s3">This</span> works the same way as pushing an <a href="SC://Environment"><span class="s3">Environment</span></a>, i.e. the current skin is stored and a new skin is added. <span class="s3">When</span> calling <b>popSkin</b> after <span class="s3">this</span> the previous skin will surface again.</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p11"><span class="s8">w = </span><span class="s3">Window</span><span class="s8">( </span>"RoundButton skins"<span class="s8"> ).front;</span></p>
+<p class="p6">w.addFlowLayout;</p>
+<p class="p3"><br></p>
+<p class="p10"><span class="s3">RoundButton</span><span class="s8">.skin = </span><span class="s3">nil</span><span class="s8">; </span>// remove old one</p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s3">RoundButton</span>.pushSkin(<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>( <span class="Apple-tab-span">	</span>radius: <span class="s5">5</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>inverse: <span class="s3">true</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>font: <span class="s3">Font</span>( <span class="s3">Font</span>.defaultSerifFace, <span class="s5">11 </span>)</p>
+<p class="p6"><span class="Apple-tab-span">	</span>)</p>
+<p class="p6">);</p>
+<p class="p3"><br></p>
+<p class="p6">a = <span class="s3">RoundButton</span>( w, <span class="s5">60</span>@<span class="s5">18 </span>).label_( <span class="s4">"skin 1"</span> );</p>
+<p class="p6">b = <span class="s3">RoundButton</span>( w, <span class="s5">40</span>@<span class="s5">18 </span>).label_( <span class="s4">"bye"</span> );</p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s3">RoundButton</span>.pushSkin(<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>( <span class="Apple-tab-span">	</span>extrude: <span class="s3">false</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>border: <span class="s5">1</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>font: <span class="s3">Font</span>( <span class="s3">Font</span>.defaultMonoFace, <span class="s5">9 </span>)</p>
+<p class="p6"><span class="Apple-tab-span">	</span>)</p>
+<p class="p6">);</p>
+<p class="p3"><br></p>
+<p class="p6">c = <span class="s3">RoundButton</span>( w, <span class="s5">60</span>@<span class="s5">18 </span>).label_( <span class="s4">"skin 2"</span> );</p>
+<p class="p6">d = <span class="s3">RoundButton</span>( w, <span class="s5">40</span>@<span class="s5">18 </span>).label_( <span class="s4">"bye"</span> );</p>
+<p class="p3"><br></p>
+<p class="p12">RoundButton<span class="s8">.popSkin;</span></p>
+<p class="p3"><br></p>
+<p class="p6">e = <span class="s3">RoundButton</span>( w, <span class="s5">150</span>@<span class="s5">18 </span>).label_( <span class="s4">"back to skin 1"</span> );</p>
+<p class="p3"><br></p>
+<p class="p6">)</p>
+<p class="p3"><br></p>
+<p class="p2"><span class="s3">This</span> can also be done in the form of <b>useWithSkin( skin, function )</b>:</p>
+<p class="p13"><br></p>
+<p class="p6">(</p>
+<p class="p11"><span class="s8">w = </span><span class="s3">Window</span><span class="s8">( </span>"RoundButton skins"<span class="s8"> ).front;</span></p>
+<p class="p6">w.addFlowLayout;</p>
+<p class="p3"><br></p>
+<p class="p10"><span class="s3">RoundButton</span><span class="s8">.skin = </span><span class="s3">nil</span><span class="s8">; </span>// remove old one(s)</p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s3">RoundButton</span>.useWithSkin(<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>( <span class="Apple-tab-span">	</span>radius: <span class="s5">2</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>extrude: <span class="s3">false</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>background: <span class="s3">Color</span>.gray(<span class="s5">0.3</span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>font: <span class="s3">Font</span>( <span class="s3">Font</span>.defaultSansFace, <span class="s5">11 </span>).boldVariant,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>stringColor: <span class="s3">Color</span>.yellow</p>
+<p class="p6"><span class="Apple-tab-span">	</span>), {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a = <span class="s3">RoundButton</span>( w, <span class="s5">60</span>@<span class="s5">18 </span>).label_( <span class="s4">"skinned"</span> );</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b = <span class="s3">RoundButton</span>( w, <span class="s5">40</span>@<span class="s5">18 </span>).label_( <span class="s4">"bye"</span> );<span class="Apple-tab-span">	</span></p>
+<p class="p6">});</p>
+<p class="p3"><br></p>
+<p class="p6">c = <span class="s3">RoundButton</span>( w, <span class="s5">60</span>@<span class="s5">18 </span>).label_( <span class="s4">"default"</span> );</p>
+<p class="p6">)</p>
+<p class="p3"><br></p>
+<p class="p2"><span class="s3">And</span> the final way to skin is by doing it directly to the <span class="s3">RoundButton</span> itself, via <b>applySkin</b>. <span class="s3">This</span> is the best way if the skin is only meant for a few objects in between others.</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p11"><span class="s8">w = </span><span class="s3">Window</span><span class="s8">( </span>"RoundButton skins"<span class="s8"> ).front;</span></p>
+<p class="p6">w.addFlowLayout;</p>
+<p class="p3"><br></p>
+<p class="p10">// the skin</p>
+<p class="p6">z = ( <span class="Apple-tab-span">	</span>radius: <span class="s5">3</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>border: <span class="s5">1</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>extrude: <span class="s3">false</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>background: <span class="s3">Gradient</span>( <span class="s3">Color</span>.white, <span class="s3">Color</span>.gray(<span class="s5">0.7</span>), <span class="s7">\v</span> ),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>font: <span class="s3">Font</span>( <span class="s3">Font</span>.defaultSansFace, <span class="s5">11 </span>).boldVariant,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>stringColor: <span class="s3">Color</span>.red(<span class="s5">0.25</span>)</p>
+<p class="p6"><span class="Apple-tab-span">	</span>);</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p6">a = <span class="s3">RoundButton</span>( w, <span class="s5">60</span>@<span class="s5">18 </span>).label_( <span class="s4">"normal"</span> );</p>
+<p class="p6">b = <span class="s3">RoundButton</span>( w, <span class="s5">60</span>@<span class="s5">18 </span>).label_( <span class="s4">"skinned"</span> ).applySkin( z );<span class="Apple-tab-span">	</span></p>
+<p class="p6">c = <span class="s3">RoundButton</span>( w, <span class="s5">120</span>@<span class="s5">18 </span>).label_( <span class="s4">"normal again"</span> );</p>
+<p class="p6">)</p>
+<p class="p3"><br></p>
+<p class="p2"><span class="s3">The</span> skinning system works for all members of the <span class="s3">RoundView</span> family (<a href="RoundButton.html"><span class="s3">RoundButton</span></a>, <a href="RoundSlider.html"><span class="s3">RoundSlider</span></a>, <span class="s3">SmoothRangeSlider</span>, <a href="RoundNumberBox.html"><span class="s3">RoundNumberBox</span></a> and their <span class="s7">'Smooth'</span> variants, and <a href="EZSmoothSlider.html"><span class="s3">EZSmoothSlider</span></a> etc.)</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p6"><span class="s3">RoundButton</span>.pushSkin( (<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>radius: <span class="s5">4</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>border: <span class="s5">1</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>background: <span class="s3">Gradient</span>( <span class="s3">Color</span>.white, <span class="s3">Color</span>.gray(<span class="s5">0.7</span>), <span class="s7">\v</span> ),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hiliteColor: <span class="s3">Color</span>.blue(<span class="s5">0.75</span>).alpha_(<span class="s5">0.5</span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>font: <span class="s3">Font</span>( <span class="s3">Font</span>.defaultMonoFace, <span class="s5">9 </span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>stringColor: <span class="s3">Color</span>.blue(<span class="s5">0.5</span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>align: <span class="s7">\center</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>focusColor: <span class="s3">Color</span>.clear,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>scroll_step: <span class="s5">0.01</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>) );</p>
+<p class="p3"><br></p>
+<p class="p11"><span class="s8">w = </span><span class="s3">Window</span><span class="s8">( </span>"round skin system"<span class="s8"> ).front;</span></p>
+<p class="p6">w.addFlowLayout;</p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s5">10</span>.do({ <span class="s3">|i|</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">RoundButton</span>( w, <span class="s5">20</span>@<span class="s5">20 </span>).label_( i.asString.dup );</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">RoundNumberBox</span>( w, <span class="s5">40</span>@<span class="s5">20 </span>).value_((<span class="s5">1</span>/(i+<span class="s5">1</span>)).round(<span class="s5">0.01</span>));</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">RoundSlider</span>( w, <span class="s5">320</span>@<span class="s5">20 </span>).value_(<span class="s5">1</span>/(i+<span class="s5">1</span>));</p>
+<p class="p6">});</p>
+<p class="p3"><br></p>
+<p class="p12">RoundButton<span class="s8">.popSkin;</span></p>
+<p class="p6">)</p>
+<p class="p3"><br></p>
+<p class="p2"><span class="s3">In</span> <span class="s3">this</span> case the properties in the skin are applied to all views. <span class="s3">There</span> is an option to single out on a specific type of view. <span class="s3">In</span> <span class="s3">this</span> example some properties apply to all, and some are overridden for specific view types:</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p6"><span class="s3">RoundButton</span>.pushSkin( (<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p10"><span class="s8"><span class="Apple-tab-span">	</span></span>// global properties</p>
+<p class="p6"><span class="Apple-tab-span">	</span>radius: <span class="s5">4</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span>border: <span class="s5">1</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span>background: <span class="s3">Gradient</span>( <span class="s3">Color</span>.white, <span class="s3">Color</span>.gray(<span class="s5">0.7</span>), <span class="s7">\v</span> ),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>hiliteColor: <span class="s3">Color</span>.web16.purple.alpha_(<span class="s5">0.5</span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>font: <span class="s3">Font</span>( <span class="s3">Font</span>.defaultMonoFace, <span class="s5">9 </span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>stringColor: <span class="s3">Color</span>.web16.purple.brightness( <span class="s5">-0.33 </span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span>align: <span class="s7">\center</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span>focusColor: <span class="s3">Color</span>.clear,</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s8"><span class="Apple-tab-span">	</span></span>// view specific</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s7">'RoundNumberBox'</span>: (scroll_step: <span class="s5">0.01</span>, <span class="s9">//additional</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>normalColor: <span class="s3">Color</span>.web16.purple.brightness( <span class="s5">-0.33 </span>),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>clipLo: <span class="s5">0</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>clipHi: <span class="s5">1 </span>),<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s7">'RoundButton'</span>: ( <span class="Apple-tab-span">	</span>font: <span class="s3">Font</span>( <span class="s3">Font</span>.defaultSansFace, <span class="s5">9 </span>).boldVariant ), <span class="s9">// override</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s7">'RoundRangeSlider'</span>: ( <span class="Apple-tab-span">	</span>background: <span class="s3">Gradient</span>( <span class="s3">Color</span>.white.alpha_(<span class="s5">0</span>), <span class="s3">Color</span>.gray(<span class="s5">0.7</span>), <span class="s7">\h</span> ),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span>knobColor: <span class="s3">Gradient</span>( <span class="s3">Color</span>.white, <span class="s3">Color</span>.gray(<span class="s5">0.7</span>), <span class="s7">\h</span> ),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span>stringAlignToKnob: <span class="s3">true</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span>minRange: <span class="s5">0.1</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p6"><span class="Apple-tab-span">	</span>)<span class="Apple-converted-space"> </span></p>
+<p class="p6">);</p>
+<p class="p3"><br></p>
+<p class="p11"><span class="s8">w = </span><span class="s3">Window</span><span class="s8">( </span>"round skin system"<span class="s8"> ).front;</span></p>
+<p class="p6">w.addFlowLayout;</p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s5">10</span>.do({ <span class="s3">|i|</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">RoundButton</span>( w, <span class="s5">20</span>@<span class="s5">20 </span>).label_( i.asString.dup );</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">RoundNumberBox</span>( w, <span class="s5">40</span>@<span class="s5">20 </span>).value_((<span class="s5">1</span>/(i+<span class="s5">1</span>)).round(<span class="s5">0.01</span>));</p>
+<p class="p12"><span class="s8"><span class="Apple-tab-span">	</span></span>RoundRangeSlider<span class="s8">( w, </span><span class="s5">320</span><span class="s8">@</span><span class="s5">20 </span><span class="s8">)</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.value_(<span class="s5">0.5 </span>+ ([<span class="s5">-0.5</span>,<span class="s5">0.5</span>] /(i+<span class="s5">1</span>)))</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.string_( i.asString );</p>
+<p class="p6">});</p>
+<p class="p3"><br></p>
+<p class="p12">RoundButton<span class="s8">.popSkin;</span></p>
+<p class="p6">)</p>
+</body>
+</html>

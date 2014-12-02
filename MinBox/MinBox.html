@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; color: #000000; min-height: 17.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; color: #000000}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; color: #000000}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; color: #bf0000}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #000000}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #bf0000}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #000000; min-height: 16.0px}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #0000bf}
+p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #007300}
+p.p22 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {text-decoration: underline}
+span.s3 {color: #0000bf}
+span.s4 {color: #606060}
+span.s5 {color: #007300}
+span.s6 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>MinBox<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a minimal gui</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: UserView</b></p>
+<p class="p3"><br></p>
+<p class="p1">MinBox is a custom GUI widget that attempts to emulate slider, knob, numberbox, button, and the "EZ" container classes, all in a minimal amount of space.<span class="Apple-converted-space">  </span>You may also specify a ControlSpec, as well as step and round values.</p>
+<p class="p2"><br></p>
+<p class="p1">You may change the value using the mouse, programmatically, using the arrow keys, or using the number keys to set the value directly.<span class="Apple-converted-space">  </span>The Ctrl and Alt keys change the step value when changing the value via mouse.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="../Core/Object.html"><span class="s2">CV</span></a> <a href="SC://NumberBox"><span class="s2">NumberBox</span></a></p>
+<p class="p4"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (parent, bounds)</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>parent </b>- <span class="s3">The</span> parent view.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>bounds </b>- <span class="s3">An</span> instance of <a href="../../../../../../../Applications/Audio/SuperCollider3/build/Help/Geometry/Rect.html"><span class="s3">Rect</span></a>, or a <a href="../../../../../../../Applications/Audio/SuperCollider3/build/Help/Geometry/Point.html"><span class="s3">Point</span></a> indicating width@height.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w = <span class="s3">Window</span>.new("",Rect(300,300,90,90)).front;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m = <span class="s3">MinBox</span>(w,<span class="s3">Rect</span>(10,10,70,70));</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m.value = 0.4;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m.action = { <span class="s3">arg</span> q;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>q.postln</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p12"><span class="s3">Use</span> <span class="s3">this</span> widget factory to explore the various customization options of MinBox:</p>
+<p class="p6"><br></p>
+<p class="p11">(</p>
+<p class="p11">~win = <span class="s3">FlowView</span>.new;</p>
+<p class="p11">~minbox = <span class="s3">MinBox</span>.new(~win, 150@150).label_(<span class="s4">"a minbox"</span>).resize_(5);</p>
+<p class="p11">~flow = <span class="s3">FlowView</span>.new(~win, 150@150);</p>
+<p class="p11"><span class="s3">StaticText</span>(~flow, 60@20).align_(<span class="s5">\right</span>).string_(<span class="s4">"mode"</span>);</p>
+<p class="p11">~mode = <span class="s3">PopUpMenu</span>.new(~flow, 60@20)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.items_(<span class="s3">MinBox</span>.modes)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.value_(0)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.action_({<span class="s3">|v|</span> ~minbox.mode = v.item; ~minbox.refresh<span class="Apple-converted-space">  </span>});</p>
+<p class="p11"><span class="s3">StaticText</span>(~flow, 60@20).align_(<span class="s5">\right</span>).string_(<span class="s4">"textMode"</span>);</p>
+<p class="p11">~textMode = <span class="s3">PopUpMenu</span>.new(~flow, 60@20)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.items_(<span class="s3">MinBox</span>.textModes)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.value_(1)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.action_({<span class="s3">|v|</span> ~minbox.textMode = v.item; ~minbox.refresh<span class="Apple-converted-space">  </span>});</p>
+<p class="p11"><span class="s3">StaticText</span>(~flow, 60@20).align_(<span class="s5">\right</span>).string_(<span class="s4">"align"</span>);</p>
+<p class="p11">~align = <span class="s3">PopUpMenu</span>.new(~flow, 60@20)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.items_(<span class="s3">MinBox</span>.aligns)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.value_(2)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.action_({<span class="s3">|v|</span> ~minbox.align = v.item; ~minbox.refresh<span class="Apple-converted-space">  </span>});</p>
+<p class="p11"><span class="s3">StaticText</span>(~flow, 60@20).align_(<span class="s5">\right</span>).string_(<span class="s4">"spec"</span>);</p>
+<p class="p11">~spec = <span class="s3">PopUpMenu</span>.new(~flow, 60@20)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.items_(<span class="s3">Spec</span>.specs.select({<span class="s3">|x|</span> x.isKindOf(<span class="s3">ControlSpec</span>)}).keys.asArray.sort)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.action_({<span class="s3">|v|</span> ~minbox.spec = <span class="s3">Spec</span>.specs.at(v.item).postln; ~minbox.refresh<span class="Apple-converted-space">  </span>});</p>
+<p class="p11">~spec.valueAction = ~spec.items.indexOf(<span class="s5">\unipolar</span>);</p>
+<p class="p11"><span class="s3">StaticText</span>(~flow, 60@20).align_(<span class="s5">\right</span>).string_(<span class="s4">"step"</span>);</p>
+<p class="p11">~step = <span class="s3">NumberBox</span>(~flow, 60@20)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.value_(~minbox.step)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.action_({<span class="s3">|v|</span> ~minbox.step = v.value });</p>
+<p class="p11"><span class="s3">StaticText</span>(~flow, 60@20).align_(<span class="s5">\right</span>).string_(<span class="s4">"round"</span>);</p>
+<p class="p11">~round = <span class="s3">NumberBox</span>(~flow, 60@20)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.value_(~minbox.round)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.action_({<span class="s3">|v|</span> ~minbox.round = v.value });</p>
+<p class="p11"><span class="s3">StaticText</span>(~flow, 60@20).align_(<span class="s5">\right</span>).string_(<span class="s4">"label"</span>);</p>
+<p class="p11">~label = <span class="s3">TextField</span>(~flow, 60@20)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.value_(~minbox.label)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.action_({<span class="s3">|v|</span> ~minbox.label = v.value.asString });</p>
+<p class="p3"><br></p>
+<p class="p11">~win.startRow;</p>
+<p class="p3"><br></p>
+<p class="p11">~result = <span class="s3">Button</span>.new(~win, 100@40).states_([[<span class="s4">"Compile String"</span>]]);</p>
+<p class="p11">~result.action_({<span class="s3">|view|</span></p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s3">var</span><span class="s6"> str = </span>"MinBox.new(parent, bounds)"<span class="s6">;</span></p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>str = str++</span>"\n\t.label_(%)\n\t.spec_(%)"</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.format(~minbox.label.asCompileString,~minbox.spec.asCompileString);</p>
+<p class="p13"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>str = str++</span>"\n\t.mode_(%).textMode_(%).align_(%)"</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.format(~minbox.mode.asCompileString,~minbox.textMode.asCompileString,~minbox.align.asCompileString);</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>str = str++<span class="s4">"\n\t.step_(%).round_(%)"</span>.format(~minbox.step, ~minbox.round);</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>str.postln</p>
+<p class="p11"><span class="Apple-tab-span">	</span>})</p>
+<p class="p3"><br></p>
+<p class="p11">)</p>
+<p class="p6"><br></p>
+<p class="p14"><b>Accessing Instance and Class Variables</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>defaultMode</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>classvar.<span class="Apple-converted-space">  </span>the default mode for MinBox may be changed. <span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is \vert</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>modes</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lists the possible display modes</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>textModes</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lists the possible textModes</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>aligns</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lists the possible values for align</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>round</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>when a value is set it is rounded using this value.<span class="Apple-converted-space">  </span>This rounds the spec-mapped value.<span class="Apple-converted-space">  </span>See step for rounding the unmapped value</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default is 0.01</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>mode</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>this sets the display mode.<span class="Apple-converted-space">  </span>See example above for what the options look like.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default is \vert</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>spec</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A ControlSpec.<span class="Apple-converted-space">  </span>When this is set the value of this view is mapped to the spec.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is \unipolar</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Note: changing the step value of the ControlSpec does not change the round or step of the MinBox</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>value</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The value of the view mapped to the view's current spec.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is 0.0;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>align_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>align</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Sets the align of the text within the view</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is \center</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>textMode</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Changes the mode for the text display</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is nil.</p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>label</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A String.<span class="Apple-converted-space">  </span>Default value is ""</p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>hiColor_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>hiColor</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A Color.<span class="Apple-converted-space">  </span>Sets the color for the max value</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>loColor_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>loColor</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A Color.<span class="Apple-converted-space">  </span>Sets the color for the min value<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>lineColor_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>lineColor</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A Color.<span class="Apple-converted-space">  </span>Sets the color for the min value<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>font_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>font</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A Font.<span class="Apple-converted-space">  </span>Sets the font</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>typingColor_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>typingColor</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A Color.<span class="Apple-converted-space">  </span>See [NumberBox]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>normalColor_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>normalColor</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A Color.<span class="Apple-converted-space">  </span>See [NumberBox]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>editable_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>editable</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Sets the view editable or not.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>skin</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Use this to change the view's display settings all at once.<span class="Apple-converted-space">  </span>Here are some examples:</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// NOTE: use with widget factory code above</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// grayscale</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~minbox.skin = (</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hi: <span class="s3">Color</span>.gray(0.85),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lo: <span class="s3">Color</span>.gray(0.5),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>text: <span class="s3">Color</span>.gray(0.1,0.8),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>type: <span class="s3">Color</span>.red(0.8,0.8),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>line: <span class="s3">Color</span>.gray(0.98),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>font: <span class="s3">Font</span>(<span class="s4">"Verdana-Bold"</span>, 12.0),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>defaultMode: <span class="s5">'blend'</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~minbox.font = <span class="s3">Font</span>(<span class="s4">"Verdana-Bold"</span>, 12); ~minbox.refresh</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// 70's</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~minbox.skin = (<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hi: <span class="s3">Color</span>(0.8, 0.4, 0.0, 1.0),<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lo: <span class="s3">Color</span>(0.74, 0.72, 0.42, 1.0),<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>line: <span class="s3">Color</span>(0.15, 0.25, 0.55, 0.7),<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>text: <span class="s3">Color</span>(0.1, 0.1, 0.1, 1.0),<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>type: <span class="s3">Color</span>(1.0, 1.0, 1.0, 1.0),<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>font: <span class="s3">Font</span>(<span class="s4">"Verdana-Bold"</span>, 12.0),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>defaultMode: <span class="s5">'blend'</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// iXi-inspired</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~minbox.skin = (</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hi: <span class="s3">Color</span>(1.0, 0.4, 0.0, 0.63),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lo: <span class="s3">Color</span>(0.4, 0.58, 0.4, 1.0),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>line: <span class="s3">Color</span>(0.61, 0.8, 0.61, 1.0),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>text: <span class="s3">Color</span>(0.88, 0.94, 0.88, 1.0),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>type: <span class="s3">Color</span>(0.5, 0.2, 0.0, 0.81),</p>
+<p class="p16"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//Color(1.0, 0.82, 0.7, 0.89),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>font: <span class="s3">Font</span>(<span class="s4">"Helvetica"</span>, 15.0),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>defaultMode: <span class="s5">'horiz'</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~minbox.skin = <span class="s3">GUI</span>.skins.default.minbox</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>step_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>step</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Sets the step size for changing the value.<span class="Apple-converted-space">  </span>This is mapped to the 0-1 range, not the ControlSpec value</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is 0.001.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>input_ (in)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>input</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>returns or sets the unmapped value (0-1 range) of the view</b></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p14"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p16">// start server before running example</p>
+<p class="p11">s.boot</p>
+<p class="p3"><br></p>
+<p class="p17">(</p>
+<p class="p18">// a gui for Gendy</p>
+<p class="p17">~ex = ();</p>
+<p class="p18">// list of specs</p>
+<p class="p17">~ex[<span class="s5">\specs</span>] = (</p>
+<p class="p17"><span class="Apple-tab-span">	</span>ampdist: [0,6,<span class="s5">\lin</span>,1].asSpec, durdist: [0,6,<span class="s5">\lin</span>,1].asSpec,</p>
+<p class="p17"><span class="Apple-tab-span">	</span>adparam: <span class="s5">\unipolar</span>.asSpec, ddparam: <span class="s5">\unipolar</span>.asSpec,</p>
+<p class="p17"><span class="Apple-tab-span">	</span>ampscale: <span class="s5">\unipolar</span>.asSpec, durscale: <span class="s5">\unipolar</span>.asSpec,</p>
+<p class="p17"><span class="Apple-tab-span">	</span>minfreq: <span class="s5">\midfreq</span>.asSpec, maxfreq: <span class="s5">\midfreq</span>.asSpec,</p>
+<p class="p17"><span class="Apple-tab-span">	</span>amp: <span class="s5">\unipolar</span>.asSpec, knum: [1,24,<span class="s5">\lin</span>,1].asSpec,</p>
+<p class="p17"><span class="Apple-tab-span">	</span>start: [0,1,<span class="s5">\lin</span>,1].asSpec, close: [0,1,<span class="s5">\lin</span>,1].asSpec</p>
+<p class="p17">);</p>
+<p class="p18">// inital values</p>
+<p class="p17">~ex[<span class="s5">\defaults</span>] = [1,1,1,1,0.5,0.5,20,1000,0.5,12,0,0];</p>
+<p class="p19"><br></p>
+<p class="p18">// synth that will be controlled by GUI</p>
+<p class="p17">~ex[<span class="s5">\synth</span>] = <span class="s3">NodeProxy</span>.audio(s,2);</p>
+<p class="p20"><span class="s6">~ex[</span><span class="s5">\synth</span><span class="s6">].source = {</span>|ampdist=1, durdist=1, adparam=1, ddparam=1, ampscale=1, durscale=1, minfreq=25, maxfreq=4000, amp=1.0, knum=12, gate=1.0|</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="s3">var</span> sig = <span class="s3">Gendy1</span>.ar(ampdist, durdist, adparam, ddparam, minfreq, maxfreq, ampscale, durscale, 24, knum);</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="s3">var</span> env = <span class="s3">Linen</span>.kr(gate,doneAction:2);</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="s3">Pan2</span>.ar(sig*env, 0, amp*env)</p>
+<p class="p17">};</p>
+<p class="p19"><br></p>
+<p class="p18">// gui setup</p>
+<p class="p17">~ex[<span class="s5">\win</span>] = <span class="s3">Window</span>.new(<span class="s4">"synth"</span>,<span class="s3">Rect</span>(300,200, 160, 200)).front;</p>
+<p class="p17">~ex[<span class="s5">\win</span>].onClose = { { ~ex[<span class="s5">\synth</span>].clear }.defer };</p>
+<p class="p17">~ex[<span class="s5">\boxes</span>] = <span class="s3">List</span>[];</p>
+<p class="p21"><span class="s6">~ex[</span>\guilayout<span class="s6">] = [[</span>\ampdist<span class="s6">, </span>\durdist<span class="s6">],[</span>\adparam<span class="s6">,</span>\ddparam<span class="s6">],[</span>\ampscale<span class="s6">,</span>\durscale<span class="s6">],[</span>\minfreq<span class="s6">,</span>\maxfreq<span class="s6">],[</span>\amp<span class="s6">,</span>\knum<span class="s6">],[</span>\start<span class="s6">,</span>\close<span class="s6">]];</span></p>
+<p class="p21"><span class="s6">~ex[</span>\rowmode<span class="s6">] = [</span>\clear<span class="s6">,</span>\blend<span class="s6">,</span>\vert<span class="s6">,</span>\horiz<span class="s6">,</span>\round<span class="s6">,</span>\button<span class="s6">];</span></p>
+<p class="p19"><br></p>
+<p class="p17">~ex[<span class="s5">\guilayout</span>].do {<span class="s3">|pair,row|</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="s3">var</span> rect = <span class="s3">Rect</span>(0,0,80,32);</p>
+<p class="p17"><span class="Apple-tab-span">	</span>pair.do {<span class="s3">|name,col|</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rect = rect.moveTo(col*rect.width,row*rect.height);</p>
+<p class="p18"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// create grid of MinBoxes</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~ex[<span class="s5">\boxes</span>] = ~ex[<span class="s5">\boxes</span>].add(</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">MinBox</span>.new(~ex[<span class="s5">\win</span>], rect.insetBy(1,1))</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.label_(name)</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.spec_(~ex[<span class="s5">\specs</span>][name]).mode_(~ex[<span class="s5">\rowmode</span>][row])</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.textMode_(<span class="s5">'switch'</span>).align_(<span class="s5">'center'</span>)</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.value_(~ex[<span class="s5">\defaults</span>][(row*2)+col])</p>
+<p class="p22"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_(</span>{<span class="s3">|me|</span> ~ex[<span class="s5">\synth</span>].set(me.label.asSymbol, me.value) })</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p17"><span class="Apple-tab-span">	</span>}</p>
+<p class="p17">};</p>
+<p class="p19"><br></p>
+<p class="p18">// start button</p>
+<p class="p17">~ex[<span class="s5">\boxes</span>][10].action = {<span class="s3">|me|</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span>if(~ex[<span class="s5">\boxes</span>][10].input==0)<span class="Apple-converted-space"> </span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ ~ex[<span class="s5">\synth</span>].stop }<span class="Apple-converted-space"> </span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ ~ex[<span class="s5">\synth</span>].play }</p>
+<p class="p17">};</p>
+<p class="p19"><br></p>
+<p class="p18">// close button</p>
+<p class="p17">~ex[<span class="s5">\boxes</span>][11].action = {<span class="s3">|me|</span> { ~ex[<span class="s5">\win</span>].close }.defer(0.3) }</p>
+<p class="p19"><br></p>
+<p class="p17">)</p>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #0000bf}
+span.s4 {color: #606060}
+span.s5 {color: #000000}
+span.s6 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>FuzzySet</b></span><span class="s2"><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>random lookup dictionary with singular elements</b></p>
+<p class="p2"><br></p>
+<p class="p1">superclass: FuzzyDictionary</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>put(key, obj)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>put an object into the dictionary. If there is already an object at that</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>key, the new object is added to the list of choices. If the object exists already somewhere</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>in the set at a certain key, it is removed there.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>at(key)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>retrieve an object at a key.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If there is several, one of them is chosen at random.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>removeAt(key, obj)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>remove an object from a certain key.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If there is several of the same kind, only one is removed</p>
+<p class="p2"><br></p>
+<p class="p1"><b>remove(obj)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>remove an object from the set.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>replace(obj, by)</b><span class="Apple-tab-span">	</span>replace an object by another one at the same key.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>choose </b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>choose a key from all possible keys and then choose an object from it</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>doAt(key, function)</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>iterate over all elements at a certain key</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>keyAt(key)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>return the list of objects at a certain key</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">// example</p>
+<p class="p5">a = <span class="s3">FuzzySet</span>.new;</p>
+<p class="p3"><br></p>
+<p class="p4">// put the letters from a to j into the dictionary under their index</p>
+<p class="p5"><span class="s4">"abcdefghij"</span>.do { |c, i| a.put(i, c) };</p>
+<p class="p3"><br></p>
+<p class="p5">a.postcs;</p>
+<p class="p3"><br></p>
+<p class="p5">a.at(0);</p>
+<p class="p5">a.removeAt(0, $a);</p>
+<p class="p3"><br></p>
+<p class="p5">a.at(0)</p>
+<p class="p5">a.at(1);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">// now put the letters from l to u into the same indices</p>
+<p class="p5"><span class="s4">"lmnopqrstu"</span>.do { |c, i| a.put(i, c) };</p>
+<p class="p3"><br></p>
+<p class="p4">// now at a certain index there is two objects, getting chosen at equal distribution</p>
+<p class="p5">10.do { a[0].postln };<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s5">a[0] = 1000; </span>// this could be any object.</p>
+<p class="p3"><br></p>
+<p class="p5">10.do { a[0].postln };<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">// in difference to FuzzyDictionary, adding one object again, will remove the old one.</p>
+<p class="p3"><br></p>
+<p class="p5">a[4] = $a;</p>
+<p class="p3"><br></p>
+<p class="p5">10.do { a[0].postln }; <span class="s6">// only "l" is left</span></p>
+<p class="p5">10.do { a[4].postln }; <span class="s6">// "a" is here</span></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

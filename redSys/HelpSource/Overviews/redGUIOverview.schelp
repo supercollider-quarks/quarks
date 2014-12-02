@@ -1,0 +1,41 @@
+TITLE:: redGUIOverview
+SUMMARY:: overview of gui wrappers
+CATEGORIES:: Red
+
+TABLE::
+## link::Classes/Red2DSlider:: || Red2DSlider(parent, bounds)
+## link::Classes/RedButton:: || RedButton(parent, bounds ...str)
+## link::Classes/RedFont:: || RedFont()
+## link::Classes/RedKnob:: || RedKnob(parent, bounds)
+## link::Classes/RedLevelIndicator:: || RedLevelIndicator(parent, bounds)
+## link::Classes/RedMultiSliderView:: || RedMultiSliderView(parent, bounds)
+## link::Classes/RedNumberBox:: || RedNumberBox(parent, bounds)
+## link::Classes/RedPopUpMenu:: || RedPopUpMenu(parent, bounds)
+## link::Classes/RedPopUpTreeMenu:: || RedPopUpTreeMenu(parent, bounds)
+## link::Classes/RedSlider:: || RedSlider(parent, bounds)
+## link::Classes/RedStaticText:: || RedStaticText(parent, string, bounds)
+## link::Classes/RedTextView:: || RedTextView(parent, bounds)
+::
+
+EXAMPLES::
+
+CODE::
+GUI.skins.redFrik		//also includes a skin
+RedFont.new.dump
+(
+var w= Window("RedGUI test", Rect(100, 200, 400, 400)).front;
+w.view.decorator= FlowLayout(w.view.bounds);
+Red2DSlider(w);
+RedButton(w);
+RedButton(w, nil, "aaa", "bbb");
+RedKnob(w);
+RedLevelIndicator(w).value_(0.5);
+RedMultiSliderView(w);
+RedNumberBox(w);
+RedPopUpMenu(w);
+RedPopUpTreeMenu(w);
+RedSlider(w);
+RedStaticText(w, "test123");
+RedTextView(w);
+)
+::

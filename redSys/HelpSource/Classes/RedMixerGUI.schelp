@@ -1,0 +1,42 @@
+CLASS:: RedMixerGUI
+SUMMARY:: gui for RedMixer
+CATEGORIES:: Red>redMixer
+RELATED:: Classes/RedMixer, Classes/RedEffectsRackGUI
+
+DESCRIPTION::
+NOTE::
+Requires link::Classes/Conductor:: quark.
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: redMixer
+A link::Classes/RedMixer::.
+
+ARGUMENT:: position
+A link::Classes/Point::.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedMixerGUI
+
+METHOD:: close
+Close the window if open.
+
+METHOD:: time
+Slider to go from now to later.
+
+EXAMPLES::
+
+CODE::
+a= RedMixer();
+c= RedMixerGUI(a);
+b= Pbind(\degree, Pseq([0, 5, 6, 3, 2, 1], inf), \out, Pseq([2, 4, 6, 8], inf)).play;
+a.channels[1].cvs.vol.input= 1.0.rand;
+a.channels[2].cvs.bal.input= 1.0.rand;
+c.close;
+b.stop;
+a.free;
+::

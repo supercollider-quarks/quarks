@@ -1,0 +1,170 @@
+TITLE:: ProxyMeter
+summary:: easy metering of audio proxy levels
+categories:: Libraries>JITLib
+related:: Classes/Ndef, Classes/NodeProxy, Classes/ProxySpace, Classes/PrePostUV, Classes/PrePostView 
+
+DESCRIPTION::
+ProxyMeter measures the peak levels of proxies (e.g. those showing on a proxymixer),
+determines pre- and post-slider volume, and can displays these two levels on a mixer,
+or generally, on a MonitorGui.
+
+Written by adc, based on suggestions of / discussions with Ricardo Guerreiro.
+Reuses ideas and code from AudioMeter by A. Bartetzki.
+
+code::
+(
+Server.default = s = Server.local;
+s.makeWindow;
+s.boot;
+p = p ?? { ProxySpace.new }; p.push;
+
+m = ProxyMixer(p, 8);
+)
+	// make some proxies
+(
+~a = { Ringz.ar(Dust.ar([1, 1]), [600, 800], 0.05) };
+~b = { Dust.ar([20, 80, 320]) * 0.5 };
+~y = { SinOsc.ar(0.2).abs * PinkNoise.ar };
+~x = { SinOsc.ar(0.13).abs * BrownNoise.ar };
+
+~a.play(vol: 0.2);
+~b.play(vol: 0.1);
+~x.play(vol: 0.2);
+~y.play(vol: 0.1);
+)
+	// show pre- and post volume amps on the sliders
+ProxyMeter.addMixer(m);
+
+	// where the proxy meter instances live
+ProxyMeter.all;
+ProxyMeter.showKrs; // show them as kr proxies
+ProxyMeter.hideKrs;
+
+	// remove them again
+ProxyMeter.removeMixer(m);
+::
+
+
+CLASSMETHODS::
+
+subsection:: Class Variables
+
+METHOD:: all
+a dict for all currently active ProxyMeters
+
+METHOD:: ppvClass
+get and set the kind of PrePostView class. can be PrePostUV (for 3.6.x and later) or PrePostView (3.5.x and earlier)
+
+METHOD:: prefix
+get and set the prefix to use for metering proxies
+
+METHOD:: sourceFunc
+the audio function to use for metering proxy volume
+
+METHOD:: prePostViews
+the currently active PrePostViews
+
+METHOD:: proxyGuis
+the proxyGuis for which metering is active
+
+METHOD:: showingKrs
+the flag whether to show meter proxies as krs or not. Set with showKrs, hideKrs.
+
+METHOD:: new 
+make a new ProxyMeter for the proxy given
+
+private:: skipjack, initClass, cmdPeriod, makeSkipJack
+
+subsection:: Class Methods
+
+private:: checkGuiObjects, checkSkip, checkAdd, checkAll, checkAddPrePost
+
+
+METHOD:: addMonitorGui, removeMonitorGui
+add or remove a MonitorGui
+METHOD:: addNdefGui, removeNdefGui
+add or remove an NdefGui
+METHOD:: addMixer, removeMixer
+add or remove a ProxyMixer or NdefMixer
+
+METHOD:: clear
+clear all ProxyMeters and remove their associated views.
+
+METHOD:: showKrs, hideKrs
+show or hide meter proxies as kr proxies in their proxyspace.
+
+
+INSTANCEMETHODS::
+
+METHOD:: arProxy
+the ar proxy the ProxyMeter is metering
+
+METHOD:: ampProxy
+the kr proxy that meters the ar proxy's volume
+
+METHOD:: ampVals
+the last measured pre- and post volume amp of the ar proxy.
+
+METHOD:: space
+the proxyspace that the ar proxy lives in.
+
+METHOD:: resp 
+the OSCresponder for this ProxyMeter
+
+METHOD:: remove
+remove this ProxyMeter
+
+METHOD:: ampName
+the name for the meterproxy
+
+METHOD:: sendPoll
+
+METHOD:: views
+the views on which the meterproxy should be shown
+
+METHOD:: showKr, hideKr
+show or hide this meter proxy in its proxyspace.
+
+private:: init, makeResp, makeAmpProxy, checkFunc, updateFunc
+
+
+EXAMPLES::
+
+code::
+	// Test with Ndefs as well
+(
+s.boot;
+m = NdefMixer(s, 8);
+)
+	// make some proxies
+(
+Ndef(\a, { Ringz.ar(Dust.ar([1, 1]), [600, 800], 0.05) });
+Ndef(\b, { Dust.ar([20, 80, 320]) * 0.5 });
+Ndef(\y, { SinOsc.ar(0.2).abs * PinkNoise.ar });
+Ndef(\x, { SinOsc.ar(0.13).abs * BrownNoise.ar });
+
+Ndef(\a).play(vol: 0.2);
+Ndef(\b).play(vol: 0.1);
+Ndef(\x).play(vol: 0.2);
+Ndef(\y).play(vol: 0.1);
+)
+	// show pre- and post volume amps on the sliders
+ProxyMeter.addMixer(m);
+
+	// where the proxy meter instances live
+ProxyMeter.all;
+ProxyMeter.showKrs; // show them as kr proxies
+ProxyMeter.hideKrs;
+
+	// remove them again
+ProxyMeter.removeMixer(m);
+
+n = NdefGui(Ndef(\x));
+ProxyMeter.addNdefGui(n);
+ProxyMeter.removeNdefGui(n);
+
+g = MonitorGui(Ndef(\a));
+ProxyMeter.addMonitorGui(n);
+ProxyMeter.removeMonitorGui(n);
+
+::

@@ -1,0 +1,44 @@
+CLASS:: TraerParticle
+SUMMARY:: move around in 3D space based on forces applied to them
+CATEGORIES:: TraerPhysics
+RELATED:: Overviews/TraerPhysicsOverview, Classes/TraerAttraction, Classes/TraerParticleSystem, Classes/TraerSpring
+
+DESCRIPTION::
+Particles can represent objects, corners of 2D or 3D shapes or abstract things that won't even be drawn. Particles have 5 properties:
+NUMBEREDLIST::
+##Mass
+##Position
+##Velocity
+##Age
+##Fixed / Free
+::
+
+NOTE::
+Documentation is only very slightly adapted to comply with the SuperCollider port. See the original by Jeffrey Traer Bernstein here... http://murderandcreate.com/physics/
+::
+
+INSTANCEMETHODS::
+
+PRIVATE::initTraerParticle
+
+METHOD::position
+Move the particle to some 3D location with CODE::positon.set(x, y, z);::.
+Move the particle by some 3D amount with CODE::position.add(x, y, z);::.
+And this is how you get to the dimensions of particle position. CODE::position.x; position.y; position.z;::.
+
+METHOD::velocity
+Set the velocity to some 3D quantity, maybe use this to send a particle flying off in a particular direction: CODE::velocity.set(x, y, z);::.
+This adds some 3D quantity to the velocity of the particle. You could maybe use this to speed up or slow down a particle: CODE::velocity.add(x, y, z);::.
+And this is how you get at the dimensions of the particles velocity: CODE::velocity.x; velocity.y; velocity.z;::
+
+METHOD::mass
+Get or set the mass of the particle.
+
+METHOD::setMass
+Set the mass of the particle. Heavier particles will have more inertia and will accelerate slower. Attraction/repulsion forces will also be stronger for heavier particles. If you aren't doing anything special this will probably be the same for all particles.
+
+METHOD::makeFixed, makeFree
+Particles can either be fixed or free. If they are free they move around and are affected by forces, if they are fixed they stay where they are.
+
+METHOD::age
+How long the particle has been around. Every time you advance the simulation by CODE::t:: every particle gets a little older by CODE::t::.

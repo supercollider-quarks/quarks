@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.44">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 17.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 17.0px Helvetica; min-height: 20.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica; min-height: 16.0px}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf; min-height: 12.0px}
+    span.s1 {color: #000000}
+    span.s2 {color: #0000bf}
+    span.s3 {color: #606060}
+  </style>
+</head>
+<body>
+<p class="p1"><b>ARHeadtracker</b></p>
+<p class="p2"><b></b><br></p>
+<p class="p3">ARHeadtracker is a class that uses a LocalClient to receive data from the ARHeadtracker command</p>
+<p class="p3">line tool via OSC (dont forget to start the tool in order to receive data...)</p>
+<p class="p4"><br></p>
+<p class="p3">An instance implements the kr method and delivers [elevation, atzimuth, roll]</p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s1">a = </span>ARHeadtracker<span class="s1">.new;</span></p>
+<p class="p5"><br></p>
+<p class="p7">// look straight forward to calibrate the system</p>
+<p class="p8">a.reset;</p>
+<p class="p5"><br></p>
+<p class="p7">// create the virtual room</p>
+<p class="p8">p = <span class="s2">ProxySpace</span>.push;</p>
+<p class="p5"><br></p>
+<p class="p7">// simple test with sinus freq controled by azimuth</p>
+<p class="p8">~test = { <span class="s2">SinOsc</span>.ar(200 + (a.kr[1] * 100), 0, 0.2) };</p>
+<p class="p8">~test.play;</p>
+<p class="p8">~test.clear;</p>
+<p class="p9"><br></p>
+<p class="p7">// more complex example as headtracker in a virtual environment</p>
+<p class="p8"><span class="s2">VirtualRoom</span>.revTime = 1;</p>
+<p class="p8"><span class="s2">VirtualRoom</span>.revGain = 0.1;</p>
+<p class="p8"><span class="s2">VirtualRoom</span>.hfDamping = 1;</p>
+<p class="p6">VirtualRoom<span class="s1">.init;</span></p>
+<p class="p6">VirtualRoom<span class="s1">.start;</span></p>
+<p class="p8">{ <span class="s2">VirtualRoom</span>.ar }.play;</p>
+<p class="p5"><br></p>
+<p class="p7">// position the listener in the middle of the room and assign the<span class="Apple-converted-space"> </span></p>
+<p class="p7">// head tracker data to the orientation of the listener<span class="Apple-converted-space"> </span></p>
+<p class="p8">~listener = { <span class="s2">| x=2.5, y=4, z=2.5, o=0|</span> [x,y,z, a.kr[1]] };</p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s1">v = </span>VirtualRoom<span class="s1">.new;</span></p>
+<p class="p8">v.listener = ~listener;<span class="Apple-converted-space"> </span></p>
+<p class="p8">v.room = [0, 0, 0, 5, 8, 5];</p>
+<p class="p8">v.refGain = 1;</p>
+<p class="p5"><br></p>
+<p class="p8">v.play;</p>
+<p class="p5"><br></p>
+<p class="p7">// adding a source to the scene (slightly right off)</p>
+<p class="p8">~noisy = { <span class="s2">EnvGen</span>.kr(<span class="s2">Env</span>.adsr, <span class="s2">Impulse</span>.kr(3)) * <span class="s2">PinkNoise</span>.ar(1) };</p>
+<p class="p8">~noisyPos = { <span class="s2">| x=3.5, y=3, z=2.5 |</span> [x,y,z] };</p>
+<p class="p8">v.addSource( ~noisy, <span class="s3">"test1"</span>, ~noisyPos);</p>
+<p class="p8">v.removeSource(<span class="s3">"test1"</span>);</p>
+<p class="p5"><br></p>
+<p class="p7">// play and stop the virtual room</p>
+<p class="p8">v.play;</p>
+<p class="p8">v.stop;</p>
+<p class="p5"><br></p>
+<p class="p7">// stop the rendering engine</p>
+<p class="p6">VirtualRoom<span class="s1">.stop;</span></p>
+<p class="p5"><br></p>
+<p class="p8">p.pop;</p>
+<p class="p5"><br></p>
+</body>
+</html>

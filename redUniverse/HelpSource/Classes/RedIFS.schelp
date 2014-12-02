@@ -1,0 +1,126 @@
+CLASS:: RedIFS
+SUMMARY:: iterated function system
+CATEGORIES:: Red>redUniverse>additional
+RELATED:: Classes/RedMRCM, Classes/RedLTurtle
+
+DESCRIPTION::
+Plotting with link::Classes/Pen::. After Flake - "The Computational Beauty of Nature".
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: drawFunc
+A link::Classes/Function:: that draws something. It is passed a link::Classes/Point:: argument that should be used. Leave as code::nil:: for the default single pixel.
+
+ARGUMENT:: matrices
+Array of arrays defining affine transformations. The inner array should have 6 values. See Pen's link::Classes/Pen#*matrix:: method. The outer array can be any length.
+
+ARGUMENT:: n
+Number of iterations.
+
+ARGUMENT:: skip
+Number of initial transformations without drawing.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prDraw, prTransform
+
+METHOD:: draw
+Start drawing at current link::Classes/Pen:: position.
+
+METHOD:: makeWindow
+Creates a link::Classes/Window:: and draws. Mainly for testing.
+
+METHOD:: drawFunc
+
+METHOD:: matrices
+
+METHOD:: n
+
+METHOD:: skip
+
+EXAMPLES::
+
+CODE::
+//--f is drawFunc, m is matrices, n is iterations
+f= nil;
+m= [[0.5, 0, 0, 0.5, -0.25, 0.25], [0.5, 0, 0, 0.5, 0.25, 0.25], [0.5, 0, 0, 0.5, 0, -0.25]];
+a= RedIFS(nil, m, 10000, 100);
+a.makeWindow
+a.n= 1000
+a.makeWindow
+a.drawFunc= {|point| Pen.addWedge(point, 3, 0.125pi, 1.75pi)};
+a.makeWindow
+a.matrices= [[0.5, 0, 0, 0.5, -0.25, 0.25], [0.5, 0, 0, 0.5, 0.25, 0.25], [0, -0.5, 0.5, 0, 0.25, -0.25]];
+a.makeWindow
+a.n= 1500
+a.drawFunc= {|point| Pen.lineTo(point)};
+a.makeWindow(Rect(100, 200, 800, 600)).view.background_(Color.red)
+
+//--
+(
+var width= 500, height= 500;
+var m= [
+	[0, 0.578, -0.577, 0, -0.15, -0.2],
+	[0, 0.577, -0.577, 0, -0.156, 0.2],
+	[0, 0.575, -0.577, 0, 0.2, 0]
+];
+var a= RedIFS(nil, m, 50000, 1000);
+var w= Window("ifs", Rect(100, 200, width, height), false);
+var u= UserView(w, Rect(0, 0, width, height));
+u.background= Color.white;
+u.drawFunc= {
+	Pen.translate(width*0.5, height*0.5);
+	a.draw(width, height);
+	Pen.stroke;
+};
+w.front;
+)
+
+//--animation
+(
+var width= 400, height= 400;
+var m= [
+	[1/3, 0, 0, 1/3, 0, -1/3],
+	[0, -1, -1/3, 0, 1/3, 0],
+	[0, -1, 1/3, 0, -1/3, 0]
+];
+var a= RedIFS(nil, m, 1000);
+var w= Window("ifs", Rect(100, 200, width, height), false);
+var u= UserView(w, Rect(0, 0, width, height));
+u.background= Color.white;
+u.clearOnRefresh= false;
+u.drawFunc= {
+	Pen.translate(width*0.5, height*0.5);
+	a.draw(width, height);
+	Pen.stroke;
+};
+w.front;
+Routine({while({w.isClosed.not}, {u.refresh; (1/30).wait})}).play(AppClock);
+)
+
+//--animation #2
+(
+var width= 400, height= 400, cnt= 0;
+var m= [
+	[0.5, 0, 0, 0.5, -0.25, 0.25],
+	[0.5, 0.3, 0, 0.5, 0.25, 0.25],
+	[0.5, 0, 0.3, 0.5, 0, -0.25]
+];
+var f= {|point| Pen.rotate(0.0006); Pen.line(point, point+5)};
+var a= RedIFS(f, m, 5000);
+var w= Window("ifs", Rect(100, 200, width, height), false);
+var u= UserView(w, Rect(0, 0, width, height));
+u.background= Color.white;
+u.drawFunc= {
+	Pen.translate(width*0.5, height*0.5);
+	a.matrices= m*(sin(cnt%100/100*2pi)*0.1+1)+(sin(cnt%320/320*2pi)*0.1);
+	a.draw(width, height);
+	Pen.stroke;
+	cnt= cnt+1;
+};
+w.front;
+Routine({while({w.isClosed.not}, {u.refresh; (1/20).wait})}).play(AppClock);
+)
+::

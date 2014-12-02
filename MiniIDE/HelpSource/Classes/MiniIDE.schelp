@@ -1,0 +1,76 @@
+TITLE:: MiniIDE
+summary:: A tabbed GUI that contains many commonly needed views
+categories:: Frontends>MiniIDE
+related:: Classes/MiniIDETab, Classes/MiniIDEScope, Classes/MiniIDENodeTree, Classes/MiniIDEJIT, Classes/MiniIDEEnvironment, Classes/MiniIDEGlobals, Classes/MiniIDEHistory, Classes/MiniIDELauncher, Classes/MiniIDELauncherButtonDef, Classes/MiniIDEHelp
+
+DESCRIPTION::
+This is a tabbed GUI that includes a number of commonly needed views.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new MiniIDE
+
+ARGUMENT:: tabs
+Expects an array of classes for the tabs that should be included.  These clases should inherit from MiniIDETab.
+If this value is left blank it defaults to [link::Classes/MiniIDEScope##MiniIDEScope::, link::Classes/MiniIDENodeTree##MiniIDENodeTree::, link::Classes/MiniIDEGlobals##MiniIDEGlobals::, link::Classes/MiniIDEEnvironment##MiniIDEEnvironment::, link::Classes/MiniIDEHistory##MiniIDEHistory::, link::Classes/MiniIDEJIT##MiniIDEJIT::, link::Classes/MiniIDELauncher##MiniIDELauncher::, link::Classes/MiniIDEHelp##MiniIDEHelp::].
+
+ARGUMENT:: userButtonsDef
+Expects an array of link::Classes/QLButton##QLButton:: that will be passed to the any instances of link::Classes/MiniIDELauncher##MiniIDELauncher:: included in the the tabs parameter.
+
+ARGUMENT:: bounds
+Bounds of the GUI window. A default of Rect(0,0,512,805) will be used if not specified.
+
+ARGUMENT:: alwaysOnTop
+True/False, always display on top of other windows.
+
+ARGUMENT:: showPositionButton
+True/False, display a button on the launcher tab to post all window bounds.
+
+ARGUMENT:: showGlobalButtons
+True/False, display a pair of buttons on the launcher tab to show and hide all launcher windows with the openOnGlobal flag set to true.
+
+INSTANCEMETHODS::
+
+METHOD:: view
+Provides access to the GUI view.
+
+METHOD:: window
+Provides access to the GUI window.
+
+METHOD:: front
+A shortcut method for window.front.
+
+PRIVATE:: init
+
+PRIVATE:: setTabeType
+
+EXAMPLES::
+
+code::
+//Simplest way to display a MiniIDE window
+MiniIDE().front;
+
+//An example of using the preset launcher buttons
+(
+MiniIDE(
+    userButtonsDef: [QLButtonLocalServer(), QLButtonInternalServer(), QLButtonEQ(), QLButtonClassBrowser(), QLButtonSynthDef(), QLButtonNdefMixer(), QLButtonProxyMixer(), QLButtonAppSupportDir(), QLButtonClassLibraryDir()]
+).front
+)
+
+/*
+Very Large display using 3 MiniIDEs in a single window.
+Good option if you have a second monitor.
+*/
+(
+Window("MiniIDE", bounds:Rect(0, 0, 1570, 827))
+    .layout_(
+        HLayout(
+          MiniIDE([MiniIDEScope]).window.view,
+          MiniIDE([MiniIDEEnvironment, MiniIDEGlobals, MiniIDEJIT]).window.view,
+          MiniIDE([MiniIDENodeTree, MiniIDEHistory, MiniIDELauncher, MiniIDEHelp]).window.view
+        )
+    )
+    .front
+)
+::

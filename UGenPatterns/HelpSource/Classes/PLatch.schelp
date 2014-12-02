@@ -1,0 +1,25 @@
+CLASS:: PLatch
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Modifiers
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/Latch::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: pattern
+
+ARGUMENT:: trig
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PLatch(Pseq([0, 2, 4, 5], inf), Pseq([0, 1, 1, 1, 1], inf)).trace*5+50).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \amp, PLatch(PSinOsc(8), PSinOsc(16)).trace*0.5).play
+a.stop
+::

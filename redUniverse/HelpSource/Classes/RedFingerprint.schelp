@@ -1,0 +1,215 @@
+CLASS:: RedFingerprint
+SUMMARY:: a different plot
+CATEGORIES:: Red>redUniverse>additional
+RELATED:: Reference/plot, Classes/RedLTurtle
+
+DESCRIPTION::
+A class that works with objects like arrays, envelopes and wavetables. It translates them to length/angle pairs and can then plot these in a separate window.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new fingerprint object and do the translation ( link::#-calc:: ).
+
+ARGUMENT:: array
+Numerical data to be plotted.
+
+ARGUMENT:: normalize
+Boolean.
+
+INSTANCEMETHODS::
+
+METHOD:: calc
+Calculate points from array.
+
+METHOD:: draw
+Start drawing at current link::Classes/Pen:: position.
+
+METHOD:: makeWindow
+Create a new window and plot the points.
+
+METHOD:: array
+Data to be plotted.
+
+METHOD:: normalize
+Normalize points after link::#-calc::.
+
+METHOD:: points
+Coordinates as points.
+
+EXAMPLES::
+
+CODE::
+l= {1.0.rand}.dup(100)		//an array with random values
+a= RedFingerprint(l)		//a fingerprint object
+a.points			//coordinates
+a.makeWindow			//plot
+a.makeWindow(scale:0.33)	//same data but smaller scale
+
+l= Env.perc.asSignal
+a= RedFingerprint(l)
+a.makeWindow
+l= Env.sine.asSignal
+a= RedFingerprint(l)
+a.makeWindow
+
+l= Wavetable.sineFill(256, [1, 0.5, 2/3]).asSignal
+a= RedFingerprint(l)
+a.makeWindow
+
+l= Array.series(90, 0.1, 0.1)	//90 values between 0.1 and 9
+a= RedFingerprint(l, true)	//normalize
+a.makeWindow
+l= l.normalize
+a= RedFingerprint(l, true)
+a.makeWindow
+
+
+//--shortcuts
+{1.0.rand}.dup(100).fingerprint.makeWindow
+Array.series(90, 0.1, 0.1).fingerprint.makeWindow
+Array.series(90, 0.1, 0.1).normalize.fingerprint.makeWindow
+Array.series(300, 0.1, 0.1).fingerprint.makeWindow
+Pseq([13, 0, 3, 3.44], 2).fingerprint.makeWindow
+
+Env.perc.fingerprint(true, 200).makeWindow
+Env.perc(0.4).fingerprint.makeWindow
+Env.perc(0.4, curve:2).fingerprint.makeWindow
+Env.perc(0.4, curve:-2).fingerprint.makeWindow
+Env.sine.fingerprint.makeWindow
+Env.adsr.fingerprint.makeWindow
+Wavetable.sineFill(512, 1/[1, 2, 3, 4]).fingerprint.makeWindow
+Wavetable.chebyFill(65, [0.3, -0.8, -2.1]).fingerprint.makeWindow
+Wavetable.chebyFill_old(128, {1.0.rand2}.dup(8)).fingerprint.makeWindow
+
+a= Env.adsr(0.2, 0.02).fingerprint
+a.makeWindow(background: Color.red(0.5, 0.5), width: 5)
+a.makeWindow(scale: 0.75, background: Color.white, color: Color.red, width: 10)
+
+
+//--animation examples
+(
+var win, usr, cnt= 0, width= 400, height= 400;
+var rf= RedFingerprint(Env.perc(0.3, 0.3, 1, -2).asSignal);
+win= Window("fingerprint", Rect(100, 100, width, height), false).front;
+usr= UserView(win, Rect(0, 0, width, height));
+usr.drawFunc= {
+	Pen.translate(width*0.5, height*0.5);
+	Pen.strokeColor= Color.white;
+	rf.array= rf.array.rotate(cnt.div(20));
+	rf.calc;
+	rf.draw(width*0.25);
+	cnt= cnt+1;
+};
+usr.animate= true;
+CmdPeriod.doOnce({win.close});
+)
+
+(
+var win, usr, cnt= 0, width= 400, height= 400;
+win= Window("fingerprint", Rect(100, 100, width, height), false).front;
+usr= UserView(win, Rect(0, 0, width, height));
+usr.drawFunc= {
+	var a= sin(cnt.fold(0, 100)/2pi).linlin(-1, 1, 0.01, 1);
+	var b= sin(cnt.fold(0, 90)/2pi).linlin(-1, 1, 0.1, cnt.fold(0, 50)/25);
+	var rf= RedFingerprint(Wavetable.sineFill(256, 1/[1, 2, a, b]).asSignal);
+	Pen.translate(width*0.5, height*0.5);
+	Pen.strokeColor= Color.white;
+	rf.draw(width*0.5);
+	cnt= cnt+0.25;
+};
+usr.animate= true;
+CmdPeriod.doOnce({win.close});
+)
+
+
+//--sound examples
+(
+s.waitForBoot{
+	var n= 5, scale= 190,
+		win, usr, cnt= 200, wt0, wt1, syn, rf;
+	var b= Buffer.alloc(s, 256, 1);
+	SynthDef(\wormsnd, {|out= 0, bufnum, freq= 60, amp= 0.01, pan= 0|
+		Out.ar(out, Pan2.ar(Osc.ar(bufnum, freq, 0, amp), pan));
+	}).send(s);
+	s.sync;
+
+	syn= Synth(\wormsnd, [\bufnum, b.bufnum, \amp, 1]);
+	s.sync;
+
+	win= Window("fingerprint", Rect(100, 100, 400, 400), false);
+	usr= UserView(win, Rect(0, 0, 400, 400));
+	usr.background= Color.white;
+	win.front;
+
+	wt1= Signal.chebyFill(b.numFrames, {10.0.rand2}.dup(n));
+	usr.drawFunc= {
+		if(cnt==200, {
+			wt0= wt1;
+			n= 50.linrand+2;
+			wt1= Signal.chebyFill(b.numFrames, {10.0.rand2}.dup(n));
+			cnt= 0;
+		});
+		wt0= wt0.blend(wt1, cnt/1000);
+		b.sine1(wt0);
+		syn.set(\freq, wt0.mean*100+100);
+
+		rf= RedFingerprint(wt0);
+		Pen.width= 2;
+		Pen.translate(win.bounds.width*0.5, win.bounds.height*0.5);
+		Pen.strokeColor= Color.blue(0.5, 0.5);
+		rf.draw(scale);
+
+		cnt= cnt+1;
+	};
+	usr.animate= true;
+	CmdPeriod.doOnce({win.close});
+};
+)
+
+(
+s.waitForBoot{
+	var n= 60, scale= 120,
+		win, usr, cnt= 5, wt0, wt1, syn, rf;
+	var b= Buffer.alloc(s, 256, 1);
+	SynthDef(\wormsnd, {|out= 0, bufnum, freq= 60, amp= 0.01, pan= 0|
+		Out.ar(out, Pan2.ar(Osc.ar(bufnum, freq, 0, amp), pan));
+	}).send(s);
+	s.sync;
+	syn= Synth(\wormsnd, [\bufnum, b.bufnum]);
+	s.sync;
+
+	win= Window("fingerprint", Rect(100, 100, 320, 240), false);
+	usr= UserView(win, Rect(0, 0, 320, 240));
+	usr.background= Color.black;
+	win.front;
+
+	wt1= Signal.chebyFill(b.numFrames, {1.0.rand2.round(0.1)}.dup(n));
+	usr.drawFunc= {
+		if(cnt%8%6!=0, {
+			syn.set(\amp, 1);
+			if(cnt%5==(0), {
+				wt0= wt1;
+				n= 1.rrand(10);
+				wt1= Signal.chebyFill(b.numFrames, {1.0.rand2.round(0.1)}.dup(n));
+				cnt= 0;
+			});
+			wt0= wt0.blend(wt1, cnt/(wt1[0]*3000+30));
+			b.sine1(wt0);
+			syn.set(\freq, wt0.mean*(wt0[0]*500)+80);
+			rf= RedFingerprint(wt0);
+			Pen.width= 2;
+			Pen.translate(win.bounds.width*0.5, win.bounds.height*0.5);
+			Pen.strokeColor= Color.white;
+			rf.draw(scale);
+		}, {
+			syn.set(\amp, 0);
+			if(0.2.coin, {cnt= cnt-1});
+		});
+		cnt= cnt+1;
+	};
+	usr.animate= true;
+	CmdPeriod.doOnce({win.close});
+};
+)
+::

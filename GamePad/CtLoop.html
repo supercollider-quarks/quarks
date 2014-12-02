@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1138.23">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #6c2a2a}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a91616}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #000000}
+span.s4 {color: #0a2cb0}
+span.s5 {color: #5a6a1b}
+span.s6 {color: #0428b3}
+span.s7 {color: #556b17}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>CtLoop</b></span><span class="s2"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>a recorder for control values</b></p>
+<p class="p2"><br></p>
+<p class="p1">CtLoop (ControlLoop) can record a loop of named control values, (i.e. a gesture)</p>
+<p class="p1">and play it back, with control of both loop properties and value-range properties:</p>
+<p class="p3"><br></p>
+<p class="p1">The loop can change in tempo,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>it can be reversed,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>its event order can be 'jittered',<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>and it can be constrained to a segment (start, range).</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p1">The values in the loop can be shifted, re-scaled, and inverted.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p1">Recorded controls can be excepted from rescaling by name.</p>
+<p class="p1">It is used in the GamePad class by adc and haho.</p>
+<p class="p3"><br></p>
+<p class="p1">Example:</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// a simple synth</p>
+<p class="p4">s.boot;</p>
+<p class="p4">Ndef(\test, { |pFreq=100, pWidth=0.5| LPF.ar(LFPulse.ar(pFreq, 0, pWidth), 1500) * 0.1 });</p>
+<p class="p4">Ndef(\test).play;</p>
+<p class="p4">Ndef(\test).scope;</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s3">(<span class="Apple-tab-span">	</span></span>// controlspecs for its params</p>
+<p class="p4"><span class="s4">Spec</span>.add(<span class="s5">\pFreq</span>, [2, 200, <span class="s5">\exp</span>]);</p>
+<p class="p4"><span class="s4">Spec</span>.add(<span class="s5">\pWidth</span>, [0.01, 0.5, <span class="s5">\exp</span>]);</p>
+<p class="p4">)</p>
+<p class="p4"><span class="Apple-tab-span">	</span>// an editor to see the params changing</p>
+<p class="p4">NdefGui(Ndef(\test), 5);</p>
+<p class="p4">Ndef(\test).set(\pFreq, \pFreq.asSpec.map(0.5));</p>
+<p class="p4">Ndef(\test).set(\pWidth, \pWidth.asSpec.map(0.5));</p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>*new(key, ctlMap)</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>// make a controlLoop to record and play back slider movement:<span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>// prepare for two normalized controls (range 0 - 1).</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>// ctlMap defines the actions to take when a control event<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>// is played back. here, \x sets the parameter \pFreq,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>// and y will set parameter \pWidth (later).<span class="Apple-converted-space"> </span></p>
+<p class="p4">(</p>
+<p class="p4">c = <span class="s4">CtLoop</span>(\mytest,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>(</p>
+<p class="p4"><span class="Apple-tab-span">	</span>x: { <span class="s4">|val|</span> <span class="s4">Ndef</span>(<span class="s5">\test</span>).set(<span class="s5">\pFreq</span>, <span class="s5">\pFreq</span>.asSpec.map(val)) },</p>
+<p class="p4"><span class="Apple-tab-span">	</span>y: { <span class="s4">|val|</span> <span class="s4">Ndef</span>(<span class="s5">\test</span>).set(<span class="s5">\pWidth</span>, <span class="s5">\pWidth</span>.asSpec.map(val)) }</p>
+<p class="p4"><span class="Apple-tab-span">	</span>)</p>
+<p class="p4">);</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// a gui to control one synth param, and to record movements</p>
+<p class="p4">(</p>
+<p class="p4"><span class="s6">EZSlider</span>(<span class="s6">nil</span>, <span class="s6">nil</span>, <span class="s7">\ctLooptest</span>, <span class="s7">nil</span>, { |sl|<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>var normVal =<span class="Apple-converted-space">  </span>sl.value;<span class="Apple-tab-span">	</span>//<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// keep new events if recording</p>
+<p class="p4"><span class="Apple-tab-span">	</span>c.recordEvent(<span class="s7">\x</span>, normVal);<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// set synth param</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">Ndef</span>(<span class="s7">\test</span>).set(<span class="s7">\pFreq</span>, <span class="s7">\pFreq</span>.asSpec.map(normVal))<span class="Apple-converted-space"> </span></p>
+<p class="p4">});</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p4">c.startRec; <span class="Apple-tab-span">	</span>// wiggle slider now</p>
+<p class="p4">c.stopRec;<span class="Apple-tab-span">	</span>// stop when done</p>
+<p class="p2"><br></p>
+<p class="p4">c.play;<span class="Apple-tab-span">	</span>// see slider in NodeProxyEditor for recorded movement</p>
+<p class="p4">c.stop;<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// use the same CtLoop with a 2D controller:</p>
+<p class="p4">(</p>
+<p class="p4">w = Window("play me").front;</p>
+<p class="p4">t = Slider2D(w, Rect(0,0,400,400))</p>
+<p class="p4"><span class="Apple-tab-span">	</span>.action_({ |sl|<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>var x, y; x = sl.x; y = sl.y;</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c.recordEvent(\x, x);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c.recordEvent(\y, y);</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Ndef(\test).set(</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\pFreq, \pFreq.asSpec.map(x),<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\pWidth, \pWidth.asSpec.map(y)<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>});</p>
+<p class="p4">)</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p4">c.startRec; <span class="Apple-tab-span">	</span>// wiggle 2dslider now</p>
+<p class="p4">c.stopRec;<span class="Apple-tab-span">	</span>// stop when done</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// playback options:</p>
+<p class="p4">c.play;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4">c.togglePlay;</p>
+<p class="p4">c.togglePlay;</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// playback is looped by default<span class="Apple-converted-space"> </span></p>
+<p class="p4">c.reverse;</p>
+<p class="p4">c.forward;</p>
+<p class="p4">c.flip;<span class="Apple-tab-span">	</span>// toggle loop direction</p>
+<p class="p4">c.flip;</p>
+<p class="p2"><br></p>
+<p class="p4">c.tempo = 2;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// faster</p>
+<p class="p4">c.tempo = 0.5;<span class="Apple-tab-span">	</span>// slower</p>
+<p class="p4">c.tempo = 1;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// orig</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// play only part of the loop:</p>
+<p class="p4">c.start = 0.3;<span class="Apple-tab-span">	</span>// a segment within range 0.0-1.0.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// percentage is of the number of events, not of loop duration</p>
+<p class="p2"><br></p>
+<p class="p4">c.start = 1.0.rand;<span class="Apple-tab-span">	</span>//<span class="Apple-converted-space"> </span></p>
+<p class="p4">c.length = 1.0.rand;<span class="Apple-tab-span">	</span>//<span class="Apple-converted-space"> </span></p>
+<p class="p4">c.length = 0.1.rand;<span class="Apple-tab-span">	</span>//<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// full loop</p>
+<p class="p4">c.start_(0).length_(1);</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// 'sequence jitter':<span class="Apple-converted-space">  </span>loop index moves as before,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// the actual event played is chosen within jitter range near the loop index.</p>
+<p class="p4">c.jitter = 0.1;<span class="Apple-tab-span">	</span>// +- 10% loop length jitter</p>
+<p class="p4">c.jitter = 0.2;</p>
+<p class="p4">c.jitter = 0.0;<span class="Apple-tab-span">	</span>// orig. sequence</p>
+<p class="p2"><br></p>
+<p class="p4">c.resetLoop;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// reset to defaults;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// gesture range can be rescaled in several ways</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// turn on gesture rescaling</p>
+<p class="p4">c.rescaled_(true);</p>
+<p class="p2"><br></p>
+<p class="p4">c.invert;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// invert around middle axis</p>
+<p class="p4">c.up; <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// that is right side up</p>
+<p class="p4">c.flipInv;<span class="Apple-tab-span">	</span>// toggle inversion on/off</p>
+<p class="p4">c.flipInv;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4">c.scaler = 2;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// make gesture bigger</p>
+<p class="p4">c.scaler = 1;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// orig size</p>
+<p class="p4">c.scaler = 0.5;<span class="Apple-tab-span">	</span>// smaller</p>
+<p class="p4">c.scaler = 0.2;<span class="Apple-tab-span">	</span>// or even smaller</p>
+<p class="p2"><br></p>
+<p class="p4">c.shift = 0.1;<span class="Apple-tab-span">	</span>// shift its range up</p>
+<p class="p4">c.shift = 0.2;<span class="Apple-tab-span">	</span></p>
+<p class="p4">c.shift = 0.3;<span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// Q: maybe rescaling could optionally go outside the spec range?</p>
+<p class="p2"><br></p>
+<p class="p4">c.resetScaling;<span class="Apple-tab-span">	</span>// back to orig</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">c.rescaled_(false);</p>
+<p class="p4">c.scaler = 0.1;<span class="Apple-tab-span">	</span>// no effect when rescaled is false</p>
+<p class="p2"><br></p>
+<p class="p4">c.rescaled_(true);<span class="Apple-tab-span">	</span>// should rescale to tiny now</p>
+<p class="p4">c.scaler = 2;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// and big again.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">c.dontRescale(\x);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// except a control name from rescaling</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// so here, x will not be rescaled, but y will.</p>
+<p class="p4">c.nonRescalableCtls;</p>
+<p class="p2"><br></p>
+<p class="p4">c.dontRescale(\x, \y);<span class="Apple-tab-span">	</span></p>
+<p class="p4">c.doRescale(\x, \y);<span class="Apple-tab-span">	</span>// make sure they all rescale again</p>
+<p class="p2"><br></p>
+<p class="p4">c.list;<span class="Apple-tab-span">	</span>// the list of recorded control events<span class="Apple-converted-space"> </span></p>
+<p class="p4">c.clear;<span class="Apple-tab-span">	</span>// clear it</p>
+<p class="p2"><br></p>
+<p class="p4">c.startRec; // this also clears the list;</p>
+<p class="p4">c.stopRec;<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p4">c.list.printAll;<span class="Apple-tab-span">	</span></p>
+<p class="p4">c.play;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">CtLoop is more about capturing multidimensional gestures, e.g from a Wii or Gamepad joysticks,<span class="Apple-converted-space"> </span></p>
+<p class="p4">faderboxes etc. It is not about fader automation, but rather exploring and juggling with<span class="Apple-converted-space"> </span></p>
+<p class="p4">recorded movements as performance.</p>
+<p class="p2"><br></p>
+<p class="p4">It is used e.g. in the GamePad class, and could be used with lots of HID, MIDI,<span class="Apple-converted-space"> </span></p>
+<p class="p4">OSC etc controllers. It will likely move to the Modality quark.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

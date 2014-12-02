@@ -1,0 +1,190 @@
+CLASS:: RedMixerChannel
+SUMMARY:: channel strip
+CATEGORIES:: Red>redMixer
+RELATED:: Classes/RedMixerChannelGUI, Classes/RedMixer, Classes/RedMixerGUI, Classes/RedEffectModule
+
+DESCRIPTION::
+NOTE::
+Requires link::Classes/Conductor:: quark.
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: outputChannels
+An array.
+
+ARGUMENT:: group
+If code::nil:: then code::Server.default.defaultGroup:: will be used.
+
+ARGUMENT:: lag
+For eq settings, balance and volume. In seconds.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prEqAction, initRedMixerChannel
+
+METHOD:: mute
+True sets the volume to zero. false recalls the volume.
+
+METHOD:: insertClass
+Creates a new link::Classes/RedEffectModule:: before the equalizer.
+
+ARGUMENT:: redEfxClass
+A class or an array of classes.
+
+ARGUMENT:: addAction
+Local to the inserts. The default code::\addToHead:: will put it first in the chain of inserts.
+
+METHOD:: insert
+Adds a link::Classes/RedEffectModule:: before the equalizer.
+
+NOTE::
+You can not do code::.insert(RedEfxRing.new):: without a fork.
+::
+
+ARGUMENT:: redEfx
+An instance or an array of instances.
+
+ARGUMENT:: addAction
+Local to the inserts. The default code::\addToHead:: will put it first in the chain of inserts.
+
+METHOD:: removeClass
+
+ARGUMENT:: redEfxClass
+Free and remove all instances of this link::Classes/RedEffectModule:: class. Can also be an array.
+
+METHOD:: remove
+
+ARGUMENT:: redEfx
+Free and remove this link::Classes/RedEffectModule::. Can also be an array.
+
+METHOD:: removeAll
+Free and remove all effects in one go.
+
+METHOD:: defaults
+Revert all link::Classes/CV::s to their defaults.
+
+METHOD:: out
+Get or set current bus.
+
+METHOD:: gui
+Create a link::Classes/RedMixerChannelGUI::.
+
+METHOD:: free
+Free synth, equalizer, inserts and remove oscreponder.
+
+METHOD:: resetPeaked
+Set code::cvs.peaked0:: and code::cvs.peaked1:: to 0.
+
+METHOD:: def
+Returns the mixer channel link::Classes/SynthDef::.
+
+METHOD:: defEq
+Returns the equalizer link::Classes/SynthDef::.
+
+METHOD:: group
+The link::Classes/Group:: in use.
+
+METHOD:: cvs
+Dictionary of link::Classes/CV::s:
+
+TABLE::
+## out || 
+## lag || 
+## eqHi || 
+## eqMi || 
+## eqLo || 
+## hiFreq || 
+## hiBand || 
+## hiGain || 
+## miFreq || 
+## miBand || 
+## miGain || 
+## loFreq || 
+## loBand || 
+## loGain || 
+## bal || 
+## vol || 
+## peak0 || 
+## peak1 || 
+## peaked0 || 
+## peaked1 || 
+::
+
+METHOD:: inserts
+Array of current inserts.
+
+METHOD:: args
+Array of arguments sent to the mixer channel synth.
+
+EXAMPLES::
+
+CODE::
+a= RedMixerChannel(#[0, 1]);
+b= Pbind(\pan, Pseq([-1, 1], inf), \amp, 0.5).play
+a.cvs.vol.value= -9
+a.out= 1
+a.out= 0
+a.cvs.vol.value= 0
+a.cvs.lag.value= 1
+a.cvs.bal.value= -0.9
+a.cvs.bal.value= 0.9
+a.cvs.peak0.value
+a.cvs.peak1.value
+
+a.cvs.vol.value= 18
+a.cvs.peaked0.value
+a.cvs.peaked1.value
+a.cvs.vol.value= -9
+a.resetPeaked
+a.cvs.peaked0.value
+a.cvs.peaked1.value
+a.free
+b.stop
+
+//--
+a= RedMixerChannel(#[0, 1]);
+b= {Pan2.ar(WhiteNoise.ar(LFNoise2.kr(4).abs), LFNoise2.kr(2))}.play
+a.cvs.vol.value= -12
+a.cvs.eqHi.value= 1
+a.cvs.hiFreq.value= 9000
+a.cvs.hiBand.input= 0.3
+a.cvs.hiGain.input= 0.7
+a.cvs.eqHi.value= 0
+a.cvs.eqMi.value= 1
+a.cvs.miFreq.value= 1500
+a.cvs.miBand.input= 0.2
+a.cvs.miGain.input= 0.9
+a.cvs.eqMi.value= 0
+a.cvs.eqLo.value= 1
+a.cvs.loFreq.value= 500
+a.cvs.loBand.input= 0.3
+a.cvs.loGain.input= 0.7
+a.cvs.eqLo.value= 0
+a.free
+b.free
+
+//--
+a= RedMixerChannel(#[0, 1]);
+b= {Pan2.ar(WhiteNoise.ar(LFNoise2.kr(4).abs), LFNoise2.kr(2))}.play
+c= RedEfxVerb.new
+a.insert(c)
+a.inserts[0].cvs.verbMix.input= 0.5
+a.insertClass([RedEfxBitc, RedEfxDist])
+a.inserts
+a.remove(c)
+a.inserts
+a.insertClass(RedEfxRing, \addToTail)
+a.inserts.last.cvs.ringMix.input= 0.5
+a.inserts
+a.removeClass(RedEfxRing)
+a.inserts
+a.removeAll
+a.inserts
+a.mute(true)
+a.mute(false)
+a.free
+b.free
+::

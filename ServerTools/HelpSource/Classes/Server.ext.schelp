@@ -1,0 +1,42 @@
+INSTANCEMETHODS::
+
+subsection:: Extensions in ServerTools
+
+method:: getQueryTree
+argument:: callback
+A callback function that will be passed a data dictionary.
+code::
+( 'children': [ 
+	( 'children': [ 
+		( 'numChildren': -1, 
+			'defName': 'tonez<>>eperc#531234929', 
+			'numControls': 3, 
+			'nodeType': Synth, 
+		  'id': 1001, 
+		  'controls': Dictionary[ ('out' -> 0.0), ('dur' -> 5.5576071739197), ('freq' -> 106.10885620117) ] ) 
+	], 
+	'id': 1, 
+	'nodeType': Group, 
+	'numChildren': 1 ) 
+], 
+'id': 0, 
+'nodeType': Group, 
+'numChildren': 1 )
+::
+returns:: a dictionary
+
+method:: async
+
+argument:: msg
+The OSC message to send to the server
+
+argument:: replyCmd
+The OSC message that the server will reply with.
+
+argument:: callback
+a callback function that will be executed with the successful response
+
+argument:: timeout
+The maximum time to wait before giving up and posting a warning
+
+returns:: the callback is executed asynchronously

@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000c0; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000c0}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {text-decoration: underline ; color: #002de2}
+span.s2 {text-decoration: underline}
+span.s3 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>TransportWindow</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">a window with play, stop and return buttons, and a time counter.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><i>** EXPERIMENTAL **</i></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">The user can add actions to all buttons and more.</p>
+<p class="p4"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="s2">Creation</span></b></p>
+<p class="p3"><b></b><br></p>
+<p class="p2"><b>TransportWindow ( name, startPos )</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>name </b>: the title of the window (default "transport" )</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>startPos </b>: the start position in seconds (default 0 )</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s3">w = </span>TransportWindow<span class="s3">();</span></p>
+<p class="p6"><br></p>
+<p class="p2">In the window you get is a play button, stop button and resetbutton. The stop button is only active during playback, the reset button only after stop is pressed (resets pos to 0)</p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="s2">Instance variables</span></b></p>
+<p class="p3"><b></b><br></p>
+<p class="p2"><b>pos</b></p>
+<p class="p2">gets and sets the time position</p>
+<p class="p7"><br></p>
+<p class="p8">w.pos = 5.12;</p>
+<p class="p9">w.pos = 0;</p>
+<p class="p6"><br></p>
+<p class="p2"><b>step</b></p>
+<p class="p2">gets and sets counter stepsize. defaults to 128/44100 seconds (2 Server control periods). Sometimes it can be better to make this higher to save cpu (window is refreshed by this rate)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>counterAction</b></p>
+<p class="p2">an action to be eveluated at every counter step</p>
+<p class="p3"><br></p>
+<p class="p9">w.counterAction = { |wnd| wnd.pos.postln; };</p>
+<p class="p3"><br></p>
+</body>
+</html>

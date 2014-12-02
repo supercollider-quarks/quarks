@@ -1,0 +1,94 @@
+CLASS:: ObjectInsp
+summary:: displays all the variables and internals of an object for debugging purposes
+categories:: Debugging, Language
+related:: Guides/insp, Classes/InspManager
+
+DESCRIPTION::
+This is the (somewhat private) implementation class that displays an object's innards when it is inspected.
+
+to document: classes may add custom hooks which are very useful to display internals relevant to that specific object. This greatly speeds up debugging and problem solving.
+
+
+
+CLASSMETHODS::
+
+METHOD:: initClass
+
+
+returns:: (returnvalue)
+
+METHOD:: registerHook
+
+
+argument:: class
+
+
+argument:: displayFunction
+
+
+argument:: includeSubclasses
+
+
+returns:: (returnvalue)
+
+METHOD:: sourceCodeGui
+
+
+argument:: sourceCode
+
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: width
+
+
+returns:: (returnvalue)
+
+
+INSTANCEMETHODS::
+
+METHOD:: writeName
+
+
+argument:: layout
+the parent view, FlowView or window
+
+returns:: (returnvalue)
+
+METHOD:: guiBody
+
+
+argument:: layout
+the parent view, FlowView or window
+
+returns:: (returnvalue)
+
+METHOD:: instVarsGui
+
+
+argument:: listItems
+
+
+argument:: actions
+
+
+returns:: (returnvalue)
+
+METHOD:: dependantsGui
+
+
+argument:: layout
+the parent view, FlowView or window
+
+returns:: (returnvalue)
+
+METHOD:: actionsGui
+
+
+argument:: layout
+the parent view, FlowView or window
+
+returns:: (returnvalue)
+
+

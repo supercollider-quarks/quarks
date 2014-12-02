@@ -1,0 +1,40 @@
+TITLE:: MiniIDELauncher
+summary:: A launcher tab for use with MiniIDE
+categories:: Frontends>MiniIDE
+related:: Classes/MiniIDE, Classes/MiniIDETab, Classes/MiniIDEHistory, Classes/MiniIDEScope, Classes/MiniIDEJIT, Classes/MiniIDEEnvironment, Classes/MiniIDEGlobals, Classes/MiniIDENodeTree, Classes/MiniIDELauncherButtonDef, Classes/MiniIDEHelp
+
+DESCRIPTION::
+A launcher tab for use with MiniIDE.  Allows you to toggle a user defined list of windows on and off.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new MiniIDENodeTree window
+
+ARGUMENT:: bounds
+Bounds of the window. A default of Rect(0,0,512,805) will be used if not specified.
+
+ARGUMENT:: userButtonsDef
+Expects an array of MiniIDELauncherButtonDef, will use default buttons if no array is passed
+
+ARGUMENT:: showPositionButton
+Boolean.  Show button to get the bounds of all current windows?  Useful for setting up or tuning the MiniIDELauncher.
+
+ARGUMENT:: showGlobalButtons
+Boolean.  Show the show all/hide all buttons?  A buttondef will only react to these buttons if the openOnGlobal flag is set to true.
+
+METHOD:: tabLabel
+This symbol provides the display name of the tab.
+
+INSTANCEMETHODS::
+
+METHOD:: window
+Provides access to the current window.
+
+METHOD:: bounds
+Provides access to the current bounds.
+
+METHOD:: layout
+Provides access to the layout.
+
+PRIVATE:: init

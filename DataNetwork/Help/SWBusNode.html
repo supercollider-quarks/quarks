@@ -1,0 +1,331 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWBusNode</TITLE>
+<META NAME="description" CONTENT="SWDataNetwork">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK type="text/css" REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00041000000000000000">
+SWBusNode</A></H2>
+<H3> - gathering data from buses on the server</H3>
+
+<p>
+SWBusNodes provide a way to analyze or process data on an audio or control bus, and put the result of the analysis on the network. It has several subclasses for common analysis methods, such as smoothing, statistical properties, and audio feature extraction.
+</p>
+
+<p>As the SWDataNode in the network is created, the bus of that node will be the internal bus of the SWBusNode. This means that the <em>scale</em> factor of the SWDataNode is not represented on the bus itself.
+</p>
+
+<h4>- Example - </h4>
+<pre><span class="comment-delimiter">// </span><span class="comment">define the network
+</span>x = <span class="type">SWDataNetwork</span>.new;
+
+<span class="comment-delimiter">// </span><span class="comment">get data input from incoming serial data
+</span><span class="comment-delimiter">// </span><span class="comment">(from an XBee network)
+</span>q = <span class="type">XBeeSMS</span>.new( <span class="string">"/dev/ttyUSB0"</span>, 115200 );
+<span class="comment-delimiter">// </span><span class="comment">the action sets the data that comes in to the network:
+</span>q.action_({ |msg| x.setData( msg[0], msg.copyToEnd(1) ); });
+
+<span class="comment-delimiter">// </span><span class="comment">we expect floor pressure sensor data on node 2
+</span>x.addExpected( 2, <span class="constant">\floor</span> );
+
+<span class="comment-delimiter">// </span><span class="comment">we want to create a node with a measure of the
+</span><span class="comment-delimiter">// </span><span class="comment">sample variance on node 102
+</span>x.addExpected( 102, <span class="constant">\floorVar</span> );
+
+<span class="comment-delimiter">// </span><span class="comment">start the parsing of the input data:
+</span>q.start;
+
+<span class="comment-delimiter">// </span><span class="comment">the data comes in as 8bit integers, so we scale
+</span><span class="comment-delimiter">// </span><span class="comment">it here to a value between 0 and 1
+</span>x[<span class="constant">\floor</span>].scale = 1/255;
+
+<span class="comment-delimiter">// </span><span class="comment">we create a bus for the data (s is the audio server):
+</span>x[<span class="constant">\floor</span>].createBus( s );
+
+<span class="comment-delimiter">// </span><span class="comment">we create the sample variance node:
+</span><span class="variable-name">~floorVar</span> = <span class="type">StdDevNode</span>.new( 102, x, x.at( <span class="constant">\floor</span> ).bus, s );
+<span class="variable-name">~floorVar</span>.start;
+
+<span class="comment-delimiter">// </span><span class="comment">now we have raw data available on node 2,
+</span><span class="comment-delimiter">// </span><span class="comment">and sample variance data on node 102
+</span></pre>
+
+
+<h3>- Methods - </h3>
+
+<DL>
+
+<h4>- Initialization - </h4>
+
+<DT><STRONG>*new( id, network, input, serv )</STRONG></DT>
+<DD>This creates an SWBusNode which will create a DataNode with <em>id</em> in the <em>network</em>. input is the <em>inputbus</em> from which the BusNode will read. This has to be an instance of Bus, and can be audiorate or controlrate, depending on the kind of analysis done on it. <em>serv</em> is the Server on which the bus is and on which the analysis synth will run (if none given the default server will be used).</DD>
+
+<DT><STRONG>initSynthDefAndBus ( s, nc )</STRONG></DT>
+<DD><em>private</em> This method is called when creating a new SWBusNode. This method initializes the SynthDef and the output bus for the BusNode. Subclasses override this method with the specific analysis or processing SynthDef. In the base class this produces a simple SynthDef which reads from one bus, multiplies it with a factor <em>mul</em>, and outputs the a lagged result to another bus.</DD>
+
+<h4>- Settings - </h4>
+
+<DT><STRONG>settings (  )</STRONG></DT>
+<DD>This is an IdentityDictionary which holds the settings for the synth. Basic settings for all SWBusNode's are: <em>out</em>, the output bus, <em>in</em>, the input bus, <em>lag</em>, the lagtime for the output, <em>mul</em>, multiplication factor, and <em>gate</em>, gate to keep the synth open. <em>out</em>, <em>in</em> and <em>gate</em> should not be set directly.
+<br>Subclasses have more settings, which are listed below. The settings can be set even when the synth is not running. As the synth is created it looks in this dictionary for its start settings.</DD>
+<DT><STRONG>set ( key, val, ... )</STRONG></DT>
+<DD>Set one or more key and value pairs of the synth. If the synth is not running, the settings are still recorded in the settings dictionary, so they will be used on startup of the synth.</DD>
+
+<DT><STRONG>dt (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>dt_ (  )</STRONG></DT>
+<DD>The time interval at which the watcher is updating the data. The default is 0.05s.</DD>
+
+<h4>- Starting and stopping - </h4>
+
+<DT><STRONG>start (  )</STRONG></DT>
+<DD>Start the synth and start the watcher for the output results.</DD>
+<DT><STRONG>stop (  )</STRONG></DT>
+<DD>Stop the synth and stop the watcher.</DD>
+<DT><STRONG>release ( releasetime )</STRONG></DT>
+<DD>Release the synth with releasetime, and stop the watcher after that time.</DD>
+
+
+<h4>- Bus access and control - </h4>
+
+<DT><STRONG>bus (  )</STRONG></DT>
+<DD>The output bus.</DD>
+
+<DT><STRONG>get ( func )</STRONG></DT>
+<DD>Get the current value of the bus. This is asynchronous, just like Bus.get</DD>
+<DT><STRONG>getn ( func )</STRONG></DT>
+<DD>Get the current value of the multichannel bus. This is asynchronous, just like Bus.getn</DD>
+
+<DT><STRONG>inbus (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>inbus_ ( ibus )</STRONG></DT>
+<DD>Change the input bus to another bus. This updates the in setting in the settings as well.</DD>
+
+<DT><STRONG>node (  )</STRONG></DT>
+<DD>The SWDataNode in the network.</DD>
+
+<DT><STRONG>setLabel (  )</STRONG></DT>
+<DD>Method used to set a default label for the node, if no label exists yet. The default label corresponds to the name of the bus node, the number of input channels and the input channel id.</DD>
+
+
+<h4>- Other (more private methods) - </h4>
+
+<DT><STRONG>synthDef (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>synthDef_ (  )</STRONG></DT>
+<DD>The SynthDef name to be used. This name is generated by the node. Only supply it when you have created a node that corresponds to the basic setup of an SWBusNode.</DD>
+
+<DT><STRONG>id (  )</STRONG></DT>
+<DD>The node ID in the network</DD>
+<DT><STRONG>network (  )</STRONG></DT>
+<DD>The network to which the data is posted.</DD>
+
+<DT><STRONG>synth (  )</STRONG></DT>
+<DD>The synth which is doing the processing.</DD>
+<DT><STRONG>server (  )</STRONG></DT>
+<DD>The server on which the node is running.</DD>
+<DT><STRONG>watcher (  )</STRONG></DT>
+<DD>The SkipJack which is regularly requesting the value from the bus and setting it in the data network.</DD>
+
+
+
+<DT><STRONG>myInit (  )</STRONG></DT>
+<DD><em>private - override in subclass to perform additional initialization</em></DD>
+
+</DL>
+
+<h3>- Subclasses - </h3>
+
+<DL>
+
+<h4>- Audio/signal analysis - </h4>
+
+<DT><STRONG>AmpTrackNode</STRONG></DT>
+	<DD>Amplitude tracker. The input bus can either be control rate or audio rate.<br>It has the parameters <em>atime</em> (attack time) and <em>rtime</em> (release time). Based on the UGen <em>Amplitude</em>.</DD>
+<DT><STRONG>PitchTrackNode</STRONG></DT>
+	<DD>Pitch tracker. The input bus can either be control rate or audio rate. Before estimating the pitch, the input signal is passed through lowpass and highpass filters to limit the signal within a certain frequency range.<br>It has the parameters <em>lpfreq</em> (low pass filter frequency), <em>hpfreq</em> (high pass filter frequency), <em>initFreq</em> (initial pitch estimate), <em>minFreq</em> (minimum pitch frequency), <em>maxFreq</em> (maximum pitch frequency) and <em>ampThreshold</em> (amplitude threshold). Based on the UGen <em>Pitch</em>.</DD>
+
+<h4>- Mixing - </h4>
+<DT><STRONG>SumBusesNode</STRONG></DT>
+	<DD>Mixes down a multichannel bus to a one channel bus, thus effectively summing them.</DD>
+
+<h4>- Smoothing - </h4>
+<DT><STRONG>LeakyNode</STRONG></DT>
+	<DD>Leaky integrator. The minimum output value is configurable (and defaults to 0).
+	<br>It has the parameters <em>posSlope1</em>, <em>posSlope2</em>, <em>negSlope</em> and <em>minValue</em>, and implements the formula 
+	<code>out(i) = (posSlope1 * in(i)) + (posSlope2 * in(i-1)) - (negSlope * out(i-1))</code>.
+	<br>Based on the UGen <em>FOS</em>.</DD>
+
+<DT><STRONG>LagUDNode</STRONG></DT>
+	<DD>Smooths the signal by putting a lagtime on it. You can set a different lagtime for going up (parameter <em>lagup</em>), than for going down (parameter <em>lagdown</em>). Based on the UGen <em>LagUD</em>.</DD>
+
+<DT><STRONG>ASRNode</STRONG></DT>
+	<DD>Trigger an envelope from the signal. This keeps the envelope open, as long as the input signal is above 0. Has the parameters <em>attack</em>, <em>release</em>, <em>curve</em>. See the <em>Env</em> helpfile for more details.</DD>
+<DT><STRONG>ASRMulNode</STRONG></DT>
+	<DD>As above, but the sustain level of the envelope is the running maximum of the input signal.</DD>
+
+<DT><STRONG>SlewNode</STRONG></DT>
+	<DD>Limits the <em>upSlope</em> and <em>downSlope</em> of the signal. Based on the UGen <em>Slew</em>.</DD>
+
+<h4>- Derivatives - </h4>
+<DT><STRONG>SlopeNode</STRONG></DT>
+	<DD>Measures the rate of change per second. Based on the UGen <em>Slope</em>.</DD>
+
+
+
+
+<h4>- Metadata - </h4>
+
+<DT><STRONG>TimerNode</STRONG></DT>
+	<DD>Measures the time between updates of the bus. Based on the UGen <em>Timer</em>.</DD>
+
+<h4>- Statistics - </h4>
+<DT><STRONG>MeanStdDevNode</STRONG></DT>
+	<DD>Output the mean and standard deviation of the last number (parameter <em>length</em>; default 50) of samples. The <em>length</em> setting has to be set or changed before the synth is started. The first buses are the mean, the second half of the buses are the standard deviation. The mean will be a smoothed version of the signal. The standard deviation gives an impression of how much change there is in a signal. Based on the UGens <em>RunningSum</em> and <em>StdDevUGen</em>.</DD>
+
+<DT><STRONG>StdDevNode</STRONG></DT>
+	<DD>Output the standard deviation of the last number (parameter <em>length</em>; default 50) of samples. The <em>length</em> setting has to be set or changed before the synth is started. The standard deviation gives an impression of how much change there is in a signal. Based on the UGen <em>StdDevUGen</em>.</DD>
+<DT><STRONG>SumStdDevNode</STRONG></DT>
+	<DD>As <strong>StdDevNode</strong>, but mixes down the outputs to one channel.</DD>
+
+<DT><STRONG>MedianNode</STRONG></DT>
+	<DD>Output the median of the last number (parameter <em>length</em>; default 21) of samples. The <em>length</em> setting must be an odd number from 1 to 31. The output is a smoothed version of the signal, less sensitive to outliers. Based on the UGen <em>Median</em>.</DD>
+
+<h4>- Physics - </h4>
+
+<DT><STRONG>FrictionNode</STRONG></DT>
+	<DD>Inputs the input bus into a friction model, with adjustable <em>friction</em>, <em>spring</em>, <em>damp</em>, <em>mass</em> and <em>beltmass</em>. Based on the UGen <em>Friction</em>.</DD>
+
+<h4>- Gating and triggering - </h4>
+
+<DT><STRONG>SchmidtNode</STRONG></DT>
+	<DD>Output 1 if input signal is higher than parameter <em>hi</em>, output 0 if parameter lower than parameter <em>lo</em>. Based on the UGen <em>Schmidt</em>.</DD>
+<DT><STRONG>SchmidtGateNode</STRONG></DT>
+	<DD>As above, but multiplies the output by the current input signal.</DD>
+
+<DT><STRONG>InRangeNode</STRONG></DT>
+	<DD>Outputs 1 if the input is within the given range (between the parameters <em>low</em> and <em>hi</em>), otherwise 0. Based on the UGen <em>InRange</em>.</DD>
+<DT><STRONG>InRangeGateNode</STRONG></DT>
+	<DD>Outputs the input value if the input is within the given range (between the parameters <em>low</em> and <em>hi</em>), otherwise 0. Based on the UGen <em>InRange</em>.</DD>
+
+<DT><STRONG>ToggleFFNode</STRONG></DT>
+	<DD>Toggles between 0 and 1 upon a trigger on the input (transition from value smaller than or equal to zero to a value above zero). Based on the UGen <em>ToggleFF</em>.</DD>
+<DT><STRONG>ToggleFFGateNode</STRONG></DT>
+	<DD>As above, but multiplies the output by the current input signal.</DD>
+
+<h4>- Other nodes - </h4>
+<DT><STRONG>GridVectorNode</STRONG></DT>
+	<DD>This calculates the directional vector in x,y, based on 9 input busses, assumed to be directions themselves in the order <code>[ [ -1, 1 ], [ -1, 0 ], [ -1, -1 ], [ 0, 1 ], [ 0, 0 ], [ 0, -1 ], [ 1, 1 ], [ 1, 0 ], [ 1, -1 ] ]</code>.</DD>
+
+<h4>- Trig Bus nodes - </h4>
+
+<DT><STRONG>SWTrigBusNode</STRONG></DT>
+	<DD><em>experimental</em> - This is the basic TrigBusNode. Instead of watching the bus at regular intervals, a TrigBusNode uses a <em>SendTrig</em> to set the data. A trigger is sent whenever the signal goes above the parameter <em>threshold</em>, or below. The output of this TrigBusNode are three times as many channels as the input (let's assume it has N channels), with the first N outputs being the strength of the trigger (how far it is above the threshold) above the threshold, the second N the strength of the trigger below the threshold, and the last N the on/off value (1 or 0). For this case, InRange may actually work more reliable. But this class may be useful for subclassing.</DD>
+
+
+<DT><STRONG>BeatListenNode</STRONG></DT>
+	<DD>Beat tracker. The input bus should be audio rate. It outputs tempo and triggers for quarter note, eighth note and sixteenth note.<br>Based on the UGen <em>BeatTrack</em>.</DD>
+
+
+<DT><STRONG>MouseGridNode</STRONG></DT>
+	<DD>Simulates a 6 by 4 matrix with a mouse, and gives triggers when it enters a field within the matrix.</DD>
+
+<DT><STRONG>TransitNode</STRONG></DT>
+	<DD><em>experimental</em> - Transition within a certain time frame (parameter <em>time</em>) between one input bus and several others.</DD>
+</DL>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A 
+  HREF="SWWatcherNode.html">SWWatcherNode</A>
+</LI>
+<LI><I> Previous: </I> <A 
+  HREF="SWDataNetworkGui.html">SWDataNetworkGui</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+
+<HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+
+
+</BODY>
+</HTML>

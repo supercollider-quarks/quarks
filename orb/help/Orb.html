@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #bf0000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {color: #0000ff}
+span.s2 {color: #0000bf}
+span.s3 {color: #606060}
+span.s4 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Orb</b></p>
+<p class="p2">A connection to SerialOrbs via serialOrb processing program.</p>
+<p class="p2">If not relying on network abilities, please use <a href="AmbientLight.html"><span class="s1">AmbientLight</span></a> instead.</p>
+<p class="p3">// There are virtual Orbs in this help Directory listening to NetAddr.localAddr:</p>
+<p class="p4">(<span class="s2">Document</span>.current.path.dirname ++ <span class="s3">"/VirtualOrb.rtf"</span>).load</p>
+<p class="p5"><br></p>
+<p class="p2"><b>*new(netAddr)</b></p>
+<p class="p5"><b></b><br></p>
+<p class="p2"><b>set(which, color, dt, action)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>sets the <b>color </b>of orb number <b>which</b> in time<b> dt</b>.</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>After process is finished, <b>action</b> is evaluated with <b>this</b> as parameter.</p>
+<p class="p6"><br></p>
+<p class="p2"><b>setHSV(which, color, dt, action)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>sets the <b>color </b>of orb number <b>which</b> in time<b> dt</b> according to HSV-space.</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>After process is finished, <b>action</b> is evaluated with <b>this</b> as parameter.</p>
+<p class="p5"><b></b><br></p>
+<p class="p2"><b>flash(which, startColor, flashColor, dt = 0.05, action)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>flashes the Orb <b>which</b> with color <b>flashColor.</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>After process is finished, <b>action</b> is evaluated with <b>this</b> as parameter.</p>
+<p class="p5"><b></b><br></p>
+<p class="p2"><b>//leak(which, startColor, flashColor, dt = 0.05, action)</b></p>
+<p class="p2">//<span class="Apple-tab-span">	</span>sets the color as fast as possible and then leaks it to original one.</p>
+<p class="p7"><br></p>
+<p class="p3">/*</p>
+<p class="p3"><span class="Apple-tab-span">	</span>o = Orb(NetAddr("echnaton", 12000))</p>
+<p class="p3"><span class="Apple-tab-span">	</span>o.set([0,1,2], Color(1, 0, 1), 1)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>o.set(1, Color.red(0.2), 1)</p>
+<p class="p8"><b>*/</b><span class="s4"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p3">// examples</p>
+<p class="p6"><br></p>
+<p class="p4">o = <span class="s2">Orb</span>.new;</p>
+<p class="p6"><br></p>
+<p class="p4">o.set(0, <span class="s2">Color</span>.green)</p>
+<p class="p4">o.set(1, <span class="s2">Color</span>.red)</p>
+<p class="p4">o.set([0, 1, 2], <span class="s2">Color</span>.hsv(0.4, 1, 1), {3.0.rand}!3)</p>
+<p class="p4">o.set(0, <span class="s2">Color</span>(1, 0.5, 0.5))</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">o.set(2, <span class="s2">Color</span>.blue, 20)</p>
+<p class="p6"><br></p>
+<p class="p4">o.set(0, <span class="s2">Color</span>.gray(0.1), 30)</p>
+<p class="p4">o.set([0, 1, 2], <span class="s2">Color</span>.new255(*[1, 1, 1]*10))</p>
+<p class="p6"><br></p>
+<p class="p4">o.set((0..2), <span class="s2">Color</span>.black)</p>
+<p class="p6"><br></p>
+<p class="p4">o.set(2, <span class="s2">Color</span>.red, 0.5)</p>
+<p class="p5"><br></p>
+<p class="p4">o.flash(1, <span class="s2">Color</span>.yellow(0.3), 0.05)</p>
+<p class="p6"><br></p>
+<p class="p4">o.flash((0..2), <span class="s2">Color</span>.black, 1);</p>
+<p class="p4">o.flash((0..2), <span class="s2">Color</span>.green, 1);</p>
+<p class="p4">o.flash((0..2), <span class="s2">Color</span>(0.1, 0.4, 0.8), 0.1);</p>
+<p class="p6"><br></p>
+<p class="p4">o.set((0..2), <span class="s2">Color</span>.red)</p>
+<p class="p4">(</p>
+<p class="p4">o.setHSV(0, <span class="s2">Color</span>.green, 10, {<span class="s3">"done"</span>.postln});</p>
+<p class="p4">o.set(1, <span class="s2">Color</span>.green, 10, {<span class="s3">"done"</span>.postln});</p>
+<p class="p4">)</p>
+<p class="p4">o.setHSV([0, 1, 2], <span class="s2">Color</span>.hsv(0, 1, 1), 10)</p>
+<p class="p4">o.set(2, <span class="s2">Color</span>.green, 2)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">o.setHSV(0, <span class="s2">Color</span>.red, 10, {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s3">"0 done"</span>.postln;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>o.setHSV(1, <span class="s2">Color</span>.green, 10, {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s3">"1 done"</span>.postln;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>o.setHSV(2, <span class="s2">Color</span>.blue, 10, {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s3">"2 done"</span>.postln;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>o.flash([0,1,2], <span class="s2">Color</span>.white, 0.1)</p>
+<p class="p4">})})})</p>
+<p class="p6"><br></p>
+<p class="p3">// Multi Channel Expansion</p>
+<p class="p6"><br></p>
+<p class="p4">o.set([0, 1, 2], <span class="s2">Color</span>(0, 0.4, 1), [2, 10, 2pi]);</p>
+<p class="p4">o.set((0..2), <span class="s2">Color</span>(1, 0.5, 0.5), [2, 10, 2pi]);</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">o.set([0, 1, 2], [<span class="s2">Color</span>.new255(127, 255, 212), <span class="s2">Color</span>.new255(143, 188, 143).blend(<span class="s2">Color</span>.red, 0.7)], [1, 2, 3])</p>
+<p class="p4">(</p>
+<p class="p9"><span class="s2">Tdef</span><span class="s4">(</span>\lichtorgel<span class="s4">, {loop{</span></p>
+<p class="p6"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>o.flash([0,1,2], <span class="s2">Color</span>.white, 0.05, action: {<span class="s2">|this|</span><span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>o.set(</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[0,1,2].choose,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Color</span>.rand(0.2, 0.9);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span>});</p>
+<p class="p4"><span class="Apple-tab-span">	</span>0.25.wait;</p>
+<p class="p6"><br></p>
+<p class="p4">}})</p>
+<p class="p4">)</p>
+<p class="p9"><span class="s2">Tdef</span><span class="s4">(</span>\lichtorgel<span class="s4">).play</span></p>
+<p class="p9"><span class="s2">Tdef</span><span class="s4">(</span>\lichtorgel<span class="s4">).stop</span></p>
+<p class="p6"><br></p>
+<p class="p4">_____</p>
+<p class="p2">SerialOrbs are proudly presented to you by vlispace inc.</p>
+<p class="p5"><br></p>
+<p class="p3">///////// test virtual Orbs ///////</p>
+<p class="p5"><br></p>
+<p class="p4">n = <span class="s2">NetAddr</span>.localAddr</p>
+<p class="p4">o = <span class="s2">Orb</span>.new(n);</p>
+<p class="p4">o.set(2, <span class="s2">Color</span>.white, 1)</p>
+<p class="p4">o.set((0..2), <span class="s2">Color</span>.black, 1)</p>
+<p class="p4">o.set((0..2), {<span class="s2">Color</span>.red(1.0.rand)}!3, 10)</p>
+<p class="p4">o.set((0..2), {<span class="s2">Color</span>.green(1.0.rand)}!3, 1)</p>
+<p class="p4">o.set((0..2), {<span class="s2">Color</span>.blue(1.0.rand)}!3, 0.1)</p>
+<p class="p4">o.set((0..2), {<span class="s2">Color</span>.yellow(1.0.rand)}!3, 10)</p>
+<p class="p4">o.set((0..2), {<span class="s2">Color</span>.yellow(1)}!3, 1)</p>
+<p class="p4">o.setHSV((0..2), [<span class="s2">Color</span>.red, <span class="s2">Color</span>.green, <span class="s2">Color</span>.blue], 10)</p>
+<p class="p4">o.setHSV((0..2), [<span class="s2">Color</span>.red, <span class="s2">Color</span>.green, <span class="s2">Color</span>.blue].scramble, 10)</p>
+<p class="p4">o.setHSV((0..2), [<span class="s2">Color</span>(1,0,1), <span class="s2">Color</span>(0,1,1), <span class="s2">Color</span>(1,1, 0)].scramble, 10)</p>
+<p class="p4">o.flash((0..2), [<span class="s2">Color</span>(1,0,1), <span class="s2">Color</span>(0,1,1), <span class="s2">Color</span>(1,1, 0)].scramble, 0.03)</p>
+<p class="p6"><br></p>
+<p class="p4">o.flash(0, <span class="s2">Color</span>.green, 0.1)</p>
+<p class="p6"><br></p>
+<p class="p4">o.set((0..2), {<span class="s2">Color</span>.blue}!3, 10)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+</body>
+</html>

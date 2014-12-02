@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #00139d; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+span.s1 {color: #00139d}
+span.s2 {font: 12.0px Arial}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SplineGen</b></p>
+<p class="p2"><br></p>
+<p class="p3">like EnvGen, but plays a Spline</p>
+<p class="p4"><br></p>
+<p class="p3">SplineGen(spline,dimension,loop)</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>spline : <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>an instance of a Spline subclass</p>
+<p class="p3"><span class="Apple-tab-span">	</span>dimension:<span class="Apple-tab-span">	</span>the time dimension.<span class="Apple-converted-space">  </span>0 is x, 1 is y</p>
+<p class="p3"><span class="Apple-tab-span">	</span>loop:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>wraps the time-interpolated spline around and plays it in a loop</p>
+<p class="p4"><br></p>
+<p class="p3">note the following are instance methods, not class methods as normal for pseudo-ugens</p>
+<p class="p4"><br></p>
+<p class="p5"><br></p>
+<p class="p3"><b>kr(timeScale=1.0,doneAction=0,divisions=512)</b></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">s.boot;</p>
+<p class="p5"><br></p>
+<p class="p6">// BSpline</p>
+<p class="p6">(</p>
+<p class="p6">b = <span class="s1">BSpline</span>([ [ 0, 2.275 ], [ 1, 1 ], [ 2.5102880658436, 3.1 ], [ 4, 4 ] ], 2.0, <span class="s1">false</span>);</p>
+<p class="p5"><br></p>
+<p class="p6">b.gui(<span class="s1">nil</span>,1000@300);</p>
+<p class="p5"><br></p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p6">{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">PinkNoise</span>.ar * <span class="s1">SplineGen</span>(b).kr(doneAction:2)</p>
+<p class="p6">}.play</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// Linear</p>
+<p class="p6">(</p>
+<p class="p5"><br></p>
+<p class="p6">b = <span class="s1">LinearSpline</span>( Array.fill(60,{ arg i; [ i,1.0.rand ] }) );</p>
+<p class="p5"><br></p>
+<p class="p6">b.gui(<span class="s1">nil</span>,1200@300);</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">)</p>
+<p class="p6">(</p>
+<p class="p6">{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">PinkNoise</span>.ar * <span class="s1">SplineGen</span>(b).kr(doneAction:2)</p>
+<p class="p6">}.play</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p7"><b>Loop</b></p>
+<p class="p8"><b></b><br></p>
+<p class="p6"><span class="s2">Its not the spline that loops (</span>that would be a loop in 2 dimensional space) but the SplineGen that is set to loop. <span class="Apple-converted-space"> </span></p>
+<p class="p8"><b></b><br></p>
+<p class="p6">(<span class="Apple-converted-space"> </span></p>
+<p class="p6">// the spline does NOT loop,<span class="Apple-converted-space"> </span></p>
+<p class="p6">b = <span class="s1">BSpline</span>( Array.fill(16,{ arg i; [ i * 0.25,1.0.rand ] }), 3.0,false );</p>
+<p class="p5"><br></p>
+<p class="p6">b.gui(<span class="s1">nil</span>,1200@300);</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">)</p>
+<p class="p6">(</p>
+<p class="p6">// the SplineGen loops</p>
+<p class="p6">{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">Saw</span>.ar(<span class="s1">SplineGen</span>(b,loop:true).kr.linexp(0.0,1.0,40,500).clip(40,500)).dup * 0.4</p>
+<p class="p6">}.play</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p3"><b>readKr</b></p>
+<p class="p6">(</p>
+<p class="p5"><br></p>
+<p class="p6">//<span class="Apple-converted-space"> </span></p>
+<p class="p6">{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">Saw</span>.ar(<span class="s1">SplineGen</span>(b,loop:true).readKr(MouseX.kr(0.0,5.0)).linexp(0.0,1.0,40,500).clip(40,500)).dup * 0.4</p>
+<p class="p6">}.play</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p3"><b>xyKr</b></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p3">not behaving yet. might move this to osc or a separate UGen</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="Apple-converted-space"> </span>returns an array of kr following each dimension</p>
+<p class="p3"><span class="Apple-converted-space"> </span>returns as many dims as you have, not just xy</p>
+<p class="p3"><span class="Apple-converted-space"> </span>time is the path along the spline</p>
+<p class="p3"><span class="Apple-converted-space"> </span>the total tangent length along spline could be summed so that you could specify the speed of circuit revolution</p>
+<p class="p3"><span class="Apple-converted-space"> </span>but only if its 2 dimensions (using point hypot)</p>
+<p class="p4"><span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-converted-space"> </span>so just crank the speed up until you like it</p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p6">b = <span class="s1">BSpline</span>( Array.fill(8,{ arg i; [ exprand(40,500),1.0.rand ] }), 3.0,false );</p>
+<p class="p5"><br></p>
+<p class="p6">b.gui(<span class="s1">nil</span>,1200@300);</p>
+<p class="p5"><br></p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p6">{</p>
+<p class="p6"><span class="Apple-tab-span">	</span># f , w = <span class="s1">SplineGen</span>(b,0,loop:true).xyKr(MouseY.kr(0.1,20),32);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">Pulse</span>.ar(f.clip(40,500),w.clip(0.0,1.0),0.4).dup</p>
+<p class="p6">}.play</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p6">b.interpolate(32).flop.plot2</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+</body>
+</html>

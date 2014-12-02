@@ -1,0 +1,23 @@
+#N canvas 308 243 614 384 10;
+#X obj 80 261 sendOSC;
+#X msg 142 112 send /oo brussels play;
+#X msg 144 159 send /oo brussels stop;
+#X floatatom 351 149 5 1 400 0 - - -;
+#X msg 349 93 send /oo brussels set freq \$1;
+#X msg 351 177 send /oo brussels set numharm \$1;
+#X obj 352 67 hsl 128 15 5 800 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 6300 1;
+#X floatatom 267 233 5 0 10 0 - - -;
+#X msg 81 66 connect 127.0.0.1 57120;
+#X text 17 10 //first start supercollider and run the code in 'openobject_supercollider.html'
+;
+#X msg 267 259 send /oo_k brussels play fadeTime \$1;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 5 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 4 0;
+#X connect 7 0 10 0;
+#X connect 8 0 0 0;
+#X connect 10 0 0 0;

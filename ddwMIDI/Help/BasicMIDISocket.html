@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 72.0px; text-indent: -36.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+span.s1 {color: #007300}
+span.s2 {color: #0000bf}
+span.s3 {color: #000000}
+span.s4 {color: #606060}
+span.s5 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>BasicMIDISocket<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">In my hierarchy, MIDI sockets respond to note on and off messages. BasicMIDISocket is the simplest of these, in which you specify a note on function and a note off function.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(channel, on_func, off_func)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Channel: the port and channel this socket should listen to. It may be specified several ways:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4">chan_num (simple integer): this number is the channel number; the port will be assumed 0</p>
+<p class="p4"><span class="s1">\omni</span>: respond to any channel on port 0</p>
+<p class="p4"><span class="s2">nil</span>: assume port 0, channel 0</p>
+<p class="p4">[port_num, chan_num]: specify a port as well as channel. port_num can be the uid belonging to the port (see MIDIClient and MIDIEndPoint), or an integer index to the sources initialized by MIDIClient.</p>
+<p class="p4">[port_num, <span class="s1">\omni</span>]: respond to any channel on this port<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">on_func, off_func: your functions. They will be passed the note number and velocity as arguments.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">port_num here refers to an index into the MIDIPort.sources array, e.g., on my machine:</p>
+<p class="p2"><br></p>
+<p class="p5">MIDIPort<span class="s3">.init;</span></p>
+<p class="p6"><br></p>
+<p class="p7">Sources: [ FastLane USB #2 : Port A, FastLane USB #2 : Port B, UltraLite : Midi Port ]</p>
+<p class="p7">Destinations: [ FastLane USB #2 : Port A, FastLane USB #2 : Port B, UltraLite : Midi Port ]</p>
+<p class="p7">MIDIPort</p>
+<p class="p2"><br></p>
+<p class="p3">In this configuration,</p>
+<p class="p2"><br></p>
+<p class="p3">port 0 = FastLane USB #2 : Port A</p>
+<p class="p3">port 1 = FastLane USB #2 : Port B</p>
+<p class="p3">port 2 = UltraLite : Midi Port</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>free<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Deactivate the socket and remove it from the hierarchy.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Example:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p7">(</p>
+<p class="p5"><span class="s3">k = </span>BasicMIDISocket<span class="s3">(</span><span class="s1">\omni</span><span class="s3">,</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>{ <span class="s2">arg</span> num, vel; [<span class="s4">"noteOn"</span>, num, vel].postln },</p>
+<p class="p7"><span class="Apple-tab-span">	</span>{ <span class="s2">arg</span> num, vel; <span class="s4">"\t"</span>.post; [<span class="s4">"noteOff"</span>, num, vel].postln; });</p>
+<p class="p7">)</p>
+<p class="p6"><br></p>
+<p class="p8">// try some notes on your keyboard</p>
+<p class="p8">// when done:</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s3">k.free;<span class="Apple-tab-span">	</span></span>// now the keyboard does nothing</p>
+<p class="p2"><br></p>
+<p class="p9"><b>Writing your own sockets</b></p>
+<p class="p2"><br></p>
+<p class="p3">Extensibility was crucial for me in designing this framework. If you have particular types of objects you like to control by MIDI that need special features, you can easily write your own MIDI socket or MIDI controller classes. This section covers MIDI sockets. MIDI controllers are handled in the <a href="BasicMIDIControl.html"><span class="s5">BasicMIDIControl</span></a> help file.</p>
+<p class="p2"><br></p>
+<p class="p3">All MIDI sockets should be subclasses of AbstractMIDISocket. The abstract class handles the details of initializing the MIDI channel and placing the socket into the hierarchy. The <i>*new</i> message is always in the format: <b>new(channel, destination, args)</b>. <i>*new</i> should not be overridden in your subclass.</p>
+<p class="p2"><br></p>
+<p class="p3">Any further initialization should be done in the method <i>init</i>. <i>Init</i> will receive any arguments after the channel number and destination given in the <i>new</i> call. For example, in BasicMIDISocket:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>init { <span class="s2">arg</span> offfunc;</p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>onPlayer = destination;<span class="Apple-converted-space">  </span></span>// since destination is this, I simplify the usual syntax:</p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>destination = </span><span class="s2">this</span><span class="s3">;<span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span></span>// new(channel, dest, args)<span class="Apple-converted-space">  </span>-- so you can say instead:</p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>offPlayer = offfunc;<span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span></span>// new(channel, on_func, off_func)<span class="s3"><span class="Apple-tab-span">	</span>}</span></p>
+<p class="p2"><br></p>
+<p class="p3">In this case, the socket is its own destination, so I do some swapping of variables to make the syntax cleaner. If you have a different destination, leave the destination variable alone.</p>
+<p class="p2"><br></p>
+<p class="p3">AbstractMIDISocket-free removes the object from the hierarchy, then calls the <i>clear</i> method.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>clear {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>onPlayer = offPlayer = <span class="s2">nil</span>;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>}</p>
+<p class="p2"><br></p>
+<p class="p3">The instance variable <i>destination</i> holds the object being played by the socket. It is set to the second argument to <i>new()</i> before your init method is called.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">The destination must respond to <i>active</i> with a Boolean which is true if the object being played is still in action and false if that object has been freed. When <i>MIDIPort.update</i> is called, it scans all the objects in the hierarchy and if <i>.destination.active</i> is false, that responder is freed. In the case of VoicerMIDISocket, which can create several MIDI controller objects in addition to the MIDI socket, the voicer (destination) calls <i>MIDIPort.update</i> when it's freed, and Voicer's <i>active</i> method tells MIDIPort that its MIDI objects can disappear. Your player should do this as well.</p>
+<p class="p2"><br></p>
+<p class="p3">If the destination is <i>this</i> (as above), then your socket must implement <i>active</i>. From BasicMIDISocket:</p>
+<p class="p2"><br></p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span>active { ^onPlayer.notNil }<span class="Apple-tab-span">	</span></span>// since I'm the destination, I must say if I'm active or not</p>
+<p class="p2"><br></p>
+<p class="p3">Finally, the socket must implement noteOn and noteOff methods, which take the note number and velocity as arguments. From BasicMIDISocket:</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>noteOn { <span class="s2">arg</span> note, vel; onPlayer.value(note, vel) }</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>noteOff { <span class="s2">arg</span> note, vel; offPlayer.value(note, vel) }</p>
+<p class="p2"><br></p>
+<p class="p3">BasicMIDISocket in its entirety:</p>
+<p class="p2"><br></p>
+<p class="p5">BasicMIDISocket<span class="s3"> : </span>AbstractMIDISocket<span class="s3"> {</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s2">var</span> &lt;&gt;onPlayer, &lt;&gt;offPlayer;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>init { <span class="s2">arg</span> offfunc;</p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>onPlayer = destination;<span class="Apple-converted-space">  </span></span>// since destination is this, I simplify the usual syntax:</p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>destination = </span><span class="s2">this</span><span class="s3">;<span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span></span>// new(channel, dest, args)<span class="Apple-converted-space">  </span>-- so you can say instead:</p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>offPlayer = offfunc;<span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span></span>// new(channel, on_func, off_func)</p>
+<p class="p7"><span class="Apple-tab-span">	</span>}</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>clear {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>onPlayer = offPlayer = <span class="s2">nil</span>;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>}</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span>active { ^onPlayer.notNil }<span class="Apple-tab-span">	</span></span>// since I'm the destination, I must say if I'm active or not</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>noteOn { <span class="s2">arg</span> note, vel; onPlayer.value(note, vel) }</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>noteOff { <span class="s2">arg</span> note, vel; offPlayer.value(note, vel) }</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7">}</p>
+<p class="p6"><br></p>
+<p class="p3">Short and sweet.</p>
+</body>
+</html>

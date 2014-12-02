@@ -1,0 +1,107 @@
+CLASS:: SaveConsole
+summary:: widget with Save/SaveAs/Open controls
+categories:: Libraries>crucial>GUI
+related:: Classes/SynthConsole
+
+DESCRIPTION:: This is used in Player guis to add the Save/SaveAs controls
+
+Does a no-clobber check, makes a .bak copy of any previously existing file it finds.
+
+code::
+(
+	SaveConsole(
+		Array.rand(16,10,200),
+		nil, // no previous path
+		nil) //no layout
+	.print // prints object
+	.save
+	.saveAs
+)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: object
+anything that can respond to .asCompileString and thus be saved to disk
+
+argument:: path
+supply this if the object you are supplying was already loaded from disk and has a known path.
+This is used for the save/save as behavior.
+
+argument:: layout
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: object
+
+
+
+METHOD:: path
+
+
+
+METHOD:: onSaveAs
+
+
+
+METHOD:: print
+
+
+
+METHOD:: printPath
+
+
+
+METHOD:: save
+
+
+argument:: title
+
+
+argument:: minWidth
+
+
+
+METHOD:: saveAs
+
+
+argument:: onSaveF
+
+
+argument:: default
+
+
+
+METHOD:: open
+
+
+argument:: onOpenF
+
+
+
+METHOD:: getPathThen
+
+
+argument:: then
+
+
+argument::  ... args
+
+
+
+METHOD:: doSave
+
+
+
+METHOD:: doSaveAs
+
+
+
+
+

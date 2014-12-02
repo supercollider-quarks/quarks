@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1000d0}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #dc0000}
+span.s1 {color: #000000}
+span.s2 {color: #008a00}
+span.s3 {color: #1000d0}
+span.s4 {color: #737373}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">Quick and dirty first pass at a class for the Akai MPD24</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>Jeff C. uses just one scene, so no switching</p>
+<p class="p1"><span class="Apple-tab-span">	</span>supports cc, notes, aftertouch, sysex.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>sysex is with MIDI.sysex - very dirty!<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>test all kinds:<span class="Apple-converted-space"> </span></p>
+<p class="p1">(</p>
+<p class="p3"><span class="s1"><span class="Apple-tab-span">	</span>m = </span>MPD24Ktl.new;</p>
+<p class="p3">//<span class="Apple-tab-span">	</span>m.dump;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>m.mapCC(<span class="s2">\k1</span>, { <span class="s2">'yo!'</span>.postln });<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>m.mapCC(<span class="s2">\sl6</span>, { <span class="s3">|val|</span> val.postln });<span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span></span>// vel is scaled from 0 - 127</p>
+<p class="p1"><span class="Apple-tab-span">	</span>m.mapNoteOn(36, { <span class="s3">|note, vel|</span> [<span class="s2">\noteOn</span>, note, vel, <span class="s4">"boom"</span>].postln });</p>
+<p class="p1"><span class="Apple-tab-span">	</span>m.mapNoteOn(39, { <span class="s3">|note, vel|</span> [<span class="s2">\noteOn</span>, note, vel, <span class="s4">"tchak"</span>].postln });</p>
+<p class="p1"><span class="Apple-tab-span">	</span>m.mapNoteOff(36, { <span class="s3">|note, vel|</span> [<span class="s2">\noteOff</span>, note, vel, <span class="s4">"moob"</span>].postln });</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span></span>// sends mono touch only.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>m.mapTouch({ <span class="s3">|val|</span> [<span class="s2">\press</span>, val].postln });</p>
+<p class="p1"><span class="Apple-tab-span">	</span>m.mapTrans(\fwd, { \fwd.postln });</p>
+<p class="p1"><span class="Apple-tab-span">	</span>m.mapTrans(\rew, { \rew.postln });</p>
+<p class="p1"><span class="Apple-tab-span">	</span>m.mapTrans(\rec, { \rec.postln });</p>
+<p class="p1"><span class="Apple-tab-span">	</span>m.mapTrans(\play, { \play.postln });</p>
+<p class="p1"><span class="Apple-tab-span">	</span>m.mapTrans(\stop, { \stop.postln });</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">)</p>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>SCJConnection</title>
+</head>
+<body bgcolor="#ffffff" text="#000000" link="#0000ee" alink="#ff0000" vlink="#551a8b">
+<h2>SCJConnection</h2>
+
+<p>A Class to manage JACK connections from SuperCollider.<br>
+This is just an encapsulation of calls to the jack tools jack_connect, jack_disconnect and jack_lsp. Normally these come with JACK.<br>
+<br>
+This class can be used in two ways:<br>
+<br>
+1. You can make connections, using the class methods .connect and .disconnect<br>
+<br>
+2. You can make an instance, which defines a connection, which can then be (dis)connected using the instance methods .connect and .disconnect<br>
+<br>
+<pre>SCJConnection.connect( srcchan, deschan, src, des )</pre><br>
+Connects srchan with deschan.<br>
+srcchan and deschan are arrays with source and destination channels. Their interpretation depends on the src and des arguments. If these are both nil, the numbers in the array are interpreted as indices in the class variable "allports" (see below). If src or des is \sc or \alsa they are interpreted as sc or alsa input or output channels. Otherwise, src or des can be strings of the jack program ports.<br>
+<br>
+<pre>SCJConnection.disconnect( srcchan, deschan, src, des )</pre><br>
+Disconnects srchan with deschan.<br>
+Arguments as in .connect.<br>
+<br>
+<pre>SCJConnection.getconnections</pre><br>
+Get a list of current jack connections (via jack_lsp).<br>
+List gets stored in class variable .connections.<br>
+<br>
+This variable is in the format:<br>
+<pre>(
+	'readable_port_name': ['a_writable_port_name', 'another_writable_port_name'],
+	'another_readable_port_name': ['a_writable_port_name']
+)</pre>
+All port names are symbols.<br>
+<br>
+<pre>SCJConnection.getproperties</pre><br>
+Get a list of properties of all jack ports (via jack_lsp).<br>
+List gets stored in class variable .properties<br>
+<br>
+<pre>SCJConnection.getallports</pre><br>
+Get a list of all jack ports (via jack_lsp).<br>
+List gets stored in class variable .allports<br>
+<br>
+<br>
+The above three methods get automatically called in the .initClass method.<br>
+<br>
+<pre>j = SCJConnection.new( srcchan, deschan, src, des )</pre><br>
+Create an instance of a Jack Connection. Arguments as in the class method .connect and .disconnect.<br>
+The instance can then later be connected using the instance method .connect of .disconnect:<br>
+<br>
+<pre>j.connect</pre><br>
+<br>
+and <br>
+<br>
+<pre>j.disconnect</pre><br>
+<br>
+<br>
+Other important class variables:<br>
+<br>
+<pre>SCJConnection.prepend</pre><br>
+the prepend to the program call for jack_connect, jack_disconnect, and jack_lsp.<br>
+Needed when the programs are not in the search path.<br>
+<br>
+<pre>SCJConnection.alsadef</pre><br>
+<pre>SCJConnection.scdef</pre><br>
+<br>
+The defaults for alsa and sc ports, when the src and des arguments are used. These are initialised in .initClass with standard values.<br>
+<br>
+</p>
+</body>
+</html>

@@ -1,0 +1,65 @@
+CLASS:: RedIntelHex
+SUMMARY:: read and decode intel hex files
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedDifferentialManchesterCodeNegative, Classes/RedArduino
+
+DESCRIPTION::
+See http://en.wikipedia.org/wiki/Intel_HEX and http://www.sbprojects.com/knowledge/fileformats/intelhex.php
+
+CLASSMETHODS::
+
+METHOD::read
+Instantiate, read and decode a .hex file.
+
+ARGUMENT::path
+Path to file as a link::Classes/String::.
+
+INSTANCEMETHODS::
+
+PRIVATE::prRead
+
+METHOD::read
+Read and decode a .hex file.
+
+ARGUMENT::path
+Path to file as a link::Classes/String::.
+
+METHOD::data
+After a successful read, this returns the raw data.
+
+RETURNS::
+An link::Classes/Array:: with raw data - no addresses.
+
+METHOD::addressData
+After a successful read, this contains the data with addresses.
+
+NOTE::
+Addresses are normally not needed. Use the link::#-data:: method instead.
+::
+
+RETURNS::
+An link::Classes/Array:: of arrays in the format of code::[address, [data]]::.
+
+METHOD::hexFormatString
+Mainly for display.
+
+RETURNS::
+A long link::Classes/String:: with the address and data as hexadecimal numbers.
+
+EXAMPLES::
+
+CODE::
+//--arduino .hex files
+
+//to decode an Arduino hex file, open ArduinoIDE and set the preferences to verbose mode.
+//then click verify and look at the the next to last printed line. it will show the path.
+a= RedIntelHex.read("/var/folders/wf/43mk9crd027f10mkp_ksv1zh0000gn/T/build2447586900609308316.tmp/udkPwm.cpp.hex")
+a.data
+a.hexFormatString
+::
+
+CODE::
+//--how to read a file from desktop
+a= RedIntelHex.read("~/Desktop/a_dec.cpp.hex");
+a.data
+::

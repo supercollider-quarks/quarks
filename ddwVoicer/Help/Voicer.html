@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 36.0px; text-indent: -36.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 36.0px; text-indent: -36.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 36.0px; text-indent: -36.0px; font: 9.0px Monaco; color: #a41919}
+p.p11 {margin: 0.0px 0.0px 0.0px 36.0px; text-indent: -36.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 36.0px; text-indent: -36.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Helvetica}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Helvetica; min-height: 12.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.0px Monaco}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 7.0px Monaco; min-height: 10.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #36701f}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001ab2}
+span.s1 {font: 12.0px Helvetica}
+span.s2 {color: #0000ff}
+span.s3 {color: #001ab2}
+span.s4 {color: #606060}
+span.s5 {color: #36701f}
+span.s6 {color: #000000}
+span.s7 {font: 9.0px Monaco}
+span.s8 {font: 9.0px Monaco; color: #36701f}
+span.s9 {color: #a41919}
+span.s10 {color: #496c29}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Voicer</b><span class="s1"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><br></p>
+<p class="p3">A programmatically-controlled voice-stealing node manager. Written by H. James Harkins, jamshark70@gmail.com</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Voicer is not the same as sc2's Voicer.ar!</b> The voicer class itself does not implement MIDI. After you create a voicer, however, you can place it in a <a href="../../ddwMIDI/Help/VoicerMIDISocket.html"><span class="s2">VoicerMIDISocket</span></a>, which includes all the necessary intelligence for note on/off, continuous controllers, and pitch bend messages. Multiple sockets can be created on the same channel with different voicers and different key ranges, allowing complex keysplit configurations to be created.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Features:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p4">Triggering and releasing notes by frequency (no need to remember which node is playing which pitch)<span class="Apple-converted-space"> </span></p>
+<p class="p4">Automatic gating (notes or chords can be played for specific durations--the release is scheduled using a clock of your choice, so if the clock is a TempoClock, you can specify durations in terms of beats very easily)<span class="Apple-converted-space"> </span></p>
+<p class="p4">Arguments can be set aside as global, applying to all nodes simultaneously--great for filter cutoffs, pitch bend, etc.--the voicer's GUI window provides sliders for each global control (which also respond to MIDI, if you have it set up that way)<span class="Apple-converted-space"> </span></p>
+<p class="p4">Easy latency setting for rock-solid timing in sequencing</p>
+<p class="p4">GUI support based on proxies, allowing easy reuse of GUI objects. See <a href="VoicerProxy.html"><span class="s2">VoicerProxy</span></a>.</p>
+<p class="p4">Support (with VoicerMIDISocket) for Instr-miditest and SynthDef-miditest, methods for testing new synths by MIDI. See the helpfile <a href="miditest.html"><span class="s2"><b>miditest</b></span></a>.</p>
+<p class="p4">As of 21 November 2004, compatible with event patterns (Pbind etc.). See the <b>Sequencing</b> section below.</p>
+<p class="p2"><br></p>
+<p class="p3">Voicer presently works with synthdefs and Instr's. You should not send a patch directly to Voicer. Voicer takes the Instr with an argument list and makes its own Patches.</p>
+<p class="p2"><br></p>
+<p class="p3">Synthdefs &amp; Instr's to be used with voicer need to have a few specific things:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4">A variable-length envelope (Env.new with a releaseNode, Env.asr, Env.adsr)<span class="Apple-converted-space"> </span></p>
+<p class="p4">A <i>freq</i> argument, for the frequency that will be triggered. Other frequencies (filter cutoffs etc.) should be specified otherwise.</p>
+<p class="p4">A <i>gate</i> argument</p>
+<p class="p4">An EnvGen whose doneAction is 2--the voicer expects that synth nodes will die after notes are released<span class="Apple-converted-space"> </span></p>
+<p class="p4">If you use a SynthDef: an argument called <i>outbus</i> for the output bus index</p>
+<p class="p2"><br></p>
+<p class="p3">To wit:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5"><span class="s3">SynthDef</span>.new(<span class="s4">"harpsi"</span>, {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">arg</span> outbus = 0, freq = 440, gate = 0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> out;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>out = <span class="s3">EnvGen</span>.ar(<span class="s3">Env</span>.adsr, gate, doneAction:2) *</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pulse</span>.ar(freq, 0.25, 0.75);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(outbus, [out, out]);</p>
+<p class="p5">}).load(s);</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p7">// or</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p5"><span class="s3">Instr</span>.new([<span class="s5">\harpsi</span>], {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">arg</span> freq = 440, gate = 0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> out;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>out = <span class="s3">EnvGen</span>.ar(<span class="s3">Env</span>.adsr, gate, doneAction:2) *</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pulse</span>.ar(freq, 0.25, 0.75);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[out, out]</p>
+<p class="p5">});</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">Tip: If you want the instrument to be velocity-sensitive, Latch the gate argument to get the velocity:</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s3">SynthDef</span>.new(<span class="s4">"harpsi"</span>, {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">arg</span> outbus = 0, freq = 440, gate = 0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> out, amp;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>amp = <span class="s3">Latch</span>.kr(gate, gate) * 0.5 + 0.5;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>out = <span class="s3">EnvGen</span>.ar(<span class="s3">Env</span>.adsr, gate, doneAction:2) *</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pulse</span>.ar(freq, 0.25, amp);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(outbus, [out, out]);</p>
+<p class="p5">}).load(s);</p>
+<p class="p2"><br></p>
+<p class="p8"><b>Creation</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(voices, things, args, bus, target, addAction = \addToTail)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p4">voices: the maximum number of voices that can be played by this instance<span class="Apple-converted-space"> </span></p>
+<p class="p4">things: what should go into the nodes. If you supply a single thing, each node will use the same synthdef. If you supply an array or other collection, the nodes will cycle through the collection. This is another way to do the sc2 trick of the pattern that plays its successive events on different synthdefs.<span class="Apple-converted-space"> </span></p>
+<p class="p4">args: can be a single argument array, such as [\ffreq, 10000], or an array of arg arrays: [ [\ffreq, 10000], [\ffreq, 15000] ]. If an array, the arg arrays will be referenced using wrapAt and assigned sequentially to the voicer nodes. These arguments will be stored with each node and sent to every synth that gets placed on the server. Argument arrays should always be written [name, value, name1, value1...]—even for Instr's. This is different from the standard crucial usage.</p>
+<p class="p4">bus: the output bus to use.<span class="Apple-converted-space"> </span></p>
+<p class="p4">target: anything that responds to .asTarget. If you supply a MixerChannel, both the bus and the target will be set appropriately. Default is Server.local.</p>
+<p class="p4">addAction: where the synths will be placed in relation to the target. (This setting will be ignored by patch nodes.)</p>
+<p class="p9"><br></p>
+<p class="p10">// with synthdef (depends on synths defined above):</p>
+<p class="p10"><span class="s6">v = </span><span class="s3">Voicer</span><span class="s6">.new(8, </span><span class="s4">"harpsi"</span><span class="s6">);<span class="Apple-converted-space">  </span></span>// 8 voices, all harpsi</p>
+<p class="p11"><br></p>
+<p class="p10">// with Instr &amp; MixerChannel:</p>
+<p class="p12">s = <span class="s3">Server</span>.local; s.boot;</p>
+<p class="p12">m = <span class="s3">MixerChannel</span>.new(<span class="s4">"harpsi"</span>, s, 2, 2);</p>
+<p class="p12">v = <span class="s3">Voicer</span>.new(8, <span class="s3">Instr</span>.at([<span class="s5">\harpsi</span>]), target:m);</p>
+<p class="p11"><br></p>
+<p class="p10">// a nested Instr:</p>
+<p class="p5">(</p>
+<p class="p5">i = <span class="s3">Instr</span>([<span class="s5">\harpsi</span>], {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">arg</span> freq = 440, gate = 0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> out;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>out = <span class="s3">EnvGen</span>.ar(<span class="s3">Env</span>.adsr, gate, doneAction:2) *</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pulse</span>.ar(freq, 0.25, 0.25);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[out,out]</p>
+<p class="p5">});</p>
+<p class="p5">f = <span class="s3">Instr</span>([<span class="s5">\test</span>, <span class="s5">\rlpf</span>], {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">arg</span> audio, ffreq = 500, rq = 0.1;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">RLPF</span>.ar(audio, ffreq, rq);</p>
+<p class="p5">});</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p7">// If you supply an Instr as an argument, it must be followed by an argument array or nil.</p>
+<p class="p7">// The Voicer makes a Patch for the inner Instr using the arg array immediately following.</p>
+<p class="p5">v = <span class="s3">Voicer</span>(8, <span class="s3">Instr</span>.at([<span class="s5">\test</span>, <span class="s5">\rlpf</span>]), [<span class="s5">\audio</span>, <span class="s3">Instr</span>.at([<span class="s5">\harpsi</span>]), <span class="s3">nil</span>, <span class="s5">\ffreq</span>, 5000, <span class="s5">\rq</span>, 0.08]);</p>
+<p class="p2"><br></p>
+<p class="p3"><b>IMPORTANT:</b> Each note that gets triggered on this last voicer will place two synths on the server: one for the harpsi, and another for the filter. These will all use the same bus, meaning that if you trigger several notes at once, the effect of the filter will be compounded for each note. This may not be the result you want. In general, you should use simple (self-contained) Instr's or synthdefs in a voicer.</p>
+<p class="p2"><br></p>
+<p class="p3">With Instr, any argument you supply as a SimpleNumber will be wrapped in a KrNumberEditor so you can change its value later. This is different from Patch. If you want a SimpleNumber to serve as a fixed argument, make a Ref to it: <span class="s7">[</span><span class="s8">\fixed_filter_freq</span><span class="s7">, `12500]</span>.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>clock_(clock)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Now deprecated - the gate method uses thisThread.clock instead of a preset clock.</p>
+<p class="p2"><br></p>
+<p class="p13">If you want to do sequencing with this voicer, you should set the clock to a TempoClock, preferably just after creation:<span class="Apple-converted-space"> </span></p>
+<p class="p14"><br></p>
+<p class="p15">t = <span class="s3">TempoClock</span>(144/60);<span class="Apple-tab-span">	</span><span class="s9">// 144 bpm</span></p>
+<p class="p15">v = <span class="s3">Voicer</span>(8, <span class="s4">"harpsi"</span>).clock_(t);</p>
+<p class="p16"><br></p>
+<p class="p13"><b>Caveat:</b> If you do this, v.gate will only work within a Routine or Task playing on the same TempoClock. If you expect to want to gate things from the command line, leave the clock as SystemClock (its default).</p>
+<p class="p2"><br></p>
+<p class="p3"><b>free</b><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Removes all synth objects associated with this voicer from the server, cleans up its GUI window, and disconnects the voicer from MIDI.</p>
+<p class="p2"><br></p>
+<p class="p8"><b>Playing<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>trigger1(freq, gate = 1, args, lat)</b></p>
+<p class="p3"><b>trigger(freq, gate = 1, args, lat)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Trigger a note (trigger1), or several notes (trigger). For trigger1, freq must be a float or int. For trigger, freq can be a single value or a collection. If you are triggering several notes, args can also be a collection of argument arrays e.g. <span class="s7">[ [</span><span class="s8">\filter</span><span class="s7">, 300], [</span><span class="s8">\filter</span><span class="s7">, 500], [</span><span class="s8">\filter</span><span class="s7">, 700] ]</span>. Each set of args will be sent in succession to the nodes as they're triggered (using wrapAt). In this case, the first node triggered will get \filter = 300, the second \filter = 500, etc.</p>
+<p class="p2"><br></p>
+<p class="p3">lat is the Server latency to use for this event. The following values are allowed for all methods with a "lat" argument:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>&lt; 0<span class="Apple-tab-span">	</span>Negative number: use the Voicer's default latency (set by myVoicer.latency = 1)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>&gt;= 0<span class="Apple-tab-span">	</span>Non-negative number: use this number as the latency for this event</p>
+<p class="p3"><span class="Apple-tab-span">	</span>nil<span class="Apple-tab-span">	</span>No latency: Server will play the message as soon as received</p>
+<p class="p2"><br></p>
+<p class="p3">Returns the node played, or a collection of nodes played.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>release1(freq, lat)</b></p>
+<p class="p3"><b>release(freq, lat)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Find the earliest-triggered note(s) with the frequency/frequencies given and send [\gate,0] to it. release1 allows only one frequency to be given; release works with either a single value or a collection. If there is no node with a given frequency, that frequency is ignored.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Returns the node(s) released.</p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s6">v = </span><span class="s3">Voicer</span><span class="s6">.new(8, </span><span class="s4">"harpsi"</span><span class="s6">);<span class="Apple-converted-space">  </span></span>// uses Server.local</p>
+<p class="p5">f = <span class="s3">Array</span>.fill(5, { 1000.0.rand + 50 });</p>
+<p class="p5">v.trigger(f);<span class="Apple-converted-space">  </span><span class="s9">// play 5 notes</span></p>
+<p class="p7"><span class="s6">v.release(f);<span class="Apple-converted-space">  </span></span>// release the same</p>
+<p class="p2"><br></p>
+<p class="p3"><b>gate1(freq, dur, gate = 1, args, lat)</b></p>
+<p class="p3"><b>gate(freq, dur, gate = 1, args, lat)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Triggers the notes and schedules their releases. If freq is a collection, dur and args may be the same thing for every node, or you can supply collections to have different arguments and different release times for each node.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Returns the node(s) played.</p>
+<p class="p2"><br></p>
+<p class="p5">f = <span class="s3">Array</span>.fill(5, { 1000.0.rand + 50 });</p>
+<p class="p7"><span class="s6"><span class="Apple-converted-space">  </span></span>// listen to the notes stop one by one</p>
+<p class="p5">v.gate(f, <span class="s3">Array</span>.fill(5, { <span class="s3">arg</span> i; 2*(i+1) }));</p>
+<p class="p2"><br></p>
+<p class="p3"><b>releaseNow1(freq, sec)</b></p>
+<p class="p3"><b>releaseNow(freq, sec)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Uses a negative gate to cause an instant release. Sec determines how long the release takes. Unlike gate, you may not supply a collection for sec. (Sec is converted to the negative gate by sec.abs.neg-1)</p>
+<p class="p2"><br></p>
+<p class="p3"><b>set(args, lat)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Sends the same <b>/n_set</b> message to each node in this voicer. Global controls (see below) send the value to the associated kr bus.</p>
+<p class="p2"><br></p>
+<p class="p8"><b>Controlling the voicer's behavior<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>panic</b></p>
+<p class="p2"><br></p>
+<p class="p3">Stops all active synths belonging to this voicer immediately.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>trace</b></p>
+<p class="p2"><br></p>
+<p class="p3">Sends the n_trace message to all active synths. Useful for debugging synthdefs. You can also trace a single playing node using the following:</p>
+<p class="p2"><br></p>
+<p class="p5">aVoicer.playingNodes.choose.trace;</p>
+<p class="p2"><br></p>
+<p class="p3"><b>gui</b></p>
+<p class="p2"><br></p>
+<p class="p3">Makes a window showing all global controls (see mapGlobal) and processes (see addProcess).</p>
+<p class="p2"><br></p>
+<p class="p3">Voicer-gui uses a proxy system so that you can display different voicers without incurring the overhead of removing views, resizing the window, adding views, and resizing again. For normal use, this process is transparent to the user. To change the voicer shown in a particular GUI, drag an expression that evaluates to the voicer (usually a variable name) into the drag sink immediately to the right of the voicer GUI label.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>mapGlobal(name, bus)</b></p>
+<p class="p3"><b>unmapGlobal(name, bus)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Makes an input to the synth global, by using the supplied kr bus (or creating a new one if no bus is supplied) and mapping the input to that bus in each voicer node. Newly triggered voicer nodes will be mapped automatically. This lets you control filter cutoff frequencies, pitch bends, etc. globally for all nodes in a voicer. A kr synth can be played on the bus to provide an LFO.</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5">i = <span class="s3">Instr</span>([<span class="s5">\harpsi</span>], {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">arg</span> freq = 440, gate = 0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> out;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>out = <span class="s3">EnvGen</span>.ar(<span class="s3">Env</span>.adsr, gate, doneAction:2) *</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pulse</span>.ar(freq, 0.25, 0.25);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[out,out]</p>
+<p class="p7"><span class="s6">}</span>/*, [\freq, \amp]*/<span class="s6">);</span></p>
+<p class="p5">f = <span class="s3">Instr</span>([<span class="s5">\test</span>, <span class="s5">\rlpf</span>], {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">arg</span> audio, ffreq = 500, rq = 0.1;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">RLPF</span>.ar(audio, ffreq, rq);</p>
+<p class="p5">});</p>
+<p class="p6"><br></p>
+<p class="p5">v = <span class="s3">Voicer</span>(8, f, [<span class="s5">\audio</span>, i, <span class="s3">nil</span>, <span class="s5">\ffreq</span>, 5000, <span class="s5">\rq</span>, 0.08]);</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p7">// globalize the filter cutoff</p>
+<p class="p5">b = v.mapGlobal(<span class="s5">\ffreq</span>);</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p7"><span class="s3">SynthDef</span><span class="s6">.new(</span><span class="s4">"SinLFO"</span><span class="s6">, {<span class="Apple-tab-span">	</span></span>// sinewave lfo</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">arg</span> outbus, freq = 1, phase = 0, mul = 1, add = 0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">ReplaceOut</span>.kr(outbus, <span class="s3">SinOsc</span>.kr(freq, phase, mul, add));</p>
+<p class="p5">}).load(<span class="s3">Server</span>.local);</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5">l = <span class="s3">Synth</span>.new(<span class="s4">"SinLFO"</span>, [<span class="s5">\freq</span>, 0.2, <span class="s5">\mul</span>, 500, <span class="s5">\add</span>, 1400, <span class="s5">\outbus</span>, b.index]);</p>
+<p class="p6"><br></p>
+<p class="p7">// all notes have the same filter LFO</p>
+<p class="p5">v.trigger([60, 64, 67].midicps);</p>
+<p class="p6"><br></p>
+<p class="p5">v.unmapGlobal(<span class="s5">\ffreq</span>);<span class="Apple-converted-space">  </span><span class="s9">// LFO stops</span></p>
+<p class="p7"><span class="s6">v.mapGlobal(</span><span class="s5">\ffreq</span><span class="s6">, b); </span>// set LFO to bus (which is still active)</p>
+<p class="p6"><br></p>
+<p class="p5">v.release([60, 64, 67].midicps);</p>
+<p class="p5">l.free;</p>
+<p class="p2"><br></p>
+<p class="p3"><b>addProcess(states, type)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Adds a <b>VoicerProcessGroup</b> to this Voicer. The group will be displayed as a button or pop-up menu in the voicer's GUI. For a button, specify type as <span class="s10">\toggle</span> in the addProcess message. See the VoicerProcessGroup help file for the correct syntax for states. Returns the new process group.</p>
+<p class="p2"><br></p>
+<p class="p3">This allows you to add graphically triggered sequencers and other processes directly to the voicer GUI.</p>
+<p class="p2"><br></p>
+<p class="p3">VoicerProcessGroups belong to the voicer's proxy, not to the voicer itself. This means you can change the voicer that is to play the sequence while the sequence is playing (provided both voicers use the same clock as the sequence). As with Voicer-gui, under normal circumstances this is transparent to the user.</p>
+<p class="p2"><br></p>
+<p class="p3">VoicerProcesses and VoicerProcessGroups are deprecated and no longer maintained.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>removeProcess(p)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Stops the process group if playing and removes it from the voicer and GUI.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>stealer_</b></p>
+<p class="p2"><br></p>
+<p class="p3">Chooses the algorithm the voicer uses to find the next node to play. Your choices are:</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s5">\preferLate</span>: prefers nodes that were more recently played</p>
+<p class="p4"><span class="s5">\preferEarly</span>: the default setting; prefers nodes that were played longer ago</p>
+<p class="p4"><span class="s5">\random</span>: chooses a non-playing node at random</p>
+<p class="p4"><span class="s5">\cycle</span>: cycles through the nodes in sequence, skipping nodes that are playing</p>
+<p class="p4"><span class="s5">\strictCycle</span>: cycles through the nodes in sequence, always in order whether they're playing or not</p>
+<p class="p9"><br></p>
+<p class="p4"><b>latency_</b></p>
+<p class="p9"><br></p>
+<p class="p3">Sets the default latency for this voicer. Default latency should be a positive number and can be overridden using the lat argument in trigger, release, gate, and set method calls.</p>
+<p class="p2"><br></p>
+<p class="p17"><b>Sequencing<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Voicer adds two new events that can be used with event streams (Pbind):</p>
+<p class="p2"><br></p>
+<p class="p3"><b>\voicerNote:</b> an alternate event type in the standard event framework, except that instead of including <span class="s5"><i>\instrument</i></span><i>, </i><span class="s5"><i>\synthdefName</i></span> in the Pbind, you should include <span class="s5"><i>\voicer</i></span><i>, myVoicerObject</i>.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5">v = <span class="s3">Voicer</span>(10, <span class="s5">\default</span>);</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p5">p = <span class="s3">Pbind</span>(<span class="s5">\degree</span>, <span class="s3">Pseq</span>((0..7), <span class="s3">inf</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\delta</span>, 0.25,<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\sustain</span>, <span class="s3">Pwhite</span>(1, 9, <span class="s3">inf</span>) * 0.25,<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\amp</span>, <span class="s3">Pwhite</span>(0.001, 0.15, <span class="s3">inf</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span></span><span class="s5">\argKeys</span><span class="s6">, #[</span><span class="s5">\amp</span><span class="s6">], <span class="Apple-converted-space">  </span></span>// leave this out and the amp stream will be ignored</p>
+<p class="p18"><span class="s6"><span class="Apple-tab-span">	</span></span>\voicer<span class="s6">, v,<span class="Apple-converted-space"> </span></span></p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span></span><span class="s5">\type</span><span class="s6">, </span><span class="s5">\voicerNote</span><span class="s6"><span class="Apple-converted-space">  </span></span>// leave this out and it will try to play on \instrument, default</p>
+<p class="p5">).play;</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5">p.stop;</p>
+<p class="p2"><br></p>
+<p class="p3"><b>\voicerMIDI:</b> a completely separate event prototype optimized for working with MIDIRecBuf. Not as flexible for general use, but easier for MIDI.</p>
+<p class="p2"><br></p>
+<p class="p5">v = <span class="s3">Voicer</span>(10, <span class="s5">\default</span>);</p>
+<p class="p19"><span class="s6">k = </span>VoicerMIDISocket<span class="s6">(0, v);</span></p>
+<p class="p19"><span class="s6">m = </span>MIDIBufManager<span class="s6">(chan:0);</span></p>
+<p class="p5">m.gui</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s6">m.initRecord;<span class="Apple-converted-space">  </span></span>// recording starts when you start playing</p>
+<p class="p7"><span class="s6">m.stopRecord;<span class="Apple-converted-space">  </span></span>// run this at the exact time you want the buffer to start looping</p>
+<p class="p6"><br></p>
+<p class="p5">p = <span class="s3">Pbind</span>(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\note</span>, <span class="s3">Pseq</span>(m[0].notes, <span class="s3">inf</span>),</p>
+<p class="p18"><span class="s6"><span class="Apple-tab-span">	</span></span>\voicer<span class="s6">, v,</span></p>
+<p class="p18"><span class="s6"><span class="Apple-tab-span">	</span></span>\latency<span class="s6">, 0.5,</span></p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span></span><span class="s5">\midi</span><span class="s6">, </span><span class="s3">true</span><span class="s6"><span class="Apple-tab-span">	</span></span>// note frequencies are MIDI note numbers...</p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// if true, the event will convert them to Hz -- true is the default</p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// if you already converted them, set this to false</p>
+<p class="p5">).play(protoEvent: <span class="s3">Event</span>.makeProto(<span class="s5">\voicerMIDI</span>));</p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span></span>// note above how you retrieve the voicerMIDI event prototype</p>
+<p class="p6"><br></p>
+<p class="p5">p.stop;</p>
+<p class="p2"><br></p>
+<p class="p3">You may also override note parameters individually: \freq is midi note number, \delta is \delta, \length corresponds to \sustain, and \gate corresponds to velocity.</p>
+<p class="p2"><br></p>
+<p class="p5">p = <span class="s3">Pbind</span>(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\note</span>, <span class="s3">Pseq</span>(m[0].notes, <span class="s3">inf</span>),</p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// replace with different note numbers, but leave the rhythm alone</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\freq</span>, <span class="s3">Pwhite</span>(48, 78, <span class="s3">inf</span>),</p>
+<p class="p18"><span class="s6"><span class="Apple-tab-span">	</span></span>\voicer<span class="s6">, v,</span></p>
+<p class="p18"><span class="s6"><span class="Apple-tab-span">	</span></span>\latency<span class="s6">, 0.5</span></p>
+<p class="p5">).play(protoEvent: <span class="s3">Event</span>.makeProto(<span class="s5">\voicerMIDI</span>));</p>
+<p class="p6"><br></p>
+<p class="p5">p.stop;</p>
+<p class="p6"><br></p>
+<p class="p5">p = <span class="s3">Pbind</span>(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\note</span>, <span class="s3">Pseq</span>(m[0].notes, <span class="s3">inf</span>),</p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// round the original note's rhythmic value to nearest 1/32</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\delta</span>, <span class="s3">Pfunc</span>({ <span class="s3">|event|</span> event[<span class="s5">\note</span>].dur.round(0.125).max(0.125) }),</p>
+<p class="p18"><span class="s6"><span class="Apple-tab-span">	</span></span>\voicer<span class="s6">, v,</span></p>
+<p class="p18"><span class="s6"><span class="Apple-tab-span">	</span></span>\latency<span class="s6">, 0.5</span></p>
+<p class="p5">).play(protoEvent: <span class="s3">Event</span>.makeProto(<span class="s5">\voicerMIDI</span>));</p>
+<p class="p6"><br></p>
+<p class="p5">p.stop;</p>
+<p class="p2"><br></p>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.29">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; min-height: 22.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #4c302e}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #2024c7}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #2024c7}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd0b0b}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008417}
+p.p19 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #cd0b0b}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #000000}
+span.s4 {text-decoration: underline}
+span.s5 {color: #2237a2}
+span.s6 {color: #64662d}
+span.s7 {color: #606060}
+span.s8 {color: #2c3f99}
+span.s9 {color: #656333}
+span.s10 {font: 12.0px Helvetica}
+span.s11 {color: #2024c7}
+span.s12 {font: 12.0px Helvetica; color: #000000}
+span.s13 {text-decoration: underline ; color: #2024c7}
+span.s14 {text-decoration: underline ; color: #0000ee}
+span.s15 {font: 9.0px Monaco; text-decoration: underline}
+span.s16 {font: 9.0px Monaco; text-decoration: underline ; color: #0000ee}
+span.s17 {color: #008417}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>************* Not updated for new JITGuis yet! ****************</b></p>
+<p class="p2"><b></b><br></p>
+<p class="p1"><span class="s1"><b>BCRKtl</b></span><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>a class for handling mappings of the Behringer BCR2000</b></p>
+<p class="p3"><br></p>
+<p class="p1"><b>Inherits from: Object : MIDIController</b></p>
+<p class="p3"><br></p>
+<p class="p1">The BCR2000 produces only MIDI controller events. Its controllers (knobs, knobs in push-mode and buttons) have different cc numbers. BCRKtl keeps a dictionary of actions for all mapped controllers.</p>
+<p class="p4"><br></p>
+<p class="p5">A dictionary of names such as \knA1 to controller keys as used for the mapping lookup:</p>
+<p class="p1">'knA1' is the 1st row knob1</p>
+<p class="p1">'knD3' is the 4th row knob3</p>
+<p class="p1">'tr8' is the top row knob8 in push mode</p>
+<p class="p1">'btA1' is the 1st row (of buttons) button1</p>
+<p class="p1">etc. See the source code for the full names:</p>
+<p class="p4"><br></p>
+<p class="p6">Meta_BCRKtl.methods.last.openCodeFile</p>
+<p class="p4"><br></p>
+<p class="p1"><b>Don't forget to change the values of your MIDICC in the class</b>,<span class="Apple-converted-space"> </span></p>
+<p class="p1">in the dictionary of last method called "*makeDefaults", depending on your BCR2000 settings:</p>
+<p class="p1">The keys are symbols like '0_42' meaning midichannel 0, ctl num 42.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s3"><b>See also: </b><a href="SC://UsingMIDI"><span class="s4">UsingMIDI</span></a>, <a href="SC://CCResponder"><span class="s4">CCResponder</span></a>, <a href="SC://MIDIIn"><span class="s4">MIDIIn</span></a></span></p>
+<p class="p4"><br></p>
+<p class="p8"><b>Creation / Class Methods</b></p>
+<p class="p9"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>*new (srcID, dict)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>create a BCRKtl object.</p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>srcID </b>- every MIDI port (e.g. from a USB plug) gets a unique ID.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This can be used to distinguish multiple controller which may have<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>overlapping MIDI channel/controller numbers.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dict </b>- a dictionary of the actions that are mapped to controllers.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// simple example</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = </span><span class="s5">BCRKtl</span><span class="s3">.new;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// listen to all midi in ports</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span></span>// <span class="Apple-tab-span">	</span>g = BCRKtl(1643926019);<span class="Apple-tab-span">	</span>// only listen to left USB input on my laptop</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccDict; <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a dict where the maps will live</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccresp;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a midi CCResponder listing to that MIDI port</p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// map top-left knob and bottom-right button to simple actions:<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCC(<span class="s6">'knA1'</span>, { <span class="s5">|ch, cc, val|</span> <span class="s7">" 'top-left knb': %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCC(<span class="s6">'btB8'</span>, { <span class="s5">|ch, cc, val|</span> <span class="s7">" 'bottom-right btn': %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the actions are now in the dict:</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccDict.postcs;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.free;</p>
+<p class="p3"><br></p>
+<p class="p14"><b>Class Variables</b></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>verbose</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span>can be set to true to post info for debugging.</p>
+<p class="p9"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">BCRKtl</span>.verbose = <span class="s8">true</span>;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">BCRKtl</span>.verbose = <span class="s8">false</span>;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><b>Instance Methods</b></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>mapCC (editor, scene)</b></p>
+<p class="p10"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>map one of the controls in a scene to a general function.</p>
+<p class="p10"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s8">BCRKtl</span>.new;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// listen to all midi in ports</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCC(<span class="s9">'knA1'</span>, { <span class="s8">|ch, cc, val|</span> <span class="s7">" top row, knob1: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCC(<span class="s9">'tr2'</span>, { <span class="s8">|ch, cc, val|</span> <span class="s7">" top row, knob2, push-mode: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCC(<span class="s9">'btA3'</span>, { <span class="s8">|ch, cc, val|</span> <span class="s7">" 1st button row, button3: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCC(<span class="s9">'knD8'</span>, { <span class="s8">|ch, cc, val|</span> <span class="s7">" bottom-row, knob8: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccDict;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.free;</p>
+<p class="p10"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>mapToPxPars (proxy, pairs)</b></p>
+<p class="p10"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>map some controllers to a NodeproxyEditor or Ndef.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p13"><span class="s10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>p = <span class="s11">ProxySpace</span>.push;</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="s12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s3">~test = { </span>|freq=250, intv=19, timescale=1, curve=0, loopnode=0, formfact=2, widfact=0.5, spread=1, amp=0.1|<span class="s3"><span class="Apple-converted-space"> </span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">var</span> env = <a href="http://EnvGen.kr/"><span class="s13">EnvGen</span><span class="s14">.kr</span></a>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Env</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ 1.0.rand2 }!11,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{1.0.rand}!10 * timescale,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>curve,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>releaseNode: 9,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>loopNode: loopnode)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">var</span> pitch = (env * [1, 0.33, -1] * intv).midiratio * freq;</p>
+<p class="p16"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><a href="http://Splay.ar/"><span class="s15">Splay</span><span class="s16">.ar</span></a>(</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><a href="http://Formant.ar/"><span class="s13">Formant</span><span class="s14">.ar</span></a>(pitch, pitch.scramble * formfact, pitch.scramble * widfact), spread) * amp;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// add specs for all the parameter ranges - required!</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Spec</span>.add(<span class="s17">\intv</span>, [0, 36, <span class="s17">\lin</span>]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Spec</span>.add(<span class="s17">\timescale</span>, [0.001, 10, <span class="s17">\exp</span>]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Spec</span>.add(<span class="s17">\curve</span>, [-10, 10]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Spec</span>.add(<span class="s17">\loopnode</span>, [0, 7, <span class="s17">\lin</span>, 1]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Spec</span>.add(<span class="s17">\formfact</span>, [0.1, 10, <span class="s17">\exp</span>]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Spec</span>.add(<span class="s17">\widfact</span>, [0.1, 10, <span class="s17">\exp</span>]);</p>
+<p class="p18"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s11">Spec</span><span class="s3">.add(</span>\spread<span class="s3">, </span>\unipolar<span class="s3">);</span></p>
+<p class="p16"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n = </span>NodeProxyEditor<span class="s3">(~test);</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p3"><br></p>
+<p class="p19"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// make a new BCRKtl</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s11">BCRKtl</span>.new;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p19"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// map top-left button to play/stop</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCC(<span class="s17">\btA1</span>, { <span class="s11">|ch, cc, val|</span> if(val&gt;0, {~test.play}, {~test.stop}) });</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p19"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// and map parameters to some controllers</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapToPxPars(~test,<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>\knB1<span class="s3">, </span>\freq<span class="s3">],</span></p>
+<p class="p18"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>\knB2<span class="s3">, </span>\intv<span class="s3">],</span></p>
+<p class="p18"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>\knB3<span class="s3">, </span>\timescale<span class="s3">],</span></p>
+<p class="p18"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>\knB4<span class="s3">, </span>\curve<span class="s3">],</span></p>
+<p class="p18"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>\knB5<span class="s3">, </span>\loopnode<span class="s3">],</span></p>
+<p class="p18"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>\knB6<span class="s3">, </span>\formfact<span class="s3">],</span></p>
+<p class="p18"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>\knB7<span class="s3">, </span>\widfact<span class="s3">],</span></p>
+<p class="p18"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>\knB8<span class="s3">, </span>\spread<span class="s3">]</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p3"><br></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// clean up</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~test.clear;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.free;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+</body>
+</html>

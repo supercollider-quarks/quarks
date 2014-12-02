@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.11">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -29.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -29.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Lucida Grande'; min-height: 15.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #e10000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #2500cf}
+span.s3 {color: #737373}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>ClockFace<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>digital clock counter display</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(starttime, tempo, inc)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>creates a new ClockFace and GUI that, when played, will start at starttime and increment by inc</p>
+<p class="p3"><span class="Apple-tab-span">	</span>according to tempo (in beats per SECOND).</p>
+<p class="p4"><br></p>
+<p class="p3"><b>play</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>starts the clock</p>
+<p class="p4"><br></p>
+<p class="p3"><b>stop</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>stops the clock</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>cursecs_(curtime)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>sets the time on the clock to curtime. curtime is passed in seconds.</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>tempo_(newBPS)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>sets the current tempo in beats per second. Adjusts the internal TempoClock.</p>
+<p class="p4"><br></p>
+<p class="p3"><b>mod</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>tell the ClockFace to calculate curtime with a modulo. Set to 0 or nil to remove a modulo.</p>
+<p class="p4"><br></p>
+<p class="p3"><b>onMod</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span></b>when a <b>mod</b> is set, a Function to evaluate when the<span class="Apple-converted-space">  </span>clock resets to 0.</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>onBeat</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>if notNil, a Function to be evaluated whenever a new integer boundry is crossed. Can be used</p>
+<p class="p3"><span class="Apple-tab-span">	</span>for metronomic functions.</p>
+<p class="p5"><br></p>
+<p class="p6"><b>Examples</b></p>
+<p class="p2"><br></p>
+<p class="p7">////////////////////////</p>
+<p class="p8"><br></p>
+<p class="p9">// simple basic clock</p>
+<p class="p10">a = <span class="s2">ClockFace</span>.new;</p>
+<p class="p10">a.play;</p>
+<p class="p10">a.stop;</p>
+<p class="p11"><br></p>
+<p class="p10">a.window.close;</p>
+<p class="p11"><br></p>
+<p class="p9">// uses as a metronome</p>
+<p class="p11"><br></p>
+<p class="p10">a = <span class="s2">ClockFace</span>.new;</p>
+<p class="p11"><br></p>
+<p class="p9">// change the tempo of the time change</p>
+<p class="p10">a.tempo_(92/60);</p>
+<p class="p10">a.mod_(4);</p>
+<p class="p11"><br></p>
+<p class="p10">a.onBeat_({<span class="s2">arg</span> curBeat;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>curBeat.postln;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>curBeat.even.if({</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(curBeat == 2).if({</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.window.view.background_(<span class="s2">Color</span>.red(0.9))</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}, {</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.window.view.background_(<span class="s2">Color</span>.red(0.6))</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}, {</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.window.view.background_(<span class="s2">Color</span>.white)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p10"><span class="Apple-tab-span">	</span>});</p>
+<p class="p11"><br></p>
+<p class="p10">a.play;<span class="Apple-tab-span">	</span></p>
+<p class="p11"><br></p>
+<p class="p9">// change the tempo at the next bar</p>
+<p class="p10">a.onMod_({a.tempo_(30/60)});</p>
+<p class="p10">a.onMod_({<span class="s3">"Works!"</span>.postln; a.tempo_(120/60)});</p>
+<p class="p11"><br></p>
+<p class="p10">a.stop;</p>
+</body>
+</html>

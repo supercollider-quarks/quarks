@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.25">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd0b0b}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd0b0b; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0909}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #0000bf}
+span.s4 {color: #000000}
+span.s5 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>FFLV2Ktl</b></span><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>a class for handling mappings of the Faderfox LV2</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: MIDIKtl</b></p>
+<p class="p2"><br></p>
+<p class="p1">The <b>Faderfox LV2</b> produces mainly MIDI control messages.</p>
+<p class="p1">It has several switchable areas, and some controllers send<span class="Apple-converted-space"> </span></p>
+<p class="p1">increment values rather than values between 1-127.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p1">The list of<span class="Apple-converted-space">  </span>control names (ctlNames) is not complete yet,<span class="Apple-converted-space"> </span></p>
+<p class="p1">as there are multiple modes which all send different controller numbers.</p>
+<p class="p1">(Needs more time and patience to finish.) <span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// to do: how to map to editor?<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// how to map to proxymixer?</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// support incremental controllers in proxies?<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// proxy.change(&lt;param&gt;, 0.03 (normalized range));<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">f = <span class="s3">FFLV2Ktl</span>.new();</p>
+<p class="p7"><span class="s4">f = </span><span class="s3">FFLV2Ktl</span><span class="s4">.new(-1097703516);<span class="Apple-tab-span">	</span></span>// just that USB location</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Class variables<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">FFLV2Ktl</span>.verbose = <span class="s3">true</span>;</p>
+<p class="p8">FFLV2Ktl<span class="s4">.verbose = </span>false<span class="s4">;</span></p>
+<p class="p2"><br></p>
+<p class="p4">f.mapCC(<span class="s5">\sl1</span>, { <span class="s3">|ch, cc, val|</span> val.postln })</p>
+<p class="p2"><br></p>
+<p class="p4">f.mapCC(<span class="s5">\joyXfx1</span>, { <span class="s3">|ch, cc, val|</span> val.postln })</p>
+<p class="p2"><br></p>
+<p class="p4">f.mapCC(<span class="s5">\potAsend</span>, { <span class="s3">|ch, cc, val|</span> val.postln })</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// sends just up or down increments</p>
+<p class="p4">f.mapCC(<span class="s5">\potAclip</span>, { <span class="s3">|ch, cc, val|</span> val.postln })</p>
+<p class="p2"><br></p>
+<p class="p8">f.ctlNames<span class="s4">[</span><span class="s5">\potAsend</span><span class="s4">]</span></p>
+<p class="p4">f.ccDict;</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// first sketch for how to map to a proxymixer:<span class="Apple-converted-space"> </span></p>
+<p class="p4">n = NdefMixer();</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4">[<span class="s5">\sl1</span>, <span class="s5">\sl2</span>, <span class="s5">\sl3</span>].do { <span class="s3">|key, i|</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>f.mapCC(key, { <span class="s3">|cc, chan, val|</span><span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n.pxMons[i].proxy.softVol_((val / 127).squared);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>});</p>
+<p class="p4">};</p>
+<p class="p2"><br></p>
+<p class="p9"><span class="s3">Spec</span><span class="s4">.add(</span>\freq1<span class="s4">, </span>\freq<span class="s4">);</span></p>
+<p class="p9"><span class="s3">Spec</span><span class="s4">.add(</span>\freq2<span class="s4">, </span>\freq<span class="s4">);</span></p>
+<p class="p2"><br></p>
+<p class="p9"><span class="s4">[</span>\potAsend<span class="s4">, </span>\potBsend<span class="s4">, </span>\potCsend<span class="s4">].do { </span><span class="s3">|key, i|</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>f.mapCC(key, { <span class="s3">|cc, chan, val|</span><span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> proxy = n.editor.proxy;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> paramname = n.editor.editKeys[i].postcs;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>proxy.set(paramname, paramname.asSpec.map(val / 127));</p>
+<p class="p4"><span class="Apple-tab-span">	</span>});</p>
+<p class="p4">};</p>
+<p class="p4">)</p>
+</body>
+</html>

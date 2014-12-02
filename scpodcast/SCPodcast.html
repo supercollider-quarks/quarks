@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #942413}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a42010}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #b71505}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {text-decoration: underline ; color: #1256c1}
+span.s3 {color: #00429f}
+span.s4 {text-decoration: underline}
+span.s5 {color: #000000}
+span.s6 {color: #002db1}
+span.s7 {color: #606060}
+span.s8 {color: #0014bd}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>SCPodcast<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Creates an MP3 podcast using SC's non-realtime synthesis</b></p>
+<p class="p2"><br></p>
+<p class="p3">A SuperCollider class and a bash script to generate MP3 podcasts <i>automatically</i> from an OSC file. The main procedure is within the bash script, which should make it easy to automate (e.g. using a cron job). The purpose is to create algorithmic podcasts, so your OSC file is expected to have some variation in it (e.g. randomness, context dependency) so that the generated files are not all the same.</p>
+<p class="p2"><br></p>
+<p class="p3"><b><i>Important notes:<span class="Apple-converted-space"> </span></i></b></p>
+<p class="p3"><b><i>1 - </i></b>This quark does <i>not</i> provide any help in hosting the RSS/MP3 files on the web. It's your job to either set up a webserver locally, or to transfer the files to a remote webserver once they've been generated.</p>
+<p class="p3"><b><i>2 - </i></b>Since the audio is generated using SC's <a href="http://../SuperCollider3/build/Help/Other%20Topics/Non-Realtime-Synthesis.html"><span class="s2">Non-Realtime-Synthesis</span></a>, a single sequence of OSC commands is used to control the sound, rather than the full range of facilities available in the SC language. One way to get around this is to use SC code to re-generate the OSC file whenever you want its commands to change.</p>
+<p class="p3"><b><i>3 - </i></b>"LAME" is used to create an MP3 from the audio. The bash script will attempt to search your path for the LAME executable if it's not where it expects; make sure your shell path variable is set correctly if this seems to be failing.</p>
+<p class="p2"><br></p>
+<p class="p3">How to create a podcast:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>1 - Create a folder in which to store source data for the podcast.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>2 - Create a binary OSC file, and store it in the folder you created.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The OSC file is created in the same way as for general SC <a href="http://../SuperCollider3/build/Help/Other%20Topics/Non-Realtime-Synthesis.html"><span class="s2">Non-Realtime-Synthesis</span></a>.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>3 - (Optional) Create a file <i>rsstop.txt</i> containing the top part to be added to the RSS file.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This is optional because a default rsstop will be generated if none exists, which you can later edit.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>4 - Create a folder in which to store the output data for the podcast.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>5 - Run the podcast-generating process, either from a unix-like command-line or within SC.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b><i>Within SC:</i></b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">SCPodcast</span>.new(readdir, writedir, baseurl, maxentries, mp3prefix, oscfname, itemtitleprefix).generate;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b><i>On a command-line:</i></b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>./scpodcast.bash readdir writedir baseurl maxentries mp3prefix oscfname itemtitleprefix</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><i>baseurl</i> is the URL people will use to access the MP3 files (it'll be written into the RSS data).</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><i>maxentries</i> is the maximum number of MP3 files to keep (oldest ones will be deleted).</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><i>mp3prefix</i> is an optional prefix added to the audio filenames; helpful for avoiding filename confusion. Don't use spaces or unusual characters, or you may find you have difficulties with URLs etc.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><i>oscfname</i> is the filename of the OSC file.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><i>itemtitleprefix</i> is a prefix for the title of each item as displayed in the podcast feed.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>6 - If the procedure has been successful, the return value from the script will be zero and the file "podcast.rss" in the output directory will have been created. This is the podcast file. This file and the MP3s in the output folder need to be accessible by whoever's receiving the podcast.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">The SCPodcast class has the following instance methods:</p>
+<p class="p2"><br></p>
+<p class="p3">.generate<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>- Runs the OSC file in non-real-time, converts the audio output to MP3, and updates the RSS file<span class="Apple-converted-space"> </span></p>
+<p class="p3">.shellCmd<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>- Returns a string containing the shell command, handy if you want to do it that way</p>
+<p class="p3">.audiofiles<span class="Apple-tab-span">	</span>- Searches for MP3 files in the output folder (beginning with the mp3prefix)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Examples</b></p>
+<p class="p2"><br></p>
+<p class="p3">There are two example OSC files provided - one which creates some droney noise, and one which creates some harp-like strumming. (The harp file requires two non-standard plugins - make sure you have Josh Parmenter's [<span class="s4">Pluck</span>] UGen and Dan Stowell's [<span class="s4">RosslerL</span>] UGen if you want to run it.)</p>
+<p class="p2"><br></p>
+<p class="p3">The first example shows all you need to do to create a podcast, using a droney noisescape synth. Sorry if that's not your scene... make up your own SynthDefs!</p>
+<p class="p2"><br></p>
+<p class="p3">Please note: generating these examples takes about 5 minutes or so on a PPC Mac, although it seems to be much quicker on an Intel Mac. Most of the time is for the MP3 compression.</p>
+<p class="p2"><br></p>
+<p class="p5">// We need to write the synthdef we're going to use; I've defined it in a separate document.</p>
+<p class="p5">// Just open that document if you want to look at the synthdef graph.</p>
+<p class="p5">// You only need to do this once.</p>
+<p class="p6"><span class="s5">(</span><span class="s6">SCPodcast</span><span class="s5">.classdir ++ </span>"/examples/scpodcast_fdbknois1_synthdef.scd"<span class="s5">).load;</span></p>
+<p class="p5">// We also need to generate the OSC file. Again, you only need to do this once.</p>
+<p class="p6"><span class="s5">(</span><span class="s6">SCPodcast</span><span class="s5">.classdir ++ </span>"/examples/scpodcast_fdbknois1_makeosc.scd"<span class="s5">).load;</span></p>
+<p class="p7"><br></p>
+<p class="p5">// Create an instance of the class - data will be read/written within the /examples/ folder next to the class file.</p>
+<p class="p5">// Note: The URL given here will be written into the RSS file. You may need to change it to suit your webserver location, BEFORE generating data.</p>
+<p class="p6"><span class="s5">p = </span><span class="s6">SCPodcast</span><span class="s5">(</span><span class="s6">SCPodcast</span><span class="s5">.classdir ++ </span>"/examples/inputdata"<span class="s5">, </span><span class="s6">SCPodcast</span><span class="s5">.classdir ++ </span>"/examples/outputdata"<span class="s5">, </span>"http://localhost/scpodcast"<span class="s5">, 6, </span>"scpodcast-example-"<span class="s5">, </span>"scpodcast_fdbknois1.osc", "Fdbk noise, "<span class="s5">);</span></p>
+<p class="p5">// Now generate one entry.</p>
+<p class="p5">// Watch the post window to see what happens. Hopefully, after a couple of minutes,<span class="Apple-converted-space"> </span></p>
+<p class="p5">//<span class="Apple-converted-space">  </span>it'll conclude with RESULT=0 which means success.</p>
+<p class="p4">p.generate;</p>
+<p class="p5">// Run the above line repeatedly if you want to generate multiple entries in the podcast.</p>
+<p class="p8"><br></p>
+<p class="p5">// On Mac OSX this next line will open the folder to show the files that have been generated.</p>
+<p class="p5">// Note: Both iTunes and Safari seem incapable of opening "local" RSS files, which is frustrating.</p>
+<p class="p5">// You will need to get the files served by a webserver in order to see it work in iTunes.</p>
+<p class="p4">(<span class="s7">"open"</span> + (<span class="s6">SCPodcast</span>.classdir ++ <span class="s7">"/examples/outputdata/"</span>).escapeChar($ )).unixCmd;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Example 2:</b> This next example is slightly unusual, but we will re-use the same SCPodcast object, modifying it to use the harp-like sound but still to write to the same podcast output folder. This will have the rather nice result that the podcast will contain a <b><i>mixture</i></b> of audio renderings, from both the noisish and harpish processes.</p>
+<p class="p2"><br></p>
+<p class="p9">// Again, we need to ensure the synthdef and OSC file have been written.</p>
+<p class="p6"><span class="s5">(</span><span class="s6">SCPodcast</span><span class="s5">.classdir ++ </span>"/examples/scpodcast_harp1_synthdef.scd"<span class="s5">).load;</span></p>
+<p class="p6"><span class="s5">(</span><span class="s6">SCPodcast</span><span class="s5">.classdir ++ </span>"/examples/scpodcast_harp1_makeosc.scd"<span class="s5">).load;</span></p>
+<p class="p8"><br></p>
+<p class="p9">// Alter the SCPodcast instance variables a bit.</p>
+<p class="p9">// You could of course simply create a new instance of the class.</p>
+<p class="p6"><span class="s5">p.oscfname = </span>"scpodcast_harp1.osc"<span class="s5">;</span></p>
+<p class="p4">p.itemtitleprefix = <span class="s7">"Harp, "</span>;</p>
+<p class="p9">// Now let's generate something</p>
+<p class="p4">p.generate;</p>
+<p class="p2"><br></p>
+<p class="p3">There are longer (30 minute) versions of the OSC files distributed with this quark, in case you'd like to use them. The sounds are intended for long-term purposes, you see. Here are the long versions:</p>
+<p class="p10">// Warning - they may take a long time to generate</p>
+<p class="p6"><span class="s5">(</span><span class="s8">SCPodcast</span><span class="s5">.classdir ++ </span>"/examples/scpodcast_harp1_makeosc_longer.scd"<span class="s5">).load;</span></p>
+<p class="p6"><span class="s5">(</span><span class="s8">SCPodcast</span><span class="s5">.classdir ++ </span>"/examples/scpodcast_fdbknois1_makeosc_longer.scd"<span class="s5">).load;</span></p>
+</body>
+</html>

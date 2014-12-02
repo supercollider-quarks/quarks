@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 9.0px Monaco; color: #535353}
+p.p7 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 9.0px Monaco; color: #0012b0}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 9.0px Monaco; color: #9f1414}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #9f1414}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #535353}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #741584}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0012b0}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p18 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p19 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p20 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+span.s1 {text-decoration: underline ; color: #001cdd}
+span.s2 {color: #001afb}
+span.s3 {color: #001ff6}
+span.s4 {color: #000000}
+span.s5 {color: #0012b0}
+span.s6 {color: #741584}
+span.s7 {text-decoration: underline ; color: #0018e6}
+span.s8 {color: #535353}
+span.s9 {font: 9.0px Monaco}
+span.s10 {font: 9.0px Monaco; color: #00149f}
+span.s11 {font: 9.0px Monaco; color: #414141}
+span.s12 {color: #285e08}
+span.s13 {color: #9f1414}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SmoothNumberBox</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">a <a href="SC://Pen"><span class="s1">Pen</span></a>-based replacement for <a href="SC://SCNumberBox"><span class="s1">SCNumberBox</span></a>, with extra styling options.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p2">SmoothNumberBox works the same way as a SCNumberBox but, as the name states, it looks smooth. SmoothNumberBox is a subclass of <a href="RoundNumberBox.html"><span class="s2">RoundNumberBox</span></a> and shares all of its functionality. The difference is that SmoothNumberBox has no bevel by default. SmoothNumberBox was designed to be used alongside <a href="SmoothSlider.html"><span class="s3">SmoothSlider</span></a> and <a href="SmoothButton.html"><span class="s2">SmoothButton</span></a>.</p>
+<p class="p4"><br></p>
+<p class="p2">One of the extra features is the possibility to enter expressions into the box. These are automatically interpreted after hitting the enter key.</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6"><span class="s4">w = </span><span class="s5">Window</span><span class="s4">(</span>"SmoothNumberBox Example"<span class="s4">, </span><span class="s5">Rect</span><span class="s4">(</span><span class="s6">100</span><span class="s4">, </span><span class="s6">500</span><span class="s4">, </span><span class="s6">400</span><span class="s4">, </span><span class="s6">120</span><span class="s4">)).front;</span></p>
+<p class="p5">b = <span class="Apple-tab-span">	</span><span class="s5">SmoothNumberBox</span>(w, <span class="s5">Rect</span>(<span class="s6">150</span>, <span class="s6">10</span>, <span class="s6">100</span>, <span class="s6">20</span>));</p>
+<p class="p5">b.value = rrand(<span class="s6">1</span>,<span class="s6">15</span>);</p>
+<p class="p5">b.action = {<span class="s5">arg</span> numb; numb.value.postln; };</p>
+<p class="p7"><span class="s4">f = { </span>|keyStroke|<span class="s4"> {<span class="Apple-tab-span">	</span><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>w.front; b.focus;</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span>keyStroke.keyStroke; </span>// enter a formula (through <a href="appleScript.html"><span class="s7">appleScript</span></a>, part of wslib)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">0.5</span>.wait;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>w.front; b.focus;</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span></span><span class="s8">"\n"</span><span class="s4">.keyStroke; </span>// press enter</p>
+<p class="p5"><span class="Apple-tab-span">	</span>}.r.play( <span class="s5">AppClock</span> );</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">)</p>
+<p class="p9"><br></p>
+<p class="p8"><span class="s4">f.( </span><span class="s8">"1+1"</span><span class="s4"> ); </span>// if this doesn't work, type these expressions in the SmoothNumberBox yourself</p>
+<p class="p5">f.( <span class="s8">"100*2"</span> );</p>
+<p class="p6"><span class="s4">f.( </span>"(5+1)**2"<span class="s4"> );</span></p>
+<p class="p9"><br></p>
+<p class="p2">The behaviour can be customized using the <b>interpretFunc</b> and <b>allowedChars</b> variables.<span class="Apple-converted-space"> </span></p>
+<p class="p2">The default interpretFunc is:<span class="Apple-converted-space">    </span><span class="s9">{ </span><span class="s10">|string|</span><span class="s9"> string.interpret }<span class="Apple-converted-space"> </span></span></p>
+<p class="p2">The default allowedChars are:<span class="Apple-converted-space">    </span><span class="s11">"+-.eE*/()%"</span></p>
+<p class="p2">Any typed char that is not in the allowedChars string will not show up in the box. The interpretFunc should usually return a Number, which is to be displayed in the numberbox. If the function returns nil the old value is kept. The interpretFunc allows for alternate interpretations of the entered data. For example it could detect unit types:</p>
+<p class="p4"><br></p>
+<p class="p10"><span class="s4">( </span>// first run the example above</p>
+<p class="p5">b.interpretFunc = { <span class="s5">|string|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">var</span> ext;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ext = string.find( <span class="s8">"dB"</span> );</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if( ext.notNil )<span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ string[..ext-<span class="s6">1</span>].interpret<span class="Apple-converted-space">  </span>}</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ string.interpret.ampdb };</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">b.allowedChars = <span class="s8">"+-.eE*/()% dB"</span>;</p>
+<p class="p5">)</p>
+<p class="p9"><br></p>
+<p class="p8"><span class="s4">f.( </span><span class="s8">"0.1"</span><span class="s4"> ); </span>// regular values are now converted to dB's</p>
+<p class="p8"><span class="s4">f.( </span><span class="s8">"0 dB"</span><span class="s4"> ); </span>// trailing "dB" signs will be interpreted as straight dB's</p>
+<p class="p5">f.( <span class="s8">"-6 dB"</span> );</p>
+<p class="p5">f.( <span class="s8">"0"</span> );</p>
+<p class="p5">f.( <span class="s8">"1"</span> );</p>
+<p class="p9"><br></p>
+<p class="p11"><br></p>
+<p class="p2">The counterpart of this is the <b>formatFunc</b>. This is the function used to show the value in the numberbox. An example to add to the above would be the following:</p>
+<p class="p4"><br></p>
+<p class="p10">// first run the examples above</p>
+<p class="p5">b.formatFunc = { <span class="s5">|value|</span> value.round(<span class="s6">0.001</span>).asString + <span class="s8">"dB"</span>; };</p>
+<p class="p4"><br></p>
+<p class="p2">Another feature of SmoothNumberBox is the <b>charSelectIndex</b>. This gives the ability to show a selection rectangle behind one of the characters displayed in the box. The example shows how this feature can be used:</p>
+<p class="p4"><br></p>
+<p class="p12">(</p>
+<p class="p13"><span class="s4">w = </span><span class="s5">Window</span><span class="s4">(</span>"click a number and start dragging"<span class="s4">, </span><span class="s5">Rect</span><span class="s4">(</span><span class="s6">100</span><span class="s4">, </span><span class="s6">500</span><span class="s4">, </span><span class="s6">400</span><span class="s4">, </span><span class="s6">120</span><span class="s4">)).front;</span></p>
+<p class="p12">b = <span class="Apple-tab-span">	</span><span class="s5">SmoothNumberBox</span>(w, <span class="s5">Rect</span>(<span class="s6">150</span>, <span class="s6">10</span>, <span class="s6">70</span>, <span class="s6">20</span>));</p>
+<p class="p12">b.clipLo_(<span class="s6">-999</span>).clipHi_(<span class="s6">1000</span>).align_( <span class="s12">\right</span> );</p>
+<p class="p12">b.formatFunc_({ <span class="s5">|value|</span>value.asStringWithFrac(<span class="s6">4</span>).preExtend(<span class="s6">9</span>, $<span class="Apple-converted-space">  </span>); }); <span class="s13">// fixed width string</span></p>
+<p class="p14"><span class="s4">c = [ </span>1000<span class="s4">, </span>100<span class="s4">, </span>10<span class="s4">, </span>1<span class="s4">, </span>0<span class="s4">, </span>0.1<span class="s4">, </span>0.01<span class="s4">, </span>0.001<span class="s4">, </span>0.0001 <span class="s4">]; </span><span class="s13">// stepsizes</span></p>
+<p class="p3"><br></p>
+<p class="p10">// mouse support</p>
+<p class="p12">b.mouseDownAction = { <span class="s5">|vw, x, y|</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>vw.charSelectIndex = vw.charIndexFromPoint( x@y, [<span class="s6">4</span>] );</p>
+<p class="p12"><span class="Apple-tab-span">	</span>vw.scroll_step = c[vw.charSelectIndex] ? <span class="s6">1</span>;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>vw.step = vw.scroll_step;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>};</p>
+<p class="p3"><br></p>
+<p class="p10">// arrow keys left/right to select char, up/down to change value</p>
+<p class="p15"><span class="s4">b.keyDownAction = { </span>|vw, char, mod, unicode|</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s5">var</span> res;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>res = case { unicode == <span class="s6">16</span>r<span class="s5">F703</span> }</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ vw.charSelectIndex = (vw.charSelectIndex + <span class="s6">1</span>).min(<span class="s6">8</span>); <span class="s5">nil</span> }</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ unicode == <span class="s6">16</span>r<span class="s5">F702</span> }</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ vw.charSelectIndex = (vw.charSelectIndex - <span class="s6">1</span>).max(<span class="s6">-1</span>); <span class="s5">nil</span> }</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s5">true</span> }</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ vw.defaultKeyDownAction( char, mod, unicode ); };</p>
+<p class="p12"><span class="Apple-tab-span">	</span>vw.step = c[vw.charSelectIndex] ? <span class="s6">1</span>;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>res;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>};</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p16"><b>Creation / Class Methods</b></p>
+<p class="p17"><br></p>
+<p class="p18"><b><span class="Apple-tab-span">	</span>*new (parent, bounds)</b></p>
+<p class="p19"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>parent </b>- The parent view.</p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>bounds </b>- An instance of <a href="../../../../../../../../Applications/SuperCollider/Help/Geometry/Rect.html"><span class="s1">Rect</span></a>, or a <a href="../../../../../../../../Applications/SuperCollider/Help/Geometry/Point.html"><span class="s1">Point</span></a> indicating width@height.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">(</span></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w = </span><span class="s5">Window</span><span class="s4">(</span>"SmoothNumberBox Example"<span class="s4">, </span><span class="s5">Rect</span><span class="s4">(</span><span class="s6">100</span><span class="s4">, </span><span class="s6">500</span><span class="s4">, </span><span class="s6">400</span><span class="s4">, </span><span class="s6">120</span><span class="s4">));</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b = <span class="Apple-tab-span">	</span><span class="s5">SmoothNumberBox</span>(w, <span class="s5">Rect</span>(<span class="s6">150</span>, <span class="s6">10</span>, <span class="s6">100</span>, <span class="s6">20</span>));</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b.value = rrand(<span class="s6">1</span>,<span class="s6">15</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b.action = {<span class="s5">arg</span> numb; numb.value.postln; };</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.front</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p20"><span class="s9"><span class="Apple-tab-span">	</span></span><i>Check the </i><a href="SC://SCNumberBox"><span class="s2"><i>SCNumberBox</i></span></a><span class="s2"><i> </i></span><i>helpfile for more examples and variable descriptions</i></p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+</body>
+</html>

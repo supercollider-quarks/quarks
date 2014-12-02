@@ -1,0 +1,216 @@
+CLASS:: CVWidgetEditor
+summary:: a GUI for editing widgets and their parameters: specs, MIDI, OSC, actions...
+categories:: GUI, Conductor, External Control>MIDI, External Control>OSC
+related:: Classes/CVCenter, Classes/CV, Classes/CVWidget, Classes/CVWidgetKnob, Classes/CVWidget2D, Classes/CV, Classes/CCResponder, Classes/OSCresponderNode, Classes/SimpleController, Classes/ControlSpec, Classes/OSCCommands
+
+DESCRIPTION::
+The interface defined within link::Classes/CVWidget:: resp. its subclasses link::Classes/CVWidgetKnob:: and link::Classes/CVWidget2D:: defines a number of methods that can also be triggered via their GUI. However these GUIs don't offer enough space to display all options a widget incorporates. Therefore each widget has an inbuilt editor which is defined within CVWidgetEditor.
+note::CVWidgetEditor is not supposed to be used directly. Rather editors should always be instantiated from within the widget it belongs to.::
+
+
+CLASSMETHODS::
+
+private:: allEditors
+METHOD:: new
+Opens a new editor for the widget specified by code::widgetName::
+
+
+argument:: widget
+the widget-object: either a link::Classes/CVWidgetKnob:: or a link::Classes/CVWidget2D::
+
+argument:: widgetName
+a link::Classes/Symbol::, reflecting the widget's name
+
+argument:: tab
+an link::Classes/Integer:: specifying which tab of the editor shall be focused when the editor opens. Each editor contains 4 tabs ( see also link::Classes/TabbedView::): "Specs", "MIDI", "OSC" and "Action", each addressed by an integer value from code::0:: to code::3::
+
+argument:: slot
+if the widget is a link::Classes/CVWidget2D:: this parameter is necessary to reflect the widget's slot for which the editor will be created.
+
+returns:: a code::CVWidgetEditor::
+
+
+INSTANCEMETHODS::
+subsection:: Common GUI properties and methods
+METHOD:: window
+The editor's window
+
+returns:: a link::Classes/Window::
+
+METHOD:: tabs
+The editor's tabs, defined by a link::Classes/TabbedView:: 
+
+returns:: a link::Classes/TabbedView::
+
+METHOD:: front
+Open resp.bring the an editor-window to front, focusing the tab given by code::tab::
+
+argument:: tab
+an link::Classes/Integer:: providing the tab-index code::0-3::
+
+returns:: a code::CVWidgetEditor::
+
+METHOD:: close
+Close the editor resp. its code::Window::.
+If applied on an editor that belongs to a CVWidget2D the key code::\hi:: resp. code::\lo:: must be supplied with the editor:
+code::aCVWidget2D.editor[\lo].close::
+
+returns:: a code::CVWidgetEditor::
+
+METHOD:: isClosed
+returns code::true:: if the editor is not code::nil:: yet it's been closed closed.
+
+returns:: a link::Classes/Boolean::
+
+subsection:: The "Specs"-tab
+
+METHOD:: specField
+A link::Classes/TextField:: for manually entering a link::Classes/ControlSpec::. Values can be:
+definitionList::
+## a link::Classes/Symbol:: || identifying an existing link::Classes/ControlSpec:: - e.g. code::\freq:: will become code::ControlSpec(20, 20000, 'exp', 0, 440, " Hz")::
+## an link::Classes/Array:: || values can be literals if no calculations have to be processed on them - e.g.: code::#[1, 10]:: will become code::ControlSpec(1, 10, 'linear', 0.0, 1, "")::. If calculations are happening within the string - e.g.: code::[5*3, 30]:: the array strong::must not:: be prefixed with code::#::.
+## a valid link::Classes/ControlSpec:: || e.g. code::ControlSpec(-1, 1, 'linear', 0.0, 0, "")::
+::
+
+returns:: a link::Classes/TextField::
+
+METHOD:: specsList
+A link::Classes/PopUpMenu:: displaying the list of predefined link::Classes/ControlSpec::s. 
+
+returns:: a link::Classes/PopUpMenu::
+
+METHOD:: specsListSpecs
+The internal list of link::Classes/ControlSpec::s from which the user may choose in link::#-specsList::. This is strong::not:: identical with the list that is displayed as code::specsList.items:: contains the spec-names as well.
+
+returns:: a code::List::
+
+subsection:: The "MIDI"-tab
+
+METHOD:: midiModeSelect
+A link::Classes/PopUpMenu:: allowing the user to selct the link::Classes/CVWidget#-setMidiMode#midiMode:: - either code::0-127:: (default, midiMode: code::0::) or code::+/-:: (in-/decremental, midiMode: code::1::).
+
+returns:: a link::Classes/PopUpMenu::
+
+METHOD:: midiMeanNB
+A link::Classes/NumberBox:: allowing the user to set the value for link::Classes/CVWidget#-setMidiMean#midiMean::
+
+returns:: a link::Classes/NumberBox::
+
+METHOD:: softWithinNB
+A link::Classes/NumberBox:: allowing the user to set the value for link::Classes/CVWidget#-setSoftWithin#softWithin::
+
+returns:: a link::Classes/NumberBox::
+
+METHOD:: ctrlButtonBankField
+A link::Classes/TextField:: allowing the user to set the value for link::Classes/CVWidget#-setCtrlButtonBank#ctrlButtonBank::
+
+returns:: a link::Classes/TextField::
+
+METHOD:: midiResolutionNB
+A link::Classes/NumberBox:: allowing the user to set the value for link::Classes/CVWidget#-setMidiResolution#midiResolution::
+
+returns:: a link::Classes/NumberBox::
+
+METHOD:: midiLearnBut
+A link::Classes/Button:: allowing the user to either trigger the link::Classes/CCResponder#-learn#MIDI-learn:: functionality ("L") or, if a value has been set in link::#-midiSrcField:: and/or link::#-midiChanField:: and/or link::#-midiCtrlField:: set up a code::CCResponder:: with the specified values ("C").
+
+returns:: a link::Classes/TextField::
+
+METHOD:: midiSrcField
+A link::Classes/TextField:: for setting resp. displaying the ID under which the MIDI-device has been registered in SuperCollider.
+
+returns:: a link::Classes/TextField::
+
+METHOD:: midiChanField
+A link::Classes/TextField:: for setting resp. displaying a MIDI-channel.
+
+returns:: a link::Classes/TextField::
+
+METHOD:: midiCtrlField
+A link::Classes/TextField:: for setting resp. displaying a controller-number.
+
+returns:: a link::Classes/TextField::
+
+subsection:: The "OSC"-tab
+
+METHOD:: calibBut
+A link::Classes/Button:: displaying resp. setting the widget's OSC-calibration-status - see also: link::Classes/CVWidget#-setCalibrate::.
+
+returns:: a link::Classes/Button::
+
+METHOD:: calibNumBoxes
+An link::Classes/Event:: containing 2 link::Classes/NumberBox::es, one displaying or setting the low limit of the OSC-input, the other displaying or setting the high limit - see also: link::Classes/CVWidget#-setOscInputConstraints::
+
+returns:: an link::Classes/Event::
+
+METHOD:: ipField
+A link::Classes/TextField:: allowing the user to restrict incoming OSC-messages to the specified IP-address only. The IP-address will be part of a link::Classes/NetAddr:: that will persist as long as the OSCresponder is active. Leaving the link::#-portField:: empty will create a link::Classes/NetAddr:: valid for all messages coming from that address, regardless of the the port from which they have been sent.
+
+returns:: a link::Classes/TextField::
+
+METHOD:: portField
+A link::Classes/TextField:: allowing the user to restrict incoming OSC-messages to the specified port only. The port will be part of a link::Classes/NetAddr:: that will persist as long as the link::Classes/OSCresponder:: is active. Leaving the link::#-ipField:: empty will create a link::Classes/NetAddr:: valid for all messages coming from the specified port, regardless of the IP-address from which they have been sent.
+
+returns:: a link::Classes/TextField::
+
+METHOD:: nameField
+A link::Classes/TextField:: allowing the user to set the OSC-command-path/-name. OSC-commands are organized in namespaces. I.e. a valid command could be code::/commandname:: or code::/some/path/to/commandname:: (The '/' at the beginning is mandatory!). This depends on how the device/program the messages are beeing sent from implement commands. For convenience users may collect valid commend-names for specific devices via a utility-class called code::OSCCommands::. Within a CVWidgetEditor the classes' inbuilt GUI can be triggered by clicking the green 'new' button to the left of code::nameField::. After having collected and saved OSC-command-names the device-name under which they have been saved will appear in the left link::Classes/PopUpMenu:: above code::nameField::. Select the device and its possible command-names are added to the list of the right link::Classes/PopUpMenu:: above code::nameField::
+
+returns:: a link::Classes/TextField::
+
+METHOD:: indexField
+A link::Classes/NumberBox:: allowing to set the required index within the incoming OSC-message: OSC-messages coming e.g. from an OSC-controller installed on a mobile-phone will usually be received as an link::Classes/Array:: where slot code::0:: contains the command-name, subsequent slots will hold the values being sent from the device/program. E.g. an orientation-sensor might send a message like the following:
+
+code::[ '/orientation', <x-value>, <y-value>, <z-value> ]::
+
+So, if the user wants the y-value to be captured (s)he has to enter code::2:: in code::indexField::
+
+returns:: a link::Classes/NumberBox::
+
+METHOD:: alwaysPosField
+A link::Classes/StaticText:: displaying the auto-correction value for incoming OSC-values - see link::Classes/CVWidget#-alwaysPositive:: for an explanation.
+
+returns:: a link::Classes/StaticText::
+
+METHOD:: specConstraintsText
+A link::Classes/StaticText:: displaying the constraints (minval / maxval) of the currently set link::Classes/ControlSpec:: of the link::Classes/CV::.
+
+returns:: a link::Classes/StaticText::
+
+METHOD:: mappingSelect
+A link::Classes/PopUpMenu:: allowing the user to set the mapping of incoming OSC-values to the Output-spec. For an explanation see link::Classes/CVWidget#-setOscMapping::
+
+returns:: a link::Classes/PopUpMenu::
+
+METHOD:: connectorBut
+A link::Classes/Button:: allowing the user to connect an link::Classes/OSCresponderNode::, defined within the previously explained inputs.
+
+returns:: link::Classes/Button::
+
+subsection:: The "Actions"-tab
+
+METHOD:: actionsList
+An link::Classes/Event:: containing all GUI-elements displaying the current actions of a widget. Actions can be added in the topmost code::TextView:: resp. a link::Classes/TextField:: (for the action's name). Behind the scenes this is handled by link::Classes/CVWidget#-addAction::, link::Classes/CVWidget#-removeAction:: resp. link::Classes/CVWidget#-activateAction::
+
+returns:: an link::Classes/Event::
+
+private:: init
+private:: amendActionsList
+
+SECTION:: Shortcuts
+When a CVWidgetEditor is present (resp. its GUI) a number of shortcuts apply:
+definitionList::
+## s || bring the "Specs"- tab to front
+## m || bring the "MIDI"-tab to front
+## o || bring the "OSC"-tab to front
+## a || bring the "Actions"-tab to front
+## c || open the link::Classes/OSCCommands:: GUI (starts collecting immediately)
+## x || close the editor
+## <shift> + o || open the link::Classes/CVCenterControllersMonitor::, focusing its "OSC"-tab 
+## <shift> + m || open the link::Classes/CVCenterControllersMonitor::, focusing its "MIDI"-tab.
+::
+
+EXAMPLES::
+
+CVWidgetEditor is not to be used on its own as it's just meant as an extended editor to an existent code::CVWidget:: ( link::Classes/CVWidgetKnob:: or link::Classes/CVWidget2D::). strong::To test things out please refer to the example-section of:: link::Classes/CVWidget#examples#CVWidget::.
+

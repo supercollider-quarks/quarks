@@ -1,0 +1,74 @@
+CLASS:: RedDTMF
+SUMMARY:: old-skool telephone
+CATEGORIES:: Red>redUGens
+
+DESCRIPTION::
+Silly class simulating old telephone tone dialing and ring signals. See http://en.wikipedia.org/wiki/DTMF
+
+CLASSMETHODS::
+
+PRIVATE:: initClass
+
+METHOD:: new
+Returns a pair of frequencies corresponding to the DTMF specs.
+
+METHOD:: string
+Decodes a string into frequency pairs.
+
+METHOD:: ar
+Returns audio rate ugens for a particular char.
+
+METHOD:: kr
+Returns control rate ugens for a particular char.
+
+METHOD:: dial
+Returns a set of audio rate ugens that simulates dialing tones.
+
+METHOD:: signal
+Returns a set of audio rate ugens that simulates a signal tone.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+
+//.new just returns different rates
+RedDTMF($8)
+RedDTMF($2)
+RedDTMF($0)
+
+//.string converts a whole string to rates
+RedDTMF.string("0123456789")
+
+//.dial played in a function
+a= {RedDTMF.dial("12AA34", 4)}.play
+a.free
+a= {RedDTMF.dial("045980022", 9)}.play
+a.free
+
+//.dial used within a synthdef
+(
+a= SynthDef(\dialecho, {|amp= 0.5|
+	var src;
+	src= RedDTMF.dial("0*2*4*6*8*0", 10)*amp;
+	Out.ar(0, CombN.ar(src, 0.1, 0.1, 2, 0.5, src));
+}).play(s)
+)
+a.free
+
+//.signal played in a function
+a= {RedDTMF.signal(0.5)}.play
+a.free
+a= {RedDTMF.signal(2, 0.4)}.play
+a.free
+
+//.signal used within a synthdef
+(
+a= SynthDef(\signalecho, {|amp= 0.5|
+	var src;
+	src= RedDTMF.signal(1, amp);
+	Out.ar(0, CombN.ar(src, 0.1, 0.1, 2, 0.5, src));
+}).play(s)
+)
+a.free
+::

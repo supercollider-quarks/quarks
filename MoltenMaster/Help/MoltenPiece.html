@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ff}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #0000ff}
+span.s3 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>MoltenPiece<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>pieces in a MoltenMaster</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="SC://Object"><span class="s2"><b>Object</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p1">MoltenMaster.pieces is an array whose items are of MoltenPiece type. Pieces have initActions for allocating resources for a piece, playActions that actually start playback, and finishActions that does the cleanup (fade out, deallocation etc.).</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><b>See also:</b> <a href="MoltenMaster.html">MoltenMaster</a></span></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b>You don't create an instance of this class directly.</p>
+<p class="p6"><br></p>
+<p class="p8"><b>Accessing Instance and Class Variables</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>initAction_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>initAction</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A function you should provide, which allocates the necessary resources (loading of buffers etc.) before playAction executes. You should fork a thread in this function (eg. a Routine) wait until<span class="Apple-converted-space">  </span>you are done with your initialization and should call "signal" on your parent MoltenMaster instance.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>playAction_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>playAction</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The action that actually starts playback.You should fork a thread in this function (eg. a Routine) wait until you are done with your initialization and should call "signal" on your parent MoltenMaster instance.</p>
+<p class="p9"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>finishAction_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>finishAction</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>For this action, you should provide a function that does the necessary cleanup for the piece. You should fork a thread in this function (eg. a Routine) wait until<span class="Apple-converted-space">  </span>you are done with your initialization and should call "signal" on your parent MoltenMaster instance.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>infoString_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>infoString</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If you want to store additional info on a piece to use, you can use this member.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>durationString_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>durationString</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>You can provide duration info for a piece (as String) with this member variable. Default is the string "inf".</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>nameString_(arg1)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>nameString</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Name of the piece. Default is "Untitled".</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p7">See <a href="MoltenMaster.html"><span class="s2">MoltenMaster</span></a> help for an example.</p>
+</body>
+</html>

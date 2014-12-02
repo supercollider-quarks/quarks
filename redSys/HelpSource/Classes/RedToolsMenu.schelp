@@ -1,0 +1,39 @@
+CLASS:: RedToolsMenu
+SUMMARY:: various tools
+CATEGORIES:: Red>redTools
+
+CLASSMETHODS::
+
+PRIVATE:: initClass
+
+METHOD:: listToLibrary
+Adds the tools to the link::Classes/Library::.
+
+METHOD:: listToMenuLibrary
+Adds submenus plus a cmd+r shortcut to the Library menu.
+
+NOTE::
+Mac OSX only.
+::
+
+METHOD:: add
+
+ARGUMENT:: nameArray
+In the form of [category, name].
+
+ARGUMENT:: func
+The actual tool.
+
+METHOD:: makeWindow
+Creates a separate window with a listview.
+
+EXAMPLES::
+
+CODE::
+RedToolsMenu.list;
+RedToolsMenu.makeWindow(500@500);
+
+RedToolsMenu.add(['system', 'my test tool'], {"this does nothing".warn})
+RedToolsMenu.makeWindow
+RedToolsMenu.listToMenuLibrary;	//call this after adding tools to update the menu as well
+::

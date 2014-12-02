@@ -1,0 +1,106 @@
+title:: Instr SynthDefs
+summary:: How Instr make SynthDefs
+categories:: Libraries>crucial>Instr
+related:: Guides/Patch-client-server-magic
+
+
+section:: An Instr is not a SynthDef
+
+An Instr is a function that creates SynthDefs.
+
+Each argument in the function for a SynthDef creates a Control input to the Synth that will eventually play on the server.
+
+An Instr can also include extra arguments that will be used in building the SynthDef, but will not be Control inputs on the final synth.
+
+For instance an Integer may be passed in:
+
+code::
+// caution: mind the feedback. AudioIn
+(
+Instr(\qAllpassA,{	arg audio,decay=1,maxDelay=0.3,quantity=4,chanDiff=0.1;
+
+	// this is wrapping the sound in layers of Allpass delays
+	(quantity.asInteger).do({
+			var x;
+			audio =
+ 				AllpassL.ar(audio, maxDelay,
+ 				[rrand(0.01,maxDelay),rrand(0.01,maxDelay)],
+ 				decay)
+ 		});
+	audio
+});
+
+Patch(\qAllpassA,[
+	{ AudioIn.ar([1,2]) },
+	1,
+	0.3,
+	8.rand + 2 // quantity of Allpass layers
+]).play
+
+)
+::
+
+The first input to the synth is a stereo audio rate input, the others were fixed floats that did not require synth inputs.
+
+Envelopes, fixed floats, fixed integers, Samples etc. can be passed into Instr functions.
+
+When Patch is used to specify the inputs to the function some of these inputs will be reduced to fixed values (integers, floats, Envelopes etc.), and the resulting SynthDef will contain those inputs hard-coded.  Using different Patches, it is possible to write many SynthDefs from the same Instr.
+
+code::
+	Instr(\rlpf,{ arg input,ffreq=400,rq=0.1;
+		RLPF.ar( input, ffreq, rq )
+	});
+::
+
+
+	If the input supplied is stereo, the synthDef produced will be stereo.
+
+code::
+(
+	Patch(\rlpf,[
+		Patch({ Saw.ar([400,440],0.1) }) // in stereo
+	]).play
+)
+::
+
+It is possible to play another Instr inside of your Instr:
+
+code::
+(
+	Instr(\sawfilter,{ arg freq,ffreq,rq;
+		Instr.ar(\rlpf, [ Saw.ar(freq,0.1) , ffreq, rq ])
+	})
+)
+::
+
+and thus get further reuse out of your library of functions.  Here the \rlpf that is used inside doesn't produce a synth def, but is used as a simple function in the ugenGraph of the \sawfilter Instr which does make a synthDef.
+
+
+
+SECTION:: Dynamic SynthDef architecture
+
+You can design Instr to take parameters that are used only in the building of the SynthDef. This can be used to select from different kinds of filters or to build a mini-modular synth.
+
+code::
+Instr(\upOrDown, {arg upDown=0;
+	var line;
+	if (upDown>0,
+		{line = Line.kr(1,0,5)}, // upDown>0 ==> pitch goes up
+		{line = Line.kr(0,1,5)}  // upDown 0 or less ==> pitch goes down
+	);
+	SinOsc.ar(440*line,0,0.2);
+},[
+	StaticIntegerSpec(0,1)
+]);
+
+Patch(\upOrDown, [ 0]).play
+::
+
+The upDown param acts as a switch between different synth def architectures.  If your Instr library is well designed you can acheive very sophisticated sound structures with automatic optimizations and code reuse.
+
+Note that the Patch would assume upDown to be a modulatable control input (with a default of 0.0) without the StaticIntegerSpec making it clear that its a static integer.
+
+
+see also link::Guides/Patch-client-server-magic::
+
+

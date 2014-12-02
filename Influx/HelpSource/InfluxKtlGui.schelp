@@ -1,0 +1,82 @@
+TITLE:: InfluxKtlGui
+summary:: A JITGui for Influx
+categories:: MetaKtl
+related:: Classes/Influx, Classes/Influx
+
+DESCRIPTION::
+
+code::
+a = Influx([\x, \y, \z], [\a, \b, \c, \d]);
+g = InfluxKtlGui(a);
+
+// set a button by hand:
+g.setButton(2, \otto, { |bt, modif| if (bt.value > 0) { "otto".speak } { "off".speak } });
+
+Ndef(\four, { |a, b, c, d| SinOsc.ar( 440 * (2 ** [a, b, c, d])).sum * 0.1 });
+Ndef(\four).play;
+Ndef(\four).gui;
+
+// test attachMapped
+Ndef(\four).addSpec(\a, [0, 2]);
+Ndef(\four).addSpec(\b, [0, 2]);
+Ndef(\four).addSpec(\c, [0, 2]);
+Ndef(\four).addSpec(\d, [0, 2]);
+
+g.attachToButton(0, Ndef(\four));
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+make a new InfluxKtlGui for an Influx, 
+ARGUMENT:: object
+the influx to show
+ARGUMENT:: numItems
+the number of attach buttons
+ARGUMENT:: parent
+the parent view in which to put
+ARGUMENT:: bounds
+the bounds
+ARGUMENT:: makeSkip
+make a skipjack or not
+ARGUMENT:: options
+options - if it includes \loop, a KtlLoopGui will also be built.
+
+
+INSTANCEMETHODS::
+
+METHOD:: xySlider
+the Slider2D that can set two param values 
+
+METHOD:: xpop, ypop
+the popups that set which Influx invals the Slider2D will set.
+
+METHOD:: xyMapDict
+the dict that keeps xy slider params to influx invals
+
+METHOD:: attachButtons
+the buttons that can attach or detach objects to the influx; each button has two states.
+
+METHOD:: loopGui
+the optional KtlLoopGui at the bottom
+
+METHOD:: setButton
+for attachButton at index, set name to name and function to func.
+function expects button and modifiers as 2 states are passed in.
+
+METHOD:: attachToButton
+attach a proxy to button at index. if mapped is true, it will be attachMapped, else attachDirect is used. The proxy will be told to play when attached, and if detached with alt-click, it will be told to stop playing.
+
+private:: slAction, influxFunc, slKeydown
+private:: makeViews, makeSlider, makeButtons
+private:: accepts, setDefaults, checkUpdate
+private:: leftBotV, leftButtonV, rightButtonV, leftTopV
+
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::

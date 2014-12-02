@@ -1,0 +1,44 @@
+CLASS:: RedInstrumentModule
+SUMMARY:: abstract class
+CATEGORIES:: Red>redModule
+RELATED:: Classes/RedAbstractModule, Classes/RedInstrumentModuleGUI, Classes/RedEffectModule
+
+DESCRIPTION::
+WARNING::
+Do not instantiate. Use its subclasses.
+::
+NOTE::
+Requires link::Classes/Conductor:: quark.
+::
+
+CLASSMETHODS::
+
+SUBSECTION:: subclass responsibility
+
+METHOD:: def
+
+INSTANCEMETHODS::
+
+METHOD:: prepareForPlay
+If no group given (*new method), then use the server code::defaultGroup::.
+
+METHOD:: free
+Remove module from code::RedAbstractModule.all::. Stops all voices.
+
+METHOD:: gui
+Create a link::Classes/RedInstrumentModuleGUI::.
+
+METHOD:: play
+For all instruments.
+
+METHOD:: stop
+For all instruments.
+
+METHOD:: stopAll
+Stop all voices for all keys.
+
+METHOD:: synth
+Return a synth object for a certain key.
+
+METHOD:: voices
+A link::Classes/List:: of instrument objects that are currently playing.

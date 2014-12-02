@@ -1,0 +1,412 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #8c221f}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0921a8}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a31917}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #792724}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #424f94}
+span.s3 {color: #0921a8}
+span.s4 {color: #476e2a}
+span.s5 {color: #000000}
+span.s6 {color: #0017b3}
+span.s7 {color: #35701d}
+span.s8 {font: 12.0px Helvetica}
+span.s9 {color: #3448ab}
+span.s10 {color: #0000bf}
+span.s11 {color: #007300}
+span.s12 {color: #bf0000}
+span.s13 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>SynthDefAutogui<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>automatic GUI creation for synthDefs and synths</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p1"><b>andrea valle, jan 2010</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p3"><br></p>
+<p class="p1">SynthDefAutogui allows to create a gui to control/monitor the behavior of a running synth, or to test a SynthDef, without recurring to SynthDescLib. It does not require previous planning. No store or memStore.</p>
+<p class="p1">Its main usage is inside two methods added to SynthDef and Synth classes, i.e aSynthDef.autogui and aSynth.autogui, but it can be instanced explicitly when needed. See examples.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Some Important Issues Regarding SynthDefAutogui</b></p>
+<p class="p2"><br></p>
+<p class="p1">In order to work, SynthDefAutogui needs to overwrite the build method of SynthDef. This is not a fortunate choice, but actually is the only way to generically access sythDefs after their creation. Every time a SynthDef is created, it is stored inside a special class, <a href="SynthDefStorage.html"><span class="s2">SynthDefStorage</span></a>, that is just a wrapper for a dictionary. In this way, a Dictionary associating a SynthDef name and a SynthDef becomes available to inspection.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5">s.boot ;<span class="Apple-converted-space"> </span></p>
+<p class="p6">// a SynthDef</p>
+<p class="p5">a = <span class="s3">SynthDef</span>(<span class="s4">\test</span>, {<span class="s3">arg</span> out = 3, freq = 100; <span class="s3">Out</span>.ar(out, <span class="s3">SinOsc</span>.ar(freq))}) ;</p>
+<p class="p7"><span class="s5">z = </span>SynthDefAutogui<span class="s5">(</span><span class="s4">\test</span><span class="s5">) ;</span></p>
+<p class="p3"><br></p>
+<p class="p8">// Separate gui call</p>
+<p class="p5">a = <span class="s6">SynthDef</span>(<span class="s7">\test</span>, {<span class="s6">arg</span> out = 3, freq = 100; <span class="s6">Out</span>.ar(out, <span class="s6">SinOsc</span>.ar(freq))}) ;</p>
+<p class="p5">z = <span class="s6">SynthDefAutogui</span>(<span class="s7">\test</span>, onInit: <span class="s4">false</span>) ;</p>
+<p class="p6"><span class="s5">z.autogui ; </span>// the autogui method actually creates the gui</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p9"><span class="s8"><img src="attachments/SynthDefAutogui/autogui.png" alt="attachments/SynthDefAutogui/autogui.png"></span></p>
+<p class="p2"><br></p>
+<p class="p1">The gui works as follow:</p>
+<p class="p1">- a scope is created allowing to see the signal (the scope is optional, see later)</p>
+<p class="p1">- if the SynthDef has an out argoment, the scope inspects it, otherwise it defaults to 0</p>
+<p class="p1">- for each arg, the min/max fields define the range where the knob works</p>
+<p class="p1">- you can set the value by moving knob or by writing into numberbox</p>
+<p class="p1">- each arg is specified by a ControlSpec. For each SynthDef's arg, you can pass a ControlSpec (see later) as an argument fo the autogui method. You can do it graphically by selecting the name of the arg and pressing a key (whatever). A GUI appears allowing to apply a ControlSpec for the selected arg</p>
+<p class="p1">- the first button plays/pauses the synth</p>
+<p class="p1">- the second button allows monitoring. When it's "On", a task inspects the controls related to args on the synth<span class="Apple-converted-space">  </span>and updates the gui. While monitoring you can still control the synth with the gui</p>
+<p class="p1">- the numberbox allows to set an update rate for the task (times per sec)</p>
+<p class="p1">- the name of the SynthDef is plotted in the gui and as the name of the window</p>
+<p class="p2"><br></p>
+<p class="p1">NOTE: the class is written in a generic GUI style, but it has been tested mainly with SwingOSC on MacOSX.</p>
+<p class="p1">With Cocoa, scoping needs internal server, and there could be layout issues.</p>
+<p class="p1">Known Bug: array preset in ControlSpec GUI doesn't work</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p10"><br></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span>*new (name, aSynth, rate, target, args, addAction, closeOnCmdPeriod, freeOnClose, window, step, hOff, vOff, scopeOn, specs)</b></p>
+<p class="p12"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>The main method where all parameters are set</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- Name of the SynthDef to inspect. Default value is nil.<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aSynth </b>- The synth to autogui. Default value is nil. If you pass a synth, that synth is inspected.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If not, a synth is created on the fly. The second case is useful when you want an autogui for a SynthDef, to understand how it works.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>rate </b>- The rate of the bus shown by embedded stethoscope. Default value is 'audio'.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>target </b>- See SynthDef. Default value is nil.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>args </b>- See SynthDef. Default value is nil.<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>addAction </b>- See SynthDef. Default value is 'addToTail'.<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>closeOnCmdPeriod </b>- Boolean, whether cmdPeriod closes the window or not. Default value is true.<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>freeOnClose </b>- Boolean, whether closing the window frees the synth or not. Default value is true.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>window </b>- You can pass an external window. Default value is nil.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>step </b>- Step is the base dimension in pixel used for calculating all. It allows to rescale the autogui. Default value is 50.<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>hOff </b>- An horizontal offset in pixel, useful when placing the gui in an external window. Default value is 0.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>vOff </b>- A vertical offset in pixel, useful when placing the gui in an external window. Default value is 0.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>scopeOn </b>- Boolean, whether a scope view is on, plotting the signal. Default value is true. When false, layout is tightened</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>specs </b>- A dictionary associating argument names to <a href="SC://ControlSpec"><span class="s9">ControlSpec</span></a>s. This allows to define how the gui works (ranges, warp, step, default). For each arg, if no spec is present in specs, minval is 0, maxval is (default arg *2).max(1), and mapping is linear.<span class="Apple-converted-space">  </span>Default value is nil. You can set it after graphically (see before)</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>onInit</b> - Boolean. If true, while creating the SynthDefAutogui the gui is created. Default value is true. <span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// See examples later for use of the args</p>
+<p class="p10"><br></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><b>Doing Some Task</b></p>
+<p class="p16"><br></p>
+<p class="p11">Substantially there is only one useful method, autogui, typically embedded as the autogui extension of Synth and SynthDef</p>
+<p class="p12"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span>autogui</b></p>
+<p class="p12"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>This is the method actually creating the gui. It is separated from init for more flexibility</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span>startMonitor/stopMonitor</b></p>
+<p class="p12"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Interface for update task. The actions are implemented by the monitor button.</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p15"><b>Examples</b></p>
+<p class="p11">Note: after an example, by pressing command+. the window will be closed.</p>
+<p class="p3"><br></p>
+<p class="p17">// better</p>
+<p class="p18"><span class="s10">Server</span>.local.boot;</p>
+<p class="p17">// if you use scope, with cocoa you need internal</p>
+<p class="p19"><br></p>
+<p class="p17">// using the SynthDef</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\test</span>, {<span class="s10">arg</span> out = 3, freq = 100; <span class="s10">Out</span>.ar(out, <span class="s10">SinOsc</span>.ar(freq))}) ;</p>
+<p class="p17"><span class="s10">SynthDefAutogui</span><span class="s5">(</span><span class="s11">\test</span><span class="s5">) ; </span>// a synth is created</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">// instantiating a synth, and calling the gui</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\test</span>, {<span class="s10">arg</span> out = 3, freq = 1000; <span class="s10">Out</span>.ar(out, <span class="s10">SinOsc</span>.ar(freq))}).send(s) ;</p>
+<p class="p18">x = <span class="s10">Synth</span>(<span class="s11">\test</span>).autogui ;</p>
+<p class="p19"><br></p>
+<p class="p17"><span class="s5">x.set(</span><span class="s11">\out</span><span class="s5">, 0) ; </span>// if monitor is off, change is not reflected on gui<span class="Apple-converted-space"> </span></p>
+<p class="p18">x.set(<span class="s11">\freq</span>, 400) ;</p>
+<p class="p17">// now press the monitor button, and you'll see the udpated values, then</p>
+<p class="p17"><span class="s5">x.set(</span><span class="s11">\freq</span><span class="s5">, 200) ; </span>// gui is updated</p>
+<p class="p17">// on CmdPeriod, window is close</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">// again</p>
+<p class="p18">x = <span class="s10">Synth</span>(<span class="s11">\test</span>) ;</p>
+<p class="p20"><span class="s5">g = </span>SynthDefAutogui<span class="s5">(</span><span class="s11">\test</span><span class="s5">, x) ;</span></p>
+<p class="p18">x.set(<span class="s11">\out</span>, 0) ;</p>
+<p class="p19"><br></p>
+<p class="p17">// now toggle monitor button</p>
+<p class="p17">// after increase rate up to 10</p>
+<p class="p18">{ <span class="s10">inf</span>.do{ x.set(<span class="s11">\freq</span>, rrand(100, 1000) );<span class="Apple-converted-space">  </span>0.1.wait}}.fork ;</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">////////////////////////////</p>
+<p class="p17">// the same with Cocoa</p>
+<p class="p17">////////////////////////////</p>
+<p class="p18"><span class="s10">GUI</span>.cocoa ;</p>
+<p class="p18">s = <span class="s10">Server</span>.internal.boot;</p>
+<p class="p19"><br></p>
+<p class="p17">// using the SynthDef</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\test</span>, {<span class="s10">arg</span> out = 3, freq = 100; <span class="s10">Out</span>.ar(out, <span class="s10">SinOsc</span>.ar(freq))}) ;</p>
+<p class="p17"><span class="s10">SynthDefAutogui</span><span class="s5">(</span><span class="s11">\test</span><span class="s5">, target:s).autogui ; </span>// a synth is created, note the target arg</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">// instantiating a synth, and calling the gui</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\test</span>, {<span class="s10">arg</span> out = 3, freq = 1000; <span class="s10">Out</span>.ar(out, <span class="s10">SinOsc</span>.ar(freq))}).send(s) ;</p>
+<p class="p18">x = <span class="s10">Synth</span>(<span class="s11">\test</span>).autogui(target:s) ;</p>
+<p class="p19"><br></p>
+<p class="p17"><span class="s5">x.set(</span><span class="s11">\out</span><span class="s5">, 0) ; </span>// if monitor is off, change is not reflected on gui<span class="Apple-converted-space"> </span></p>
+<p class="p18">x.set(<span class="s11">\freq</span>, 400) ;</p>
+<p class="p17">// now press the monitor button, and you'll see the udpated values, then</p>
+<p class="p17"><span class="s5">x.set(</span><span class="s11">\freq</span><span class="s5">, 200) ; </span>// gui is updated</p>
+<p class="p17">// on CmdPeriod, window is close</p>
+<p class="p19"><br></p>
+<p class="p17">// BUG: scope doesn't reflect wave</p>
+<p class="p17">// BUG2: layout is messy</p>
+<p class="p17">// seems to be a cocoa stuff</p>
+<p class="p19"><br></p>
+<p class="p17">// again</p>
+<p class="p18">x = <span class="s10">Synth</span>(<span class="s11">\test</span>) ;</p>
+<p class="p18">g = <span class="s10">SynthDefAutogui</span>(<span class="s11">\test</span>, x, target:s).autogui ;</p>
+<p class="p18">x.set(<span class="s11">\out</span>, 0) ;</p>
+<p class="p19"><br></p>
+<p class="p17">// now toggle monitor button</p>
+<p class="p17">// after increase rate up to 10</p>
+<p class="p18">{ <span class="s10">inf</span>.do{ x.set(<span class="s11">\freq</span>, rrand(100, 1000) );<span class="Apple-converted-space">  </span>0.1.wait}}.fork ;</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">/////////////////////////////////////////////////////////</p>
+<p class="p17">// Using the autogui methods with SynthDefs and Synth</p>
+<p class="p17">/////////////////////////////////////////////////////////</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">// 1. Minimal usage</p>
+<p class="p18"><span class="s10">Server</span>.local.boot ;</p>
+<p class="p17">// easy for testing</p>
+<p class="p18">x = {<span class="s10">SinOsc</span>.ar}.play.autogui ;</p>
+<p class="p17">// just press CmdPeriod</p>
+<p class="p19"><br></p>
+<p class="p17">// A def</p>
+<p class="p18">(</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\test</span>, {<span class="s10">arg</span> out = 0, freq = 300, mul = 0.3, pf = 5 ;</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s10">Out</span>.ar(out, <span class="s10">SinOsc</span>.ar(freq)*mul*<span class="s10">LFPulse</span>.kr(pf))</p>
+<p class="p18"><span class="Apple-tab-span">	</span>}).send(s)<span class="Apple-converted-space">  </span>;</p>
+<p class="p18">)</p>
+<p class="p19"><br></p>
+<p class="p17">// creating and controlling</p>
+<p class="p18">x = <span class="s10">Synth</span>(<span class="s11">\test</span>).autogui ;</p>
+<p class="p19"><br></p>
+<p class="p17">// no scope</p>
+<p class="p18">x = <span class="s10">Synth</span>(<span class="s11">\test</span>).autogui(scopeOn:<span class="s10">false</span>) ;<span class="Apple-converted-space"> </span></p>
+<p class="p19"><br></p>
+<p class="p17">// using the rate arg<span class="Apple-converted-space"> </span></p>
+<p class="p17">// control rate outs<span class="Apple-converted-space"> </span></p>
+<p class="p18">(</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\test</span>, {<span class="s10">arg</span> out = 0, freq = 300, mul = 0.3, pf = 5 ;</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s10">Out</span>.kr(out, <span class="s10">SinOsc</span>.kr(freq)*mul*<span class="s10">LFPulse</span>.kr(pf))</p>
+<p class="p18"><span class="Apple-tab-span">	</span>}).send(s)<span class="Apple-converted-space">  </span>;</p>
+<p class="p18">)</p>
+<p class="p17"><span class="s5">x = </span><span class="s10">Synth</span><span class="s5">(</span><span class="s11">\test</span><span class="s5">).autogui(</span><span class="s11">\control</span><span class="s5">) ; </span>// using the rate arg<span class="Apple-converted-space"> </span></p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">// an example from the SC examples</p>
+<p class="p19"><br></p>
+<p class="p18">(</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\theremin</span>, { <span class="s10">arg</span> mod = 7, detune = 0;</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s10">var</span> f, a, z;</p>
+<p class="p18"><span class="Apple-tab-span">	</span>f = <span class="s10">MouseY</span>.kr(4000, 200, <span class="s11">'exponential'</span>, 0.8) + detune;</p>
+<p class="p18"><span class="Apple-tab-span">	</span>a = <span class="s10">SinOsc</span>.ar(f + (f * <span class="s10">SinOsc</span>.ar(mod,0,0.02)), mul: <span class="s10">MouseX</span>.kr(0, 0.9));</p>
+<p class="p18"><span class="Apple-tab-span">	</span>z = <span class="s10">Mix</span>.ar(a);</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s10">Out</span>.ar(0, z) + <span class="s10">Out</span>.ar(1, z)</p>
+<p class="p18">}).autogui</p>
+<p class="p18">)</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">// Using specs</p>
+<p class="p17">// note how the specs affect the gui's behavior.</p>
+<p class="p17">// e.g. frequency knob acts in range 20-20000, with an exponential increase</p>
+<p class="p17">// with step = 1, and default to 440</p>
+<p class="p17">// if e.g. \freq were not present in the dict</p>
+<p class="p17">// default freq would be taken from SinthDef, i.e. 300</p>
+<p class="p17">// range would be: 0-300*2</p>
+<p class="p17">// mapping would be linear</p>
+<p class="p19"><br></p>
+<p class="p18">(</p>
+<p class="p18">x = <span class="s10">Synth</span>(<span class="s11">\test</span>).autogui</p>
+<p class="p18">)<span class="Apple-converted-space"> </span></p>
+<p class="p17">// vs.</p>
+<p class="p18">(</p>
+<p class="p18">x = <span class="s10">Synth</span>(<span class="s11">\test</span>).autogui(specs:</p>
+<p class="p18"><span class="Apple-tab-span">	</span>(<span class="s11">\out</span>: <span class="Apple-tab-span">	</span>[0, 1, <span class="s11">\lin</span>, 1, 0],</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s11">\freq</span>: <span class="Apple-tab-span">	</span>[20, 20000, <span class="s11">\exp</span>, 1, 440],</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s11">\mul</span>: <span class="Apple-tab-span">	</span>[0, 1, <span class="s11">\lin</span>, 0.01, 0.3],</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s11">\pf</span>: <span class="Apple-tab-span">	</span>[1, 100, <span class="s11">\lin</span>, 1, 5])) ;<span class="Apple-converted-space"> </span></p>
+<p class="p18">)<span class="Apple-converted-space"> </span></p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">///////////////</p>
+<p class="p17">// 2. Using the out arg</p>
+<p class="p18">(</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\test2</span>, {<span class="s10">arg</span> in = 2, out = 0, freq = 100, mul = 0.3, pf = 5 ;</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s10">Out</span>.ar(out, <span class="s10">In</span>.ar(in)*<span class="s10">SinOsc</span>.ar(freq)*mul*<span class="s10">LFPulse</span>.kr(pf))</p>
+<p class="p18"><span class="Apple-tab-span">	</span>}).send(s)<span class="Apple-converted-space">  </span>;</p>
+<p class="p19"><br></p>
+<p class="p17">// a bunch of signal to a bunch of busses</p>
+<p class="p18">14.do{ <span class="s10">|i|</span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s10">var</span> ug = [<span class="s10">Pulse</span>, <span class="s10">SinOsc</span>, <span class="s10">Saw</span>].choose ;</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s10">var</span> fr = rrand(100, 1000) ;</p>
+<p class="p18"><span class="Apple-tab-span">	</span>{<span class="s10">Out</span>.ar(i+2, ug.ar(fr))}.play</p>
+<p class="p19"><br></p>
+<p class="p18">}</p>
+<p class="p18">)</p>
+<p class="p19"><br></p>
+<p class="p18">s.scope(16) ; <span class="s12">// see all</span></p>
+<p class="p19"><br></p>
+<p class="p17">// be sure to add to tail, so we can push into the in the busses</p>
+<p class="p17">// we specify a spec for in, so that it reads from busses 2-14<span class="Apple-converted-space"> </span></p>
+<p class="p18">x = <span class="s10">Synth</span>(<span class="s11">\test2</span>, addAction:<span class="s11">\addToTail</span>).autogui(specs:(<span class="s11">\in</span>: [2, 14, <span class="s11">\lin</span>, 1, 2])) ;</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">// 3.</p>
+<p class="p17">// doing with four</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">// using ins to connect modules<span class="Apple-converted-space"> </span></p>
+<p class="p18">(</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\I_pulse</span>, {<span class="s10">arg</span> out = 2, freq = 10 ;<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s10">Out</span>.ar(out, <span class="s10">LFPulse</span>.ar(freq))</p>
+<p class="p18">}).send(s) ;</p>
+<p class="p19"><br></p>
+<p class="p17">// Ring Mod by I_pulse, to moog filter</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\II_source</span>, {<span class="s10">arg</span> in = 2, out = 3, freq = 100 ;<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s10">Out</span>.ar(out, <span class="s10">Saw</span>.ar(freq)*<span class="s10">In</span>.ar(in))</p>
+<p class="p18">}).send(s) ;</p>
+<p class="p19"><br></p>
+<p class="p17">// we use it to control gain of the moog filter</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\IV_gainControl</span>, {<span class="s10">arg</span> out = 4, freq = 2 ;<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s10">Out</span>.ar(out, <span class="s10">SinOsc</span>.ar(freq, mul: 2, add:2))</p>
+<p class="p18">}).send(s) ;</p>
+<p class="p19"><br></p>
+<p class="p17">// the moog filter</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\III_filter</span>, {<span class="s10">arg</span> inSig = 3, inGain = 4, out = 0, freq = 2000 ;<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="s10">Out</span>.ar(out, <span class="s10">MoogFF</span>.ar(<span class="s10">In</span>.ar(inSig), freq, <span class="s10">In</span>.ar(inGain)))</p>
+<p class="p18">}).send(s) ;</p>
+<p class="p19"><br></p>
+<p class="p18">)</p>
+<p class="p19"><br></p>
+<p class="p18">(<span class="Apple-converted-space"> </span></p>
+<p class="p17">// four synths</p>
+<p class="p18"><span class="s10">Synth</span>(<span class="s11">\II_source</span>).autogui ;</p>
+<p class="p18"><span class="s10">Synth</span>(<span class="s11">\I_pulse</span>, addAction:<span class="s11">\addToHead</span>).autogui ;</p>
+<p class="p21"><span class="s10">Synth</span><span class="s5">(</span>\IV_gainControl<span class="s5">, addAction:</span>\addToHead<span class="s5">).autogui ;</span></p>
+<p class="p18"><span class="s10">Synth</span>(<span class="s11">\III_filter</span>, addAction:<span class="s11">\addToTail</span>).autogui ;</p>
+<p class="p18">)</p>
+<p class="p19"><br></p>
+<p class="p17">// 4.</p>
+<p class="p17">// mapping</p>
+<p class="p18">(</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\sin</span>, {<span class="s10">arg</span> out = 0, freq = 400; <span class="s10">Out</span>.ar(out, <span class="s10">SinOsc</span>.ar(freq))}).send(s) ;</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\mod</span>, {<span class="s10">arg</span> out = 2, freq = 3 ; <span class="s10">Out</span>.kr(out, <span class="s10">Saw</span>.kr(freq, mul: 100, add: 200))}).send(s)</p>
+<p class="p18">)</p>
+<p class="p18">a = <span class="s10">Synth</span>(<span class="s11">\sin</span>).autogui;</p>
+<p class="p18">b = <span class="s10">Synth</span>(<span class="s11">\mod</span>, addAction:<span class="s11">\addToHead</span>).autogui(<span class="s11">\control</span>)<span class="Apple-converted-space">  </span>;<span class="Apple-converted-space"> </span></p>
+<p class="p17">// you won't see in the scope, out of range, but works</p>
+<p class="p17">// now evaluate this<span class="Apple-converted-space"> </span></p>
+<p class="p17"><span class="s5">a.map(</span><span class="s11">\freq</span><span class="s5">, 2) ; </span>// freq f a is controlled by output of b</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">// 5.</p>
+<p class="p17">// exporting window and rescaling</p>
+<p class="p19"><br></p>
+<p class="p18">s.boot ;</p>
+<p class="p17">// external window. Note that CmdPeriod doesn't work, must be registered in case<span class="Apple-converted-space"> </span></p>
+<p class="p18">w = <span class="s10">Window</span>.new(<span class="s13">"SupaSyntha"</span>, <span class="s10">Rect</span>(20, 20, 300, 580)).front ;</p>
+<p class="p19"><br></p>
+<p class="p17">// you cannot know from outside width of the modules as it depedn on number of args</p>
+<p class="p17">// but height, yes, it's (step*3/5*6), --&gt; step*3.6</p>
+<p class="p19"><br></p>
+<p class="p18">~height = 40*3/5*6 ;</p>
+<p class="p18">(</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\sin</span>, {<span class="s10">arg</span> out = 2, freq = 100; <span class="s10">Out</span>.ar(out, <span class="s10">SinOsc</span>.ar(freq))}).autogui(window:w, step:40) ;</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\imp</span>, {<span class="s10">arg</span> out = 3, freq = 25; <span class="s10">Out</span>.ar(out, <span class="s10">Impulse</span>.ar(freq))}).autogui(window:w, vOff: ~height, step:40) ;</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\saw</span>, {<span class="s10">arg</span> out = 4, freq = 50; <span class="s10">Out</span>.ar(out, <span class="s10">Saw</span>.ar(freq))}).autogui(window:w, step:40, vOff: ~height*2) ;</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\pul</span>, {<span class="s10">arg</span> out = 5, freq = 10; <span class="s10">Out</span>.ar(out, <span class="s10">Pulse</span>.ar(freq))}).autogui(window:w, step:40, vOff: ~height*3) ;</p>
+<p class="p17">// note that we have rescaled by setting step to 40 (default is 50)<span class="Apple-converted-space"> </span></p>
+<p class="p17">// (move out knob to push out to public busses)</p>
+<p class="p18">)</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">// another one, just to test a complex layout</p>
+<p class="p18"><span class="s10">Server</span>.local.boot;</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p18">(</p>
+<p class="p19"><br></p>
+<p class="p17"><span class="s10">var</span><span class="s5"> step = 30 ; </span>// smaller and smaller<span class="Apple-converted-space"> </span></p>
+<p class="p17"><span class="s10">var</span><span class="s5"> height = step*3.6 ; </span>// made some calculations</p>
+<p class="p18"><span class="s10">var</span> w = <span class="s10">Window</span>.new(<span class="s13">"SupaSyntha"</span>, <span class="s10">Rect</span>(20, 20, 1250, height*6)).front ;</p>
+<p class="p19"><br></p>
+<p class="p18"><span class="s10">var</span> out, freq, synth ;</p>
+<p class="p18">{</p>
+<p class="p17">// send the synthDef</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\Sinner</span>, {<span class="s10">arg</span> out = 3, freq = 1000;<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">Out</span>.ar(out, <span class="s10">SinOsc</span>.ar(freq))}).send(s) ;</p>
+<p class="p17"><span class="s5">s.sync ; </span>// wait until it's compiled, see Server</p>
+<p class="p17">// then<span class="Apple-converted-space"> </span></p>
+<p class="p18">30.do {<span class="s10">|i|</span></p>
+<p class="p18"><span class="Apple-tab-span">	</span>out = i+2 ; freq = 50*i+50 ;</p>
+<p class="p21"><span class="s5"><span class="Apple-tab-span">	</span></span><span class="s10">Synth</span><span class="s5">(</span>\Sinner<span class="s5">)</span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.set(<span class="s11">\out</span>, out, <span class="s11">\freq</span>, freq)</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.autogui(window:w, step:30, vOff: height*(i%6), hOff:250*((i/6)).asInteger)</p>
+<p class="p18"><span class="Apple-tab-span">	</span>}</p>
+<p class="p18">}.fork(<span class="s10">AppClock</span>)</p>
+<p class="p18">)</p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p19"><br></p>
+<p class="p17">// compact layout with no scope</p>
+<p class="p18">(</p>
+<p class="p19"><br></p>
+<p class="p17"><span class="s10">var</span><span class="s5"> step = 30 ; </span>// smaller and smaller<span class="Apple-converted-space"> </span></p>
+<p class="p17"><span class="s10">var</span><span class="s5"> height = step*3.6 ; </span>// made some calculations</p>
+<p class="p18"><span class="s10">var</span> w = <span class="s10">Window</span>.new(<span class="s13">"SupaSyntha"</span>, <span class="s10">Rect</span>(20, 20, 1250, height*6)).front ;</p>
+<p class="p19"><br></p>
+<p class="p18"><span class="s10">var</span> out, freq, synth ;</p>
+<p class="p18">{</p>
+<p class="p17">// send the synthDef</p>
+<p class="p18"><span class="s10">SynthDef</span>(<span class="s11">\Sinner</span>, {<span class="s10">arg</span> out = 3, freq = 1000;<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">Out</span>.ar(out, <span class="s10">SinOsc</span>.ar(freq))}).send(s) ;</p>
+<p class="p17"><span class="s5">s.sync ; </span>// wait until it's compiled, see Server</p>
+<p class="p17">// 48 vs. 30 of the previous example</p>
+<p class="p18">48.do {<span class="s10">|i|</span></p>
+<p class="p18"><span class="Apple-tab-span">	</span>out = i+2 ; freq = 50*i+50 ;</p>
+<p class="p21"><span class="s5"><span class="Apple-tab-span">	</span></span><span class="s10">Synth</span><span class="s5">(</span>\Sinner<span class="s5">)</span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.set(<span class="s11">\out</span>, out, <span class="s11">\freq</span>, freq)</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.autogui(window:w, step:30, vOff: height*(i%6), hOff:155*((i/6)).asInteger, scopeOn:<span class="s10">false</span>)</p>
+<p class="p18"><span class="Apple-tab-span">	</span>}</p>
+<p class="p18">}.fork(<span class="s10">AppClock</span>)</p>
+<p class="p18">)</p>
+<p class="p3"><br></p>
+</body>
+</html>

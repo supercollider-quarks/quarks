@@ -1,0 +1,164 @@
+TITLE:: InfluxBase
+summary:: base class for metacontrol by influence.
+categories:: Influx
+related:: Classes/Influx, Reference/MetaControl
+
+DESCRIPTION::
+InfluxBase is the base class for the Influx family.
+  It passes on incoming values under the same name
+  and spreads them as they are to multiple destinations
+  by means named actions.
+
+InfluxMix can accept influences from multiple sources
+  and decides on param values based on the influences.
+  Different sources can have different trust values,
+  which will determine the strength of their influence.
+
+InfluxSpread can distribute incoming values to
+  multiple destinations, with optional rescaling,
+  and optional mapping to other parameter names.
+
+Influx can entangle or disentangle inValues to outValues
+  by means of a matrix of weights  which determine how strongly
+  a given input param will affect a given output param.
+
+First example:
+
+code::
+// make an influx
+a = InfluxBase([\x, \y], inValDict: (x: 0.5, y: 0.1));
+a.postv;
+
+// generate names automatically
+a = InfluxBase(2);
+a = InfluxBase(4);
+a.inNames;
+a.outNames;
+
+// look uo values
+a.inValDict;
+a.postv;
+
+a.calcOutVals;
+a.postv;
+
+// setting updates values
+a.set(\x, 0.5).postv;
+a.set(\y, -0.5).postv;
+
+// wrong names are ignored
+a.set(\z, 0.5).postv;
+
+
+Tdef(\a, { |envir|
+	loop { 1.wait; envir.postln };
+}).play;
+
+// add a named function to act on changing inVals
+a.add(\test, { |influx| Tdef(\a).set(*influx.outValDict.asKeyValuePairs); });
+a.set(\y, -0.54321).postv;
+
+// and remove it
+a.remove(\test);
+
+//
+a.attachSet(Tdef(\a));
+a.set(\x, 0.12).postv;
+
+a.detach(\set_a);
+a.set(\x, 0.34).postv;
+
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+make a new InfluxBase.
+ARGUMENT:: inNames
+input names to use. if inNames is a, number, e.g. 4, inNames will be from the list x, y, z, w, v, u, etc.
+ARGUMENT:: outNames
+output names to use. In InfluxBase, this is usally the same as inNames, subclasses differ.
+
+ARGUMENT:: inValDict
+an optional dict of input values.
+
+INSTANCEMETHODS::
+
+subsection:: Instance Variables
+
+METHOD:: inNames
+the input names
+
+METHOD:: outNames
+the output names
+
+METHOD:: inValDict
+the dict of input values
+
+METHOD:: outValDict
+the dict of output values
+
+METHOD:: action
+a FuncChain, where actions can be put that run when new output values are calculated. This is used for attaching e.g. Ndefs to be played with Influx.
+
+METHOD:: shape, smallDim, bigDim
+shape is the shape of the weights, [inNames.size, outNames.size]
+smallDim is the smaller of the two, bigDim the greater.
+
+subsection:: Instance methods
+
+METHOD:: postv
+pretty-post values
+
+METHOD:: set
+set input values of Influx
+ARGUMENT::  ... keyValPairs
+key1, val1, ... keyN, valN
+
+METHOD:: calcOutVals
+calculate new output values and do the action.
+
+METHOD:: doAction
+perform the action(s), e.g. after a set call.
+
+private:: init, printOn, storeArgs
+
+
+
+subsection:: Interface to actions
+
+METHOD:: add
+add a function to action by name
+
+METHOD:: remove
+remove a function from action by name
+
+METHOD:: addFunc
+add an anonymous function to action
+
+METHOD:: removeFunc
+remove an anonymous function from action
+
+METHOD:: attach
+attach an object - typically a JITLib proxy - and set its params from the Influx outputs.
+
+ARGUMENT:: object
+the object
+
+ARGUMENT:: funcName
+a name to use in the FuncChain
+
+ARGUMENT:: paramNames
+paramNames to set - if none given, gets them from the object.
+
+ARGUMENT:: specs
+specs to use for mapping. If none given, those stored in the object's Halo are used.
+
+METHOD:: detach
+remove an object from action by name
+
+EXAMPLES::
+
+code::
+(some example code)
+::

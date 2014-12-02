@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #1000d0}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #dc0000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1000d0}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #b400a7}
+span.s1 {font: 18.0px Helvetica; color: #1000d0}
+span.s2 {font: 18.0px Helvetica}
+span.s3 {color: #1000d0}
+span.s4 {color: #b400a7}
+span.s5 {color: #000000}
+span.s6 {color: #797979}
+span.s7 {color: #008a00}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PlayBufCF</b></span><span class="s2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>crossfading version of playbuf</b></p>
+<p class="p1">part of <a href="wslib.html">wslib</a></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s3"><b>PlayBufCF</b></span><b>.ar(numChannels, bufnum, rate, trigger, startPos, loop, lag, n )</b></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s3">Arguments</span> are the same as <a href="SC://PlayBuf"><span class="s3">PlayBuf</span></a>. <span class="s3">But</span> <span class="s3">PlayBufCF</span> makes a crossfade every time it is triggered. <span class="s3">In</span> order to do so it uses two <span class="s3">PlayBufs</span> internally uses equal power crossfades between them. <span class="s3">Triggers</span> can be audio or control rate.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>lag: </b>the crossfade duration in seconds (default: <span class="s4">0.1</span>)</p>
+<p class="p1"><b>n: </b>number of overlaps. <span class="s3">The</span> default (<span class="s4">2</span>) is enough if the lag time never exceeds the time between two triggers. <span class="s3">If</span> the n is set too low there is a chance of audible clicks. <span class="s3">When</span> using for example a lagtime of <span class="s4">1 </span>and triggers happen every <span class="s4">0.5</span>s, n should be set to <span class="s4">3</span>. <span class="s3">If</span> n == <span class="s4">1 </span>no crossfading will happen, and triggers will always result in clicks. n is not modulatable. <span class="s3">Higher</span> values for n use more cpu.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>See</b><span class="s5"><b> also:</b> <a href="SC://PlayBuf"><span class="s3">PlayBuf</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s5">b = </span><span class="s3">Buffer</span><span class="s5">.read(s, </span><span class="s6">"sounds/a11wlk01.wav"</span><span class="s5">); </span>// remember to free the buffer later.</p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p7"><span class="s5">z = </span>SynthDef<span class="s5">(</span><span class="s7">\help_PlayBufCF</span><span class="s5">, { </span>| out = 0, bufnum = 0 |</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar( out,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">PlayBufCF</span>.ar(<span class="s4">1</span>, bufnum, <span class="s3">BufRateScale</span>.kr(bufnum),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Impulse</span>.kr(<span class="s4">2</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">WhiteNoise</span>.kr(<span class="s4">1</span>).range(<span class="s4">0</span>, <span class="s3">BufFrames</span>.kr(bufnum) - (<span class="s4">0.5 </span>* <span class="s4">44100</span>) ) )</p>
+<p class="p6"><span class="Apple-tab-span">	</span>).dup</p>
+<p class="p6">}).play(s, [<span class="s7">\bufnum</span>, b]);</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p6">z.free;</p>
+<p class="p5"><br></p>
+<p class="p4">/// compare with PlayBuf:</p>
+<p class="p6">(</p>
+<p class="p7"><span class="s5">y = </span>SynthDef<span class="s5">(</span><span class="s7">\help_PlayBufCF2</span><span class="s5">, { </span>| out = 0, bufnum = 0 |</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar( out,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">PlayBuf</span>.ar(<span class="s4">1</span>,<span class="Apple-converted-space">  </span>bufnum, <span class="s3">BufRateScale</span>.kr(bufnum),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Impulse</span>.kr(<span class="s4">2</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">WhiteNoise</span>.kr(<span class="s4">1</span>).range(<span class="s4">0</span>, <span class="s3">BufFrames</span>.kr(bufnum) - (<span class="s4">0.5 </span>* <span class="s4">44100</span>) ) )</p>
+<p class="p6"><span class="Apple-tab-span">	</span>).dup</p>
+<p class="p6">}).play(s, [<span class="s7">\bufnum</span>, b]);</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p6">y.free;</p>
+<p class="p5"><br></p>
+<p class="p4">/// also accepts Demand UGens:</p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p7"><span class="s5">x = </span>SynthDef<span class="s5">(</span><span class="s7">\help_PlayBufCF3</span><span class="s5">, { </span>| out = 0, bufnum = 0, division = 80 |</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar( out,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">PlayBufCF</span>.ar(<span class="s4">1</span>, bufnum, <span class="s3">BufRateScale</span>.kr(bufnum),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Dwhite</span>(<span class="s4">0.1</span>, <span class="s4">0.3</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Dbrown</span>(<span class="s4">0</span>, <span class="s4">0.95</span>, <span class="s4">0.1 </span>) * <span class="s3">BufFrames</span>.kr(bufnum)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>).dup</p>
+<p class="p6"><span class="Apple-tab-span">	</span>)</p>
+<p class="p6">}).play(s, [<span class="s7">\bufnum</span>, b]);</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p6">x.free;</p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p7"><span class="s5">x = </span>SynthDef<span class="s5">(</span><span class="s7">\help_PlayBufCF3</span><span class="s5">, { </span>| out = 0, bufnum = 0, division = 80 |</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar( out,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">PlayBufCF</span>.ar(<span class="s4">1</span>, bufnum,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Drand</span>( (<span class="s4">1</span>..<span class="s4">5</span>) / <span class="s4">2</span>, <span class="s3">inf</span> ),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Dwhite</span>(<span class="s4">0.05</span>, <span class="s4">0.2</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Dbrown</span>(<span class="s4">0</span>, <span class="s4">0.95</span>, <span class="s4">0.1 </span>) * <span class="s3">BufFrames</span>.kr(bufnum),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lag: <span class="s4">0.05</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>).dup</p>
+<p class="p6"><span class="Apple-tab-span">	</span>)</p>
+<p class="p6">}).play(s, [<span class="s7">\bufnum</span>, b]);</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p6">x.free;</p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p7"><span class="s5">x = </span>SynthDef<span class="s5">(</span><span class="s7">\help_PlayBufCF3</span><span class="s5">, { </span>| out = 0, bufnum = 0, division = 80 |</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar( out,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">PlayBufCF</span>.ar(<span class="s4">1</span>, bufnum,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">2 </span>** <span class="s3">Dbrown</span>( <span class="s4">-1</span>, <span class="s4">1</span>, <span class="s4">0.05 </span>),<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s3">Dbrown</span><span class="s5">( </span>0.01<span class="s5">, </span>0.05<span class="s5">, </span>0.01 <span class="s5">),<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Dseq</span>( [ <span class="s3">Dseries</span>( <span class="s4">0</span>, <span class="s4">0.002</span>, <span class="s4">500 </span>) ], <span class="s3">inf</span> ) * <span class="s3">BufFrames</span>.kr(bufnum),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n: <span class="s4">10<span class="Apple-converted-space">  </span></span>// because the shortest possible trigger time is <span class="s4">0.01</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>).dup</p>
+<p class="p6"><span class="Apple-tab-span">	</span>)</p>
+<p class="p6">}).play(s, [<span class="s7">\bufnum</span>, b]);</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p6">x.free;</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p4"><span class="s5">b.free; </span>// free buffer</p>
+</body>
+</html>

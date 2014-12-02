@@ -1,0 +1,255 @@
+CLASS:: BezierSpline
+summary:: A Bézier spline is a series of Bézier curves joined end to end where the last point of one curve coincides with the starting point of the next curve.
+categories:: Splines, Envelopes>Splines
+related:: Classes/LinearSpline
+
+DESCRIPTION::
+The Bézier curves lie between each point on the spline and have an array of 0 or more control points that express the curvature.
+
+Like other spline classes, the points may be of 2 or more more dimensions.  Control points should be of the same dimensional order as the points. The BezierSplineGui can only edit in 2D.
+
+The number of control points determines the order of that segment:
+list::
+## 0 : linear
+## 1 : quadratic
+## 2 : cubic
+## ...
+## N : ntic
+::
+
+code::
+(
+b = BezierSpline(
+	[ 0, 0 ],
+		[  ],
+	[ 1, 1 ],
+		[ [ 1.56875, 0.3125 ] ],
+	[ 2, 2 ],
+		[ [ 2.23125, 0.54166666666667 ], [ 2.78125, 0.6875 ] ],
+	[ 3, 3 ],
+		[ [ 3.0375, 4.6875 ], [ 3.475, 1.3958333333333 ], [ 3.4875, 5.125 ] ],
+	[ 4, 4 ],
+		[ [ 4.2875, 1.875 ], [ 4.76875, 1.0208333333333 ], [ 4.38125, 4.3333333333333 ], [ 4.69375, 5.5416666666667 ] ],
+	[ 5, 5 ],
+	false);
+
+b.gui(nil,1000@300);
+)
+::
+
+Methods that return a point will return an array [x,y], not a Point object as that class is limited to 2 dimensions.  Methods that take a point as setter may be either an array or a Point object that will be converted to a point array.
+
+The gui allows fairly intuitive display and editing of points and control points.
+
+CLASSMETHODS::
+
+METHOD:: new
+Points alternate with arrays of controlPoints. If no args are supplied then a simple linear spline (2 points, no control points) is created.
+
+argument::  ... things
+code::
+BezierSpline(
+	point,
+	  controlPoints,
+	point2,
+	  controlPoints2,
+	...
+	pointN,
+	  controlPointsN,
+
+	isClosed
+)
+::
+isClosed (boolean): if the spline loops back to the first point
+
+Example:
+code::
+ BezierSpline(
+        0@0,
+            [0.2@0.4],
+        1@1,
+            [],
+        false
+ );
+::
+
+returns:: a BezierSpline
+
+METHOD:: fromPoints
+An alternate constructor
+
+argument:: points
+The points for each segment.
+
+argument:: controlPoints
+Optional, defaulting to no controlPoints. An array of controlPoints arrays, one controlPoint array for each segment.  It is of size one less than the number of points, as each controlPoint array is inbetween each point. controlPoint arrays may have 0 or more controlPoints.  controlPoints should be of the same dimensional order as the points.
+
+argument:: isClosed
+if the spline loops back to the first point
+
+returns:: a BezierSpline
+
+
+INSTANCEMETHODS::
+
+METHOD:: interpolate
+Interpolate points along the spline path. Note they are not evenly spaced along the whole path, but interpolate per segment. For a more common usage see bilinearInterpolate
+
+argument:: divisions
+number of divisions per segment
+
+returns:: returns an array of points of size: (divisions * num segments)
+
+METHOD:: createPoint
+create and insert a new point p at index i.  It will also create and insert a corresponding controlPoint array, which will be initially empty (linear).
+
+argument:: p
+the point as either an array or a Point object
+
+argument:: i
+the index to insert it at
+
+METHOD:: createControlPoint
+create a new controlPoint for a segment
+
+argument:: p
+the controlPoint as an array or a Point object
+
+argument:: pointi
+the segment number to insert it at
+
+argument:: cpi
+the controlPoint index to insert it at
+
+returns:: [pointi, last index of controlPoints]  this is intended for the gui class which usually is what calls createControlPoint
+
+METHOD:: controlPoints
+set the controlPoints, which is an array of arrays of control points.
+
+METHOD:: deletePoint
+remove a point and its corresponding controlPoints
+
+argument:: i
+index of point to remove
+
+METHOD:: deleteControlPoint
+delete a specific control point from a segment's control point list
+
+argument:: pointi
+segment index
+
+argument:: i
+control point index
+
+METHOD:: isLinear
+answers if the BezierSpline is only a single segment with no control points and thus a simple linear function
+
+returns:: boolean
+
+METHOD:: ++
+concatenate another BezierSpline
+
+argument:: thou
+the other spline
+
+returns:: a new BezierSpline
+
+METHOD:: guiClass
+specifies the ObjectGui subclass which builds the GUI for editing the spline
+
+returns:: ObjectGui subclass
+
+METHOD:: linear
+used internally to interpolate between 2 points when there are no control points for the segment
+
+argument:: t
+0..1 position between p1 and p2
+
+argument:: p1
+point 1
+
+argument:: p2
+point 2
+
+argument:: cps
+control points, in this case not used since its a linear interpolation
+
+returns:: a point
+
+METHOD:: quadratic
+used internally to quadratically interpolate between two points with 1 control point between them
+
+argument:: t
+0..1 position between p1 and p2
+
+argument:: p1
+point 1
+
+argument:: p2
+point 2
+
+argument:: cps
+control points, in this case an array of one controlPoint
+
+returns:: a point
+
+METHOD:: cubic
+used internally to cubically interpolate between two points with 2 control points between them
+
+METHOD:: ntic
+used internally to cubically interpolate between two points with 3 or more control points between them
+
+
+EXAMPLES::
+
+code::
+(
+b = BezierSpline(
+		0@0,
+		  [],
+		1@1,
+		  [],
+		false
+	);
+
+b.gui
+)
+::
+
+Click a knot to select that segment.
+Double click to create a point after the selected segment.
+Control-double click to create a control point within the selected segment.
+
+The Spline's compile string saves the current state:
+code::
+b.asCompileString
+::
+
+code::
+(
+b = BezierSpline(
+		0@0,
+		  [0.2@0.4],
+		1@1,
+		  [],
+		false
+	);
+
+b.gui
+)
+::
+
+code::
+(
+b = BezierSpline(
+		0@0,
+		  [ 0.2@0.4, 0.5@0.9  ],
+		1@1,
+		  [],
+		false
+	);
+
+b.gui(nil,1000@300);
+)
+::
+

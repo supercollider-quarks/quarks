@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: RecordMyDesktop</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>RecordMyDesktop</h1>
+<h2>invoke recordmydesktop to create a screencast</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> </p>
+
+<p>This invokes recordmydesktop to record what is going on on the screen and capture the audio from SuperCollider's first two channels. Make sure you have the server booted, when starting this.<br>You need to have the external Linux program 'recordmydesktop' in order to make succesful use of this class. See <a href="http://recordmydesktop.sourceforge.net">http://recordmydesktop.sourceforge.net</a>. It is also available in some Linux distributions.</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*new(name)</STRONG></DT>
+<DD>Start a new screencast with the filename <em>name</em>. The file extension is automatically added.</DD>
+
+<DT><STRONG>*all</STRONG></DT>
+<DD>A collector for all running instances.</DD>
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+<DT><STRONG>stop</STRONG></DT>
+<DD>Stop the recording.</DD>
+
+<DT><STRONG>name</STRONG></DT>
+<DD>The name of the session. The name is also the key with which the instance is stored in the <em>all</em> classvar</DD>
+
+<DT><STRONG>pid</STRONG></DT>
+<DD>The process id of the running recordmydesktop program.</DD>
+
+</DL>
+
+<h3> Example 1 </h3>
+<pre>
+s.boot;
+z = <span class="type">RecordMyDesktop</span>.new( <span class="string">"helpfile_example"</span>);
+
+{ <span class="type">SinOsc</span>.<span class="function-name">ar</span>( [200,400],0,0.3 )}.play;
+
+{ <span class="type">SinOsc</span>.<span class="function-name">ar</span>( [230,400],0,0.3 )}.play;
+
+z.stop;
+
+<span class="string">"vlc helpfile_example.ogv"</span>.unixCmd;
+</pre>
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

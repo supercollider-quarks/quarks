@@ -1,0 +1,55 @@
+CLASS:: RedArduino
+SUMMARY:: for uploading sketches to arduino
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedIntelHex
+
+DESCRIPTION::
+This class can be used for uploading sketches to an Arduino from SuperCollider via the soundcard. No FTDI chip needed! It's a very cheap way to program barebone arduino boards.
+
+NUMBEREDLIST::
+## Download the bootloader AudioBoot_V2_0 from http://www.hobby-roboter.de/forum/viewtopic.php?f=4&t=127
+## Burn it to a ATmega168 chip using STK500, USBtinyISP or similar avr programmer.
+## code::avrdude -v -p m168 -b 115200 -P /dev/tty.PL2303-000013FA -c stk500v2 -U flash:w:/Users/Stirling/Desktop/AudioBoot_V2_0/Atmega_Source/chAudioBoot_ATMEGA168_IN_PD1_LED_PB5.hex -U lfuse:w:0xE2:m -U hfuse:w:0xDF:m -U efuse:w:0xFA:m::
+## Build the barebone arduino circuit from http://www.hobby-roboter.de/forum/viewtopic.php?f=4&t=128&p=531
+::
+
+CLASSMETHODS::
+
+METHOD::read
+create a new instance and read a hex file.
+
+INSTANCEMETHODS::
+
+METHOD::read
+read a hex file.
+
+METHOD::upload
+starts the server and the upload process.
+
+NOTE::
+do not change the last three arguments if you want the upload to work with the AudioBoot_V2_0 bootloader. if you are only interested in the sound of serial data, you can of course try to change these arguments.
+::
+
+ARGUMENT::server
+if nil then the Server.default will be used.
+
+ARGUMENT::out
+which audio bus to play to. note: can also be an link::Classes/Array::.
+
+ARGUMENT::amp
+amplitude
+
+METHOD::intel
+After a successful read, this holds an instance of link::Classes/RedIntelHex::.
+
+EXAMPLES::
+
+CODE::
+//--uploading
+//1. open an Arduino sketch in the IDE and make sure board is set to ATmega168 with 8mhz internal crystal.
+//2. click compile and copy the path of the .hex file (you'll need to set the preferences to verbose compile mode).
+//3. put the hex file path in the code below, turn up volume to 80%, reset the ATmega168 and run the example below to upload.
+
+a= RedArduino.read("/var/folders/wf/43mk9crd027f10mkp_ksv1zh0000gn/T/build3164609001308421888.tmp/Blink.cpp.hex");//edit path
+a.upload	//boots the server and start the uploading process
+::

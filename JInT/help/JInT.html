@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.33">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 27.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #2b0a09; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #2b0a09; min-height: 16.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #004fdc}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica; min-height: 19.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica; min-height: 16.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times; min-height: 19.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #004392}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #991c19}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Helvetica; min-height: 11.0px}
+span.s1 {color: #0068a8}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {font: 12.0px Helvetica}
+span.s5 {color: #004392}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>JustInTerface</b></p>
+<p class="p2">—Accessing Hardware Controllers—</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>2006<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Till Bovermann (IEM)</p>
+<p class="p4"><span class="Apple-tab-span">	</span>2007, 2008<span class="Apple-tab-span">	</span>Till Bovermann (Uni Bielefeld)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p4">A meta interface to various hardware-controllers.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><i>Just InTeraction</i> provides functionality to access various HCI-Controlers by abstracting from their particular communication protocol.</p>
+<p class="p4">Designed to be used in <a href="SC://JITLib"><span class="s1">JITLib</span></a>, but also suitable for other styles.</p>
+<p class="p6"><br></p>
+<p class="p4">See also<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><a href="JInT_HIDlda.html"><span class="s3">JInT_HIDlda</span></a></span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><a href="JInT_TriggerFinger.html"><span class="s3">JInT_TriggerFinger</span></a></span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><a href="JInT_PocketControl.html"><span class="s3">JInT_PocketControl</span></a></span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><a href="JInT_PocketFader.html"><span class="s3">JInT_PocketFader</span></a></span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><a href="JInT_PocketDial.html"><span class="s3">JInT_PocketDial</span></a></span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><a href="JInT_WISE.html"><span class="s3">JInT_WISE</span></a></span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><a href="JInT_Surface.html"><span class="s3">JInT_Surface</span></a></span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><a href="JInT_Wacom.html"><span class="s3">JInT_Wacom</span></a></span></p>
+<p class="p8"><br></p>
+<p class="p4">SC3 provides several ways to connect existing h/w controllers. There are e.g.</p>
+<p class="p6"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>OpenSoundControl</p>
+<p class="p4"><span class="Apple-tab-span">	</span>MIDI</p>
+<p class="p4"><span class="Apple-tab-span">	</span>HID-Controllers</p>
+<p class="p6"><br></p>
+<p class="p4">These are communication protocols. More interesting in terms of human centered interface design, however, is to look at the controller's inherent natural featured and how they fit into the patch to be controlled.</p>
+<p class="p6"><br></p>
+<p class="p4">Most haptic controllers are assembled with subcontrollers, which are again each controllable by one finger.</p>
+<p class="p9"><br></p>
+<p class="p10"><span class="s4"><img src="attachments/JInT/Logitech-dualAction-Ctl.pdf" alt="Logitech-dualAction-Ctl.pdf"></span></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Description<span class="Apple-tab-span">	</span>dimensionality<span class="Apple-tab-span">	</span># <span class="Apple-tab-span">	</span>states<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>semantics</b></p>
+<p class="p4">A,B,D<span class="Apple-tab-span">	</span>Button<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1d<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>discrete, backsnapper</p>
+<p class="p4">C<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Nav.Cross<span class="Apple-tab-span">	</span>1d<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>9<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>discrete, backsnapper</p>
+<p class="p4">E<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Joystick<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2d<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>256**2<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>contiuous, backsnapper</p>
+<p class="p6"><br></p>
+<p class="p11"><br></p>
+<p class="p6"><br></p>
+<p class="p4"><b>[</b><b><span class="s3">JInTController</span></b><b>]<span class="Apple-converted-space"> </span></b></p>
+<p class="p4"><span class="Apple-tab-span">	</span>provide semantic access to different controller types.</p>
+<p class="p4"><span class="Apple-tab-span">	</span>Examples (currently implemented):</p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>JInTC_onoff : JInTController</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>simple one-DOF controller with on/off</p>
+<p class="p6"><br></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>JInTC_Button : JInTC_onoff</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Button (on/off) with snap back ("Taster")</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>JInTC_linear : JInTController</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>simple one-DOF contiuous controller (abstract)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>JInTC_linearSnapper : JInTController</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>simple one-DOF contiuous controller, snapping back into default position</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>JInTC_Fader : JInTC_linear</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>simple one-DOF Fader</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>JInTC_Knob : JInTC_linear</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>simple knob to turn</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>JInTC_composite : JInTController</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A composite of several controllers. Should not directly be used (abstract class)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>JInTC_ThumbStick : JInTC_composite</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>small two DOF analog joystick with an additional knob-functionality.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Normally actuated by thumb.</p>
+<p class="p6"><br></p>
+<p class="p4">We can get information on a specific controller:</p>
+<p class="p6"><br></p>
+<p class="p4">E.g:</p>
+<p class="p12"><br></p>
+<p class="p13"><span class="s2">a = </span>JInTC_ThumbStick<span class="s2">.new</span></p>
+<p class="p14"><span class="s2">a.numDOF;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// number of dimensions</p>
+<p class="p14"><span class="s2">a.description;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a textual description</p>
+<p class="p14"><span class="s2">a.semantics;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// keywords on semantics</p>
+<p class="p12"><br></p>
+<p class="p15">a.specs.do{<span class="s5">|a|</span> a.asCompileString.postln};</p>
+<p class="p14"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// spec of each dimension</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p4"><b>[</b><b><span class="s3">JInT</span></b><b>]</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span>is a container (i.e. a hardware device) consisting of several JInTControllers.</p>
+<p class="p4"><span class="Apple-tab-span">	</span>Examples of controllers:</p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</b><b><span class="s3">JInT_HIDlda</span></b><b>]</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Logitech Dual Action device.</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</b><b><span class="s3">JInT_TriggerFinger</span></b><b>]</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>M-Audio Trigger Finger.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</b><b><span class="s3">JInT_PocketControl</span></b><b>]</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Doepfer PocketControl.</p>
+<p class="p6"><br></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</b><b><span class="s3">JInT_PocketFader</span></b><b>]</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Doepfer PocketFader.</p>
+<p class="p6"><br></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</b><b><span class="s3">JInT_PocketDial</span></b><b>]</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Doepfer PocketDial.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</b><b><span class="s3">JInT_Wacom</span></b><b>]</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Wacom Tablet.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+</body>
+</html>

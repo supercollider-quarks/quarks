@@ -1,0 +1,25 @@
+CLASS:: PLastValue
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Modifiers
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/LastValue::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: pattern
+
+ARGUMENT:: diff
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PLastValue(Pseq([0, 2, 4, 5, 0, 4, 4, 4, 4, 4, 4, 4], inf), 2).trace*5+50).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \amp, PLastValue(PSaw(12), PSinOsc(64, 0.5, 0.5)).trace*0.5).play
+a.stop
+::

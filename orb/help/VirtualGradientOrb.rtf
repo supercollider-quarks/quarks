@@ -1,0 +1,40 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf410
+{\fonttbl\f0\fnil\fcharset77 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red96\green96\blue96;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs18 \cf2 var\cf0  window, colors, i_width = 100, pad = 10, views;\
+\
+colors = \cf2 Color\cf0 .black!3;\
+\
+window = \cf2 SCWindow\cf0 .new(\cf3 "Virtual Ambient Lights"\cf0 , \cf2 Rect\cf0 (400, 100, colors.size*(i_width+pad) + (2*pad), i_width+50)).front;\
+window.view.background_(\cf2 Color\cf0 .black);\
+\
+views = Array.fill(3, \{|i|\
+	SCTabletView(window, Rect(pad + (i * (i_width + pad)), pad, i_width, i_width)).background_(colors[i]);\
+\});\
+\
+\
+\cf2 OSCresponder\cf0 (\cf2 NetAddr\cf0 .localAddr, \cf3 "/orb"\cf0 , \{\cf2 |time, resp, msg|\cf0 \
+	\cf2 var\cf0  which, color, oldColor, lagTime, numSteps, fps = 20, rFps;\
+	which = msg[1];\
+	color = \cf2 Color\cf0 .new255(*msg[2..4]);\
+	oldColor = colors[which];\
+	lagTime = msg[5];\
+	numSteps = lagTime*fps;\
+	rFps = fps.reciprocal;\
+	\
+	\cf2 Task\cf0 (\{\
+		numSteps.do\{|i|\
+			colors[which] = oldColor.blend(color, i/numSteps);\
+			views[which].background = HiliteGradient(Color.black, colors[which]);\
+			window.refresh;\
+			rFps.wait\
+		\};\
+		colors[which] = color;\
+		window.refresh;\
+	\}, \cf2 AppClock\cf0 ).start;\
+\}).add\
+\
+\
+}

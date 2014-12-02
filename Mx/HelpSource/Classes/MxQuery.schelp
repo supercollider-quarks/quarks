@@ -1,0 +1,285 @@
+CLASS:: MxQuery
+summary:: jQuery style queries for selecting objects and performing bulk operations on them
+categories:: Mx
+related:: Classes/MxApp
+
+DESCRIPTION::
+An link::Classes/MxApp:: can query its contents (units, channels, inlets, outlets) and operations can be called on these queries to perform them on all results.
+
+An initial query set is obtained from the link::Classes/MxApp:: and can then be filtered further.  Operations performed on the query are performed on all matching objects and all events (like connections or replacing units) will happen in a single update.
+
+
+code::
+x = Mx.new.app;
+
+// a query set of all units
+q = x.units
+
+// of those units, select all inlets
+q = q.inlets
+
+// of those inlets filter where name of inlet is \freq
+q = q.where(\name,\freq)
+
+// add a CC controller
+c = x.add( CCResponder(num:1) );
+// patch it to those freq inputs
+// spec is automaticaly matched
+c >> q
+
+// a query set of all channels
+q = x.channels
+
+// all units in one channel
+q = x.channel(0).units
+
+
+// better example coming !
+u = x.add( lfo );
+10.do {
+    x.add( tones )
+};
+// select all inlets of units, filter where name is \freq
+q = x.units.inlets.where(\name,\freq);
+// patch u to all of those inlets
+u >> q;
+
+// patch all of those tones to the channel fader
+q >> x.channel(0).fader
+
+
+::
+
+More to come.  query to query patching will be possible with UGen-style multi channel array connections
+
+
+INSTANCEMETHODS::
+
+METHOD:: select
+Just like collection select, but the function is passed:  source, i, app
+
+argument:: function
+
+
+ a new MxQuery with the selected results
+
+METHOD:: reject
+Just like collection reject
+
+argument:: function
+
+
+ a new MxQuery with the non-rejected results
+
+METHOD:: units
+If a query set includes channels or iolets then this method will return a query set with all the units in those channels and all units that the iolets.
+
+returns:: an MxQuery with only units
+
+METHOD:: channels
+If a query set includes units or iolets then this will return a query set with just the channels that those items are in.
+
+returns:: an MxQuery with just channels
+
+METHOD:: inlets
+Returns a query set with all inlets for the currently matched results.  so mx.units.inlets returns all inlets for all units in the mx.  For a channel (or channels) it returns all inlets for all units in that channel.  For a query set of units it returns all inlets for those units.
+
+returns:: an MxQuery with just inlets
+
+METHOD:: outlets
+Like inlets but returns outlets
+
+returns:: an MxQuery with just outlets
+
+METHOD:: where
+Filters the results by testing each source object if objects.selector == equalsValue.
+eg. qs.inlets.where(\name,\freq) would return all inlets with the name \freq
+
+argument:: selector
+The selector will be called on the source. For a unit this is what is inside it. For inlets, outlets and channels it is the inlet,outlet,channel itself.  Thus inlet.name == 'freq' is asking the inlet.
+
+argument:: equalsValue
+The value to be matched for equality
+
+returns:: an MxQuery with the selected results
+
+METHOD:: whereIsA
+Filters where class of the source object === class
+
+argument:: class
+
+returns:: an MxQuery with the selected results
+
+METHOD:: whereIsKindOf
+Filters where source object is of the class or a subclass of class.
+
+argument:: class
+
+returns:: an MxQuery with the selected results
+
+METHOD:: whereAppClassIs
+
+
+argument:: class
+
+
+
+
+
+METHOD:: do
+Iterates over the result set
+
+argument:: function
+Supplied arguments: source, i, app
+
+returns:: this
+
+METHOD:: collect
+Collects the resultset returning an array of whatever your function returns.
+
+argument:: function
+
+
+ an array
+
+METHOD:: size
+Size of the result set
+
+returns:: integer
+
+METHOD:: isEmpty
+If size == 0
+
+returns:: boolean
+
+METHOD:: notEmpty
+If size != 0
+
+returns:: boolean
+
+METHOD:: at
+Returns an item from the result set
+
+argument:: i
+index
+
+returns:: the app object: link::Classes/MxUnitApp::, link::Classes/MxInletApp:: etc
+
+METHOD:: >>
+Connects all matched items to that.  Units connect their first available out.
+
+argument:: that
+An inlet.  Will support connecting to another query set soon.
+
+returns:: that
+
+METHOD:: disconnect
+Disconnect all matched items.  Outlets and inlets disconnect all cables.  Units disconnect all of their iolets.
+
+
+
+METHOD:: remove
+Remove the matched items from the mx.  Not to be confused with removing the items from the query set (use reject for that).
+
+
+
+METHOD:: get
+From the source objects get an array of values obtained with the selector.
+eg. x.units.outlets.get('spec') would be all of the specs of all of outlets.
+
+argument:: selector
+The selector to call on the source objects.
+
+argument::  ... args
+extra args to pass when calling source.selector( arg1, arg2, ...)
+
+returns:: an array of the results of getting
+
+METHOD:: set
+
+
+argument:: selector
+
+
+argument:: value
+
+
+
+
+
+METHOD:: dup
+Duplicate all units in the query set.  Dup inserts a copy of the unit directly below itself, moving anything that might be there further down by one.
+
+argument:: num
+Number of copies to make
+
+returns:: if num == 1 then returns the new unit, else returns an array of units [though a new qs would be nice]
+
+METHOD:: moveBy
+Move the matched items by channel and slot according to the vector (a point).  ie. 1@0 moves it over by one channel.  0@1 moves it down by one slot in the current channel.  Replaces anything currently there. [ will offer safe mode or moving items ]
+
+argument:: vector
+a point channel@slot by which to move the objects
+
+returns:: this. returning a new set would be better
+
+METHOD:: copyBy
+Copies rather than moves. See moveBy
+
+argument:: vector
+
+
+
+
+
+METHOD:: stop
+Stops matched objects from playing
+
+
+
+METHOD:: play
+Plays matched objects
+
+
+
+METHOD:: free
+
+
+
+
+
+METHOD:: respawn
+Respawns matched objects.  See link::Classes/MxUnitApp:: respawn
+
+
+
+METHOD:: mute
+For all channels of the matched object, mutes or unmutes the channel fader.
+
+argument:: boo
+
+
+
+
+
+METHOD:: solo
+For all channels of the matched object, solos or unsolos the channel fader.
+
+argument:: boo
+
+
+
+
+
+METHOD:: db
+For all channels of the matched object, set the channel fader level.
+
+argument:: db
+
+
+
+
+
+
+
+

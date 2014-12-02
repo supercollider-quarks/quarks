@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.27">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 19.0px Monaco; color: #3b3b3b}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #981f19}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #003ca9}
+span.s1 {color: #000000}
+span.s2 {color: #004392}
+span.s3 {color: #213e16}
+span.s4 {color: #225718}
+span.s5 {color: #003ca9}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">"ScatterView2"<span class="s1">;</span></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p4">// three dimensional dataset</p>
+<p class="p3">d = ({1.0.rand}!9000).clump(3);</p>
+<p class="p2"><br></p>
+<p class="p3">w = <span class="s2">SCWindow</span>.new("ScatterView Example");</p>
+<p class="p3">v = <span class="s2">ScatterView2</span>(w, <span class="s2">Rect</span>(10, 10, 380, 380), d);</p>
+<p class="p3">v.selectionMode = <span class="s3">\nextNeighbour</span>;</p>
+<p class="p3">v.background = <span class="s2">Color</span>.black;</p>
+<p class="p3">w.front;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">v.selectModes.add(\abc -&gt; ((1..100)))</p>
+<p class="p3">v.selectionMode = <span class="s3">\abc</span>;</p>
+<p class="p2"><br></p>
+<p class="p3">v.selectionMode = <span class="s4">\nextNeighbour;</span></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s1">v.selectModes.add(</span><span class="s4">\nextNeighbour</span><span class="s1"> -&gt; {</span>|view, data, pos, itemSize|</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s5">var</span> threshold, index, selected;</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>threshold = itemSize*2;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>index = data.detectIndex{<span class="s5">|item|</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(item - pos).abs.sum &lt;= threshold;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>};</p>
+<p class="p3"><span class="Apple-tab-span">	</span>index</p>
+<p class="p3">})</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">v.select((1..900))</p>
+<p class="p3">v.selection</p>
+<p class="p3">v.selectionMode = <span class="s3">\surrounding</span>;</p>
+<p class="p3">v.selectRegion = 0.021</p>
+<p class="p3">v.itemSize = 5</p>
+<p class="p2"><br></p>
+<p class="p3">v.data = d;</p>
+<p class="p3">v.action = {<span class="s2">|indices|</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>indices.postln;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>d[indices].postln</p>
+<p class="p3">}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">v.colorFunc = {<span class="s2">|idx, selected|</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>selected.if({<span class="s2">Color</span>.red}, {<span class="s2">Color</span>.hsv(d[idx][2], 1, 0.2)})</p>
+<p class="p3">}</p>
+<p class="p2"><br></p>
+<p class="p3">v.colorFunc = <span class="s2">Color</span>.red(1, 0.5)</p>
+</body>
+</html>

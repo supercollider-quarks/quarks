@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.46">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #1320f3}
+span.s3 {color: #0000ff}
+span.s4 {color: #1925b1}
+span.s5 {color: #0e17b6}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>HrSlider<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>midi aware and automatable slider widget.</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="SC://Object"><span class="s2"><b>Object</b></span></a><b> : SCViewHolder</b></p>
+<p class="p3"><br></p>
+<p class="p1">HrSlider inherits all the functionality of the standard <a href="SC://Slider"><span class="s2">Slider</span></a><span class="s2"> </span>but is midi aware (can do midi learn) and automatable (can record its own automation).</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Midi Learn:</b></p>
+<p class="p2"><br></p>
+<p class="p1">Make sure your midi gear is connected, when the slider is in focus, press the L key on your keyboard (background will turn to blue meaning "in midi learn mode"), and twist a knob on your midi controller. When you see the slider moving, press L again to confirm the learned midi controller.</p>
+<p class="p2"><br></p>
+<p class="p1">To clear the midi learn data, press L and then 0 (zero).</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Automation:</b></p>
+<p class="p2"><br></p>
+<p class="p1">When the view is in focus, press W on your keyboard. Background will turn to orange (meaning record armed). Now when you start moving the slider, recording will start. Press W again (when the slider is in focus) to stop recording. if <b>autoplay </b>is set to "true" it will start playing back the automation right away. Press P key on your keyboard to start and stop automation playback. To clear the automation data, press W and then 0 (zero).</p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="SC://Slider"><span class="s2">Slider</span></a><span class="s2"> <a href="HrButton.html"><span class="s3">HrButton</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (parent, bounds)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>parent </b>- The parent view.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>bounds </b>- An instance of <a href="../../../../../../../dev/sc3/build/Help/Geometry/Rect.html"><span class="s4">Rect</span></a>, or a <a href="../../../../../../../dev/sc3/build/Help/Geometry/Point.html"><span class="s4">Point</span></a> indicating width@height.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w = <span class="s5">Window</span>.new.front;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a = Hr<span class="s5">Slider</span>(w, <span class="s5">Rect</span>(20, 60, 150, 20));</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.action = { a.value.postln };</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p11"><br></p>
+<p class="p12"><b>Accessing Instance and Class Variables</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>automationSize_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>automationSize</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The automation recorder records 25 values per second. automationSize value defines how many points will be recorded.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is inf.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>automationData_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>automationData</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Array of floats that contain the recorded positions of the slider.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>autoPlay_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>autoPlay</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If true, playbacks starts right after recording of automation ends.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is true.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>boundMidiArgs_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>boundMidiArgs</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>CCResponder [src, chan, num] arguments as an array that this widget is bound to. Populated automatically after midi learn operation.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is nil.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>automationPlaySize_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>automationPlaySize</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defines how many frames will be played back from the recorded automation data.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is inf.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6">For the rest of the standard Slider methods, consult to the <a href="SC://Slider"><span class="s2">Slider</span></a> help.</p>
+<p class="p3"><br></p>
+</body>
+</html>

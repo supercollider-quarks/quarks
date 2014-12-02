@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad1817}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #4d4d4d}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #003ca9}
+span.s1 {text-decoration: underline}
+span.s2 {color: #000000}
+span.s3 {color: #003ca9}
+span.s4 {color: #225717}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>JInT_WISE</b></p>
+<p class="p2"><b>superclass: JInT</b></p>
+<p class="p3">/**</p>
+<p class="p3"><span class="Apple-tab-span">	</span>2007<span class="Apple-converted-space">  </span>Till Bovermann (Bielefeld University)</p>
+<p class="p3">*/</p>
+<p class="p4"><br></p>
+<p class="p2">implements basic [<b><span class="s1">JustInTerface</span></b>] for an IRCAM WISEbox.</p>
+<p class="p4"><br></p>
+<p class="p5">Server.default = s = Server.internal;<span class="Apple-converted-space"> </span></p>
+<p class="p5">s.boot;</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p3">// set up the WISEBox</p>
+<p class="p7">"nc -u -l -p 7500 | nc -u localhost 57120"<span class="s2">.unixCmd</span></p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s2">k = </span>JInT_WISE<span class="s2">.new</span></p>
+<p class="p5">k.start</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">k.controllers[0].action = {<span class="s3">|me|</span> me.value.postln}</p>
+<p class="p5">k.controllers[0].action = nil</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p3">// get information on device</p>
+<p class="p5">k.info</p>
+<p class="p6"><br></p>
+<p class="p5">p = <span class="s3">ProxySpace</span>.push(s)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">~a = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span>k[\j0].kr.poll;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>SinOsc.ar;</p>
+<p class="p5">}</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p5">~a = {</p>
+<p class="p3">//<span class="Apple-tab-span">	</span>var ctls = k.at([\j0, \j1, \j2, \j3, \j4, \j5, \j6, \j7, \j8, \j9]).kr.poll;</p>
+<p class="p3">//<span class="Apple-tab-span">	</span>var ctls = k[\j5].kr.poll;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> ctls = <span class="s3">In</span>.kr((2..7));</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Splay</span>.ar(<span class="s3">SinOsc</span>.ar(<span class="s3">Array</span>.geom(ctls.size, 150, 1.5).reverse) * <span class="s3">LFPulse</span>.ar(ctls.range(1, 2 0)).lag(0.01))</p>
+<p class="p5">}</p>
+<p class="p5">)</p>
+<p class="p5">~a.play</p>
+<p class="p6"><br></p>
+<p class="p5">~a = {<span class="s3">SinOsc</span>.ar(k[<span class="s4">\j12</span>].kr.poll)}</p>
+<p class="p6"><br></p>
+<p class="p5">~a = {</p>
+<p class="p3"><span class="s2"><span class="Apple-tab-span">	</span></span>// var amp = k[\j10].kr.range(-0.1, 1).max(0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> ctl = k[<span class="s4">\j8</span>].kr;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> pFreq = k[<span class="s4">\j10</span>].kr.range(0, 20);</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Splay</span>.ar(({<span class="s3">|i|</span> <span class="s3">SinOsc</span>.ar(ctl.exprange((10 - (i+1)) * 50, (10 - (i+1)) * 100).lag(i*1), mul: 0.05)}!20).scramble) * <span class="s3">LFPulse</span>.ar(pFreq).lag(0.01);</p>
+<p class="p5">}</p>
+<p class="p6"><br></p>
+<p class="p5">~a.play</p>
+<p class="p6"><br></p>
+<p class="p5">k.stop</p>
+</body>
+</html>

@@ -1,0 +1,37 @@
+CLASS:: PXLine
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Generators
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/XLine::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: start
+Fixed.
+
+ARGUMENT:: end
+Fixed.
+
+ARGUMENT:: dur
+Fixed. Integer number of steps to reach end.
+
+ARGUMENT:: mul
+
+ARGUMENT:: add
+
+ARGUMENT:: length
+Number of values produced.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PXLine(1, 13, 16, 1, 49).trace).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \amp, PXLine(0.8, 0.001, 32).trace).play
+a.stop
+::

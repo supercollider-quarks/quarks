@@ -1,0 +1,180 @@
+CLASS:: SynthConsole
+summary:: a widget with controls: play/stop/record/scope etc.
+categories:: Libraries>crucial>GUI
+related:: Classes/SaveConsole
+
+DESCRIPTION:: a widget with controls: play/stop/record/scope etc.
+
+Each method you call adds another button to the gui.
+
+This widget is used in AbstractPlayerGui but may also be used on its own.
+
+code::
+(
+var p;
+p = Patch({ arg freq; SinOsc.ar(freq,0,0.3) });
+w = Window("patch",Rect(0,0,800,200)).front;
+
+SynthConsole(p,w)
+	.play
+	.record("SoundFiles/testy.aiff") // sets defaultPath for the prompt dialog
+	.formats
+	.stop
+	.scope
+	.fftScope
+	.tempo // gui the default Tempo
+)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: ugenFunc
+
+
+argument:: layout
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: format
+
+
+
+METHOD:: duration
+
+
+
+METHOD:: ugenFunc
+
+
+
+METHOD:: onRecordOrWrite
+
+
+
+METHOD:: init
+
+
+
+METHOD:: remove
+
+
+
+METHOD:: update
+
+
+argument:: status
+
+
+
+METHOD:: play
+
+
+
+METHOD:: prepare
+
+
+
+METHOD:: scope
+
+
+argument:: duration
+
+
+
+METHOD:: fftScope
+
+
+
+METHOD:: record
+
+
+
+METHOD:: write
+
+
+argument:: dur
+
+
+argument:: defpath
+
+
+
+METHOD:: stop
+
+
+argument:: stopFunc
+
+
+
+METHOD:: free
+
+
+
+METHOD:: formats
+
+
+
+METHOD:: tempo
+
+
+
+METHOD:: doPlay
+
+
+
+METHOD:: doPrepare
+
+
+
+METHOD:: doScope
+
+
+argument:: duration
+
+
+
+METHOD:: doFreqScope
+
+
+
+METHOD:: doStop
+
+
+argument:: stopFunc
+
+
+
+METHOD:: doWrite
+
+
+argument:: path
+
+
+argument:: argduration
+
+
+
+EXAMPLES::
+
+
+
+SynthConsole sends notifications that you can register to recieve through NotificationCenter:
+
+code::
+NotificationCenter.register(yourSynthConsole,\didStop,you,{
+	// do something like
+	true.tabletTracking; // turn back on the wacom mouse
+});
+
+NotificationCenter.register(yourSynthConsole,\didRecordOrWrite,you,{
+	arg path; // path is passed in with the notification
+	savedTo = path;
+});
+::
+

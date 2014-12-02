@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #dc0000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1000d0}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008a00}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #000000}
+span.s4 {color: #1000d0}
+span.s5 {color: #008a00}
+span.s6 {color: #737373}
+span.s7 {color: #dc0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>KeyChain</b></span><span class="s2"> <span class="Apple-tab-span">	</span></span><b>a named chain of actions.</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">A KeyChain is a named chain of actions.<span class="Apple-converted-space"> </span></p>
+<p class="p1">It can run these in sequence, or based on transition functions.<span class="Apple-converted-space"> </span></p>
+<p class="p1">It can be used nicely with <b>KeyPlayer</b>.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span></span>// a single function</p>
+<p class="p4">a = <span class="s4">KeyChain</span>($a, [(key: <span class="s5">\x</span>, act: { <span class="s6">"act"</span>.scramble.postln })]);</p>
+<p class="p4">a.next;</p>
+<p class="p4">a.next;</p>
+<p class="p5"><br></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span></span>// KeyChain($a) is a named proxy, so you either create or access it by name:<span class="Apple-converted-space"> </span></p>
+<p class="p6">KeyChain<span class="s3">($a);</span></p>
+<p class="p5"><br></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span></span>// You can change its list by accessing it with a second argument:</p>
+<p class="p4">b = <span class="s4">KeyChain</span>($a, [(key: <span class="s5">\x</span>, act: { <span class="s6">"bong"</span>.scramble.postln })]);</p>
+<p class="p5"><br></p>
+<p class="p4">a === b; <span class="s7">// true!</span></p>
+<p class="p4">a = <span class="s4">KeyChain</span>($a);</p>
+<p class="p5"><br></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span></span>// a, b, and equivalent now:<span class="Apple-converted-space"> </span></p>
+<p class="p4">b.next; ""</p>
+<p class="p4">a.next; <span class="s3">""</span></p>
+<p class="p4"><span class="s4">KeyChain</span>($a).next</p>
+<p class="p5"><br></p>
+<p class="p4">a.dump</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p3"><span class="s3">(<span class="Apple-tab-span">	</span></span>// a simple sequence</p>
+<p class="p6">KeyChain<span class="s3">($a, [</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>(key: <span class="s5">\x</span>, act: { <span class="s6">"xanadu"</span>.scramble.postln }),<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>(key: <span class="s5">\y</span>, act: { <span class="s6">"yakk"</span>.scramble.postln }),<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>(key: <span class="s5">\z</span>, act: { <span class="s6">"zonk"</span>.scramble.postln }),<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>]);</p>
+<p class="p4">)</p>
+<p class="p4">b.next;</p>
+<p class="p4">a.next;</p>
+<p class="p5"><br></p>
+<p class="p4"><span class="s4">KeyChain</span>($a).next;</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>// a KeyPlayer for it:<span class="Apple-converted-space"> </span></p>
+<p class="p4">KeyPlayer(\chain);</p>
+<p class="p7">KeyPlayer.gui;</p>
+<p class="p7">KeyPlayer(\chain).putBoth($a, { <span class="s4">KeyChain</span>($a).next });</p>
+<p class="p5"><br></p>
+<p class="p7">KeyPlayer(\chain).bothActions.postcs;</p>
+<p class="p5"><br></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span></span>// tell it where to go next with 'to' key</p>
+<p class="p3"><span class="Apple-tab-span">	</span>// does this retrigger, even though it should not<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// (it was off earlier)?<span class="Apple-converted-space"> </span></p>
+<p class="p4">(</p>
+<p class="p6">KeyChain<span class="s3">($a, [</span></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// name, what, what next</p>
+<p class="p4"><span class="Apple-tab-span">	</span>(key: <span class="s5">\boing</span>, act: { <span class="s5">\boing</span>.postln }, to: { <span class="s6">"next: "</span>.post; [<span class="s5">\boing</span>, <span class="s5">\tak</span>].choose.postln }),<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>(key: <span class="s5">\tak</span>, act: { <span class="s5">\tak</span>.postln }, to: <span class="s5">\boom</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span>(key: </span><span class="s5">\boom</span><span class="s3">, act: { </span><span class="s5">\boom</span><span class="s3">.postln }), </span>// default is next in chain, wraps<span class="Apple-converted-space"> </span></p>
+<p class="p4">], 0)</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span></span>// get more info</p>
+<p class="p4"><span class="s4">KeyChain</span>.verbose = <span class="s4">true</span>;</p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p5"><br></p>
+<p class="p6">KeyChain<span class="s3">.verbose = </span>false<span class="s3">;</span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span></span>// more complex sequence:</p>
+<p class="p4">(</p>
+<p class="p6">KeyChain<span class="s3">($a, [</span></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// name, what, what next</p>
+<p class="p4"><span class="Apple-tab-span">	</span>(key: <span class="s5">\boing</span>, act: { <span class="s5">\boing</span>.postln }, to: { [<span class="s5">\boing</span>, <span class="s5">\tak</span>].choose }),<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>(key: <span class="s5">\tak</span>, act: { <span class="s5">\tak</span>.postln }, to: <span class="s5">\boom</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span>(key: </span><span class="s5">\boom</span><span class="s3">, act: { </span><span class="s5">\boom</span><span class="s3">.postln }), </span>// default is next in chain, wraps<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>(key: <span class="s5">\tsk</span>, act: { <span class="s5">\tsk</span>.postln }),<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>(key: <span class="s5">\chak</span>, act: { <span class="s5">\chak</span>.postln }, to: { a.chooseNext })</p>
+<p class="p4">], 0)</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p4">a.next; <span class="s6">""</span></p>
+<p class="p5"><br></p>
+<p class="p3"><span class="s3"><span class="Apple-tab-span">	</span></span>// do multiple actions at once</p>
+<p class="p4">a.act(0)</p>
+<p class="p4">a.act(<span class="s5">\boom</span>)</p>
+<p class="p4">a.act(<span class="s5">\chak</span>)</p>
+<p class="p4">a.act([<span class="s5">\boom</span>, <span class="s5">\chak</span>])</p>
+<p class="p8"><span class="s3">a.act([</span>\boom<span class="s3">, </span>\chak<span class="s3">, </span>\tak<span class="s3">])</span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+</body>
+</html>

@@ -1,0 +1,39 @@
+CLASS:: CVCenterControllersMonitor
+summary:: A utility simply displaying all OSC-/MID-responders currently being used within CVCenter
+categories:: External Control>OSC, External Control>MIDI, Conductor
+related:: Classes/CVCenter, Classes/CCResponder, Classes/OSCresponderNode
+
+DESCRIPTION::
+A simple monitor, displaying all link::Classes/OSCresponder::s and link::Classes/CCResponder::s currently in use within link::Classes/CVCenter::.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create the GUI and focus the given tab.
+
+argument:: focus
+an link::Classes/Integer::
+
+returns:: this (CVCenterControllersMonitor)
+
+METHOD:: window
+The GUI window.
+
+returns:: a link::Classes/Window::
+
+METHOD:: tabs
+2 tabs: "MIDI-responders" and "OSC-responders"
+
+returns:: a link::Classes/TabbedView::
+
+METHOD:: getControllersList
+get an link::Classes/Event:: containing all current controllers in link::Classes/CVCenter::.
+
+returns:: this (CVCenterControllersMonitor)
+
+section:: Shortcuts
+definitionList::
+## o || focus the "OSC-controllers" tab
+## m || focus the "MIDI-controllers" tab
+## x || close the window
+::

@@ -1,0 +1,392 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.27">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #f22100}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #b11d00}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #b11d00; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #0037bc}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #606060}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #336a19}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #000000}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #bf0000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #0037bc}
+span.s4 {color: #336a19}
+span.s5 {color: #606060}
+span.s6 {color: #b11d00}
+span.s7 {color: #0000bf}
+span.s8 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Image <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>simple image drawing and utility class</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">This class does use underneath the Cocoa Bridge by jan Trützschler and is basically a wrapper around the NSImage class. So Mac OS X Only.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Image.new</b>(path) -<span class="Apple-converted-space">  </span>new Image from a file or an URL located at path</p>
+<p class="p4"><br></p>
+<p class="p1"><i>path </i>can be either an absolute file path, a relative file path (relative to the current document's path), or an URL beginning with file:///, http:// or ftp://</p>
+<p class="p1">returns nil and send a warning if the file does not exits.</p>
+<p class="p1">The initializer will always try to create a bitmap representation of the image.</p>
+<p class="p4"><br></p>
+<p class="p5"><b>caution:<span class="Apple-converted-space"> </span></b></p>
+<p class="p5">- use the right extension for your image type. If you try to load a jpeg file with a .png extension instead, it will crash supercollider (sending you the beachball of pain)...</p>
+<p class="p5">- test your URL, bad or nonexistant url may lead also to unknown behaviour.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p1"><b>Image.newClear</b>(size) <b>-</b> new empty Image with an initial size of size</p>
+<p class="p4"><br></p>
+<p class="p1"><i>size</i> might be a Rect (it will take only the with and height values) or a Size or a Point (wich allows you to use the 200@200 syntax). (info: On return the newly allocated image will contain a NSCachedImageRep).</p>
+<p class="p4"><br></p>
+<p class="p1"><b>Image.releaseAll -</b> will release all current instances, freeing memory.</p>
+<p class="p4"><br></p>
+<p class="p1"><b>Image.numberOfImages -</b> the number of Image instances currently allocated</p>
+<p class="p4"><br></p>
+<p class="p1"><b>autoTransform </b>- if true the instance will set the appropriate matrix to draw itself correctly in supercollider coordinates whenever a drawXXX method is called. is true by default. set it to false to perform you own transformation</p>
+<p class="p4"><br></p>
+<p class="p1"><b>path</b></p>
+<p class="p1"><b>width</b></p>
+<p class="p1"><b>height</b></p>
+<p class="p1"><b>height</b></p>
+<p class="p1"><b>bounds</b></p>
+<p class="p1"><b>release - </b>caution: you should always release the image when done with it !</p>
+<p class="p1"><b>(bitsPerSample)</b></p>
+<p class="p1"><b>(bitsPerPixel)</b></p>
+<p class="p1"><b>(isOpaque)</b></p>
+<p class="p1"><b>(hasAlpha)</b></p>
+<p class="p4"><br></p>
+<p class="p1"><b>drawAtPoint</b>(aPoint, fraction, operation) <b>-</b> draw the image. fraction = 0 means draw it totally transparent, 1 = fully opaque, is 1.0 by default. operation is the Compositing operation to apply, Compositing.copy is default:</p>
+<p class="p4"><br></p>
+<p class="p3">Compositing {</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*clear {^0;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*copy {^1;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*sourceIn {^2;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*sourceOver {^3;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*sourceOut {^4;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*sourceATop {^5;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*destinationOver {^6;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*destinationIn {^7;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*destinationOut {^8;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*destinationATop {^9;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*xor {^10;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*darker {^11;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*highlight {^12;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*lightPlus {^13;}</p>
+<p class="p3">}</p>
+<p class="p4"><br></p>
+<p class="p1"><b>drawRegionAtPoint</b>(aPoint, aRegion, fraction, operation) <b>-</b> draw a portion of the image. see examples for more info</p>
+<p class="p4"><br></p>
+<p class="p1"><b>drawStringAtPoint</b>(string, point, font, color) - see example for particular need case for this method. This method always flip the coordinate system.</p>
+<p class="p4"><br></p>
+<p class="p1"><b>flipped - </b>returns a newly allocated Image wich is the flipped (upside down) copy of the receiver.</p>
+<p class="p4"><br></p>
+<p class="p1"><b>saveAs</b>(argPath, type) - save it :-). argPath should be an absolute file path and type should be a valid ImageType.</p>
+<p class="p4"><br></p>
+<p class="p3">ImageType {</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*tiff {^0;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*bmp {^1;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*gif {^2;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*jpeg {^3;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*png {^4;}</p>
+<p class="p3"><span class="Apple-tab-span">	</span>*jpeg2000 {^5;} // carefull: supported only in 10.4</p>
+<p class="p3">}</p>
+<p class="p2"><br></p>
+<p class="p1"><b>lockFocus, unlockFocus - </b>All Pen commands between those two call will draw inside the Image. Caution: Normally, it will use by default the Quartz coordinate system. See examples on how to setup correctly the image to draw inside of it with the supercollider coordinate system</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p1">Notes:</p>
+<p class="p1">- currently it is not possible to retrieve the bitmap data fo the image.</p>
+<p class="p1">- you cannot set/retrieve individual pixel value. (draw inside the image using lockFocus to set pixels)</p>
+<p class="p1">- creating an image with newClear will create a totally transparent image. But once you have drawn opaque or semi-opaque pixels inside of it, it is not currently possible to re-make it totally transparent/clear it (since Pen does not provide a method to clear a context, using Pen.fillColor_(Color.clear) won't work), you'll have to create a new one for that !</p>
+<p class="p4"><br></p>
+<p class="p6"><br></p>
+<p class="p7">/*</p>
+<p class="p7">--------------------- Examples ---------------------</p>
+<p class="p7"><span class="Apple-tab-span">	</span>Please make sure you have the 'resources' folder in the same folder as the current script otherwise you won't be able to load the example images !</p>
+<p class="p8"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>Example 1:</p>
+<p class="p7"><span class="Apple-tab-span">	</span>Transparency Example:</p>
+<p class="p7"><span class="Apple-tab-span">	</span>How to draw transparency of an image that contains an alpha channel.</p>
+<p class="p7"><span class="Apple-tab-span">	</span>+ alpha control of the image</p>
+<p class="p7"><span class="Apple-tab-span">	</span>+ show different compositing options</p>
+<p class="p7"><span class="Apple-tab-span">	</span>+ kind of multi state Button with different images (record button)</p>
+<p class="p7">*/</p>
+<p class="p6"><br></p>
+<p class="p9">(</p>
+<p class="p10">var<span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>resources=<span class="s3">nil</span>,</p>
+<p class="p9"><span class="Apple-tab-span">	</span>icon=<span class="s3">nil</span>,</p>
+<p class="p9"><span class="Apple-tab-span">	</span>recordButton=<span class="s3">nil</span>,</p>
+<p class="p9"><span class="Apple-tab-span">	</span>customIcon=<span class="s3">nil</span>,</p>
+<p class="p9"><span class="Apple-tab-span">	</span>recordButtonState=0,</p>
+<p class="p9"><span class="Apple-tab-span">	</span>background, imageAlpha=1.0, imageComposition=<span class="s3">Compositing</span>.sourceIn</p>
+<p class="p9">;</p>
+<p class="p6"><br></p>
+<p class="p9">resources = <span class="s3">Dictionary</span>[</p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s4">'bg'</span><span class="s2"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>-&gt; </span><span class="s3">Image</span><span class="s2">(</span>"resources/gradient.jpg"<span class="s2">),</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s4">'icon'</span><span class="s2"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>-&gt; </span><span class="s3">Image</span><span class="s2">(</span>"resources/Swamp.png"<span class="s2">),</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span></span>'recButton'<span class="s2"><span class="Apple-tab-span">	</span>-&gt; [</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s3">Image</span><span class="s2">(</span>"resources/TrBtn_record_off.tiff"<span class="s2">),</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s3">Image</span><span class="s2">(</span>"resources/TrBtn_record_off_p.tiff"<span class="s2">),</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s3">Image</span><span class="s2">(</span>"resources/TrBtn_record_on.tiff"<span class="s2">),</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s3">Image</span><span class="s2">(</span>"resources/TrBtn_record_on_p.tiff"<span class="s2">)</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>]</p>
+<p class="p9">];</p>
+<p class="p6"><br></p>
+<p class="p9">w = <span class="s3">SCWindow</span>(<span class="s5">"Drawing Options"</span>, <span class="s3">Rect</span>(310, 500, 500, 300)).front;</p>
+<p class="p9">w.view.background_(<span class="s3">Color</span>.white);</p>
+<p class="p9">w.onClose = {</p>
+<p class="p9"><span class="Apple-tab-span">	</span>resources.do{</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>|img|<span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(img.isKindOf(<span class="s3">Image</span>), {img.release});</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(img.isKindOf(<span class="s3">Array</span>), {img.do {<span class="s3">|item|</span> item.release}});</p>
+<p class="p9"><span class="Apple-tab-span">	</span>};</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span></span>//Image.releaseAll; // you can also use this to release all image instances<span class="Apple-converted-space"> </span></p>
+<p class="p9">};</p>
+<p class="p6"><br></p>
+<p class="p9">background = <span class="s3">SCUserView</span>(w, <span class="s3">Rect</span>(0, 0, w.bounds.width, w.bounds.height)).relativeOrigin_(<span class="s3">false</span>).canFocus_(<span class="s3">false</span>)</p>
+<p class="p9"><span class="Apple-tab-span">	</span>.drawFunc_({resources.at(<span class="s4">'bg'</span>).drawAtPoint(0@0)})</p>
+<p class="p9">;</p>
+<p class="p6"><br></p>
+<p class="p9">icon = <span class="s3">SCUserView</span>(w, <span class="s3">Rect</span>(20, 20, resources.at(<span class="s4">'icon'</span>).width, resources.at(<span class="s4">'icon'</span>).height))</p>
+<p class="p9"><span class="Apple-tab-span">	</span>.relativeOrigin_(<span class="s3">false</span>)</p>
+<p class="p9"><span class="Apple-tab-span">	</span>.drawFunc_({resources.at(<span class="s4">'icon'</span>).drawAtPoint(icon.bounds.left@icon.bounds.top, imageAlpha, imageComposition)})</p>
+<p class="p9">;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p9">recordButton = <span class="s3">SCUserView</span>(w, <span class="s3">Rect</span>(icon.bounds.left + icon.bounds.width + 10, icon.bounds.top, resources.at(<span class="s4">'recButton'</span>)[0].width, resources.at(<span class="s4">'recButton'</span>)[0].height))</p>
+<p class="p9"><span class="Apple-tab-span">	</span>.relativeOrigin_(<span class="s3">false</span>)</p>
+<p class="p9"><span class="Apple-tab-span">	</span>.canFocus_(<span class="s3">false</span>)</p>
+<p class="p9"><span class="Apple-tab-span">	</span>.mouseDownAction_({<span class="s3">|me|</span> recordButtonState=recordButtonState+1; me.refresh;})</p>
+<p class="p9"><span class="Apple-tab-span">	</span>.mouseUpAction_({<span class="s3">|me|</span><span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>recordButtonState=recordButtonState+1;<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(recordButtonState &gt; (resources.at(<span class="s4">'recButton'</span>).size-1), {recordButtonState=0}); me.refresh;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>})</p>
+<p class="p9"><span class="Apple-tab-span">	</span>.drawFunc_({</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> img = resources.at(<span class="s4">'recButton'</span>)[recordButtonState];</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>img.drawAtPoint(recordButton.bounds.left@recordButton.bounds.top, 1, <span class="s3">Compositing</span>.sourceIn);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>})</p>
+<p class="p9">;</p>
+<p class="p6"><br></p>
+<p class="p9">p = <span class="s3">SCSlider</span>(w, <span class="s3">Rect</span>(10, icon.bounds.top + icon.bounds.height + 10, icon.bounds.width, 20))</p>
+<p class="p9">.action_({</p>
+<p class="p9"><span class="Apple-tab-span">	</span>imageAlpha = p.value;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>icon.refresh;</p>
+<p class="p9">})</p>
+<p class="p9">.value_(1.0);</p>
+<p class="p6"><br></p>
+<p class="p9">m = <span class="s3">SCPopUpMenu</span>(w, <span class="s3">Rect</span>(p.bounds.left, p.bounds.top + p.bounds.height + 5, p.bounds.width + 20, 20));</p>
+<p class="p9">m.items =<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>[</p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.clear"<span class="s2">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.copy"<span class="s2">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.sourceIn"<span class="s2">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.sourceOver"<span class="s2">,</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.sourceOut"<span class="s2">,</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.sourceATop"<span class="s2">,</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.destinationOver"<span class="s2">,</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.destinationIn"<span class="s2">,</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.destinationOut"<span class="s2">,</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.destinationATop"<span class="s2">,</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.xor"<span class="s2">,</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.darker"<span class="s2">,</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.highlight"<span class="s2">,</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Compositing.lightPlus"</p>
+<p class="p9"><span class="Apple-tab-span">	</span>];</p>
+<p class="p9">m.value_(2);</p>
+<p class="p9">m.action_({</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span></span>|v|</p>
+<p class="p9"><span class="Apple-tab-span">	</span>imageComposition = v.value;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>icon.refresh;</p>
+<p class="p9">});</p>
+<p class="p6"><br></p>
+<p class="p9">)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">/*</p>
+<p class="p7"><span class="Apple-tab-span">	</span>Example 2:</p>
+<p class="p7"><span class="Apple-tab-span">	</span>Kind of multi graphic state button made with one image</p>
+<p class="p7"><span class="Apple-tab-span">	</span>containing the different states.</p>
+<p class="p7"><span class="Apple-tab-span">	</span>Shows how to draw a part of an image</p>
+<p class="p7">*/</p>
+<p class="p9">(</p>
+<p class="p9"><span class="s3">var</span> <span class="Apple-tab-span">	</span>state = 0,</p>
+<p class="p9"><span class="Apple-tab-span">	</span>stateArray;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p9">stateArray = [</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span>0@60, </span>// normal state</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span>0@15, </span>// normal state pressed</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span>0@45, </span>// second state</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span>0@0 </span>// second state pressed ...ect...</p>
+<p class="p9">];</p>
+<p class="p6"><br></p>
+<p class="p9">w = <span class="s3">SCWindow</span>(<span class="s5">"Drawing Options"</span>, <span class="s3">Rect</span>(300, 500, 50, 50)).front;</p>
+<p class="p9">w.view.background_(<span class="s3">Color</span>.new255(192, 192, 192));</p>
+<p class="p11"><span class="s2">b = </span><span class="s3">Image</span><span class="s2">(</span>"resources/TrackMute.tiff"<span class="s2">);</span></p>
+<p class="p6"><br></p>
+<p class="p9">v = <span class="s3">SCUserView</span>(w, <span class="s3">Rect</span>(10, 10, 15, 15))</p>
+<p class="p9">.relativeOrigin_(<span class="s3">false</span>)</p>
+<p class="p9">.drawFunc_({</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="s3">var</span> coords = stateArray[state];</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span></span>//("drawing state: "+state+" = "+coords.asString).postln;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.drawRegionAtPoint(10@10, <span class="s3">Rect</span>(coords.x, coords.y, 15, 15));</p>
+<p class="p9">})</p>
+<p class="p9">.canFocus_(<span class="s3">false</span>);</p>
+<p class="p9">v.mouseDownAction = {<span class="s3">|me|</span> state=state+1; me.refresh;};</p>
+<p class="p9">v.mouseUpAction = {<span class="s3">|me|</span> state=state+1; if(state &gt; (stateArray.size-1), {state=0}); me.refresh;};</p>
+<p class="p9">w.onClose = {</p>
+<p class="p9"><span class="Apple-tab-span">	</span>b.release;</p>
+<p class="p9">};</p>
+<p class="p9">w.refresh;</p>
+<p class="p9">)</p>
+<p class="p6"><br></p>
+<p class="p7">/*</p>
+<p class="p7"><span class="Apple-tab-span">	</span>Example 3:</p>
+<p class="p7"><span class="Apple-tab-span">	</span>Navigation through an Image<span class="Apple-converted-space"> </span></p>
+<p class="p7">*/</p>
+<p class="p9">(</p>
+<p class="p9"><span class="s3">var</span> image, left=0, top=0, width=0, height=0;</p>
+<p class="p11"><span class="s2">image = </span><span class="s3">Image</span><span class="s2">(</span>"resources/earth.jpg"<span class="s2">);</span></p>
+<p class="p9">width = image.width;</p>
+<p class="p9">height = image.height;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p9">w = <span class="s3">SCWindow</span>(<span class="s5">"Drawing Options"</span>, <span class="s3">Rect</span>(310, 500, 300, 200)).front;</p>
+<p class="p9">w.view.background_(<span class="s3">Color</span>.clear);</p>
+<p class="p9">y = <span class="s3">SCUserView</span>(w, <span class="s3">Rect</span>(10, 10, 150, 150)).relativeOrigin_(<span class="s3">false</span>);</p>
+<p class="p9">y.drawFunc = {</p>
+<p class="p9"><span class="Apple-tab-span">	</span>image.drawRegionAtPoint(10@10, <span class="s3">Rect</span>(left, top, 150, 150));</p>
+<p class="p9">};</p>
+<p class="p6"><br></p>
+<p class="p9">v = <span class="s3">SC2DSlider</span>(w, <span class="s3">Rect</span>(150 + 20, 10, 100, 150));</p>
+<p class="p9">v.x_(0); v.y_(0);</p>
+<p class="p9">v.action_({</p>
+<p class="p9"><span class="Apple-tab-span">	</span>left = v.x * (width - 150);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>top = v.y * (height - 150);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>y.refresh;</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span></span>//[left, top].postln;</p>
+<p class="p9">});</p>
+<p class="p6"><br></p>
+<p class="p9">w.onClose = {</p>
+<p class="p9"><span class="Apple-tab-span">	</span>image.release;</p>
+<p class="p9">};</p>
+<p class="p9">w.refresh;</p>
+<p class="p9">)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">/*</p>
+<p class="p7"><span class="Apple-tab-span">	</span>Example 4:</p>
+<p class="p7"><span class="Apple-tab-span">	</span>Scaling Example</p>
+<p class="p7">*/</p>
+<p class="p9">(</p>
+<p class="p9"><span class="s3">var</span> image, left=0, top=0, width=0, height=0, scalex = 1.0, scaley = 1.0;</p>
+<p class="p11"><span class="s2">image = </span><span class="s3">Image</span><span class="s2">(</span>"resources/earth.jpg"<span class="s2">);</span></p>
+<p class="p9">width = image.width;</p>
+<p class="p9">height = image.height;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p9">w = <span class="s3">SCWindow</span>(<span class="s5">"Drawing Options"</span>, <span class="s3">Rect</span>(310, 500, 400, 400)).front;</p>
+<p class="p9">w.view.background_(<span class="s3">Color</span>.clear);</p>
+<p class="p9">w.drawHook = {</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.use {</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.translate(20, 20);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.scale(scalex, scaley);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>image.drawAtPoint(0@0);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>}</p>
+<p class="p9">};</p>
+<p class="p6"><br></p>
+<p class="p9">v = <span class="s3">SC2DSlider</span>(w, <span class="s3">Rect</span>(20, image.height + 30, 100, 30));</p>
+<p class="p9">v.x_(0); v.y_(0);</p>
+<p class="p9">v.action = {</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span></span>|m|</p>
+<p class="p9"><span class="Apple-tab-span">	</span>scalex = 1.0 + v.x;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>scaley = 1.0 + v.y;</p>
+<p class="p9"><span class="Apple-tab-span">	</span>w.refresh;</p>
+<p class="p9">};</p>
+<p class="p6"><br></p>
+<p class="p9">w.onClose = {</p>
+<p class="p9"><span class="Apple-tab-span">	</span>image.release;</p>
+<p class="p9">};</p>
+<p class="p9">w.refresh;</p>
+<p class="p9">)</p>
+<p class="p6"><br></p>
+<p class="p7">/*</p>
+<p class="p7"><span class="Apple-tab-span">	</span>Drawing inside an image:</p>
+<p class="p7"><span class="Apple-tab-span">	</span>Very basic example</p>
+<p class="p7">*/</p>
+<p class="p9">(</p>
+<p class="p9"><span class="s3">var</span> image=<span class="s3">nil</span>, image2=<span class="s3">nil</span>, width, height;</p>
+<p class="p9">image = <span class="s3">Image</span>.newClear(150@150);</p>
+<p class="p9">width = image.width;</p>
+<p class="p9">height = image.height;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">/*<span class="Apple-converted-space"> </span></p>
+<p class="p7">the setFlipped method is the easy way to setup the image before drawing.</p>
+<p class="p7">But this won't draw the image flipped. It is just a hint for the cache buffer when rendering inside of it.</p>
+<p class="p7">*/</p>
+<p class="p9">image.setFlipped(<span class="s3">true</span>);</p>
+<p class="p7"><span class="s2">image.autoTransform = </span><span class="s3">false</span><span class="s2">; </span>// set autoTransform to false we use setFlipped</p>
+<p class="p9">image.lockFocus; <span class="s6">// begins drawing</span></p>
+<p class="p9"><span class="s3">Pen</span>.use {</p>
+<p class="p9"><span class="Apple-tab-span">	</span>30.do {</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.fillColor_(<span class="s3">Color</span>.new(1.0.rand,1.0.rand,1.0.rand,1.0.rand));</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.fillOval(<span class="s3">Rect</span>(50.rand, 50.rand, 100.rand, 100.rand));</p>
+<p class="p9"><span class="Apple-tab-span">	</span>};</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span></span>// Drawing text require a specific command</p>
+<p class="p9"><span class="Apple-tab-span">	</span>image.drawStringAtPoint(<span class="s5">"Hello Image"</span>, 5@20); <span class="s6">// draw text in the right sense</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span></span>//"Hello".drawAtPoint(5@20); // uncomment to see otherwise...</p>
+<p class="p9">};</p>
+<p class="p7"><span class="s2">image.unlockFocus; </span>// do not forget to call it when done</p>
+<p class="p9">image.recache; <span class="s6">// in case</span></p>
+<p class="p6"><br></p>
+<p class="p9">w = <span class="s3">SCWindow</span>(<span class="s5">"Drawing Scale"</span>, <span class="s3">Rect</span>(310, 500, 400, 400)).front;</p>
+<p class="p9">w.view.background_(<span class="s3">Color</span>.clear);</p>
+<p class="p9">w.drawHook = {</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.use {</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>image.drawAtPoint(10@10, operation:<span class="s3">Compositing</span>.sourceIn);</p>
+<p class="p9"><span class="Apple-tab-span">	</span>}</p>
+<p class="p9">};</p>
+<p class="p6"><br></p>
+<p class="p9">v = <span class="s3">SCButton</span>(w, <span class="s3">Rect</span>(0, image.height + 30, 80, 20)).states_([[<span class="s5">"Save Me"</span>, <span class="s3">Color</span>.black, <span class="s3">Color</span>.white]]);</p>
+<p class="p9">v.action_({</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="s3">var</span> result;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="s3">var</span> savePath = <span class="s3">Document</span>.current.path.dirname ++ <span class="s5">"/SavedImage.png"</span>;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span>image2 = image.flipped; </span>// here this is a particular case since we created<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a flipped cached image so we need to flip it to save it after</p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span>(</span>"flipping image and save at: "<span class="s2">++savePath).postln;</span></p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">CocoaDialog</span>.savePanel(</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">arg</span> path;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>result = image2.saveAs(path++<span class="s5">".png"</span>, <span class="s7">ImageType</span>.png); <span class="s8">// to keep alpha channel</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(<span class="s5">"saving result: "</span> + result.class).postln;</p>
+<p class="p14"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>image2.release; </span>// release after done</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}, {}</p>
+<p class="p13"><span class="Apple-tab-span">	</span>);</p>
+<p class="p9">});</p>
+<p class="p6"><br></p>
+<p class="p9">w.onClose = {</p>
+<p class="p9"><span class="Apple-tab-span">	</span>image.release;</p>
+<p class="p9">};</p>
+<p class="p9">w.refresh;</p>
+<p class="p9">)</p>
+<p class="p6"><br></p>
+<p class="p14"><span class="s7">Image</span><span class="s2">.releaseAll; </span>// ensure all Image intances are cleared</p>
+</body>
+</html>

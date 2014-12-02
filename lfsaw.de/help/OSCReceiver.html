@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {text-decoration: underline}
+span.s2 {color: #000000}
+span.s3 {color: #0000bf}
+span.s4 {color: #606060}
+span.s5 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>OSCReceiver</b></p>
+<p class="p2"><br></p>
+<p class="p3">An object for remote controlling scLang by any other application through OSC-messages.</p>
+<p class="p2"><br></p>
+<p class="p3">Uses <b>[</b><b><span class="s1">OSCReceiverFunction</span></b><b>]</b> as controllable objects.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(name, addr)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>new instance listening for messages of type name from addr.</p>
+<p class="p3"><b>start</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>starts the receiver</p>
+<p class="p3"><b>stop</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>stops the receiver</p>
+<p class="p2"><br></p>
+<p class="p4">// internal try</p>
+<p class="p5"><span class="s2">o = </span><span class="s3">OSCReceiver</span><span class="s2">(</span>"/dumbo"<span class="s2">, </span><span class="s3">NetAddr</span><span class="s2">(</span>"localhost"<span class="s2">, 57120))</span></p>
+<p class="p6"><span class="s2">o = </span>OSCReceiver<span class="s2">(</span><span class="s4">"/dumbo"</span><span class="s2">, </span>nil<span class="s2">)</span></p>
+<p class="p7"><br></p>
+<p class="p6">OSCReceiverFunction<span class="s2">(o, </span><span class="s4">"fly"</span><span class="s2">, {</span><span class="s4">"juchee"</span><span class="s2">.postln})</span></p>
+<p class="p6">OSCReceiverFunction<span class="s2">.all</span></p>
+<p class="p6">OSCReceiverFunction<span class="s2">(</span><span class="s4">"/dumbo"</span><span class="s2">, </span><span class="s4">"fly"</span><span class="s2">, {</span>|height = 0|<span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>(height&gt;100).if({</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"no, too high!"<span class="s2">.postln</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>},{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s4">"juchee"</span>.postln</p>
+<p class="p8"><span class="Apple-tab-span">	</span>})</p>
+<p class="p8">})</p>
+<p class="p7"><br></p>
+<p class="p8">o.start</p>
+<p class="p8">o.stop</p>
+<p class="p7"><br></p>
+<p class="p8">n = <span class="s3">NetAddr</span>(<span class="s4">"localhost"</span>, 57120)</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p8">n.sendMsg(<span class="s4">"/dumbo"</span>, <span class="s5">\fly</span>)</p>
+<p class="p8">n.sendMsg(<span class="s4">"/dumbo"</span>, <span class="s5">\fly</span>, 1000)</p>
+<p class="p7"><br></p>
+<p class="p8">o.stop</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p4">// external try</p>
+<p class="p6"><span class="s2">o = </span>OSCReceiver<span class="s2">(</span><span class="s4">"/dumbo"</span><span class="s2">, </span>NetAddr<span class="s2">(</span><span class="s4">"localhost"</span><span class="s2">, </span>nil<span class="s2">))</span></p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s3">OSCReceiverFunction</span><span class="s2">(</span>"/dumbo"<span class="s2">, </span>"fly"<span class="s2">, {</span>"juchee"<span class="s2">.postln})</span></p>
+<p class="p6">OSCReceiverFunction<span class="s2">(</span><span class="s4">"/dumbo"</span><span class="s2">, </span><span class="s4">"fly"</span><span class="s2">, {</span>|height = 0|<span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>(height&gt;100).if({</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"no, too high!"<span class="s2">.postln</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>},{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s4">"juchee"</span>.postln</p>
+<p class="p8"><span class="Apple-tab-span">	</span>})</p>
+<p class="p8">})</p>
+<p class="p7"><br></p>
+<p class="p8">o.start</p>
+<p class="p7"><br></p>
+<p class="p4">/*</p>
+<p class="p4">sendOSC -h localhost 57120</p>
+<p class="p4">/dumbo fly</p>
+<p class="p4">/dumbo fly 1000</p>
+<p class="p4">*/</p>
+<p class="p7"><br></p>
+<p class="p8">o.stop</p>
+</body>
+</html>

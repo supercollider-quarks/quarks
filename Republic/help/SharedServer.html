@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #102ac3}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1713}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd0b0b}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #2024c7}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1e22bf}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #000000}
+span.s4 {color: #2024c7}
+span.s5 {color: #008417}
+span.s6 {color: #737373}
+span.s7 {color: #cd0b0b}
+span.s8 {color: #007313}
+span.s9 {color: #1e22bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>SharedServer</b></span><span class="s2"> <span class="Apple-tab-span">	</span></span><b>represents a (remote) server that several clients can play on.</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">Several clients can play on the same remote SharedServer;<span class="Apple-converted-space"> </span></p>
+<p class="p1">they keep can their node IDs separate <b>by using DIFFERENT clientIDs.<span class="Apple-converted-space"> </span></b></p>
+<p class="p1">[Bus allocators could do the same - not done yet!]</p>
+<p class="p2"><br></p>
+<p class="p1">Each SharedServer has its own group on the remote server, so it can<span class="Apple-converted-space"> </span></p>
+<p class="p1">freeAll its own synths with cmd-period.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>example:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>// make two server objects, same options:</b></p>
+<p class="p3">(</p>
+<p class="p4"><span class="s3">o = </span>SharedServerOptions<span class="s3">.new</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>.numAudioBusChannels_(1024)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>.numControlBusChannels_(4096)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>.numInputBusChannels_(42)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>.numOutputBusChannels_(42)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>.memSize_(8192 * 32)</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span>.numClients_(8) </span>// change if needed</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// remoteControlVolume_( true)</p>
+<p class="p3">;</p>
+<p class="p3">)</p>
+<p class="p1"><span class="s2"><span class="Apple-tab-span">	</span></span>// make one server</p>
+<p class="p3">t = <span class="s4">SharedServer</span>(<span class="s5">\t1_shared</span>, <span class="s4">NetAddr</span>(<span class="s6">"localhost"</span>, 57111), o, clientID: 1)<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p7">// only one server should do this,<span class="Apple-converted-space"> </span></p>
+<p class="p7">// all others do x.serverRunning_(true);</p>
+<p class="p3">t.boot;</p>
+<p class="p3">t.makeWindow;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p1"><span class="s2"><span class="Apple-tab-span">	</span></span>// typically on a different computer, another server object</p>
+<p class="p1"><span class="Apple-tab-span">	</span>// pointing to the same remote scsynth:</p>
+<p class="p3">(</p>
+<p class="p3">u = <span class="s4">SharedServer</span>(<span class="s5">\shared_U2</span>, <span class="s4">NetAddr</span>(<span class="s6">"localhost"</span>, 57111), <span class="s4">o</span>, clientID: 2);</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// scsynth is the same for t and u, so<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// u is already booted, but does not know it yet.</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s3">u.serverRunning_(</span><span class="s4">true</span><span class="s3">);<span class="Apple-tab-span">	</span></span>//<span class="Apple-converted-space">  </span>tell it it is running</p>
+<p class="p7"><span class="s3">u.initTree;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// init its myGroup</p>
+<p class="p7"><span class="s3">u.makeWindow;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// and make a window for it</p>
+<p class="p3">)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p1"><span class="s2"><span class="Apple-tab-span">	</span></span><b>// Node/Group tests:<span class="Apple-converted-space"> </span></b></p>
+<p class="p6"><br></p>
+<p class="p3">t.queryAllNodes</p>
+<p class="p3"><span class="Apple-tab-span">	</span>// posts:<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>NODE TREE Group 0</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>1 group</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>101 group<span class="Apple-tab-span">	</span>// 100 + clientID - this is t's myGroup</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>102 group<span class="Apple-tab-span">	</span>// <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and this is u's myGroup</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s4">Synth</span><span class="s3">(</span><span class="s5">\default</span><span class="s3">, </span><span class="s4">nil</span><span class="s3">, t);<span class="Apple-tab-span">	</span></span>// play on t</p>
+<p class="p3">t.queryAllNodes</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s3">t.freeAll<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// t can remove its synths with freeAll</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s4">Synth</span><span class="s3">(</span><span class="s5">\default</span><span class="s3">, </span><span class="s4">nil</span><span class="s3">, u);<span class="Apple-tab-span">	</span></span>// play on u</p>
+<p class="p3">t.queryAllNodes</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s3">t.freeAll<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//<span class="Apple-converted-space">  </span>t can't kill it</p>
+<p class="p3">u.freeAll<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">// u can!</span></p>
+<p class="p6"><br></p>
+<p class="p3"><span class="s4">Synth</span>(<span class="s5">\default</span>, <span class="s4">nil</span>, t);</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s3">u.freeAll(</span><span class="s4">true</span><span class="s3">);<span class="Apple-tab-span">	</span></span>// in EMERGENCIES u can hard-freeAll with a flag true.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// BUT - now t's myGroup is gone:<span class="Apple-converted-space"> </span></p>
+<p class="p3">t.queryAllNodes</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// so t has to run initTree to recover .. ugly!<span class="Apple-converted-space"> </span></p>
+<p class="p3">t.initTree;</p>
+<p class="p3">t.queryAllNodes;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// maybe initTree should notify the server objects on the other clients?<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// how best?<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// test several synths<span class="Apple-converted-space"> </span></p>
+<p class="p3">50.do { <span class="s4">Synth</span>(<span class="s5">\default</span>, [<span class="s5">\freq</span>, rrand(48.0, 60).midicps, <span class="s5">\amp</span>, 0.05], t) };</p>
+<p class="p3">50.do { <span class="s4">Synth</span>(<span class="s5">\default</span>, [<span class="s5">\freq</span>, rrand(72.0, 84).midicps, <span class="s5">\amp</span>, 0.05], u) };</p>
+<p class="p6"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p3">t.freeAll;</p>
+<p class="p3">u.freeAll;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p1"><b>// bus tests : - busses should never overlap between clients!<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s4">Bus</span>.audio(t, 4);</p>
+<p class="p3"><span class="s4">Bus</span>.audio(t, 4);</p>
+<p class="p3"><span class="s4">Bus</span>.control(t, 16);</p>
+<p class="p3"><span class="s4">Bus</span>.control(t, 4);</p>
+<p class="p6"><br></p>
+<p class="p3"><span class="s4">Bus</span>.audio(u, 4);</p>
+<p class="p3"><span class="s4">Bus</span>.audio(u, 4);</p>
+<p class="p3"><span class="s4">Bus</span>.control(u, 16);</p>
+<p class="p3"><span class="s4">Bus</span>.control(u, 4);</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>// two proxyspaces can be run on separate server objects (typically on different clients),<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>// but play on the same server, and never have bus number conflicts:</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s3">p = </span>ProxySpace<span class="s3">(t);</span></p>
+<p class="p3">p.server</p>
+<p class="p6"><br></p>
+<p class="p8"><span class="s3">q = </span>ProxySpace<span class="s3">(u);</span></p>
+<p class="p3">q.server</p>
+<p class="p6"><br></p>
+<p class="p3">p[<span class="s5">\a</span>] = { <span class="s4">CombL</span>.ar(<span class="s4">Dust</span>.ar(10).lag(0.001), 0.1, 0.01, 1.4) * <span class="s4">LFClipNoise</span>.ar };</p>
+<p class="p3">p[<span class="s5">\a</span>].server</p>
+<p class="p3">p[<span class="s5">\a</span>].play;</p>
+<p class="p6"><br></p>
+<p class="p3">q[<span class="s5">\b</span>] = { <span class="s4">CombL</span>.ar(<span class="s4">Dust</span>.ar(10).lag(0.001), 0.1, 0.015, 1.5) * <span class="s4">LFClipNoise</span>.ar };</p>
+<p class="p3">q[<span class="s5">\b</span>].server</p>
+<p class="p3">q[<span class="s5">\b</span>].play(1);</p>
+<p class="p6"><br></p>
+<p class="p3">t.queryAllNodes</p>
+<p class="p6"><br></p>
+<p class="p3">t.freeAll</p>
+<p class="p3">u.freeAll</p>
+<p class="p6"><br></p>
+<p class="p3">t.queryAllNodes</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p1">// WFS: which channels are reserved for me?<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p3">t.myOuts;</p>
+<p class="p3">u.myOuts;</p>
+<p class="p6"><br></p>
+<p class="p1"><b>// buffer tests : - buffers should never overlap between clients!<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>// allocates the same numbers</p>
+<p class="p3"><span class="s4">b = Buffer</span>.alloc(t, t.sampleRate * 4, 2);</p>
+<p class="p3"><span class="s4">c = Buffer</span>.alloc(u, t.sampleRate * 4, 2);</p>
+<p class="p6"><br></p>
+<p class="p3">b.free; c.free;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p3">t.quit; u.quit;</p>
+<p class="p3">t.boot;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// non-overlapping now:</p>
+<p class="p3"><span class="s4">b = Buffer</span>.alloc(t, t.sampleRate * 4, 2);</p>
+<p class="p3"><span class="s4">c = Buffer</span>.alloc(u, t.sampleRate * 4, 2);</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// you can get all the buffers from the server:</p>
+<p class="p6"><br></p>
+<p class="p3">t.getBuffers({ |bufs| "\n<span class="Apple-tab-span">	</span>YO! SharedServer - found these buffers: ".postln; bufs.printAll });</p>
+<p class="p6"><br></p>
+<p class="p3">t.buffers;</p>
+<p class="p6"><br></p>
+<p class="p3">u.getBuffers</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p3">// Get all buffer infos from the SharedServer</p>
+<p class="p6"><br></p>
+<p class="p3">(</p>
+<p class="p3">b = Array.new(32);<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="s3">o.remove; o = </span>OSCresponder<span class="s3">(</span>nil<span class="s3">, </span><span class="s8">'bufscan'</span><span class="s3">, { </span>|time, resp, msg|<span class="s3"><span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>var bufnum, frames, chans, srate;<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>#bufnum, frames, chans, srate = msg.keep(-4).postln;<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>if (chans &gt; 0) { b = b.add(Buffer(t, frames, chans, srate, bufnum: bufnum)) };</p>
+<p class="p3">}).add;</p>
+<p class="p6"><br></p>
+<p class="p3">{<span class="Apple-tab-span">	</span>var bufnum = Line.kr(0, 1024, 8).round(1);</p>
+<p class="p3"><span class="Apple-tab-span">	</span>var trig = HPZ1.kr(bufnum);</p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s9">SendReply</span><span class="s3">.kr(trig, </span><span class="s8">'bufscan'</span><span class="s3">, [bufnum, </span>BufFrames.kr(<span class="s3">bufnum</span>), BufChannels.kr(<span class="s3">bufnum</span>), BufSampleRate.kr(<span class="s3">bufnum</span>)]<span class="s3">);</span></p>
+<p class="p3">}.play(t);</p>
+<p class="p3">)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+</body>
+</html>

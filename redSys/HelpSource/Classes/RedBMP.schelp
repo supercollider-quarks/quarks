@@ -1,0 +1,195 @@
+CLASS:: RedBMP
+SUMMARY:: bitmap images
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedGIF
+
+DESCRIPTION::
+Read and write .bmp files from disk. Handles 1, 4, 8, 16, 24 and 32bit depths. Includes a simple link::#-makeWindow:: method to display the pixels (but you should really write your own).
+
+See http://en.wikipedia.org/wiki/BMP_file_format
+
+CLASSMETHODS::
+
+METHOD:: new
+Create an empty bitmap image.
+
+METHOD:: read
+Create a RedBMP by reading a .bmp file from disk.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prRead, prReadFileHeader, prWritePalette, prReadInfoHeader, prWrite, prWriteFileHeader, prWriteInfoHeader, initRedBMP, prWriteData, prReadData, prReadPalette
+
+METHOD:: write
+Write the bitmap image to disk.
+
+METHOD:: makeWindow
+As simple as possible.
+
+METHOD:: type
+A string. "BM".
+
+METHOD:: width, height
+Image dimensions in pixels.
+
+METHOD:: depth
+Colour depth. 1, 4, 8, 16, 24 or 32.
+
+METHOD:: compression
+When read from disk.
+
+METHOD:: palette
+Colour table as a 1-dimensional array of link::Classes/Color:: objects. Size 256 for 8bit images, size 16 for 4bit images and size 2 for 1bit images.
+
+METHOD:: data
+The pixel data as a 1-dimensional array of link::Classes/Color:: objects. Reading from left to right, top to bottom. If you create your own make the size width*height.
+
+EXAMPLES::
+
+CODE::
+//--read from disk
+a= RedBMP.read("/Developer/Examples/OpenGL/Cocoa/GLSLShowpiece/Textures/Granite.bmp");
+a.dump;
+a.makeWindow;
+
+a= RedBMP.read("/Developer/Extras/Java/JavaAdvancedImaging/JAIDemo/images/pond.bmp");
+a.dump;
+a.makeWindow;
+
+
+
+//--create an 32bit image from scratch
+b= RedBMP(320, 240, 32);
+b.dump;
+b.data= {Color.rand}.dup(b.width*b.height);	//creating our own noise pixel data
+b.makeWindow;
+b.write("~/Desktop/testredbmp32a.bmp");		//save it to desktop
+
+
+//--another 32bit image from scratch notice the alpha channel
+(
+b= RedBMP(640, 480, 32);
+b.data= {|i|
+	var x= i%b.width;
+	Color.grey(sin(x/b.width*2pi+sin(x*0.11)), sin(i*0.01+sin(x*0.1)).abs);
+}.dup(b.width*b.height);
+b.makeWindow;
+)
+
+
+//--creating a 1bit image from scratch
+(
+b= RedBMP(640, 480, 1);
+b.palette= [Color.blue, Color.green];
+b.data= {|i|
+	var x= i%b.width;
+	var y= i.div(b.width);
+	b.palette[(Point(sin(x/6), cos(y/5)).rho>(x/b.width)).binaryValue];
+}.dup(b.width*b.height);
+b.makeWindow;
+)
+b.write("~/Desktop/testredbmp1.bmp");		//save it to desktop
+b= RedBMP.read("~/Desktop/testredbmp1.bmp");	//read it back
+b.dump
+b.makeWindow;
+
+
+//--creating a 4bit image from scratch
+(
+b= RedBMP(640, 480, 4);
+b.palette= {|i| Color.red(i/15)}.dup(16);
+b.data= {|i|
+	var x= i%b.width;
+	var y= i.div(b.width);
+	b.palette[(sin(x/17)*cos(y/48)).linlin(-1, 1, 0, 15).round.asInteger];
+}.dup(b.width*b.height);
+b.makeWindow;
+)
+b.write("~/Desktop/testredbmp4.bmp");		//save it to desktop
+b= RedBMP.read("~/Desktop/testredbmp4.bmp");	//read it back
+b.dump
+b.makeWindow;
+
+
+//--creating an 8bit image from scratch
+(
+b= RedBMP(640, 480, 8);
+b.palette= {|i| Color.hsv(i%128/128, i%80/79, i/255)}.dup(256);
+b.data= {|i|
+	var x= i%b.width;
+	var y= i.div(b.width);
+	b.palette[(sin(x/17)+cos(y/18)).linlin(-2, 2, 0, 255).round.asInteger];
+}.dup(b.width*b.height);
+b.makeWindow;
+)
+b.write("~/Desktop/testredbmp8.bmp");		//save it to desktop
+b= RedBMP.read("~/Desktop/testredbmp8.bmp");	//read it back
+b.dump
+b.makeWindow;
+
+
+//--creating a 16bit image from scratch
+(
+b= RedBMP(640, 480, 16);
+b.data= {|i|
+	var x= i%b.width;
+	var y= i.div(b.width);
+	Color(x*y%1234/1233, x*y%2345/2344, x*y%3456/3455);
+}.dup(b.width*b.height);
+b.makeWindow;
+)
+b.write("~/Desktop/testredbmp16.bmp");		//save it to desktop
+b= RedBMP.read("~/Desktop/testredbmp16.bmp");	//read it back
+b.dump
+b.makeWindow;
+
+
+//--creating a 24bit image from scratch
+(
+b= RedBMP(640, 480, 24);
+b.data= {|i|
+	var x= i%b.width;
+	var y= i.div(b.width);
+	Color.rand;
+}.dup(b.width*b.height);
+b.makeWindow;
+)
+b.write("~/Desktop/testredbmp24.bmp");		//save it to desktop
+b= RedBMP.read("~/Desktop/testredbmp24.bmp");	//read it back
+b.dump
+b.makeWindow;
+
+
+//--another 32bit image from scratch
+(
+b= RedBMP(640, 480, 32);
+b.data= {|i|
+	var x= i%b.width;
+	var y= i.div(b.width);
+	Color(sin(x/b.width*4pi).abs, sin(i*0.01).abs, sin(y/b.height*2pi).abs);
+}.dup(b.width*b.height);
+b.makeWindow;
+)
+b.write("~/Desktop/testredbmp32.bmp");		//save it to desktop
+b= RedBMP.read("~/Desktop/testredbmp32.bmp");	//read it back
+b.dump
+b.makeWindow;
+
+
+//--template for custom code to read, manipulate and display
+(
+	var scale= 3;
+	var a= RedBMP.read("/Developer/Extras/Java/JavaAdvancedImaging/JAIDemo/images/pond.bmp");	//edit to point at a bmp file
+	var win= Window("bmp", Rect(300, 300, a.width*scale, a.height*scale), false);
+	win.view.background= Color.red;
+	a.data= a.data.reverse;		//mess with the image pixel data
+	win.drawFunc= {
+		Pen.smoothing= true;
+		a.data.do{|c, i|
+			Pen.fillColor= Color(c.blue, c.green, c.red, c.alpha);
+			Pen.fillOval(Rect(i%a.width*scale, i.div(a.width)*scale, scale, scale));
+		};
+	};
+	win.front;
+)
+::

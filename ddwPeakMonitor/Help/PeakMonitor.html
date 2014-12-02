@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    span.s1 {color: #0000bf}
+    span.s2 {color: #000000}
+  </style>
+</head>
+<body>
+<p class="p1"><b>PeakMonitor<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">A simple utility to monitor the peak output of a given audio bus (or range of consecutive buses).<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">PeakMonitor uses a synth node on the server to get the peak value over the desired time frame and place that information onto control buses, which can be read by the client and displayed graphically. <b>Your synths must occur earlier in the chain than this synth.</b> PeakMonitor will place its synth at the tail of the root node, so everything should work, particularly if you have already created groups and are placing your synths into those groups. If you place a new synth at the tail of the root node after invoking PeakMonitor, it won't be able to hear the new synth and you won't see the results.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Usage:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">PeakMonitor.new(target, freq)<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><i>target:</i> the bus that should be monitored. You can specify the bus as a MixerChannel, a bus object, an integer (in which case it will assume you want a stereo bus on the default server), or a shorthand, array notation: [Index, numChannels, server, rate]. If you omit one of these, the index will be assumed to be 0 (the main audio out), numChannels will be assumed to be 2, server will be localhost, and rate will be audio (rate should always be audio).</p>
+<p class="p3"><i>freq:</i> number of times per second the audio buses will be polled. The default is 2, or every half-second.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">To end monitoring, simply close the monitor window.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s1">PeakMonitor</span><span class="s2">(0); </span>// monitor the main output, left and right channels</p>
+<p class="p5"><span class="s1">PeakMonitor</span><span class="s2">.new; </span>// same thing</p>
+<p class="p5"><span class="s1">PeakMonitor</span><span class="s2">([0, 4], 4); </span>// monitor four channels of main output, polling every quarter-second</p>
+</body>
+</html>

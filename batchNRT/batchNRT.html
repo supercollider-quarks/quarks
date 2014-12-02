@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #aa190e}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #001fb8}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #606060}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #316f16}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #bb0e03}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #bf0000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #007300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #001fb8}
+span.s4 {text-decoration: underline}
+span.s5 {color: #000000}
+span.s6 {color: #316f16}
+span.s7 {color: #606060}
+span.s8 {color: #aa190e}
+span.s9 {color: #167209}
+span.s10 {color: #000ebe}
+span.s11 {color: #0000bf}
+span.s12 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>batchNRT</b></span><span class="s2"><span class="Apple-tab-span">	</span></span><b>A method for batch-processing audio files in NRT mode</b></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="s3">Score</span>.batchNRT(inputpath, outputpath, synthdefname)</p>
+<p class="p2"><br></p>
+<p class="p1">If you have a folder full of sound files, and a SynthDef defining the process you want to be applied to the sound files, this method can do it for you.</p>
+<p class="p2"><br></p>
+<p class="p1">The method is asynchronous, so it will return quickly but the Routine which is managing the process will carry on in the background. A message is posted (and optionally, a function evaluated) when the processing is complete.</p>
+<p class="p2"><br></p>
+<p class="p1">The first three parameters must be specified:</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>inputpath</b> - Path pattern for input files. For example, "~/data/*.wav" to load all wave files from one folder.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>outputpath</b> - Path for the folder in which output files are to be written. This must exist. Output will overwrite existing files if the filenames match.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>synthdefname</b> - The name of a SynthDef you have previously created and stored. It must take the following arguments: <b><i>inbufnum</i></b>, <b><i>outbufnum</i></b> (for the input and output buffer numbers, respectively)</p>
+<p class="p2"><br></p>
+<p class="p1">By default, the output buffer is created with the same length as the input buffer, and the synth will be played for exactly that duration. If you want to change this (e.g. make it control rate, or make it slightly longer to account for reverberation, etc) you can supply <b>outputlengthfunc</b>, a function which will deduce the output buffer length (IN FRAMES) from an input file's length in seconds, and/or <b>synthdurfunc</b>, which will do the same for the synth running time (returning a time IN SECONDS).<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">The input and output are assumed to be single-channel. You can change this using the <b>inchannels</b> and <b>outchannels</b> arguments. Processing will typically fail if you don't ensure that the number of in/out channels matches those in the SynthDef <b><i>and</i></b> the input files.</p>
+<p class="p2"><br></p>
+<p class="p1">Other parameters:</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>synthparams</b> - Additional parameters for the synth</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>plot</b> - Set to true to automatically plot the results</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>outputnameadd</b> - Append some text to the output filenames (before the file extension)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>maxtimeperfile</b> - Specify a "safety limit", limiting each file's NRT processing time to a maximum number of seconds</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>extrainitcommands</b> - an array of extra commands you'd like prepending to the list</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>action</b> - a function to be evaluated once all the processing is complete. It will be passed a list of paths for the files created.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>opts</b> - a ServerOptions object (NB options for number of output busses will be overwritten).</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>really</b> - set this to false to skip the NRT part of the process (in other words, just perform the plotting/action). Useful for debug or rerunning actions.</p>
+<p class="p2"><br></p>
+<p class="p1"><i>See also:</i> [<span class="s4">Score</span>], [<span class="s4">Non-Realtime-Synthesis</span>].</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Examples:</b></p>
+<p class="p2"><br></p>
+<p class="p1">The first example is audio-rate, batch-processing a set of sounds to add reverb to them.</p>
+<p class="p2"><br></p>
+<p class="p3">// First we'll create a SynthDef for adding a bit of reverb to a sound</p>
+<p class="p1">(</p>
+<p class="p4"><span class="s5"><span class="Apple-tab-span">	</span></span>SynthDef<span class="s5">(</span><span class="s6">\help_addalittlereverb</span><span class="s5">, { </span>|inbufnum, outbufnum, gain = 0.2|</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> source;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>source = <span class="s3">PlayBuf</span>.ar(1, inbufnum, <span class="s3">BufRateScale</span>.kr(inbufnum));</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>4.do({ source = <span class="s3">AllpassN</span>.ar(source, 0.050, [<span class="s3">Rand</span>(0, 0.05), <span class="s3">Rand</span>(0,0.05)], 1) } );</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">RecordBuf</span>.ar([source * gain], outbufnum, loop:0);</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(0, (source * gain).dup);</p>
+<p class="p1"><span class="Apple-tab-span">	</span>}).store;</p>
+<p class="p1">)</p>
+<p class="p3">// Now we'll run the SynthDef over a folder full of samples.</p>
+<p class="p3">// Of course you need a folder with some sound files in,</p>
+<p class="p3">// and also an output folder. You may need to alter the paths given in this code.</p>
+<p class="p1">(</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="s3">Score</span>.batchNRT(</p>
+<p class="p3"><span class="s5"><span class="Apple-tab-span">	</span></span><span class="s7">"~/svn/soundsamples/beatboxes/*.wav"</span><span class="s5">,<span class="Apple-tab-span">	</span></span>// Input path pattern - note the asterisk wildcard</p>
+<p class="p5"><span class="s5"><span class="Apple-tab-span">	</span></span>"~/dataoutput/addreverb"<span class="s5">,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">// Output path</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>\help_addalittlereverb<span class="s5">,</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>outputnameadd: <span class="s7">"-verbed"</span>,</p>
+<p class="p3"><span class="s5"><span class="Apple-tab-span">	</span>outputlengthfunc: {</span><span class="s3">|indur|</span><span class="s5"> (indur + 2) * 44100}, </span>// Allow 2 seconds at end of file for reverberations</p>
+<p class="p1"><span class="Apple-tab-span">	</span>synthparams: [<span class="s9">\gain</span>, 0.9],</p>
+<p class="p7"><span class="s5"><span class="Apple-tab-span">	</span></span>// opts: ServerOptions.new.verbosity_(-1), // Reduces amount of info the server posts</p>
+<p class="p7"><span class="s5"><span class="Apple-tab-span">	</span>synthdurfunc: {</span><span class="s10">|indur|</span><span class="s5"> indur + 2} </span>// Allow 2 seconds at end of file for reverberations</p>
+<p class="p1"><span class="Apple-tab-span">	</span>);</p>
+<p class="p1">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">The second example is control-rate, for extracting a parameter (here the amplitude envelope) of the sounds. It also plots the results.</p>
+<p class="p2"><br></p>
+<p class="p3">// First the synthdef</p>
+<p class="p1">(</p>
+<p class="p4"><span class="s5"><span class="Apple-tab-span">	</span></span>SynthDef<span class="s5">(</span><span class="s6">\help_param</span><span class="s5">, { </span>|inbufnum, outbufnum|</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">var</span> source, amp, freq, hasfreq;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>source = <span class="s3">PlayBuf</span>.ar(1, inbufnum, <span class="s3">BufRateScale</span>.kr(inbufnum));</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amp = <span class="s3">Amplitude</span>.kr(source);</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">BufWr</span>.kr(amp, outbufnum, <span class="s3">Phasor</span>.ar(0, <span class="s3">BufRateScale</span>.kr(outbufnum) * <span class="s3">ControlRate</span>.ir / <span class="s3">SampleRate</span>.ir, 0, <span class="s3">BufFrames</span>.kr(outbufnum)), 0);</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(0, source.dup);</p>
+<p class="p1"><span class="Apple-tab-span">	</span>}).store;</p>
+<p class="p1">)</p>
+<p class="p3">// Then we process the files</p>
+<p class="p1">(</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s11">Score</span>.batchNRT(</p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span></span><span class="s7">"~/svn/soundsamples/beatboxes/*.wav"</span><span class="s5">,<span class="Apple-tab-span">	</span></span>// Input path pattern - note the asterisk wildcard</p>
+<p class="p5"><span class="s5"><span class="Apple-tab-span">	</span></span>"~/dataoutput/parameters"<span class="s5">,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s12">// Output path</span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span></span>\help_param<span class="s5">,</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>outputnameadd: <span class="s7">"-parameters"</span>,</p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span>outputlengthfunc: {</span><span class="s11">|indur|</span><span class="s5"> ((indur) * 44100 / 64).postln}, </span>// Note the way the durations are scaled to the (standard) control rate</p>
+<p class="p8"><span class="Apple-tab-span">	</span>plot:<span class="s11">true</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>);</p>
+<p class="p1">)</p>
+</body>
+</html>

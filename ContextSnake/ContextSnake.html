@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.33">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a91616}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0014bc}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0023b6}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 15.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a91616; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #000000}
+span.s4 {color: #606060}
+span.s5 {color: #0014bc}
+span.s6 {color: #307109}
+span.s7 {color: #0000bf}
+span.s8 {color: #007300}
+span.s9 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>ContextSnake</b></span><span class="s2"><span class="Apple-tab-span">	</span></span><b>grammatical inference pattern</b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a Markov chain/generative grammar approach with self-adjusting context depth</b></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>concept by Gerhard Nierhaus,<span class="Apple-converted-space">  </span>implementation Alberto de Campo.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>comments and suggestions welcome!<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p1">Based on a corpus of examples, a ContextSnake creates a stream of values:</p>
+<p class="p1">For each next value, a number of previous values define the context depth;<span class="Apple-converted-space"> </span></p>
+<p class="p1">the longer the context considered, the less likely the context is to occur in its full length.<span class="Apple-converted-space"> </span></p>
+<p class="p1">The snake extends the context until it becomes unique, i.e. until it only occurs<span class="Apple-converted-space"> </span></p>
+<p class="p1">at a single location in the corpus; then it reduces context depth again so that more<span class="Apple-converted-space"> </span></p>
+<p class="p1">than one option becomes available, and picks the next item from these options.<span class="Apple-converted-space"> </span></p>
+<p class="p1">(Like a gourmet, it insists on choices.)</p>
+<p class="p3"><br></p>
+<p class="p1">Two parameters influence these choices further: <b>minDepth</b> is the minimum context depth below which single choices are accepted), and <b>acceptSingleCond</b> is a flag or boolean function whether to accept single choices even when above minimum depth.</p>
+<p class="p3"><span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></span>// Demonstrate the algorithm by hand first:<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></span>// a corpus of two example strings - text sequences are easiest to follow.</p>
+<p class="p5"><span class="s3">a = [ </span>"was it a cat or a car i saw"<span class="s3">, </span>"warsaw"<span class="s3"> ];<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// and a context snake with that corpus.</p>
+<p class="p6"><span class="s3">c = </span>ContextSnake<span class="s3">(a);</span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// find all locations of the sublist given in corpus;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// returns list of index pairs [which example in corpus, starting where in example]</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">c.find(</span><span class="s4">"cat"</span><span class="s3">);<span class="Apple-tab-span">	</span></span>// "cat" is unique, i.e. only found once in corpus:<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// in example 0, starting at index 9<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s3">c.find(</span><span class="s4">"ca"</span><span class="s3">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// "ca" occurs twice, so two locations<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// do context-snake decisions by hand:</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s3">c.find(</span><span class="s4">"w"</span><span class="s3">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// 4 locations, pick first of them as next (here, by hand):</p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// at [0, 0], next letter is "a"; so the context is now "wa".</p>
+<p class="p4"><span class="s3">c.find(</span><span class="s4">"wa"</span><span class="s3">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// still 2 locations, pick first</p>
+<p class="p4"><span class="s3">c.find(</span><span class="s4">"was"</span><span class="s3">);<span class="Apple-tab-span">	</span></span>// 1 unique location; reduce context - drop the oldest character</p>
+<p class="p4"><span class="s3">c.find(</span><span class="s4">"as"</span><span class="s3">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// 1 unique location; reduce context again</p>
+<p class="p4"><span class="s3">c.find(</span><span class="s4">"s"</span><span class="s3">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// 3 locations; pick the last one</p>
+<p class="p4"><span class="s3">c.find(</span><span class="s4">"sa"</span><span class="s3">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// 2 locations; pick the latter</p>
+<p class="p4"><span class="s3">c.find(</span><span class="s4">"saw"</span><span class="s3">);<span class="Apple-tab-span">	</span></span>// still 2 locations; but both have no next letter -&gt; end.</p>
+<p class="p2"><br></p>
+<p class="p4">// The entire string produced by now is: "wasaw".</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>*new(corpus, starter, minDepth, acceptSingleCond, starterLength, verbose);<span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>corpus</b> is the corpus from which to generate new streams,</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>starter </b>is an optional start sequence (usually the beginning of a corpus specimen),</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>minDepth</b> is the minimum context depth below which single choices are also accepted,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>acceptSingleCond</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s3">c = </span><span class="s5">ContextSnake</span><span class="s3">(a, </span><span class="s4">"ca"</span><span class="s3">, 1).verbose_(</span><span class="s5">true</span><span class="s3">); </span>// a snake, posting all its decisions.</p>
+<p class="p7">e = c.asStream;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s3">e.next; <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// get a next value; do this several times!</p>
+<p class="p7">e.next;<span class="Apple-converted-space"> </span></p>
+<p class="p7">e.next;<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">e.nextN(5).join.postcs;<span class="Apple-tab-span">	</span></span>// get several values at once, stream may end and only return nils.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">c.verbose_(</span><span class="s5">false</span><span class="s3">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// turn off long posting</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// collect all next values until stream ends with nil;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// for strings, .join makes them more readable.</p>
+<p class="p7">c.asStream.all.join;<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p7">5.do { c.asStream.all.join.postcs };</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">c = </span><span class="s5">ContextSnake</span><span class="s3">(a, </span><span class="s4">"w"</span><span class="s3">, 2);<span class="Apple-tab-span">	</span></span>// try longer minimum context</p>
+<p class="p7">c.asStream.all.join;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// slightly different corpus</p>
+<p class="p5"><span class="s3">a = [ </span>"was it a cat or a car i saw"<span class="s3">, </span>"there once was a saw in warsaw"<span class="s3"> ];<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s3">c = </span><span class="s5">ContextSnake</span><span class="s3">(a, </span><span class="s4">"s"</span><span class="s3">, 4);<span class="Apple-tab-span">	</span></span>// try longer context again</p>
+<p class="p4"><span class="s3">c.asStream.all.join;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// collect all next values until stream ends</p>
+<p class="p3"><br></p>
+<p class="p2"><br></p>
+<p class="p1">Fairytales and poetry can make good material, e.g. we experimented with<span class="Apple-converted-space"> </span></p>
+<p class="p1">Schneewittchen (Snow white), Erlkoenig, and others, see <b>ContextSnake_3texts</b>.html.</p>
+<p class="p1">Formulaic segments can become points of 'modulation' between sections.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>A very simple music example:</b></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// melody which can go up only in steps, and down only in thirds;</p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// can begin with 0, 7, or 6; can end with 7, 4 or 0.</p>
+<p class="p7">b = [ (0..7), [7, 5, 3, 1, 2, 3, 4], [6, 4, 2, 0]];</p>
+<p class="p2"><br></p>
+<p class="p7">c = <span class="s5">ContextSnake</span>(b, minDepth: 1, starterLength: 1);</p>
+<p class="p2"><br></p>
+<p class="p7">10.do { c.asStream.all.postln };</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// add pauses between new starts</p>
+<p class="p7"><span class="s5">Pbind</span>(<span class="s6">\degree</span>, <span class="s5">Pseq</span>([<span class="s5">Plazy</span>({ c.randStarter }), <span class="s6">\_</span>, <span class="s6">\_</span>], <span class="s5">inf</span>), <span class="s6">\dur</span>, 0.2).trace(<span class="s6">\degree</span>).play;</p>
+<p class="p8">s.boot;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">// Add special markers for the beginning and ending to each phrase;<span class="Apple-converted-space"> </span></p>
+<p class="p1">// this can be helpful for doing special things on segment borders.</p>
+<p class="p9">(</p>
+<p class="p10">b = [ (0..7), [7, 5, 3, 1, 2, 3, 4], [6, 4, 2, 0]];</p>
+<p class="p10">d = b.collect { <span class="s7">|ex|</span> [<span class="s8">'&lt;'</span>] ++ ex ++ [<span class="s8">'&gt;'</span>] };<span class="Apple-tab-span">	</span><span class="s9">// add</span></p>
+<p class="p10">c = <span class="s7">ContextSnake</span>(d, minDepth: 1, starterLength: 1);</p>
+<p class="p7"><span class="s3">)</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s3">(<span class="Apple-tab-span">	</span></span>// beginning and ending symbols create pauses<span class="Apple-converted-space"> </span></p>
+<p class="p6">Pbind<span class="s3">(</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s6">\degree</span>, <span class="s5">Pn</span>(<span class="s5">Plazy</span>({ c.randStarter }), <span class="s5">inf</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s6">\dur</span>, 0.2</p>
+<p class="p7">).trace(<span class="s6">\degree</span>).play;</p>
+<p class="p7">)</p>
+<p class="p2"><br></p>
+<p class="p1">For a musical example with Palestrina melodies, see <b>ContextSnake_Palestrina</b>.html.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p11"><b>Analysis<span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><br></p>
+<p class="p1"><b>ContextSnakes can analyse a sample for different criteria, for example, what the longest sequences are that occur verbatim in the corpus. If the found sequences overlap, the sample is a possible production from the given corpus. Other methods test whether the sample is valid output of the snake, and whether it is new or not.<span class="Apple-converted-space"> </span></b><span class="s2"> <span class="Apple-converted-space"> </span></span></p>
+<p class="p10">(</p>
+<p class="p10">a = [<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>"ContextSnakes can analyse a sample for different criteria, for example, what the longest sequences are that occur verbatim in the corpus."<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>"If the found sequences overlap, the sample is a possible production from the given corpus."<span class="s3">, <span class="Apple-tab-span">	</span></span>"Other methods test whether the sample is valid output, and whether it is new or not."</p>
+<p class="p10">];</p>
+<p class="p10">c = <span class="s7">ContextSnake</span>(a, minDepth: 4);<span class="Apple-converted-space"> </span></p>
+<p class="p10">)</p>
+<p class="p10">10.do { c.randStarter.asStream.all.join.postcs }; <span class="s9">// produce something</span></p>
+<p class="p12"><br></p>
+<p class="p13"><span class="s3">b = </span><span class="s4">"If the given corpus."</span><span class="s3">;<span class="Apple-tab-span">	</span></span>// a short possible production;</p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>longestSnippets (sample)</b></p>
+<p class="p10">c.longestSnippets(b).printcsAll <span class="s9">// where the segments are;</span></p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>isValidOutput(sample, snippets)</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tests whether a sample is a possible production of the snake.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if you have the snippets already, you can pass them in for efficiency.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>also posts the amounts of overlap, in effect telling you likely minimum context depth.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10">c.isValidOutput(b);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">// yes</span></p>
+<p class="p10">c.isValidOutput(<span class="s4">"longest samples"</span>);<span class="Apple-tab-span">	</span><span class="s9">// yes</span></p>
+<p class="p13"><span class="s3">c.isValidOutput(</span><span class="s4">"shortest samples"</span><span class="s3">);<span class="Apple-tab-span">	</span></span>// zeroes show that no overlap, though all the letters are OK.</p>
+<p class="p13"><span class="s3">c.isValidOutput(</span><span class="s4">"context XYZ impossible."</span><span class="s3">);<span class="Apple-tab-span">	</span></span>// negative numbers show non-occurring letters.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>isNew(sample)</b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tests </b>whether a sample is a new production of the pattern.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Sometimes the snake may regenerate parts of the corpus,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which should be identified as not new.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s3">c.isNew(b);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// is b a new production? yes.</p>
+<p class="p4"><span class="s3">c.isNew(</span><span class="s4">"samples"</span><span class="s3">);<span class="Apple-tab-span">	</span></span>// yes, new.</p>
+<p class="p4"><span class="s3">c.isNew(</span><span class="s4">"sample"</span><span class="s3">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// no, occurs as is.</p>
+<p class="p4"><span class="s3">c.isNew(a.first);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// line 0 from the corpus is also not new.</p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>vocabulary ()<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>all the elements occurring in the corpus; can be used for testing.<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7">c.vocabulary.postcs;<span class="Apple-converted-space"> </span></p>
+<p class="p7">c.vocabulary.includesAll(b);</p>
+<p class="p7">c.vocabulary.includesAll(<span class="s4">"shortest samples"</span>);</p>
+<p class="p7">c.vocabulary.includesAll(<span class="s4">"context XYZ impossible."</span>);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">/****** <span class="Apple-tab-span">	</span>possible extensions:<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>* force switching when segments get too long? (how to check for that?)</p>
+<p class="p4"><span class="Apple-tab-span">	</span>* choosing could have tendencies, e.g. prefer to stay close,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>or prefer to switch examples whenever possible.<span class="Apple-converted-space"> </span></p>
+<p class="p4">******/</p>
+<p class="p2"><br></p>
+</body>
+</html>

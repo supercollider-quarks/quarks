@@ -1,0 +1,187 @@
+CLASS:: AudioMulchClock
+SUMMARY:: clock that slaves to AudioMulch over network
+CATEGORIES:: Scheduling>Clocks
+RELATED:: Classes/ClockAudioMulch
+
+DESCRIPTION::
+Use this class to strong::receive:: sync and have SuperCollider act as a strong::slave::.
+
+AudioMulch is a program written by Ross Bencina. http://www.audiomulch.com/
+
+AudioMulchClock is a SuperCollider class for synchronising playback with this program via network sync.
+
+This clock has no notion of time in seconds. Rather time advances in ticks and each incoming network sync message includes a tick counter. There are 24 ticks per beat and 96 per bar (assuming 4/4 - change beatsPerBar to use something different).
+
+A tick is roughly 1/24 seconds long at tempo 60bpm. Though network jitter will add and subtract to this value.
+
+Sub tick accurate scheduling (precision lower than 1/24th of a beat) is also possible.
+
+SUBSECTION:: Network setup
+In AudioMulch's preference panel under the emphasis::Network Sync:: tab, set the emphasis::Send to address:: to 127.0.0.1 and the corresponding UDP Port to 57120. Activate emphasis::Generate Network Sync:: under the Control meny.
+
+SUBSECTION:: Known issues
+Pbind legato does not behave correctly - scale it with beat duration.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new clock.
+
+METHOD:: default
+Returns the default clock. It is created the first time you try to access it and is permanent.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initAudioMulchClock
+
+METHOD:: play
+Schedules a function to be evaluated at some future beat - usually the next beat or next 4 beats (bar).
+
+ARGUMENT:: task
+A link::Classes/Function::. The function is passed tick, time and clock as first three arguments.
+
+ARGUMENT:: quant
+1 plays on the next beat, 4 on the next bar etc. Also fractions of beats are possible.
+
+METHOD:: schedAbs
+Schedules a function to be evaluated at a certain emphasis::tick::.
+
+ARGUMENT:: tick
+Use code::.tick:: to find the current tick and then add an offset in ticks to that. Also fractions of ticks are possible for sub tick accuracy.
+
+ARGUMENT:: item
+A link::Classes/Function::. The function is passed tick, time and clock as first three arguments. If the function returns a number, it will be rescheduled in that amount of beats (yes, not ticks).
+
+METHOD:: sched
+Schedules a function to be evaluated at some future beat.
+
+ARGUMENT:: delta
+1 here means the next upcoming beat. Also fractions of beats are possible as well as sub tick accuracy (1<24th of a beat).
+
+ARGUMENT:: item
+A link::Classes/Function::. The function is passed tick, time and clock as first three arguments. If the function returns a number, it will be rescheduled in that amount of beats.
+
+METHOD:: nextTimeOnGrid
+Used for finding out at which tick in the future the next beat or bar will occur.
+
+ARGUMENT:: quant
+If 1 then return the tick for the next tick%24==0. If 4 then the tick for the next tick%96==0 etc.
+
+ARGUMENT:: phase
+Adds to the quant. e.g. quant 4 and phase 2 will return the tick at the next bar + two beats.
+
+METHOD:: clear
+Stops the clock and removes all tasks from the scheduling queue.
+
+METHOD:: beatDur
+Return the average beat duration in seconds.
+NOTE::
+This value will fluctuate because of network jitter.
+::
+
+METHOD:: beats
+Return the current beat.
+
+METHOD:: running
+A link::Classes/Boolean:: that is set when either a code::\t_start:: or a code::\t_pulse:: message is received. It is cleard when a code::\t_stop:: message is received or the clock is cleared.
+
+METHOD:: tick
+An link::Classes/Integer:: that counts up indefinitely.
+
+METHOD:: shift
+An link::Classes/Integer:: specifying latency compensation in ticks. If negative items will be scheduled slightly early.
+
+METHOD:: beatsPerBar
+An link::Classes/Integer:: that should match the number of beats in a bar. Used when restarting after a code::\t_stop::.
+
+METHOD:: permanent
+A link::Classes/Boolean::. If true then the clock will continue to run after a link::Classes/CmdPeriod::. The user is responsible for clearing permanent clocks with the link::#-clear:: method.
+
+METHOD:: tempo
+A link::Classes/Float:: that represents the average tempo in beats per minutes.
+NOTE::
+This value will fluctuate because of network jitter.
+::
+
+METHOD:: startAction
+A link::Classes/Function:: that is evaluated when the external clock is started (a code::\t_start:: is received).
+
+METHOD:: stopAction
+A link::Classes/Function:: that is evaluated when the external clock is stopped (a code::\t_stop:: is received).
+
+EXAMPLES::
+
+CODE::
+s.latency= 0.05;
+s.boot;
+
+a= AudioMulchClock.new;
+//now press play in AudioMulch - make sure 'Generate Network Sync' is set under the control menu.
+a.beatDur	//will fluctuate because of network jitter
+a.beats
+a.tempo		//will fluctuate because of network jitter
+a.tick
+
+
+
+//--patterns - note that legato needs to be scaled down - still not working properly
+b= Pbind(\degree, Pseq([0, 5, 2, 1, 0, 5, 2, 1, 0, -1], inf), \dur, Pseq([1, 1, 1, 1, 0.25, 0.25, 0.5, 1, 1, 1], inf), \legato, Pfunc({a.beatDur})).play(a, quant:4)
+a.shift= -3;	//latency compenstation.  3 ticks early
+//now try changing tempo in AudioMulch
+b.stop
+a.clear
+
+
+
+//--show manual scheduling in beats
+a= AudioMulchClock.new;
+(
+a.sched(3.5, {|tick, time, clock|
+	("3.5 beats later - relative to now"+tick+time+clock).postln;
+	nil;
+})
+)
+
+(
+//note: schedAbs works in ticks so you need to scale with ticks per beat (24)
+a.schedAbs(a.tick+(2*24), {|tick, time, clock|
+	("2 beats later (48 ticks) - absolute time"+tick+time+clock).postln;
+	nil;
+})
+)
+
+(
+//schedules a synth at half a beat after the beginning of the next bar
+a.schedAbs(a.nextTimeOnGrid(4, 0.5), {|tick, time, clock|
+	var syn= Synth(\default);
+	a.sched(1, {
+		syn.release;
+		nil;
+	});
+	4;	//reschedule every 4 beat
+})
+)
+a.clear
+
+
+
+//--two pbinds on the same clock
+(
+SynthDef(\audiomulchclock, {|out= 0, atk= 0.01, rel= 0.2, gate= 1, freq= 400, pan= 0, amp= 1|
+	var env= EnvGen.kr(Env.asr(atk, amp, rel), gate, doneAction:2);
+	var src= MoogFF.ar(
+		Pulse.ar(freq-(amp-env*50), env*0.25+0.5, env),
+		env.lag(2).exprange(freq*0.5, freq*2),
+		3
+	);
+	Out.ar(out, Pan2.ar(src, pan));
+}).add;
+)
+a= AudioMulchClock.new;
+a.shift= -4;
+b= Pbind(\instrument, \audiomulchclock, \degree, Pseq([0, 5, 2, 1, 0, 5, 2, 1], inf)*[1, 0.5], \strum, 0.2, \dur, 0.5, \pan, [0.5, -0.5], \amp, cos(Ptime()*0.3), \legato, Pfunc({a.beatDur})).play(a, quant:4);
+c= Pbind(\instrument, \audiomulchclock, \degree, Pn(Pshuf([0, 5, 2, 1, 0, 5, 2, 1], 4), inf)*[1, 0.5], \strum, 0.1, \dur, 0.5, \pan, [-0.5, 0.5], \amp, cos(Ptime()*0.2), \legato, Pfunc({a.beatDur}), \octave, 7).play(a, quant:4);
+c.stop
+b.stop
+a.clear
+::

@@ -1,0 +1,112 @@
+CLASS:: HasPatchIns
+summary:: parent class for Players that have PatchIns such as Patch
+categories:: Libraries>crucial>Players>abstract
+related:: Classes/Patch
+
+DESCRIPTION::
+
+
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: patchIns
+
+
+
+METHOD:: connectPatchIns
+
+
+
+METHOD:: synthArgsIndices
+
+
+
+METHOD:: inputs
+
+
+
+METHOD:: mapInputToBus
+
+
+argument:: i
+
+
+argument:: bus
+
+
+
+METHOD:: inputProxies
+
+
+
+METHOD:: annotatedInputProxies
+
+
+argument:: offset
+
+
+argument:: array
+
+
+
+METHOD:: setInput
+
+
+argument:: ai
+
+
+argument:: ag
+
+
+
+METHOD:: setDeepInput
+
+
+argument:: ai
+
+
+argument:: ag
+
+
+argument:: offset
+
+
+
+METHOD:: deepSpecAt
+
+
+argument:: argi
+
+
+argument:: offset
+
+
+
+
+EXAMPLES::
+
+code::
+p = Patch({ arg audio=0,ffreq=300;
+	RHPF.ar(audio,ffreq,0.1)
+});
+q = Patch({
+	Saw.ar(mul: 0.3)
+});
+
+p.play;
+q.play;
+
+// adds a connection
+// but q is still out of main outs
+p.connectInputToPlayer(0,q)
+
+
+q.patchTo(p,0);
+
+
+p.gui
+
+::

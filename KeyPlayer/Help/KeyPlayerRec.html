@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #dc0000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #1000d0}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #737373}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 10.0px Monaco}
+span.s3 {color: #000000}
+span.s4 {color: #008a00}
+span.s5 {color: #1000d0}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>KeyPlayerRec</b></span><span class="s2"><span class="Apple-tab-span">	</span></span><b>a simple recorder for KeyPlayer</b></p>
+<p class="p2"><br></p>
+<p class="p1">KeyPlayerRec can record a series of key presses made with KeyPlayer,<span class="Apple-converted-space"> </span></p>
+<p class="p1">and play it back with variable speed.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p1"><b>class methods:</b></p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// *new needs a KeyPlayer object</p>
+<p class="p5">KeyPlayer<span class="s3">(</span><span class="s4">\kRec</span><span class="s3">);</span></p>
+<p class="p5">KeyPlayer<span class="s3">.gui;</span></p>
+<p class="p6"><span class="s5">KeyPlayer</span>(<span class="s4">\kRec</span>).makeRec;</p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// or make rec explicitly:<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// r = KeyPlayerRec.new();</p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// k.rec = r;</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p1"><b>examples:</b></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// random keyboard:<span class="Apple-converted-space"> </span></p>
+<p class="p6">(</p>
+<p class="p6"><span class="s5">var</span> notes = ();</p>
+<p class="p6"><span class="s5">thisThread</span>.randSeed = 2008;</p>
+<p class="p7">"qwertzuiopasdfghjklyxcvbnm"<span class="s3">.do { </span><span class="s5">|char|</span><span class="s3"><span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span>notes.put(char, rrand(36, 96));</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s5">KeyPlayer</span>(<span class="s4">\kRec</span>).put(char, { <span class="s5">|char|</span><span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// recording added here!</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">KeyPlayer</span>(<span class="s4">\kRec</span>).rec.recordEvent(char, <span class="s4">\down</span>);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>char.postln;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(midinote: notes[char]).play<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p6">};</p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// use extra keys for record and play on/off</p>
+<p class="p6"><span class="s5">KeyPlayer</span>(<span class="s4">\kRec</span>).putDown($,, { <span class="s5">KeyPlayer</span>(<span class="s4">\kRec</span>).rec.toggleRec }, noRep: <span class="s5">true</span>);</p>
+<p class="p6"><span class="s5">KeyPlayer</span>(<span class="s4">\kRec</span>).putDown($., { <span class="s5">KeyPlayer</span>(<span class="s4">\kRec</span>).rec.togglePlay }, noRep: <span class="s5">true</span>);</p>
+<p class="p6">)</p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// record a sequence now:</p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// bring window to front,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// type ',' to start rec, type a few letter keys;</p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>// type ',' to stop rec, type '.' to toggle playback</p>
+<p class="p3"><br></p>
+<p class="p5"><span class="s3">k = </span>KeyPlayer<span class="s3">(</span><span class="s4">\kRec</span><span class="s3">);</span></p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s3">k.rec.task.play;<span class="Apple-tab-span">	</span></span>// play it by hand</p>
+<p class="p4"><span class="s3">k.rec.list;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the list of recorded events</p>
+<p class="p6">k.rec.list.printAll;</p>
+<p class="p4"><span class="s3">k.rec.isOn;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// recording now or not?</p>
+<p class="p3"><br></p>
+<p class="p4">// maybe do automatic recording?<span class="Apple-converted-space"> </span></p>
+<p class="p4">// if so, problem: we must know which keys to record,<span class="Apple-converted-space"> </span></p>
+<p class="p4">// and which not (e.g. rec on/off controls).</p>
+<p class="p3"><br></p>
+<p class="p4">// good enough for playing with it now, extend later...</p>
+<p class="p3"><br></p>
+</body>
+</html>

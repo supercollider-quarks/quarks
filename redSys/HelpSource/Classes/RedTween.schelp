@@ -1,0 +1,86 @@
+CLASS:: RedTween
+SUMMARY:: tweening for sclang and scserver
+CATEGORIES:: Red>redScore
+RELATED:: Classes/RedInterpolator
+
+DESCRIPTION::
+A class for mapping values between different ranges using different curvatures. It works best in combination with the link::Overviews/EaseOverview##Ease:: quark, but is also fine to use on its own.
+Basically it maps a value from a certain range to another range with an optional curvature.
+
+
+CLASSMETHODS::
+
+METHOD::new
+
+ARGUMENT::source
+The beginning.
+
+ARGUMENT::target
+The destination.
+
+ARGUMENT::curve
+The curvature.
+
+ARGUMENT::inMin
+Lowest input value.
+
+ARGUMENT::inMax
+Highest input value.
+
+DISCUSSION::
+If the curve argument is CODE::nil:: then a linear mapping will be used. If it is a link::Classes/SimpleNumber:: then internally a lincurve method will be applied (so the curvature will work in the same was as for the link::Classes/Env:: class). Though the real benefit of this class is to set the curve argument to an link::Overviews/EaseOverview##Ease:: object or write a custom mapping function. This allows to do proper tweening/easing.
+
+INSTANCEMETHODS::
+
+PRIVATE::initRedTween
+
+EXAMPLES::
+
+CODE::
+//--linear mapping from 0-1 to 10-20
+a= RedTween(10, 20)
+a.value(0)
+a.value(0.5)
+a.value(0.999)
+
+//--same but with a curvature of 4
+a= RedTween(10, 20, 4)
+a.value(0)
+a.value(0.5)
+a.value(0.999)
+100.collect{|x| a.value(x/99)}.plot
+
+//--similar but map from -1 to 1 to 10-20 using a curvature of -4
+a= RedTween(10, 20, -4, -1, 1)
+a.value(-1)
+a.value(0)
+a.value(0.999)
+100.collect{|x| a.value(x/99*2-1)}.plot
+
+//--custom curvature function
+a= RedTween(10, 20, {|t| t*t*t*t*t})
+a.value(0)
+a.value(1)
+100.collect{|x| a.value(x/99)}.plot
+
+//--ease objects
+a= RedTween(-10, 20, EaseInSine)
+100.collect{|x| a.value(x/99)}.plot
+a= RedTween(-10, 20, EaseInAtan(20))
+100.collect{|x| a.value(x/99)}.plot
+
+//--helper method for arrays
+a= [-10, 20, EaseInQuart].asRedTween
+100.collect{|x| a.value(x/99)}.plot
+
+//--the .value class method
+//note how the input value is the first argument, and then the source, target, curve etc.
+RedTween.value(0.55, 10, 20, {|t| t.postln; t*t*t}, 0.5, 1.0)
+
+//--audio examples
+s.boot
+{SinOsc.ar(400, 0, RedTween.kr(MouseX.kr(0, 1), 0, 1, 4).poll)}.play
+{SinOsc.ar(400, 0, RedTween.kr(MouseX.kr(0, 1), 0, 1, {|t| t*t*t}).poll)}.play
+{SinOsc.ar(400, 0, RedTween.kr(MouseX.kr(0, 1), 0, 1, EaseInAtan).poll)}.play
+{SinOsc.ar(400, 0, RedTween.kr(LFSaw.ar(0.5)*0.5+0.5, 0, 1, EaseInBack).poll)}.play
+::

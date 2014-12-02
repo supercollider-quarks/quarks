@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #001fe8}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #0030f2}
+span.s3 {color: #000000}
+span.s4 {text-decoration: underline}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Actant<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>an Actant for GeoGraphy</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p3"><br></p>
+<p class="p1">Actant represent a dynamic element generating a time-stamped sequence of vertices in a GeoGraphy's <a href="../Users/andreavalle/Library/Application Support/SuperCollider/Extensions/Help/mine/GeoGraphy/Graph.html"><span class="s2">Graph</span></a>.</p>
+<p class="p1">It's the core element for RT sequencing: because of this aspect, it can be thought as a wrapper for a <a href="SC://Routine"><span class="s2">Routine</span></a>.<span class="Apple-converted-space"> </span></p>
+<p class="p1">The task simply navigates the graph. From the starting vertex, it chooses randomly among the edges departing from it, sets the ending vertex as the new vertex, and waits for the edges's duration. Then the process starts again.</p>
+<p class="p1">If the vertex is a terminal one (i.e. no edges depart from it) it terminates removing the actant (note that termination is taken into account by the Runner).</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3"><b>See also: </b><a href="../Users/andreavalle/Library/Application Support/SuperCollider/Extensions/Help/mine/GeoGraphy/Graph.html"><span class="s4">Graph</span></a>, <a href="../Users/andreavalle/Library/Application Support/SuperCollider/Extensions/Help/mine/GeoGraphy/Runner.html"><span class="s4">Runner</span></a>, <a href="../Users/andreavalle/Library/Application Support/SuperCollider/Extensions/Help/mine/GeoGraphy/GeoGraphyIntro.html"><span class="s4">GeoGraphyIntro</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Working with Actants</b></p>
+<p class="p2"><br></p>
+<p class="p1">You never need to work directly with Actants, as you can control all their relevant aspects from a Runner.<span class="Apple-converted-space"> </span></p>
+<p class="p1">So, only documentation of <b>*new </b>is provided. For the rest, see <a href="../Users/andreavalle/Library/Application Support/SuperCollider/Extensions/Help/mine/GeoGraphy/Runner.html"><span class="s2">Runner</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (graph, aID, bpm, weight)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Create an actant.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>graph </b>- a Graph. Default value is nil. The Actan requires a Graph as it must generate a path on it.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aID </b>- a unique identifier for the actant. Default value is nil.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>bpm </b>- bpm, i.e. beats for minute. Default value is 60.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>weight </b>- an abstract weight for the actant. Default value is 0.1.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Useful (but not necessarily)<span class="Apple-converted-space">  </span>to be mapped to amplitude.</p>
+</body>
+</html>

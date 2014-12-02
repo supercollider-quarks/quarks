@@ -1,0 +1,88 @@
+CLASS:: AudioSpec
+summary:: datatype expressing an 'audio' rate object
+categories:: Spec, Libraries>crucial>Spec
+
+
+DESCRIPTION::
+An audio spec specifies that the input should be an audio signal, or that an output will be an audio signal.
+Inputs with an AudioSpec are expecting an audio rate player.  eg. filters and effects that take an audio input.
+
+Here is an effect patch that specifies that it takes a stereo input (for the 'input' arg) and produces a stereo output.
+
+code::
+Patch({ arg input,ffreq;
+
+	RLPF.ar(input,ffreq)
+
+},[
+	AudioSpec(2), // input
+	ControlSpec(200,13000,\exp,default:10000)
+],
+	AudioSpec(2) // output
+);
+::
+
+
+Its default control is a PlayerInputProxy which is a placeholder.  It will play silently, but it will also
+allow you to compile the patch's synth def and will create an audio input.
+
+Note: this should be changed as the Specs should not be attached to Player, they should be neutral datatypes.  The defaultControl system should just go away.  see link::Classes/ControlPrototypes::
+
+code::
+// inline example
+g = AudioSpec(2).defaultControl;
+g.numChannels.postln;
+g.spec.postln;
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: numChannels
+The number of channels your input requires. Default value is 1. This can also be nil which expresses that your Instr will multi-channel expand if given more than one channel.  ie. its mono-stereo compatible
+
+
+METHOD:: initClass
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: numChannels
+
+
+
+METHOD:: defaultControl
+
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: canAccept
+
+
+argument:: thing
+
+
+
+METHOD:: constrain
+
+
+argument::  ... args
+
+
+
+METHOD:: color
+
+
+

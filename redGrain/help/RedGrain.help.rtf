@@ -1,0 +1,146 @@
+{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;\f1\fswiss\fcharset77 Helvetica;\f2\fnil\fcharset77 Monaco;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red191\green0\blue0;\red96\green96\blue96;
+}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b\fs36 \cf2 RedGrain\cf0 				granular synthesis
+\f1\b0\fs24 \
+
+\f0\b\fs36 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\fs24 \cf0 superclass: \cf2 Object
+\fs36 \cf0 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f1\b0\fs24 \cf0 Language side granulator built upon Task.
+\f0\b\fs36 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\fs24 \cf0 Class Methods
+\fs36 \
+
+\fs24 \
+\cf2 RedGrain\cf0 .new(server)
+\f1\b0  - create granulator (stereo only for now)\
+
+\f0\b \
+\
+Instance Methods\
+\
+start(out)
+\f1\b0  - starts the granulator playing on bus index out\
+
+\f0\b stop - 
+\f1\b0 stops the granulator
+\f0\b \
+pause - \
+resume - \
+delta_(sec) - 
+\f1\b0 set time between grains in seconds
+\f0\b \
+buf_(buf) - 
+\f1\b0 select which buffer to get the grain source audio from
+\f0\b \
+rate_(rate) - 
+\f1\b0 set grain playbackrate
+\f0\b \
+pos_(percent) - 
+\f1\b0 set position in source buffer (1.0= end of buffer)
+\f0\b \
+dur_(sec) - 
+\f1\b0 set grain duration in seconds\
+
+\f0\b pan_(val) - 
+\f1\b0 set grain panning (-1 to 1)
+\f0\b \
+amp_(val) - 
+\f1\b0 set grain amplitude
+\f0\b \
+mute_(boolean) - 
+\f1\b0 silence grains
+\f0\b \
+latency_(sec) - 
+\f1\b0 set bundle message latency\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f2\fs18 \cf0 \
+\
+s.boot;\
+\
+\cf3 //-- prepare some buffers\cf0 \
+~length= 1;		\cf3 //segment lengths in seconds - should be the same for positions to scan correctly\cf0 \
+~b1= \cf2 RedBuffer\cf0 (s, \cf4 "sounds/a11wlk01.wav"\cf0 , 0.1, ~length);\
+~b2= \cf2 RedBuffer\cf0 (s, \cf4 "sounds/a11wlk01.wav"\cf0 , 0.3, ~length);\
+~b3= \cf2 RedBuffer\cf0 (s, \cf4 "sounds/a11wlk01.wav"\cf0 , 0.5, ~length);\
+\
+\cf3 //-- create and start the granulator object\cf0 \
+r= \cf2 RedGrain\cf0 (s);\
+r.buf_(~b1);\
+r.start;\
+\
+\cf3 //offset halfway into source buffer\cf0 \
+r.pos_(0.5);\
+\
+\cf3 //switch buffer\cf0 \
+r.buf_(~b2);\
+\
+\cf3 //cycle through buffers quickly 20 times\cf0 \
+(\
+fork\{\
+	20.do\{\cf2 |i|\cf0  r.buf_([~b1, ~b2, ~b3].wrapAt(i)); 0.1.wait\};\
+\});\
+\
+\cf3 //cycle through buffers and randomise playback rate\cf0 \
+(\
+fork\{\
+	20.do\{\cf2 |i|\cf0 \
+		r.buf_([~b1, ~b2, ~b3].wrapAt(i));\
+		r.rate_(2.0.rand2);\
+		0.1.wait;\
+	\}\
+\});\
+\
+\cf3 //now for something completely different\cf0 \
+(\
+r.rate_(-1.7);\
+r.pos_(0);\
+r.dur_(0.2);\
+r.delta_(\{0.2.rrand(0.3)\});	\cf3 //delta can be a function\cf0 \
+)\
+\
+\cf3 //and all of the controllers can be functions\cf0 \
+(\
+r.buf_(\{[~b1, ~b2, ~b3].choose\});\
+r.rate_(\{8.0.rand2\});\
+r.pos_(\{0.1.rand\});\
+r.dur_(\{0.05.rrand(0.15)\});\
+r.pan_(\{1.0.rand2\});\
+r.amp_(\{0.5.rrand(1.0)\});\
+r.delta_(\{0.01.rrand(0.2)\});\
+)\
+\
+\cf3 //quantise playbackrate\cf0 \
+r.rate_(\{10.rand.round(5)\});\
+r.rate_(\{10.rand.round(4)\});\
+r.rate_(\{10.rand.round(3)\});\
+\
+\cf3 //back to static amp and deltatime\cf0 \
+r.amp_(0.3);\
+r.delta_(0.005);	\cf3 //default\cf0 \
+r.dur_(0.1);\
+r.buf_(~b1);\
+r.pos_(0);\
+\
+\cf3 //take out more and more and stop\cf0 \
+(\
+fork\{\
+	30.do\{\cf2 |i|\cf0  r.delta_(r.delta*1.1); 0.2.wait\};\
+	r.stop;\
+\});\
+\
+}

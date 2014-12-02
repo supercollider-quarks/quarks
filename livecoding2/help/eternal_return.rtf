@@ -1,0 +1,279 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf440
+{\fonttbl\f0\fnil\fcharset77 Monaco;}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green0\blue191;\red96\green96\blue96;
+}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs18 \cf0 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 // eternal return. \cf0 \
+\cf2 // nonlinear history for live and experimental just in time programming.\cf0 \
+\cf2 // Julian Rohrhuber 2007\cf0 \
+\
+\cf2 /*\
+\
+\
+This program will give access to any ProxySpace (or subclass of LazyEnvir / EnvironmentRedirect) that is present as current environment. If none is present, it will create a ProxySpace and push it.\
+\
+It creates a document window with some temporal navigations. \
+This document is a throw away GUI, it can be closed anytime.\
+\
+- the black stripe is the current time. here the edits become visible.\
+- the first number box is the current time\
+- the last number box represents the length of history, after which we return to beginning\
+\
+Buttons:\
+_	navigate in time without entering it (toggles)\
+->	start time / stop time (toggles)\
+<<	rewind to beginning of time\
+:<	step back to previous edit\
+>:	step forward to next edit	\
+<	backward 0.25 sec in time\
+>	forward 0.25 sec in time\
+#	post the complete history\
+\
+\
+*/\cf0 \
+\
+\
+(\
+\pard\pardeftab560\li200\ql\qnatural
+\cf0 	\cf3 var\cf0  w, txt, value = 0, mapVal, valMap, b2, scaledValue = 0, tmax = 30, delta = 0.25;\
+	\cf3 var\cf0  ff, fne, fla, fba, fne2, fla2, m,  v, vv, mmax, task, changed, running = \cf3 false\cf0 ;\
+	\cf3 var\cf0  drawLine, playRout, windowFollow,toggleHistory, dispatch, onTime = \cf3 false\cf0 ;\
+	\cf3 var\cf0  browseBut, browseMode = \cf3 false\cf0 ;\
+	\cf3 var\cf0  nietzsche, temporaryPseudoEnvironment, proxyspace;\
+	\
+	temporaryPseudoEnvironment = \cf3 EnvironmentRedirect\cf0 .new;\
+	\
+	b2 = \cf3 Rect\cf0 (10, 10, 340, 20);\
+	w = \cf3 GUI\cf0 .window.new(\cf4 "---"\cf0 , \cf3 Rect\cf0 (128, 64, 640, 30));\
+	w.view.decorator = \cf3 FlowLayout\cf0 ( w.view.bounds );\
+	\
+	\
+	running = \{ task.isPlaying \};\
+	toggleHistory = \{\
+		if(running.value) \{ task.play(\cf3 AppClock\cf0 ) \} \{ task.stop \};\
+	\};\
+	\
+	\
+	\
+	\cf2 // get the next appropriate point in time,\cf0 \
+	\cf2 // either the next delta step, or, if closer, the next timepoint\cf0 \
+	task = \cf3 Task\cf0  \{\
+		\cf3 var\cf0  nextDelta, nextIndex;\
+		loop \{\
+			nextIndex = dispatch.timepoints.indexOfGreaterThan(scaledValue);\
+			if(nextIndex.isNil) \{\
+				if(dispatch.timepoints.last.notNil \
+					and: \{dispatch.timepoints.last >= (scaledValue + delta)\}) \{\
+					nextDelta = tmax - scaledValue;\
+				\} \{\
+					nextDelta = delta\
+				\}\
+			\} \{\
+				nextDelta = min(delta, dispatch.timepoints.at(nextIndex) - scaledValue);\
+			\};\
+			scaledValue = (scaledValue + nextDelta % tmax);\
+			valMap.(scaledValue);\
+			nextDelta.wait;\
+		\}\
+	\
+	\};\
+	if(currentEnvironment.isKindOf(\cf3 EnvironmentRedirect\cf0 ).not) \{\
+		proxyspace = p = \cf3 ProxySpace\cf0 .push(s.boot);\
+	\} \{\
+		proxyspace = currentEnvironment;\
+	\};\
+	dispatch = proxyspace.dispatch;\
+	if(dispatch.isNil) \{\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 		proxyspace.dispatch = dispatch = \cf3 HistoryDispatch\cf0 .new;\
+	\};\
+	dispatch.manual = \cf3 true\cf0 ;\
+	dispatch.alwaysReplace = \cf3 false\cf0 ;\
+\pard\pardeftab560\li200\ql\qnatural
+\cf0 	\
+	changed = \{ \cf3 |val|\cf0  \
+		\cf3 var\cf0  str, envir, changed, pairs;\
+		envir = dispatch.envir;\
+		if(browseMode) \{\
+			pairs = dispatch.getPairsForTime(val);\
+			if(pairs.isNil) \{ d.string = \cf4 ""\cf0  \} \{\
+				d.string = pairs.collect \{ \cf3 |pair|\cf0 \
+						format(\cf4 "\\n~% = %;\\n\\n"\cf0 , pair[0], pair[1].asCompileString)\
+					\}.join;\
+			\};\
+		\} \{\
+			changed = dispatch.setTime(val);\
+			if(changed) \{\
+				str = dispatch.envir.asCompileString;\
+				d. string_( \cf3 String\cf0 .streamContents \{ \cf3 arg\cf0  str; \
+					envir.storeOn(str, includeSettings: \cf3 false\cf0 ); \
+				\});\
+			\}\
+		\};\
+	\};\
+	\
+	\
+	\
+	drawLine = \{ \cf3 |x, inset=0|\cf0 \
+			\cf3 GUI\cf0 .pen.beginPath;\
+			\cf3 GUI\cf0 .pen.moveTo(x @ (5 + inset));\
+			\cf3 GUI\cf0 .pen.lineTo(x @ (vv.bounds.height + 5 - inset));\
+			\cf3 GUI\cf0 .pen.stroke;\
+	\};\
+	w.drawHook_\{\
+		\cf3 GUI\cf0 .pen.use \{	\
+			\cf3 GUI\cf0 .pen.setSmoothing(\cf3 false\cf0 );\
+			\cf3 GUI\cf0 .pen.width = 1;\
+			\
+			\cf3 Color\cf0 .white.set;\
+			drawLine.(value, 0);\
+			\
+			\cf3 Color\cf0 .new255(230, 123, 155).set;\
+			dispatch.timepoints.do \{\cf3 |x=(0)|\cf0 \
+				x = x.clip(0, tmax);\
+				drawLine.(x / tmax * vv.bounds.width + vv.bounds.left, 3);\
+			\};\
+\
+		\};\
+	\};\
+	\
+	mapVal = \{\cf3 |x|\cf0 \
+			if(x.inclusivelyBetween(vv.bounds.left, vv.bounds.left + vv.bounds.width)) \{\
+				value = x;\
+				scaledValue = x - vv.bounds.left / vv.bounds.width * tmax;\
+				m.value = scaledValue;\
+				\cf2 //onTime = dispatch.timepoints.includes(scaledValue);\cf0 \
+				w.refresh;\
+			\}\
+	\};\
+	\
+	valMap = \{\cf3 |x|\cf0 \
+			if(x.notNil) \{\
+				x = x.clip(0, tmax);\
+				m.value = scaledValue = x;\
+				value = x / tmax * vv.bounds.width + vv.bounds.left;\
+				changed.value(scaledValue);\
+			\cf2 //	onTime = timepoints.includes(scaledValue);\cf0 \
+				w.refresh;\
+			\}\
+	\};\
+	vv = \cf3 GUI\cf0 .compositeView.new(w, b2).background_(\cf3 Color\cf0 .black);\
+	v = \cf3 GUI\cf0 .userView.new(vv, \cf3 Rect\cf0 (0, 0, w.bounds.width, w.bounds.height))\
+		\
+		.mouseMoveAction_(\{\cf3 |v,x|\cf0  mapVal.value(x) \})\
+		.mouseUpAction_(\{\cf3 |v,x|\cf0  mapVal.value(x); changed.value(scaledValue); \})\
+		.mouseDownAction_(\{\cf3 |v,x|\cf0  mapVal.value(x); \});\
+	\
+	\
+	m = \cf3 GUI\cf0 .numberBox.new(w, \cf3 Rect\cf0 (0, 0, 40, 20));\
+	m.value = 0;\
+	m.action = \{ valMap.value(m.value) \};\
+	\
+	vv.keyDownAction = \{ \cf3 |v, char|\cf0 \
+		char.postln;\
+		if(char == $ , toggleHistory);\
+	\};\
+\
+	browseBut = \cf3 GUI\cf0 .button.new(w, \cf3 Rect\cf0 (0, 0, 20, 20))\
+		.states_([[\cf4 "_"\cf0 , \cf3 Color\cf0 .black], [\cf4 "-"\cf0 , \cf3 Color\cf0 .black]])\
+		.action_(\{\cf3 |b|\cf0  \
+			browseMode = b.value == 1;\
+			if(b.value == 0) \{\
+				valMap.(scaledValue);\
+			\cf2 //	currentEnvironment = proxyspace;\cf0 \
+			\cf2 //	proxyspace.dispatch = dispatch;\cf0 \
+			\} \{\
+			\cf2 //	currentEnvironment = temporaryPseudoEnvironment;\cf0 \
+			\cf2 //	temporaryPseudoEnvironment.dispatch = dispatch;\cf0 \
+			\};\
+			d.background = [\cf3 Color\cf0 .white, \cf3 Color\cf0 .grey(0.8)][b.value];\
+		\});\
+\
+	ff = \cf3 GUI\cf0 .button.new(w, \cf3 Rect\cf0 (0, 0, 20, 20)).states_([[\cf4 "->"\cf0 , \cf3 Color\cf0 .black], [\cf4 "||"\cf0 , \cf3 Color\cf0 .red]]);\
+	\
+	fba = \cf3 GUI\cf0 .button.new(w, \cf3 Rect\cf0 (0, 0, 20, 20)).states_([[\cf4 "<<"\cf0 , \cf3 Color\cf0 .black]]);\
+	\
+	fla = \cf3 GUI\cf0 .button.new(w, \cf3 Rect\cf0 (0, 0, 20, 20)).states_([[\cf4 ":<"\cf0 , \cf3 Color\cf0 .black]]);\
+	fne = \cf3 GUI\cf0 .button.new(w, \cf3 Rect\cf0 (0, 0, 20, 20)).states_([[\cf4 ">:"\cf0 , \cf3 Color\cf0 .black]]);\
+	\
+	fla2 = \cf3 GUI\cf0 .button.new(w, \cf3 Rect\cf0 (0, 0, 20, 20)).states_([[\cf4 "<"\cf0 , \cf3 Color\cf0 .black]]);\
+	fne2 = \cf3 GUI\cf0 .button.new(w, \cf3 Rect\cf0 (0, 0, 20, 20)).states_([[\cf4 ">"\cf0 , \cf3 Color\cf0 .black]]);\
+	\
+	ff.action = \{ if(ff.value == 1) \{ task.play(\cf3 AppClock\cf0 );  \} \{ task.stop \} \};\
+	fba.action = \{ valMap.(0.0) \};\
+	fne.action = \{ \
+		i = dispatch.timepoints.indexOfGreaterThan(scaledValue) ? 0; \
+		valMap.(dispatch.timepoints.at(i))\
+	 \};\
+	fla.action = \{ \
+		i = dispatch.timepoints.indexOfGreaterThan(scaledValue - 0.01);\
+		i = i ? dispatch.timepoints.lastIndex;\
+		if(i.notNil and: \{ i > 0 \}) \{\
+			valMap.(dispatch.timepoints.wrapAt(i-1))\
+		\}\
+	\};\
+	\
+	fne2.action = \{ \
+		valMap.(scaledValue + delta % tmax)\
+	 \};\
+	fla2.action = \{\
+		valMap.(scaledValue - delta  % tmax)\
+	\};\
+	\
+	\
+	\cf3 GUI\cf0 .button.new(w, \cf3 Rect\cf0 (0, 0, 20, 20)).states_([[\cf4 "#"\cf0 , \cf3 Color\cf0 .black]])\
+		.action_(\{dispatch.document\});\
+	\
+	mmax = \cf3 GUI\cf0 .numberBox.new(w, \cf3 Rect\cf0 (0, 0, 40, 20));\
+	mmax.value = tmax;\
+	mmax.action = \{ tmax = mmax.value; valMap.(scaledValue); \};\
+	\
+	\
+	\cf3 GUI\cf0 .button.new(w, \cf3 Rect\cf0 (0, 0, 20, 20)).states_([[\cf4 "$"\cf0 , \cf3 Color\cf0 .black]])\
+		.action_(\{ \
+				dispatch.removeAllAtTime(scaledValue);\
+				changed.(scaledValue);\
+				w.refresh;\
+		\});\
+	w.front;\
+	d = \cf3 Document\cf0 .new(\cf4 "history doc"\cf0 ).bounds_(\cf3 Rect\cf0 (20, 280, 670, 481));\
+	d.onClose = \{ w.close; windowFollow.stop; \cf3 CmdPeriod\cf0 .remove(playRout); \};\
+	w.onClose = \{ windowFollow.stop; \cf3 CmdPeriod\cf0 .remove(playRout); \};\
+	d.toFrontAction = d.toFrontAction.addFunc \{\
+		if(w.isClosed.not) \{ ff.valueAction = 0 \};\
+	\};\
+	nietzsche = #[\cf4 "Alles Laufenkoennen muss gelaufen sein"\cf0 , \cf4 "Der Torweg muss auch gelaufen sein"\cf0 , \cf4 "Der Augenblick zieht alles nach sich, auch sich selbst"\cf0 , \cf4 "Alles Laufenkoennen muss noch laufen"\cf0 , \cf4 "Out of damp and gloomy days, out of solitude, out of loveless words directed at us, conclusions grow in us like fungus: one morning they are there, we do not know how, and they gaze upon us."\cf0 , \cf4 "Woe to the thinker who is not the gardener but only the soil of the plants that grow up in him!"\cf0 ];\
+	windowFollow = \cf3 Routine\cf0  \{ \
+		\cf3 var\cf0  x;\
+		loop \{\
+		0.06.wait;\
+		if(d.bounds != x) \{\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 		 	w.bounds = \
+		 	\cf3 Rect\cf0 (d.bounds.left, d.bounds.top + d.bounds.height, d.bounds.width, w.bounds.height);\
+		 	if(0.3.coin) \{ nietzsche.choose.postln \};\
+		 	 \
+		 	 w.front;\
+		 	 0.01.wait;\
+		 	 d.front;\
+			\
+		 \};\
+		 x = d.bounds;\
+		\
+		  0.3.wait;\
+		\}\
+	\
+	\};\
+	playRout = \{ windowFollow.play(\cf3 AppClock\cf0 ) \};\
+	\cf3 CmdPeriod\cf0 .add(playRout);\
+	\
+	playRout.value;\
+	valMap.value(0);\
+	\
+\
+)\
+}

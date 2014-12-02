@@ -1,0 +1,560 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #ad1d13}
+p.p13 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 9.0px Monaco}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #bf0000}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000}
+p.p17 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p18 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #606060}
+p.p19 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p20 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; color: #000000}
+p.p21 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #0000bf}
+p.p22 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco CY; color: #bf0000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #4a67bc}
+span.s3 {color: #2f58d1}
+span.s4 {color: #0019ba}
+span.s5 {color: #606060}
+span.s6 {color: #566db2}
+span.s7 {color: #000000}
+span.s8 {font: 9.0px Monaco}
+span.s9 {font: 12.0px Helvetica}
+span.s10 {font: 9.0px Monaco CY}
+span.s11 {color: #0000bf}
+span.s12 {font: 9.0px Monaco CY; color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Runner<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>handler of GeoGraphy process</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p3"><br></p>
+<p class="p1">The Runner class handles all the dynamic processes on a Graph, i.e. it allows to instatiate Actants and to control them. Typically, you never instatiate directly Actant, as in that case it is not possible to coordinate them in any way.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also: </b><a href="Graph.html"><span class="s2">Graph</span></a>, <a href="Actant.html"><span class="s3">Actant</span></a><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Fundamentals</b></p>
+<p class="p2"><br></p>
+<p class="p1">At its core Runner simply handles Actants, so that you can set a common tempo for all, count vertex occurences, create a unified GUI, etc.</p>
+<p class="p2"><br></p>
+<p class="p1">Note: GUIs are always deferred, so you can use SystemClock in routines involving graphics.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (graph, bpm, weight, name)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Create a new Runner instance.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>graph </b>- a Graph object. Default value is nil.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>bpm </b>-<span class="Apple-converted-space">  </span>tempo expressed in bpm. Default value is 60, e.g. if you have a duration of 1 in the edge this means that it will last 1 second. I.e. with default, duration is expressed in seconds.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>weight </b>- weight is a value associated to an Actant. As actants can be thought as tracks, it is an abstraction for determining relations between actant. Here it is only used as the default associated to actants created thorugh runnner. Default value is 0.1.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>offsetWeight</b> - a weight proper to the runner. Default value is 0.0.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name - </b>a symbolic name for tracing the runner<b><span class="Apple-converted-space"> </span></b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s4">Graph</span>.new</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.addVertex(600, 400, 0, <span class="s5">"bump"</span>)<span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.addEdge(1, 1, 1) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r = <span class="s4">Runner</span>.new(g);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.graph.graphDict.postln ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p10"><b>Accessing Instance and Class Variables</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>actantDict_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>actantDict</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>An <a href="SC://IdentityDictionary"><span class="s6">IdentityDictionary</span></a> collecting all the actants instantiated by the Runner, so that it is possible to refer to them buy an ID.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>See <a href="Actant.html"><span class="s2">Actant</span></a>.<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>bpm_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>bpm</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Time in GeoGraphy is referred to a musical tempo (beats per minute).<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is 60, so that all durations can represent seconds.<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>graph_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>graph</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A <b>graph </b>object used by Runner. See <a href="Graph.html"><span class="s6">Graph</span></a><span class="s6">.</span></p>
+<p class="p7"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>weight_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>weight</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A default weight for newly instantiated actants.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is<span class="Apple-converted-space">  </span>0.1. See Actant.</p>
+<p class="p7"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>offsetWeight_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>offsetWeight</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A weight associated to the runner.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is<span class="Apple-converted-space">  </span>0.1. See Actant.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>statsDict</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A dictionary counting for each vertex its occurences while actants are running.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This must be done at Runner level, because there can be many actants passing through the same vertex, so total occurences cannot be counted at Actant level.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>na</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Increasing number of actants, used for intern reference.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b>Functionality</b></p>
+<p class="p11"><br></p>
+<p class="p6">The following are the most relevant methods. Still the class is a bit messy, so many methods are left without documentation purposely.</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>write (path)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Save to file a Runner object in archive form. Actually it saves two files, one with .run extension and one with .gra extension.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>path </b>- the path where to find the files. A name without extension should be provided as extensions are appended by the method.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s4">Graph</span>.new</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.addVertex(600, 400, 0, <span class="s5">"bump"</span>)<span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.addEdge(1, 1, 1) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.plot ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r = <span class="s4">Runner</span>.new(g);</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.addAndSetup(1) ;</p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.write(</span><span class="s5">"sounds/test"</span><span class="s7">) </span>//write to SCapp/sounds</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>open (path)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Open a .run file and a .gra file with the same name.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>path </b>- path to the run file.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">(</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s4">Graph</span>.new ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r = <span class="s4">Runner</span>.new(g) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.open(<span class="s5">"</span>sounds/test.run") // open test.run and test.gra</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.plot ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><span class="Apple-converted-space"> </span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>addAndSetup (aStartingVertexID, times)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>The general method to add an actant.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aStartingVertexID </b>- the vertex ID where the actant starts to walk on the graph. Default value is nil.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>times </b>- the lenght of the path on the graph, expressed in number of vertices. Default value is nil, which is then converted to inf.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>s = <span class="s4">Server</span>.default.boot ;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s4">Graph</span>.new ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r = <span class="s4">Runner</span>.new(g, weight:0.03) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s4">Painter</span>.new(g, r) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Routine</span>.new({</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>30.do({ <span class="s4">arg</span> i ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addVertex((100+1000).rand, (100+600).rand, 0, <span class="s5">"s"</span>++(70+i).asString) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(g.nv-1, g.nv-1, 2.0.rand) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.addAndSetup(g.nv-1).start(r.na-1) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1.wait</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play(<span class="s4">SystemClock</span>) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// adding some noise. You can evaluate while routine is working</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="s10"><span class="Apple-tab-span">	</span>h = </span><span class="s4">Sinusoider</span>.new(r) ;</p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.gui ; </span>// if want to see what's going on</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>////////////</p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// another ex</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(<span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// using times</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s4">Graph</span>.new ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r = <span class="s4">Runner</span>.new(g, weight:0.02).gui ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s4">Painter</span>.new(g, r) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">h = </span><span class="s4">Sinusoider</span>.new(r) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Routine</span>.new({</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>50.do({ <span class="s4">arg</span> i ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addVertex((100+1000).rand, (100+600).rand, 0, <span class="s5">"s"</span>++(70+i).asString) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(g.nv-1, g.nv-1, rrand(0.1, 0.5)) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.addAndSetup(g.nv-1, 20).start(r.na-1) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.5.wait</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play(<span class="s4">SystemClock</span>) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>removeActant (aID)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Remove the actant (after stopping if necessary).</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aID </b>- the ID of the required actant in actandDict. Default value is nil.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>s = <span class="s4">Server</span>.default.boot ;</p>
+<p class="p7"><br></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s4">Graph</span>.new ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r = <span class="s4">Runner</span>.new(g, weight:0.02).gui ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s4">Painter</span>.new(g, r) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">h = </span><span class="s4">Sinusoider</span>.new(r) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Routine</span>.new({</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>20.do({ <span class="s4">arg</span> i ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addVertex((100+1000).rand, (100+600).rand, 0, <span class="s5">"s"</span>++(30+(i*5)).asString) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(g.nv-1, g.nv-1, rrand(0.5, 1)) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.addAndSetup(g.nv-1).start(r.na-1) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1.wait</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>20.do({ <span class="s4">arg</span> i ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.removeActant(r.na-i) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2.wait ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play(<span class="s4">SystemClock</span>) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>setWeight (aID, weight)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Short prose description of method.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aID </b>- an actant ID. Default value is nil.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>weight </b>- the weight of the actant. Default value is nil.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>s = <span class="s4">Server</span>.default.boot ;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// random mixing</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s4">Graph</span>.new ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r = <span class="s4">Runner</span>.new(g, weight:0.01).gui(step: 20) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s4">Painter</span>.new(g, r) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">h = </span><span class="s4">SlicePlayer</span>(r).initAudio(<span class="s5">"sounds/a11wlk01.wav"</span>) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>40.do({ <span class="s4">arg</span> i;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addVertex((100+1000).rand, (100+600).rand, 0, <span class="s5">"p"</span>++i.asString) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(g.nv-1, g.nv-1, rrand(0.1, 1)) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.addAndSetup(g.nv-1) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.startAll ;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// automix</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Routine</span>.new({</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">inf</span>.do({ <span class="s4">arg</span> i ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.setWeight(r.actantDict[r.actantDict.keys.choose], 0.5.rand ) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(0.01, 0.25).wait ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> }) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play(<span class="s4">SystemClock</span>) ;</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>setOffsetWeight (offset)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Set the weight associated to the runner.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>OffsetWeight is an abstraction for a general volume associated to a set of tracks.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>offset </b>- the new offsetWeight. Default value is 0.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>start (aID)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>resume (aID)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>stop (aID)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Control the actant (substantially it's a wrapper for a <a href="SC://Task"><span class="s2">Task</span></a>)</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aID </b>- the desired actant's ID. Default value is nil.</p>
+<p class="p7"><span class="s8"><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>s = <span class="s11">Server</span>.default.boot ;<span class="Apple-tab-span">	</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s11">Graph</span>.new ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r = <span class="s11">Runner</span>.new(g).gui ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Painter</span>(g, r) ;</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addVertex(100, 100, 0, <span class="s5">"q80"</span>) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addVertex(100, 700, 0, <span class="s5">"q83"</span>) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addVertex(1100, 700, 0, <span class="s5">"q85"</span>) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addVertex(1100, 100, 0, <span class="s5">"q86"</span>) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(1,2, 1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(2,3, 1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(3,3, 1/3) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(3,4, 1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(4,4, 1/3) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(4,1, 1/3) ;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Squarer</span>(r) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.setTempo(480) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.addAndSetup(1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.start(1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Routine</span>.new({</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">inf</span>.do({ <span class="s11">arg</span> i;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.pause(1) ; //NOTE: pause is obsolete. No more supported!</p>
+<p class="p18"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"I have paused"<span class="s7">.postln ; //NOTE: pause is obsolete. No more supported!</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(2+1.0).rand.wait ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.resume(1) ;</p>
+<p class="p18"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Now I start again from where I was"<span class="s7">.postln ;</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(2+1.0.rand).wait ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.stop(1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">"STOP!"</span>.postln ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(2+1.0.rand).wait ;</p>
+<p class="p18"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"from the beginning"<span class="s7">.postln ;</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.start(1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(2+1.0.rand).wait ;</p>
+<p class="p17"><br></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play(<span class="s11">SystemClock</span>)</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p19"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>startAll</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>resumeAll</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>stopAll</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>The same as before but to all the actants in one time.</p>
+<p class="p7"><br></p>
+<p class="p16"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>s = <span class="s11">Server</span>.default.boot ;</p>
+<p class="p19"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//init stuff</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s11">Graph</span>.new ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r = <span class="s11">Runner</span>.new(g) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addVertex(1200.rand, 800.rand, 0, <span class="s5">"q30"</span>) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k = 31 ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>60.do({ <span class="s11">arg</span> i ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k = k+[1,2].choose ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addVertex(1200.rand, 800.rand, 0, <span class="s5">"q"</span>++k.asString) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(g.nv-2, g.nv-1, [1, 1+1/3, 4/5].choose) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if ([<span class="s11">true</span>, <span class="s11">false</span>].choose, {g.addEdge(g.nv-1, g.nv-1, [1/3, 1/5].choose) }) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addEdge(61, 1, 1) ;</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// It's better to paint AFTER it has been generated</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// otherwise refreshing kills...</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// remember that you can live the same without a Painter</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s11">Painter</span><span class="s7">(g, r) ;<span class="Apple-tab-span">	</span></span>// just comment it out</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// g.plot ; // in case you just wnat to see the topology<span class="Apple-converted-space"> </span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.addAndSetup(1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.addAndSetup(10) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.addAndSetup(20) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.addAndSetup(30) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// audio</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Squarer</span>(r) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.setTempo(500) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.start(1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.start(2) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.start(3) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.start(4) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// scheduling</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Routine</span>.new({</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">inf</span>.do({ <span class="s11">arg</span> i;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.pauseAll ; //NOTE: pause is obsolete. No more supported!</p>
+<p class="p18"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"I have paused"<span class="s7">.postln ; //NOTE: pause is obsolete. No more supported!</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(0.1+0.5).rand.wait ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.resumeAll ;</p>
+<p class="p18"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"Now I start again from where I was"<span class="s7">.postln ;</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(0.1+0.5.rand).wait ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.stopAll ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">"STOP!"</span>.postln ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(0.1+0.5.rand).wait ;</p>
+<p class="p18"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"from the beginning"<span class="s7">.postln ;</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.startAll ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(0.1+0.5.rand).wait ;</p>
+<p class="p17"><br></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play(<span class="s11">SystemClock</span>)</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>setTempo (aBpm)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Set a general tempo in bpm. The tempo is the number of unit in time.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>So if tempo == 60, then a duration of 1 unit is a second.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aBpm </b>- tempo in bpm. Default value is nil.</p>
+<p class="p19"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Server</span>.local.boot ;</p>
+<p class="p19"><br></p>
+<p class="p20"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">(</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">var</span> graph, runner, bpm, gui ;</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// you can evidently have more graphs, runners, etc</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// each one can receive different values e.g. for tempo</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>5.do({ <span class="s11">arg</span> i ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>graph = <span class="s11">Graph</span>.new ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>runner = <span class="s11">Runner</span>.new(graph, name: (<span class="s5">"runner "</span>++i).asSymbol) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>gui = <span class="s11">RunnerGUI</span>(runner, controlNum: 2) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>gui.w.bounds_(gui.w.bounds.moveBy(0, i*210.neg)) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Sinusoider</span>(runner) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>graph.addVertex(1200.rand, 800.rand, 0, <span class="s5">"s"</span>++(80+(i*[1,2,3].choose)).asString) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>graph.addEdge(1,1, 1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>runner.addAndSetup(1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>runner.start(1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Routine</span>.new({</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">inf</span>.do({</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bpm = rrand(i*20+40, i*20+200) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>runner.setTempo(bpm) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(0.5, 1).wait ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play(<span class="s11">SystemClock</span>) ;<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>gui (step)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Create a gui control for all the Runner's actants by instantiating a <b>RunnerGUI </b>object.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The first row shows the runner's name and a slider controlling the offsetWeight.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Then each actant is given a start/stop button, a label for the actual vertex, a slider for the weight.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>step </b>- a multiplier for scaling the gui. Default value is 35.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">var</span> step ;</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// changing the step</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s11">Graph</span>.new ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r = <span class="s11">Runner</span>.new(g) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.addVertex(1200.rand, 800.rand, 0, <span class="s5">""</span>) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.addAndSetup(1) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">Routine</span>.new({</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>100.do({ <span class="s11">arg</span> i ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>step = i+10 ;</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// RunnerGUI is what Runner calls</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// step is the step arg</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>v = <span class="s11">RunnerGUI</span>.new(r, step, 100, 400) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.5.wait ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>v.w.close ;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play(<span class="s11">SystemClock</span>)</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p10"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p15">// A variation on the random mixing example exploiting the<span class="Apple-converted-space"> </span></p>
+<p class="p15">// SlicePlayer spatial mapping</p>
+<p class="p17"><br></p>
+<p class="p16">s = <span class="s11">Server</span>.local.boot ;</p>
+<p class="p17"><br></p>
+<p class="p17"><br></p>
+<p class="p16">(</p>
+<p class="p16">g = <span class="s11">Graph</span>.new ;</p>
+<p class="p16">r = <span class="s11">Runner</span>.new(g, weight:0.2).gui ;</p>
+<p class="p16">p = <span class="s11">Painter</span>.new(g, r) ;</p>
+<p class="p16"><span class="s10">h = </span><span class="s11">SlicePlayer</span>(r).initAudio(<span class="s5">"sounds/a11wlk01.wav"</span>) ;</p>
+<p class="p16">20.do({ <span class="s11">arg</span> i;</p>
+<p class="p16"><span class="Apple-tab-span">	</span>g.addVertex(100+100.rand, 100+100.rand, 0, <span class="s5">"p"</span>++i.asString) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span>g.addEdge(g.nv-1, g.nv-1, rrand(0.1, 1)) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span>r.addAndSetup(g.nv-1) ;</p>
+<p class="p16">}) ;</p>
+<p class="p16">)</p>
+<p class="p17"><br></p>
+<p class="p16">r.startAll ;</p>
+<p class="p17"><br></p>
+<p class="p15">// moving around the cloud</p>
+<p class="p16">(</p>
+<p class="p16"><span class="s11">var</span> v, x, y;</p>
+<p class="p21">Routine<span class="s7">.new({</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="s11">inf</span>.do({ <span class="s11">arg</span> i ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>v = g.graphDict.keys.choose ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = g.graphDict[v][0];</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>y = g.graphDict[v][1] ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.graph.changeVertexPosition(v, (x+50)%1200, (y+50)%800) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(0.01, 0.25).wait ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> }) ;</p>
+<p class="p16">}).play(<span class="s11">SystemClock</span>) ;</p>
+<p class="p16">)</p>
+<p class="p17"><br></p>
+<p class="p15">//////////////////////////</p>
+<p class="p15">// Another looping cloud</p>
+<p class="p16">(</p>
+<p class="p16">g = <span class="s11">Graph</span>.new ;</p>
+<p class="p16">r = <span class="s11">Runner</span>.new(g, weight:0.2).gui ;</p>
+<p class="p16">p = <span class="s11">Painter</span>.new(g, r) ;</p>
+<p class="p16"><span class="s10">h = </span><span class="s11">SlicePlayer</span>(r).initAudio(<span class="s5">"sounds/a11wlk01.wav"</span>) ;</p>
+<p class="p16">20.do({ <span class="s11">arg</span> i;</p>
+<p class="p16"><span class="Apple-tab-span">	</span>g.addVertex(550+100.rand, 350+100.rand, 0, <span class="s5">"p"</span>++i.asString) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span>g.addEdge(g.nv-1, g.nv-1, rrand(0.1, 1)) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span>r.addAndSetup(g.nv-1) ;</p>
+<p class="p16">}) ;</p>
+<p class="p16">)</p>
+<p class="p17"><br></p>
+<p class="p16">r.startAll ;</p>
+<p class="p15">// move it</p>
+<p class="p16">(</p>
+<p class="p16"><span class="s11">var</span> v, x, y;</p>
+<p class="p21">Routine<span class="s7">.new({</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="s11">inf</span>.do({ <span class="s11">arg</span> i ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>v = g.graphDict.keys.choose ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = g.graphDict[v][0];</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>y = g.graphDict[v][1] ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.graph.changeVertexPosition(v, (x+rrand(-50,50))%1200, (y+rrand(-50,50))%800) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(0.01, 0.25).wait ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> }) ;</p>
+<p class="p16">}).play(<span class="s11">SystemClock</span>) ;</p>
+<p class="p16">)</p>
+<p class="p17"><br></p>
+<p class="p15">///////////////////////////</p>
+<p class="p15">// A third one</p>
+<p class="p15">// No mercy. sooner or later it will crash...</p>
+<p class="p15">// (oh, but SC is damn' efficient, so you need many minutes)<span class="Apple-converted-space"> </span></p>
+<p class="p17"><br></p>
+<p class="p16"><span class="s11">Server</span>.local.boot ;</p>
+<p class="p17"><br></p>
+<p class="p16">(</p>
+<p class="p16">g = <span class="s11">Graph</span>.new ;</p>
+<p class="p16">r = <span class="s11">Runner</span>.new(g, weight:0.6).gui ;</p>
+<p class="p16">p = <span class="s11">Painter</span>.new(g, r) ;</p>
+<p class="p22">// how many as you want</p>
+<p class="p22">// note that this means they are in synch</p>
+<p class="p22">// if you want parallelism instantiate another Runner</p>
+<p class="p18"><span class="s12"><span class="Apple-converted-space"> </span></span><span class="s11">SlicePlayer</span><span class="s7">(r).initAudio(</span>"/audioRumentario/sources/fiati/chalumeau or.wav"<span class="s7">) ;</span></p>
+<p class="p18"><span class="s12"><span class="Apple-converted-space"> </span></span><span class="s11">SlicePlayer</span><span class="s7">(r).initAudio(</span>"/audioRumentario/sources/fiati/ocarina or.wav"<span class="s7">) ;</span></p>
+<p class="p18"><span class="s12"><span class="Apple-converted-space"> </span></span><span class="s11">SlicePlayer</span><span class="s7">(r).initAudio(</span>"/audioRumentario/sources/fiati/quena or.wav"<span class="s7">) ;</span></p>
+<p class="p18"><span class="s12"><span class="Apple-converted-space"> </span></span><span class="s11">SlicePlayer</span><span class="s7">(r).initAudio(</span>"/audioRumentario/sources/fiati/fl circolo or.wav"<span class="s7">) ;</span></p>
+<p class="p18"><span class="s12"><span class="Apple-converted-space"> </span></span><span class="s11">SlicePlayer</span><span class="s7">(r).initAudio(</span>"/audioRumentario/sources/fiati/fl quadro or.wav"<span class="s7">) ;</span></p>
+<p class="p18"><span class="s12"><span class="Apple-converted-space"> </span></span><span class="s11">SlicePlayer</span><span class="s7">(r).initAudio(</span>"/audioRumentario/sources/fiati/coulisse or.wav"<span class="s7">) ;</span></p>
+<p class="p16">g.addVertex(575+50.rand, 375+50.rand, 0, <span class="s5">"p"</span>++0.asString) ;</p>
+<p class="p16">19.do({ <span class="s11">arg</span> i;</p>
+<p class="p16"><span class="Apple-tab-span">	</span>g.addVertex(550+100.rand, 350+100.rand, 0, <span class="s5">"p"</span>++(i+1).asString) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span>g.addEdge(g.nv-2, g.nv-1, rrand(0.01, 0.1)) ;</p>
+<p class="p16">}) ;</p>
+<p class="p16">g.addEdge(g.nv-1, 1, rrand(0.01, 0.1)) ;</p>
+<p class="p16">r.addAndSetup(1) ;</p>
+<p class="p16">)</p>
+<p class="p17"><br></p>
+<p class="p16">r.start(1) ;</p>
+<p class="p17"><br></p>
+<p class="p16">(</p>
+<p class="p16"><span class="s11">var</span> v, x, y, j;</p>
+<p class="p21">Routine<span class="s7">.new({</span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="s11">inf</span>.do({ <span class="s11">arg</span> i ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>v = g.graphDict.keys.choose ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = g.graphDict[v][0];</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>y = g.graphDict[v][1] ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>j = i*0.1 ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.graph.changeVertexPosition(v, (x+rrand(-50-j,50+j))%1200, (y+rrand(-50-j,50+j))%800) ;</p>
+<p class="p15"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Now you know...</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.setTempo(r.bpm*0.001+r.bpm) ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(0.01, 0.25).wait ;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> }) ;</p>
+<p class="p16">}).play(<span class="s11">SystemClock</span>) ;</p>
+<p class="p16">)</p>
+<p class="p5"><br></p>
+</body>
+</html>

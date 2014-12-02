@@ -1,0 +1,141 @@
+CLASS:: MxTimeGui
+summary:: Timeline view
+categories:: Mx
+
+
+DESCRIPTION:: This object is the timeline view that coordinates any timeline views that the units may support.
+
+The Mx itself has settings for endBeat and tempo, and it maintains a beat Position object as it plays, but otherwise does not have any timeline system.
+
+But the objects that it hosts may have timeline systems and this view coordinates display, scrolling, zooming and transport control for any objects that do.
+
+The objects driver file can implement the ~timeGui handler, ~beatDuration and ~zoomTimeGui.  This will be documented when its finalized.
+
+
+INSTANCEMETHODS::
+
+METHOD:: from
+
+
+
+
+
+METHOD:: to
+
+
+
+
+
+METHOD:: maxTime
+
+
+argument:: mt
+
+
+
+
+
+METHOD:: laneHeight
+
+
+
+
+
+METHOD:: guiBody
+
+
+argument:: parent
+
+
+
+
+
+METHOD:: prSetFromTo
+
+
+argument:: argFrom
+
+
+argument:: argTo
+
+
+
+
+
+METHOD:: zoom
+
+
+argument:: argFrom
+
+
+argument:: argTo
+
+
+argument:: updateZoomControl
+
+
+
+
+
+METHOD:: zoomBy
+
+
+argument:: percentage
+
+
+argument:: round
+
+
+
+
+
+METHOD:: moveBy
+
+
+argument:: percentage
+
+
+argument:: round
+
+
+
+
+
+METHOD:: keyDownResponder
+
+
+
+
+
+METHOD:: writeName
+
+
+
+
+
+METHOD:: background
+
+
+argument:: b
+
+
+
+
+
+METHOD:: guify
+
+
+argument:: parent
+
+
+argument:: bounds
+
+
+argument:: title
+
+
+
+
+
+
+

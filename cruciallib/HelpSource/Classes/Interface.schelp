@@ -1,0 +1,550 @@
+CLASS:: Interface
+summary:: Sets up an environment in which you can build a player, a GUI and responders for midi and keyboard control
+categories:: Libraries>crucial>Instr, Libraries>crucial>Players
+related:: Classes/Instr, Classes/Patch, Classes/Mx
+
+DESCRIPTION:: This sets up an environment in which you can build a player,
+build a gui for that player, and respond to midi and keyboard control.
+
+The gui is quite optional, and in fact non-screen-staring is one of its primary
+goals.
+
+section:: GUI
+You can set a custom gui function.
+	This can use any combination of .gui style and normal Views
+	The Interface can be placed on any other windows of any style.
+	You may decline to customize your gui.
+
+section:: MIDI
+If you set any of these handler functions:
+	onNoteOn
+	onNoteOff
+	onPitchBend
+	onCC
+then appropriate midi responders will be enabled when the player starts to play
+and disabled when it stops.  This includes if the player is being started/stopped by
+external mixers, PlayerPool etc.
+
+
+KeyDown/KeyUp
+	keyDownAction
+	keyUpAction
+	(only when guied, only when focus is within the MetaPatch's views)
+
+
+Interface is great for having no gui at all.  Personally I use the gui stuff to
+set up parameters for performing, and then when performing I use no gui, only MIDI
+controllers and key commands.
+
+
+The function that builds the player is actually an link::Classes/InterfaceDef::.  These can be created and stored in the same fashion as Instr and kept in the same folder.  You can then address them by name, supply paramaters as you do for Patch and you will get an Interface which will use the gui and midi functions from the InterfaceDef.
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: interfaceDef
+
+
+argument:: args
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: interfaceDef
+
+
+
+METHOD:: args
+
+
+
+METHOD:: onPrepareToBundle
+
+
+
+METHOD:: onPlay
+
+
+
+METHOD:: onStop
+
+
+
+METHOD:: onFree
+
+
+
+METHOD:: onNoteOn
+
+
+
+METHOD:: onNoteOff
+
+
+
+METHOD:: onCC
+
+the control change handler is installed (via link::Classes/CCResponder::) when play starts and unistalled when
+play stops.
+
+It can be a simple function:
+code::
+interface.onCC = { arg src,chan,num,value;
+	[num,value].postln;
+};
+::
+
+a CCResponder that responds on a specific number.
+(note: tell it NOT to install itself, because the Interface
+will install and uninstall it when play starts or stops)
+
+code::
+	onCC = CCResponder(num,{ },install: false);
+::
+
+or a custom class:
+
+code::
+onCC = KorgMicroKontrolCC(
+				[\slider,0,{  }],
+				[\slider,1,{  }],
+				[\encoder,0,{  }],
+				[\encoder,1,{  }],
+				[\x,{ }],
+				[\y, { }]
+			);
+::
+
+whatever it is will be asked to respond to 'value' :
+
+code::
+	thing.value(src,chan,num,value);
+::
+
+
+
+METHOD:: guiFunction
+
+
+
+METHOD:: guiBodyFunction
+
+
+
+METHOD:: keyDownAction
+
+
+
+METHOD:: keyUpAction
+
+
+
+METHOD:: init
+
+
+argument:: i
+
+
+argument:: a
+
+
+
+METHOD:: createArgs
+
+
+argument:: argargs
+
+
+
+METHOD:: prepareToBundle
+
+
+argument:: agroup
+
+
+argument:: bundle
+
+
+argument:: private
+
+
+argument:: bus
+
+
+argument:: defWasLoaded
+
+
+
+METHOD:: didSpawn
+
+
+
+METHOD:: didStop
+
+
+
+METHOD:: freeToBundle
+
+
+argument:: b
+
+
+
+METHOD:: gui
+
+
+argument:: f
+
+
+
+METHOD:: guiClass
+
+
+
+METHOD:: guiBody
+
+
+argument::  ... args
+
+
+
+METHOD:: use
+
+
+argument:: function
+
+
+
+METHOD:: defer
+
+
+argument:: function
+
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: storeModifiersOn
+
+
+argument:: stream
+
+
+
+
+EXAMPLES::
+
+code::
+(
+
+m = Interface({
+	// an environment is in place here
+	~freq = KrNumberEditor(400,[100,1200,\exp]);
+	~syncFreq = KrNumberEditor(800,[100,12000,\exp]);
+	~amp = KrNumberEditor(0.1,\amp);
+
+	Patch({ arg freq,syncFreq,amp=0.3;
+		SyncSaw.ar(syncFreq,freq) * amp
+	},[
+		~freq,
+		~syncFreq,
+		~amp
+	])
+
+});
+
+// setting the gui
+m.gui = { arg layout,metaPatch;
+	var joy;
+
+	// the same environment is again in place
+	~freq.gui(layout);
+
+	ActionButton(layout,"twitch",{
+		var x,y;
+		// action button now remembers the environment !
+		~freq.setUnmappedValue( x = 1.0.rand );
+		~syncFreq.setUnmappedValue( y = 1.0.rand );
+		joy.x_(x).y_(y).changed;
+	});
+
+	joy = GUI.slider2D.new(layout, 100 @ 100)
+		.action_({ arg sl;
+			// at this time not in environment
+			metaPatch.use({ // use the metaPatch's environment
+				~freq.setUnmappedValue(sl.x);
+				~syncFreq.setUnmappedValue(sl.y );
+			})
+		});
+
+	EZNumber(layout,30 @ 30,"amp",[0.01,0.4,\exp],{ arg ez;
+		metaPatch.use({
+			~amp.value_(ez.value).changed;
+		})
+	});
+
+};
+
+// creating a gui
+m.gui
+
+
+)
+
+// You can place them on any window
+(
+w = GUI.window.new("other",Rect(20,20,700,200));
+w.front;
+
+g = m.gui(w,Rect(30,30,500,200));
+
+g.background = Color.blue(alpha:0.4);
+)
+
+
+// MIDI handler installed on play
+// takes some seconds to start up, then play your midi keyboard
+(
+
+Instr([\klankperc,\k2a],{ arg trig=0.0,sfreqScale=1.0,sfreqOffset=0.0,stimeScale=1.0,foldAt=0.1;
+	Klank.ar(
+				`[
+					FloatArray[ 87.041, 198.607 ],
+					nil,
+					FloatArray[ 0.165394, 0.15595 ]
+				],
+				K2A.ar(trig),
+				sfreqScale,sfreqOffset,stimeScale
+			).squared.fold2(foldAt)
+},[
+	nil,
+	[0.01,100],
+	[0,10000],
+	[0.01,100]
+]);
+
+// Create 5 patches, cycle through them on each midi key
+Interface({ arg quantity=5;
+
+	~quantity = quantity.poll;
+	~a = Array.fill(~quantity,{ arg i;
+		Patch.new([\klankperc,\k2a],
+		[
+			BeatClockPlayer(16),
+			i * (3.midiratio),
+			i * (3.midiratio),
+			1.0,
+			~foldAt = KrNumberEditor(0.1,[1.0,0.01])
+		]);
+	});
+
+	~pool = PlayerPool( ~a,
+			env: Env.asr(0.01,releaseTime: 0.01),
+			round: 0.25);
+
+
+}).onNoteOn_({ arg note,vel;
+	// the same environment is in place here
+	//~foldAt.setUnmappedValue(vel / 127.0).changed;
+	~pool.select(note % ~quantity)
+}).play
+
+)
+// fast triggering still trips it up.  working on it.
+
+
+// Simple CC example
+(
+
+Interface({
+
+	~freq = KrNumberEditor(400,[100,1200,\exp]);
+	~syncFreq = KrNumberEditor(800,[100,12000,\exp]);
+	~amp = KrNumberEditor(0.1,\amp);
+
+	Patch({ arg freq,syncFreq,amp=0.3;
+		SyncSaw.ar(syncFreq,freq) * amp
+	},[
+		~freq,
+		~syncFreq,
+		~amp
+	])
+
+}).onCC_({ arg src,chan,num,value;
+	if(num == 80,{  ~freq.setUnmappedValue(value/127);});
+	if(num == 81,{  ~syncFreq.setUnmappedValue(value/127);});
+	if(num == 82,{  ~amp.setUnmappedValue(value/127);});
+})
+.play
+
+)
+(
+
+Interface({
+
+	~freq = KrNumberEditor(400,[100,1200,\exp]);
+	~syncFreq = KrNumberEditor(800,[100,12000,\exp]);
+	~amp = KrNumberEditor(0.1,\amp);
+
+	Patch({ arg freq,syncFreq,amp=0.3;
+		SyncSaw.ar(syncFreq,freq) * amp
+	},[
+		~freq,
+		~syncFreq,
+		~amp
+	])
+
+}).onCC_(
+	ResponderArray(
+		// these normally install themselves immediately, but the Interface will be handling that
+		CCResponder(80,{ arg value; ~freq.setUnmappedValue(value/127);},install: false),
+		CCResponder(81,{ arg value; ~syncFreq.setUnmappedValue(value/127);},install: false),
+		CCResponder(82,{ arg value; ~amp.setUnmappedValue(value/127);},install: false)
+	)
+)
+.play
+
+)
+
+
+
+(
+// beat juggler
+
+Interface({ arg sample;
+
+	~beatStart1 = NumberEditor(0.0,[0.0,8.0,\lin,0.25]);
+	~beatStart2 = NumberEditor(0.0,[0.0,8.0,\lin,0.25]);
+	~durations = [ 2.0,2.0];
+
+	~patch = InstrGateSpawner({ arg sample,dur, pchRatio,beatStart,amp=0.3,envadsr,tempo;
+
+			var gate;
+			gate = Trig1.kr(1.0,dur / tempo);
+
+			pchRatio = pchRatio * sample.pchRatioKr;
+			beatStart = beatStart * sample.beatsizeIr;
+
+			PlayBuf.ar(sample.numChannels,
+					sample.bufnumIr,
+					pchRatio,
+					1.0,
+					beatStart,
+					1.0)
+
+				* EnvGen.kr(envadsr, gate,amp,doneAction: 2 )
+		},[
+			sample,
+			// dur uses a Pfunc to ask the delta till the next event
+			Pfunc({ arg igs;  (igs.delta * 0.9) }),
+
+			// get an .ir input into the synth function
+			~pchRatio = IrNumberEditor(1.0,[-2,2,\lin,0.25]),
+
+			// patterns naturally create an .ir input
+			Pswitch1([
+				~beatStart1,
+				~beatStart2
+			],Pseq([0,1],inf))	// juggle back and forth
+
+		],
+		// stream of beat durations
+		Pseq(~durations,inf));
+
+	~patch
+
+},[
+	// a blank sample
+	Sample.new(nil)
+])
+.gui_({ arg layout; // we are given a FlowView
+
+	var env,ddsp,bdsp;
+
+	CXLabel(layout,"Click the sample path (nil) to browse for a sample. You can choose new samples even while playing.");
+	layout.startRow;
+	/* the environment from the build function above is available here */
+	~sample.gui(layout,500@100);
+
+	/* but when view actions fire you will be in a different environment
+		so save it here in a variable for use later */
+	env = currentEnvironment;
+
+	// .vert returns an SCVLayoutView so we can stack each 2d over its caption
+	layout.vert({ arg layout;
+		GUI.slider2D.new(layout,100@100)
+			.action_({ arg sl;
+				env.use({
+					// set a 0..1 value, map it to the spec ranges of the NumberEditors
+					~beatStart1.setUnmappedValue(sl.x);
+					~beatStart2.setUnmappedValue(sl.y);
+					bdsp.object_( [~beatStart1.value,~beatStart2.value]).changed;
+				})
+			});
+		GUI.staticText.new(layout,100@13).object_("Beat starts:");
+		bdsp = GUI.staticText.new(layout,100@13).object_([~beatStart1.value,~beatStart2.value].asString);
+	},100@120);
+
+	layout.vert({ arg layout;
+		GUI.slider2D.new(layout,100@100)
+			.action_({ arg sl;
+				env.use({
+					var stride,part;
+					stride = 2 ** [3,4,5,6].at((sl.x * 3).asInteger) * 0.125;
+					part = (stride * (1.0 - sl.y)).round(0.25).clip(0.25,stride - 0.25);
+					~durations.put(0,part);
+					~durations.put(1,stride - part);
+					ddsp.object_(~durations.sum.asString + "=" + ~durations).changed;
+				});
+			});
+		GUI.staticText.new(layout,100@13).object_("beats");
+		ddsp = GUI.staticText.new(layout,100@13).object_(~durations.sum.asString + "=" + ~durations);
+	},100@120);
+	CXLabel(layout,"pchRatio:");
+	~pchRatio.gui(layout);
+})
+.gui
+
+)
+
+::
+
+
+section:: onPlay onStop onFree
+
+code::
+(
+
+Interface({
+
+	~freq = KrNumberEditor(400,[100,1200,\exp]);
+	~amp = KrNumberEditor(0.1,[0.01,0.4,\exp]);
+
+	Patch({ arg freq,amp;
+		SinOsc.ar(freq) * amp
+	},[
+		~freq,
+		~amp
+	])
+
+})
+.onPlay_({
+	"playing".postln;
+})
+.onStop_({ // also on command-.
+	"stopping".postln;
+})
+.onFree_({
+	"freeing".postln;
+}).play
+
+)
+::

@@ -1,0 +1,55 @@
+TITLE:: EntityManager
+summary:: A 'world' for the entities
+categories:: Class
+related:: Overviews/Gameloop_Overview
+
+DESCRIPTION::
+
+EntityManager is a 'world' for Entities. When an Entity is created it is added to an EntityManager. the responsibilities of the manager are: (1) updating the entities (the time between updates is stored in the managers class variable dt). (2) checking for collisions using an instance of SpatialHashing and sending the .collision msg to the entities. You can add to it 3 types of entities: free, static and mobile. When adding a free Entity the manager doesn't include it when checking for collisions. Mobile entities are checked against each other and with static ones while static are not checked against each other. This saves processing time by reducing the number of checks while the spatial hashing index becomes more efficient by registering the static entities one time only, at the time of creation.
+
+CLASSMETHODS::
+
+METHOD:: new
+
+On instantiation we need to pass in the spatial index.
+
+INSTANCEMETHODS::
+
+METHOD:: update
+This is the method that is used inside a game loop to set the world in motion. Examine the internal of the methods if you want to know how the rest of the class is working. The update method is expected to be called inside a loop/routine with a wait time of the current dt. An example of usage can be found in the link::GameLoop:: class.
+
+METHOD:: newIndex
+Swap the index for a new one.
+
+METHOD:: clearEntities
+Clear just the entities.
+
+METHOD:: collisionCheck
+Check for collisions between the relevant objects.
+
+METHOD:: clearWalls
+Clear all walls currently registered with the manager.
+
+METHOD:: addWall
+Add a wall to the manager.
+
+METHOD:: removeWall
+Remove a wall from the manager.
+
+METHOD:: clear
+Clear all entities and walls (Does not affect the camera).
+
+METHOD:: mobList
+Get all mobile entities.
+
+METHOD:: freeList
+Get all free entities.
+
+METHOD:: staticList
+Get static entities.
+
+METHOD:: entList
+Get all entities in a List.
+
+METHOD:: wallList
+Get the walls in a List.

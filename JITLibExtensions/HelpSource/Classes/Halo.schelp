@@ -1,0 +1,87 @@
+TITLE:: Halo
+summary:: associate a halo of meanings to any object.
+categories:: Libraries/JITLib
+related:: Classes/Library, Classes/Ndef, Classes/Tdef, Classes/Pdef
+
+DESCRIPTION::
+Halo is a singleton class that keeps a global Library where objects can put their halos. Halo content can be organized as lists of keys that access objects.
+Typical things to keep in halos would be specs for JITLib proxies; or categories and tags that can be used to select objects based on informed criteria.
+
+Strong::Caveat: :: This may be problematic for garbage collection,
+as it may keep objects around that would become unreachable otherwise.
+Thus, Halo is intended only for use with semi-permanent objects!
+
+Strong::Also note: :: Usually, one never talks to Halo directly except for debugging. Instead, one uses the object itself to store things into its halo, as shown in the examples.
+
+code::
+
+	// object 'a'
+a = 12;
+a.addHalo(\otto, 234);
+a.addHalo(\ada, \bebe, 123);
+
+a.getHalo;
+a.getHalo( \otto)
+a.getHalo(\ada)
+a.getHalo(\ada, \bebe)
+
+	// internal
+Halo.lib;
+Halo.at(a);
+Halo.postTree;
+
+	// special Halo-related method addSpec / getSpec
+	// one can add and get specs, e.g. for Ndefs, Tdefs, Pdefs
+a.addSpec(\myfreak, [66.6, 666, \exp]);
+a.addSpec(\amp, [0, 4, \amp]);
+a.getSpec(\amp);
+a.getSpec(\pan);	// get defaults from Spec.specs if missing in halo
+a.getSpec
+
+Halo.at(a, \spec);
+
+
+Ndef(\a).addSpec(\myfreak, [66.6, 666, \exp]);
+Ndef(\a).addSpec(\amp, [0, 4, \amp]);
+
+Ndef(\a).getSpec
+NdefGui ... should use Ndef's Halo!
+
+
+	// add tags for semantic clouds;
+	// can be weighted (default weight is 1)
+a.addTag(\kewl);
+a.addTag(\poor);
+a.addTag(\kwaizy, 3);
+
+a.getTag;
+a.getTag(\poor);
+
+	// add categories for searching, can have weights also
+a.addCat(\num);
+a.addCat(\even);
+a.addCat(\small);
+
+a.getCat;
+
+::
+
+CLASSMETHODS::
+
+METHOD:: put
+put something into Halo lib under the hierarchical list of keys.
+the first key is the object itself for which the halo is stored,
+the other keys can be arbitrarily deep.
+
+METHOD:: at
+access things in the Halo Library by hierarchical list of keys:
+the first key is the object itself for which the halo is stored,
+the other keys can be arbitrarily deep.
+
+returns:: the halo content stored at ... keys.
+
+METHOD:: postTree
+pretty-post the current Halo tree
+
+private:: initClass, lib, nodeType
+

@@ -1,0 +1,119 @@
+CLASS:: AbstractPlayerGui
+summary:: base class for all Player guis
+categories:: Libraries>crucial>GuiClasses, Libraries>crucial>Players
+related:: Classes/ObjectGui, Classes/AbstractPlayer
+
+DESCRIPTION::
+This is the parent class for all gui classes of AbstractPlayer subclasses.
+
+Usually the only method you need to implement in your subclass is guiBody
+
+to the standard ObjectGui it adds these visual elements:
+
+server boot controls
+play button
+stop button  [ ]
+free button
+tempo control
+save button
+save as
+#path - post the path
+#        - post the object as a compile string
+
+
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: gui
+
+
+argument:: parent
+
+
+argument:: bounds
+
+
+argument::  ... args
+
+
+
+METHOD:: background
+
+
+argument:: b
+
+
+
+METHOD:: topGui
+	does
+		synthConsole
+		saveConsole
+	does writeName
+	does guiBody
+	then shrinks the window to fit
+
+argument:: parent
+
+
+argument:: bounds
+
+
+argument::  ... args
+
+
+
+METHOD:: writeName
+	write the name of the object as a label.
+	the color of the name label is different if the object has a path (was loaded from disk)
+
+argument:: layout
+
+
+
+METHOD:: viewDidClose
+
+
+
+METHOD:: keyDownResponder
+
+
+
+METHOD:: saveConsole
+	standard save controls using link::Classes/SaveConsole::. you can override this method in subclasses to customise.
+
+
+
+argument:: layout
+
+
+
+METHOD:: synthConsole
+standard play/record/etc. controls using link::Classes/SynthConsole::.   you can override this method in
+	subclasses to customise.
+
+argument:: layout
+
+
+
+METHOD:: durationString
+	returns a formatted string representing the minutes:seconds duration of the player
+
+
+
+METHOD:: durationGui
+	subclasses can call this to add a display of the duration of the player.  it will
+	update itself when the player changes and also when the Tempo (global) changes which affects the calculation of the total duration in seconds.
+
+argument:: layout
+
+
+
+METHOD:: enableMIDI
+
+
+
+
+

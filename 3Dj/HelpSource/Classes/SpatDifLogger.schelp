@@ -1,0 +1,85 @@
+TITLE:: SpatDifLogger
+summary:: a SpatDifLogger
+categories:: Libraries>3Dj
+related:: Guides/3Dj, Classes/SpatialRender, Classes/SpatDifPlayer
+
+DESCRIPTION::
+This class provides the functionality to register all incoming OSC-SpatDIF messages and save them in a textfile, which can be afterwards played by a link::Classes/SpatDifPlayer::.
+
+
+
+A SpatDifLogger is created and managed by the link::Classes/SpatialRender:: instance, so normally the user doesn't need to deal with it directly.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+Most of the arguments of this method are optional parameters for the Meta Section headers of the SpatDIF file, as defined in link::http://redmine.spatdif.org/attachments/download/105/SpatDIF-specs-V0.3.pdf::
+
+ARGUMENT:: fn
+File name where save the messages.
+
+ARGUMENT:: path
+Path to file
+
+ARGUMENT:: extensions
+Array with the names of the used SpatDif extensions, for the Meta section
+
+ARGUMENT:: author
+Name of the author, for the Meta section
+
+ARGUMENT:: host
+Authoring tool used, for the Meta section
+
+ARGUMENT:: date
+Date, for the Meta section
+
+ARGUMENT:: session
+Session number, for the Meta section
+
+ARGUMENT:: location
+Venue location, for the Meta section
+
+ARGUMENT:: annotation
+General comments, for the Meta section
+
+
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: offset, writeMetaInfo, init, oscRecFunc, writeMetaExtensions, writeMetaEnd, writeMetaVersion, timelogfile
+
+
+METHOD:: writeLine
+Write a new SpatDIF command in the Time Section
+
+ARGUMENT:: msg
+An Array containing a valid SpatDIF message, as formatted after link::Classes/NetAddr#-sendMsg::
+
+ARGUMENT:: time
+Timestamp of the message
+
+
+
+
+METHOD:: resetTime
+Reset the internal time
+
+METHOD:: save
+Save the file
+
+METHOD:: close
+Close the file
+
+METHOD:: deltaTime
+
+Get/set the minimum time interval, below which two messages are considered simultaneous.
+Default to 10 miliseconds.
+
+METHOD:: log
+Get/set whether to log incoming messages.
+Default to true.
+
+

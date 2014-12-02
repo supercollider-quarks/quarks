@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.25">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd0b0b}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008417}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #2024c7}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #e20d0d; min-height: 12.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #e20d0d}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ffac28; min-height: 12.0px}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p19 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #2226cf}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #000000}
+span.s4 {color: #2024c7}
+span.s5 {color: #008417}
+span.s6 {color: #2226cf}
+span.s7 {color: #e20d0d}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>AdCVerb</b></span><span class="s2"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>a simple reverb based on Schroeder and Moorer/Loy models,<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tuned for low coloration, with some special tweaks.</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">AdCVerb is a bank of comb filters going thru a bank of allpass filters, with optional predelay.</p>
+<p class="p1">Input filtering is provided (high rolloff, DC removal), and it is easy and efficient to use for<span class="Apple-converted-space"> </span></p>
+<p class="p1">multichannel systems.</p>
+<p class="p3"><br></p>
+<p class="p1">The overall structure is:</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4"><span class="Apple-converted-space">     </span>||||| <span class="Apple-converted-space">  </span>in (number of channels of input array, e.g. 5)</p>
+<p class="p4"><span class="Apple-converted-space">     </span>\\|//<span class="Apple-tab-span">	</span>summed to<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-converted-space">       </span>|<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mono<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>/// \\\<span class="Apple-tab-span">	</span>fanning out to &lt;numCombs&gt; (e.g. 6 here)</p>
+<p class="p4"><span class="Apple-converted-space">    </span>||| ||| <span class="Apple-converted-space">  </span>comb filters</p>
+<p class="p4"><span class="Apple-converted-space">     </span>\\ //</p>
+<p class="p4"><span class="Apple-converted-space">       </span>|<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>summed to mono</p>
+<p class="p4"><span class="Apple-converted-space">     </span>//|\\<span class="Apple-converted-space">    </span>fanned to &lt;nOuts&gt; allpass chain channels for decorrelation/diffuseness;</p>
+<p class="p4"><span class="Apple-converted-space">     </span>|||||<span class="Apple-tab-span">	</span>for each channel, a chain of &lt;numAllpasses&gt; allPasses,</p>
+<p class="p4"><span class="Apple-converted-space">     </span>|||||<span class="Apple-tab-span">	</span>e.g. 3 here.</p>
+<p class="p4"><span class="Apple-converted-space">     </span>|||||</p>
+<p class="p4">_____________</p>
+<p class="p4"><span class="Apple-tab-span">	</span>|||||<span class="Apple-tab-span">	</span>&lt;nOuts&gt; output channels.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">There is no specific design of first reflections; if there are no particular demands on the early reflections,<span class="Apple-converted-space"> </span></p>
+<p class="p1">those created by AdCVerb are often fully sufficient.<span class="Apple-converted-space"> </span></p>
+<p class="p1">One can easily add first reflections, e.g. based on room geometry, by adding higher predelays,<span class="Apple-converted-space"> </span></p>
+<p class="p1">and creating a special purpose set of first reflections; then AdCVerb works well for global reverb tails.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p1">Currently, the combTimes are hardcoded to be colouration-free (based on prime numbers),<span class="Apple-converted-space"> </span></p>
+<p class="p1">and they can be scaled. The allpassTimes are generated randomly based on prime number ratios,<span class="Apple-converted-space"> </span></p>
+<p class="p1">but can also be passed in if desired</p>
+<p class="p2"><br></p>
+<p class="p1"><b>*ar(in, revTime, hfDamping, nOuts,<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>predelay, numCombs, numAllpasses,<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>inFilter, leakCoeff, combScale, apScale, allpassPrimes)</b></p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s2"><span class="Apple-tab-span">	</span></span><b>in<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>audio input; this is converted to mono.</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>revTime <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>reverb time for -60 db decay of combs.</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>hfDamping<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>0.0 is no damping, 1.0 means high frequencies roll off<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>significantly faster.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>nOuts<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>number of outputs; each out gets its own group<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>of allpass filters for more density and decorrelation</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>predelay <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>predelay before reverb tail begins, in sec</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>numCombs<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>number of combs used for reverb tail</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>numAllpasses<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>number of allpasses used for decorrelating each out channel</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>inFilter <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>a coefficient for reverb input filtering;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.0 is no filtering, 0.99 is very dark.</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>combScale<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>scales all combTimes (within a max of 0.2 sec);<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>can be used to adjust room size. 1.0 is default.</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>apScale<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>scales all allpassTimes (within a max of 0.2 sec);</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>can be used to adjust room size. 1.0 is default.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>allpassPrimes<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>a list of prime numbers for the allpass filters;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>providing them overrides <b>numAllpasses </b>and<b> nOuts.</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s3">(<span class="Apple-tab-span">	</span></span>// simple use:<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s4">Ndef</span><span class="s3">(</span>\adcverb_help<span class="s3">).play;</span></p>
+<p class="p6"><span class="s4">Ndef</span><span class="s3">(</span>\adcverb_help<span class="s3">, {<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">var</span> src, verb;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>src = <span class="s4">Decay2</span>.ar(<span class="s4">Impulse</span>.ar(0.5, 0.99), 0.001, 0.03, <span class="s4">PinkNoise</span>.ar(1));</p>
+<p class="p4"><span class="Apple-tab-span">	</span>verb = <span class="s4">AdCVerb</span>.ar(src * 0.1);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>src + verb;</p>
+<p class="p4">});</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s4">Ndef</span><span class="s3">(</span>\adcverb_help).play;</p>
+<p class="p7">NodeProxyEditor<span class="s3">(</span>Ndef<span class="s3">(</span><span class="s5">\adcverb_help));</span></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s3">(<span class="Apple-tab-span">	</span></span>// all params open for tuning:</p>
+<p class="p4"><span class="s4">Spec</span>.add(<span class="s5">\revTime</span>, [0.01, 100, <span class="s5">\exp</span>]);</p>
+<p class="p4"><span class="s4">Spec</span>.add(<span class="s5">\hfDamping</span>, [0, 1]);</p>
+<p class="p4"><span class="s4">Spec</span>.add(<span class="s5">\predelay</span>, [0.0, 0.2, <span class="s5">\amp</span>]);</p>
+<p class="p4"><span class="s4">Spec</span>.add(<span class="s5">\revTime</span>, [0.01, 100, <span class="s5">\exp</span>]);</p>
+<p class="p4"><span class="s4">Spec</span>.add(<span class="s5">\inFilter</span>, [-0.99, 0.99]);</p>
+<p class="p4"><span class="s4">Spec</span>.add(<span class="s5">\leakCoeff</span>, [0.8, 1.0]);</p>
+<p class="p4"><span class="s4">Spec</span>.add(<span class="s5">\combScale</span>, [0.1, 2, <span class="s5">\exp</span>]);</p>
+<p class="p4"><span class="s4">Spec</span>.add(<span class="s5">\apScale</span>, [0.1, 2, <span class="s5">\exp</span>]);</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s4">Ndef</span>(<span class="s5">\adcverb_help</span>, { |revTime = 3, hfDamping = 0.1, predelay = 0.02,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>inFilter = 0.6, leakCoeff = 0.995, combScale = 1, apScale = 1|</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>var src, verb;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>src = Decay2.ar(Impulse.ar(0.5), 0.001, 0.03, PinkNoise.ar(1));</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>verb = AdCVerb.ar(src * 0.1,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>revTime: revTime.lag(0.5),<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hfDamping: hfDamping.lag(0.5),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>nOuts: 2, <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// fixed number of decorrelated output channels</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>predelay: predelay.lag(0.5),<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>numCombs: <span class="Apple-tab-span">	</span>8, <span class="Apple-tab-span">	</span>// fixed number - increase for more density</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>numAllpasses: 4, <span class="Apple-tab-span">	</span>// fixed number - increase for more diffuseness</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>inFilter: inFilter,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakCoeff: leakCoeff,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>combScale: combScale.lag(0.5), // lagged to<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>apScale: apScale.lag(0.5)</p>
+<p class="p4"><span class="Apple-tab-span">	</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>src + verb;</p>
+<p class="p4">});</p>
+<p class="p4">)</p>
+<p class="p8"><b></b><br></p>
+<p class="p9"><b>Class Variables</b></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span>*verbose</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>turn posting of random-generated allpass number info on and off,<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>so one can get the exact same reverb again if desired.</p>
+<p class="p12"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">AdCVerb</span>.verbose_(<span class="s6">true</span>); <span class="s7">// post</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// now build a new AdCVerb - times get posted,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s5">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s4">Ndef</span>(<span class="s5">\adcverb_help</span>, { <span class="s4">var</span> src, verb;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>src = <span class="s4">Decay2</span>.ar(<span class="s4">Impulse</span>.ar(0.5, 0.99), 0.001, 0.03, <span class="s4">PinkNoise</span>.ar(1));</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>verb = <span class="s4">AdCVerb</span>.ar(src * 0.1);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>src + verb;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p4">)</p>
+<p class="p16"><br></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// e.g. [ [ 683, 757, 1319, 1597 ], [ 419, 1009, 1129, 2053 ] ]</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// if desired, use these specific random primes:<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p18"><span class="s5">(</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Ndef</span>(<span class="s5">\adcverb_help</span>, { <span class="s4">var</span> src, verb;<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>src = <span class="s4">Decay2</span>.ar(<span class="s4">Impulse</span>.ar(0.5, 0.99), 0.001, 0.03, <span class="s4">PinkNoise</span>.ar(1));</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>verb = <span class="s4">AdCVerb</span>.ar(src * 0.1,<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>allpassPrimes: [ [ 683, 757, 1319, 1597 ], [ 419, 1009, 1129, 2053 ] ]</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>src + verb;</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p4">)</p>
+<p class="p19"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>AdCVerb.verbose_<span class="s3">(</span>false<span class="s3">); </span><span class="s7">// no posting</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span>*maxTime<span class="Apple-tab-span">	</span></b>set the maximum delay time for predelay, combs and allpasses.</p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>When maxTime is changed, the next instance of AdCVerb will have this maxdelaytime</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>for combs, allpasses and predelay. Default value is 0.2.</p>
+<p class="p10"><br></p>
+</body>
+</html>

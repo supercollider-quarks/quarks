@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #95221c}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #95221c}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0e17b6}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #95221c; min-height: 12.0px}
+span.s1 {color: #0e17b6}
+span.s2 {color: #000000}
+span.s3 {color: #606060}
+span.s4 {color: #416f16}
+span.s5 {color: #95221c}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>MIDIKeyboard<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a simple GUI keyboard</b></p>
+<p class="p2"><br></p>
+<p class="p3">This GUI widget is pretty similar to the Keyboard (kslider) object in Max - basically</p>
+<p class="p3">a tool to play MIDI notes and perhaps map scales, visualise real keyboard, etc.</p>
+<p class="p3">The MIDIKeyboard does not handle any system-midi (SC has other ways of doing that),<span class="Apple-converted-space"> </span></p>
+<p class="p3">the only "midi" about it is that the keys are numbered according to the MIDI standard.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>*new(window, bounds, octaves, startnote);</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>window <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- A SCWindow in which the MIDIKeyboard will appear</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>bounds<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The Rect of the MIDIKeyboard<span class="Apple-converted-space"> </span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>octaves<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The number of octaves on the keyboard</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>startnote <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The MIDI note number of the first key (48 is the default - that's C3)</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>keyDownAction_ <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The function that key down will trigger.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>keyTrackAction_ <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The function that moving the cursor will trigger.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>keyUpAction_ <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- The function that key up will trigger.</p>
+<p class="p4"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>showScale([scale], startnote, color) <span class="Apple-tab-span">	</span></b>- Takes an array with the scale. Startnote is the fundamental.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>playScale([scale], startnote, wait) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Takes an array with the scale. Startnote is the fundamental.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>inScale(note) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- returns true or false if a note is part of a set scale.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>setColor(note, Color) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Set a color of a note (still keeps black/white tint).</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>removeColor(note) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- Remove the color of a specific note.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>clear <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- clears the scale or all colors from the keyboard.</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>keyDown(note) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- colors the selected key grey.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>keyUp(note) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>- resets the selected key.</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">// choose a gui (see GUI helpfile)</p>
+<p class="p6"><span class="s1">GUI</span>.swing;</p>
+<p class="p6"><span class="s1">GUI</span>.cocoa;</p>
+<p class="p2"><br></p>
+<p class="p4"><br></p>
+<p class="p7">// examples</p>
+<p class="p4"><br></p>
+<p class="p8">MIDIKeyboard<span class="s2">.new</span></p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s1">MIDIKeyboard</span>.new(bounds: <span class="s1">Rect</span>(20, 10, 273, 60), octaves: 3)</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s1">MIDIKeyboard</span>.new(bounds: <span class="s1">Rect</span>(20, 10, 364, 60), octaves: 4)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6">(</p>
+<p class="p6">w = <span class="s1">GUI.window.new</span>(<span class="s3">"using the keyboard in a SCWindow"</span>, <span class="s1">Rect</span>(10, 500, 500, 212)).front;</p>
+<p class="p2"><br></p>
+<p class="p6">k = <span class="s1">MIDIKeyboard</span>.new(w, <span class="s1">Rect</span>(20, 20, 364, 60), 4, 48);</p>
+<p class="p6">l = <span class="s1">MIDIKeyboard</span>.new(w, <span class="s1">Rect</span>(20, 110, 455, 60), 5, 48);</p>
+<p class="p2"><br></p>
+<p class="p6">)</p>
+<p class="p2"><br></p>
+<p class="p5">// posting the MIDI note number and the frequency of the note</p>
+<p class="p6">(</p>
+<p class="p6">w = <span class="s1">GUI.window.new</span>(<span class="s3">" using the midi keyboard"</span>, <span class="s1">Rect</span>(10, 260, 820, 212)).front;</p>
+<p class="p6">k = <span class="s1">MIDIKeyboard</span>.new(w, <span class="s1">Rect</span>(20, 20, 776, 160), 4, 48);</p>
+<p class="p6">k.keyDownAction_({<span class="s1">arg</span> note; [<span class="s4">\midinote</span>, note, <span class="s4">\freq</span>, note.midicps].postln;});</p>
+<p class="p6">k.keyTrackAction_({<span class="s1">arg</span> note; [<span class="s4">\midinote</span>, note, <span class="s4">\freq</span>, note.midicps].postln;});</p>
+<p class="p6">)</p>
+<p class="p2"><br></p>
+<p class="p5">// displaying a scale on the keyboard</p>
+<p class="p6">(</p>
+<p class="p8"><span class="s2">k = </span>MIDIKeyboard<span class="s2">.new;</span></p>
+<p class="p6">k.keyDownAction_({<span class="s1">arg</span> note; <span class="s3">"Key down : "</span>.post; note.postln;});</p>
+<p class="p6">k.keyUpAction_({<span class="s1">arg</span> note; <span class="s3">"Key up : "</span>.post; note.postln;});</p>
+<p class="p6">k.keyTrackAction_({<span class="s1">arg</span> note; <span class="s3">"Key tracking : "</span>.post; note.postln;});</p>
+<p class="p6">k.showScale([0, 2, 4, 6, 8, 10], 48, <span class="s1">Color</span>.new(0.4, 0.6,0.8));</p>
+<p class="p6">)</p>
+<p class="p5"><span class="s2">k.clear; </span>// clear the scale</p>
+<p class="p6">k.showScale([0, 1, 3, 6, 7, 8, 10]);<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span><span class="s5">// in C</span></p>
+<p class="p6">k.showScale([0, 1, 3, 6, 7, 8, 10], 50);<span class="Apple-tab-span">	</span><span class="s5">// in D</span></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2">k.inScale(69) </span>// returns true or false depending on the note being in the scale</p>
+<p class="p9"><br></p>
+<p class="p5">// play a scale</p>
+<p class="p6">k.playScale([0, 1, 3, 6, 7, 8, 10], 60);</p>
+<p class="p6">k.playScale([0, 1, 3, 6, 7, 8, 10], 60, 0.3);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6">k.keyDown(60) <span class="s5">// midinote</span></p>
+<p class="p6">k.keyUp(60)</p>
+<p class="p2"><br></p>
+<p class="p6">k.keyDown(65)</p>
+<p class="p6">k.keyUp(65)</p>
+<p class="p2"><br></p>
+<p class="p5">// a chord</p>
+<p class="p6">(</p>
+<p class="p6">k.clear;</p>
+<p class="p6">k.keyDown(60);<span class="Apple-converted-space"> </span></p>
+<p class="p6">k.keyDown(64);</p>
+<p class="p6">k.keyDown(67);</p>
+<p class="p6">)</p>
+<p class="p6">k.clear;</p>
+<p class="p2"><br></p>
+<p class="p6">// or</p>
+<p class="p2"><br></p>
+<p class="p6">k.keyDown([60, 64, 68])</p>
+<p class="p6">k.keyUp([60, 64, 68])</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// a sounding example</p>
+<p class="p6">(</p>
+<p class="p6"><span class="s1">SynthDef</span>(<span class="s4">\midikeyboardsine</span>, {<span class="s1">arg</span> freq, amp = 0.25;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">Out</span>.ar(0, (<span class="s1">SinOsc</span>.ar(freq,0,amp)*<span class="s1">EnvGen</span>.ar(<span class="s1">Env</span>.perc, doneAction:2)).dup)</p>
+<p class="p6">}).add;</p>
+<p class="p2"><br></p>
+<p class="p8"><span class="s2">k = </span>MIDIKeyboard<span class="s2">.new;</span></p>
+<p class="p6">k.keyDownAction_({<span class="s1">arg</span> note; <span class="s1">Synth</span>(<span class="s4">\midikeyboardsine</span>, [<span class="s4">\freq</span>, note.midicps])});</p>
+<p class="p6">k.keyTrackAction_({<span class="s1">arg</span> note; <span class="s1">Synth</span>(<span class="s4">\midikeyboardsine</span>, [<span class="s4">\freq</span>, note.midicps])});</p>
+<p class="p2"><br></p>
+<p class="p6">k.showScale([0, 3, 6, 9, 10]);</p>
+<p class="p6">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// Displaying incoming MIDI notes</p>
+<p class="p5">// an example where the MIDIKeyboard shows which notes are played on a MIDI controller</p>
+<p class="p5">// NOTE: there are many ways of working with MIDI in SC, so this is just one quick example...</p>
+<p class="p6">(</p>
+<p class="p8"><span class="s2">k = </span>MIDIKeyboard<span class="s2">.new;</span></p>
+<p class="p6"><span class="s1">MIDIIn</span>.connect;</p>
+<p class="p6"><span class="s1">MIDIIn</span>.noteOn_({ <span class="s1">arg</span> src, chan, num, vel; <span class="Apple-tab-span">	</span>{k.keyDown(num)}.defer; });</p>
+<p class="p6"><span class="s1">MIDIIn</span>.noteOff_({ <span class="s1">arg</span> src, chan, num, vel; <span class="Apple-tab-span">	</span>{k.keyUp(num)}.defer; });</p>
+<p class="p6">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// Playing (outputting) MIDI notes on midi channel 1</p>
+<p class="p6">(</p>
+<p class="p8"><span class="s2">k = </span>MIDIKeyboard<span class="s2">.new;</span></p>
+<p class="p8">MIDIClient<span class="s2">.init;</span></p>
+<p class="p6">m = <span class="s1">MIDIOut</span>(0, <span class="s1">MIDIClient</span>.destinations.at(0).uid);</p>
+<p class="p6">k.keyDownAction_({<span class="s1">arg</span> note; m.noteOn(0, note, 60);}); <span class="s5">// (midi channel 1, midinote, velocity 60)</span></p>
+<p class="p6">k.keyUpAction_({<span class="s1">arg</span> note; m.noteOff(0, note, 60);});</p>
+<p class="p6">)</p>
+<p class="p2"><br></p>
+<p class="p6">k.setColor(60, Color.red)</p>
+<p class="p2"><br></p>
+<p class="p5">// setting color ranges:</p>
+<p class="p2"><br></p>
+<p class="p6">(</p>
+<p class="p6"><span class="s1">var</span> oct;</p>
+<p class="p6">oct = 4;</p>
+<p class="p6">k = <span class="s1">MIDIKeyboard</span>.new(bounds: <span class="s1">Rect</span>(20, 10, 364, 60), octaves: oct);</p>
+<p class="p2"><br></p>
+<p class="p6">c = [<span class="s1">Color</span>.red, <span class="s1">Color</span>.yellow, <span class="s1">Color</span>.blue, <span class="s1">Color</span>.green];</p>
+<p class="p2"><br></p>
+<p class="p6">oct.do({<span class="s1">arg</span> j;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>12.do({<span class="s1">arg</span> i;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k.setColor(48+i+(j*12), c[j]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p6">});</p>
+<p class="p6">)</p>
+<p class="p5"><span class="s2">k.clear </span>// and clear the keyboard of colors</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// chords</p>
+<p class="p6">(</p>
+<p class="p6"><span class="s1">var</span> chord, chords, chordnames;</p>
+<p class="p6">var menu, play;</p>
+<p class="p6">var fString, fundamental=60;</p>
+<p class="p2"><br></p>
+<p class="p6">w = <span class="s1">GUI.window.new</span>(<span class="s3">"Common Chords"</span>, <span class="s1">Rect</span>(10, 260, 820, 252)).front;</p>
+<p class="p6">k = <span class="s1">MIDIKeyboard</span>.new(w, <span class="s1">Rect</span>(20, 60, 776, 160), 4, 48);</p>
+<p class="p2"><br></p>
+<p class="p6">k.keyDownAction_({<span class="s1">arg</span> note; fundamental = note;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fString.string_(note.asString);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k.showScale(chord, fundamental, <span class="s1">Color</span>.new255(103, 148, 103));</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6">k.keyTrackAction_({<span class="s1">arg</span> note; fundamental = note;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fString.string_(note.asString);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k.showScale(chord, fundamental, <span class="s1">Color</span>.new255(103, 148, 103));</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6">k.keyUpAction_({<span class="s1">arg</span> note; fundamental = note;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fString.string_(note.asString);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k.showScale(chord, fundamental, <span class="s1">Color</span>.new255(103, 148, 103));</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s1">GUI.staticText.new</span>(w, <span class="s1">Rect</span>(350, 20, 100, 20)).string_(<span class="s3">"Fundamental :")</span>;</p>
+<p class="p6"><span class="s1">fString = GUI.staticText.new</span>(w, <span class="s1">Rect</span>(436, 20, 50, 20)).string_(<span class="s3">fundamental.asString)</span>;</p>
+<p class="p2"><br></p>
+<p class="p6">chords = [[<span class="s3">"Major"</span>, [0, 4, 7]], [<span class="s3">"Minor"</span>, [0, 3, 7]],[<span class="s3">"5"</span>, [0, 7]], [<span class="s3">"Dominant 7th"</span>, [0, 4, 7, 10]], [<span class="s3">"Major 7th"</span>, [0, 4, 7, 11]], [<span class="s3">"Minor 7th"</span>, [0, 3, 7, 10]], [<span class="s3">"Minor Major 7th"</span>, [0, 3, 7, 11]], [<span class="s3">"Sus 4"</span>, [0, 5, 7]], [<span class="s3">"Sus 2"</span>,<span class="Apple-converted-space">  </span>[0, 2, 7]], [<span class="s3">"6"</span>, [0, 4, 7, 9]], [<span class="s3">"Minor 6"</span>, [0, 3, 7, 9]], [<span class="s3">"9"</span>, [0, 2, 4, 7, 10]], [<span class="s3">"Minor 9"</span>, [0, 2, 3, 7, 10]], [<span class="s3">"Major 9"</span>, [0, 2, 4, 7, 11]], [<span class="s3">"Minor Major 9"</span>, [0, 2, 3, 7, 11]], [<span class="s3">"11"</span>, [0, 2, 4, 5, 7, 11]], [<span class="s3">"Minor 11"</span>, [0, 2, 3, 5, 7, 10]], [<span class="s3">"Major 11"</span>, [0, 2, 4, 5, 7, 11]], [<span class="s3">"Minor Major 11"</span>, [0, 2, 3, 5, 7, 11]], [<span class="s3">"13"</span>, [0, 2, 4, 7, 9, 10]], [<span class="s3">"Minor 13"</span>, [0, 2, 3, 7, 9, 10]], [<span class="s3">"Major 13"</span>, [0, 2, 4, 7, 9, 11]], [<span class="s3">"Minor Major 13"</span>, [0, 2, 3, 7, 9, 11]], [<span class="s3">"add 9"</span>, [0, 2, 4, 7]], [<span class="s3">"Minor add 9"</span>, [0, 2, 3, 7]], [<span class="s3">"6 add 9"</span>, [0, 2, 4, 7, 9]], [<span class="s3">"Minor 6 add 9"</span>, [0, 2, 3, 7, 9]], [<span class="s3">"Dominant 7th add 11"</span>, [0, 4, 5, 7, 10]], [<span class="s3">"Major 7th add 11"</span>, [0, 4, 5, 7, 11]], [<span class="s3">"Minor 7th add 11"</span>, [0, 3, 5, 7, 10]], [<span class="s3">"Minor Major 7th add 11"</span>, [0, 3, 5, 7, 11]], [<span class="s3">"Dominant 7th add 13"</span>, [0, 4, 7, 9, 10]], [<span class="s3">"Major 7th add 13"</span>, [0, 4, 7, 9, 11]], [<span class="s3">"Minor 7th add 13"</span>, [0, 3, 7, 9, 10]], [<span class="s3">"Minor Major 7th add 13"</span>, [0, 3, 7, 9, 11]], [<span class="s3">"7b5"</span>, [0, 4, 6, 10]], [<span class="s3">"7#5"</span>, [0, 4, 8, 10]], [<span class="s3">"7b9"</span>, [0, 1, 4, 7, 10]], [<span class="s3">"7#9"</span>, [0, 3, 4, 7, 10]], [<span class="s3">"7#5b9"</span>, [0, 1, 4, 8, 10]], [<span class="s3">"m7b5"</span>, [0, 3, 6, 10]], [<span class="s3">"m7#5"</span>, [0, 3, 8, 10]], [<span class="s3">"m7b9"</span>, [0, 1, 3, 7, 10]], [<span class="s3">"9#11"</span>, [0, 2, 4, 6, 7, 10]], [<span class="s3">"9b13"</span>, [0, 2, 4, 7, 8, 10]], [<span class="s3">"6sus4"</span>, [0, 5, 7, 9]], [<span class="s3">"7sus4"</span>, [0, 5, 7, 10]], [<span class="s3">"Major 7th Sus4"</span>, [0, 5, 7, 11]], [<span class="s3">"9sus4"</span>, [0, 2, 5, 7, 10]], [<span class="s3">"Major 9 Sus4"</span>, [0, 2, 5, 7, 11]]];</p>
+<p class="p2"><br></p>
+<p class="p6">chordnames = [];</p>
+<p class="p6">chords.do({arg item; item[0].postln; chordnames = chordnames.add(item[0])});</p>
+<p class="p6">chord = chords[0][1];</p>
+<p class="p2"><br></p>
+<p class="p8">menu = GUI.popUpMenu.new<span class="s2">(w,</span>Rect<span class="s2">(500,20,150,20))</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.items_(chordnames)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.background_(Color.white)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_({arg item;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>chord = chords[item.value][1];</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k.showScale(chord, fundamental, <span class="s1">Color</span>.new255(103, 148, 103));</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>play.focus;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p2"><br></p>
+<p class="p8">play = GUI.button.new<span class="s2">(w,</span>Rect<span class="s2">(660,20,60,20))</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>.states_([["play", Color.black, Color.clear]])</p>
+<p class="p6"><span class="Apple-tab-span">	</span>.action_({</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Task({</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>chord.do({arg note;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>note = note + fundamental;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s4">\midikeyboardsine</span>, [<span class="s4">\freq</span>, note.midicps]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.4.wait;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.6.wait;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>chord.do({arg note;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>note = note + fundamental;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Synth</span>(<span class="s4">\midikeyboardsine</span>, [<span class="s4">\freq</span>, note.midicps, \amp, 0.1]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).start;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p6">)</p>
+</body>
+</html>

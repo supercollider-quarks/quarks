@@ -1,0 +1,190 @@
+CLASS:: PlayerMixer
+summary:: takes multiple players as input, mixes them to a single (stereo) output
+categories:: Libraries>crucial>Players
+related:: Classes/GroupedPlayerMixer
+
+DESCRIPTION:: Plays all of the players, mixing them together in its own synth.
+
+code::
+(
+c = FloatArray[1,2,4,5,6,8,13];
+// an array buffer loads an array onto the server
+d = ArrayBuffer(c);
+
+Instr(\helpPlayerMixer, { arg degree=1,amp=1.0,scale;
+	var freq;
+	//freq = degree.degreeToKey([0,1,3,5,7,9,11]);
+	freq = DegreeToKey.kr(scale.bufnumIr,degree + 30,12.0);
+	Saw.ar([freq,freq ],amp)
+});
+
+p = PlayerMixer([
+	Patch(\helpPlayerMixer,[
+		KrNumberEditor(5,\degree),
+		KrNumberEditor(0.3,\amp),
+		d
+	]),
+	Patch(\helpPlayerMixer,[
+		KrNumberEditor(3,\degree),
+		KrNumberEditor(0.3,\amp),
+		d
+	]),
+	Patch(\helpPlayerMixer,[
+		KrNumberEditor(1,\degree),
+		KrNumberEditor(0.3,\amp),
+		d
+	])
+]);
+p.gui
+
+)
+::
+
+Patching of this combined output is easy.  They are treated like a single unit.
+
+code::
+(
+
+Patch({ arg audio,ffreq=100,rq=0.1;
+
+	RHPF.ar(audio,ffreq,rq)
+},[
+	p // that you created in the above example
+]).gui
+
+)
+::
+
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: players
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: players
+
+
+
+METHOD:: asSynthDef
+
+
+
+METHOD:: defName
+
+
+
+METHOD:: synthDefArgs
+
+
+
+METHOD:: respawnMixerToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: addPlayer
+
+
+argument:: player
+
+
+
+METHOD:: removePlayerAt
+
+
+argument:: pli
+
+
+
+METHOD:: putPlayer
+
+
+argument:: i
+
+
+argument:: pl
+
+
+
+METHOD:: beatDuration
+
+
+
+METHOD:: children
+
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: numChannels
+
+
+
+METHOD:: guiClass
+
+
+
+
+EXAMPLES::
+
+It is possible to dynamically add, replace or remove players
+
+code::
+
+(
+Instr(\testSine,{arg freq=1000,mul=0.1; SinOsc.ar(freq,0,mul)});
+a=PlayerMixer([
+	Patch(\testSine,[400,0.1]),
+	Patch(\testSine,[800,0.08]),
+	Patch(\testSine,[1600,0.06])
+]);
+)
+
+a.play;
+
+a.addPlayer(Patch(\testSine,[2000,0.2]));
+a.addPlayer(Patch(\testSine,[2400,0.15]));
+a.addPlayer(Patch(\testSine,[2800,0.1]));
+
+a.addPlayer( Patch(\testSine, [rrand(400,4000),0.1 ] ) );
+
+
+
+(
+Instr(\testSine,{arg freq=1000,mul=0.1; SinOsc.ar(freq,0,mul)});
+a=PlayerMixer([
+	Patch(\testSine,[400,0.1]),
+	Patch(\testSine,[800,0.08]),
+	Patch(\testSine,[1600,0.06])
+]);
+b=PlayerPool([a]).autostart_(true);
+)
+b.choose
+
+b.play;
+a.addPlayer(Patch(\testSine,[2000,0.2]));
+b.select(0);		//crashes
+a.addPlayer(Patch(\testSine,[2400,0.15]));
+b.select(0);		//crashes
+a.addPlayer(Patch(\testSine,[2800,0.1]));
+b.select(0);		//crashes
+
+::
+

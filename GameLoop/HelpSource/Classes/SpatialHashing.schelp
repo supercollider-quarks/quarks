@@ -1,0 +1,26 @@
+TITLE:: SpatialHashing
+summary:: A spatial index for efficient collision detection
+categories:: Class
+related:: Overviews/Gameloop_Overview
+
+DESCRIPTION::
+
+SpatialHashing is a spatial index used by EntityManager for collision detection. It is based on the paper "Optimization of Large-Scale, Real-Time Simulations by Spatial Hashing" (Erin J. Hastings, Jaruwan Mesit, Ratan K. Guha). I also had a look at the implementation described link::http://conkerjo.wordpress.com/2009/06/13/spatial-hashing-implementation-for-fast-2d-collisions/##here::.
+
+The objects registered in the index should be circles and have getter methods for position and radius. 
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new instance of SpatialHashing with the given dimensions and resolution. The dimensions are in metres. The cell size should be able to fully contain the largest entity in order to function correctly.
+
+INSTANCEMETHODS::
+
+METHOD:: register
+register the entity in the index
+
+METHOD:: clearBuckets
+clear the index
+
+METHOD:: getCellsForLine
+A bit of a hack to see the cells that contain a line. This is used for adding and colliding with link::Wall:: objects

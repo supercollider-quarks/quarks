@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica; min-height: 19.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+span.s1 {font: 16.0px Helvetica}
+span.s2 {color: #0000ff}
+span.s3 {font: 12.0px Helvetica; color: #000000}
+span.s4 {color: #0000bf}
+span.s5 {color: #000000}
+span.s6 {color: #007300}
+span.s7 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SETOTarsusServer</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>2006</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Till Bovermann<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>IEM, KUG Graz, Austria</p>
+<p class="p2"><span class="s1"><b><span class="Apple-tab-span">	</span></b></span>2007</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Till Bovermann<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Neuroinformatics Group, Bielefeld University, Germany</p>
+<p class="p3"><b></b><br></p>
+<p class="p2">a server fullfilling the TUIO-Specs.</p>
+<p class="p2">Uses the proprietary OSC protocol written by Tarsus2OSC.</p>
+<p class="p2">Format has to be the following:</p>
+<p class="p4"><span class="Apple-tab-span">	</span>/client set time 6DOF&lt;1&gt; ... 6DOF&lt;n&gt;</p>
+<p class="p2">the used format String (explained in <a href="SETObject.html"><span class="s2">SETObject</span></a>) is then<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span>'</span>_ixyzuvw'</p>
+<p class="p6"><br></p>
+<p class="p2"><b>*new(netaddr, setoClass)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>netaddr<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a netaddr, default nil; listening to all.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>setoClass<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the Class of the created objects.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Must be a subclass of <a href="SETObject.html"><span class="s2">SETObject</span></a>, defaults to <a href="SETObject.html"><span class="s2">SETObject</span></a>.</p>
+<p class="p2"><b>start</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>starts listening</p>
+<p class="p2"><b>stop</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>stops litening</p>
+<p class="p2"><b>gui</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>creates a gui representing recognized objects (2D for now and no rotation)</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p4">(</p>
+<p class="p7"><span class="s4">var</span> posSpecs;</p>
+<p class="p8"><br></p>
+<p class="p7">posSpecs = <span class="s4">Array</span>.fill(3, {[-10, 10].asSpec});</p>
+<p class="p7">posSpecs = [</p>
+<p class="p7"><span class="Apple-tab-span">	</span>[285, 3000].asSpec,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>[-1428, 3000].asSpec,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>[0, 3000].asSpec</p>
+<p class="p7">];</p>
+<p class="p8"><br></p>
+<p class="p7">posSpecs.do{<span class="s4">|spec, i|</span> <span class="s4">SpecGUI</span>(spec, i)};</p>
+<p class="p9"><span class="s5">t = </span><span class="s4">SETOTarsusServer</span><span class="s5">(</span><span class="s4">nil</span><span class="s5">, </span><span class="s4">SETOdumpWin</span><span class="s5">, specs: posSpecs); </span>// listen to all messages from anywhere</p>
+<p class="p7">t.start;</p>
+<p class="p8"><br></p>
+<p class="p9">// inspect its behavior</p>
+<p class="p7">i = t.inspect;</p>
+<p class="p8"><br></p>
+<p class="p7">g = t.gui;</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9">// send it messages</p>
+<p class="p7">n = <span class="s4">NetAddr</span>.localAddr;</p>
+<p class="p8"><br></p>
+<p class="p7">n.sendMsg(<span class="s6">'/client'</span>, <span class="s6">\set</span>, 42, 0.7.rand, 0.5, 2pi.rand, 10, 20, 30.rand);<span class="Apple-converted-space"> </span></p>
+<p class="p7">i.update</p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p7">t.stop;</p>
+<p class="p10"><br></p>
+<p class="p9">///////////////////////</p>
+<p class="p11"><span class="s5">o = </span>OSCresponder<span class="s5">(</span>NetAddr<span class="s5">(</span><span class="s7">"192.168.0.20"</span><span class="s5">, </span>nil<span class="s5">), </span><span class="s7">"/client"</span><span class="s5">, {</span>|time, resp, msg|<span class="s5"> msg.postln})</span></p>
+<p class="p7">o.add</p>
+<p class="p7">o.remove</p>
+<p class="p8"><br></p>
+</body>
+</html>

@@ -1,0 +1,93 @@
+CLASS:: BusMeters
+summary:: Creates meters for an array of busses for building mixer consoles
+categories:: Server, Views
+related:: Classes/Bus, Classes/LevelIndicator, Classes/ServerMeter
+
+DESCRIPTION::
+This creates a bank of meters for an array of busses.  Useful for building mixers or scattering bus meters throughout a GUI.  The meters can be next to each other in a row or can be placed individually. A single Synth is started to collect level readings and update the meters.
+
+CLASSMETHODS::
+
+METHOD:: new
+
+argument:: server
+All busses must be on the same Server.
+
+argument:: busses
+An array of Bus objects
+
+
+INSTANCEMETHODS::
+
+METHOD:: gui
+make a single bank of adjacent meters
+
+argument:: parent
+parent view
+
+argument:: bounds
+total bounds
+
+returns:: this
+
+METHOD:: makeBusMeter
+Make an individual meter. You cannot make 2 meters for the same bus.
+
+argument:: bi
+bus index. The index in the array of busses that was supplied to the construtor.
+
+argument:: layout
+layout or parent view.  All meters do not have to be on the same layout.
+
+argument:: bounds
+size and location of meter.  When .gui is called the bounds are created and passed to here.
+
+returns:: a LevelIndicator
+
+METHOD:: makePeak
+Make a peak indicator. On the standard gui this is above the meter. Its a button that shows dB of highest peak received.  Clicking it reset it.
+
+argument:: bi
+index of bus
+
+argument:: layout
+layout or parent view
+
+argument:: bounds
+bounds of peak indicator
+
+returns:: an ActionButton
+
+METHOD:: start
+starts the meters' synth and starts updating the views
+
+METHOD:: stop
+stops the meter's synth and stops updating the views. 
+
+METHOD:: remove
+When the window or parent view is closed then .remove is called (standard for all views). This will .stop the meter synth and stop further updates.
+
+
+EXAMPLES::
+
+code::
+s = Server.default;
+m = BusMeters(s,Array.fill(4,{Bus.audio(s,2)}));
+m.gui;
+
+m.start;
+
+Routine({
+	500.do {
+		{
+			EnvGen.kr(Env.perc) * Saw.ar(rrand(100,400),rrand(-80,0).dbamp)
+		}.play(outbus:m.busses.choose);
+		0.1.wait;
+	}
+}).play(AppClock)
+
+::
+
+15 busses seems to be maximum for the SynthDef. 16 results in: GraphDef_recv maximum number of interconnected buffers.  Use 2 separate BusMeters if you need more than 15.
+
+

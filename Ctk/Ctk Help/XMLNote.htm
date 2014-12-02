@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.33">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #782727}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #862323}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {text-decoration: underline ; color: #0432de}
+span.s3 {color: #0000ff}
+span.s4 {color: #556b17}
+span.s5 {color: #606060}
+span.s6 {color: #000000}
+span.s7 {color: #0027b3}
+span.s8 {color: #782727}
+span.s9 {color: #0022b6}
+span.s10 {color: #4d6d13}
+span.s11 {color: #862323}
+span.s12 {text-decoration: underline ; color: #002be2}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>XMLNote<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Note representations for MusicXML documents</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object : XMLMusicObj</b></p>
+<p class="p3"><br></p>
+<p class="p1">Note representations for MusicXML files, to be used along with <a href="XMLScore.htm"><span class="s2">XMLScore</span></a><span class="s2">,</span> <a href="XMLPart.html"><span class="s3">XMLPart</span></a> and <a href="XMLVoice.htm"><span class="s2">XMLVoice</span></a></p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="MusicXMLOverview.htm"><span class="s2">MusicXMLOverview</span></a> for other elements in the system.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Some Important Issues Regarding XMLNote (optional)</b></p>
+<p class="p2"><br></p>
+<p class="p1">MusicXML is a VERY complex system, and different notation programs handle the code in different ways. Overall, the MusicXML files created from SuperCollider should open fine in Finale, Sibelius and NoteAbility Pro. Also, while this first version (June 2008) works well, until a number of people have used it there may be some instability in the library. While future changes will attempt to be backwards compatible, this may not always be possible.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (aPitchClass, beat, duration, tuplet)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new instance of XMLNote</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aPitchClass </b>- An instance of <a href="PitchClass.htm"><span class="s2">PitchClass</span></a>, or an integer representing a midi note keynum.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>beat </b>- The beat the XMLNote appears on. Must be &gt;= 1.0.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>duration </b>- A duration value for the XMLNote, based on the note name. e.g, 0.25 (or 1/4) is a quarter-note. 1.0 is a whole note. 0.75 is a dotted half note. Symbols may also be used as defined in XMLMusicObj:</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">\l</span> -&gt; <span class="s5">"long"</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">\b</span> -&gt; <span class="s5">"breve"</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">\w</span> -&gt; <span class="s5">"whole"</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">\h</span> -&gt; <span class="s5">"half"</span></p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s4">\q</span><span class="s6"> -&gt; </span>"quarter"</p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s4">\e</span><span class="s6"> -&gt; </span>"eighth"</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">\s</span> -&gt; <span class="s5">"16th"</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">\t</span> -&gt; <span class="s5">"32nd"</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">\x</span> -&gt; <span class="s5">"64th"</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">\o</span> -&gt; <span class="s5">"128th"</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>All symbols may also may also have up to two dots appended to them as follows:</p>
+<p class="p9"><br></p>
+<p class="p12"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s4">\qd</span><span class="s6">; </span>// dotted quarter</p>
+<p class="p12"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s4">\edd</span><span class="s6">; </span>// double dotted eighth</p>
+<p class="p3"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>tuplet </b>- a ratio expressing a tuplet relation. e.g. 3/2 represents three in the space of two.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>See the examples below for more</p>
+<p class="p5"><br></p>
+<p class="p13"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p12">// simple example</p>
+<p class="p10">(</p>
+<p class="p12">// create an XMLScore</p>
+<p class="p10">z = <span class="s7">XMLScore</span>.new;</p>
+<p class="p12">// add a voice to the XMLScore</p>
+<p class="p10">z.add(y = <span class="s7">XMLPart</span>(meter: <span class="s7">XMLMeter</span>(4, 4), key: <span class="s7">XMLKey</span>.major(<span class="s4">\Bf</span>)));</p>
+<p class="p12">// create a B-flat major scale in quarter notes</p>
+<p class="p12">// uses XMLVoice's internal 'clock' to keep track of beats</p>
+<p class="p10">[58, 60, 62, 63, 65, 67, 69, 70].do({<span class="s7">arg</span> keynum;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>y.add(<span class="s7">XMLNote</span>(keynum, y.now, <span class="s4">\q</span>))</p>
+<p class="p10"><span class="Apple-tab-span">	</span>});</p>
+<p class="p12">// output the XMLScore</p>
+<p class="p10">z.output(<span class="s5">"~/Desktop/test.xml"</span>.standardizePath);</p>
+<p class="p10">)</p>
+<p class="p3"><br></p>
+<p class="p12">// same as above, but with triplet eighth notes</p>
+<p class="p10">(</p>
+<p class="p10">z = <span class="s7">XMLScore</span>.new;</p>
+<p class="p10">z.add(y = <span class="s7">XMLPart</span>(meter: <span class="s7">XMLMeter</span>(4, 4), key: <span class="s7">XMLKey</span>.major(<span class="s4">\Bf</span>)));</p>
+<p class="p10">[58, 60, 62, 63, 65, 67, 69, 70].do({<span class="s7">arg</span> keynum;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>y.add(<span class="s7">XMLNote</span>(keynum, y.now, <span class="s4">\e</span>, 3/2)); <span class="s8">// 3 eighths in the space of 2</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>});</p>
+<p class="p10">z.output(<span class="s5">"~/Desktop/test.xml"</span>.standardizePath);</p>
+<p class="p10">)</p>
+<p class="p3"><br></p>
+<p class="p12">// a short melodic example with changing meters, and tuplets in simple meters</p>
+<p class="p10">(</p>
+<p class="p10"><span class="s9">var</span> curkey, notedur, tuplet, curMeter;</p>
+<p class="p14">// create an XMLScore</p>
+<p class="p10">z = <span class="s9">XMLScore</span>.new;</p>
+<p class="p14">// add a voice to the XMLScore</p>
+<p class="p10">z.add(y = <span class="s9">XMLPart</span>(key: <span class="s9">XMLKey</span>.major(<span class="s10">\Bf</span>)));</p>
+<p class="p10">y.addMeter(1, <span class="s9">XMLMeter</span>(4, 4));</p>
+<p class="p10">y.addMeter(2, <span class="s9">XMLMeter</span>(6, 8, <span class="s10">\compound</span>)); <span class="s11">// a compound meter</span></p>
+<p class="p10">y.addMeter(4, <span class="s9">XMLMeter</span>(4, 4));</p>
+<p class="p3"><br></p>
+<p class="p14">// uses XMLVoice's internal 'clock' to keep track of beats</p>
+<p class="p10">while({</p>
+<p class="p14"><span class="s6"><span class="Apple-tab-span">	</span></span>// see <a href="XMLVoice.htm"><span class="s12">XMLVoice</span></a> for more utilities for getting values from a voice's attributes</p>
+<p class="p10"><span class="Apple-tab-span">	</span>curkey = [58, 60, 62, 63, 65, 67, 69, 70].choose;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>curMeter = y.getMeterFromBeat(y.now);</p>
+<p class="p10"><span class="Apple-tab-span">	</span>tuplet = (curMeter.type == <span class="s10">\compound</span>).if({1/1}, {3/2});</p>
+<p class="p10"><span class="Apple-tab-span">	</span>y.add(<span class="s9">XMLNote</span>(curkey, y.now, <span class="s10">\e</span>, tuplet));</p>
+<p class="p10"><span class="Apple-tab-span">	</span>(y.now &lt; 13)</p>
+<p class="p10"><span class="Apple-tab-span">	</span>});</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p14">// output the XMLScore</p>
+<p class="p10">z.output(<span class="s5">"~/Desktop/test.xml"</span>.standardizePath);</p>
+<p class="p10">)</p>
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #0000bf}
+span.s3 {color: #000000}
+span.s4 {color: #606060}
+span.s5 {color: #bf0000}
+span.s6 {color: #007300}
+span.s7 {text-decoration: underline}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>rewriteString<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>stream variant of a lindenmayer system</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">An initial stream, the <b>axiom</b>, is recursively rewritten, using a set</p>
+<p class="p1">of <b>production</b> <b>rules</b>. In a classic <i>lindenmayer system (L-system)</i>,<span class="Apple-converted-space"> </span></p>
+<p class="p1">each <b>level</b> of rewriting is done at once, rewriting the whole string.</p>
+<p class="p3"><br></p>
+<p class="p1">This can be also done in a depth-first traversal through all levels, taking in a stream and resulting in a stream.</p>
+<p class="p3"><br></p>
+<p class="p1">The L-system's restrictions to a general <i>generative grammar </i>is a fixed order in which the</p>
+<p class="p1">rules are applied, and no principal distinction between terminal and nonterminal symbols.</p>
+<p class="p3"><br></p>
+<p class="p1">If one of the two special characters "<b>&lt;</b>" and "<b>&gt;</b>" appear in a set of rules,</p>
+<p class="p1">they are interpreted as <i>context</i> in order to form a <i>context-sensitive generative grammar. </i>Everything that falls outside the closure suc as A and B in A&lt;X&gt;B are not rewritten - X is rewritten only if AXB match.</p>
+<p class="p3"><br></p>
+<p class="p1">The class <b><i>Prewrite</i></b> by James McCartney does a similar thing with objects, whereby their</p>
+<p class="p1">identity is used as a lookup. This is more efficient, but does not allow for the combinatorics</p>
+<p class="p1">that a pure string rewriting system does.</p>
+<p class="p3"><br></p>
+<p class="p4">Julian Rohrhuber, 2005.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// stream a string as axiom. 1 level of rewiting</p>
+<p class="p4">(</p>
+<p class="p4"><span class="s2">var</span> axiom, rules;</p>
+<p class="p5"><span class="s3">axiom = </span><span class="s4">"hello Aristide"</span><span class="s3">.iter; </span>// create a stream from a string</p>
+<p class="p4">rules = [</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"r"</span> -&gt; <span class="s4">"rr"</span>,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"i"</span> -&gt; <span class="s4">"ou"</span>,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"u"</span> -&gt; <span class="s4">"i"</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>];<span class="Apple-converted-space"> </span></p>
+<p class="p4">z = axiom.rewriteString(rules);<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s3">z.all.join; </span>// stream all characters into one string</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// the same doing the rewriting all at once:</p>
+<p class="p4">(</p>
+<p class="p4"><span class="s2">var</span> rules;</p>
+<p class="p4">rules = [</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"r"</span> -&gt; <span class="s4">"rr"</span>,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"i"</span> -&gt; <span class="s4">"ou"</span>,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"u"</span> -&gt; <span class="s4">"i"</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>];<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s4">"hello Aristide"</span>.rewriteString(rules);<span class="Apple-converted-space"> </span></p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// cantor set</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s4">"_"</span>.rewriteString([<span class="s4">"_"</span> -&gt; <span class="s4">"_ _"</span>, <span class="s4">" "</span> -&gt; <span class="s4">" <span class="Apple-converted-space">  </span>"</span>], 4);</p>
+<p class="p2"><br></p>
+<p class="p5">// fibonacci numbers</p>
+<p class="p4">(</p>
+<p class="p4"><span class="s2">var</span> r;</p>
+<p class="p4">r = <span class="s4">"A"</span>;</p>
+<p class="p4">10.do {</p>
+<p class="p4"><span class="Apple-tab-span">	</span>r = r.rewriteString([<span class="s4">"A"</span> -&gt; <span class="s4">"B"</span>, <span class="s4">"B"</span> -&gt; <span class="s4">"AB"</span>]);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>r.postln;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>r.size.postln;</p>
+<p class="p4">}</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p5">// thue-morse L-system</p>
+<p class="p4">(</p>
+<p class="p4"><span class="s2">var</span> r;</p>
+<p class="p4">r = <span class="s4">"a"</span>;</p>
+<p class="p4">6.do {</p>
+<p class="p4"><span class="Apple-tab-span">	</span>r = r.rewriteString([<span class="s4">"a"</span> -&gt; <span class="s4">"ab"</span>, <span class="s4">"b"</span> -&gt; <span class="s4">"ba"</span>]);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>r.postln;</p>
+<p class="p4">}</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// streaming the 45th..50th generation of an l-system</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4"><span class="s2">var</span> z;</p>
+<p class="p4">(45..50).do { <span class="s2">arg</span> i;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>z = <span class="s2">Pseq</span>(<span class="s4">"aaa", 1</span>).asStream.rewriteString([<span class="s4">"a"</span> -&gt; <span class="s4">"bb"</span>, <span class="s4">"b"</span> -&gt; <span class="s4">"abb"</span>], i);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>z.nextN(40).reject(_.isNil).join.postln;</p>
+<p class="p4">}</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// using a stream as axiom has certain advantages,</p>
+<p class="p5">// because it does not have to be known from the beginning.</p>
+<p class="p5">// it would be even possible to make the axiom dependent on the productions.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// using a random stream of letters as axiom</p>
+<p class="p4">(</p>
+<p class="p4">k = <span class="s2">Prout</span> { 50.do { <span class="s4">"abcde"</span>.choose.yield } };</p>
+<p class="p4">c = [</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"a"<span class="s3"> -&gt;</span>"aa"<span class="s3">, </span>"b"<span class="s3"> -&gt; </span>"bb"<span class="s3">, </span>"c"<span class="s3"> -&gt; </span>"dd"<span class="s3">, </span>"d"<span class="s3"> -&gt; </span>"dxx"<span class="s3">, </span>"x"<span class="s3"> -&gt; </span>"y"</p>
+<p class="p4">];</p>
+<p class="p2"><br></p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p5">// 1 level of rewriting</p>
+<p class="p4">(</p>
+<p class="p4">z = k.asStream.rewriteString(c);</p>
+<p class="p4">z.all.join;</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p5">// 5 levels of rewriting</p>
+<p class="p4">(</p>
+<p class="p4">z = k.asStream.rewriteString(c, 5); <span class="s5">// 5 x rewriting</span></p>
+<p class="p4">z.all.join;</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// if the input stream returns nil, the output stream finishes and returns nil asl well.</p>
+<p class="p5">// it can be resumend if the input stream resumes.</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4">a = <span class="s4">"abc"</span>;</p>
+<p class="p4">k = <span class="s2">Prout</span> { 100.do { a.yield } };</p>
+<p class="p4">z = k.asStream.rewriteString(c, 5); <span class="s5">// 5 x rewriting</span></p>
+<p class="p4">z.nextN(20).join.postln;</p>
+<p class="p4">a = <span class="s2">nil</span>;</p>
+<p class="p4">z.nextN(50).join.postln;</p>
+<p class="p4">a = <span class="s4">"c"</span>;</p>
+<p class="p4">z.nextN(50).join.postln;</p>
+<p class="p6">""</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// increasing the level of rewriting by reusing the same stream</p>
+<p class="p4">(</p>
+<p class="p6"><span class="s3">r = </span>"hello aristide"<span class="s3">.iter;</span></p>
+<p class="p4">c = [</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"r"</span> -&gt; <span class="s4">"ri"</span>,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"i"</span> -&gt; <span class="s4">"ou"</span>,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"u"</span> -&gt; <span class="s4">"i"</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>];</p>
+<p class="p4">z = r.rewriteString(c,8);</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// calculate the first 8 characters</p>
+<p class="p4">z.nextN(5).join;</p>
+<p class="p2"><br></p>
+<p class="p5">// now add a next level and continue streaming:</p>
+<p class="p4">(</p>
+<p class="p4">z = z.rewriteString(c);</p>
+<p class="p4">z.nextN(8).join;</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p5">// take the rest</p>
+<p class="p4">z.all.join;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// the rules can contain functions as values. The function is evaluated passing in</p>
+<p class="p5">// the current string cache, the rewriting level (generation) and the rules themselves.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4">k = <span class="s2">Prout</span> { 3.do { <span class="s4">"abcd"</span>.choose.yield } };</p>
+<p class="p4">c = [</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"a"<span class="s3"> -&gt; </span>"xaa"<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">"b"</span> -&gt; <span class="s4">"x"</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"d"<span class="s3"> -&gt; </span>"dxx"<span class="s3">,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">"c"</span> -&gt; { <span class="s2">arg</span> count, level, rules; if(level.even) {<span class="s4">"Z"</span>} {<span class="s4">"P"</span>}<span class="Apple-converted-space">  </span>},</p>
+<p class="p4">]</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p5">// post 5 variations</p>
+<p class="p4">(</p>
+<p class="p4">5.do {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">var</span> z;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>z = k.asStream.rewriteString(c, 6);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>z.all.join.postcs;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>"\n".post;</p>
+<p class="p4">}</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// a stochastic thue-morse L-system.</p>
+<p class="p5">// systems like this resemble markov chains</p>
+<p class="p4">(</p>
+<p class="p4"><span class="s2">var</span> r;</p>
+<p class="p4">r = <span class="s4">"a"</span>;</p>
+<p class="p4">8.do {</p>
+<p class="p4"><span class="Apple-tab-span">	</span>r = r.rewriteString([</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"a"</span> -&gt; { [<span class="s4">"ab"</span>, <span class="s4">"b"</span>].choose },<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"b"</span> -&gt; { [<span class="s4">"ba"</span>, <span class="s4">"a"</span>].choose }</p>
+<p class="p4"><span class="Apple-tab-span">	</span>]);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>r.postln;</p>
+<p class="p4">}</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p5">// context-sensitive chomsky-grammar:</p>
+<p class="p5">// "X&lt;A&gt;Y", where X,A,Y is any number of characters.</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4"><span class="s2">var</span> rules;</p>
+<p class="p6"><span class="s3">r = </span>"xuabcyyyyxcccxx"<span class="s3">;</span></p>
+<p class="p4">rules = [</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"a&lt;b&gt;c"<span class="s3"> -&gt; </span>"Z"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"xx"<span class="s3"> -&gt; </span>"?"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"y&lt;xcc"<span class="s3"> -&gt; </span>"P"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"x&gt;u"<span class="s3"> -&gt; </span>"..."<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"."<span class="s3"> -&gt; </span>"_."<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"Zcc"<span class="s3"> -&gt; </span>"abc"</p>
+<p class="p4">];</p>
+<p class="p4">r.rewriteString(rules, 1).postcs;</p>
+<p class="p4">r.rewriteString(rules, 2).postcs;</p>
+<p class="p4">r.rewriteString(rules, 3).postcs;</p>
+<p class="p4">r.rewriteString(rules, 4).postcs;</p>
+<p class="p4">r.rewriteString(rules, 5).postcs;</p>
+<p class="p6">""</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p5">/* returns:</p>
+<p class="p5">"...uaZccyyyyPc?"</p>
+<p class="p5">"_._._.uaabcyyyyPc?"</p>
+<p class="p5">"__.__.__.uaaZccyyyyPc?"</p>
+<p class="p5">"___.___.___.uaaabcyyyyPc?"</p>
+<p class="p5">"____.____.____.uaaaZccyyyyPc?"</p>
+<p class="p5">*/</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// classical context-sensitive l-system for modeling movement along an axis</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4"><span class="s2">var</span> r, rules;</p>
+<p class="p6"><span class="s3">r = </span>"aa......aa......"<span class="s3">;</span></p>
+<p class="p4">rules = [</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"a&lt;."</span> <span class="Apple-tab-span">	</span>-&gt; <span class="s4">"a"</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"a&gt;a"<span class="s3"><span class="Apple-tab-span">	</span>-&gt; </span>"."</p>
+<p class="p4"><span class="Apple-tab-span">	</span>];</p>
+<p class="p2"><br></p>
+<p class="p4">15.do { <span class="s2">|i|</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>r.postcs;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>r = r<span class="s4">.</span>rewriteString(rules, 1);</p>
+<p class="p4">};</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">//<span class="Apple-tab-span">	</span>Penrose tile (without screen graphics)</p>
+<p class="p4">(</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">var</span> angle = 36 / 360 * 2pi;</p>
+<p class="p6"><span class="s2">var</span><span class="s3"> r = </span>"[X]++[X]++[X]++[X]++[X]"<span class="s3">;</span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">var</span> rules = [</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"W"<span class="s3"> -&gt; </span>"YF++ZF----XF[-YF----WF]++ "<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"X"<span class="s3"> -&gt; </span>"+YF--ZF[---WF--XF]+"<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"Y"<span class="s3"> -&gt; </span>"-WF++XF[+++YF++ZF]-"<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"Z"<span class="s3"> -&gt; </span>"--YF++++WF[+ZF++++XF]--XF"<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">"F"</span> -&gt; <span class="s4">""</span></p>
+<p class="p4">];</p>
+<p class="p2"><br></p>
+<p class="p4">2.do {</p>
+<p class="p4"><span class="Apple-tab-span">	</span>r = r.rewriteString(rules).postln</p>
+<p class="p4">}</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// sound examples ////////////////////////////////////////////////////////</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p6"><span class="s2">SynthDef</span><span class="s3">(</span>"sinegrain"<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>{ <span class="s2">arg</span> out=0, freq=440, dur=0.05;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> env;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>env = <span class="s2">EnvGen</span>.kr(<span class="s2">Env</span>.perc(0.01, dur, 0.2), doneAction:2);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Out</span>.ar(out, <span class="s2">SinOsc</span>.ar(freq, 0, env))</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}).memStore;</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// translating characters in melody</p>
+<p class="p4">(</p>
+<p class="p4">k = <span class="s2">Pseq</span>(<span class="s4">"ab"</span>);</p>
+<p class="p4">c = [</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"a"<span class="s3"> -&gt; </span>"ba"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"b"<span class="s3"> -&gt; </span>"ca"</p>
+<p class="p4">];</p>
+<p class="p7"><span class="s3">d = </span>Dictionary<span class="s3">[</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>$a -&gt; 0,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>$b -&gt; 5,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>$c -&gt; 3</p>
+<p class="p4">];</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s3">z = </span><span class="s2">Pdict</span><span class="s3">(d, </span>// apply homomorphism (final translation)</p>
+<p class="p4"><span class="Apple-tab-span">	</span>k.asStream.rewriteString(c, 5)</p>
+<p class="p4">);</p>
+<p class="p2"><br></p>
+<p class="p7">Pbind<span class="s3">(</span></p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span></span>\instrument<span class="s3">, </span>\sinegrain<span class="s3">,</span></p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span></span>\degree<span class="s3">, z,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">\dur</span>, 0.1</p>
+<p class="p4">).play;</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// which is the same as:</p>
+<p class="p4">(</p>
+<p class="p4">k = <span class="s2">Pseq</span>([0, 5]);</p>
+<p class="p7"><span class="s3">c = </span>IdentityDictionary<span class="s3">[</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>0 -&gt; [5, 0],</p>
+<p class="p4"><span class="Apple-tab-span">	</span>5 -&gt; [3, 0]</p>
+<p class="p4">];</p>
+<p class="p2"><br></p>
+<p class="p4">z = <span class="s2">Prewrite</span>(k, c, 5);</p>
+<p class="p7">Pbind<span class="s3">(</span></p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span></span>\instrument<span class="s3">, </span>\sinegrain<span class="s3">,</span></p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span></span>\degree<span class="s3">, z,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">\dur</span>, 0.1</p>
+<p class="p4">).play;</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// the following would be hard with Prewrite, because<span class="Apple-converted-space"> </span></p>
+<p class="p5">// the new string is a combination of previous ones</p>
+<p class="p5">// ("aa" -&gt; "_", "ab" -&gt; "c")</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4">k = <span class="s2">Pseq</span>(<span class="s4">"abx"</span>);</p>
+<p class="p4">c = [</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"aa"<span class="s3"> -&gt; </span>"_"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"ab"<span class="s3"> -&gt; </span>"c"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"a"<span class="s3"> -&gt; </span>"ba"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"b"<span class="s3"> -&gt; </span>"ca"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"c"<span class="s3"> -&gt; </span>"ac"</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4">];</p>
+<p class="p7"><span class="s3">d = </span>Dictionary<span class="s3">[</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>$a -&gt; 0,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>$b -&gt; 5,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>$c -&gt; 3,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>$_ -&gt; 8,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>$x -&gt; [5, 7]</p>
+<p class="p4">];</p>
+<p class="p4">k.asStream.rewriteString(c, 10).all.join.postln;</p>
+<p class="p4">z = <span class="s2">Pdict</span>(d, k.asStream.rewriteString(c, 10));</p>
+<p class="p2"><br></p>
+<p class="p7">Pbind<span class="s3">(</span></p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span></span>\instrument<span class="s3">, </span>\sinegrain<span class="s3">,</span></p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span></span>\degree<span class="s3">, z,</span></p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span></span>\octave<span class="s3">, 5,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">\dur</span>, 0.1</p>
+<p class="p4">).play;</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// two levels in parallel:</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4">k = <span class="s2">Pseq</span>(<span class="s4">"abx"</span>);</p>
+<p class="p4">c = [</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"aa"<span class="s3"> -&gt; </span>"_"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"a"<span class="s3"> -&gt; </span>"ba"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"b"<span class="s3"> -&gt; </span>"ca"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"c"<span class="s3"> -&gt; </span>"ac"</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4">];</p>
+<p class="p7"><span class="s3">d = </span>Dictionary<span class="s3">[</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>$a -&gt; 0,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>$b -&gt; 5,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>$c -&gt; 3,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>$_ -&gt; 9,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>$x -&gt; <span class="s2">Pseq</span>((0..15), 2) <span class="s5">// end phrase</span></p>
+<p class="p4">];</p>
+<p class="p2"><br></p>
+<p class="p4">z = <span class="s2">Ptuple</span>([</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pdict</span>(d, k.asStream.rewriteString(c, 8)),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pdict</span>(d, k.asStream.rewriteString(c, 9)) + 2 <span class="s5">// modal transpose</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>]).trace;</p>
+<p class="p2"><br></p>
+<p class="p7">Pbind<span class="s3">(</span></p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span></span>\instrument<span class="s3">, </span>\sinegrain<span class="s3">,</span></p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span></span>\degree<span class="s3">, z,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">\dur</span>, 0.1</p>
+<p class="p4">).play;</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// rule order tests /////////////////////////////////////////////////////////</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// the rules are applied in order. The first match is used to translate</p>
+<p class="p5">// the current string.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4">k = <span class="s2">Pseq</span>(<span class="s4">"ba"</span>);</p>
+<p class="p4">c = [</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"ab"<span class="s3"> -&gt; </span>"c"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"a"<span class="s3"> -&gt; </span>"ba"</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4">];</p>
+<p class="p4">k.asStream.rewriteString(c, 6).all.join.postcs; <span class="s5">// "bbbbbbba"</span></p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4">k = <span class="s2">Pseq</span>(<span class="s4">"ab"</span>);</p>
+<p class="p4">c = [</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"ab"<span class="s3"> -&gt; </span>"c"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"a"<span class="s3"> -&gt; </span>"ba"</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4">];</p>
+<p class="p4">k.asStream.rewriteString(c, 6).all.join.postcs; <span class="s5">// "c"</span></p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4">k = <span class="s2">Pseq</span>(<span class="s4">"ab"</span>);</p>
+<p class="p4">c = [</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"a"<span class="s3"> -&gt; </span>"ba"<span class="s3">,</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"ab"<span class="s3"> -&gt; </span>"c"</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4">];</p>
+<p class="p4">k.asStream.rewriteString(c, 6).all.join.postcs; <span class="s5">// "bbbbbbab"</span></p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// Links on the net:</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s7">http://www.math.okstate.edu/mathdept/dynamics/lecnotes/node15.html</span></p>
+<p class="p4"><span class="s7">http://en.wikipedia.org/wiki/Lindenmayer_system</span></p>
+<p class="p4"><span class="s7">http://en.wikipedia.org/wiki/Chomsky_grammar</span></p>
+<p class="p4"><span class="s7">http://swiki.hfbk-hamburg.de:8888/MusicTechnology/279</span></p>
+<p class="p4"><span class="s7">http://www.avatar.com.au/courses/Lsystems/</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">//////////////////////////////////////////</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4"><span class="s2">var</span> w, b, u, f, z, level=0;</p>
+<p class="p2"><br></p>
+<p class="p4">w = <span class="s2">SCWindow</span>(<span class="s4">"test"</span>, <span class="s2">Rect</span>(40, 240, 200, 200)).front;</p>
+<p class="p4">w.view.decorator = <span class="s2">FlowLayout</span>(w.bounds.copy.left_(30).top_(30));</p>
+<p class="p4">b = { <span class="s2">|i|</span> { <span class="s2">|j|</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">var</span> c = ({ <span class="s4">"abcd"</span>.choose } ! 3).join;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">SCButton</span>(w, <span class="s2">Rect</span>(0,0, 30,25))</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.states_([[c, <span class="s2">Color</span>.black]])</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_({ f.(c) })</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.font_(<span class="s2">Font</span>(<span class="s6">\Georgia</span>, 11))</p>
+<p class="p4">} ! 4; w.view.decorator.nextLine } ! 4;</p>
+<p class="p2"><br></p>
+<p class="p4">w.view.decorator.nextLine;</p>
+<p class="p4"><span class="s2">SCButton</span>(w, <span class="s2">Rect</span>(0,0, 30,25))</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.states_({ <span class="s2">|i|</span> [i.asString, <span class="s2">Color</span>.black]} ! 16)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_({ <span class="s2">|b|</span> level = b.value });</p>
+<p class="p2"><br></p>
+<p class="p4">r = [</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"aa"<span class="s3"> -&gt; </span>"aba.b"<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"ba"<span class="s3"> -&gt; </span>"....aa"<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"c"<span class="s3"> -&gt; </span>"ddba"<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span></span>"."<span class="s3"> -&gt; </span>"b."<span class="s3">,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">"dd"</span> -&gt; { #[<span class="s4">".c"</span>, <span class="s4">"c."</span>, <span class="s4">"ld"</span>].choose }</p>
+<p class="p4">];</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p7">SynthDef<span class="s3">(</span><span class="s6">\p</span><span class="s3">, { </span>|out = 0, freq=400, amp=0.4, sustain=0.04|</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">OffsetOut</span>.ar(out,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">SinOsc</span>.ar(freq)<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* <span class="s2">XLine</span>.ar(amp, amp * 0.001, sustain, doneAction: 2)</p>
+<p class="p4"><span class="Apple-tab-span">	</span>);</p>
+<p class="p4">}).memStore;</p>
+<p class="p4">);</p>
+<p class="p2"><br></p>
+<p class="p4">u = { <span class="s2">|str|</span><span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>fork {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> m = str.iter.rewriteString(r, level);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> b;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Char</span>.nl.post;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>loop {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b = m.next;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(a.notNil and: b.isNil) { <span class="s4">"\n"</span>.post };</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(b ? <span class="s4">""</span>).post;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(b.isNil) { <span class="s2">nil</span>.yield };</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Synth</span>.grain(<span class="s6">\p</span>, [<span class="s6">\freq</span>, b.ascii - 97 * 200 + 300]);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.04.wait;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p4">};</p>
+<p class="p2"><br></p>
+<p class="p4">f = { <span class="s2">|c|</span> u.(c); };</p>
+<p class="p4">w.onClose = { u.stop };</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+</body>
+</html>

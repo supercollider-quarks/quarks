@@ -1,0 +1,861 @@
+CLASS:: AbstractPlayer
+summary:: the base class for all Players : a playable object
+categories:: Libraries>crucial>Players
+related:: Classes/Patch, Classes/Mx
+
+DESCRIPTION::
+Players are things that can play.  The AbstractPlayer interface encapsulates each of the steps to load an object, get its resources onto the server (eg. loading buffers, populating lookup tables) , to play at precise times, stop and free its resources when finished.
+
+Players may have one synth or many or even none. They may hold groups, busses and buffers in its instance variables.
+
+Players have an output spec and some of them have inputs and input specs.
+
+If they have editable parameters then the framework supports saving and loading of the player object in compile string document format.
+
+
+
+
+CLASSMETHODS::
+
+METHOD:: bundleClass
+
+
+
+METHOD:: bundle
+
+
+argument:: server
+
+
+argument:: atTime
+see link::Guides/atTime::
+
+
+argument:: buildFunction
+
+
+
+METHOD:: ar
+
+
+argument::  ... args
+
+
+
+METHOD:: kr
+
+
+argument::  ... args
+
+
+
+METHOD:: annotate
+
+
+argument:: thing
+
+
+argument:: note
+
+
+
+METHOD:: getAnnotation
+
+
+argument:: thing
+
+
+
+METHOD:: removeAnnotation
+
+
+argument:: thing
+
+
+
+METHOD:: initClass
+
+
+
+METHOD:: load
+
+
+argument:: obj
+
+
+argument:: warnIfNotFound
+
+
+
+METHOD:: enpath
+
+
+argument:: obj
+
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: path
+ if loaded or saved, the player knows its path
+
+argument:: p
+
+
+
+METHOD:: synth
+
+
+
+METHOD:: group
+
+
+argument:: g
+
+
+
+METHOD:: server
+
+
+
+METHOD:: patchOut
+
+
+
+METHOD:: status
+
+
+
+METHOD:: play
+	boots the server, prepares the player for play (loading resources like samples etc.)
+	and spawns the player
+
+	all args are optional
+
+argument:: group
+	a Server (will use the root node)
+	a Group
+	nil (default server's root node)
+
+argument:: atTime
+	see link::Guides/atTime::
+
+argument:: bus
+	bus - (Bus,Integer,Nil)
+		a specific Bus to play on, otherwise will default to the main audio outs
+
+
+METHOD:: prPlay
+
+
+argument:: atTime
+see link::Guides/atTime::
+
+
+argument:: bus
+
+
+argument:: timeOfRequest
+
+
+
+METHOD:: prSetStatus
+
+
+argument:: newStatus
+
+
+
+METHOD:: isPrepared
+
+
+
+METHOD:: readyForPlay
+
+
+
+METHOD:: prepareForPlay
+	this loads the synthDef to the server for the player and all of its children,
+	and allocates any resources such as buffers, loading sound files etc.
+
+argument:: group
+	group -	a Server, a Group or Nil
+
+argument:: private
+	isPrivate: a public bus is one of the main audio outputs of your soundcard.
+		a private bus is one that will be patched and mixed further down the line.
+		When makePatchOut is called on the top player (the one that actually was sent .play)
+		it plays to a public (main audio output), and any internal children are told to
+		allocate and play onto a private bus.
+
+argument:: bus
+	bus -    a specific Bus to play on.  this will cause isPrivate to be ignored
+
+
+
+METHOD:: prepareToBundle
+
+
+argument:: agroup
+
+
+argument:: bundle
+
+
+argument:: private
+
+
+argument:: bus
+
+
+
+METHOD:: makeResourcesToBundle
+
+
+
+METHOD:: prepareChildrenToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: loadDefFileToBundle
+
+
+argument:: bundle
+
+
+argument:: server
+
+
+
+METHOD:: defaultAtTime
+
+
+
+METHOD:: loadBuffersToBundle
+
+
+
+METHOD:: makePatchOut
+
+
+argument:: agroup
+
+
+argument:: private
+
+
+argument:: bus
+
+
+argument:: bundle
+
+
+
+METHOD:: topMakePatchOut
+
+
+argument:: agroup
+
+
+argument:: private
+
+
+argument:: bus
+
+
+
+METHOD:: setPatchOut
+
+
+argument:: po
+
+
+
+METHOD:: spawn
+	assumes the player has been prepared.  see prepareForPlay
+
+
+argument:: atTime
+see link::Guides/atTime::
+
+
+argument:: timeOfRequest
+
+
+
+METHOD:: spawnOn
+
+
+argument:: group
+
+
+argument:: bus
+
+
+argument:: atTime
+see link::Guides/atTime::
+
+
+argument:: timeOfRequest
+
+
+
+METHOD:: spawnToBundle
+
+
+argument:: bundle
+
+
+argument:: selector
+
+
+
+METHOD:: spawnOnToBundle
+
+
+argument:: agroup
+
+
+argument:: bus
+
+
+argument:: bundle
+
+
+
+METHOD:: didSpawn
+
+
+
+METHOD:: isPlaying
+
+
+
+METHOD:: cmdPeriod
+
+
+
+METHOD:: onPlay
+
+
+argument:: func
+
+
+argument:: timeout
+
+
+argument:: listener
+
+
+argument:: oneShot
+
+
+argument:: throwErrorOnTimeout
+
+
+
+METHOD:: onStop
+
+
+argument:: func
+
+
+argument:: timeout
+
+
+argument:: listener
+
+
+argument:: oneShot
+
+
+argument:: throwErrorOnTimeout
+
+
+
+METHOD:: onReady
+
+
+argument:: func
+
+
+argument:: timeout
+
+
+argument:: listener
+
+
+argument:: oneShot
+
+
+argument:: throwErrorOnTimeout
+
+
+
+METHOD:: freeOnStop
+
+
+
+METHOD:: prOn
+
+
+argument:: status
+
+
+argument:: func
+
+
+argument:: timeout
+
+
+argument:: listener
+
+
+argument:: oneShot
+
+
+argument:: throwErrorOnTimeout
+
+
+
+METHOD:: stop
+	stops playing but does not deallocate any resources (buffers etc.)
+	You need to .free to deallocate it
+
+
+argument:: atTime
+see link::Guides/atTime::
+
+
+
+METHOD:: stopToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: didStop
+
+
+
+METHOD:: release
+	call release on the synth, with the releaseTime
+	then calls stop on the player, so even if the synthDef does not have a \gate
+	input, it will function the same as stop after a short delay.
+
+argument:: releaseTime
+
+
+argument:: atTime
+
+
+
+METHOD:: releaseToBundle
+
+
+argument:: releaseTime
+
+
+argument:: bundle
+
+
+
+METHOD:: free
+	frees all allocated resources (buffers etc.)
+	if it is playing then it also stops it
+
+
+argument:: atTime
+see link::Guides/atTime::
+
+
+
+METHOD:: freeToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: freeResourcesToBundle
+
+
+
+METHOD:: didFree
+
+
+
+METHOD:: freeSynthToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: freePatchOutToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: record
+
+
+argument:: path
+
+
+argument:: endBeat
+
+
+argument:: onComplete
+
+
+argument:: recHeaderFormat
+
+
+argument:: recSampleFormat
+
+
+argument:: atTime
+see link::Guides/atTime::
+
+
+
+METHOD:: busIndex
+
+
+
+METHOD:: bus
+
+
+argument:: b
+
+
+
+METHOD:: asSynthDef
+
+
+
+METHOD:: writeDefFile
+
+
+argument:: dir
+
+
+
+METHOD:: synthDefArgs
+
+
+
+METHOD:: defName
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: numChannels
+
+
+
+METHOD:: spec
+
+
+
+METHOD:: addToSynthDef
+
+
+argument:: synthDef
+
+
+argument:: name
+
+
+
+METHOD:: synthArg
+
+
+
+METHOD:: instrArgFromControl
+
+
+argument:: control
+
+
+
+METHOD:: ar
+
+
+
+METHOD:: kr
+
+
+
+METHOD:: value
+
+
+
+METHOD:: valueArray
+
+
+
+METHOD:: plot
+
+
+argument:: duration
+
+
+argument:: bounds
+
+
+
+METHOD:: connectTo
+
+
+argument:: hasInput
+
+
+
+METHOD:: connectToInputAt
+
+
+argument:: player
+
+
+argument:: inputIndex
+
+
+
+METHOD:: connectToPatchIn
+
+
+argument:: patchIn
+
+
+argument:: needsValueSetNow
+
+
+
+METHOD:: disconnect
+
+
+
+METHOD:: children
+for players that hold other players or objects, return those children
+	player classes should implement where appropriate.
+	a Patch has its args as children
+	SFP has its underlying object as child
+
+	using this.children.do({arg item; .... })  can save you from having to muck up
+	the Player class with extra methods.
+
+
+METHOD:: deepDo
+ do to allChildren
+
+argument:: function
+
+
+
+METHOD:: allChildren
+and all your children's children, and their children...
+
+METHOD:: composeUnaryOp
+
+
+argument:: operator
+
+
+
+METHOD:: composeBinaryOp
+
+
+argument:: operator
+
+
+argument:: pattern
+
+
+
+METHOD:: reverseComposeBinaryOp
+
+
+argument:: operator
+
+
+argument:: pattern
+
+
+
+METHOD:: beatDuration
+
+
+
+METHOD:: timeDuration
+
+
+
+METHOD:: embedInStream
+
+
+argument:: inval
+
+
+
+METHOD:: delta
+
+
+
+METHOD:: name
+ if loaded or saved then the name is the filename, else its the normal asString for an object (eg. "a Patch")
+
+
+METHOD:: asString
+
+
+
+METHOD:: save
+
+
+argument:: apath
+
+
+
+METHOD:: didSaveAs
+
+
+argument:: apath
+
+
+
+METHOD:: asCompileString
+
+
+
+METHOD:: storeParamsOn
+
+
+argument:: stream
+
+
+
+METHOD:: simplifyStoreArgs
+
+
+argument:: args
+
+
+
+METHOD:: annotate
+
+
+argument:: thing
+
+
+argument:: note
+
+
+
+METHOD:: changed
+
+
+argument:: what
+
+
+argument::  ... moreArgs
+
+
+
+METHOD:: copy
+
+
+
+METHOD:: guiClass
+
+
+
+METHOD:: addToDefName
+
+
+
+METHOD:: proxyControlClass
+
+
+
+METHOD:: wrapInFader
+
+
+argument:: bus
+
+
+
+METHOD:: releaseAndFreeToBundle
+
+
+argument:: releaseTime
+
+
+argument:: bundle
+
+
+
+METHOD:: enpath
+
+
+
+METHOD:: loadDocument
+
+
+
+METHOD:: didLoadFromPath
+
+
+argument:: argpath
+
+
+
+METHOD:: load
+
+
+argument:: obj
+
+
+argument:: warnIfNotFound
+
+
+
+METHOD:: busReport
+
+
+argument:: f
+
+
+argument:: slogan
+
+
+
+METHOD:: asKAsset
+
+
+
+METHOD:: swapperApp
+
+
+argument:: sb
+
+
+
+METHOD:: wigglyness
+
+
+
+
+

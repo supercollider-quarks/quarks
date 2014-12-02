@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0035aa}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #8f2116; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {text-decoration: underline ; color: #134ec9}
+span.s2 {color: #0000ff}
+span.s3 {color: #000000}
+span.s4 {color: #606060}
+span.s5 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>MIDIBendWindow</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">a graphic interface for midi pitchbend data.</p>
+<p class="p3"><br></p>
+<p class="p2">also see: <a href="MIDIWindow.html"><span class="s2">MIDIWindow</span></a></p>
+<p class="p3"><br></p>
+<p class="p4"><br></p>
+<p class="p5">MIDIBendWindow<span class="s3">();</span></p>
+<p class="p3"><br></p>
+<p class="p2">The MIDIBendWindow is a global window; there can be only one at a time.</p>
+<p class="p2">It connects 16 channels of pitchbend information sliders, Busses and actions. The sliders can also be moved by hand, which will have the same result; if you don't have your MIDI controller at hand this option might prove very useful. The sliders on MIDIBendWindow are <a href="SmoothSlider.html"><span class="s2">SmoothSlider</span></a>s.</p>
+<p class="p3"><br></p>
+<p class="p2">The MIDIBendWindow is built for interaction with MIDI controllers such as the Peavey PC1600x. If you select the "16xPitchbend" preset on that machine, you immedeately are connected to the MIDIBendWindow.</p>
+<p class="p3"><br></p>
+<p class="p2">The MIDIBendWindow can also record and playback movements, and plot, read and write them to MIDI files using <a href="SimpleMIDIFile.html"><span class="s2">SimpleMIDIFile</span></a>.</p>
+<p class="p3"><br></p>
+<p class="p2">similar undocumented classes:</p>
+<p class="p2">MIDITouchWindow</p>
+<p class="p2">MIDIControlWindow</p>
+<p class="p2">MIDICinetixWindow</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>MIDIBendWindow ( nC , busOffset, initValues, historySize, maxMIDIVal, inAction, left, bottom, height )</b></p>
+<p class="p3"><b></b><br></p>
+<p class="p2"><b>nC </b>: number of channels (default 16)</p>
+<p class="p2"><b>busOffset </b>: bus number to connect the first slider to. The other will be connected to the subsequent ones.</p>
+<p class="p2"><b>initValues </b>: the initial values of the sliders (default [ ] )</p>
+<p class="p2"><b>historySize </b>: every slider keeps an array with previous values. It's size should be at least 1 (default)</p>
+<p class="p2"><b>maxMIDIVal </b>: value at which the slider will be fully open.</p>
+<p class="p2"><b>inAction </b>: an action which is added to all sliders. it's passed arguments are:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>sliderNumber, sliderValue, lastSliderValue ... earlierSliderValues</b> (depending on <b>historySize</b>)</p>
+<p class="p2"><b>left, bottom, height </b>: the bounds of the window. The width is derrived from <b>nC</b></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>MIDIBendWindow.addFaderAction ( n, action )</b></p>
+<p class="p3"><b></b><br></p>
+<p class="p2"><b>n </b>: the number of the slider to add the action to</p>
+<p class="p2"><b>action </b>: a function to be evaluated every time the slider is moved (or a MIDI pitchbend event for that channel is received). The arguments passed to it are:</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>sliderNumber, sliderValue, lastSliderValue ... earlierSliderValues</b> (depending on <b>historySize</b>)</p>
+<p class="p3"><br></p>
+<p class="p2">if an action for slider <b>n</b> already existed it is replaced by the new one.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p6">(</p>
+<p class="p7">MIDIBendWindow<span class="s3">.addFaderAction( 0, { </span>|i, val, lastval|<span class="s3"><span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s4">"fader % moved from % to %\n"</span>.postf( i + 1, lastval, <span class="s3">val</span> ) } );</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p2"><b>MIDIBendWindow.addTreshAction ( n, val, up, down )</b></p>
+<p class="p3"><b></b><br></p>
+<p class="p2"><b>n </b>: the number of the slider to add the action to</p>
+<p class="p2"><b>val </b>: if the slider passes this value, one of the actions will be evaluated</p>
+<p class="p2"><b>up </b>: a function to be evaluated every time the slider is moved upwards past the <b>val</b></p>
+<p class="p2"><b>down </b>: a function to be evaluated every time the slider is moved downwards past the <b>val</b></p>
+<p class="p2">The arguments passed to the <b>up </b>and <b>down<span class="Apple-converted-space"> </span></b> functions are:</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>sliderNumber, sliderValue, lastSliderValue ... earlierSliderValues</b> (depending on <b>historySize</b>)</p>
+<p class="p3"><br></p>
+<p class="p2">if a treshAction for slider <b>n</b><span class="Apple-converted-space">  </span>at value <b>val</b> already existed it is replaced by the new one.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><br></p>
+<p class="p9">(</p>
+<p class="p9"><span class="s5">MIDIBendWindow</span>.addTreshAction( 1, 0.5,<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span>{ </span><span class="s5">|i, val, lastval|</span><span class="s3"> </span>"fader % moved up <span class="Apple-converted-space">  </span>and passed 0.5\n".postf( i+1)<span class="s3"> },</span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span>{ </span><span class="s5">|i, val, lastval|</span><span class="s3"> </span>"fader % moved down and passed 0.5\n".postf( i+1)<span class="s3"> } );</span></p>
+<p class="p9">)</p>
+</body>
+</html>

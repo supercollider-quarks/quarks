@@ -1,0 +1,78 @@
+TITLE:: MidiNoteFunc
+summary:: Used by the QuNeo classes to interface to MIDI Note controls.
+categories:: Hardware>QuNeo
+related:: Classes/QuNeo, Classes/MidiCcBus, Classes/QuNeoButton, Classes/QuNeoCircleControl, Classes/QuNeoDrumPad, Classes/QuNeoGridPad, Classes/QuNeoLongSlider, Classes/QuNeoSlider
+
+DESCRIPTION::
+Used by the QuNeo classes to interface to MIDI Note controls
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new MidiNoteFunc.  During regular use this will be called by the QuNeo control classes.
+
+ARGUMENT:: noteNum
+MIDI note number for the control.
+
+ARGUMENT:: channel
+MIDI channel the control responds to.
+
+ARGUMENT:: scInPort
+Port that Supercollider will recieve MIDI data from.
+
+ARGUMENT:: scOutPort
+Port that Supercollider will send MIDI data to.
+
+ARGUMENT:: name
+Name of the control, used when printing debug info.
+
+returns:: A new MidiNoteFunc.
+
+
+INSTANCEMETHODS::
+
+
+METHOD:: noteNum
+MIDI note number that the control responds to.
+
+
+METHOD:: onFunc
+A fuction to be called when a MIDI note on message is received.  The following values will be passed to the function: val, num, chan, src.
+
+
+METHOD:: offFunc
+A fuction to be called when a MIDI note off message is received.  The following values will be passed to the function: val, num, chan, src.
+
+
+METHOD:: name
+Name of the control, used when printing debug info.
+
+
+METHOD:: channel
+MIDI channel the control responds to.
+
+
+METHOD:: scInPort
+Port that Supercollider will recieve MIDI data from.
+
+
+METHOD:: scOutPort
+Port that Supercollider will send MIDI data to.
+
+
+METHOD:: debug
+Allows you to enable or disable debugging for the control.  This setting can also be changed on a per datasource basis.
+
+ARGUMENT:: setDebug
+Enable debugging? true/false.
+
+
+PRIVATE:: init
+
+
+EXAMPLES::
+
+code::
+See QuNeo class for examples
+::

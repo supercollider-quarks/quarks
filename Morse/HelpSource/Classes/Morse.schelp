@@ -1,0 +1,195 @@
+TITLE:: Morse
+summary:: create time patterns based on Morse code.
+categories:: HistoricalCommunication
+related:: MorseDict
+
+DESCRIPTION::
+Morse looks dot-dash patterns (in MorseDict) for a given character or string
+and converts them to times for playback. Based on the Morse class by Hairi Vogel.
+
+http://en.wikipedia.org/wiki/Morse_Code,
+based on ITU recommendation ITU-R M.1677, found here:
+http://www.godfreydykes.info/international\ morse\ code.pdf
+
+code::
+	Morse.signs($a);
+	Morse.timesFor($a); // dot - pause - dash - pause
+
+	Morse.signs("SOS");
+	Morse.word("SOS");
+
+    Morse("Hello Morse");
+	Morse.signs("SOS SOS");
+::
+
+
+CLASSMETHODS::
+
+METHOD:: timesFor
+get the times for a single character or symbol.
+ARGUMENT:: char
+ a single char or one of the supported special symbols.
+returns:: a list of dot-dash time values and the pauses in between them.
+
+code::
+	Morse.timesFor($a);
+
+// ->	[ 0.1, 0.1, 0.3, 0.3 ]
+	  dot (inside-char pause) dash (inside-word pause)
+::
+
+METHOD:: word
+get the time lists for a word.
+ARGUMENT:: word
+a string without blank space
+returns:: the time values for the chars in the word.
+
+code::
+	Morse.word("SOS").printAll;
+
+	[ 0.1, 0.1, 0.1, 0.1, 0.1, 0.3 ]
+	  di        di        dit
+	[ 0.3, 0.1, 0.3, 0.1, 0.3, 0.3 ]
+	  dah       dah       dah
+	[ 0.1, 0.1, 0.1, 0.1, 0.1, 0.7 ]
+	  di        di        dit  (pause between words)
+::
+
+METHOD:: new
+get the time lists for a word.
+ARGUMENT:: text
+the text to be encoded to Morse times. default = "Hello Morse".
+returns:: the time values for the text
+
+METHOD:: signs
+convert a text to dot-dash signs.
+ARGUMENT:: text
+the text to be encoded to Morse dot-dash signs. default = "Hello Morse"
+returns:: the time values for the text
+
+METHOD:: dot
+get and set the time for a dot - default is 0.1
+
+METHOD:: dash
+get and set the time for a dash - default is 0.3
+
+METHOD:: intra
+get and set pause time within a char - default is 0.1
+
+METHOD:: short
+get and set pause time between chars - default is 0.3
+
+METHOD:: medium
+get and set pause time between words - default is 0.7
+
+METHOD:: verbose
+get and set flag whether to post debug messages
+
+
+code::
+z = "Morse Code";
+Morse(z).postln.flat;
+
+	// post the times for z in time:
+(
+Tdef(\morse, { var times;
+	times = Morse(z).flat;
+	(times.flat * 0.5).do({ arg time, i;
+		time.postln.wait;
+	});
+}).play;
+)
+
+// example with JITLib
+
+Ndef(\morse, { arg amp = 0; SinOsc.ar(600, 0, amp * 0.2); }).play;
+
+Ndef(\morse).set(\amp, 1);
+Ndef(\morse).set(\amp, 0);
+(
+Tdef(\morse, {
+	var times;
+	Ndef(\morse).play;
+	times = Morse(z).postln.flat;
+	(times.flat * 0.5).do({ arg time, i;
+		Ndef(\morse).set(\amp, [ 1, 0 ].wrapAt(i));
+		time.wait;
+	});
+});
+)
+
+
+z = "Code";	Tdef(\morse).play; // z is the text to play.
+
+Tdef(\morse).stop.play;	// repeat
+
+z = "Cheers Hairi";
+Tdef(\morse).stop.play;
+
+
+	// gate any running sound with morse.
+
+Ndef(\src, { FSinOsc.ar(600, 0, 0.2); });
+
+Ndef(\morse).set(\amp, 0);
+
+Ndef(\morse, { arg amp = 0.0; Ndef(\src).ar * amp });
+Ndef(\morse).play;
+
+Ndef(\src).stop
+Ndef(\src).fadeTime = 5;
+
+	// and change source while playing:
+z = "Try Alternative Beeps Yourself";		// new text.
+Tdef(\morse).stop.play;	// start over
+
+Ndef(\src, { SinOsc.ar(LFNoise1.kr([0.3, 0.31], 200, 800)).sum });
+
+Ndef(\src).play
+Ndef(\src).stop
+
+Tdef(\morse).stop.play;	// start over
+Ndef(\src, { LPF.ar(Saw.ar(LFNoise1.kr([0.3, 0.31], 200, 800)), 2000).sum * 0.5 });
+
+Tdef(\morse).stop.play;	// start over
+Ndef(\src, { Impulse.ar(LFNoise1.kr([0.3, 0.31], 200, 800)).sum.lag(0.001) * LFPulse.ar(80, 0, LFNoise1.kr(1, 0.5, 0.5)) });
+
+~out.set(\amp, 0.2);
+~out.set(\amp, 0);
+
+Ndef(\src, { GrayNoise.ar(1, 1) * SinOsc.ar(600) * 0.2 });
+
+
+(
+Tdef(\morse, {
+	var times;
+	Ndef(\morse).play;
+	times = Morse(z).postln.flat;
+	(times.flat * 0.3).do({ arg time, i;
+		Ndef(\morse).set(\amp, [ 1, 0 ].wrapAt(i));
+		time.wait;
+	});
+});
+)
+
+
+	// the test word for Morse transmission speed definition:
+Morse("Paris").flat.sum;
+
+	// 5 secs means it could be transmitted 12 times in one minute;
+	// so this speed is 12 words per minute, or WPM.
+
+
+(
+z = "Paris";
+Tdef(\morse, {
+	var times;
+	Ndef(\morse).play;
+	times = Morse(z).postln.flat;
+	(times.flat).do({ arg time, i;
+		Ndef(\morse).set(\amp, [ 1, 0 ].wrapAt(i));
+		time.wait;
+	});
+}).play;
+)
+::

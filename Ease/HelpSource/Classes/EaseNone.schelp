@@ -1,0 +1,30 @@
+CLASS:: EaseNone
+SUMMARY:: no easing
+CATEGORIES:: Ease
+RELATED:: Overviews/EaseOverview
+
+DESCRIPTION::
+Easing equation for a simple linear tweening with no easing.
+
+NOTE::
+This class is only for pass-thru.
+::
+
+INSTANCEMETHODS::
+
+METHOD:: value
+
+ARGUMENT:: t
+a link::Classes/Float:: between 0.0 and 1.0.
+
+EXAMPLES::
+
+CODE::
+a= EaseNone.new
+a.value(0.5)
+
+{|t| EaseNone.(t/99)}.dup(100).plot2	//no change
+
+s.boot
+{SinOsc.ar(EaseNone.kr(Line.kr(0, 1, 2, doneAction:2)).exprange(500, 1000), 0, 0.1)}.play
+::

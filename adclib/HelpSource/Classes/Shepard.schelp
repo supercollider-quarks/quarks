@@ -1,0 +1,142 @@
+TITLE:: Shepard
+summary:: create interval and amplitude values for Shepard pitch illusions
+categories:: UGens
+related:: ShepardG
+
+DESCRIPTION::
+The Shepard effect is the illusion of freely changing the chroma of a tone (the octave-independent notion of its pitch; in equal temperament, also called the pitch class), while keeping its perceived tone height apparently constant, or even moving it in the opposite direction. It is named after Roger Shepard, who first presented a discrete pitch scale with this effect - see http://en.wikipedia.org/wiki/Shepard_tone.
+Jean-Claude Risset famously created a glissando variant of this scale which he used in several pieces.
+
+This effect relies on the perceptual fusion of pitches at octave distances into a single pitch of rather ambiguous octave 'height', and manipulating the amplitudes of the individual components such that the overall balance of the different octaves creates the desired average pitch height perception.
+
+CLASSMETHODS::
+
+METHOD:: new
+create values for the intervals to be used in Shepard-based sounds,
+along with the corresponding amplitude levels for the sound's components.
+
+ARGUMENT:: num
+the number of interval and amplitude controls to generate. Default value is 5.
+
+ARGUMENT:: interval
+the interval between two adjacent interval controls. Default value is 12 for pitch
+fusion at the octave interval, as in the classic Shepard experiment. (Other values will create less fusion, but may be interesting to experiment with.)
+
+ARGUMENT:: shift
+the amount by which pitch height is shifted up or down without changing pitch class.
+Can be used to glide up in octaves without apparent glissando. Best understood by trying.
+
+ARGUMENT:: ampExp
+the amplitude function is a cosine function, with an exponent to change window width.
+code::
+// different ampExp values: exponents of 1, 2, and 4
+(0, 0.01 .. 2pi).collect { |x| 1 - cos(x) ** 1 }.plot
+(0, 0.01 .. 2pi).collect { |x| 1 - cos(x) ** 2 }.plot
+(0, 0.01 .. 2pi).collect { |x| 1 - cos(x) ** 4 }.plot
+::
+
+ARGUMENT:: masterPhase
+for which position in the rotating loop to create values.
+
+returns:: interval and amplitude values based on Shepard formula.
+
+code::
+// intervals and volume levels for a static Shepard-like sound
+Shepard(5, 12, 0).round(0.001).postln;
+Shepard(5, 12, 0).round(0.001).postln;
+
+// a static shepard sound
+(
+{ 	var intvs, amps;
+	#intvs, amps = Shepard(5, 12, 0);
+	(SinOsc.ar((intvs + 60).midicps) * amps).mean
+}.scope;
+)
+
+// changing masterphase: going from full left to full right moves thru the cycle num times.
+(
+{ 	var intvs, amps;
+	#intvs, amps = Shepard(5, 12, 0, masterPhase: MouseX.kr(0, 1));
+	(SinOsc.ar((intvs + 60).midicps) * amps).mean
+}.scope;
+)
+::
+
+METHOD:: kr
+
+		create controls for the intervals to be used in Shepard-driven sounds,
+		along with the corresponding amplitude controls for the sound's layers.
+		num, interval, shift, ampExp work as in new;
+
+ARGUMENT:: num
+as above, the number of interval and amplitude controls. Default is 5.
+
+ARGUMENT:: slope
+the slope by which the Shepard controls rise or fall.
+E.g. 0 is constant pitch class; 0.1 means once thru the cycle of <num> values in 10 seconds, rising; -0.2 is once thru the cycle of <num> controls falling in 5 seconds. Default value is 0.02.
+
+ARGUMENT:: interval
+as above, the interval between two adjacent interval controls. Default is 12.
+
+ARGUMENT:: shift
+as above, the amount by which pitch height is shifted up or down without changing pitch class.
+
+
+ARGUMENT:: ampExp
+the amplitude function is a cosine function, with an exponent to change window width.
+
+returns::
+Array of [num, num] kr signals for interval and amplitude values.
+
+EXAMPLES::
+
+code::
+
+// forever rising pitch
+(
+{ 	var intervals, amps; #intervals, amps = Shepard.kr;
+	(SinOsc.ar( (intervals + 60).midicps) * amps).sum * 0.2 ! 2
+}.scope;
+)
+
+// control slope (rising or falling pitch tendency)
+// and pitch height independently by mouse x, y
+(
+{
+	var slope =  MouseX.kr(-0.1, 0.1);
+	var shift = MouseY.kr(2, -2);
+
+	var intvs, amps;
+	#intvs, amps = Shepard.kr(5, slope, 12, shift);
+	SinOsc.ar( (intvs + 60).midicps, 0, amps).sum * 0.2 ! 2
+}.scope;
+)
+
+// control chroma from left to right,
+// and pitch height independently by mouse x, y
+(
+{
+	var chroma =  MouseX.kr(-6, 6);
+	var shift = MouseY.kr(2, -2) - (chroma / 12);
+
+	var intvs, amps;
+	#intvs, amps = Shepard(5, 12, shift);
+	SinOsc.ar( (intvs + 60 + chroma).midicps, 0, amps).sum * 0.2 ! 2
+}.scope;
+)
+
+// try it with a drum loop - (Hello Dan ;-)
+b = Buffer.read(s, "/sounds/adc_sounds/breaks/FUNKYDRUM.wav");
+(
+{
+	var slope =  MouseX.kr(-0.1, 0.1);
+	var shift = MouseY.kr(2, -2);
+
+	var intvs, amps;
+	#intvs, amps = Shepard.kr(5, slope, 12, shift);
+	(PlayBuf.ar(b.numChannels, b, intvs.midiratio, loop: 1) * amps).sum * 0.2 ! 2
+}.scope;
+)
+
+// to do - SynthDef and pattern example...
+::

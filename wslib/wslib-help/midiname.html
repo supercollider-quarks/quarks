@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {text-decoration: underline ; color: #0048cf}
+span.s2 {color: #bf0000}
+span.s3 {color: #606060}
+span.s4 {text-decoration: underline}
+span.s5 {color: #007300}
+span.s6 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>midiname</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p4">notenumber to notename and backwards conversion</p>
+<p class="p4">also includes convenience methods for frequency (cps)</p>
+<p class="p3"><br></p>
+<p class="p4">midivoicetype can be used to test if a certain note<span class="Apple-converted-space"> </span></p>
+<p class="p4">or frequency is included in a certain voice type</p>
+<p class="p3"><br></p>
+<p class="p4">voice types are currently in english and dutch</p>
+<p class="p3"><br></p>
+<p class="p4">note names are as found in Logic Pro. Sibelius and some other brands</p>
+<p class="p4">use other:<span class="Apple-converted-space">  </span>C4 in Logic = C3 in Sibelius</p>
+<p class="p3"><br></p>
+<p class="p5"><br></p>
+<p class="p4"><b>SimpleNumber-midiname ( sign )</b></p>
+<p class="p4">convert a midi notenumber to a notename</p>
+<p class="p4">adds a 'cents' method</p>
+<p class="p3"><br></p>
+<p class="p6">64.midiname; <span class="s2">// -&gt; "E3"</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>SimpleNumber-cpsname ( sign )</b></p>
+<p class="p2">convert frequency to a notename</p>
+<p class="p7"><br></p>
+<p class="p8">440.cpsname; <span class="s2">// -&gt; "A3"</span></p>
+<p class="p5"><br></p>
+<p class="p2"><b>String-namemidi ( cents )</b></p>
+<p class="p2">convert a notename to a midi notenumber</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s3">"G2"</span>.namemidi; <span class="s2">// -&gt; 55</span></p>
+<p class="p7"><br></p>
+<p class="p2"><b>String-namecps ( cents )</b></p>
+<p class="p2">convert a notename to a frequency</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s3">"A2"</span>.namecps; <span class="s2">// -&gt; 220</span></p>
+<p class="p7"><br></p>
+<p class="p2"><b>String-namename ( cents, sign )</b></p>
+<p class="p2">convert a notename to a standardized notename</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s3">"A#2"</span>.namename; <span class="s2">// -&gt; "Bb2"</span></p>
+<p class="p5"><br></p>
+<p class="p2">Convenience methods for Symbol and Array classes were added.</p>
+<p class="p7"><br></p>
+<p class="p2"><b><span class="s4">scales</span></b></p>
+<p class="p7"><b></b><br></p>
+<p class="p2"><b>makeScale ( type, startNote, endNote )</b></p>
+<p class="p7"><b></b><br></p>
+<p class="p2">Makes a scale using the object it's called to as ground note. If no <b>endNote </b>or <b>startNote </b>is provided, the scale will range from the ground note to an octave higher.<span class="Apple-converted-space"> </span></p>
+<p class="p7"><br></p>
+<p class="p2">When called on a Number, the number is used as a midi note number.<span class="Apple-converted-space"> </span></p>
+<p class="p2">When called on a String or Symbol, it is interpreted as a note name, and the result will also contain notenames.</p>
+<p class="p7"><b><span class="s4"></span></b><br></p>
+<p class="p4"><b>Possible scale types:</b></p>
+<p class="p3"><br></p>
+<p class="p4"><i>arabic</i></p>
+<p class="p4"><i>blues</i></p>
+<p class="p4"><i>blues-major</i></p>
+<p class="p4"><i>chromatic</i></p>
+<p class="p4"><i>fifth</i></p>
+<p class="p4"><i>fifth-major</i></p>
+<p class="p4"><i>fifth-minor</i></p>
+<p class="p4"><i>harm-minor</i></p>
+<p class="p4"><i>indian</i></p>
+<p class="p4"><i>just</i></p>
+<p class="p4"><i>just-major</i></p>
+<p class="p4"><i>just-minor</i></p>
+<p class="p4"><i>major</i></p>
+<p class="p4"><i>melo-minor</i></p>
+<p class="p4"><i>minor</i></p>
+<p class="p4"><i>pentatonic</i></p>
+<p class="p4"><i>pythagorean</i></p>
+<p class="p4"><i>quartertones</i></p>
+<p class="p4"><i>werckmeister</i></p>
+<p class="p3"><i></i><br></p>
+<p class="p6">60.makeScale( <span class="s5">\just</span> );</p>
+<p class="p6"><span class="s3">"G4"</span>.makeScale( <span class="s5">\major</span> );</p>
+<p class="p9"><br></p>
+<p class="p5"><br></p>
+<p class="p4"><b><span class="s4">voicetype</span></b></p>
+<p class="p5"><br></p>
+<p class="p4">tests if a note is within reach of singing voices</p>
+<p class="p3"><br></p>
+<p class="p5"><br></p>
+<p class="p4"><b>SimpleNumber-midivoicetype ( type, language )</b></p>
+<p class="p4">get the voicetypes who can sing this midi notenumber</p>
+<p class="p4"><b>type </b>can be nil, 'm' or 'f' (male or female)</p>
+<p class="p2"><b>language </b>can be 'en' or 'nl' (English - default - or Dutch )</p>
+<p class="p7"><br></p>
+<p class="p2">Returns an array of possible voice types. If a voice type is followed by a - or + sign that means it is in the outer regions, and can probably only be sung by well-trained singers, and not for a long time.</p>
+<p class="p3"><br></p>
+<p class="p10"><span class="s6">42.midivoicetype;<span class="Apple-converted-space">  </span></span>// -&gt; [ 'baritone -', 'bass' ]</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><b>SimpleNumber-cpsvoicetype</b></p>
+<p class="p4">get the voicetypes who can sing this frequency</p>
+<p class="p3"><br></p>
+<p class="p4"><b>String-namevoicetype ( type, language )</b></p>
+<p class="p4">get the voicetypes who can sing this notename</p>
+</body>
+</html>

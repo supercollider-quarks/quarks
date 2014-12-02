@@ -1,0 +1,3 @@
+DualBandComp { 	*ar { arg in, xFreq = 300, loGain = 1.0, hiGain = 1.0, 		thresh = 0.1, compRatio = 5, attack = 0.0, decay = 1.0;				var hi, lo, ctl, compFactor; 		compFactor = compRatio.reciprocal;		lo = LPF.ar(in, xFreq);		hi = in - lo * hiGain;
+		lo = lo * loGain;
+				lo = Compander.ar(lo, lo.asArray.sum, thresh, slopeAbove: compFactor, clampTime: attack, relaxTime: decay);		hi = Compander.ar(hi, hi.asArray.sum, thresh, slopeAbove: compFactor, clampTime: attack, relaxTime: decay);				^Mix.ar([ lo, hi ]);	}}

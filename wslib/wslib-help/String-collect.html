@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {color: #255ece}
+span.s2 {color: #606060}
+span.s3 {color: #000000}
+span.s4 {color: #0000bf}
+span.s5 {color: #bf0000}
+</style>
+</head>
+<body>
+<p class="p1"><b>String:collect</b></p>
+<p class="p2"><br></p>
+<p class="p3">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p2"><br></p>
+<p class="p3">change of behaviour for String:collect.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>String:collect ( function )</b></p>
+<p class="p4">instead of only accepting Chars as output of the function, String:collect now accepts anything as output, and adds it to the output string. This might change behaviour of other methods such as <b>tr</b></p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s2">"teststring"</span><span class="s3">.collect({ </span><span class="s4">|char|</span><span class="s3"> </span><span class="s2">" "</span><span class="s3"> ++ char }); </span>// inserts spaces before every char</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2">"teststring"</span>.collect({ <span class="s4">|char|</span>if( char == $s ) { <span class="s2">""</span> } { char } }); <span class="s5">// removes "s"</span></p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2">"teststring"</span>.collect({ <span class="s4">|char|</span> char.ascii });</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s2">"teststring"</span><span class="s3">.tr( $s, </span><span class="s2">"zzzz"</span><span class="s3"> );<span class="Apple-converted-space">  </span></span>// previously the to argument could only be a <a href="SC://Char">Char</a></p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+</body>
+</html>

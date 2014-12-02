@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWCombineNode</TITLE>
+<META NAME="description" CONTENT="SWDataNetwork">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00041000000000000000">
+SWCombineNode</A></H2>
+
+<h3>- Example - </h3>
+    <pre>
+<span class="comment-delimiter">// </span><span class="comment">define the data network:
+</span>x = <span class="type">SWDataNetwork</span>.new;
+
+<span class="comment-delimiter">// </span><span class="comment">add some labels:
+</span>x.add( <span class="constant">\floor1</span>, 2 );
+x.add( <span class="constant">\floor2</span>, 11 );
+x.add( <span class="constant">\floor3</span>, 12 );
+x.add( <span class="constant">\floorAll</span>, 100 );
+
+<span class="comment-delimiter">// </span><span class="comment">In this example the data comes into the network, set from an XBee network,
+// with sensor devices which have the ID's 2, 11 and 12.
+// These ID's are used directly as node IDs in the Data Network.
+</span><span class="comment-delimiter">// </span><span class="comment">The sensors involved are pressure sensors with multiple areas of sensing.
+</span><span class="comment-delimiter">// </span><span class="comment">Since the spatial layout of the sensors vary from setup to setup,
+// setting up the sensing environment involves checking what the current layout is.
+</span><span class="comment-delimiter">// </span><span class="comment">So, in the setup time the spatial mapping needs to be defined,
+// so that further processing of the data is fixed.
+</span>
+<span class="comment-delimiter">// </span><span class="comment">indices per 8 pressure areas:
+</span><span class="variable-name">~floorsorders</span> = [ 
+    [0,1,4,6, 2,3,4,6],
+    [1,0,6,7, 2,3,4,5],
+    [5,4,3,0, 6,7,1,2]
+];
+
+<span class="comment-delimiter">// </span><span class="comment">indices per sensor node:
+</span><span class="variable-name">~floorsensors</span> = [0,2,1];
+
+<span class="comment-delimiter">// </span><span class="comment">~floorall will combine all data into one node, with a fixed order.
+</span><span class="variable-name">~floorall</span> = <span class="type">SWCombineNode</span>.new( 100, x, 24 );
+[<span class="constant">\floor1</span>,<span class="constant">\floor2</span>,<span class="constant">\floor3</span>].do{ |it,i|
+    x[it].scale_( 1/256 );
+    x[it].action_( { |data|
+        <span class="comment-delimiter">// </span><span class="comment">reorder data and set in combine node
+</span>        <span class="variable-name">~floorall</span>.set( (<span class="variable-name">~floorsensors</span>[i]*8), data.at( <span class="variable-name">~floorsorders</span>[i].copyRange(0,data.size-1) ) ); 
+    }; );
+};
+</pre>
+
+<h3>- Methods - </h3>
+
+<DL>
+<DT><STRONG>*new ( id, network, size )</STRONG></DT>
+<DD>Creates a node that gets data from various sources, but combines it into one node. <em>size</em> is the total size of the data array that will be supplied as one node.</DD>
+
+<DT><STRONG>data (  )</STRONG></DT>
+<DD>The current data values.</DD>
+<DT><STRONG>set ( index, newdata )</STRONG></DT>
+<DD>Puts <em>newdata</em> into the <em>data</em> array at offset <em>index</em>, and updates the node in the network accordingly.</DD>
+
+<DT><STRONG>network (  )</STRONG></DT>
+<DD>The SWDataNetwork.</DD>
+<DT><STRONG>id (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>id_ (  )</STRONG></DT>
+<DD>The node ID.</DD>
+<DT><STRONG>node (  )</STRONG></DT>
+<DD>The SWDataNode.</DD>
+
+</DL>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+  HREF="SWDataAction.html">SWDataAction</A>
+</LI>
+<LI>
+<I> Previous: </I> <A NAME="tex2html79"
+  HREF="SWBusWatcherNode.html">SWBusWatcherNode</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</P>
+
+</BODY>
+</HTML>

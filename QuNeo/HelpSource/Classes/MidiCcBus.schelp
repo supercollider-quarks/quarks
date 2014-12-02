@@ -1,0 +1,112 @@
+TITLE:: MidiCcBus
+summary:: Used by the QuNeo classes to interface to MIDI CC controls.
+categories:: Hardware>QuNeo
+related:: Classes/QuNeo, Classes/MidiNoteFunc, Classes/QuNeoButton, Classes/QuNeoCircleControl, Classes/QuNeoDrumPad, Classes/QuNeoGridPad, Classes/QuNeoLongSlider, Classes/QuNeoSlider
+
+DESCRIPTION::
+Used by the QuNeo classes to interface to MIDI CC controls.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new MidiCcBus.  During regular use this will be called by the QuNeo control classes.
+
+ARGUMENT:: cc
+MIDI CC number for the control.
+
+ARGUMENT:: channel
+MIDI channel the control responds to.
+
+ARGUMENT:: scInPort
+Port that Supercollider will recieve MIDI data from.
+
+ARGUMENT:: scOutPort
+Port that Supercollider will send MIDI data to.
+
+ARGUMENT:: name
+Name of the control, used when printing debug info.
+
+returns:: A new MidiCcBus.
+
+
+INSTANCEMETHODS::
+
+
+METHOD:: cc
+MIDI CC number that the control will receive data on.
+
+
+METHOD:: bus
+Bus number that the control will transmit on.
+
+
+METHOD:: map
+Shortcut method for bus.asMap.
+
+
+METHOD:: value
+Shortcut method for bus.getSynchronus.
+
+
+METHOD:: kr
+A k-rate Ugen wrapped in a lag control.  Outputs 0 - 1.
+
+ARGUMENT:: mul
+multiply with this value.
+
+ARGUMENT:: add
+add this value.
+
+ARGUMENT:: lagTime
+60 dB lag time in seconds.
+
+
+METHOD:: ar
+A a-rate Ugen wrapped in a lag control.  Outputs 0 - 1.
+
+ARGUMENT:: mul
+multiply with this value
+
+ARGUMENT:: add
+add this value
+
+ARGUMENT:: lagTime
+60 dB lag time in seconds.
+
+
+METHOD:: func
+A fuction to be called when a MIDI CC message is received.  The following values will be passed to the function: val, num, chan, src.
+
+
+METHOD:: name
+Name of the control, used when printing debug info.
+
+
+METHOD:: channel
+MIDI channel the control responds to.
+
+
+METHOD:: scInPort
+Port that Supercollider will recieve MIDI data from.
+
+
+METHOD:: scOutPort
+Port that Supercollider will send MIDI data to.
+
+
+METHOD:: debug
+Allows you to enable or disable debugging for the control.  This setting can also be changed on a per datasource basis.
+
+ARGUMENT:: setDebug
+Enable debugging? true/false.
+
+
+PRIVATE:: init
+
+
+EXAMPLES::
+
+code::
+See QuNeo class for examples
+::

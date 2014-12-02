@@ -1,0 +1,40 @@
+title:: Debugging with insp
+summary:: The insp object inspection system
+categories:: Language, Debugging
+related:: Classes/Insp, Classes/ClassGui
+
+section:: insp
+
+Any object can be inspected by calling .insp on it:
+
+code::
+4.insp;
+[1,2,3].insp;
+PageLayout.insp;
+SynthDef("yawn",{ arg freq=100;
+    Out.ar(0,Saw.ar * LFPulse.kr(3))
+}).insp;
+::
+
+Each time you .insp something a snapshot is taken and added to the sidebar of the InspManager. The InspManager is like a web browser with a sidebar and a main viewing area.  You navigate by clicking on items in the sidebar or links in the main area. This allows you to prowl through the depths of your objects.
+
+
+Historical note: ObjectInsp was originally called ObjectInspector and was the inspiration for the current version of ObjectInspector in Common. This class was then renamed to CXObjectInspector but that's an ugly name. This kind of internal inspector is common in many programming environments and takes its inspiration most directly from Squeak.
+
+
+subsection:: customizing
+
+Classes may register custom hooks which are very useful to display internals relevant to that specific object. This greatly speeds up debugging and problem solving.
+
+For instance a Synth may link to searches of the ServerLog to show its birth and possible death on the Server. It may link to the SynthDef (located by searching for it by name) and it may show the arguments by name even though the Synth was created without named arguments.
+
+A Dictionary displays its key/values (rather than just its sparse internal array)
+
+Registering a display hook is quite easy:
+code::
+ObjectInsp.registerHook(class,{ arg model,layout;    
+
+},includeSubclasses);
+::
+
+Where includeSubclasses is a boolean : register the same hook for each subclass of the class. eg. register for AbstractGroup and all Group subclasses will feature the same hook.

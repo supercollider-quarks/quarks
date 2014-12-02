@@ -1,0 +1,522 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #a81914}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a81914}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a81914; min-height: 12.0px}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #606060}
+p.p18 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #0910ba}
+p.p19 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #a81914; min-height: 12.0px}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0910ba}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #1320f3}
+span.s3 {color: #0000ff}
+span.s4 {color: #000000}
+span.s5 {color: #0910ba}
+span.s6 {color: #606060}
+span.s7 {color: #0c16f9}
+span.s8 {font: 12.0px Helvetica; color: #000000}
+span.s9 {color: #2f710f}
+span.s10 {color: #a81914}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>LSys<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a Lindenmayer system implementation</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="SC://Object"><span class="s2"><b>Object</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p1">LSys is a Lindenmayer system implementation for SuperCollider. It does parallel rewriting, supports context free, context sensitive, stochastic and parametric rulesets. When working with context sensitive rules in a bracketed L-system, this class takes axial node points and segment neighborhood into account (which is not represented in the sequential string representation naturally). See the examples in this document.</p>
+<p class="p2"><br></p>
+<p class="p1">To learn more about L-Systems and the syntax, you might want to check out the book <i>The Algorithmic Beauty of Plants </i>which can be obtained for free from: http://algorithmicbotany.org/papers/#abop</p>
+<p class="p2"><br></p>
+<p class="p1">For an interesting read on musical applications of L-Systems on various time scales, the Master's Thesis of Stelios Manousakis - <i>Musical L-Systems</i> is recommended: http://www.modularbrains.net/research.html</p>
+<p class="p2"><br></p>
+<p class="p1">See also: LSPlant</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (argAxiom, argRules, argIgnore, argEnvironment)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argAxiom </b>- The base axiom. Should be a string.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argRules </b>- Rules for the system. Should be an <a href="SC://Array"><span class="s3">Array</span></a> of <a href="SC://Association"><span class="s3">Association</span></a>s.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argIgnore </b>- Characters to be ignored when matching context sensitive rules. When working with bracketed context sensitive systems, you should include the [ and ] characters here exclusively.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argEnvironment </b>- Environment for constants (or other variables) that are to be used by parametric L-Systems.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// simple example, fibonacci numbers</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a = <span class="s5">LSys</span>(<span class="s6">"A"</span>, [<span class="s6">"A"</span> -&gt; <span class="s6">"B"</span>, <span class="s6">"B"</span> -&gt; <span class="s6">"AB"</span>]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>10.do({ a.applyRules(1).postln; });</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p11"><b>Accessing Instance and Class Variables</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>axiom_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>axiom</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Sets/gets the axiom. This variable contains the original axiom in string format. arg1 should be String.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>rules_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>rules</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Sets/gets the rules array to be used for reproduction. If changed between iterations, Table L-Systems can be simulated with this.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>environ_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>environ</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Gets/sets the environment that the functions of parametric L-systems work in. Should be a type of <a href="SC://Environment"><span class="s7">Environment</span></a>.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>ignores_(arg1)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>ignores</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Gets/sets the ignore characters put inside a <a href="SC://String"><span class="s7">String</span></a>.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>currentAxiom</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Gets the current product of the system after the rules are applied.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b>Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>applyRules (argLevel)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Applies the rules to the current axiom/product. argLevel sets the number of iterations.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is 1.</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>giveParsedString</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Parses<b> </b>and<b> </b>returns the product in an array. Each character is a symbol in the array, and in a parametric system, the parametric elements are returned as an array (packed symbol and arguments). For example:</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6">"ABCF(8,9)K"</span><span class="s4">; </span>//is returned as:</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s9">'A'</span>, <span class="s9">'B'</span>, <span class="s9">'C'</span>, [<span class="s9">'F'</span>, [8, 9]], <span class="s9">'K'</span>];</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p11"><b>Context free examples:</b></p>
+<p class="p3"><br></p>
+<p class="p13">//Koch Snowflake</p>
+<p class="p12">(</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"F--F--F"<span class="s4">, [</span>"F"<span class="s4"> -&gt; </span>"F+F--F+F"<span class="s4">]);</span></p>
+<p class="p12">k = a.applyRules(4);</p>
+<p class="p12"><span class="s5">LSPlant</span>(80@170, 90, argAngle: 60).drawSize_(4).draw(k);</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p13">//Dragon Curve</p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s5">LSys</span>(<span class="s6">"L"</span>, [<span class="s6">"L"</span> -&gt; <span class="s6">"L+R+"</span>, <span class="s6">"R"</span> -&gt; <span class="s6">"-L-R"</span>]);</p>
+<p class="p12">k = a.applyRules(11);</p>
+<p class="p12"><span class="s5">LSPlant</span>(180@270, 180, argAngle: 90).drawSize_(4).draw(k);</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p13">//Sierpinsky triangle</p>
+<p class="p12">(</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"L"<span class="s4">, [</span>"L"<span class="s4"> -&gt; </span>"R+L+R"<span class="s4">, </span>"R"<span class="s4"> -&gt; </span>"L-R-L"<span class="s4">]);</span></p>
+<p class="p12">k = a.applyRules(6);</p>
+<p class="p12"><span class="s5">LSPlant</span>(60@400, 30, argAngle: 60).drawSize_(6).draw(k);</p>
+<p class="p12">)</p>
+<p class="p15"><br></p>
+<p class="p13">//Islands and Lakes from Algorithmic Beauty of Plants fig. 1.8.</p>
+<p class="p12">(</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"F+F+F+F"<span class="s4">, [</span>"F"<span class="s4"> -&gt; </span>"F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF"<span class="s4">, </span>"f"<span class="s4"> -&gt; </span>"ffffff"<span class="s4">]);</span></p>
+<p class="p12">k = a.applyRules(2);</p>
+<p class="p12"><span class="s5">LSPlant</span>(360@350, 0, argAngle: 90).drawSize_(6).draw(k);</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p13">//Quadratic Snowflake from A.B.O.P. fig. 1.7b</p>
+<p class="p12">(</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"F"<span class="s4">, [</span>"F"<span class="s4"> -&gt; </span>"F+F-F-F+F"<span class="s4">]);</span></p>
+<p class="p12">k = a.applyRules(5);</p>
+<p class="p12"><span class="s5">LSPlant</span>(20@350, 90, 90, <span class="s5">Rect</span>(300, 300, 530, 500), { <span class="s5">Color</span>.rand; }).drawSize_(2).draw(k);</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p13">//Fig 1.9a. from A.B.O.P.</p>
+<p class="p12">(</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"F-F-F-F"<span class="s4">, [</span>"F"<span class="s4"> -&gt; </span>"FF-F-F-F-F-F+F"<span class="s4">]);</span></p>
+<p class="p12">k = a.applyRules(3).postln;</p>
+<p class="p12"><span class="s5">LSPlant</span>(270@120, 90, 90, argColor: { <span class="s5">Color</span>.rand; }).drawSize_(6).draw(k);</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p11"><b>Context sensitive example:</b></p>
+<p class="p16"><br></p>
+<p class="p13">//Signal propagation throughout a string of symbols:</p>
+<p class="p3"><br></p>
+<p class="p12">(</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"baaaaaaaaaaaaaaaa"<span class="s4">, [</span>"b&lt;a"<span class="s4"> -&gt; </span>"b"<span class="s4">, </span>"b"<span class="s4"> -&gt; </span>"a"<span class="s4">]);</span></p>
+<p class="p12">16.do</p>
+<p class="p12">({</p>
+<p class="p12"><span class="Apple-tab-span">	</span>a.applyRules(1).postln;</p>
+<p class="p12">});</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p1">For the syntax of the context sensitive rule definitions, refer to page 30 in the <i>Algorithmic Beauty of Plants</i>.</p>
+<p class="p3"><br></p>
+<p class="p11"><b>Branching (bracketed) examples:</b></p>
+<p class="p16"><br></p>
+<p class="p13">//Tree b from fig 1.24 in A.B.O.P.</p>
+<p class="p10">(</p>
+<p class="p17"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"F"<span class="s4">, [</span>"F"<span class="s4"> -&gt; </span>"F[+F]F[-F][F]"<span class="s4">]);</span></p>
+<p class="p10">k = a.applyRules(5).postln;</p>
+<p class="p18">LSPlant</p>
+<p class="p10"><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argAngle: 20,<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argColor:<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Color</span>.green(0.6.rand + 0.4),</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Color</span>.gray(0.6.rand)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>].choose;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><span class="Apple-tab-span">	</span>).drawSize_(6).draw(k);</p>
+<p class="p10">)</p>
+<p class="p5"><br></p>
+<p class="p9">//Tree c from fig 1.24 in A.B.O.P.</p>
+<p class="p10">(</p>
+<p class="p17"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"F"<span class="s4">, [</span>"F"<span class="s4"> -&gt; </span>"FF-[-F+F+F]+[+F-F-F]"<span class="s4">]);</span></p>
+<p class="p10">k = a.applyRules(4).postln;</p>
+<p class="p18">LSPlant</p>
+<p class="p10"><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argAngle: 22.5,<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argColor:<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Color</span>.green(0.6.rand + 0.4),</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Color</span>.gray(0.6.rand)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>].choose;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><span class="Apple-tab-span">	</span>).drawSize_(6).draw(k);</p>
+<p class="p10">)</p>
+<p class="p5"><br></p>
+<p class="p9">//Tree f from fig 1.24 in A.B.O.P.</p>
+<p class="p10">(</p>
+<p class="p17"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"X"<span class="s4">, [</span>"X"<span class="s4"> -&gt; </span>"F-[[X]+X]+F[+FX]-X"<span class="s4">, </span>"F"<span class="s4"> -&gt; </span>"FF"<span class="s4">]);</span></p>
+<p class="p10">k = a.applyRules(5).postln;</p>
+<p class="p18">LSPlant</p>
+<p class="p10"><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argAngle: 22.5,<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argColor:<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Color</span>.green(0.6.rand + 0.4),</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Color</span>.gray(0.6.rand)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>].choose;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><span class="Apple-tab-span">	</span>).drawSize_(4).draw(k);</p>
+<p class="p10">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p11"><b>Stochastic L-Systems:</b></p>
+<p class="p16"><br></p>
+<p class="p1">The notation for the stochastic L-systems is a bit different from the standard notation at this time. You need to define a single rule for a single symbol and make the necessary probability calculations in an associated function. this offers more flexibility and arguably provides a better interface for SC. For characters associated with stochastic production rules, you need to append opening and closing parenthesis to the symbol to identify it's association as a function. From the associated function, you need to return the resulting string.</p>
+<p class="p2"><br></p>
+<p class="p1">This example is a stochastic version of the tree from A.B.O.P. (fig 1.24d) taken from: http://hardlikesoftware.com/projects/lsystem/lsystem.html</p>
+<p class="p2"><br></p>
+<p class="p1">It branches either left or right at the first branch point.</p>
+<p class="p2"><br></p>
+<p class="p10">(</p>
+<p class="p17"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"X()"<span class="s4">, [</span>"X()"<span class="s4"> -&gt; { [</span>"F[+X()]F[-X()]+X()"<span class="s4">, </span>"F[-X()]F[-X()]+X()"<span class="s4">].choose; }, </span>"F"<span class="s4"> -&gt; </span>"FF"<span class="s4">]);</span></p>
+<p class="p10">k = a.applyRules(7).postln;</p>
+<p class="p18">LSPlant</p>
+<p class="p10"><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argAngle: 20,<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argColor:<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Color</span>.green(0.6.rand + 0.4),</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Color</span>.gray(0.6.rand)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>].choose;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><span class="Apple-tab-span">	</span>).drawSize_(2).draw(k);</p>
+<p class="p10">)</p>
+<p class="p5"><br></p>
+<p class="p9">//Tree from fig 1.27 in A.B.O.P. Stochastic tree that will look different each time it's generated.</p>
+<p class="p10">(</p>
+<p class="p10">a = <span class="s5">LSys</span>(<span class="s6">"F()"</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>[</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"F()"</span> -&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"F()[+F()]F()[-F()]F()",</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>"F()[+F()]F()",</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>"F()[-F()]F()"</p>
+<p class="p10"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>].choose;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><span class="Apple-tab-span">	</span>]);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10">k = a.applyRules(5).postln;</p>
+<p class="p18">LSPlant</p>
+<p class="p10"><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argAngle: 25,<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argColor:<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Color</span>.green(0.6.rand + 0.4),</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Color</span>.gray(0.6.rand)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>].choose;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><span class="Apple-tab-span">	</span>).drawSize_(5).draw(k);</p>
+<p class="p10">)</p>
+<p class="p5"><br></p>
+<p class="p11"><b>Parametric L-Systems:</b></p>
+<p class="p16"><br></p>
+<p class="p1">Rules of parametric L-systems are defined similar to the stochastic ones. The functions run in the supplied environment. The following example is the Row of Trees model from A.B.O.P. (fig 1.37). Formal definition is taken from: http://hardlikesoftware.com/projects/lsystem/lsystem.html</p>
+<p class="p2"><br></p>
+<p class="p9">/*</p>
+<p class="p9">Constants:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-converted-space">  </span>c = 1, p = 0.3, q = c − p,<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-converted-space">  </span>h = (p * q) ^ ∧ 0.5</p>
+<p class="p9">Symbols:</p>
+<p class="p9"><span class="Apple-converted-space">  </span>F(d) forward(d)</p>
+<p class="p9"><span class="Apple-converted-space">  </span>+ left(a)</p>
+<p class="p9"><span class="Apple-converted-space">  </span>- right(a)</p>
+<p class="p9">Axiom: F(d)</p>
+<p class="p9">Rules:</p>
+<p class="p9"><span class="Apple-converted-space">  </span>F(x) --&gt; F(x * p) + F(x * h) - -<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-converted-space">           </span>F(x * h) + F(x * q)</p>
+<p class="p9">*/</p>
+<p class="p19"><br></p>
+<p class="p1">In this system, the distance to be travelled in each symbol is bound to a variable. The class LSPlants cannot draw parametric strings at this time so it is not used in this example.</p>
+<p class="p2"><br></p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s5">LSys</span></p>
+<p class="p10">(</p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span></span>"F(1)"<span class="s4">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>[<span class="s6">"F(x)"</span> -&gt; {<span class="s5">|x|</span> <span class="s6">"F(%)+F(%)--F(%)+F(%)"</span>.format(x * ~p, x * ~h, x * ~h, x * ~q); }],</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s6">""</span>,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s5">Environment</span>.make({ ~c = 1; ~p = 0.3; ~q = ~c - ~p; ~h = (~p * ~q) ** 0.5; })</p>
+<p class="p10">);</p>
+<p class="p10">k = a.applyRules(5);</p>
+<p class="p10">k = a.giveParsedString;</p>
+<p class="p10">)</p>
+<p class="p5"><br></p>
+<p class="p10">(</p>
+<p class="p10">c = <span class="s5">false</span>;</p>
+<p class="p10">d = <span class="s5">true</span>;</p>
+<p class="p10">p = 10@350;</p>
+<p class="p10">h = 90;</p>
+<p class="p10">a = 86;</p>
+<p class="p10">l = 5;</p>
+<p class="p10">w = <span class="s5">Window</span>(<span class="s6">"Row of trees"</span>, <span class="s5">Rect</span>(300, 300, 800, 400)).front;</p>
+<p class="p10">u = <span class="s5">UserView</span>(w, w.view.bounds).background_(<span class="s5">Color</span>.black)</p>
+<p class="p10"><span class="Apple-tab-span">	</span>.clearOnRefresh_(<span class="s5">false</span>)</p>
+<p class="p10"><span class="Apple-tab-span">	</span>.drawFunc_</p>
+<p class="p10"><span class="Apple-tab-span">	</span>({</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">var</span> dx, dy, nextP;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(c,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Pen</span>.color = <span class="s5">Color</span>.white;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dx = ((h * (pi / 180)).sin * l).round;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dy = ((h * (pi / 180)).cos * l).round;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>nextP = (p.x + dx)@(p.y + dy);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(d,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Pen</span>.line(p, nextP);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Pen</span>.stroke;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = nextP;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c = <span class="s5">false</span>;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p10"><span class="Apple-tab-span">	</span>});</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p10">{<span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>({</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k.do</p>
+<p class="p18"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({</span>|item|</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(item.species == <span class="s5">Array</span>,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>item[0].switch</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">'F'</span>,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c = <span class="s5">true</span>;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d = <span class="s5">true</span>;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>l = (item[1][0] * 500);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>u.refresh;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.01.wait;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>item.switch</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">'+'</span>,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>h = (h + a).wrap(0, 360);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">'-'</span>,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>h = (h - a).wrap(0, 360);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p10"><span class="Apple-tab-span">	</span>}).fork(<span class="s5">AppClock</span>);</p>
+<p class="p10">}.value;</p>
+<p class="p10">)</p>
+<p class="p5"><br></p>
+<p class="p1">In parametric L-systems, parametric symbols are matched by the number of arguments they have. A simple example, formal definition from page 42 of A.B.O.P.:</p>
+<p class="p2"><br></p>
+<p class="p13">/*</p>
+<p class="p13">axiom: B(2)A(4,4)</p>
+<p class="p13">p1 <span class="Apple-converted-space">  </span>: A(x,y) : y&lt;=3 -&gt; A(x*2,x+y)</p>
+<p class="p13">p2 <span class="Apple-converted-space">  </span>: A(x,y) : y&gt;3<span class="Apple-converted-space">  </span>-&gt; B(x)A(x/y,0)</p>
+<p class="p13">p3 <span class="Apple-converted-space">  </span>: B(x) <span class="Apple-converted-space">  </span>: x&lt;1<span class="Apple-converted-space">  </span>-&gt; C</p>
+<p class="p13">p4 <span class="Apple-converted-space">  </span>: B(x) <span class="Apple-converted-space">  </span>: x&gt;=1 -&gt; B(x-1)<span class="Apple-converted-space"> </span></p>
+<p class="p13">*/</p>
+<p class="p15"><br></p>
+<p class="p12">(</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"B(2)A(4,4)"<span class="s4">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"A(X,Y)"<span class="s4"> -&gt;</span></p>
+<p class="p20"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</span>|x, y|</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(y &lt;= 3,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"A(%,%)"</span>.format(x*2, x+y);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"B(%)A(%,0)"</span>.format(x,x/y);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"B(X)"<span class="s4"> -&gt;</span></p>
+<p class="p20"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</span>|x, y|</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(x &lt; 1,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"C"</span>;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"B(%)"</span>.format(x-1);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p12"><span class="Apple-tab-span">	</span>]);</p>
+<p class="p12">4.do</p>
+<p class="p12">({</p>
+<p class="p12"><span class="Apple-tab-span">	</span>a.applyRules(1).postln;</p>
+<p class="p12">});</p>
+<p class="p12">)</p>
+<p class="p5"><br></p>
+<p class="p11"><b>Context sensitive bracketed L-systems:</b></p>
+<p class="p16"><br></p>
+<p class="p1">In context sensitive bracketed systems, LSys takes segment neighborhood into account which isn't immediately visible to the eye in the string itself. To give an example (from figure 1.29 of A.B.O.P.), the production rule BC&lt;S&gt;G[H]M should apply to the string ABC[DE][SG[HI[JK]L]MNO] by successfully skipping the symbols [DE] in the search for<span class="Apple-converted-space">  </span>left context and I[JK]L in the search for the right context.</p>
+<p class="p2"><br></p>
+<p class="p9"><span class="s4">(</span>//in context sensitive bracketed systems, the symbols [] should be explicitly ignored</p>
+<p class="p17"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"ABC[DE][SG[HI[JK]L]MNO]"<span class="s4">, [</span>"BC&lt;S&gt;G[H]M"<span class="s4"> -&gt; </span>"X"<span class="s4">], </span>"[]"<span class="s4">);</span></p>
+<p class="p10">a.applyRules(1).postln; <span class="s10">//S turned into X</span></p>
+<p class="p10">)</p>
+<p class="p5"><br></p>
+<p class="p1">Branching with brackets in a context sensitive domain allow us to obtain more complex forms. Examples are fig 1.31 (a, b, c, d, e) from A.B.O.P. Be aware that due to the high numbers of iterations, these examples might take a few seconds to compute.</p>
+<p class="p2"><br></p>
+<p class="p12">(</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"F1F1F1"<span class="s4">,</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>[</p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;0&gt;0"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;0&gt;1"<span class="s4"> -&gt; </span>"1[+F1F1]"<span class="s4">,</span></p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;1&gt;0"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;1&gt;1"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;0&gt;0"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;0&gt;1"<span class="s4"> -&gt; </span>"1F1"<span class="s4">,</span></p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;1&gt;0"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;1&gt;1"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"+"</span> -&gt; <span class="s6">"-"</span>,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"-"</span> -&gt; <span class="s6">"+"</span></p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span>], </span>"+-F[]"<span class="s4">);</span></p>
+<p class="p10">k = a.applyRules(30);</p>
+<p class="p12"><span class="s5">LSPlant</span>(argAngle: 22.5, argColor: { [<span class="s5">Color</span>.green(1.0.rand, rrand(0.5, 1)), <span class="s5">Color</span>.gray(1.0.rand, rrand(0.5, 1))].choose }).drawSize_(4).draw(k);</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="s4">(</span>//this will take a while to compute. beauty comes at a price. ^_^</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"F1F1F1"<span class="s4">,</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;0&gt;0"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;0&gt;1"<span class="s4"> -&gt; </span>"1[-F1F1]"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;1&gt;0"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;1&gt;1"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;0&gt;0"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;0&gt;1"<span class="s4"> -&gt; </span>"1F1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;1&gt;0"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;1&gt;1"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"+"</span> -&gt; <span class="s6">"-"</span>,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"-"</span> -&gt; <span class="s6">"+"</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span>], </span>"+-F[]"<span class="s4">);</span></p>
+<p class="p12">k = a.applyRules(30);</p>
+<p class="p12"><span class="s5">LSPlant</span>(argAngle: 22.5, argColor: { [<span class="s5">Color</span>.green(1.0.rand, rrand(0.5, 1)), <span class="s5">Color</span>.gray(1.0.rand, rrand(0.5, 1))].choose }).drawSize_(6).draw(k);</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p12">(</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"F1F1F1"<span class="s4">,</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;0&gt;0"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;0&gt;1"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;1&gt;0"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;1&gt;1"<span class="s4"> -&gt; </span>"1[+F1F1]"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;0&gt;0"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;0&gt;1"<span class="s4"> -&gt; </span>"1F1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;1&gt;0"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;1&gt;1"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"+"</span> -&gt; <span class="s6">"-"</span>,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"-"</span> -&gt; <span class="s6">"+"</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span>], </span>"+-F[]"<span class="s4">);</span></p>
+<p class="p12">k = a.applyRules(26);</p>
+<p class="p12"><span class="s5">LSPlant</span>(argAngle: 25.75, argColor: { [<span class="s5">Color</span>.green(1.0.rand, rrand(0.5, 1)), <span class="s5">Color</span>.gray(1.0.rand, rrand(0.5, 1))].choose }).drawSize_(6).draw(k);</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p12">(</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"F0F1F1"<span class="s4">,</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;0&gt;0"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;0&gt;1"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;1&gt;0"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;1&gt;1"<span class="s4"> -&gt; </span>"1F1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;0&gt;0"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;0&gt;1"<span class="s4"> -&gt; </span>"1[+F1F1]"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;1&gt;0"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;1&gt;1"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"+"</span> -&gt; <span class="s6">"-"</span>,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"-"</span> -&gt; <span class="s6">"+"</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span>], </span>"+-F[]"<span class="s4">);</span></p>
+<p class="p12">k = a.applyRules(24);</p>
+<p class="p12"><span class="s5">LSPlant</span>(argAngle: 25.75, argColor: { [<span class="s5">Color</span>.green(1.0.rand, rrand(0.5, 1)), <span class="s5">Color</span>.gray(1.0.rand, rrand(0.5, 1))].choose }).drawSize_(4).draw(k);</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p12">(</p>
+<p class="p14"><span class="s4">a = </span><span class="s5">LSys</span><span class="s4">(</span>"F1F1F1"<span class="s4">,</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;0&gt;0"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;0&gt;1"<span class="s4"> -&gt; </span>"1[-F1F1]"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;1&gt;0"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"0&lt;1&gt;1"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;0&gt;0"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;0&gt;1"<span class="s4"> -&gt; </span>"1F1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;1&gt;0"<span class="s4"> -&gt; </span>"1"<span class="s4">,</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"1&lt;1&gt;1"<span class="s4"> -&gt; </span>"0"<span class="s4">,</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"+"</span> -&gt; <span class="s6">"-"</span>,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">"-"</span> -&gt; <span class="s6">"+"</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span>], </span>"+-F[]"<span class="s4">);</span></p>
+<p class="p12">k = a.applyRules(26);</p>
+<p class="p12"><span class="s5">LSPlant</span>(argAngle: 22.5, argColor: { [<span class="s5">Color</span>.green(1.0.rand, rrand(0.5, 1)), <span class="s5">Color</span>.gray(1.0.rand, rrand(0.5, 1))].choose }).drawSize_(6).draw(k);</p>
+<p class="p12">)</p>
+</body>
+</html>

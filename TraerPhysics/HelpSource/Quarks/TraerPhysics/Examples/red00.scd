@@ -1,0 +1,30 @@
+//redFrik 2012
+
+(
+var width= 640, height= 360, num= 200;
+var win= Window("red00", Rect(100, 100, width, height), false, false);
+var usr= UserView(win, Rect(0, 0, width, height));
+var physics, anchor, springs;
+usr.background= Color.red;
+physics= TraerParticleSystem(0.1, 0.2, 0.3, 0.9);
+num.do{physics.makeParticle(1.5.rand+0.5, width.rand, height.rand, 0)};
+anchor= physics.makeParticle(1, width/2, height/2, 0);
+anchor.makeFixed;
+springs= physics.particles.do{|p| physics.makeSpring(p, anchor, 0.5.rand, 0.1.rand, 75.rand+1)};
+usr.mouseDownAction= {|v, x, y| anchor.position.set(x, y, 0)};
+usr.mouseMoveAction= usr.mouseDownAction;
+usr.drawFunc= {
+	physics.tick;
+	Pen.fillColor= Color.black;
+	physics.particles.do{|p|
+		Pen.addOval(Rect.aboutPoint(Point(p.position.x, p.position.y), p.mass, p.mass));
+	};
+	Pen.fill;
+};
+usr.animate= true;
+win.front;
+CmdPeriod.doOnce({win.close});
+)
+
+//click and drag
+//press cmd+period to stop

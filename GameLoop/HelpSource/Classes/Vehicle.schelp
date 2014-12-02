@@ -1,0 +1,46 @@
+TITLE:: Vehicle
+summary:: An entity that can steer itself or be steered.
+categories:: Class
+related:: Overviews/Gameloop_Overview, Classes/Entity, Classes/MobileEntity
+
+DESCRIPTION::
+
+Vehicle includes all the variables required for implementing link::Reference/SteeringBehaviors##steering behaviours::. 
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new mobile entity
+
+ARGUMENT:: world
+an instance of link::Classes/EntityManager::
+
+ARGUMENT:: position
+an instance of link::RealVector2D::
+
+ARGUMENT:: radius
+radius in meters
+
+ARGUMENT:: mass
+a number/float
+
+ARGUMENT:: collisionType
+a symbol for the collision type /free, /mobile or /static
+
+ARGUMENT:: velocity
+an instance of link::RealVector2D::
+
+ARGUMENT:: maxSpeed
+the max possible speed of the vehicle
+
+ARGUMENT:: maxForce
+the max possible force that can be applied to the vehicle
+
+ARGUMENT:: heading
+the current heading. At the moment is identical to the velocity
+
+ARGUMENT:: side
+a vector perpedicular to the heading
+
+ARGUMENT:: maxTurnRate
+- not used at the moment -

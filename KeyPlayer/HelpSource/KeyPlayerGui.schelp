@@ -1,0 +1,158 @@
+TITLE:: KeyPlayerGui
+summary:: a simple gui for KeyPlayer
+categories:: Libraries>JITLib
+related:: Classes/KeyPlayer, Reference/KeyLoop
+
+DESCRIPTION::
+
+KeyPlayerGui provides a window interface to link::Classes/KeyPlayer::, see examples there.
+
+The keys that have associated actions are shown colored in KeyPlayerGui.
+
+strong::Meta control commands available from alt-key shortcuts: ::
+list::
+##alt-R toggles RECORDING
+##alt-P toggles KeyLoop PLAYBACK
+##alt-L toggles LOOPED on/off
+##alt-F FORKS a (non-looped) task - playOnce
+##alt-G GUI opens for the KeyLoop
+##alt-T TOP focus goes to top control that sets current KeyPlayer
+::
+
+code::
+// simple random keyboard player
+(
+s.boot;
+s.latency = nil;    // make sure we respond quickly
+thisThread.randSeed = 2014;
+k = KeyPlayer(\rand);
+"qwertzuiopasdfghjklyxcvbnm".do { |char|
+    var note = (midinote: rrand(36, 96), dur: rrand(0.1));
+   k.putDown(char, { |char| char; note.play });
+};
+
+     // make k.rec a KeyLoop:
+k.makeLoop;
+g = KeyPlayerGui(k);
+)
+
+// second player shows up as well;
+KeyPlayer(\xs);
+::
+
+strong::Notes: ::
+
+Several aspects of this class could be made more flexible:
+supporting different display sizes, keyboard layouts,
+and ways of switching between several KeyPlayers may be useful.
+(current the useList options gives one choice.
+
+Dragging and dropping actions could also be supported;
+not sure how to do that consistently with keyUp actions,
+retriggering, putting things on shifted keys, etc.
+
+
+Maybe alt-1..9,0 could go to one of top ten KeyPlayers on buttons.
+
+
+CLASSMETHODS::
+
+subsection:: Class Variables
+
+METHOD:: colors
+a list of colors used for the keys.
+
+METHOD:: keyboard
+the list of characters the physical keyboard shows.
+Default is a Macbook Pro with US Extended key caps.
+
+METHOD:: initClass
+
+METHOD:: keyboardNoShift
+the list of characters that will be printed when typed.
+
+METHOD:: keyboardShift
+the list of characters that will be printed when typed while the keyboard shift key is pressed.
+
+METHOD:: lineOffsets
+a list of offsets used for keyboard line layout/geometry.
+
+
+subsection:: Class Methods
+
+METHOD:: gui
+Make a KeyPlayerGui for up to 10 KeyPlayers.
+
+METHOD:: new
+make a new KeyPlayerGui for a keyplayer.
+
+METHOD:: initClass
+...
+
+
+INSTANCEMETHODS::
+
+subsection:: Instance Variables
+
+METHOD:: player
+the KeyPlayer displayed.
+
+strong::GUI elements, visual aspects: ::
+METHOD:: w, zone, buttons, drags, listview
+METHOD:: font, activeColor
+
+METHOD:: skipjack
+
+subsection:: Instance Methods
+METHOD:: front
+
+strong::GUI creation: ::
+METHOD:: makeWindow, makeButtons, makeDrags, makeListView, makeKey
+
+strong::GUI updating: ::
+
+METHOD:: updateAll, updateDrags, updateButtons, runUpdate, stopUpdate
+
+EXAMPLES::
+
+code::
+	// make two variants of KeyPlayerGui, 
+	// one with buttons for KeyPlayers
+g = KeyPlayerGui().moveTo(10, 450);
+
+	// the other with a listview for the players
+h = KeyPlayerGui(options: [\useList]);
+
+	// add some players
+"asdfg".do { |char| KeyPlayer(char.asSymbol) };
+"hjkl".do { |char| KeyPlayer(char.asSymbol) };
+
+	// put one in - also by clicking on its button
+g.object_(KeyPlayer(\f));
+
+	// put same one in listview - can be switched here by selecting 
+	// its name in the listview and typing Return key.	
+h.object_(g.object);
+
+	// put some key actions in current player, show up in both guis
+g.object.put($t, {"t!".postln });
+g.object.put($x, {"x".postln }, both: true);
+g.object.putUp($x, {"x up!".postln });
+g.object.putUp($x, {"x up!".postln }, both: true);
+
+g.object.putUp($y, {"y up only!".postln }, both: true);
+
+
+
+	// Try the meta control commands available from alt-key shortcuts:
+
+alt-R toggles RECORDING
+alt-P toggles KeyLoop PLAYBACK
+alt-L toggles LOOPED on/off
+alt-F FORKS a (non-looped) task - playOnce
+alt-G GUI opens for the KeyLoop
+alt-T TOP focus goes to top control that sets current KeyPlayer
+
+::
+
+

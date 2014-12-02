@@ -1,0 +1,86 @@
+CLASS:: RedLZSS
+SUMMARY:: lzss compression/decompression
+CATEGORIES:: Red>>redTools
+RELATED:: Classes/RedBase64, Classes/RedHuffman, Classes/RedLZ77, Classes/RedLZ78, Classes/RedLZW, Classes/RedRLE
+
+DESCRIPTION::
+See http://michael.dipperstein.com/lzss/ and http://en.wikipedia.org/wiki/Lempel-Ziv-Storer-Szymanski
+
+A dictionary look-up compressor that performs best with long repeating patterns e.g. [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3].
+
+NOTE::
+Only works with 8bit link::Classes/Integer:: (0-255) values.
+::
+
+CLASSMETHODS::
+
+METHOD:: compress
+Expects an array of 8bit integers. Returns a string of binary numbers.
+
+METHOD:: decompress
+Expects a string of binary numbers. Returns an array of 8bit integers.
+
+METHOD:: binaryStringToBytes
+Converts a binary string into 8-bit bytes. Up to 7 zeros might be padded automatically at the end. The number of zeros is stored in link::#*pad::. link::#*pad:: is semi-private and used when converting back to bytes.
+
+METHOD:: bytesToBinaryString
+Converts an array of 8-bit bytes into a binary string.
+
+METHOD:: pad
+Semi-private counter for number of padded zeros. Set by link::#*binaryStringToBytes:: and read by link::#*bytesToBinaryString::.
+
+METHOD:: window
+Maximum sliding window size. The default is 4096.
+
+METHOD:: length
+Maximum length for matching pattern. The default is 32.
+
+EXAMPLES::
+
+CODE::
+a= [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3];
+b= RedLZSS.compress(a);
+RedLZSS.binaryStringToBytes(b).size/a.size;	//compressed to 29%
+c= RedLZSS.decompress(b);
+a==c
+
+
+a= "AABCBBABC".ascii;
+b= RedLZSS.compress(a);
+c= RedLZSS.decompress(b);
+c.collect{|x| x.asAscii}.join;
+a==c
+
+
+a= "abracadabra".ascii;
+b= RedLZSS.compress(a);
+c= RedLZSS.decompress(b);
+a==c
+
+
+a= "JOEYNJOEYNJOEYJOEYNJOEYNJOEYJOEYNJOEYNJOEYJOEYNJOEYNJOEY".ascii;
+b= RedLZSS.compress(a);
+c= RedLZSS.binaryStringToBytes(b);
+c.size/a.size;			//compressed to 27%
+d= RedLZSS.bytesToBinaryString(c);
+e= RedLZSS.decompress(d);
+e.collect{|x| x.asAscii}.join;
+a==e
+
+
+a= "Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.".ascii;
+b= RedLZSS.compress(a);
+RedLZSS.binaryStringToBytes(b).size/a.size;	//compressed to 99%
+c= RedLZSS.decompress(b);
+c.collect{|x| x.asAscii}.join;
+a==c
+
+
+a= {|i| [0, 0, 0, 1].choose}.dup(5000);
+RedLZSS.window= 512;		//decrease window and length to speed up compression
+RedLZSS.length= 16;
+b= RedLZSS.compress(a);		//very slow to compress large arrays
+RedLZSS.binaryStringToBytes(b).size/a.size;	//compressed to around 22% (also 22% with default window and length values)
+c= RedLZSS.decompress(b);	//fast to decompress
+a==c
+::

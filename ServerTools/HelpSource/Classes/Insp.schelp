@@ -1,0 +1,43 @@
+CLASS:: Insp
+summary:: a simple wrapper object that holds an ObjectInsp in the .insp system
+categories:: Debugging, Language
+related:: Guides/insp, Classes/ObjectInsp, Classes/InspManager, Classes/InspButton
+
+DESCRIPTION::
+Insp itself is a simple wrapper object that holds an ObjectInsp which is what shows the actual detail.
+
+It is created by calling .insp on an object:
+
+code::
++ Object {
+
+	insp { arg  ... args;
+		Insp(this,args);
+	}
+}
+::
+
+This adds it to the global InspManager which is the application that manages many Insp.
+
+See Guides/insp for a general user manual.
+
+See Classes/ObjectInsp for the internals of the object inspection view.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: subject
+the object being Insp(ected)
+
+argument:: notes
+notes can be captions, comments or objects that are useful to identify why and when you inspected the object.  Especially useful if calling during fast loops.
+
+argument:: guiInstead
+boolean: rather than create an ObjectInsp, just .gui the object
+
+
+
+

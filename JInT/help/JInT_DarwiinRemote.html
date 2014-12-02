@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad1817}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #003ca9}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000; min-height: 12.0px}
+span.s1 {text-decoration: underline}
+span.s2 {color: #000000}
+span.s3 {color: #003ca9}
+span.s4 {color: #0000bf}
+span.s5 {color: #606060}
+span.s6 {color: #0019b7}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>JInT_DarwiinRemote</b></p>
+<p class="p2"><b>superclass: JInT</b></p>
+<p class="p3">/**</p>
+<p class="p3"><span class="Apple-tab-span">	</span>2007<span class="Apple-converted-space">  </span>Till Bovermann (Bielefeld University)</p>
+<p class="p3">*/</p>
+<p class="p4"><br></p>
+<p class="p2">implements [<b><span class="s1">JustInTerface</span></b>] for a Wiimote via DarwiinRemote.</p>
+<p class="p4"><br></p>
+<p class="p5">Server.default = s = Server.internal;<span class="Apple-converted-space"> </span></p>
+<p class="p5">s.boot;</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s2">k = </span>JInT_DarwiinRemote<span class="s2">.new</span></p>
+<p class="p5">k.start</p>
+<p class="p5">k.stop</p>
+<p class="p6"><br></p>
+<p class="p5">k.controllers[7].action = {<span class="s3">|me|</span> me.value.postln}</p>
+<p class="p5">k.controllers[7].action = nil</p>
+<p class="p5">k[\wiiAcc].action = {|me| me.value.postln}</p>
+<p class="p5">k[\wiiAcc].action = nil</p>
+<p class="p5">k[\acc1].action = {|me| me.value.postln}</p>
+<p class="p5">k[\acc1].action = nil</p>
+<p class="p6"><br></p>
+<p class="p3">// get information on device</p>
+<p class="p5">k.info</p>
+<p class="p6"><br></p>
+<p class="p5">p = <span class="s3">ProxySpace</span>.push(s)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">~a = {</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>//k[\wiiAcc].kr.poll;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s4">SinOsc</span>.ar(k[\wiiAcc].kr.range(100, 1000), 0, 0.3).sum;</p>
+<p class="p5">}</p>
+<p class="p6"><br></p>
+<p class="p5">~a = {</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>//k[\wiiAcc].kr.poll;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s4">SinOsc</span>.ar(k[\nunAcc].kr.range(100, 1000), 0, 0.3).sum * k[\Z].kr.range(0, 1);</p>
+<p class="p5">}</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">~a = {</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>//k[\wiiAcc].kr.poll;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s4">SinOsc</span>.ar(k[\wiiAcc].kr.range(100, 1000), 0, 0.3).sum * k[\A].kr.range(0, 1);</p>
+<p class="p5">}</p>
+<p class="p5">~a.clear</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">~a = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span>var acc = LeakDC.kr(k[\wiiAcc].kr, 0.95);</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>//k[\wiiAcc].kr.poll;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s4">SinOsc</span>.ar([acc.exprange(50, 10000), k[\nunAcc].kr.range(100, 1000)], 0, 0.3).collect(_.sum) * [k[\A].kr.range(0, 1) * acc.range(-1, 1), k[\Z].kr.range(0, 1)];</p>
+<p class="p5">}</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p9"><span class="s4">var</span><span class="s2"> path = </span>"/localvol/sound/share/audiosamples/spass/sonneRein-loop.wav"<span class="s2">.standardizePath;</span></p>
+<p class="p5">s.waitForBoot{</p>
+<p class="p5"><span class="Apple-tab-span">	</span>b = <span class="s4">Buffer</span>.read(s, path, action: {<span class="s5">"done"</span>.postln});</p>
+<p class="p5">}</p>
+<p class="p5">)</p>
+<p class="p5">b.play</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">~looped.clear</p>
+<p class="p5">(</p>
+<p class="p10">~looped = {<span class="s4">arg</span> inter=4;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">BufRd</span>.ar(2, b.bufnum, <span class="s6">Phasor</span>.ar(k[\C].kr, <span class="s6">BufRateScale</span>.kr(b.bufnum) * k[\joy].kr.last.range(-6, 6), 0, <span class="s6">BufFrames</span>.kr(b.bufnum)), 1, inter) * k[\C].kr.range(0, 1) * [k[\joy].kr.first.range(1, 0), k[\joy].kr.first.range(0, 1)]</p>
+<p class="p10">}</p>
+<p class="p8">)</p>
+<p class="p8">~looped.play</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p5">~a = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span>var acc = LeakDC.kr(k[\wiiAcc].kr, 0.95);</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>//k[\wiiAcc].kr.poll;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s4">SinOsc</span>.ar([acc.exprange(50, 10000), k[\nunAcc].kr.range(100, 1000)], 0, 0.3).collect(_.sum) * [k[\A].kr.range(0, 1) * acc.range(-1, 1), k[\Z].kr.range(0, 1)];</p>
+<p class="p5">}</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">~a.play</p>
+<p class="p6"><br></p>
+<p class="p5">k.stop</p>
+</body>
+</html>

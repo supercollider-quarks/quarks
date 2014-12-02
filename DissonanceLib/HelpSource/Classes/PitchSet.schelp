@@ -1,0 +1,376 @@
+title:: PitchSet
+summary:: A collection of intervals represented as harmonic vectors in harmonic space. 
+categories::DissonanceLib
+related:: Classes/Dissonance, Classes/HarmonicVector, Classes/HarmonicMetric, Overviews/numberExtras
+
+DESCRIPTION::
+Pitch sets designed for irregular, non octave-repeating interval collections like those produced by dissonance curves. The intervals they contain are represented as HarmonicVectors and partitioned into harmonic and timbral subsets, according to whether they lie inside certain parallelepipeds in harmonic space. These 'periodicity blocks' are defined by matrices of so-called 'unison vectors'.
+
+Pitch sets are also used to calculate stochastic harmonic fields by computing inter-interval matrices according to a link::Classes/HarmonicMetric::. The probabilities for choosing and interval are proportional their metric, in accordance with the fields 'strength' (from -1 to 1).
+
+Dissonance objects represent their scales as PitchSets with the link::Classes/Dissonance#-harmonicAnalysis:: method. PitchSets can also be created directly from ratios. Visualization of the sets in harmonic space as well as the harmonic fields can be done with the aid of the GNUPlot quark. A few other niceties are possible with these objects. See below. 
+			
+
+
+CLASSMETHODS::
+
+METHOD:: unisons
+This are default unison vector matrixes used to determine the how the pitch set is partitioned into timbral and harmonic subsets. They are accessed as a dictionary of dictionaries, the first category is the number of dimensions, either code::dim2:: or code::dim3::, corresponding to 5 and 7-limit harmonic lattices. The next category is which equal division per octave, either code::et12, et19, et22, et31, et41:: or code::et53::. The last category chooses between different unison matrixes that divide harmonic space into those divisions. There are generally 2 options, each having a different center for the parallelepiped. 
+
+These dictionaries are fed when creating the pitch set, with 12ET in 3 dimensions (7-limit) as the default. 
+
+This is an implementation of Adriaan Fokkers 'Periodicity Blocks'. See Fokker, A, “Unison vectors and periodicity blocks in the three-dimensional (3-5-7-)harmonic lattice of notes”, 
+	Koninklijke Nederlandse Akademie van Wetenschappen - Amsterdam, Proceedings, Series B 72, No. 3, 1969
+	available at: http://www.huygens-fokker.org/docs/fokkerpb.html
+
+
+METHOD:: with
+The main method for creating pitch sets from an array of [p,q] ratios. 
+
+argument:: array
+something like code:: [[1,2],[7,6],[7,5],[7,4]]::
+
+argument:: unisonvector
+The unison matrix for partitioning. Defaults to code::PitchSet.unisons.dim3.et12[1]::. See the class definition to look at the other options. The default corresponds to 7-limit approximations to 12 tone equal temperament. 
+
+returns:: a code::PitchSet:: object. 
+
+This example is used to illustrate some of the instance methods below.
+code::
+a = PitchSet.with([[1,2],[8,7],[7,6],[7,5],[7,4]])
+::
+It posts:
+teletype::
+Harmonic Set[ 8/7, 1/2, 7/5, 7/4 ]
+Timbral Set[ 7/6 ]
+::
+
+INSTANCEMETHODS::
+
+METHOD:: unisonvector
+Instance variable with the current unison matrix. 
+
+METHOD:: set
+A set of intervals, each represented as a code::HarmonicVector::.
+
+METHOD:: harmonicSet
+The set of the harmonic intervals, the ones that fall inside the parallelepiped defined by the unison matrix. 
+
+METHOD:: timbralSet
+The set of 'timbral' intervals, the ones that fall outside the the parallelepiped defined by the unison matrix. 
+
+METHOD:: setH
+An array containing the harmonic set intervals in the form of an array of [p,q] ratios.
+
+METHOD:: setT
+An array containing the timbral set intervals in the form of an array of [p,q] ratios.
+
+METHOD:: ratios
+An array with all the ratios of the PitchSet. 
+
+METHOD:: ratioM
+The ratio matrix, not for direct access by the user. 
+
+METHOD:: metricM
+Metric matrix. Private. 
+
+METHOD:: ranks
+Likewise. The ranks of the intervals. 
+
+METHOD:: weights
+Private. 
+
+METHOD:: invweights
+Private. 
+
+METHOD:: equweights
+Private.
+
+METHOD:: currentRanks
+Private.
+
+METHOD:: markov
+The markov chain for the probability matrix. Not directly usable. 
+
+METHOD:: markovStream
+Likewise. 
+
+METHOD:: metric
+The pitch sets' metric. See link::Classes/HarmonicMetric::. 
+
+METHOD:: add
+Add a ratio to the pitch set. 
+
+argument:: item
+The [p,q] ratio. 
+
+code::
+a.add([12,7])
+::
+
+METHOD:: play
+Plays the pitch set as a scale. 
+
+METHOD:: playChord
+Plays the set as a chord. 
+
+METHOD:: partition
+Partition the intervals into timbral and harmonic subsets. Normally this is done when creating a PitchSet or when adding a ratio to it. 
+
+Say we want to change the partitioning of our pitch set. 
+code::
+a.partition(PitchSet.unisons.dim3.et31[2]); // a different periodicity block
+::
+posting: 
+
+teletype::
+Harmonic Set[ 1/2, 7/4, 7/5 ]
+Timbral Set[ 7/6, 8/7, 12/7 ]
+::
+
+METHOD:: makeProbMatrix
+Use this method to be able to play harmonic fields (choosing intervals from probabilities derived from their harmonic measures). It creates a inter-interval matrix with harmonicities between each pair of intervals. 
+
+The harmonicities are converted into probability weights by the formula: 
+math::(rank + add)^{pwr}::
+
+argument:: pwr
+The degree of differentiation between the harmonic measures. The default of 15 works well, higher values make the inharmonic intervals less probable. 
+
+argument:: add
+Probably there is no need to change this parameter. 
+
+argument:: metric
+The harmonic metric. Either code::\harmonicity::, code::\harmonicDistance:: or code::\gradusSuavitatis::. Harmonic fields have been used successfully with harmonicity, the other two metrics need some work to function properly. To do for the next version.
+
+returns:: does not return a value, just calculates the matrices that are held as instance variables. 
+
+code::
+a.makeProbMatrix(20)
+::
+
+METHOD:: calcPolarity
+Once the matrix has been calculated, this method permits the interpolation between the values matrices by means of the polarity argument. This value corresponds to the strength of the harmonic field. At 0 all intervals are equally probable (atonal), at 1 the most harmonic are more probable (tonal, where the contrast between harmonic and inharmonic intervals being defined by the code::pwr:: argument in  code::makeProbMatrix::), at -1 the most inharmonic are more probable (antitonal). 
+
+argument:: polarity
+A float from -1 to 1. 
+
+argument:: filteredScale
+If not given, all the ratios in the pitch set are used. If given (as an array of [p,q] ratios) then only those intervals are taken into account. 
+
+returns:: an array of probabilities corresponding to each ratio of the pitch set. This array can used as an argument to wchoose or in a Pwrand pattern.
+
+Example (first evaluate the code in the previous method):
+
+code::
+a.calcPolarity(0); // returns an array of equal probabilities
+a.calcPolarity(1); // array where the most probable are the most harmonic
+a.calcPolarity(-0.5); // half way towards the antitonal side. 
+::
+
+METHOD:: gradusSuavitatis
+Euler's gradus function can give the total harmonicity for sets of intervals. This method calculates that for the whole pitch set as well as its partitions. 
+
+code::
+a.gradusSuavitatis
+::
+
+METHOD:: asHarmonicSeries
+Outputs the different partitions as harmonic series. 
+
+code::
+// be sure to have changed the partitioning: 
+a.partition(PitchSet.unisons.dim3.et31[2]);
+a.asHarmonicSeries;
+::
+Posts: 
+teletype::
+complete: 1/2, 8/7, 7/6, 7/5, 12/7, 7/4
+
+harmonic: 1/2, 7/5, 7/4
+
+timbral: 8/7, 7/6, 12/7
+
+Complete: [ 210, 480, 490, 588, 720, 735 ]
+Harmonic: [ 10, 28, 35 ]
+Timbral: [ 48, 49, 72 ]
+Harmonic Set[ 1/2, 7/4, 7/5 ]
+Timbral Set[ 7/6, 8/7, 12/7 ]
+::
+
+returns:: The pitch set. 
+
+METHOD:: reducedRatios
+(describe method here)
+
+returns:: The complete pitch set expressed as a harmonic series. 
+
+METHOD:: sort
+Order the ratios of the complete pitch set according to a harmonic metric (default harmonicity).
+
+Compare:
+code::
+a.sort; // \harmonicity is the default
+a.sort(\harmonicDistance);
+a.sort(\gradusSuavitatis);
+::
+
+
+returns:: an array of [p,q] ratios. 
+
+METHOD:: asScale
+Posts a lot of information regarding the pitch set. The complete and adjacency ratios, cent values, octave reduced ratio and adjacency ratios and notes.
+
+code::
+a.asScale;
+::
+
+argument:: ffreq
+A frequency to anchor the ratios to some fundamental, default: 440. 
+
+
+METHOD::asETdegrees 
+A useful method to approximate the intervals in the pitch set to degrees of some equal division of the octave (default: 53). A highest prime argument can be used filter intervals containing higher prime factors than this threshold. 
+
+returns:: an array of degrees corresponding to the harmonic and the timbral partitions.
+
+code::
+a.asETdegrees;
+::
+
+Posts: 
+
+teletype::
+53-TET
+Harmonic Ratios: 1/2, 7/5, 7/4
+Harmonic Degrees: [ 0, 26, 43 ]
+Timbral Ratios: 8/7, 7/6
+Timbral Degrees: [ 10, 12 ]
+[ [ 0, 26, 43 ], [ 10, 12 ] ]
+::
+
+Compare to:
+code::
+a.asETdegrees(31);
+::
+
+Posts:
+teletype::
+31-TET
+Harmonic Ratios: 1/2, 7/5, 7/4
+Harmonic Degrees: [ 0, 15, 25 ]
+Timbral Ratios: 8/7, 7/6
+Timbral Degrees: [ 6, 7 ]
+[ [ 0, 15, 25 ], [ 6, 7 ] ]
+::
+
+METHOD:: plotHarmonicField
+Show the probability matrix in 3D using GNUPlot (requires the GNUPlot quark).
+
+argument:: what
+Can be code:: \metric, \ranks, \weights, \currRanks:: to plot the different matrices that are created with the code::makeProbMatrix:: method. Defaults to code::\metric::.
+
+argument:: hollow
+If true (default), it will hollow out the main diagonal in the plot (not in the matrix itself) so this diagonal doesen't get in the way of the visualization. 
+
+argument:: minval
+The minimum value to plot against with.
+
+argument:: title
+A title for the plot. 
+
+code::
+a.plotHarmonicField;
+a.plotHarmonicField(hollow:false);
+a.plotHarmonicField(\ranks);
+a.plotHarmonicField(\weights);
+a.calcPolarity(0.5); // to prepare the next plot
+a.plotHarmonicField(\currRanks);
+a.calcPolarity(-1); 
+a.plotHarmonicField(\currRanks); // compare the tonal and antitonal plots
+
+// a larger harmonic field:
+Dissonance.default.pitchSet.plotHarmonicField
+::
+
+METHOD:: plotHarmonicSpace
+Plot a 3D harmonic space with GNUPlot. If the pitch set has more than 3 dimensions (larger than 7-limit intervals) then the space will not correspond correctly to the pitch set. See code::makeMDSfile:: for those cases. 
+The intervals are shown as little figures. It is complicated to print them out as proportions (though possible). Another drawback: couldn't find a way to plot the lattice axes between the intervals. This method shows a nice plot but is not very useful. 
+
+argument:: type
+Defaults to code::\235::. Does not work yet, but the intention is to choose which 3 the axes of hspace are plotted (for example \357 or \27e, e being 11). 
+
+
+code::
+Dissonance.default.pitchSet.plotHarmonicSpace
+::
+
+METHOD:: makeMDSfile
+For pitch sets in more than 3 dimensions, a multidimensional scaling analysis can project their relative distances in harmonic space into a plane. I tried and almost succeeded in implementing the MDS 'smacof' algorithm in SC, but somehow it does not work (the class is included in the DissonanceLib though). This method writes a file that can be read by other visualization programs for rendering the MDS analysis. I use link::http://orange.biolab.si/::
+ 
+argument:: path
+
+METHOD:: selectPrime
+Selects all the intervals in the pitch set containing the selected prime in their ratio. 
+
+argument:: prime
+Defaults to 7
+
+returns:: an array of [p,q] ratios. 
+
+code::
+a.selectPrime(5); // -> [[7,5]]
+a.selectPrime(3); // -> [[7,6]]
+::
+
+
+METHOD:: rejectPrime
+The negative of the previous method. 
+
+code::
+a.rejectPrime(2); // -> [[7,5]]
+a.rejectPrime(3); // -> [[1,2], [8,7], [7,5], [7,4]]
+::
+
+
+METHOD:: separateIntoPrimes
+Separates a pitch set into subsets based on the maximum prime numbers contained in their ratios. Useful for separating the 'colors' or fundamental intervals of a pitch set. 
+
+code::
+a = Dissonance.default.pitchSet; // let's use a big enough pitch set
+a.add([12,7]);					// and add a few higher prime ratios
+a.add([11,5]);				
+b = a.separateIntoPrimes; 		// separate
+b[0]; // contains ratios with a maximum prime of 2 (octaves)
+b[1]; // ratios with 2 and 3 (octaves and fifths)
+b[2]; // ratios with 2, 3 and 5 (thirds)
+b[3]; // ratios with 2,3,5 and 7 
+b[4]; // ratios with 2-11
+::
+
+returns:: an array of arrays, each with its own prime limit.
+
+examples::
+code::
+r = [[1,1],[35,32],[7,6],[6,5],[5,4],[35,27],[4,3],[11,8],[7,5],[3,2],[11,7],[8,5],[5,3],[7,4],[9,5],[28,15]];
+
+b = PitchSet.with(r);
+b.timbralSet.size;
+w = b.harmonicSet.choose;
+
+a = PitchSet.with(r, PitchSet.unisons.dim3.et19[2]);
+a.harmonicSet
+
+b.asScale
+b.asHarmonicSeries
+b.gradusSuavitatis
+
+b.partition(PitchSet.unisons.dim4.et41[1])
+b.harmonicSet.size
+b.timbralSet.size
+b.setH.cents.round(0.1)
+
+b.plotHarmonicSpace
+b.makeProbMatrix
+b.plotHarmonicField
+::

@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0018e6}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #991714}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #991714; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0012b0}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0019a9}
+span.s1 {text-decoration: underline ; color: #103ac4}
+span.s2 {color: #002cea}
+span.s3 {color: #000000}
+span.s4 {text-decoration: underline}
+span.s5 {color: #0000bf}
+span.s6 {color: #666666}
+span.s7 {color: #990099}
+span.s8 {color: #0019a9}
+span.s9 {color: #0023f2}
+span.s10 {color: #991714}
+span.s11 {color: #2d5c11}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>ScaledUserView</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">a <a href="SC://SCUserView"><span class="s2">SCUserView</span></a><span class="s2"> </span>adaptation which supports scaling and translation of it's drawFunc</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s3">also see: <a href="ScaledUserViewWindow.html"><span class="s4">ScaledUserViewWindow</span></a></span></p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="s4">Creation</span></b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>ScaledUserView ( window, bounds, fromBounds )</b></p>
+<p class="p2">the <b>window </b>and <b>bounds </b>work the same way as in every <a href="SC://SCView"><span class="s2">SCView</span></a>.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>fromBounds </b>: (also an instance variable) the <b>drawFunc</b> of this userView is scaled and translated<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>internally in such a way that the fromBounds rect fills the <b>bounds</b>. If no <b>fromBounds</b> are specified</p>
+<p class="p2"><span class="Apple-tab-span">	</span>ScaledUserView used the bounds for this instead, and thus doesn't scale anything.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p5">(</p>
+<p class="p6">// resize the window and see what happens</p>
+<p class="p7">w = <span class="s5">Window</span>( <span class="s6">"ScaledUserView"</span> ).front; <span class="Apple-converted-space"> </span></p>
+<p class="p7">b = <span class="s5">ScaledUserView</span>( w,<span class="Apple-converted-space">  </span>w.view.bounds.insetBy( <span class="s7">10</span>, <span class="s7">10 </span>), <span class="s5">Rect</span>(<span class="s7">0</span>,<span class="s7">0</span>,<span class="s7">1</span>,<span class="s7">1</span>) );</p>
+<p class="p7">b.drawFunc = { <span class="s5">Pen</span>.line( <span class="s7">0.1</span>@<span class="s7">0.1</span>, <span class="s7">0.9</span>@<span class="s7">0.9 </span>).stroke; };</p>
+<p class="p7">b.view.resize = <span class="s7">5</span>;</p>
+<p class="p5">)</p>
+<p class="p3"><br></p>
+<p class="p2">The Pen:width is set by ScaledUserView internally to correspond with 1 px in the view. To change this you can specify your own width:</p>
+<p class="p3"><br></p>
+<p class="p5">b.drawFunc = { <span class="s8">Pen</span>.width = 0.05; <span class="s8">Pen</span>.line( 0.1@0.1, 0.9@0.9 ).stroke; };</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p2"><b><span class="s4">Methods and variables</span></b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>scaleH, scaleV</b></p>
+<p class="p2">sets and gets the relative scaling of the <b>drawFunc</b> (default 1)</p>
+<p class="p3"><br></p>
+<p class="p5">b.scaleH;</p>
+<p class="p5">b.scaleH = 2;</p>
+<p class="p5">b.scaleV = 0.5;<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>moveH, moveV</b></p>
+<p class="p2">sets and gets the relative moving of the <b>drawFunc</b> (default 0.5).</p>
+<p class="p2">This depends on the scaling. If the scaling is 1, moveH and moveV are not visible.<span class="Apple-converted-space"> </span></p>
+<p class="p2">A moveH value of 0.5 means that the scaled func is centered in the view.</p>
+<p class="p2">A moveH value of 1 means that the right side of the <b>fromBounds</b> is the same as the right side of the view</p>
+<p class="p2">A moveH value of 0 means that the left side of the <b>fromBounds </b>is the same as that of the view</p>
+<p class="p2">same goes for moveV</p>
+<p class="p3"><br></p>
+<p class="p5">b.moveH;</p>
+<p class="p9"><span class="s3">b.scaleH = 2; b.moveH = 1;<span class="Apple-converted-space">  </span></span>// zoomed H x 2 and scrolled to the outer right side</p>
+<p class="p9"><span class="s3">b.moveH = 0; <span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span>// scrolled to the outer left side</p>
+<p class="p9"><span class="s3">b.moveH = 0.5;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// scrolled to the center</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p2"><b>scale, scale_ ( newScaleArray )</b></p>
+<p class="p2"><b>move, move_ ( newMoveArray )</b></p>
+<p class="p2">the <b>newScaleArray </b>can be an <a href="SC://Array"><span class="s9">Array</span></a>, but also a number (for both H and V) or a <a href="SC://Point"><span class="s9">Point</span></a></p>
+<p class="p3"><br></p>
+<p class="p5">b.scale = [0.75, 0.5 ];</p>
+<p class="p5">b.scale = 1.5@1;</p>
+<p class="p5">b.scale = 1;<span class="Apple-converted-space">  </span>b.move = 0.5; <span class="s10">// back to normal</span></p>
+<p class="p10"><br></p>
+<p class="p2"><b>reset</b></p>
+<p class="p2">resets scale and move to defaults.</p>
+<p class="p10"><br></p>
+<p class="p2"><b>clip</b></p>
+<p class="p2">sets and gets clipping boolean for he <b>drawFunc</b> (default true).</p>
+<p class="p2">If clip is true the path will be clipped to inside the view.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><i>Depricated</i> (all functions are clipped inside the view now)</p>
+<p class="p3"><br></p>
+<p class="p5">b.scale = 2; b.clip = <span class="s8">false</span>;</p>
+<p class="p5">b.clip = <span class="s8">true</span>;</p>
+<p class="p5">b.reset;</p>
+<p class="p3"><br></p>
+<p class="p2"><b>autoRefresh</b></p>
+<p class="p2">sets and gets the autoRefresh boolean (default true).</p>
+<p class="p2">Auto refresh works for all the above methods and setters.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p5">b.autoRefresh = <span class="s8">false</span>;<span class="Apple-converted-space"> </span></p>
+<p class="p5">b.scale = 0.5;</p>
+<p class="p5">b.refresh;</p>
+<p class="p8"><br></p>
+<p class="p5">b.autoRefresh = <span class="s8">true</span>;<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="s3">b.scale = [-0.5, 0.5];<span class="Apple-converted-space">  </span></span>// yes, you can also use negative values for scale</p>
+<p class="p3"><br></p>
+<p class="p2">You can bypass it for each setter individually with it's <b>refreshFlag</b> argument (always the last argument)</p>
+<p class="p3"><br></p>
+<p class="p5">b.scale_( 1.1, refreshFlag: <span class="s8">false</span> );<span class="Apple-converted-space"> </span></p>
+<p class="p5">b.refresh;</p>
+<p class="p3"><br></p>
+<p class="p2"><b>view</b></p>
+<p class="p2">holds the SCUserView on which this class is based</p>
+<p class="p3"><br></p>
+<p class="p2"><b>background</b></p>
+<p class="p2">gets and sets the background color</p>
+<p class="p3"><br></p>
+<p class="p2"><b>*window</b></p>
+<p class="p4"><span class="s3">Creates an <a href="ScaledUserViewWindow.html"><span class="s4">ScaledUserViewWindow</span></a> instead</span></p>
+<p class="p3"><br></p>
+<p class="p11">ScaledUserView<span class="s3">.window;</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="s4">drawFuncs</span></b></p>
+<p class="p3"><br></p>
+<p class="p2">Next to the <b>drawFunc</b>, as used in the above examples, there are several other drawing functions. They can be used simultaniously.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>unscaledDrawFunc</b></p>
+<p class="p2">this drawFunc is not scaled or moved, except from that it is translated in such a way that Point(0,0) inside this func resembles the topLeft corner of the view. The func is drawn on top of the scaled drawFunc.</p>
+<p class="p3"><br></p>
+<p class="p5">b.unscaledDrawFunc = { <span class="s8">Pen</span>.width = 2; <span class="s8">Color</span>.blue(0.5).set; <span class="s8">Pen</span>.line( 300@10, 10@300 ).stroke; };</p>
+<p class="p9">// resize the window to see the difference</p>
+<p class="p10"><br></p>
+<p class="p2"><b>unclippedUnscaledDrawFunc</b></p>
+<p class="p2">Same as above, but also not clipped. This draws yet on top of the other two</p>
+<p class="p3"><br></p>
+<p class="p5">b.unclippedUnscaledDrawFunc = { <span class="s8">Color</span>.red(0.5).set; <span class="s8">Pen</span>.line( 200@(-10), 200@500 ).stroke; };</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p2">all drawFuncs receive the ScaledUserView itself as firsst argument. From there you can also request the current move and scale settings. But there is a more convenient way of using scaled data inside the unscaled functions:</p>
+<p class="p3"><br></p>
+<p class="p2"><b>translateScale ( item )</b></p>
+<p class="p2">returns a scaled and translated version of the item. The item can be a Point, a Rect, an array containing Points and Rects, or Pen.</p>
+<p class="p2">Points and Rects will be scaled and translated according to the settings of the ScaledUserView.</p>
+<p class="p2">Pen will perform the correct Pen.scale and Pen.translate methods.</p>
+<p class="p3"><br></p>
+<p class="p5">(</p>
+<p class="p5">b.unscaledDrawFunc = { <span class="s8">|view|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s8">var</span> points, scaledPoints;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>points = [ 0.1@0.1, 0.9@0.1, 0.2@0.5 ];</p>
+<p class="p5"><span class="Apple-tab-span">	</span>scaledPoints = view.translateScale( points );</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s8">Pen</span>.width = 5;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s8">Color</span>.blue.set;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s8">Pen</span>.moveTo( scaledPoints[0] );</p>
+<p class="p5"><span class="Apple-tab-span">	</span>scaledPoints[1..].do({ <span class="s8">|point|</span> <span class="s8">Pen</span>.lineTo( point ) });</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s8">Pen</span>.stroke;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>convertFwd ( x, y ), convertBwd ( x, y )</b></p>
+<p class="p2">this converts unscaled x,y values to and back from scaled values</p>
+<p class="p3"><br></p>
+<p class="p2"><b>beforeDrawFunc</b></p>
+<p class="p2">the beforeDrawFunc is called before any other of the drawFuncs are called at refresh. Use this if you need to calculate values before the other drawFuncs are called.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>clearDrawFuncs</b></p>
+<p class="p2">removes all drawFuncs</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="s4">mouseActions</span></b></p>
+<p class="p3"><br></p>
+<p class="p2">the ScaledUserView uses the same mouseAction types as regular SCViews:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><b>mouseDownAction, mouseMoveAction </b>and <b>mouseUpAction</b><span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p2">The arguments they get are different though:</p>
+<p class="p2"><b>arg <i>view, scaledX, scaledY, modifier, x, y, isInside</i></b></p>
+<p class="p3"><b><i><span class="Apple-tab-span">	</span></i></b></p>
+<p class="p2"><b><i><span class="Apple-tab-span">	</span></i>view </b>: the ScaledUserView ( as in the drawFuncs )</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>scaledX, scaledY </b>: the x/y coordinates, scaled according to the view's settings</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>modifier </b>: binary code of the current modifier key</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>x, y </b>: the unscaled x/y coordinates, relative to the view's leftTop corner</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>isInside </b>: a boolean stating wether the mouse is still inside the bounds of the view</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2">the view is automatically refreshed, unless <b>autoRefreshMouseActions </b>is set to false.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p5">(</p>
+<p class="p12"><span class="s3">b.mouseMoveAction = { </span>|v, sx, sy, m, x, y, inside|</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[ sx@sy, x@y, inside ].postln;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">)</p>
+<p class="p8"><br></p>
+<p class="p9">/// move a point around</p>
+<p class="p5">(</p>
+<p class="p5">b.clearDrawFuncs;</p>
+<p class="p5">p = 0.5@0.5;</p>
+<p class="p5">b.drawFunc = { <span class="s8">Color</span>.green(0.5).alpha_(0.75).set; <span class="s8">Pen</span>.addArc( p, 0.05, 0, 2pi ).fill };</p>
+<p class="p5">b.mouseMoveAction = { <span class="s8">|v, sx, sy, m, x, y, inside|</span> if( inside ) { p = sx@sy; }; };</p>
+<p class="p5">b.mouseDownAction = b.mouseMoveAction;</p>
+<p class="p5">)</p>
+<p class="p8"><br></p>
+<p class="p5">b.scale = [2, 0.5]; b.move = [ 0.75, 0.25 ]; <span class="s10">// still works</span></p>
+<p class="p5">b.reset;</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p2"><b><span class="s4">gridLines</span></b></p>
+<p class="p3"><br></p>
+<p class="p2">ScaledUserView has built-in grid drawing. The code below explain how it works:</p>
+<p class="p3"><br></p>
+<p class="p5">b.gridLines = 10;</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s3">b.gridLines = [ 10, 4 ];<span class="Apple-converted-space">  </span></span>// number of lines for H and V</p>
+<p class="p8"><br></p>
+<p class="p5">b.gridMode = <span class="s11">\lines</span>; b.refresh; <span class="s10">// doesn't refresh!!</span></p>
+<p class="p8"><br></p>
+<p class="p5">b.gridMode = [<span class="s11">\blocks</span>, <span class="s11">\lines</span>]; b.refresh;<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p5">b.scaleH = 1.5; b.moveH = 0.25;</p>
+<p class="p8"><br></p>
+<p class="p5">b.reset;</p>
+<p class="p8"><br></p>
+<p class="p5"><span class="s8">ScaledUserView</span>.gridColor = <span class="s8">Color</span>.red.alpha_(0.25); b.refresh; <span class="s10">// gridColor is a global variable</span></p>
+<p class="p8"><br></p>
+<p class="p5">b.gridMode = <span class="s11">\blocks</span>; b.refresh;<span class="Apple-converted-space">  </span><span class="s10">// default</span></p>
+<p class="p8"><br></p>
+<p class="p5"><span class="s8">ScaledUserView</span>.gridColor = <span class="s8">Color</span>.gray.alpha_(0.25); b.refresh; <span class="s10">// default</span></p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s3">b.gridLines = 0;<span class="Apple-converted-space">  </span></span>// no grid (default) - inf does the same</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s3">b.gridSpacingH;<span class="Apple-converted-space">  </span></span>// the actual variables are gridSpacingH and gridSpacingV</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+</body>
+</html>

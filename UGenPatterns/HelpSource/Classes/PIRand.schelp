@@ -1,0 +1,28 @@
+CLASS:: PIRand
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Generators
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/IRand::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: lo
+
+ARGUMENT:: hi
+
+ARGUMENT:: length
+Number of values produced.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PIRand(60, 70).trace).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \amp, PIRand(0, 1).trace).play
+a.stop
+::

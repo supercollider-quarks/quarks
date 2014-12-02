@@ -1,0 +1,98 @@
+TITLE:: PTimePoints
+summary:: Converts an event pattern based on time points into one based on deltas
+categories:: Streams-Patterns-Events>Patterns>Time
+
+DESCRIPTION::
+Most event patterns specify rhythm in terms of time emphasis::deltas:: between events. (The formal term is "inter-onset interval" or IOI.) Some rhythms may be more convenient to express in terms of time points within a measure:
+
+table::
+## Time point || Meaning
+## 0 || barline
+## 1 || beat 2
+## 2.5 || 2nd eighth-note of beat 3
+::
+
+PTimePoints supports this by converting successive time points into deltas. Write the time point sequence into the code::\timept:: event key.
+
+note::
+The delta is the time until the next event. To fill in the delta for the event that should play emphasis::now::, PTimePoints must get the subsequent event now. Calculations within that event that depend on the clock's current time will be incorrect, including link::Classes/Env:: as streams, link::Classes/Pseg:: and link::Classes/Ptime::.
+::
+
+note::
+If two successive time points are the same, the second will occur one bar later.
+::
+
+subsection:: Reference point: Barline
+
+Time points make sense only in reference to a barline. link::Classes/TempoClock:: defines barlines according to its variables link::Classes/TempoClock#-beatsPerBar:: and link::Classes/TempoClock#-baseBarBeat::. Barlines occur at integer multiples of beatsPerBar after baseBarBeat: if emphasis::n:: is an integer, code::barline = baseBarBeat + (beatsPerBar * n)::.
+
+These two variables are set whenever you change the meter using beatsPerBar's setter method:
+
+code::
+// You should change the meter only on the next barline.
+// quant == -1 aligns to the barline.
+c.play({ c.beatsPerBar = 3 }, -1);
+::
+
+note::
+Because of this, you must play a PTimePoints on a TempoClock. link::Classes/SystemClock:: and link::Classes/AppClock:: will not work because they have no concept of meter.
+::
+
+PTimePoints will begin with a rest event if needed, to synchronize to the first sounding event's time point.
+
+When the child pattern ends, the final event's delta will bring the pattern player back to the next barline.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a PTimePoints.
+
+ARGUMENT:: pattern
+An event pattern, where the result events contain values for code::\timept::.
+
+ARGUMENT:: tolerance
+Avoids certain problems with floating-point rounding. Time points whose difference is below code::tolerance:: are treated as the same time point.
+
+returns:: An instance of PTimePoints.
+
+
+INSTANCEMETHODS::
+
+METHOD:: tolerance
+Gets or sets the tolerance value.
+
+returns:: A link::Classes/SimpleNumber:: reflecting a number of beats.
+
+
+
+EXAMPLES::
+
+code::
+// Babbitt-style time-point series, with metronome
+
+// Do this first, and wait
+TempoClock.play({ TempoClock.beatsPerBar = 3 }, -1);
+
+// Then...
+(
+p = Ppar([
+	PTimePoints(Pbind(
+		// randomly-ordered pitch-class row
+		\row, Pshuf((0..11), inf),
+		\midinote, Pkey(\row) + 60,
+		\timept, Pkey(\row) * 0.25,
+		\amp, 0.5
+	)),
+	Pbind(
+		\pan, Pseq([-1, 1, 1], inf),
+		\midinote, Pseq([72, 76, 80], inf),
+		\dur, 1,
+		\sustain, 0.15,
+		\amp, 0.5
+	)
+]).play(quant: -1);
+)
+
+p.stop;
+::

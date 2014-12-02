@@ -1,0 +1,27 @@
+CLASS:: RedRock
+SUMMARY:: an obstacle object with infinite mass
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview
+
+DESCRIPTION::
+The differences from link::Classes/RedObject:: are that it is not possible to change the mass and the mass is always infinite.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedObject
+
+METHOD:: mass
+code::inf::. Will not change.
+
+EXAMPLES::
+
+CODE::
+a= RedWorld.new
+b= RedRock(a)
+b.mass
+b.mass= 4		//no effect
+b.mass
+
+a.objects
+b.dump
+::

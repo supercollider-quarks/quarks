@@ -1,0 +1,46 @@
+CLASS:: RedTrk2
+SUMMARY:: a sort of timeline - slave track
+CATEGORIES:: Red>redMst
+RELATED:: Classes/RedMst, Classes/RedSeq, Classes/RedTrk
+
+DESCRIPTION::
+Very similar to link::Classes/RedTrk:: but can do abrupt swaps between sections. It cuts off events with long durations. Also does cross-fade on demand. Please ignore the code::"FAILURE n_set Node not found":: that gets posted.
+
+NOTE::
+Internally link::Classes/Pbind:: gets wrapped in link::Classes/Pbus:: and this may change order-of-execution. So the Pbus forces a RedTrk2 to code::\addToTail::. This is not the case for link::Classes/RedTrk::.
+::
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedTrk
+
+METHOD:: fadeTime
+Time to fade in/out. The default is 0.02 seconds.
+
+EXAMPLES::
+
+CODE::
+(
+s.waitForBoot{
+RedMst.clear;
+RedMst.clock= TempoClock(120/60);
+RedMst.quant= 2;			//relatively short quant
+
+RedTrk2(\t1, Pbind(\degree, 0, \dur, 8), [0]);	//create a track with long duration events
+RedTrk2(\t2, Pbind(\degree, 1, \dur, 8), [1]);
+}
+)
+
+
+RedMst.play
+RedMst.goto(1)			//with RedTrk long durations and short quant gives overlaps
+RedMst.goto(0)			//while RedTrk2 forces events to stop
+
+RedTrk2(\t1).fadeTime= 3;	//set long fadeTime to do crossfades
+RedTrk2(\t2).fadeTime= 3;
+RedMst.goto(1)
+RedMst.goto(0)
+
+RedMst.stop
+RedMst.clear
+::

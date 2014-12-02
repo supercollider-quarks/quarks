@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p6 {margin: 0.0px 0.0px 16.0px 0.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times; min-height: 19.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 12.0px Arial; color: #3332aa}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<h1 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 12.0px Helvetica"><span class="s1"><b>Cartesian<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Cartesian point in 3D space</b></h1>
+<p class="p2"><b>Superclass: Object</b></p>
+<p class="p3"><br></p>
+<p class="p2">Defines a point in 3D Cartesian space.</p>
+<p class="p3"><br></p>
+<p class="p2">Part of SpherCoords, a spherical and 3D cartesian coordinate support library.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">See also: <a href="Spherical.html">Spherical</a>, <a href="../../../../../../../../Library/Application Support/SuperCollider/Help/Polar.html"><span class="s2">Polar</span></a>, <a href="Point.html">Point</a></p>
+<p class="p3"><br></p>
+<p class="p2">Credits: Joseph Anderson, 2011 [j.anderson[at]ambisonictoolkit.net]</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4"><b>Creation</b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>new(inX, inY,inZ)</b></p>
+<p class="p3"><br></p>
+<p class="p2">Defines a new Cartesian point.</p>
+<p class="p3"><br></p>
+<p class="p5"><br></p>
+<p class="p4"><b>Accessing</b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>x</b></p>
+<p class="p3"><br></p>
+<p class="p2">Get the x coordinate value.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>y</b></p>
+<p class="p3"><br></p>
+<p class="p2">Get the y coordinate value.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>Z</b></p>
+<p class="p3"><br></p>
+<p class="p2">Get the y coordinate value.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>x_(aValue)</b></p>
+<p class="p3"><br></p>
+<p class="p2">Set the x coordinate value.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>y_(aValue)</b></p>
+<p class="p3"><br></p>
+<p class="p2">Set the y coordinate value.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>z_(aValue)</b></p>
+<p class="p3"><br></p>
+<p class="p2">Set the z coordinate value.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>set(inX, inY,inZ)</b></p>
+<p class="p3"><br></p>
+<p class="p6">Sets the Cartesian point x, y and z values.</p>
+<p class="p5"><br></p>
+<p class="p4"><b>Testing</b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>== aPoint</b></p>
+<p class="p3"><br></p>
+<p class="p2">answers a Boolean whether the receiver equals the argument.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>hash</b></p>
+<p class="p3"><br></p>
+<p class="p2">returns a hash value for the receiver.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4"><b>Math</b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>+ aCartesianOrPointOrScalar</b></p>
+<p class="p3"><br></p>
+<p class="p2">Addition.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>- aCartesianOrPointOrScalar</b></p>
+<p class="p3"><br></p>
+<p class="p2">Subtraction.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>* aCartesianOrPointOrScalar</b></p>
+<p class="p3"><br></p>
+<p class="p2">Multiplication.</p>
+<p class="p3"><br></p>
+<p class="p2">Returns: Cartesian.new(this.x * scale.x, this.y * scale.y, this.z * scale.z)</p>
+<p class="p3"><br></p>
+<p class="p2">Note that the result of * for a 3D Cartesian point does not match that of <a href="Point.html">Point</a>, where the result is interpreted as the multiplication of complex numbers.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>/ aCartesianOrPointOrScalar</b></p>
+<p class="p3"><br></p>
+<p class="p2">Division.</p>
+<p class="p3"><br></p>
+<p class="p2">Returns: Cartesian.new(this.x / scale.x, this.y / scale.y, this.z / scale.z)</p>
+<p class="p3"><br></p>
+<p class="p2">Note that the result of / for a 3D Cartesian point does not match that of <a href="Point.html">Point</a>, where the result is interpreted as the division of complex numbers.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>translate(aCartesian)</b></p>
+<p class="p3"><br></p>
+<p class="p2">Addition by a Cartesian</p>
+<p class="p3"><br></p>
+<p class="p2"><b>scale(aCartesian)</b></p>
+<p class="p3"><br></p>
+<p class="p2">Multiplication by a Cartesian.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>rotate(aNumber)</b></p>
+<p class="p3"><br></p>
+<p class="p6">Rotation about the origin in the XY plane by the angle given in radians.</p>
+<p class="p2"><b>tilt(aNumber)</b></p>
+<p class="p3"><br></p>
+<p class="p6">Rotation about the origin in the YZ plane by the angle given in radians.</p>
+<p class="p2"><b>tumble(aNumber)</b></p>
+<p class="p3"><br></p>
+<p class="p6">Rotation about the origin in the XZ plane by the angle given in radians.</p>
+<p class="p2"><b>rotateXY(aNumber)</b></p>
+<p class="p3"><br></p>
+<p class="p6">A synonym for <b>rotate</b>.</p>
+<p class="p2"><b>rotateYZ(aNumber)</b></p>
+<p class="p3"><br></p>
+<p class="p6">A synonym for <b>tilt</b>.</p>
+<p class="p2"><b>rotateXZ(aNumber)</b></p>
+<p class="p3"><br></p>
+<p class="p2">A synonym for <b>tumble</b>.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>mirrorX</b></p>
+<p class="p3"><br></p>
+<p class="p2">Mirror x, reflecting across the YZ plane.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>mirrorY</b></p>
+<p class="p3"><br></p>
+<p class="p2">Mirror y, reflecting across the XZ plane.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>mirrorZ</b></p>
+<p class="p3"><br></p>
+<p class="p2">Mirror z, reflecting across the XY plane.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>mirrorO</b></p>
+<p class="p3"><br></p>
+<p class="p2">Mirror across the origin.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>abs</b></p>
+<p class="p3"><br></p>
+<p class="p2">Absolute value of the point.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>rho</b></p>
+<p class="p3"><br></p>
+<p class="p2">Return the spherical coordinate radius of the receiver.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>theta</b></p>
+<p class="p3"><br></p>
+<p class="p2">Return the spherical coordinate azimuth angle of the receiver.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>phi</b></p>
+<p class="p3"><br></p>
+<p class="p2">Return the spherical coordinate elevation angle of the receiver.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>angle</b></p>
+<p class="p3"><br></p>
+<p class="p2">Return the spherical coordinate azimuth angle of the receiver.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>angles</b></p>
+<p class="p3"><br></p>
+<p class="p2">Return the spherical coordinate azimuth and elevation angles of the receiver.</p>
+<h4 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px"><br></h4>
+<p class="p2"><b>dist</b>(aCart)</p>
+<p class="p3"><br></p>
+<p class="p2">Return the distance from the receiver to aCart.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>transpose</b></p>
+<p class="p3"><br></p>
+<p class="p2">Return a Cartesian point whose x and y coordinates are swapped.</p>
+<p class="p3"><br></p>
+<p class="p2">Discussion: Matches the return value for <a href="Point.html">Point</a>.transpose.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>transpose</b></p>
+<p class="p3"><br></p>
+<p class="p2">Return a Cartesian point whose x and y coordinates are swapped.</p>
+<p class="p3"><br></p>
+<p class="p2">Discussion: A synonym for transpose.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>transposeYZ</b></p>
+<p class="p3"><br></p>
+<p class="p2">Return a Cartesian point whose y and z coordinates are swapped.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>transposeXZ</b></p>
+<p class="p3"><br></p>
+<p class="p2">Return a Cartesian point whose x and z coordinates are swapped.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>round(quantum)</b></p>
+<p class="p3"><br></p>
+<p class="p2">Round the coordinate values to a multiple of quantum.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>trunc(quantum)</b></p>
+<p class="p3"><br></p>
+<p class="p2">Truncate the coordinate values to a multiple of quantum.</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p4"><b>Conversion</b></p>
+<p class="p5"><br></p>
+<p class="p2"><b>asCartesian</b></p>
+<p class="p3"><br></p>
+<p class="p2">Returns the receiver.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asPoint</b></p>
+<p class="p3"><br></p>
+<p class="p2">Returns a <a href="Point.html">Point</a>, discarding z.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asComplex</b></p>
+<p class="p3"><br></p>
+<p class="p2">Returns a Complex with x as the real part and y as the imaginary part, discarding z.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asPolar</b></p>
+<p class="p3"><br></p>
+<p class="p2">Returns a <a href="../../../../../../../../Library/Application Support/SuperCollider/Help/Polar.html"><span class="s2">Polar</span></a>, discarding z.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asSpherical</b></p>
+<p class="p3"><br></p>
+<p class="p2">Returns a <a href="Spherical.html">Spherical</a>.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asArray</b></p>
+<p class="p3"><br></p>
+<p class="p2">Returns an Array: [ x, y, z ]</p>
+<p class="p3"><br></p>
+</body>
+</html>

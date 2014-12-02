@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWDataNetwork</TITLE>
+<META NAME="description" CONTENT="SWDataNetwork">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00041000000000000000">
+SWDataNetwork</A></H2>
+<H3>Base class for the Sense World Data Network.</H3>
+
+
+<h4>Some nomenclature:</h4>
+<p>
+A <strong>DataNode</strong>, or a node, is a collection of data streams which somehow belong together.<br>
+For example, this can be representing:<br>
+
+<UL>
+  <LI>A SenseStage MiniBee hardware sensor node with sensors attached</LI>
+  <LI>All the parameters of a sound process (amplitude, frequency, etc)</LI>
+  <LI>A group of (DMX) light channels</LI>
+  <LI>Showtime information (hours, minutes, seconds, frame)</LI>
+  <LI>All the light sensors in a space, collected in a logical order</LI>
+  <LI>All the parameters of a graphical object (dimensions, color)</LI>
+  <LI>All the data from a gaming device, such as a joystick</LI>
+</UL>
+
+<p>An <strong>expected Node</strong> is a DataNode that is prepared to be added to the network, but may not be present yet.</p>
+
+<p>A <strong>DataSlot</strong>, or a slot, is one datastream. So corresponding to the examples of nodes above a slot would represent:<br>
+
+<UL>
+  <LI>A light sensor attached to a MiniBee</LI>
+  <LI>One axis of an acclerometer attached to a MiniBee</LI>
+  <LI>The amplitude of a sound process</LI>
+  <LI>One DMX light channel</LI>
+  <LI>The seconds of the showtime</LI>
+  <LI>The x-dimension of a graphical object</LI>
+  <LI>The y-axis of a joystick</LI>
+</UL>
+
+<p><strong>A client:</strong> the programming environment of one collaborator hooked up to the network. E.g. Joe, using PureData, or Marije, using SuperCollider, or Vincent, using Processing, or Brett, using Max/MSP.</p>
+
+<p><strong>Subscription:</strong> a client can subscribe to a node to receive its data, or subscribe to a single slot of a node. These are called the client's subscriptions.</p>
+
+<p><strong>Setter:</strong> a client can provide data to the network by creating a DataNode. The client then becomes the "setter" of the node. Other clients can not set data to the same node.</p>
+
+
+<h4>- Example - </h4>
+
+    <pre>
+
+<span class="comment-delimiter">// </span><span class="comment">define the network
+</span>x = <span class="type">SWDataNetwork</span>.new;
+
+<span class="comment-delimiter">// </span><span class="comment">get data input from incoming serial data
+</span><span class="comment-delimiter">// </span><span class="comment">(from an XBee network)
+</span>q = <span class="type">XBeeSMS</span>.new( <span class="string">"/dev/ttyUSB0"</span>, 115200 );
+<span class="comment-delimiter">// </span><span class="comment">the action sets the data that comes in to the network:
+</span>q.action_({ |msg| x.setData( msg[0], msg.copyToEnd(1) ); });
+
+<span class="comment-delimiter">// </span><span class="comment">we expect floor pressure sensor data on node 2
+</span>x.addExpected( 2, <span class="constant">\floor</span> );
+
+<span class="comment-delimiter">// </span><span class="comment">we want to create a node with a measure of the
+</span><span class="comment-delimiter">// </span><span class="comment">sample variance on node 102
+</span>x.addExpected( 102, <span class="constant">\floorVar</span> );
+
+<span class="comment-delimiter">// </span><span class="comment">start the parsing of the input data:
+</span>q.start;
+
+<span class="comment-delimiter">// </span><span class="comment">the data comes in as 8bit integers, so we scale
+</span><span class="comment-delimiter">// </span><span class="comment">it here to a value between 0 and 1
+</span>x[<span class="constant">\floor</span>].scale = 1/255;
+
+<span class="comment-delimiter">// </span><span class="comment">we create a bus for the data (s is the audio server):
+</span>x[<span class="constant">\floor</span>].createBus( s );
+
+<span class="comment-delimiter">// </span><span class="comment">we create the sample variance node:
+</span><span class="variable-name">~floorVar</span> = <span class="type">StdDevNode</span>.new( 102, x, x.at( <span class="constant">\floor</span> ).bus, s );
+<span class="variable-name">~floorVar</span>.start;
+
+<span class="comment-delimiter">// </span><span class="comment">now we have raw data available on node 2,
+</span><span class="comment-delimiter">// </span><span class="comment">and sample variance data on node 102
+</span></pre>
+
+<h3>- Methods - </h3>
+
+<D>
+<DL>
+
+<DT><STRONG>*new</STRONG></DT>
+<DD>Create an instance of SWDataNetwork</DD>
+
+<h4>- Node Control - </h4>
+
+<DT><STRONG>setData ( id, data )</STRONG></DT>
+<DD>Set the data for a node. This registers a node if it does not yet exist. The size of the data array determines the amount of slots the node will have. Subsequent calls to this method for this same node ID will have to have the same size of the data array.
+</DD>
+<DT><STRONG>registerNode ( id, sz, type )</STRONG></DT>
+<DD>register a node in the network with a specific size and type (0: float, 1: string). If a node is not expected (see below), then it cannot be registered.
+</DD>
+<DT><STRONG>nodes (  )</STRONG></DT>
+<DD>returns an Array of the nodes of the network </DD>
+<DT><STRONG>removeNode ( id )</STRONG></DT>
+<DD>remove a node from the network. 
+</DD>
+
+<DT><STRONG>checkDataType ( data )</STRONG></DT>
+<DD>Checks the data type (float: 0, string: 1) for the data, by looking at the first element in the array. Called by setData if a node is set for the first time.
+</DD>
+
+
+<h4>- Expected nodes - </h4>
+
+<DT><STRONG>addExpected ( id, label, size, type )</STRONG></DT>
+<DD>add an expected node to the network. Label (the key the node will have in the spec) and size are optional. If size is specified, a node will be created with <em>size</em> number of slots, of <em>type</em> (default 0); the value of each slot will be initialized with 0.
+ </DD>
+
+<DT><STRONG>isExpected ( id )</STRONG></DT>
+<DD>Answers whether the given node ID is expected or not.</DD>
+
+<DT><STRONG>expectedNodes (  )</STRONG></DT>
+<DD>returns an Array of the expected nodes (actually just their IDs) of the network </DD>
+<DT><STRONG>expectedNodes_ (  )</STRONG></DT>
+<DD>set the expected nodes of the network (should be an Array of ids)</DD>
+
+<h4>- Spec - </h4>
+
+<DT><STRONG>spec (  )</STRONG></DT>
+<DD>returns the SWDataNetworkSpec
+</DD>
+<DT><STRONG>setSpec ( name )</STRONG></DT>
+<DD>Load an SWDataNetworkSpec from file.</DD>
+
+<DT><STRONG>add ( key, slot )</STRONG></DT>
+<DD>Add a <em>key</em> (node or slot label) to the spec. <em>slot</em> can be the node ID (one integer), or the slot ID (an Array of two integers).</DD>
+
+<h4>- Named access to nodes, values and actions - </h4>
+
+<DT><STRONG>at ( key )</STRONG></DT>
+<DD>Returns the node or slot at <em>key</em></DD>
+<DT><STRONG>value ( key )</STRONG></DT>
+<DD>Get the value of the node or slot at <em>key</em></DD>
+<DT><STRONG>action_ ( key, action )</STRONG></DT>
+<DD>Set the action of the node or slot at <em>key</em></DD>
+
+<h4>- Node bus control - </h4>
+
+<DT><STRONG>bus ( key )</STRONG></DT>
+<DD>Get the bus of the node or slot at <em>key</em></DD>
+<DT><STRONG>createBus ( key, server )</STRONG></DT>
+<DD>Create a control bus on the <em>server</em> for the node or slot at <em>key</em>. The data that comes into the slot is automatically mapped to this bus.</DD>
+<DT><STRONG>freeBus ( key )</STRONG></DT>
+<DD>Free the bus of the node or slot at <em>key</em></DD>
+<DT><STRONG>createAllBuses ( server )</STRONG></DT>
+<DD>Creates buses for all nodes and slots that are named in the spec on the specified <em>server</em></DD>
+<DT><STRONG>freeAllBuses (  )</STRONG></DT>
+<DD>Free all the buses that have been created.</DD>
+<DT><STRONG>createAllNodeBuses ( server )</STRONG></DT>
+<DD>create buses on the server for all nodes (Note difference with createAllBuses, which creates buses for all nodes that are named in the spec).
+</DD>
+
+<h4>- Data input control - </h4>
+
+<DT><STRONG>worrytime (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>worrytime_ ( wt )</STRONG></DT>
+<DD>time after which the network will perform an action to restart the network data inputs</DD>
+<DT><STRONG>watch ( onoff )</STRONG></DT>
+<DD>turn on or off whether to worry about data (not) coming in
+</DD>
+<DT><STRONG>watcher (  )</STRONG></DT>
+<DD><em>private</em> - the task that performs the watching to regularly check when data was last set in the network</DD>
+
+<h4>- Data logging and recording - </h4>
+
+<DT><STRONG>initRecord ( fn, dt, stamp, break )</STRONG></DT>
+<DD>initialize recording the data. This uses a MultiFileWriter to write to multiple files. Afterwards you can replay the log with <a href="SWDataNetworkLog.html">SWDataNetworkLog</a>.
+<DL>
+  <DT>fn (default "SWDataNetworkLog")</DT><DD>is the base filename. A date stamp gets automatically added to the filename. The MultiFileWriter will create a folder with that name, and temporarily store the data in that folder.</DD>
+  <DT>dt (default 0.025)</DT><DD>is the time interval at which to write lines of data.</DD>
+  <DT>stamp (default false)</DT><DD>determines whether or not to add a date stamp to the beginning of each line.</DD>
+<DT>break (default 36000)</DT><DD>is the number of lines after which to start a new file. The defaults come down to a new file every 15 minutes.</DD>
+</DL>
+</DD>
+<DT><STRONG>record ( onoff )</STRONG></DT>
+<DD>turn recording on or off</DD>
+<DT><STRONG>closeRecord (  )</STRONG></DT>
+<DD>close the recorded file</DD>
+<DT><STRONG>recnodes (  )</STRONG></DT>
+<DD><em>private</em> - The nodes which are being recorded.</DD>
+<DT><STRONG>writeHeader (  )</STRONG></DT>
+<DD><em>private</em> - write the header into the logfile</DD>
+<DT><STRONG>writeLine ( dt, recordnodes )</STRONG></DT>
+<DD><em>private</em> - write one line of data into the logfile</DD>
+<DT><STRONG>recTask (  )</STRONG></DT>
+<DD><em>private</em></DD>
+<DT><STRONG>recTask_ (  )</STRONG></DT>
+<DD><em>private</em> - the task performing the file writing</DD>
+<DT><STRONG>logfile (  )</STRONG></DT>
+<DD><em>private</em> - the file into which data is written</DD>
+
+<h4>- Logging update times - </h4>
+
+<DT><STRONG>initTimeRecord ( fn, stamp )</STRONG></DT>
+<DD>initialize recording of the update times of the data. <em>fn</em> is the filename. <em>stamp</em> is whether or not to precede each line with a Date stamp (default is false).</DD>
+<DT><STRONG>closeTimeRecord (  )</STRONG></DT>
+<DD>close the update time recorded file</DD>
+<DT><STRONG>writeTimeUpdate ( id, time )</STRONG></DT>
+<DD><em>private</em> - write one line of time update data to the log (format node id - update time)</DD>
+<DT><STRONG>recTime</STRONG></DT>
+<DD><em>private</em> - whether currently recording update times or not</DD>
+<DT><STRONG>timelogfile (  )</STRONG></DT>
+<DD><em>private</em> - the file into which update time data is written</DD>
+
+<h4>- Graphical user interface - </h4>
+
+<DT><STRONG>makeGui (  )</STRONG></DT>
+<DD>Create a graphical user interface.</DD>
+
+<DT><STRONG>gui (  )</STRONG></DT>
+<DD><em>private</em> returns the SWDataNetworkGui
+</DD>
+
+<DT><STRONG>gui_ (  )</STRONG></DT>
+<DD><em>private</em> set the SWDataNetwork graphical interface (called internally when creating a new SWDataNetworkGui).
+</DD>
+
+
+<h4>- OpenSoundControl interface (OSC) - </h4>
+
+<DT><STRONG>addOSCInterface (  )</STRONG></DT>
+<DD>Add the OSC interface to the network.</DD>
+
+<DT><STRONG>osc (  )</STRONG></DT>
+<DD><em>private</em> returns the SWDataNetworkOSC
+ </DD>
+<DT><STRONG>osc_ (  )</STRONG></DT>
+<DD><em>private</em> set the SWDataNetworkOSC interface (called internally when creating a new SWDataNetworkOSC).
+ </DD>
+
+<h4>- Debugging and verbosity - </h4>
+
+<DT><STRONG>debug_ ( onoff )</STRONG></DT>
+<DD>turn debugging on for all slots. This will post all incoming data.
+ </DD>
+
+<DT><STRONG>verbose (  )</STRONG></DT>
+<DD>posting of messages. There are various verbosity levels. 0 is no posts, 1 posts informational/warning messages, 2 posts all data coming in.</DD>
+<DT><STRONG>verbose_ (  )</STRONG></DT>
+<DD>Set the verbosity level.</DD>
+
+
+</DL>
+</D>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+  HREF="SWDataNode.html">SWDataNode</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</P>
+
+</BODY>
+</HTML>

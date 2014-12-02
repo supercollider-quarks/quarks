@@ -1,0 +1,381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #00149f}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #7f1514}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #414141}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #7f1514}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #561571}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #0021f0}
+span.s3 {color: #001dd3}
+span.s4 {color: #00117a}
+span.s5 {color: #001ff6}
+span.s6 {color: #00149f}
+span.s7 {color: #000000}
+span.s8 {color: #7f1514}
+span.s9 {color: #561571}
+span.s10 {color: #294a08}
+span.s11 {color: #414141}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>EZSmoothSlider<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>wrapper class for label, SmoothSlider, SmoothNumberBox</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p1">part of <a href="wslib.html"><span class="s2">wslib</span></a></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="SC://Object"><span class="s3"><b>Object</b></span></a><b> : </b><a href="SC://EZGui"><span class="s3"><b>EZGui</b></span></a><span class="s4"><b> : </b><a href="SC://EZSlider"><span class="s2"><b>EZSlider</b></span></a></span></p>
+<p class="p3"><br></p>
+<p class="p1">EZSmoothSlider is wrapper class which creates an (optional) <a href="../../../../../../../../Applications/SuperCollider/Help/GUI/Main-GUI/StaticText.html"><span class="s4">StaticText</span></a>, and a <a href="SmoothSlider.html"><span class="s2">SmoothSlider</span></a><span class="s4"> </span>plus a <a href="SmoothNumberBox.html"><span class="s5">SmoothNumberBox</span></a>. If the parent is nil, then EZSmoothSlider will create its own window. EZSmoothSlider behaves in the same way as <a href="SC://EZSlider"><span class="s2">EZSlider</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4">w = <span class="s6">Window</span>.new.front;</p>
+<p class="p4">w.addFlowLayout;</p>
+<p class="p5"><span class="s7">z = </span>EZSmoothSlider<span class="s7">(<span class="Apple-tab-span">	</span>w,<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span></span><span class="s8">// parent</span></p>
+<p class="p6"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s9">390</span><span class="s7">@</span><span class="s9">20</span><span class="s7">,<span class="Apple-tab-span">	</span></span>// bounds</p>
+<p class="p7"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>" test "<span class="s7">,<span class="Apple-tab-span">	</span></span><span class="s8">// label</span></p>
+<p class="p6"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s10">\freq</span><span class="s7">, <span class="Apple-tab-span">	</span></span>// controlSpec</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{<span class="s6">|ez|</span> (ez.value.asString ++<span class="s11">" is the value of "</span> ++ ez).postln} <span class="s8">// action</span></p>
+<p class="p4">);</p>
+<p class="p4">z.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white)</p>
+<p class="p4">);</p>
+<p class="p8"><br></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6">// Simplest version, no parent view, so a window is created</p>
+<p class="p4">(</p>
+<p class="p5"><span class="s7"><span class="Apple-tab-span">	</span>z=</span>EZSmoothSlider<span class="s7">(label:</span><span class="s11">" test "</span><span class="s7">);</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>z.action_({<span class="s6">|ez|</span> (ez.value.asString ++<span class="s11">" is the value of "</span> ++ ez).postln});</p>
+<p class="p4">);</p>
+<p class="p8"><br></p>
+<p class="p4">(</p>
+<p class="p4">w = <span class="s6">Window</span>().front;</p>
+<p class="p4">w.addFlowLayout;</p>
+<p class="p4"><span class="s9">9</span>.do({ <span class="s6">|i|</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">EZSmoothSlider</span>( w, <span class="s9">40</span>@<span class="s9">390</span>, (i+<span class="s9">1</span>).digit2roman, layout: <span class="s10">\vert</span> )</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.labelView.align_( <span class="s10">\center</span> );</p>
+<p class="p4"><span class="Apple-tab-span">	</span>});</p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p9"><br></p>
+<p class="p10"><b>Examples (converted from EZSlider)</b></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p11"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// basic use</p>
+<p class="p4"><span class="Apple-tab-span">	</span>w=<span class="s6">Window</span>.new.front;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(w, <span class="s9">400</span>@<span class="s9">16</span>,<span class="s11">" test<span class="Apple-converted-space">  </span>"</span>, <span class="s10">\freq</span>,unitWidth:<span class="s9">30</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\horz</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white);</p>
+<p class="p4">);</p>
+<p class="p4">g.view.enabled=<span class="s6">false</span></p>
+<p class="p6">// lots of sliders on on view</p>
+<p class="p4">(</p>
+<p class="p4">w=<span class="s6">Window</span>.new.front;</p>
+<p class="p4">w.view.decorator=<span class="s6">FlowLayout</span>(w.view.bounds);</p>
+<p class="p4">w.view.decorator.gap=<span class="s9">2</span>@<span class="s9">2</span>;</p>
+<p class="p8"><br></p>
+<p class="p4"><span class="s9">20</span>.do{</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">EZSmoothSlider</span>(w, <span class="s9">392</span>@<span class="s9">16</span>,<span class="s11">" Freq "</span>, <span class="s10">\freq</span>,unitWidth:<span class="s9">30</span>,initVal:<span class="s9">6000</span>.rand, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\horz</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span>.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white)</p>
+<p class="p4"><span class="Apple-tab-span">	</span>.font_(<span class="s6">Font</span>(<span class="s11">"Helvetica"</span>,<span class="s9">11</span>));</p>
+<p class="p8"><br></p>
+<p class="p4">};</p>
+<p class="p4">);</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s6">Window</span><span class="s7">.closeAll<span class="Apple-converted-space">  </span></span>// use this to close all the windows</p>
+<p class="p8"><br></p>
+<p class="p6">/////////////////////////////////////////////////////////////////</p>
+<p class="p6">////////// click these parentheses to see all features and layouts<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p4">(</p>
+<p class="p8"><br></p>
+<p class="p4">m=<span class="s6">nil</span>;</p>
+<p class="p6">//m=2@2;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// uncomment this for margin</p>
+<p class="p8"><br></p>
+<p class="p6">/////////////////</p>
+<p class="p6">/// Layout \horz</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// all features, small font</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(<span class="s6">nil</span>, <span class="s9">400</span>@<span class="s9">14</span>,<span class="s11">" freq<span class="Apple-converted-space">  </span>"</span>, <span class="s10">\freq</span>,unitWidth:<span class="s9">30</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\horz</span>, margin: m);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.bounds = g.window.bounds.moveBy(<span class="s9">-180</span>,<span class="s9">50</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.font_(<span class="s6">Font</span>(<span class="s11">"Helvetica"</span>,<span class="s9">10</span>));</p>
+<p class="p4">);</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// no unitView</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(<span class="s6">nil</span>, <span class="s9">400</span>@<span class="s9">16</span>,<span class="s11">" freq<span class="Apple-converted-space">  </span>"</span>, <span class="s10">\freq</span>,unitWidth:<span class="s9">0</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\horz</span>, margin: m);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.bounds = g.window.bounds.moveBy(<span class="s9">-180</span>, <span class="s9">-20</span>);</p>
+<p class="p4">);</p>
+<p class="p6"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// no label, so use window name as label</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(<span class="s6">nil</span>, <span class="s9">400</span>@<span class="s9">16</span>, <span class="s6">nil</span>, <span class="s10">\freq</span>,unitWidth:<span class="s9">0</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\horz</span>, margin: m);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.bounds = g.window.bounds.moveBy(<span class="s9">-180</span>, <span class="s9">-90</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.name=<span class="s11">"Freq"</span>;</p>
+<p class="p4">);</p>
+<p class="p8"><br></p>
+<p class="p6">/////////////////</p>
+<p class="p6">/// Layout \line2</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// all features</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(<span class="s6">nil</span>, <span class="s9">300</span>@<span class="s9">42</span>,<span class="s11">" freq<span class="Apple-converted-space">  </span>"</span>, <span class="s10">\freq</span>,unitWidth:<span class="s9">30</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\line2</span>, margin: m);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.bounds = g.window.bounds.moveBy(<span class="s9">-180</span>,<span class="s9">-160</span>);</p>
+<p class="p4">);</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// no unitView, with label</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(<span class="s6">nil</span>, <span class="s9">300</span>@<span class="s9">42</span>,<span class="s11">" freq<span class="Apple-converted-space">  </span>"</span>, <span class="s10">\freq</span>,unitWidth:<span class="s9">0</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\line2</span>, margin: m);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.bounds = g.window.bounds.moveBy(<span class="s9">-180</span>,<span class="s9">-260</span>);</p>
+<p class="p4">);</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// no label</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(<span class="s6">nil</span>, <span class="s9">300</span>@<span class="s9">42</span>,<span class="s6">nil</span>, <span class="s10">\freq</span>, unitWidth:<span class="s9">30</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\line2</span>, margin: m);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.bounds = g.window.bounds.moveBy(<span class="s9">-180</span>,<span class="s9">-360</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.name=<span class="s11">"Freq"</span>;</p>
+<p class="p4">);</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// no lablel, so use window name as label</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(<span class="s6">nil</span>, <span class="s9">150</span>@<span class="s9">42</span>,<span class="s6">nil</span>, <span class="s10">\freq</span>,unitWidth:<span class="s9">0</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\line2</span>, margin: m);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.bounds = g.window.bounds.moveBy(<span class="s9">-180</span>,<span class="s9">-460</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.name=<span class="s11">"Freq"</span>;</p>
+<p class="p4">);</p>
+<p class="p8"><br></p>
+<p class="p6">/////////////////</p>
+<p class="p6">/// Layout \vert</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// all features, small font</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(<span class="s6">nil</span>, <span class="s9">45</span>@<span class="s9">300</span>,<span class="s11">" Vol<span class="Apple-converted-space">  </span>"</span>, <span class="s10">\db</span>.asSpec.step_(<span class="s9">0.01</span>),unitWidth:<span class="s9">30</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\vert</span>, margin: m);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.bounds = g.window.bounds.moveBy(<span class="s9">250</span>,<span class="s9">50</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.font_(<span class="s6">Font</span>(<span class="s11">"Helvetica"</span>,<span class="s9">10</span>));</p>
+<p class="p4">);</p>
+<p class="p6"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// no label, small font</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(<span class="s6">nil</span>, <span class="s9">45</span>@<span class="s9">300</span>, <span class="s6">nil</span>, <span class="s10">\db</span>.asSpec.step_(<span class="s9">0.01</span>),unitWidth:<span class="s9">30</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\vert</span>, margin: m);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.bounds = g.window.bounds.moveBy(<span class="s9">310</span>,<span class="s9">50</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.font_(<span class="s6">Font</span>(<span class="s11">"Helvetica"</span>,<span class="s9">10</span>));</p>
+<p class="p4">);</p>
+<p class="p6"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// no Units small font</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(<span class="s6">nil</span>, <span class="s9">45</span>@<span class="s9">300</span>, <span class="s11">" Vol"</span>, <span class="s10">\db</span>.asSpec.step_(<span class="s9">0.01</span>),unitWidth:<span class="s9">0</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\vert</span>, margin: m);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.bounds = g.window.bounds.moveBy(<span class="s9">370</span>,<span class="s9">50</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.font_(<span class="s6">Font</span>(<span class="s11">"Helvetica"</span>,<span class="s9">10</span>));</p>
+<p class="p4">);</p>
+<p class="p6"><span class="s7">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// no unitView, no Units small font</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g=<span class="s6">EZSmoothSlider</span>(<span class="s6">nil</span>, <span class="s9">45</span>@<span class="s9">300</span>, <span class="s6">nil</span>, <span class="s10">\db</span>.asSpec.step_(<span class="s9">0.01</span>),unitWidth:<span class="s9">0</span>, numberWidth:<span class="s9">60</span>,layout:<span class="s10">\vert</span>, margin: m);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.window.bounds = g.window.bounds.moveBy(<span class="s9">430</span>,<span class="s9">50</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.font_(<span class="s6">Font</span>(<span class="s11">"Helvetica"</span>,<span class="s9">10</span>));</p>
+<p class="p4">);</p>
+<p class="p8"><br></p>
+<p class="p4">)<span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6">///////////////////////////////////////////////////////////////</p>
+<p class="p6">///////////////////////////////////////////////////////////////</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p6">// Sound example</p>
+<p class="p4">(</p>
+<p class="p6">// start server</p>
+<p class="p4">s.waitForBoot({</p>
+<p class="p8"><br></p>
+<p class="p4"><span class="s6">var</span> w, startButton, noteControl, cutoffControl, resonControl;</p>
+<p class="p4"><span class="s6">var</span> balanceControl, ampControl;</p>
+<p class="p4"><span class="s6">var</span> node, cmdPeriodFunc;</p>
+<p class="p8"><br></p>
+<p class="p6">// define a synth</p>
+<p class="p4"><span class="s6">SynthDef</span>(<span class="s11">"window-test"</span>, { <span class="s6">arg</span> note = <span class="s9">36</span>, fc = <span class="s9">1000</span>, rq = <span class="s9">0.25</span>, bal=<span class="s9">0</span>, amp=<span class="s9">0.4</span>, gate = <span class="s9">1</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">var</span> x;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = <span class="s6">Mix</span>.fill(<span class="s9">4</span>, {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">LFSaw</span>.ar((note + {<span class="s9">0.1</span>.rand2}.dup).midicps, <span class="s9">0</span>, <span class="s9">0.02</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = <span class="s6">RLPF</span>.ar(x, fc, rq).softclip;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = <span class="s6">RLPF</span>.ar(x, fc, rq, amp).softclip;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = <span class="s6">Balance2</span>.ar(x[<span class="s9">0</span>], x[<span class="s9">1</span>], bal);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = x * <span class="s6">EnvGen</span>.kr(<span class="s6">Env</span>.cutoff, gate, doneAction: <span class="s9">2</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Out</span>.ar(<span class="s9">0</span>, x);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}, [<span class="s9">0.1</span>, <span class="s9">0.1</span>, <span class="s9">0.1</span>, <span class="s9">0.1</span>, <span class="s9">0.1</span>, <span class="s9">0</span>]</p>
+<p class="p4">).load(s);</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p6">// make the window</p>
+<p class="p7"><span class="s7">w = </span><span class="s6">Window</span><span class="s7">(</span>"another control panel"<span class="s7">, </span><span class="s6">Rect</span><span class="s7">(</span><span class="s9">20</span><span class="s7">, </span><span class="s9">400</span><span class="s7">, </span><span class="s9">440</span><span class="s7">, </span><span class="s9">180</span><span class="s7">));</span></p>
+<p class="p6"><span class="s7">w.front; </span>// make window visible and front window.</p>
+<p class="p4">w.view.decorator = <span class="s6">FlowLayout</span>(w.view.bounds);</p>
+<p class="p4">w.view.decorator.gap=<span class="s9">4</span>@<span class="s9">4</span>;</p>
+<p class="p8"><br></p>
+<p class="p6">// add a button to start and stop the sound.</p>
+<p class="p4">startButton = <span class="s6">SmoothButton</span>(w, <span class="s9">75 </span>@ <span class="s9">20</span>);</p>
+<p class="p4">startButton.states = [</p>
+<p class="p4"><span class="Apple-tab-span">	</span>[<span class="s11">"Start"</span>, <span class="s6">Color</span>.black, <span class="s6">Color</span>.green(<span class="s9">0.7</span>)],</p>
+<p class="p4"><span class="Apple-tab-span">	</span>[<span class="s11">"Stop"</span>, <span class="s6">Color</span>.white, <span class="s6">Color</span>.red(<span class="s9">0.7</span>)]</p>
+<p class="p4">];</p>
+<p class="p4">startButton.action = {<span class="s6">|view|</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if (view.value == <span class="s9">1</span>) {</p>
+<p class="p6"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// start sound</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>node = <span class="s6">Synth</span>( <span class="s11">"window-test"</span>, [</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">"note"</span>, noteControl.value,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">"fc"</span>, cutoffControl.value,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">"rq"</span>, resonControl.value,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">"bal"</span>, balanceControl.value,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">"amp"</span>, ampControl.value.dbamp ]);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>} {</p>
+<p class="p6"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// set gate to zero to cause envelope to release</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>node.release; node = <span class="s6">nil</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p4">};</p>
+<p class="p8"><br></p>
+<p class="p6">// create controls for all parameters</p>
+<p class="p4">w.view.decorator.nextLine;</p>
+<p class="p4">noteControl = <span class="s6">EZSmoothSlider</span>(w, <span class="s9">430 </span>@ <span class="s9">20</span>, <span class="s11">"Note "</span>, <span class="s6">ControlSpec</span>(<span class="s9">24</span>, <span class="s9">60</span>, <span class="s10">\lin</span>, <span class="s9">1</span>, <span class="s9">36</span>, <span class="s10">\note</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span>{<span class="s6">|ez|</span> node.set( <span class="s11">"note"</span>, ez.value )}, unitWidth:<span class="s9">30</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey, <span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p4">w.view.decorator.nextLine;</p>
+<p class="p4">cutoffControl = <span class="s6">EZSmoothSlider</span>(w, <span class="s9">430 </span>@ <span class="s9">20</span>, <span class="s11">"Cutoff "</span>, <span class="s6">ControlSpec</span>(<span class="s9">200</span>, <span class="s9">5000</span>, <span class="s10">\exp</span>,<span class="s9">0.01</span>,<span class="s9">1000</span>,<span class="s10">\Hz</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span>{<span class="s6">|ez|</span> node.set( <span class="s11">"fc"</span>, ez.value )}, unitWidth:<span class="s9">30</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey, <span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p4">w.view.decorator.nextLine;</p>
+<p class="p4">resonControl = <span class="s6">EZSmoothSlider</span>(w, <span class="s9">430 </span>@ <span class="s9">20</span>, <span class="s11">"Reson "</span>, <span class="s6">ControlSpec</span>(<span class="s9">0.1</span>, <span class="s9">0.7</span>,<span class="s10">\lin</span>,<span class="s9">0.001</span>,<span class="s9">0.2</span>,<span class="s10">\rq</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span>{<span class="s6">|ez|</span> node.set( <span class="s11">"rq"</span>, ez.value )}, unitWidth:<span class="s9">30</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey, <span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p4">w.view.decorator.nextLine;</p>
+<p class="p4">balanceControl = <span class="s6">EZSmoothSlider</span>(w, <span class="s9">430 </span>@ <span class="s9">20</span>, <span class="s11">"Balance "</span>, <span class="s10">\bipolar</span>,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>{<span class="s6">|ez|</span> node.set( <span class="s11">"bal"</span>, ez.value )},<span class="Apple-converted-space">  </span>unitWidth:<span class="s9">30</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey, <span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p4">w.view.decorator.nextLine;</p>
+<p class="p4">ampControl = <span class="s6">EZSmoothSlider</span>(w, <span class="s9">430 </span>@ <span class="s9">20</span>, <span class="s11">"Amp "</span>, <span class="s10">\db</span>,</p>
+<p class="p4"><span class="Apple-tab-span">	</span>{<span class="s6">|ez|</span> node.set( <span class="s11">"amp"</span>, ez.value.dbamp )}, <span class="s9">-6</span>, unitWidth:<span class="s9">30</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey, <span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p6">// set start button to zero upon a cmd-period</p>
+<p class="p4">cmdPeriodFunc = { startButton.value = <span class="s9">0</span>; };</p>
+<p class="p4"><span class="s6">CmdPeriod</span>.add(cmdPeriodFunc);</p>
+<p class="p8"><br></p>
+<p class="p6">// stop the sound when window closes and remove cmdPeriodFunc.</p>
+<p class="p4">w.onClose = {</p>
+<p class="p4"><span class="Apple-tab-span">	</span>node.free; node = <span class="s6">nil</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">CmdPeriod</span>.remove(cmdPeriodFunc);</p>
+<p class="p4">};</p>
+<p class="p4">});</p>
+<p class="p4">)</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p6">// a variant of the above example so one can<span class="Apple-converted-space"> </span></p>
+<p class="p6">// add new parameters and more views are created automatically</p>
+<p class="p8"><br></p>
+<p class="p4">(</p>
+<p class="p6">// start server</p>
+<p class="p4">s.waitForBoot({</p>
+<p class="p8"><br></p>
+<p class="p4"><span class="s6">var</span> w, startButton, sliders;</p>
+<p class="p4"><span class="s6">var</span> node, cmdPeriodFunc;</p>
+<p class="p4"><span class="s6">var</span> params, specs;</p>
+<p class="p8"><br></p>
+<p class="p6">// define a synth</p>
+<p class="p4"><span class="s6">SynthDef</span>(<span class="s11">"window-test"</span>, { <span class="s6">arg</span> note = <span class="s9">36</span>, fc = <span class="s9">1000</span>, rq = <span class="s9">0.25</span>, bal = <span class="s9">0</span>, amp=<span class="s9">0.4</span>, width=<span class="s9">0</span>, gate = <span class="s9">1</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">var</span> x;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = <span class="s6">Mix</span>.fill(<span class="s9">4</span>, {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">VarSaw</span>.ar((note + {<span class="s9">0.1</span>.rand2}.dup).midicps, <span class="s9">0</span>, width, <span class="s9">0.02</span>)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = <span class="s6">RLPF</span>.ar(x, fc, rq).softclip;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = <span class="s6">RLPF</span>.ar(x, fc, rq, amp).softclip;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = <span class="s6">Balance2</span>.ar(x[<span class="s9">0</span>], x[<span class="s9">1</span>], bal);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>x = x * <span class="s6">EnvGen</span>.kr(<span class="s6">Env</span>.cutoff, gate, <span class="s9">5</span>, doneAction: <span class="s9">2</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Out</span>.ar(<span class="s9">0</span>, x);</p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span>}, [</span>0.1<span class="s7">, </span>0.1<span class="s7">, </span>0.1<span class="s7">, </span>0.1<span class="s7">, </span>0.1<span class="s7">, </span>0.1<span class="s7">, </span>0<span class="s7">]</span></p>
+<p class="p4">).load(s);</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7"><span class="s7">params = [</span>"note"<span class="s7">, </span>"fc"<span class="s7">, </span>"rq"<span class="s7">, </span>"bal"<span class="s7">, </span>"amp"<span class="s7">, </span>"width"<span class="s7">];</span></p>
+<p class="p4">specs = [</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">ControlSpec</span>(<span class="s9">24</span>, <span class="s9">60</span>, <span class="s10">\lin</span>, <span class="s9">1</span>, <span class="s9">36</span>, <span class="s10">\note</span>),</p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span></span><span class="s6">ControlSpec</span><span class="s7">(</span>200<span class="s7">, </span>5000<span class="s7">, </span><span class="s10">\exp</span><span class="s7">,</span>0.01<span class="s7">,</span>1000<span class="s7">,</span><span class="s10">\Hz</span><span class="s7">),</span></p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span></span><span class="s6">ControlSpec</span><span class="s7">(</span>0.1<span class="s7">, </span>0.7<span class="s7">,</span><span class="s10">\lin</span><span class="s7">,</span>0.001<span class="s7">,</span>0.2<span class="s7">,</span><span class="s10">\rq</span><span class="s7">),</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">ControlSpec</span>(<span class="s9">-1</span>, <span class="s9">1</span>, <span class="s10">\lin</span>, <span class="s9">0</span>, <span class="s9">0</span>, <span class="s10">\pan</span>),</p>
+<p class="p6"><span class="s7"><span class="Apple-tab-span">	</span></span><span class="s6">ControlSpec</span><span class="s7">(</span><span class="s9">0.0001</span><span class="s7">, </span><span class="s9">2</span><span class="s7">, </span><span class="s10">\exp</span><span class="s7">, </span><span class="s9">0</span><span class="s7">, </span><span class="s9">0.3</span><span class="s7">, </span><span class="s10">\vol</span><span class="s7">), </span>// db spec acts weird, so use self made one</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">ControlSpec</span>(<span class="s9">0</span>, <span class="s9">1</span>, <span class="s10">\lin</span>, <span class="s9">0</span>, <span class="s9">0.3</span>, <span class="s10">\width</span>),</p>
+<p class="p4">];</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p6">// make the window</p>
+<p class="p7"><span class="s7">w = </span><span class="s6">Window</span><span class="s7">(</span>"another control panel"<span class="s7">, </span><span class="s6">Rect</span><span class="s7">(</span><span class="s9">20</span><span class="s7">, </span><span class="s9">400</span><span class="s7">, </span><span class="s9">440</span><span class="s7">, </span><span class="s9">180</span><span class="s7">));</span></p>
+<p class="p6"><span class="s7">w.front; </span>// make window visible and front window.</p>
+<p class="p4">w.view.decorator = <span class="s6">FlowLayout</span>(w.view.bounds);</p>
+<p class="p4">w.view.decorator.gap=<span class="s9">4</span>@<span class="s9">4</span>;</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p6">// add a button to start and stop the sound.</p>
+<p class="p4">startButton = <span class="s6">SmoothButton</span>(w, <span class="s9">75 </span>@ <span class="s9">20</span>);</p>
+<p class="p4">startButton.states = [</p>
+<p class="p4"><span class="Apple-tab-span">	</span>[<span class="s11">"Start"</span>, <span class="s6">Color</span>.black, <span class="s6">Color</span>.green(<span class="s9">0.7</span>)],</p>
+<p class="p4"><span class="Apple-tab-span">	</span>[<span class="s11">"Stop"</span>, <span class="s6">Color</span>.white, <span class="s6">Color</span>.red(<span class="s9">0.7</span>)]</p>
+<p class="p4">];</p>
+<p class="p4">startButton.action = {<span class="s6">|view|</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">var</span> args;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if (view.value == <span class="s9">1</span>) {</p>
+<p class="p6"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// start sound</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>params.do { <span class="s6">|param, i|</span><span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>args = args.add(param);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>args = args.add(sliders[i].value)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>node = <span class="s6">Synth</span>(<span class="s11">"window-test"</span>, args.postcs);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>} {</p>
+<p class="p6"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// set gate to zero to cause envelope to release</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>node.release; node = <span class="s6">nil</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p4">};</p>
+<p class="p8"><br></p>
+<p class="p6">// create controls for all parameters</p>
+<p class="p4">w.view.decorator.nextLine;</p>
+<p class="p4">sliders = params.collect { <span class="s6">|param, i|</span><span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">EZSmoothSlider</span>(w, <span class="s9">430 </span>@ <span class="s9">20</span>, param, specs[i], {<span class="s6">|ez|</span> node.set( param, ez.value )})</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.setColors(<span class="s6">Color</span>.grey,<span class="s6">Color</span>.white, <span class="s6">Color</span>.grey(<span class="s9">0.7</span>),<span class="s6">Color</span>.grey, <span class="s6">Color</span>.white, <span class="s6">Color</span>.yellow);</p>
+<p class="p4">};</p>
+<p class="p6">// set start button to zero upon a cmd-period</p>
+<p class="p4">cmdPeriodFunc = { startButton.value = <span class="s9">0</span>; };</p>
+<p class="p4"><span class="s6">CmdPeriod</span>.add(cmdPeriodFunc);</p>
+<p class="p8"><br></p>
+<p class="p6">// stop the sound when window closes and remove cmdPeriodFunc.</p>
+<p class="p4">w.onClose = {</p>
+<p class="p4"><span class="Apple-tab-span">	</span>node.free; node = <span class="s6">nil</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s6">CmdPeriod</span>.remove(cmdPeriodFunc);</p>
+<p class="p4">};</p>
+<p class="p8"><br></p>
+<p class="p4">})</p>
+<p class="p4">)</p>
+</body>
+</html>

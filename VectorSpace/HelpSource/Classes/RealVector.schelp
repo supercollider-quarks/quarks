@@ -1,0 +1,61 @@
+CLASS:: RealVector
+SUMMARY:: an element of R^N
+CATEGORIES:: Math
+RELATED:: Overviews/VectorSpace
+
+DESCRIPTION::
+Represents an element of R^N.  Usual operations are implemented.
+NOTE::
+for 2D and 3D vectors, there are available the classes link::Classes/RealVector2D:: and link::Classes/RealVector3D:: which are roughly 10% faster than RealVector.
+::
+
+CLASSMETHODS::
+
+METHOD:: rand
+random vector.
+
+ARGUMENT:: size
+dimension of vector.
+
+ARGUMENT:: lo, hi
+range of values
+
+code::
+RealVector.rand(4,-6.0,6.0);
+::
+
+METHOD:: canonB
+ith element of canonic base of R^N.
+
+code::
+RealVector.canonB(0,6)
+::
+
+INSTANCEMETHODS::
+
+METHOD::cross
+image::crossproduct.png#cross product::
+
+NOTE::
+The vectors should be 3 dimensional, and no error checking is done for speed.
+::
+
+code::
+RealVector[1,2,3].cross(RealVector[2,5,7])
+
+// the cross product of the cannoic base elements folds into itself
+3.collect{ |i|  RealVector.canonB(i, 3) };
+3.collect{ |i|  RealVector.canonB(i, 3).cross(RealVector.canonB((i+1).mod(3), 3)) };
+::
+
+METHOD:: asPoint
+
+code::
+RealVector[1,2].asPoint;
+::
+
+METHOD:: theta
+
+code::
+RealVector[0,1].theta/(2pi)*360
+::

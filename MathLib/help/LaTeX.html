@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000; min-height: 12.0px}
+span.s1 {color: #606060}
+span.s2 {color: #0000bf}
+span.s3 {color: #007300}
+span.s4 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>LaTeX<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>produces LaTeX code for tables and charts</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>numericalDict:</b></p>
+<p class="p2"><br></p>
+<p class="p4">d = (a: 100.2, b: 650.2, <span class="s1">"pi"</span>:pi, der:0.001, <span class="s1">"\\theta"</span>: <span class="s1">"theta"</span>);</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">LaTeX</span>.numericalDict(d, <span class="s1">"key"</span>, <span class="s1">"value"</span>);</p>
+<p class="p4"><span class="s2">LaTeX</span>.numericalDict(d);</p>
+<p class="p2"><br></p>
+<p class="p5">// dict can be also an array with key value pairs:</p>
+<p class="p4">d = [a: 100.2, b: 650.2, <span class="s1">"pi"</span>:pi, der:0.001, <span class="s1">"\\theta"</span>: <span class="s1">"theta"</span>];</p>
+<p class="p2"><br></p>
+<p class="p5">// which is the same as:</p>
+<p class="p4">d = [ <span class="s3">\a</span>, 100.2, <span class="s3">\b</span>, 650.2, <span class="s1">"pi"</span>, 3.1415926535898, <span class="s3">\der</span>, 0.001, <span class="s1">"\\theta"</span>, <span class="s1">"theta"</span> ];</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>tableDict:</b></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">LaTeX</span>.tableDict( (a: 100.2, b: 650.2, <span class="s1">"pi"</span>:pi, der:0.001, <span class="s1">"\\theta"</span>: <span class="s1">"\\theta + \\gamma"</span>), [<span class="s1">"key"</span>, <span class="s1">"val"</span>]);</p>
+<p class="p4"><span class="s2">LaTeX</span>.tableDict(<span class="s2">Array</span>.iota(4, 4), [0, 2], <span class="s1">"c"</span>, <span class="s1">"|"</span>);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">a = [</p>
+<p class="p6"><span class="s4">[</span>"Minute"<span class="s4">, </span>"from Degree"<span class="s4">, </span>"to Degree"<span class="s4">, </span>"Number of Countries"<span class="s4">],</span></p>
+<p class="p4">[3.54, <span class="s1">"$0^o$"</span>, <span class="s1">"$45^o$"</span>, 67],</p>
+<p class="p6"><span class="s4">[5.02, </span>"$7^o$"<span class="s4">, </span>"$32^o$"<span class="s4">, 3]</span></p>
+<p class="p4">];</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">LaTeX</span>.tableDict(a, [1], <span class="s1">"c"</span>, <span class="s1">"|"</span>, <span class="s2">false</span>);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>barChart:</b></p>
+<p class="p7"><br></p>
+<p class="p5">// Give it an array of (barlabel -&gt; barvalue) Association items.<span class="Apple-converted-space"> </span></p>
+<p class="p5">// "shades" can be true to cycle through shades, or false, or a function that translates the bar's index to a shade number (numbers 1 through 8).</p>
+<p class="p4"><span class="s2">LaTeX</span>.barChart({100.0.rand}.dup(10).collect{<span class="s2">|item, index|</span> ((<span class="s1">"Item"</span>+index) -&gt; item) }, precision: 3);</p>
+<p class="p4"><span class="s2">LaTeX</span>.barChart({100.0.rand}.dup(10).collect{<span class="s2">|item, index|</span> ((<span class="s1">"Item"</span>+index) -&gt; item) }, precision: 2, shades: <span class="s2">true</span>);</p>
+<p class="p4"><span class="s2">LaTeX</span>.barChart({100.0.rand}.dup(10).collect{<span class="s2">|item, index|</span> ((<span class="s1">"Item"</span>+index) -&gt; item) }, precision: 4, shades: <span class="s2">true</span>, min: -30, max: 100, interval: 10);</p>
+</body>
+</html>

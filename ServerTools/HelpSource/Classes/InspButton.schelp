@@ -1,0 +1,77 @@
+CLASS:: InspButton
+summary:: displays an object by its name, when clicked the object is inspected using Insp
+categories:: Debugging, GUI
+related:: Guides/insp, Classes/Insp, Classes/InspManager
+
+DESCRIPTION::
+This is a hyper-link button for use in debugging views.  Clicking on the button calls .insp on the target object and brings the global InspManager to the front.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: target
+the object to be inspected
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: minWidth
+Label will automatically size itself to fit the name. minWidth specifies a minimum width so that multiple labels will align nicely.
+
+
+
+METHOD:: big
+a bigger button
+
+argument:: target
+the object to be inspected
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: minWidth
+Label will automatically size itself to fit the name. minWidth specifies a minimum width so that multiple labels will align nicely.
+
+
+returns:: a button
+
+
+METHOD:: icon
+A very small button with just "insp" for use when screen space is tight or you don't want to clutter it up.
+
+argument:: target
+the object to be inspected
+
+argument:: layout
+the parent view, FlowView or window
+returns:: the little button
+
+
+METHOD:: captioned
+creates a pair of views: Caption: InspButton
+
+argument:: caption
+string caption
+
+argument:: target
+the object to be inspected
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: minWidth
+The caption label will automatically size itself to fit the name. minWidth specifies a minimum width so that multiple labels will align nicely.
+
+
+returns:: the button
+
+
+
+EXAMPLES::
+
+code::
+InspButton(["fork",$a,\spoon]);
+::

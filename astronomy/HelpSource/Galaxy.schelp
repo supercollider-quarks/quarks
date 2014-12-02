@@ -1,0 +1,145 @@
+TITLE:: Galaxy
+summary:: Our galaxy
+categories:: Libraries>Astronomy
+related:: Classes/Exoplanet
+
+DESCRIPTION::
+A representation of our galaxy, a.k.a. The Milky Way. It is intended as a placeholder for astronomic information.
+
+A small query system is implemented for handling astronomic elements information.
+
+At the moment, only information about exoplanets is supported. 
+
+Get exoplanets information in CSV from here: link::http://exoplanet.eu/catalog/::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a galaxy and load its information
+
+ARGUMENT:: filePath
+Path to a csv file containing the desired data
+
+ARGUMENT:: type
+A code::\Symbol:: with the kind of data to load. At the moment, only code::\exoplanet:: is supported
+
+
+
+INSTANCEMETHODS::
+
+private:: loadExoplanet, file, init
+
+METHOD:: getExoplanetsBetween
+Get a code::List:: of all exoplanet names located in the desired distance range,
+ARGUMENT:: min
+ARGUMENT:: max
+
+METHOD:: getExoplanetsAround
+Get a code::List:: with the n exoplanets closer to dist
+ARGUMENT:: dist
+ARGUMENT:: n
+
+METHOD:: exoplanets
+Get a code::Dictionary:: in the form (exoplanetName -> exoplanetInstance)
+
+METHOD:: getExoplanetNames
+Get a code::List:: with all exoplanet names
+
+METHOD:: getExoplanet
+Get a exoplanet by name
+ARGUMENT:: name
+
+METHOD:: getExoplanetsWithComposition
+Get a code::List:: with all exoplanet names in which different molecules have been found
+
+
+METHOD:: distMin
+METHOD:: distMax
+
+METHOD:: orbitMin
+METHOD:: orbitMax
+
+METHOD:: massMin
+METHOD:: massMax
+
+
+
+
+EXAMPLES::
+
+code::
+// EXOPLANET SONIFICATION
+// it depends on SpatialRender and SSWorld classes
+(
+r=SpatialRender.new(s);
+
+s.options.numOutputBusChannels_(20);
+~numAudioOutputs=4;
+
+w=SSWorld([100,100,100]).showView;
+w.setSweetSpotSize(0.1);
+
+// put here yout path
+//
+u=Galaxy.new("~/Documentos/SuperCollider/exoplanet/exoplanet.eu_catalog.csv".standardizePath);
+
+
+SynthDef(\planet,{ |out=0, freq=200, modAmp=1, modFreq=1|
+	var sig = SinOsc.ar(freq+(modAmp*freq/2*SinOsc.kr(modFreq)));
+	Out.ar(out,sig*0.2);
+}).add
+
+)
+
+(
+
+// try different possitbilities
+// ~exo=u.getExoplanetsBetween(0,2);
+// ~exo=u.getExoplanetsBetween(0,5);
+// ~exo=u.getExoplanetsBetween(100,200);
+
+~exo=u.getExoplanetsAround(0,15);
+
+// ~exo=u.getExoplanetsAround(0,1);
+// ~exo=u.getExoplanetsAround(4.69,3)++u.getExoplanetsAround(0,1);
+
+
+
+~objects=List.new;
+~synths=List.new;
+// create objects
+{~exo.do{|name,i|
+	var e = u.getExoplanet(name);
+	var rho = e.starDistance;
+	var azi = e.ra.degree2rad;
+	// var ele = e.dec.degree2rad;
+	var ele = 0;
+
+	var mass = e.mass;
+	var freq;
+
+	var orbitalPeriod = e.orbitalPeriod;
+	var modAmp, modFreq;
+
+	~objects.add(SSObject.new(w,name:e.name,channel:i).locSph_([rho,azi,ele]));
+
+
+	// SOUND
+
+	// mass -> frequency
+	// orbitalPeriod-> modFreq,modAmp
+
+	freq = mass.scale(u.massMin,2,50,1000,\exp).postln;
+	modAmp = orbitalPeriod.scale(u.orbitMin,u.orbitMax,1,0,\lin).postln;
+	modFreq = orbitalPeriod.scale(u.orbitMin,u.orbitMax,10,1,\exp).postln;
+	"***".postln;
+	{~synths.add(Synth(\planet,[\out,~numAudioOutputs+i,\freq,freq,\modAmp,modAmp,\modFreq,modFreq]))}.defer(1);
+
+
+	("jack_connect SuperCollider:out_"++(~numAudioOutputs+i+1)++" SuperCollider:in_"++(i+1)).systemCmd;
+
+
+}}.defer(2);
+)
+::

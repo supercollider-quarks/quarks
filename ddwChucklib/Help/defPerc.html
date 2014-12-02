@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001ab2}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {color: #0000ff}
+span.s2 {color: #001ab2}
+span.s3 {color: #36701f}
+span.s4 {color: #000000}
+span.s5 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>PR(\defPerc)</b></p>
+<p class="p2"><br></p>
+<p class="p3">A drum machine process that produces sound based on user-defined synthdefs.</p>
+<p class="p2"><br></p>
+<p class="p3">Most of the parameters are identical to <a href="bufPerc.html"><span class="s1">bufPerc</span></a>; refer to its help file for details.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Specifying synthdefs</b></p>
+<p class="p2"><br></p>
+<p class="p3">In PR(\defPerc), the ~bufPaths and ~bufCoords parameters are ignored. Instead, the parameter <b>~objects</b> lists the objects to treat as synthdefs within this process. The parameter may take an array directly, or if the synthdefs will depend on resources that you load in ~postMCCreation, you can provide a function that returns the array. The function will be evaluated after the postMCCreation resources are prepared.</p>
+<p class="p2"><br></p>
+<p class="p3">The following objects are supported:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>"string"</b> or <b>\symbol:</b> The name of a synthdef that you have already saved in the library using .store or .memStore.</p>
+<p class="p3"><b>SynthDef(...):</b> The synthdef will be .memStore'd in the library for you.</p>
+<p class="p3"><b>Function { ... }:</b> Will be converted into a synthdef and .memStore'd.</p>
+<p class="p3"><b>Patch:</b> Will be converted into a synthdef and .memStore'd. Do not use nested patches.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Specifying synth arguments</b></p>
+<p class="p2"><br></p>
+<p class="p3">The only synth argument automatically sent is <b>\amp</b>. All others must be given in the <b>~argPairs</b> array, which takes the form [argName0: pattern0, argName1: pattern1 ... ]. The arguments are treated as extra streams for Pbind.</p>
+<p class="p2"><br></p>
+<p class="p3">The same <b>~argPairs</b> array is used for all synthdefs, which assumes that the arguments are more or less compatible across all of them. It is recommended to keep the sounds for a single process relatively similar. The drum machine processes are not polyphonic; you should not expect to layer several sounds within the same process.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Examples</b></p>
+<p class="p2"><br></p>
+<p class="p5">// Synthdefs do not depend on additional resources.</p>
+<p class="p6"><br></p>
+<p class="p7">s.boot;</p>
+<p class="p7"><span class="s2">TempoClock</span>.default.tempo = 84/60;</p>
+<p class="p6"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s2">PR</span>(<span class="s3">\defPerc</span>).chuck(<span class="s2">BP</span>(<span class="s3">\ex1</span>), parms: (</p>
+<p class="p7"><span class="Apple-tab-span">	</span>objects: [</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{<span class="Apple-tab-span">	</span></span>|amp = 1, decayscale = 1|</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span><span class="Apple-tab-span">	</span>sig = <span class="s2">PinkNoise</span>.ar(amp) * <span class="s2">Decay2</span>.kr(<span class="s2">Impulse</span>.kr(0), 0.01, 0.05);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s2">Klank</span>.ar(`[</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ rrand(500.0, 1200.0) } ! 5,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ rrand(0.5, 1.0) } ! 5,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ rrand(0.4, 0.8) } ! 5</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>], sig, decayscale: decayscale);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">DetectSilence</span>.ar(sig, doneAction: 2);</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig * 0.1<span class="Apple-tab-span">	</span></span>// this synth can be kind of loud</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p7"><span class="Apple-tab-span">	</span>],</p>
+<p class="p7"><span class="Apple-tab-span">	</span>amps: 0,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>ampbase: #[1, 0.6, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</p>
+<p class="p7"><span class="Apple-tab-span">	</span>argPairs: [decayscale: <span class="s2">BPStream</span>(<span class="s3">\dscale</span>)],</p>
+<p class="p7"><span class="Apple-tab-span">	</span>dscale: <span class="s2">Pwhite</span>(0.8, 1.7, <span class="s2">inf</span>),</p>
+<p class="p7"><span class="Apple-tab-span">	</span>pbindPreAction: {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span><span class="Apple-tab-span">	</span>pool = (4..15).scramble;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~amps = ~ampbase.copy;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(3, 7).do({ <span class="s2">|i|</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~amps[pool[i]] = rrand(0.2, 0.7);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span>}</p>
+<p class="p7">));</p>
+<p class="p7">)</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s2">BP</span>(<span class="s3">\ex1</span>).play;</p>
+<p class="p7"><span class="s2">BP</span>(<span class="s3">\ex1</span>).stop;</p>
+<p class="p7"><span class="s2">BP</span>(<span class="s3">\ex1</span>).free;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">// Synthdefs DO depend on additional resources.</p>
+<p class="p5">// This one loads part of a soundfile and plays it with different kinds of processing.</p>
+<p class="p5">// Could also be done with \bufPerc if you write custom synthdefs.</p>
+<p class="p6"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s2">PR</span>(<span class="s3">\defPerc</span>).chuck(<span class="s2">BP</span>(<span class="s3">\ex2</span>), parms: (</p>
+<p class="p7"><span class="Apple-tab-span">	</span>inChannels: 2,</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// load special resources here</p>
+<p class="p7"><span class="Apple-tab-span">	</span>postMCCreation: { <span class="s2">|chan|</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~buf = <span class="s2">Buffer</span>.readAndQuery(s, <span class="s5">"sounds/a11wlk01-44_1.aiff"</span>, 4785, 12900);</p>
+<p class="p7"><span class="Apple-tab-span">	</span>},</p>
+<p class="p7"><span class="Apple-tab-span">	</span>objects: { [</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// this shows that the buffer loading (in postMCCreation)</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// takes place before synthdef creation</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// thus, ~buf is populated by this point</p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"\nCreating synthdefs."<span class="s4">.postln;</span></p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// forward with ringmod</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ </span>|amp = 1, rate = 1, pan|</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span><span class="Apple-tab-span">	</span>dur = <span class="s2">BufDur</span>.ir(~buf),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s2">PlayBuf</span>.ar(1, ~buf, rate * <span class="s2">BufRateScale</span>.ir(~buf)),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig2 = <span class="s2">SinOsc</span>.ar(<span class="s2">XLine</span>.kr(<span class="s2">ExpRand</span>(300, 900), <span class="s2">ExpRand</span>(300, 900), dur));</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>FreeSelfWhenDone<span class="s4">.kr(sig);</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pan2</span>.ar(sig * sig2, pan, amp)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// backward with comb filter</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ </span>|amp = 1, rate = 1, pan|</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span><span class="Apple-tab-span">	</span>sig = <span class="s2">PlayBuf</span>.ar(1, ~buf, rate.neg * <span class="s2">BufRateScale</span>.ir(~buf),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>startPos: <span class="s2">BufFrames</span>.ir(~buf) - 1),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>combDelay = <span class="s2">ExpRand</span>(100, 650).reciprocal;</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// without LeakDC, DetectSilence never detects silence!</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s2">LeakDC</span>.ar(<span class="s2">CombL</span>.ar(sig, combDelay, combDelay, <span class="s2">Rand</span>(0.1, 0.4)));</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">DetectSilence</span>.ar(sig, doneAction: 2);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pan2</span>.ar(sig, pan, amp)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p7"><span class="Apple-tab-span">	</span>] },</p>
+<p class="p7"><span class="Apple-tab-span">	</span>ampbase: #[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</p>
+<p class="p7"><span class="Apple-tab-span">	</span>amps: 0,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>defbase: 0 ! 16,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>argPairs: [rate: <span class="s2">Pwhite</span>(0.8, 1.25), pan: <span class="s2">Pwhite</span>(-1.0, 1.0, <span class="s2">inf</span>)],</p>
+<p class="p7"><span class="Apple-tab-span">	</span>usedKeys: #[defs],</p>
+<p class="p7"><span class="Apple-tab-span">	</span>pbindPreAction: {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span><span class="Apple-tab-span">	</span>pool = (2..15).scramble;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~amps = ~ampbase.copy;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~defs = ~defbase.copy;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(5, 10).do({ <span class="s2">|i|</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~amps[pool[i]] = rrand(0.1, 0.5);</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// 0 == use forward synthdef; 1 == use backward</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~defs[pool[i]] = 0.7.coin.binaryValue;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Func</span>(<span class="s3">\shrinkKeys</span>).value;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>},</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// I made the buffer; I have to clean it up</p>
+<p class="p7"><span class="Apple-tab-span">	</span>free: { ~buf.free }</p>
+<p class="p7">));</p>
+<p class="p7">)</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s2">BP</span>(<span class="s3">\ex2</span>).play;</p>
+<p class="p7"><span class="s2">BP</span>(<span class="s3">\ex2</span>).stop;</p>
+<p class="p7"><span class="s2">BP</span>(<span class="s3">\ex2</span>).free;</p>
+<p class="p2"><br></p>
+</body>
+</html>

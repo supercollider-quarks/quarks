@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; color: #db2122}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 72.0px; text-indent: -36.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001ab2}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; min-height: 22.0px}
+span.s1 {color: #0000ff}
+span.s2 {color: #001ab2}
+span.s3 {color: #36701f}
+span.s4 {color: #000000}
+span.s5 {color: #606060}
+span.s6 {color: #a41919}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>MIDIPort / MIDIChannel<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">A MIDI responder hierarchy that goes beyond MIDIresponder to add multiport, multichannel support.</p>
+<p class="p2"><br></p>
+<p class="p3">The information provided here is for reference only. In most cases, you will never have to talk to MIDIPort or MIDIChannel directly. MIDI responders (sockets for note on and off messages, and controllers for continuous control messages) know how to initialize the entire hierarchy and create their MIDI channel objects if needed. See the help files for <a href="BasicMIDISocket.html"><span class="s1">BasicMIDISocket</span></a> and <a href="BasicMIDIControl.html"><span class="s1">BasicMIDIControl</span></a> for more information about normal use.</p>
+<p class="p2"><br></p>
+<p class="p3">You may need some of the information in this file if you want to write your own MIDI sockets or MIDI controllers.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><i>For ordinary use, the only MIDIPort methods you will need are under “Initialization” and “Resetting” below. If you use others, you might break something.</i></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Initialization:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*putProtoCCAlloc(port, alloc)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Provide a prototype for a CCAllocator that is specific to this port. You may assign one CCAllocator to each port (MIDI source). If none is given, the default settings in the CCAllocator class will be used. See the <a href="CCAllocator.html"><span class="s1">CCAllocator</span></a> help file for details on configuring an allocator.</p>
+<p class="p2"><br></p>
+<p class="p3">port may be the system-assigned unique identifier for for the desired MIDI source, or an integer index into the MIDIPort.sources array.</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s2">MIDIPort</span>.putProtoCCAlloc(0, <span class="s2">CCAllocator</span>((10..20), [<span class="s3">\test</span>]));</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*onInitAll</b></p>
+<p class="p3"><b>*onInitAll_(func)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Specifies a function to be executed after MIDIPort initializes its connections to the MIDI interface. The primary usage is to specify prototypes for the default CCAllocators. Calling putProtoCCAlloc as above requires initializing the MIDI interface, which you may not want to do every time you start SuperCollider. This function allows the action to be defined at startup, but deferred until you actually need MIDI functionality.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s2">MIDIPort</span>.onInitAll = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s2">MIDIPort</span>.putProtoCCAlloc(0, <span class="s2">CCAllocator</span>((10..20), [<span class="s3">\test</span>]))</p>
+<p class="p6">};</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Resetting:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>MIDIPort.removeAt(channelIndex)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Resets the given MIDI channel, removing all sockets and control responders and resetting the channel's controller allocator.</p>
+<p class="p2"><br></p>
+<p class="p3">channelIndex is specified in one of the following ways:</p>
+<p class="p2"><br></p>
+<p class="p7">chan_num (simple integer): this number is the channel number; the port will be assumed 0</p>
+<p class="p7"><span class="s3">\omni</span>: the omni channel on port 0</p>
+<p class="p7"><span class="s2">nil</span>: assume port 0, channel 0</p>
+<p class="p7">[port_num, chan_num]: specify a port as well as channel. port_num can be the uid belonging to the port (see MIDIClient and MIDIEndPoint), or an integer index to the sources initialized by MIDIClient.</p>
+<p class="p7">[port_num, <span class="s3">\omni</span>]: the omni channel on the given port<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">port_num here refers to an index into the MIDIPort.sources array, e.g., on my machine:</p>
+<p class="p2"><br></p>
+<p class="p8">MIDIPort<span class="s4">.init;</span></p>
+<p class="p9"><br></p>
+<p class="p6">Sources: [ FastLane USB #2 : Port A, FastLane USB #2 : Port B, UltraLite : Midi Port ]</p>
+<p class="p6">Destinations: [ FastLane USB #2 : Port A, FastLane USB #2 : Port B, UltraLite : Midi Port ]</p>
+<p class="p6">MIDIPort</p>
+<p class="p2"><br></p>
+<p class="p3">In this configuration,</p>
+<p class="p2"><br></p>
+<p class="p3">port 0 = FastLane USB #2 : Port A</p>
+<p class="p3">port 1 = FastLane USB #2 : Port B</p>
+<p class="p3">port 2 = UltraLite : Midi Port</p>
+<p class="p2"><br></p>
+<p class="p3"><b>MIDIPort.resetAll<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Reset every channel on every port.</p>
+<p class="p2"><br></p>
+<p class="p3">-hjh, jamshark70@dewdrop-world.net</p>
+<p class="p2"><br></p>
+<p class="p10"><b>MIDIPort</b></p>
+<p class="p2"><br></p>
+<p class="p3">Class methods (involving the whole hierarchy):</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*removeAt(channel)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Frees and removes the MIDI channel object on the given channel number.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*search(object)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Searches each channel for a socket that is controlling the given object, and returns the socket.</p>
+<p class="p2"><br></p>
+<p class="p6">v = <span class="s2">Voicer</span>(8, <span class="s5">"mySynth"</span>);</p>
+<p class="p8"><span class="s4">k = </span>VoicerMIDISocket<span class="s4">(0, v);</span></p>
+<p class="p6"><span class="s2">MIDIPort</span>.search(v);<span class="Apple-tab-span">	</span><span class="s6">// returns k</span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*update<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Searches all MIDI channels for sockets whose destination is inactive and frees those sockets. A complex class that creates many MIDI controllers can clean itself up quickly by calling this method in its <i>free</i> method.</p>
+<p class="p2"><br></p>
+<p class="p3">________________________________________</p>
+<p class="p11"><br></p>
+<p class="p10"><b>MIDIChannel<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>free(callPortRemove = true)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Stops and frees all players installed on this channel and cleans up all objects currently on the channel. If callPortRemove is true (the default behavior), the channel's slot in MIDIPort is cleared and this channel cannot be used again until you create a new MIDIChannel. If it's false, this channel object is left empty and ready to accept new sockets and controllers.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>add(socket)</b></p>
+<p class="p3"><b>remove(socket)</b></p>
+<p class="p3"><b>removeAt(index)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Add and remove new MIDI sockets. Currently the only kind of MIDI socket is VoicerMIDISocket, but any kind of socket can be written. See the <a href="BasicMIDISocket.html"><span class="s1">BasicMIDISocket</span></a> help file for details.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>search(player)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Searches for a socket talking to the given player (such as a voicer) and returns the socket.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>addControl(cc)</b></p>
+<p class="p3"><b>removeControl(cc)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Add and remove continuous controller responders. These should be objects like VoicerMIDIController and MixerMIDIControl. See the <a href="BasicMIDIControl.html"><span class="s1">BasicMIDIControl</span></a> help file on writing your own MIDI controller classes.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>searchControl(name)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Searches through the current control responders for controllers talking to an object with a specific name. Since voicers can have several MIDI controllers talking to them, this method may not be very useful in its current incarnation. I may revise it in the future to return a collection of all controllers talking to this object.</p>
+</body>
+</html>

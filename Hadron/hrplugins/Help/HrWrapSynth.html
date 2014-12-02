@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0c16f9; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0b15e8}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #202de8}
+span.s3 {color: #1320f3}
+span.s4 {color: #0c16f9}
+span.s5 {text-decoration: underline ; color: #0b15e8}
+span.s6 {color: #000000}
+span.s7 {color: #007300}
+span.s8 {color: #0000bf}
+span.s9 {font: 12.0px Helvetica; text-decoration: underline}
+span.s10 {font: 12.0px Helvetica; color: #0c16f9}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>HrWrapSynth<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a general purpose SynthDef wrapper for Hadron</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="SC://Object"><span class="s2"><b>Object</b></span></a><b> : </b><a href="../../Help/HadronPlugin.html"><span class="s2"><b>HadronPlugin</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p1">This <a href="../../Help/Hadron.html"><span class="s3">Hadron</span></a> plugin is shipped with the Hadron distribution. Hadron plugins are not meant for instantiating by hand in code, they are used internally by the Hadron system.</p>
+<p class="p2"><br></p>
+<p class="p1">This plugin is a SynthDef wrapper, that reads the metadata of the SynthDef from SynthDescLib.default, builds a GUI for it and handles its connections within the Hadron system.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Arguments: </b>Takes the name of the SynthDef as an argument.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Requirements:</b></p>
+<p class="p1">For the plugin to understand the desired inputs and outputs for your synthdef, you should follow a naming guideline. The input busses should be supplied as arguments and named as inBus[n] where [n] is the bus index that starts from 0. Similarly, for your output busses, you should supply the arguments in outBus[n] format. All indexes start from 0, and you should NOT skip an index.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Bad:</b> arg inputBus1, inputBus2, output1, output2;</p>
+<p class="p1"><b>Bad:</b> arg inBus1, inBus3, outBus0, outBus2;</p>
+<p class="p1"><b>Good:</b> arg inBus0, inBus1, outBus0, outBus1;</p>
+<p class="p2"><br></p>
+<p class="p1">For the automatic GUI creation to work, you should fill the specs event with specs, relevant to your control arguments in your SynthDef. For more info see: <a href="SC://ControlSpec"><span class="s4">ControlSpec</span></a></p>
+<p class="p4"><br></p>
+<p class="p1">To see how the metadata and specs scheme work in detail, see the relevant sections in the help files for <a href="SC://SynthDesc"><span class="s4">SynthDesc</span></a><span class="s4"> </span>and<span class="s4"> <a href="SC://SynthDef"><span class="s5">SynthDef</span></a>.</span></p>
+<p class="p2"><br></p>
+<p class="p1">To register your SynthDef controls on SynthDescLib, you MUST use SynthDef.memStore or SynthDef.store when sending your SynthDef to server (instead of .send or .load).</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Examples:</b></p>
+<p class="p2"><br></p>
+<p class="p1">This is a sine oscillator synth with two outputs:</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s6">s.boot; </span>//remember to boot before .memStore</p>
+<p class="p2"><br></p>
+<p class="p6">(</p>
+<p class="p7">SynthDef<span class="s6">(</span><span class="s7">\sineOsc</span><span class="s6">,</span></p>
+<p class="p6">{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s8">arg</span> outBus0, outBus1, freq;</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s8">var</span> sound = <span class="s8">SinOsc</span>.ar([freq, freq+10], 0, 0.2);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s8">Out</span>.ar(outBus0, sound[0]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s8">Out</span>.ar(outBus1, sound[1]);</p>
+<p class="p6">},</p>
+<p class="p6">metadata:</p>
+<p class="p6">(</p>
+<p class="p6"><span class="Apple-tab-span">	</span>specs:</p>
+<p class="p6"><span class="Apple-tab-span">	</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freq: [80, 880, <span class="s7">\exponential</span>, 1, 220].asSpec;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>)</p>
+<p class="p6">)).memStore;</p>
+<p class="p6">)</p>
+<p class="p2"><br></p>
+<p class="p1">Now launch Hadron:</p>
+<p class="p2"><br></p>
+<p class="p7">Hadron<span class="s6">.new;</span></p>
+<p class="p3"><br></p>
+<p class="p1">Now create a HrWrapSynth instance with the argument sineOsc:</p>
+<p class="p1">(right click on the canvas)</p>
+<p class="p2"><br></p>
+<p class="p1">HrWrapSynth sineOsc</p>
+<p class="p2"><br></p>
+<p class="p1">You should see the auto-generated GUI now, with 2 outputs (outBus0, outBus1). Connect this instance to a HrDAC and you should be able to hear the sine tones.</p>
+<p class="p2"><br></p>
+<p class="p1">The specs entry in metadata is used as a reference for the generated GUI. Here is a more complicated SynthDef:</p>
+<p class="p2"><br></p>
+<p class="p6">(</p>
+<p class="p8"><span class="s8">SynthDef</span><span class="s6">(</span>\karplusPipe<span class="s6">,</span></p>
+<p class="p6">{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s8">arg</span> outBus0, outBus1, freq, pressure, angle, whistle, knack;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s8">var</span> generator, envelope, delCompensate, delTime, fed, inloop, finOut;</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>delCompensate = <span class="s8">Server</span>.default.options.blockSize / <span class="s8">SampleRate</span>.ir();</p>
+<p class="p6"><span class="Apple-tab-span">	</span>delTime = freq.reciprocal - delCompensate;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>fed = <span class="s8">LeakDC</span>.ar(<span class="s8">LocalIn</span>.ar(1));</p>
+<p class="p6"><span class="Apple-tab-span">	</span>envelope = <span class="s8">EnvGen</span>.ar(<span class="s8">Env</span>([0, 1, 0.8], [0.3, 1], -5), 1);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>generator =<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">LPF</span>.ar(<span class="s8">WhiteNoise</span>.ar(0.5), freq * knack) * envelope) +<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(envelope + (fed * whistle)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>);</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>inloop = <span class="s8">LPF</span>.ar(<span class="s8">HPF</span>.ar(generator, angle + freq), pressure + freq);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s8">LocalOut</span>.ar(<span class="s8">DelayC</span>.ar(inloop, 1, delTime.lag(2)).distort);</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>finOut = <span class="s8">Limiter</span>.ar(inloop);</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s8">Out</span>.ar(outBus0, finOut);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s8">Out</span>.ar(outBus1, finOut);</p>
+<p class="p6">},<span class="Apple-converted-space"> </span></p>
+<p class="p6">metadata:<span class="Apple-converted-space"> </span></p>
+<p class="p6">(</p>
+<p class="p6"><span class="Apple-tab-span">	</span>specs:<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freq: [15, 680, <span class="s7">'exponential'</span>, 1, 220].asSpec,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>pressure: [20, 20000, <span class="s7">'exponential'</span>, 0, 2500].asSpec,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>angle: [20, 20000, <span class="s7">'exponential'</span>, 0, 120].asSpec,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>whistle: [1, 3, <span class="s7">'linear'</span>, 0.01, 1.2].asSpec,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>knack: [0.1, 10, <span class="s7">'linear'</span>, 0.1, 4.5].asSpec</p>
+<p class="p6"><span class="Apple-tab-span">	</span>)</p>
+<p class="p6">)</p>
+<p class="p6">).memStore;</p>
+<p class="p6">)</p>
+<p class="p3"><br></p>
+<p class="p1">As you can see, we provided a spec for each argument. After sending this to server, create a HrWrapSynth with the argument karplusPipe and you should see the auto-generated GUI and the instance with 2 outputs.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Modulatable parameters:</b> All controls can be modulated.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inputs: </b>Defined by user in the SynthDef.</p>
+<p class="p1"><b>Outputs:</b> Defined by user in the SynthDef.</p>
+<p class="p2"><br></p>
+<p class="p1">The slider controls in the auto-generated GUIs use the <a href="../../widgets/Help/HrSlider.html"><span class="s3">HrSlider</span></a> widget which is midi aware and automatable. For details, see the help file for <a href="../../widgets/Help/HrSlider.html"><span class="s3">HrSlider</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p9"><span class="s6"><b>See also:</b> <a href="HrDAC.html"><span class="s9">HrDAC</span></a> <a href="HrADC.html"><span class="s10">HrADC</span></a> <a href="HrFreeVerb.html"><span class="s9">HrFreeVerb</span></a> <a href="HrStereoMixer.html"><span class="s9">HrStereoMixer</span></a> <a href="HrStereoSplitter.html"><span class="s9">HrStereoSplitter</span></a> <a href="HrSimpleModulator.html"><span class="s9">HrSimpleModulator</span></a> <a href="HrDIYSynth.html"><span class="s9">HrDIYSynth</span></a></span></p>
+</body>
+</html>

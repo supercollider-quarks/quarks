@@ -1,0 +1,116 @@
+TITLE:: InfluxMix
+summary:: merge influences from several sources into one set of control values.
+categories:: MetaKontrol
+related:: Classes/Influx, Classes/KtlLoop
+
+DESCRIPTION::
+
+InfluxMerge receives influence values for named control parameters from an unlimited number of named sources, and merges them into one set of output param values. Within an InfluxMerge each named source has its own trust factor. This can be used to have multiple control sources (e.g. human interfaces) influence the same process simultaneously.
+
+code::
+a = InfluxMix();
+
+a.influence(\srcA, \x, 0.5, \y, 0.1).outValDict;
+a.influence(\srcB, \x, -0.3, \y, 0.2).outValDict;
+
+// Its inValDict collects all the current influences stored by name:
+
+a.inValDict; // posts:
+( 'y': ( 'srcA': 0.1, 'srcB': -0.2 ),
+  'x': ( 'srcA': 0.5, 'srcB': 0.3 ) )
+
+// remove influence of srcB
+a.influence(\srcB, \x, nil, \y, nil).outValDict;
+
+// It mixes them by applying a mergeFunc to all the influences on one param.
+
+a.mergeFunc.postcs;
+
+// each source has a weight which scales its influence
+a.trusts; // 1 by default for every source
+a.trust(\srcA, 0.5);
+
+// now srcA has less influence:
+a.influence(\srcA, \x, -0.5, \y, 0.1).outValDict.collect(_.round(0.001));
+a.influence(\srcB, \x, -0.3, \y, -0.2).outValDict.collect(_.round(0.001));
+
+// add influence for other params:
+a.influence(\srcC, \z, 0.3, \ccc, -0.2).outValDict.collect(_.round(0.001));
+a.inValDict;
+a.outValDict;
+a.trusts;
+
+a.trust(\srcA, 1);
+
+// interactive example:
+// small xy sliders influence the big XY,
+// vertical ezsliders set influence of each XY.
+(
+w = Window("InfluxMix - 3 top xy sliders influence big XY", Rect(10, 10, 550, 400)).front;
+w.addFlowLayout;
+// EnvirGui(a.inValDict, 4, w);
+
+b = [\srcA, \srcB, \srcC].collect { |srcName|
+//	var ktl = KtlLoop(srcName).looped = true;
+
+	var sl2d = Slider2D(w, 120@130).action_({ |sl, x, y|
+		a.influence(*[srcName, \x, sl.x.unibi.round(0.001), \y, sl.y.unibi.round(0.001)].postln);
+		a.outValDict.collect(_.round(0.001)).postln;
+		c.setXY(a.outValDict[\x] + 1 * 0.5, a.outValDict[\y] + 1 * 0.5);
+	}).setXY(0.5, 0.5);
+	var slInf = EZSlider(w, 40@130, srcName, [0, 4, \amp].asSpec, { |sl|
+		a.trusts.put(srcName, sl.value.postln); }, 1, layout: \vert);
+	w.view.decorator.shift(20, 0);
+
+	// sl.mouseDownAction = { ktl.startRec };
+	// sl.mouseUpAction = { ktl.play };
+};
+c = Slider2D(w, 250@250).setXY(0.5, 0.5);
+)
+
+::
+
+CLASSMETHODS::
+
+METHOD:: defaultMergeFunc
+the default for the function by which the influences in an InfluxMix get merged.
+this creates a linear sum which is then scaled by  numOfValues ** damping.
+This means that a damping value of 0 is the full linear sum, damping 0.5 means the sum is scaled by numOfValues.sqrt, and damping 1 is linear average.
+
+METHOD:: new
+make a new InfluxMix, optionally giving it parameter names.
+
+INSTANCEMETHODS::
+
+private:: init, initClass, checkWeights
+
+METHOD:: inValDict
+the dictionary of incoming influence values
+
+METHOD:: outValDict
+the dictionary of output influence values
+
+METHOD:: trusts
+the dictionary of weights for each named source.
+
+METHOD:: influence
+exert an influence on a named param of the InfluxMix.
+
+ARGUMENT:: who
+name of the source exerting the influence
+
+ARGUMENT::  ... keyValPairs
+pairs of key, val, key, val
+
+METHOD:: trust
+add or set a trust value for a named source.
+
+METHOD:: mergeFunc
+get and set the function by which values are merged. By default, a kind of equal power panning is used.
+
+METHOD:: damping
+get and set the a damping factor for mergeFunc. the default mergeFunc uses this as an exponent for scaling by numOfValues ** damping. Here, damping 0 is full linear sum, damping 0.5 means scale sum by numOfValues.sqrt, and damping 1 is linear average.
+
+private:: checkTrusts
+
+

@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {font: 14.0px Helvetica}
+span.s2 {color: #001ab2}
+span.s3 {color: #36701f}
+span.s4 {color: #000000}
+span.s5 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>VC(\symbol)</b></span> -- VoiCer -- automatic creation<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">A placeholder for a voicer.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">A Voicer object by itself does not have any room to store resources that it depends on. But, as noted in the <a href="Fact.html"><span class="s2">Fact</span></a> help file, the factory can create those supporting resources and keep them together with the voicer proper in a VC. The VC keeps track of supporting resources by retaining a copy of the Factory's environment in the instance variable env.</p>
+<p class="p2"><br></p>
+<p class="p1">The chuck operation Fact =&gt; VC does the following:</p>
+<p class="p2"><br></p>
+<p class="p1">1. Make a copy of the factory environment.</p>
+<p class="p1">2. Enter the environment (.use) and run the Factory's <i>make</i> function. Any resources that this function creates and assigns into environment variables are stored in the copy of the environment.</p>
+<p class="p1">3. Save the fully populated environment copy in the VC.</p>
+<p class="p2"><br></p>
+<p class="p1">The voicer object is accessible through the <i>value</i> variable. Supporting objects are available through the environment, <i>env</i>.</p>
+<p class="p2"><br></p>
+<p class="p1">See help for <a href="Fact.html"><span class="s2">Fact</span></a> for an example of passing parameters into the factory at chuck time.</p>
+<p class="p2"><br></p>
+<p class="p3">(keys: [<span class="s3">\master</span>], make: {</p>
+<p class="p4"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// master is used as the target mixer's output</p>
+<p class="p3"><span class="Apple-tab-span">	</span>~target = <span class="s2">MixerChannel</span>(<span class="s5">"ghostly"</span>, s, 1, 2, level:0.1, outbus: ~master);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">Instr</span>(<span class="s5">"analog.ghostly"</span>, { <span class="s2">arg</span> freq, gate, freqlag, attacktime, decaytime, env, vsense, mul;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> amp;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amp = <span class="s2">Sensitivity</span>.kr(1, <span class="s2">Latch</span>.kr(gate, gate), vsense);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Mix</span>.ar(<span class="s2">Formlet</span>.ar(<span class="s2">PinkNoise</span>.ar([0.2, 0.2]), freq*2, attacktime, decaytime, mul))</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* <span class="s2">EnvGen</span>.kr(env, gate, doneAction:2, levelScale:amp*2.5)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>}, [<span class="s3">\freq</span>, [0, 1], [0, 2], [0.001, 2, <span class="s3">\exponential</span>], [0.001, 2, <span class="s3">\exponential</span>],</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">EnvSpec</span>(<span class="s2">Env</span>.adsr(0.01, 1, 0.75, 0.1)), [0, 1], [0, 1]]);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">Voicer</span>(10, <span class="s2">Instr</span>(<span class="s5">"analog.ghostly"</span>), [<span class="s3">\attacktime</span>, `0.002, <span class="s3">\decaytime</span>, `0.9186, <span class="s3">\vsense</span>, `0.787, <span class="s3">\mul</span>, `0.535], target:~target).latency_(0.5)</p>
+<p class="p3">},</p>
+<p class="p3">free: {</p>
+<p class="p3"><span class="Apple-tab-span">	</span>~target.free</p>
+<p class="p3">}, type: <span class="s3">\voicer</span>) =&gt; <span class="s2">Fact</span>(<span class="s3">\ghost</span>);</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">Fact</span><span class="s4">(</span><span class="s3">\ghost</span><span class="s4">) =&gt; </span><span class="s2">VC</span><span class="s4">(</span><span class="s3">\ghost</span><span class="s4">);<span class="Apple-converted-space">  </span></span>// creates the voicer and its mixerchannel</p>
+<p class="p5"><br></p>
+<p class="p3"><span class="s2">VC</span>(<span class="s3">\ghost</span>).value;</p>
+<p class="p5"><br></p>
+<p class="p4"><span class="s2">VC</span><span class="s4">(</span><span class="s3">\ghost</span><span class="s4">).v;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// short form of .value</p>
+<p class="p5"><br></p>
+<p class="p4"><span class="s2">VC</span><span class="s4">(</span><span class="s3">\ghost</span><span class="s4">).env.target;<span class="Apple-tab-span">	</span></span>// returns target MixerChannel</p>
+<p class="p5"><br></p>
+<p class="p4"><span class="s2">VC</span><span class="s4">(</span><span class="s3">\ghost</span><span class="s4">).free;<span class="Apple-converted-space">  </span></span>// frees Voicer and MixerChannel together</p>
+<p class="p2"><br></p>
+</body>
+</html>

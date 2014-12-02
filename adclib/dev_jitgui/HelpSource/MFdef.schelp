@@ -1,0 +1,43 @@
+TITLE:: MFdef
+summary:: a named MFunc, a proxy for multiple modal functions
+categories:: Libraries>JITLib
+related:: Classes/MFunc
+
+DESCRIPTION::
+MFdef is a named link::Classes/MFunc::, i.e. a named proxy for multiple modal functions.
+As with all the *def classes, instances can be looked up and created by key,
+and are accessible in a global dict called *all.
+
+code::
+(
+MFdef(\m,
+	    [
+		    \ada, { "ada".postln },
+		    \bob, { "bob".postln },
+		    \dada, { "dada".postln },
+		    \ede, { "ede".postln },
+]);
+)
+
+MFdef(\m) === MFdef(\m);
+MFdef(\m).value;
+
+// can't set an MFdef with new args after its creation for now;
+// maybe this should be supported later?
+MFdef(\m, []);
+
+
+::
+
+
+CLASSMETHODS::
+
+METHOD:: all
+the dictionary where all instances are kept by key.
+code::
+MFdef.all;
+::
+
+private:: initClass, new
+
+private:: prKey

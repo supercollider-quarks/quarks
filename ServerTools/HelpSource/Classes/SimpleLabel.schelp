@@ -1,0 +1,79 @@
+CLASS:: SimpleLabel
+summary:: displays a string as a StaticText with size automatically determined
+categories:: GUI
+related:: Classes/StaticText
+
+DESCRIPTION::
+This is the parent class for several simple text and button views in this package
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: string
+the string to display
+
+argument:: bounds
+nil: automatically determines size based on the string size
+Integer: a minimum width. if the string is longer and requires more than the integer then the then the button will be wider. height will be GUI.skin.buttonHeight
+array: taken as: [width, height, ... ignored]
+Point: a width and a height
+Rect: the first two values x/y will be used as width and height and the rest are ignored.
+
+argument:: font
+optional Font, else uses default font
+
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: makeViewWithStringSize
+private
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: optimalWidth
+
+
+argument:: minHeight
+default is GUI.skin.buttonHeight
+
+returns:: (returnvalue)
+
+METHOD:: label
+set a new label string
+
+argument:: string
+
+
+
+METHOD:: bold
+change the font to the bold variation.
+no method supplied to set it back but you could set the font manually.
+
+argument:: fontSize
+in standard pt
+
+
+METHOD:: color
+set the label color
+
+argument:: color
+
+
+
+
+EXAMPLES::
+
+code::
+w = Window.new.front;
+SimpleLabel(w,"a simple label");
+::

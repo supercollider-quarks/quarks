@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #006600}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #800080}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #000000}
+span.s2 {color: #0000e5}
+span.s3 {color: #800000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>OscGroupClient - an SC interface to Ross Bencinia's OscGroups, available for download from:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>http://www.audiomulch.com/~rossb/code/oscgroups/</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3">You can put the OscGroupClient UNIX binary inside your SuperCollider folder (on OS X at least) and this code will automaticall find it. Otherwise, set the variable:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>OscGroupClient.program_("/Path/to/OscGroupClient");</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3">You can join your own server, or Ross maintains a server with limited space at oscgroups.iua.upf.edu.</p>
+<p class="p2"><br></p>
+<p class="p3">Specify a server, and log on with a unique userid, userpassword, and the groupid and grouppassword of a group already on the server (or this will create a groupid and grouppassword if one doesn't already exist).</p>
+<p class="p2"><br></p>
+<p class="p3">USAGE</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s1">                  </span>// server address       ,userid,   userpassword, groupid, grouppassword</p>
+<p class="p6"><span class="s1">a = </span><span class="s2">OscGroupClient</span><span class="s1">(</span>"realizedsound.mooo.com"<span class="s1">, </span>"josh"<span class="s1">, </span>"joshword"<span class="s1">, </span>"test"<span class="s1">, </span>"testword"<span class="s1">)</span></p>
+<p class="p4"><br></p>
+<p class="p5">// join the Server</p>
+<p class="p7">a.join;</p>
+<p class="p7"> </p>
+<p class="p5">// add a responder for OTHER people on the server to send messages to you</p>
+<p class="p7">a.addResp(<span class="s3">\test</span>, {<span class="s2">arg</span> time, resp, msg;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>msg.postln;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p5">// and remove your responder. This is an IdentityDictionary in the class, so you can have as<span class="Apple-converted-space"> </span></p>
+<p class="p5">// many responders with unique<span class="s1"> </span>ids that you want</p>
+<p class="p7">a.removeResp(<span class="s3">\test</span>);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">// this sends a message to everyone else. You don't see anything though on your end</p>
+<p class="p7">a.sendMsg(<span class="s3">\test</span>)</p>
+<p class="p4"><br></p>
+<p class="p5">// you can send more then just the trigger id, just comma separate the stuff you are sending!):</p>
+<p class="p6"><span class="s1">a.sendMsg(</span><span class="s3">\test</span><span class="s1">, </span>"How much can I send?"<span class="s1">, </span><span class="s2">1232</span><span class="s1">, </span><span class="s3">\etc</span><span class="s1">);</span></p>
+<p class="p4"><br></p>
+<p class="p5">// close your connection to the server, and clean up. </p>
+<p class="p7">a.close;</p>
+</body>
+</html>

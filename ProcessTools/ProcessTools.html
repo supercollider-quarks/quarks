@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #606060}
+span.s4 {color: #002eaf}
+span.s5 {font: 12.0px Lucida Grande}
+span.s6 {text-decoration: underline}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>ProcessTools<span class="Apple-tab-span">	</span></b></span><b>Some things to help interact with *n*x processes</b></p>
+<p class="p2"><br></p>
+<p class="p3">Quick intro to the main functions (run each line, watch the post window, wait for a bit):</p>
+<p class="p2"><br></p>
+<p class="p4">"sleep 3"<span class="s2">.unixCmd</span></p>
+<p class="p5"><span class="s3">"sleep 3"</span>.unixCmdInferPID({<span class="s4">|pid|</span> (<span class="s3">"The PID is"</span> + pid).postln})</p>
+<p class="p4">"sleep 3"<span class="s2">.unixCmdThen({</span><span class="s4">|pid|</span><span class="s2"> (</span>"The PID was"<span class="s2"> + pid ++ </span>"; the program has completed"<span class="s2">).postln})</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">thor:</p>
+<p class="p5"><span class="s3">"python </span><span class="s5">pyprog.py</span><span class="s3">"</span>.unixCmdInferPID({<span class="s4">|pid|</span> p = pid; (<span class="s3">"The PID is"</span> + pid).postln})</p>
+<p class="p6"><br></p>
+<p class="p5">("kill "++p.asString).unixCmd</p>
+<p class="p6"><br></p>
+<p class="p2"><br></p>
+<p class="p3">This toolbox contains the following:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>String:unixCmdInferPID(action)</b></p>
+<p class="p2"><br></p>
+<p class="p3">This is like unixCmd except that it also infers the PID that the launched process takes on. This is useful for monitoring long-running processes. The "action" argument is launched once the PID is known.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>String:unixCmdThen(action, checkevery)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Runs unixCmd then monitors the process, waiting until it completes.</p>
+<p class="p6"><br></p>
+<p class="p3"><b>String:unixCmdGetStdOut</b></p>
+<p class="p2"><br></p>
+<p class="p3">Uses a Pipe to run a command and grab all of the standard output into a string, which is returned.</p>
+<p class="p6"><br></p>
+<p class="p3"><b>Integer:isPIDRunning</b></p>
+<p class="p2"><br></p>
+<p class="p3">Checks to see if a UNIX process with PID matching the integer is running.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Score:recordNRTThen</b></p>
+<p class="p2"><br></p>
+<p class="p3">Just like Score's recordNRT methods except wrapped up in the unixCmdThen method described above. This is particularly helpful for running [<span class="s6">Non-Realtime-Synthesis</span>] processes and then automatically doing something else once the rendering is complete.</p>
+</body>
+</html>

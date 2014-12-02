@@ -1,0 +1,88 @@
+CLASS:: CompositeInstr
+summary:: two Instr combined together with function composition
+categories:: Libraries>crucial>Instr
+related:: Classes/Instr, Guides/Instr-functional-tricks
+
+DESCRIPTION:: Two Instr chained one into the next.
+
+In mathematics, function composition is the application of one function to the results of another. For instance, the functions f: X → Y and g: Y → Z can be composed by computing the output of g when it has an argument of f(x) instead of x.
+
+In audio this is most often thought of as filtering.  An Instr can be filtered through another Instr and this results in a CompositeInstr.  This CompositeInstr has inputs and outputs and can be used like any Instr.  It is a still a function.
+
+code::
+(
+f = Instr("eperc",{ arg audio,dur=2.0; audio * EnvGen.kr(Env.sine(dur)) });
+
+t = Instr("tonez",{ arg freq=300; Saw.ar(freq) });
+
+// this creates a link::CompositeInstr::
+// t is plugged into f
+o = t <>> f;
+
+o.gui;
+
+Patch(o).rand.gui
+)
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: a
+
+
+argument:: b
+
+
+argument:: index
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: b
+
+
+
+METHOD:: index
+
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: init
+
+
+
+METHOD:: findUniqueNameForArg
+
+
+argument:: argName
+
+
+argument:: argNames
+
+
+
+METHOD:: valueArray
+
+
+argument:: args
+
+
+
+METHOD:: outSpec
+
+
+
+METHOD:: guiClass
+
+
+
+

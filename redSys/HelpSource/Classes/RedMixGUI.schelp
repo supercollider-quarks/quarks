@@ -1,0 +1,71 @@
+CLASS:: RedMixGUI
+SUMMARY:: gui for RedMixMono, RedMixStereo, RedMixStereoMono
+CATEGORIES:: Red>redMix
+RELATED:: Overviews/redMixOverview, Classes/RedMixMono, Classes/RedMixStereo, Classes/RedMixStereoMono, Classes/RedMatrixMixerGUI, Classes/RedMixerGUI
+
+DESCRIPTION::
+
+NOTE::
+Requires link::Classes/Conductor:: quark.
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: redMix
+A red mix object ( link::Classes/RedMixMono::, link::Classes/RedMixStereo::, link::Classes/RedMixStereoMono:: )
+
+ARGUMENT:: parent
+A link::Classes/Window::, link::Classes/CompositeView:: or code::nil::.
+
+ARGUMENT:: position
+A link::Classes/Point:: or code::nil::.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedMixGUI, prContainer
+
+METHOD:: close
+Close the window if open.
+
+EXAMPLES::
+
+CODE::
+(
+s.waitForBoot{
+	a= RedMixStereo(10, 14, 0);
+	Pbind(\degree, 0, \out, 10).play;
+	Pbind(\degree, 4, \out, 14).play;
+	c= RedMixGUI(a);
+}
+)
+
+c.parent;
+c.redMix==a;
+c.close;
+
+(
+w= Window("lkj", Rect(100, 200, 500, 500));
+w.front;
+w.view.decorator= FlowLayout(w.view.bounds, 10@10, 10@10);
+a= RedMixStereo(10, 14, 0);
+Pbind(\degree, 0, \out, 10).play;
+Pbind(\degree, 4, \out, 14).play;
+a.gui(w);
+w.view.decorator.nextLine;
+a.gui(w);
+)
+
+(
+w= Window("hgf", Rect(100, 200, 500, 500));
+w.front;
+v= CompositeView(w, Rect(10, 10, 400, 400)).background_(Color.blue).decorator= FlowLayout(Rect(0, 0, 300, 300));
+a= RedMixStereo(10, 14, 0);
+Pbind(\degree, 0, \out, 10).play;
+Pbind(\degree, 4, \out, 14).play;
+a.gui(v);
+v.decorator.nextLine;
+a.gui(v);
+)
+::

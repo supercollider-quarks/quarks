@@ -1,0 +1,153 @@
+TITLE:: SensorSonificator
+summary:: Tool to sonify incoming control data
+categories:: Control
+related:: Classes/SensorSonificatorSynth
+
+DESCRIPTION::
+SensorSonificator allows you to sonify realtime sensor data that is put on a control bus. These are tools to understand the nature of the data.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new SensorSonificator
+
+ARGUMENT:: input
+A bus onto which control data is put.
+
+ARGUMENT:: outbus
+Audio output bus, if left blank a bus is created
+
+ARGUMENT:: server
+The server on which to run the sonification. If left blank, the default server is used.
+
+
+INSTANCEMETHODS::
+
+private:: init
+
+METHOD:: addSonification
+Add a sonification.
+
+ARGUMENT:: type
+Should be one of \value (sonify the value to a frequency), \intrig (gives a small toc each time the control bus receives a new value; frequency is the time between updates), \inrange (gives a toc when the value is within a certain range).
+
+METHOD:: start
+Start the sonification
+
+METHOD:: stop
+Stop all of the sonification.
+
+METHOD:: query
+Query the group of sonifying synths.
+
+ARGUMENT:: args
+Whether or not to post the arguments of the synths (default is true).
+
+METHOD:: group
+The group within which the sonification synths are running
+
+returns:: a Group
+
+METHOD:: synths
+The Synths that are doing the sonification.
+
+returns:: an Array of Synths
+
+METHOD:: server
+The Server on which the sonification is running.
+
+returns:: a Server
+
+METHOD:: inbus
+The input bus.
+
+returns:: a control rate Bus
+
+METHOD:: outbus
+The output bus.
+
+returns:: an audio rate bus
+
+
+EXAMPLES::
+
+code::
+s = Server.local.boot;
+
+b = Bus.control(s,1);
+
+( // generate some data
+Tdef( \updateBus, {
+	loop{
+		b.set( 1.0.rand.postln; );
+		rrand(0.05,0.3).wait;
+	}
+}).play;
+);
+
+~output = Bus.new('audio', 0 );
+
+// create a sonificator for the first bus:
+x = SensorSonificator.new( b, ~output );
+
+// right now there are three different kinds of sonificators
+// \value : sonifies the current value as frequency, amplitude is controlled by the rate of change in value
+// \inrange : makes sound when the value is within a certain range
+// \intrig : makes a sound whenever new data is coming in. Pitch is higher when the time since the last trigger was longer ago
+
+// add value sonification:
+x.addSonification( \value );
+
+// start the sonification
+x.start;
+
+// set parameters for it
+x.synths[0].set( \amp, 0.01 ); // base amplitude
+x.synths[0].set( \slamp, 1 );  // slope amplitude
+
+// post a list of available parameter names:
+x.synths[0].controlNames;
+
+// add inrange sonification:
+x.addSonification( \inrange );
+
+x.start;
+
+// set parameters:
+x.synths[1].set( \amp, 0.2 );
+x.synths[1].set( \freq, 600 );
+x.synths[1].set( \lo, 0.8 );
+
+x.stop;
+// arguments are kept when the sonification is stopped and started
+x.start;
+
+// add another inrange sonificator
+x.addSonification( \inrange );
+x.synths[2].set( \amp, 0.2 );
+x.synths[2].set( \freq, 700 );
+x.synths[2].set( \lo, 0 );
+x.synths[2].set( \hi, 0.2 );
+x.start;
+
+// add an intrig sonificator:
+x.addSonification( \intrig );
+
+x.start;
+x.synths[3].set( \amp, 0.5 );
+x.synths[3].set( \dur, 0.05 );
+x.synths[3].set( \freq, 300 );
+x.synths[3].set( \fmmod, 100 );
+
+x.synths[3].controlNames;
+
+// query the group of sonificators (including argument values)
+x.query
+
+// with argument values:
+x.query( false );
+
+// stop the sonification:
+x.stop;
+::

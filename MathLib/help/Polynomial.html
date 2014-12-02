@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0022e4}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 9.0px Monaco; color: #bf0000}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #bf0000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; color: #615e52; min-height: 14.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #615e52; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #43506a}
+span.s4 {color: #0026b1}
+span.s5 {color: #0000ff}
+span.s6 {font: 12.0px Helvetica; color: #000000}
+span.s7 {color: #0000bf}
+span.s8 {font: 12.0px Helvetica}
+span.s9 {color: #007300}
+span.s10 {color: #615e52}
+span.s11 {font: 9.0px Monaco; color: #615e52}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Polynomial<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>various methods for polynomial math operations</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Inherits from: </b><a href="../../../../../Applications/SuperCollider/Help/Core/Object.html"><span class="s3"><b>Object</b></span></a><b> : </b><a href="../../../../../../../Applications/SuperCollider/Help/Collections/Collection.html"><b>Collection</b></a></span><span class="s4"><b> :</b></span><span class="s2"><b> </b><a href="../../../../../../../Applications/SuperCollider/Help/Collections/SequenceableCollection.html"><b>SequenceableCollection</b></a></span><b> : </b><a href="SC://ArrayedCollection"><span class="s5"><b>ArrayedCollection</b></span></a></p>
+<p class="p4"><br></p>
+<p class="p1">A class which makes possible various elementary polynomial math operations. Included are arithmetic methods like multiplication and division, (complex) root finding and evaluation at a specific point for arbitrary degree polynomials. All methods should work for real as well as complex coefficients.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Important notes</b></p>
+<p class="p1">Note that for all binary arithmetic operations to give valid results, it is necessary that both coefficient arrays are of the same size. This means that in some cases it will be necessary to pad a coefficient array with zeros until it matches the other coefficient array in size. See the '/' operation for an example.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new(coefs)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new instance of Polynomial. Returned is a polynomial of a degree equal to the number of coefficients minus one. The coefficients need to be supplied in increasing order:<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a_0, a_1, a_2 ... a_n-1, a_n</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><span class="s7">Polynomial</span><span class="s2">[1, 2, 1]<span class="Apple-tab-span">	</span></span>//2nd degree polynomial</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">Polynomial</span><span class="s2">[0, 2, 1]<span class="Apple-tab-span">	</span></span>//Another 2nd degree polynomial with a_0 coefficient equal to 0</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">Polynomial</span><span class="s2">[1, 2, 0]<span class="Apple-tab-span">	</span></span>//1st degree polynomial, since a_2 coefficient is 0</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b>*expandBinomialFactors(binomials)</b></p>
+<p class="p8"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Expands an array of first degree binomial factors.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>a = <span class="s7">Polynomial</span>[2, 2];</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b = <span class="s7">Polynomial</span>[3, 3];</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c = <span class="s7">Polynomial</span>[4, 4];</p>
+<p class="p4"><br></p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Polynomial</span>.expandBinomialFactors([a, b, c])</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p13"><b>Instance Methods</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>* (polynomial)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Calculate the product of two polynomials by convolving the original coefficient sequences.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">Polynomial</span>[1, 2, 3, 4, 5] * <span class="s7">Polynomial</span>[5, 4, 3, 2, 1];</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//Complex example</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a = <span class="s7">Polynomial</span>[<span class="s7">Complex</span>(2, 2.2), <span class="s7">Complex</span>(2.5, 5), <span class="s7">Complex</span>(7, 4)];</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a * a.performUnaryOp(<span class="s9">'conjugate'</span>);</p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>/ (polynomial)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Divide two polynomials using synthetic division. Returned is an <a href="SC://Array"><span class="s5">Array</span></a> containing the remainder in the first slot and the quotient in the second slot, where: P(z)<span class="Apple-converted-space">  </span>/ D(z) = Q(z) + R(z) / D(z)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The degree of the numerator polynomial needs to be greater than or equal to the degree of the denominator polynomial.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>a = <span class="s7">Polynomial</span>[<span class="s7">Complex</span>(2, 1), <span class="s7">Complex</span>(0.2, -0.436), <span class="s7">Complex</span>(-1.9, -5)];</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b = <span class="s7">Polynomial</span>[<span class="s7">Complex</span>(-5, 4), <span class="s7">Complex</span>(3.5, 1.2)];</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>#r, q = a / b;</p>
+<p class="p4"><br></p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(b * q) + r.addAll([0, 0]);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//Check if we get back the original polynomial and notice <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>//padding of the remainder in order to get a valid result</p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>pow(n)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Calculate the n'th power of a polynomial. Negative, complex or fractional powers are allowed for binomials with the a_0 coefficient equal to one in order to calculate the binomial series which converges for:<span class="Apple-converted-space">  </span>|z| &lt; 1</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">Polynomial</span><span class="s2">[1, 1].pow(0.5)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//Binomial series: (1 + x)^0.5</p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>eval(z)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Evaluate the polynomial at the (complex) point z.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">Polynomial</span>[0.2, 0.1, 0.3, 0.5].eval(1.0);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>evalDerivs(z)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Evaluate the polynomial and all of its derivatives at the (complex) point z. Returned is an <a href="SC://Array"><span class="s5">Array</span></a><span class="s5"> </span>containing the results. Slot zero contains the function value and subsequent slots are filled with the values of all existing derivatives.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">Polynomial</span>[0.2, 0.1, 0.3, 0.5].evalDerivs(1.0);</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s10"><b><span class="Apple-tab-span">	</span></b></span><b>findRoots(method)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Find all the roots of the polynomial. The argument 'method' defaults to \laguerre, which works for polynomials<span class="Apple-converted-space">  </span>with real as well as complex coefficients. Another option is to use the method \eigenvalue to form the companion matrix which eigenvalues coincide with the roots of the polynomial. Although this method is more reliable than the first one, it is considerably slower and only works for polynomials with real coefficients.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>a = <span class="s7">Polynomial</span>[80, 4, -24, -1, 1];</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b = a.findRoots;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//Check if the roots we found make sense</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c = ([b.neg, [1, 1, 1, 1]].lace(8).reshape(4, 2).collect(<span class="s7">_</span> .as(<span class="s7">Polynomial</span>)));</p>
+<p class="p12"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Polynomial</span>.expandBinomialFactors(c)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>degree</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns the degree of the polynomial.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">Polynomial</span>[0, 2, 0, 0, 6, 0, 0].degree;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s11"><span class="Apple-tab-span">	</span></span><b>isMonomial</b></p>
+<p class="p16"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns 'true' if the polynomial is a monomial.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">Polynomial</span>[0, 0, 2, 0, 0].isMonomial;</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s10"><b><span class="Apple-tab-span">	</span></b></span><b>isBinomial</b></p>
+<p class="p16"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Returns 'true' if the polynomial is a binomial.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">Polynomial</span>[0, 2, 0, 0, 6].isBinomial;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><b>Examples</b></p>
+<p class="p17"><br></p>
+<p class="p17"><br></p>
+<p class="p17"><br></p>
+<p class="p15">// Example showing two alternative methods for dividing polynomials</p>
+<p class="p4"><br></p>
+<p class="p15"><span class="s2">a = </span><span class="s7">Polynomial</span><span class="s2">[2, 3, 4, 1];<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// P(x) = 2 + 3*x + 4*x^2 + x^3</p>
+<p class="p15"><span class="s2">b = </span><span class="s7">Polynomial</span><span class="s2">[4, 5, 6, 0];<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// P(x) = 4 + 5*x + 6*x^2</p>
+<p class="p4"><br></p>
+<p class="p15">// First example: remainder and quotient are of the same order (standard behaviour)</p>
+<p class="p12">#r, q = a / b;</p>
+<p class="p15">// Get back original polynomial</p>
+<p class="p12">(b[0..b.size-2] * q.add(0)) + r.addAll([0, 0]);</p>
+<p class="p4"><br></p>
+<p class="p15">// Second example: quotient contains powers x^0 up to x^k and remainder starts from power x^(k+1)</p>
+<p class="p12">b = b.insert(0, b.removeAt(b.size-1));</p>
+<p class="p15">// We need to reverse the coefficients so that the powers are in increasing order again</p>
+<p class="p12">#r, q = (a.reverse / b.reverse).performUnaryOp(<span class="s9">'reverse'</span>);</p>
+<p class="p15">// Adjust degree of the remainder (must be 3rd degree in this case)</p>
+<p class="p12">q.size.do({ r = r.insert(0, 0) });</p>
+<p class="p15">// Get back original polynomial</p>
+<p class="p12">(b[1..b.size-1] * q.add(0)) + r</p>
+</body>
+</html>

@@ -1,0 +1,167 @@
+CLASS:: Spherical
+summary:: Spherical coordinates
+categories:: Math
+related:: Classes/Cartesian, Classes/Polar, Classes/Point
+
+DESCRIPTION::
+Represents spherical coordinates.
+
+NOTE::
+Part of SpherCoords, a spherical and 3D cartesian coordinate support library.
+::
+subsection:: Credits
+Joseph Anderson, 2011 [j.anderson[at]ambisonictoolkit.net]
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new spherical coordinate with the given radius, rho, and angles in radians, theta and phi.
+
+
+argument:: rho
+radius
+
+argument:: theta
+azimuth angle
+
+argument:: phi
+elevation angle
+
+
+INSTANCEMETHODS::
+
+subsection:: Accessing
+
+METHOD:: rho
+Get or set the rho coordinate value.
+
+METHOD:: theta
+Get or set the theta coordinate value.
+
+METHOD:: phi
+Get or set the phi coordinate value.
+
+
+subsection:: Testing
+
+METHOD:: ==
+Answers a Boolean whether the receiver equals the argument.
+
+METHOD:: hash
+Returns a hash value for the receiver.
+
+
+subsection:: Math
+
+method:: +, -, *, /
+The math operations of addition, subtraction, multiplication and division are accomplished by
+first converting to cartesian coordinates, then answering to spherical coordinates.
+
+METHOD:: scale
+Scale the radius by some value.
+
+METHOD:: rotate
+Rotation about the origin in the XY plane by the angle given in radians.
+
+discussion:: Positive values rotate from +X towards +Y
+
+METHOD:: tilt
+Rotation about the origin in the YZ plane by the angle given in radians.
+
+discussion:: Positive values rotate from +Y towards +Z
+
+METHOD:: tumble
+Rotation about the origin in the XZ plane by the angle given in radians.
+
+discussion:: Positive values rotate from +X towards +Z
+
+
+METHOD:: rotateXY
+Rotation about the origin in the XY plane by the angle given in radians.
+
+discussion:: A synonym for rotate.
+
+METHOD:: rotateYZ
+Rotation about the origin in the YZ plane by the angle given in radians.
+
+discussion:: A synonym for tilt.
+
+METHOD:: rotateXZ
+Rotation about the origin in the XZ plane by the angle given in radians.
+
+discussion:: A synonym for tumble.
+
+METHOD:: mirrorX
+Mirror x, reflecting across the YZ plane.
+
+METHOD:: mirrorY
+Mirror y, reflecting across the XZ plane.
+
+METHOD:: mirrorZ
+Mirror z, reflecting across the XY plane.
+
+METHOD:: mirrorO
+Mirror across the origin.
+
+METHOD:: neg
+Rotate theta by pi and negate phi.
+
+discussion:: This operation is equivalent to negating rho, and is a synonym for mirrorO.
+
+
+
+subsection:: Conversion
+
+
+method:: magnitude
+Answer the radius.
+
+method:: angle
+Answer the azimuth angle, theta, in radians.
+
+METHOD:: phase
+Answer the azimuth angle, theta, in radians.
+
+METHOD:: angles
+Answer the azimuth and elevation angles, theta and phi, in radians.
+
+returns:: [ theta, phi ]
+
+METHOD:: phases
+Answer the azimuth and elevation angles, theta and phi, in radians.
+
+returns:: [ theta, phi ]
+
+METHOD:: x
+Answer the cartesian coordinate x of the receiver.
+
+METHOD:: y
+Answer the cartesian coordinate y of the receiver.
+
+METHOD:: z
+Answer the cartesian coordinate z of the receiver.
+
+METHOD:: real
+Answer the cartesian coordinate x of the receiver.
+
+METHOD:: imag
+Answer the cartesian coordinate y of the receiver.
+
+
+
+METHOD:: asSpherical
+Returns the receiver.
+
+METHOD:: asPolar
+Convert to link::Classes/Polar::, discarding z.
+
+METHOD:: asComplex
+Answers a link::Classes/Complex:: with x as the real part and y as the imaginary part, discarding z.
+
+METHOD:: asPoint
+Convert to link::Classes/Point::, discarding z.
+
+METHOD:: asCartesian
+Convert to link::Classes/Cartesian::.
+

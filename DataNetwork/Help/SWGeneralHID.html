@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SW General HID support</TITLE>
+<META NAME="description" CONTENT="SWDataNetwork">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00041000000000000000">
+SWDataNetwork General HID support</A></H2>
+
+<p>To simplify getting the data from a GeneralHID device into an SWDataNetwork, a method has been created which automatically sets actions for the HID device to set the data into a DataNode in the network. It also copies any labels that have been set for the device over to the data slots.</p>
+
+<h4>- Example - </h4>
+
+<pre>
+x = <span class="type">SWDataNetwork</span>.new;
+
+<span class="comment-delimiter">// </span><span class="comment">build the device list and start the event loop: 
+</span><span class="type">GeneralHID</span>.buildDeviceList; 
+<span class="type">GeneralHID</span>.startEventLoop; 
+ 
+<span class="comment-delimiter">// </span><span class="comment">find an Impact game device and open it: 
+</span>a = <span class="type">GeneralHID</span>.open( <span class="type">GeneralHID</span>.findBy( 1973 ) ); 
+
+<span class="comment-delimiter">// </span><span class="comment">set the spec for the device (as defined in a previous session; see GeneralHID documentation).
+</span>a.setSpec( a.findSpec.first ); 
+
+<span class="comment-delimiter">// </span><span class="comment">Add an expected node to the network and give it the label of the device name:</span>
+x.addExpected( 1, <span class="constant">\impact</span> );
+
+<span class="comment-delimiter">// </span><span class="comment">Add the device to the network:</span>
+a.addToNetwork( x, 1 );
+
+<span class="comment-delimiter">// </span><span class="comment">Access the node:</span>
+x.at(<span class="constant">\impact</span>)
+<span class="comment-delimiter">// </span><span class="comment">Access the left axis slot:</span>
+x.at(<span class="constant">\lx</span>)
+<span class="comment-delimiter">// </span><span class="comment">Access the data of the left axis:</span>
+x.at(<span class="constant">\lx</span>).value
+</pre>
+
+
+<h3> - Method extension to GeneralHIDDevice - </h3>
+
+<D>
+<DL>
+<DT>addToNetwork( network, id, prefix )</DT>
+<DD><em>network</em> is the instance of SWDataNetwork to which this device will be added. <em>id</em> is the data node ID that the device's data will be put into. <em>prefix</em> is the prefix that will be used for the labels.</DD>
+</DL>
+</D>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A 
+  HREF="SWWiiMote.html">WiiMote support</A>
+</LI>
+<LI>
+<I> Previous: </I> <A 
+  HREF="SWDataAction.html">SWDataAction</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,48 @@
+CLASS:: RedSpring
+SUMMARY:: helper class for RedObject:spring
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview, Classes/RedObject
+
+DESCRIPTION::
+A simple class that keeps track of connections and spring parameters.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new spring object.
+
+ARGUMENT:: object
+A link::Classes/RedObject:: that will be connected to target.
+
+ARGUMENT:: target
+A link::Classes/RedObject:: acting as target.
+
+ARGUMENT:: stiffness
+A link::Classes/Float::. The default is 0.1.
+
+ARGUMENT:: damping
+A link::Classes/Float::. The default is 0.9.
+
+ARGUMENT:: length
+A link::Classes/Float::. The default is 0.
+
+INSTANCEMETHODS::
+
+METHOD:: update
+Calls the method spring on the object. See link::Classes/RedObject::.
+
+METHOD:: update2
+Calls the method spring on strong::both:: the object and the target. Note that this is just a convenience method for interconnecting two objects with one spring.
+
+EXAMPLES::
+
+CODE::
+a= RedWorld.new
+b= RedObject(a, RedVector2D[0, 0]);
+c= RedObject(a, RedVector2D[100, 100]);
+d= RedSpring(b, c);
+
+b.accel		//no acceleration
+d.update	//apply spring force
+b.accel		//now acceleration
+::

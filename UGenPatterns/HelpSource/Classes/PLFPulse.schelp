@@ -1,0 +1,35 @@
+CLASS:: PLFPulse
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Generators
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/LFPulse::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: freq
+
+ARGUMENT:: iphase
+Fixed.
+
+ARGUMENT:: width
+
+ARGUMENT:: mul
+
+ARGUMENT:: add
+
+ARGUMENT:: length
+Number of values produced.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PLFPulse(16, 0, 0.5, 10, 60).trace).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \amp, PLFPulse(PSinOsc(64, 0, 8, 12), 0, 0.33, 0.25).trace).play
+a.stop
+::

@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.29">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #cd0b0b}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 15.0px Monaco; min-height: 20.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 15.0px Monaco; color: #cd0b0b}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #737373}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #008417}
+span.s1 {color: #000000}
+span.s2 {color: #2024c7}
+span.s3 {color: #008417}
+span.s4 {color: #737373}
+span.s5 {color: #cd0b0b}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">/* <span class="Apple-tab-span">	</span>A recommended setup for the WFS system at TU Berlin:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>* Use a SharedServer with 42 channels I/O;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>* split for e.g. 8 users, such that each user gets 5 private chans</p>
+<p class="p3"><span class="Apple-tab-span">	</span>* these chans can be panned freely with Wonder via OSC,<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>* or thru Florian's SWonder SC class.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3">*/</p>
+<p class="p3">(</p>
+<p class="p3">q = q ? ();</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s1">q.myClientID = 0; <span class="Apple-tab-span">	</span></span>// CHANGE FOR YOURS!!</p>
+<p class="p5">q.numPlayers = 8;<span class="Apple-tab-span">	</span>// agree on a maximum number</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// prepare a shared server:<span class="Apple-converted-space"> </span></p>
+<p class="p3">q.options = <span class="s2">SharedServerOptions</span>.new</p>
+<p class="p3"><span class="Apple-tab-span">	</span>.numAudioBusChannels_(1024)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>.numInputBusChannels_(8)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>.numOutputBusChannels_(42);</p>
+<p class="p2"><br></p>
+<p class="p3">q.numChans = q.options.numOutputBusChannels;</p>
+<p class="p3">q.wfs = <span class="s2">SharedServer</span>(<span class="s3">\wfs</span>, <span class="s2">NetAddr</span>(<span class="s4">"192.168.3.111"</span>, 57110), q.options, q.myClientID);</p>
+<p class="p3"><span class="s2">Server</span>.default = s = q.wfs;</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">CmdPeriod</span>.add({ q.wfs.freeAll });<span class="Apple-tab-span">	</span>// frees only my own nodes, not all of them</p>
+<p class="p3">q.wfs.initTree;</p>
+<p class="p3">q.wfs.numClients_(q.numPlayers);</p>
+
+<p class="p6">"I can play on chans: %\n"<span class="s1">.postf(q.wfs.myOuts);</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span></span>// the panning software address at TU is:<span class="Apple-converted-space"> </span></p>
+<p class="p3">q.wfsCtl = <span class="s2">NetAddr</span>(<span class="s4">"192.168.3.254"</span>, 58100);</p>
+<p class="p3">w = q.wfsCtl;</p>
+<p class="p2"><br></p>
+<p class="p1">// try { q.wfsWin.close };</p>
+<p class="p3">q.wfsWin = <span class="s2">Window</span>(<span class="s4">"WFS server"</span>, <span class="s2">Rect</span>(0,800,305, 130)).userCanClose_(<span class="s2">false</span>).front;</p>
+<p class="p3">q.wfsWin.addFlowLayout;</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">Button</span>(q.wfsWin, <span class="s2">Rect</span>(0,0, 145, 50))</p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span>.states_([[</span>"EMERGENCY ONLY \n<span class="Apple-converted-space">    </span>- FREE ALL!"<span class="s1">, </span><span class="s2">Color</span><span class="s1">.white, </span><span class="s2">Color</span><span class="s1">.red]])</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>.action_({ q.wfs.freeAll(<span class="s2">true</span>); });</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">Button</span>(q.wfsWin, <span class="s2">Rect</span>(0,150, 145, 50))</p>
+<p class="p3"><span class="Apple-tab-span">	</span>.states_([[<span class="s4">"Free All \nMy Sounds."</span>, <span class="s2">Color</span>.white, <span class="s2">Color</span>.green]])</p>
+<p class="p3"><span class="Apple-tab-span">	</span>.action_({ q.wfs.freeAll });</p>
+<p class="p2"><br></p>
+<p class="p3">q.wfs.makeGui(q.wfsWin);</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// a simple test sound, playing to s.myOuts, channel 0</p>
+<p class="p3">x.free; x = { <span class="s2">Ringz</span>.ar(<span class="s2">Dust</span>.ar([30, 20, 10]), [600, 1800, 7200], 0.04).sum * 0.5 }.play(s, s.myOuts[0]);</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>//</p>
+<p class="p3">x.free; x = { <span class="s2">Ringz</span>.ar(<span class="s2">Dust</span>.ar([30, 20, 10]), [600, 1800, 7200], 0.04).sum * 0.1 }.play(s, s.myOuts[1]);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// ch, x, y, fadeDur</p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// <span class="Apple-converted-space">    </span>0, 0 is center;</p>
+<p class="p3">w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[0], 0, -0.2);</p>
+<p class="p3">w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[0], 7, -0.2);</p>
+<p class="p3">w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[0], -7, -0.2);</p>
+<p class="p2"><br></p>
+<p class="p3">w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[0], 7, -0.2, 5);</p>
+<p class="p3">w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[0], -7, -0.2, 5);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// Florians Wonderful SWonder class:<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="s1">a = </span><span class="s2">SWonder</span><span class="s1">( </span><span class="s2">NetAddr</span><span class="s1">(</span><span class="s4">"192.168.3.254"</span><span class="s1">, 58100)); <span class="Apple-tab-span">	</span></span>// creating an instance of SWonder</p>
+<p class="p1"><span class="s1">a.connect <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// connect it to cwonder</p>
+<p class="p3">a.drawGUI_(<span class="s2">true</span>)</p>
+<p class="p3">a.sourcePosition(s.myOuts[1], 0.8@0.5) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// put source 0 in the center of the room</span></p>
+<p class="p3">a.sourcePosition(0, 0@0.5) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// move it half way to the front</span></p>
+<p class="p1"><span class="s1">a.addSource(1, 0.5@0.2) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// add a source directly to a specified position</p>
+<p class="p3">a.sourcePlane(1, <span class="s2">true</span>) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// add a plane wave source</span></p>
+<p class="p3">a.sourceAngle(1, 360.rand) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// set it's angle</span></p>
+<p class="p3">a.sourceName(1, <span class="s4">"new name"</span>) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// rename it</span></p>
+<p class="p3">a.sourceColor(1, <span class="s2">Color</span>.rand) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// different color</span></p>
+<p class="p3">a.removeSource(1) <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">// remove it</span></p>
+<p class="p3">a.addNextSource</p>
+<p class="p3">a.sources.collect(_.position)</p>
+<p class="p3">a.addNextSource(0.1 @ 0.7)</p>
+<p class="p3">a.free;</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// randomly move evrything:</p>
+<p class="p3">a.sources.do { |src, i| a.sourcePosition(i, 1.0.rand2 @ 1.0.rand2, exprand(0.3, 3)) };</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span></span>// jumping to a new position produces bad glitches</p>
+<p class="p3">(</p>
+<p class="p7"><span class="s2">Tdef</span><span class="s1">(</span>\randPan<span class="s1">, {</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">inf</span>.do {<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> dur = exprand(1.0, 10.0);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> x = 30.0.bilinrand;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> y = 50.0.bilinrand;<span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[1], *[x, y]);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dur.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>}</p>
+<p class="p3">}).play;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// can also smoothly move there</p>
+<p class="p3">(</p>
+<p class="p7"><span class="s2">Tdef</span><span class="s1">(</span>\randPan1<span class="s1">, {</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">inf</span>.do {<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> dur = exprand(1.0, 10.0);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> x = 30.0.bilinrand;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> y = 50.0.bilinrand;<span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[2], *[x, y, dur]);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dur.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>}</p>
+<p class="p3">}).play;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">Tdef</span>(<span class="s3">\randPan</span>).stop;</p>
+<p class="p7"><span class="s2">Tdef</span><span class="s1">(</span>\randPan1<span class="s1">).stop;</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">x.free; x = { <span class="s2">SinOsc</span>.ar(100) * 0.1 }.play(s, s.myOuts[2]);</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// xy pendulum - lissajou figures</p>
+<p class="p3">(</p>
+<p class="p7"><span class="s2">Tdef</span><span class="s1">(</span>\pendulum<span class="s1">, {<span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">inf</span>.do { <span class="s2">|i|</span><span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> xpos = (i * 0.02).sin * 7;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> ypos = (i * 0.022).sin * 12 + 12;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[2], *[xpos, ypos, 0.02]);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.02.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>};<span class="Apple-tab-span">	</span></p>
+<p class="p3">}).play;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p7"><span class="s2">Tdef</span><span class="s1">(</span>\pendulum2<span class="s1">, {<span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">inf</span>.do { <span class="s2">|i|</span><span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> xpos = (i * 0.024).sin * 7;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> ypos = (i * 0.028).sin * 12 + 12;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[2], *[xpos, ypos, 0.02]);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.02.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>};<span class="Apple-tab-span">	</span></p>
+<p class="p3">}).play;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p7"><span class="s2">Tdef</span><span class="s1">(</span>\pendulum3<span class="s1">, {<span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s2">inf</span>.do { <span class="s2">|i|</span><span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> xpos = (i * 0.027).sin * 7;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> ypos = (i * 0.029).sin * 12 + 12;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[3], *[xpos, ypos, 0.02]);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.02.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>};<span class="Apple-tab-span">	</span></p>
+<p class="p3">}).play;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span></span>// x, y, 0/0 is center front;</p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span></span>// x, y, 0/0 is center;</p>
+<p class="p3">w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[0], 0, 0);</p>
+<p class="p3">w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[0], 7, 0); <span class="Apple-converted-space">  </span><span class="s5">// right</span></p>
+<p class="p3">w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[0], -7, 0);<span class="Apple-converted-space">  </span><span class="s5">// left</span></p>
+<p class="p2"><br></p>
+<p class="p3">w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[0], 0, 0); <span class="Apple-converted-space">  </span><span class="s5">// center front</span></p>
+<p class="p3">w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[0], 7, 25);<span class="Apple-converted-space">  </span><span class="s5">// right back</span></p>
+<p class="p3">w.sendMsg(<span class="s4">"/WONDER/source/position"</span>, s.myOuts[0], -7, 25); <span class="s5">// left back</span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span></span>// EMERGENCY:</p>
+<p class="p3">q.wfs.freeAll;<span class="Apple-tab-span">	</span>// kill your own sounds</p>
+<p class="p3">q.wfs.freeAll(true);<span class="Apple-tab-span">	</span>// kill everything on the server.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

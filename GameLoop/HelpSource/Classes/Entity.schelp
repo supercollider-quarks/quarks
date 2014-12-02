@@ -1,0 +1,74 @@
+TITLE:: Entity
+summary:: The base class for entity creation in GameLoop
+categories:: Class
+related:: Overviews/Gameloop_Overview, Classes/MobileEntity, Classes/Vehicle
+
+DESCRIPTION::
+
+Entity is the base class for all entity classes.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new entity
+
+ARGUMENT:: world
+an instance of link::Classes/EntityManager::
+
+ARGUMENT:: position
+an instance of RealVector2D
+
+ARGUMENT:: radius
+radius in meters
+
+ARGUMENT:: mass
+a number/float
+
+ARGUMENT:: collisionType
+a symbol for the collision type /free, /mobile or /static
+
+returns:: an Entity
+
+INSTANCEMETHODS::
+
+METHOD:: position
+
+METHOD:: mass
+
+METHOD:: radius
+
+METHOD:: dt
+
+METHOD:: collisionType
+
+METHOD:: attach
+Attach a representation to the entity.
+
+NOTE::
+An entity is activated the moment a representation is attached. To have synchronous start of sound entities you need to add them before any visual reps. If a visual entity is attached before the sound representation the entity will synchronise with the delay needed for the visual which is usually zero.
+::
+
+METHOD:: colliding
+Returns true if the entity is colliding and false if it is not.
+
+METHOD:: detach
+Dettach a representation.
+
+METHOD:: collisionFunc
+
+Set the collision function. The function is passed in the current entity and an array containing the colliding entities.
+
+METHOD:: add
+Add the entity to the manager. Usually we let this happen automatically the moment we attach the first representation. The entity is going to be added synchronously with the first attached representation.
+
+METHOD:: world
+Get the link::Classes/EntityManager::
+
+METHOD:: detachAll
+Detach all representations.
+
+METHOD:: remove
+Remove the entity. This will remove all the attached representations.
+
+METHOD:: active
+Check if the entity is active aka. has been added to the manager.

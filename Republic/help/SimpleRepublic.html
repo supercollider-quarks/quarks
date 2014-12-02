@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #606060}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1612}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0b28c6}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd0b0b}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1713}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #737373}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #001bb9}
+span.s3 {text-decoration: underline ; color: #2b30fa}
+span.s4 {color: #000000}
+span.s5 {text-decoration: underline ; color: #0000ee}
+span.s6 {text-decoration: underline}
+span.s7 {font: 12.0px Helvetica; color: #000000}
+span.s8 {color: #2c7014}
+span.s9 {font: 9.0px Monaco}
+span.s10 {color: #1135f9}
+span.s11 {color: #737373}
+span.s12 {color: #008417}
+span.s13 {color: #cd0b0b}
+span.s14 {color: #2024c7}
+span.s15 {color: #018526}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>SimpleRepublic<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>assemble participants in network ensembles (sclang)</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1">Inherits from: <a href="../../../../../../Volumes/data/sc/SuperCollider3/build/Help/Core/Object.html"><span class="s2">Object</span></a></p>
+<p class="p3"><br></p>
+<p class="p1">Simplify synchronisation of networks. SimpleRepublic makes it easy to join and quit a running session.</p>
+<p class="p1">For server and client side support, see<span class="Apple-converted-space"> </span><b> </b><a href="Republic.html"><span class="s3">Republic</span></a></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s4"><b>See also:</b></span><span class="s2"> <a href="SC://NetAddr"><span class="s5">NetAddr</span></a></span><span class="s4">, <a href="SC://OSCresponder"><span class="s6">OSCresponder</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new(broadcastAddr, republicName)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Return a new instance, which is already listening for incoming network messages.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>broadcastAddr </b>- The NetAddr with the broadcast IP of the current network, and the default langPort of SuperCollider (57120). If the langPort is different, setup fails. Restart SC for retrieving the correct port.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>republicName<span class="Apple-converted-space"> </span></b> - The OSC command for communication. Separate sessions should have different names. Default: '/republic'<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*default</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*default_(a republic)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Get or set the default republic. Works like Server.default.</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>makeDefault</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Make a given republic the default one.</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>join(nickname)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Join the current republic under a given nickname.<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>leave (free)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Leave the current republic.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If <b>free</b> is true, free the republic's resources (default is false)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>nameIsFree(name)</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns true if the name is not in use already.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>free<span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>free the republic's resources.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Network connections are closed and addresses are removed.</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>addrs</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns a dictionary of all available (sclang) addresses.</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>send(name ... args)</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span>Send an OSC message (<b>args</b>) to the SClang of the given <b>name</b>. If the name is <b>\all</b>, the message is sent to all participants, if it is an array, the message is sent to each participant of the given name.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s4">r.send(</span><span class="s8">\alice</span><span class="s4">, </span><span class="s8">'/chat'</span><span class="s4">, </span>"alice speaking"<span class="s4">, </span>"ping ping"<span class="s4">);</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.send(</span><span class="s8">\all</span><span class="s4">, </span><span class="s8">'/chat'</span><span class="s4">, </span>"alice speaking"<span class="s4">, </span>"hi all"<span class="s4">);</span></p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>r.send([</span><span class="s8">\bob, \charlie]</span><span class="s4">, </span><span class="s8">'/chat'</span><span class="s4">, </span>"alice speaking"<span class="s4">, </span>"hi all"<span class="s4">);</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s9"><span class="Apple-tab-span">	</span></span><b>gui(parent, bounds)</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Return an EZRepublicGUI and open the window with an overview and a minimal chat (Hit tab key for sending message).</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>shareHistory</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Open the commandline history and shares it with all participants. See <a href="SC://History"><span class="s10">History</span></a>.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p11"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p12"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// make a new instance. NetAddr broadcast flag is switched to true.</p>
+<p class="p13"><span class="s4"><span class="Apple-tab-span">	</span>r = </span>SimpleRepublic<span class="s4">(</span>NetAddr<span class="s4">(</span><span class="s11">"255.255.255.255"</span><span class="s4">, </span>NetAddr<span class="s4">.langPort));</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// make a gui to monitor its state</p>
+<p class="p15"><span class="Apple-tab-span">	</span>r.gui;<span class="Apple-tab-span">	</span></p>
+<p class="p3"><br></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// individual status messages from other participants may come in<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// before you join the republic - then one can see who is already there,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// and which names are already in use.<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// if they are not renewed, they fade away.</p>
+<p class="p15"><span class="Apple-tab-span">	</span>r.broadcastAddr.sendMsg(<span class="s12">'/republic'</span>, <span class="s12">\dada</span>);</p>
+<p class="p15"><span class="Apple-tab-span">	</span>r.broadcastAddr.sendMsg(<span class="s12">'/republic'</span>, <span class="s12">\otto</span>);</p>
+<p class="p15"><span class="Apple-tab-span">	</span>r.broadcastAddr.sendMsg(<span class="s12">'/republic'</span>, <span class="s12">\alice</span>);</p>
+<p class="p3"><br></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span>r.addrs; </span>// a dictionary of all current net addresses.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p15"><span class="Apple-tab-span">	</span>r.join(<span class="s12">\alice</span>);</p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span>r.join(</span><span class="s12">\alice</span><span class="s4">);<span class="Apple-tab-span">	</span></span>// have joined already</p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span>r.join(</span><span class="s12">\bob</span><span class="s4">);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// please leave before rejoining</p>
+<p class="p15"><span class="Apple-tab-span">	</span>r.leave</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p16"><span class="s4"><span class="Apple-tab-span">	</span></span>// wait a bit..</p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span>r.join(</span><span class="s12">\alice</span><span class="s4">);<span class="Apple-tab-span">	</span></span>// please leave before rejoining</p>
+<p class="p15"><span class="Apple-tab-span">	</span>r.nickname; <span class="s13">// nickname</span></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span></span>// make some OSC responder</p>
+<p class="p15"><span class="Apple-tab-span">	</span>g = <span class="s14">OSCresponder</span>(<span class="s14">nil</span>, <span class="s12">'/chat'</span>, {<span class="s14">|t,r,msg|</span> (<span class="s11">"&gt;"</span> + msg[1] + <span class="s11">":"</span> + msg[2]).postln }).add;<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span></span>// send to one address. This may not yet exist and fail.<span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>r.addrs[<span class="s12">\alice</span>].sendMsg(<span class="s12">'/chat'</span>, <span class="s11">"alice speaking"</span>, <span class="s11">"hi all."</span>);<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span></span>// if you are not sure if a participant is absent</p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span>r.send(</span><span class="s12">\alice</span><span class="s4">, </span><span class="s12">'/chat'</span><span class="s4">, </span>"alice speaking"<span class="s4">, </span>"hi all"<span class="s4">);</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span></span>// if you want to send to everyone, use the name \all:</p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span>r.send(</span><span class="s12">\all</span><span class="s4">, </span><span class="s12">'/chat'</span><span class="s4">, </span>"alice speaking"<span class="s4">, </span>"hi all"<span class="s4">);</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span></span>// multiple names</p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span>r.send([</span><span class="s12">\alice</span><span class="s4">, </span><span class="s12">\john</span><span class="s4">], </span><span class="s12">'/chat'</span><span class="s4">, </span>"alice speaking"<span class="s4">, </span>"hi all"<span class="s4">);</span></p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span>r.send([</span><span class="s15">\alice</span><span class="s4">, </span><span class="s15">\bob</span><span class="s4">], </span><span class="s15">'/chat'</span><span class="s4">, </span>"alice speaking"<span class="s4">, </span>"hi all"<span class="s4">);</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span></span>// leave republic. you can still see who else is in.</p>
+<p class="p15"><span class="Apple-tab-span">	</span>r.leave;</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span></span>// free its resources:<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>r.free;</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s4"><span class="Apple-tab-span">	</span></span>// and maybe turn broadcasting back off if desired</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s14">NetAddr</span>.broadcastFlag = <span class="s14">false</span>;</p>
+<p class="p3"><br></p>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    span.s1 {color: #0000bf}
+    span.s2 {color: #007300}
+    span.s3 {color: #000000}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>CControl<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">A holder for basic information about a MIDI controller: controller number (or \pb for the pitch bend wheel), button number, and controller type.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">I use SuperCollider with a Novation ReMOTE 25 controller, which features three types of controls (knobs, encoders and sliders) and an x/y touchpad in addition to the standard pitch bend and modulation wheels. The knobs, encoders and sliders have buttons attached to them. CControl keeps both the controller number and button number so that the button and controller are always linked.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Type is used so that you can ask CCAllocator for a specific type of controller.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(ccnum, type)</b></p>
+<p class="p2"><br></p>
+<p class="p3">ccnum: the controller number (or \pb). If this controller has a button, ccnum should be an array: [controller number, button number].</p>
+<p class="p3">type: a symbol representing the type.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s1">CControl</span>.new([5, 2], <span class="s2">\knob</span>).dump;</p>
+<p class="p4">Instance of CControl {<span class="Apple-converted-space">    </span>(0247B6A0, gc=A4, fmt=00, flg=00, set=02)</p>
+<p class="p4"><span class="Apple-converted-space">  </span>instance variables [3]</p>
+<p class="p4"><span class="Apple-converted-space">    </span>ccnum : Integer 5</p>
+<p class="p4"><span class="Apple-converted-space">    </span>type : Symbol 'knob'</p>
+<p class="p4"><span class="Apple-converted-space">    </span>buttonnum : Integer 2</p>
+<p class="p4">}</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*newArray(ccnums, types)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Make an array of CControls.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">ccnums: an array of controller numbers. Controllers with buttons should be represented as an array within this array: [[5, 2], [6, 3]...].</p>
+<p class="p3">types: an array of controller types. If you have several controllers of the same type, you can list the type followed by as many nils as you need to fill up the rest.</p>
+<p class="p2"><br></p>
+<p class="p4">a = <span class="s1">CControl</span>.newArray([[5, 2], [6, 3], [9, 122], <span class="s2">\pb</span>], [<span class="s2">\knob</span>, <span class="s1">nil</span>, <span class="s2">\slider</span>, <span class="s2">\pb</span>]);</p>
+<p class="p4">[ a CControl, a CControl, a CControl, a CControl ]</p>
+<p class="p5"><br></p>
+<p class="p4">a.do({ <span class="s1">arg</span> c; [c.asString, c.buttonnum].postln });</p>
+<p class="p4">[ [ 5, knob ], 2 ]</p>
+<p class="p6"><span class="s3">[ [ 6, knob ], 3 ]<span class="Apple-tab-span">	</span></span>// note that type was nil for this entry; it picks up \knob from #5</p>
+<p class="p4">[ [ 9, slider ], 122 ]</p>
+<p class="p6"><span class="s3">[ [ pb, pb ], nil ]<span class="Apple-tab-span">	</span></span>// no button for the pb wheel</p>
+<p class="p2"><br></p>
+<p class="p3"><b>value<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Returns the controller number. This allows raw numbers as well as CControls to be used as arguments to MIDI control objects: whether it's a CControl or an integer, cc.value always returns the controller number.</p>
+</body>
+</html>

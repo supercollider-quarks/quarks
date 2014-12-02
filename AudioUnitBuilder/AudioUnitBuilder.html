@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a8220e}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0013bb}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #316f11}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #0013bb}
+span.s4 {color: #000000}
+span.s5 {color: #606060}
+span.s6 {color: #0000bf}
+span.s7 {color: #a8220e}
+span.s8 {color: #316f11}
+span.s9 {font: 10.0px Monaco; color: #316f11}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>AudioUnitBuilder</b></span><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>makes Audio Unit plugins<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">AudioUnitBuilder is<span class="Apple-converted-space">  </span>an utility class to build custom Audio Unit plugins using SuperColliderAU.</p>
+<p class="p1">It needs Rez to compile the resource used by the Component Manager to identify the plugin.<span class="Apple-converted-space"> </span></p>
+<p class="p1">Rez is installed by the Developer Tools so you must have them installed to use this class.</p>
+<p class="p1">It is recommended that<span class="Apple-converted-space">  </span>you get familiar with the pluginSpec.plist and the serverConfig.plist files, even if this class creates them for you.</p>
+<p class="p1">They are very simple XML files.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Example:</b></p>
+<p class="p3"><br></p>
+<p class="p4"><br></p>
+<p class="p5">( <span class="s3">var</span> name, func, specs, componentType, componentSubtype, builder;</p>
+<p class="p4"><br></p>
+<p class="p6"><span class="s4">name = </span><span class="s5">"fedDelay"</span><span class="s4">; </span>// name of your plugin</p>
+<p class="p5">func =<span class="Apple-converted-space">  </span>{</p>
+<p class="p7"><span class="s4"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></span>| tap1Time,<span class="Apple-converted-space">  </span>tap1Feedback,</p>
+<p class="p7"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span>  </span>tap2Time,<span class="Apple-converted-space">  </span>tap2Feedback,</p>
+<p class="p7"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span>  </span>tap3Time,<span class="Apple-converted-space">  </span>tap3Feedback,</p>
+<p class="p7"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span>  </span>tap4Time,<span class="Apple-converted-space">  </span>tap4Feedback|</p>
+<p class="p4"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span><span class="s3">var</span> tap1, tap2, tap3, tap4;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> local, in, amp, feedBackMix, tapArray;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> maxDelay = 3;</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span>in = <span class="s6">Mix</span>.new(<span class="s6">AudioIn</span>.ar([1,2]));<span class="s7">//Input from AU<span class="Apple-converted-space">  </span>host</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>local = <span class="s3">LocalIn</span>.ar(4);</p>
+<p class="p5"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span>feedBackMix = <span class="s3">Mix</span>.new(local);</p>
+<p class="p4"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span>tap1 = <span class="s3">AllpassN</span>.ar(<span class="Apple-converted-space">  </span>(feedBackMix * tap1Feedback) +in*(1-tap1Feedback), maxDelay, tap1Time,<span class="Apple-converted-space">  </span>0.2);</p>
+<p class="p5"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span>tap2 = <span class="s3">AllpassN</span>.ar(<span class="Apple-converted-space">  </span>(feedBackMix * tap2Feedback) +in*(1-tap2Feedback), maxDelay, tap2Time, 0.2);</p>
+<p class="p5"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span>tap3 = <span class="s3">AllpassN</span>.ar(<span class="Apple-converted-space">  </span>(feedBackMix * tap3Feedback) +in*(1-tap3Feedback), maxDelay, tap3Time, 0.2);</p>
+<p class="p5"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span>tap4 = <span class="s3">AllpassN</span>.ar(<span class="Apple-converted-space">  </span>(feedBackMix * tap4Feedback) +in*(1-tap4Feedback), maxDelay, tap4Time,<span class="Apple-converted-space">  </span>0.2);</p>
+<p class="p4"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span>tapArray = [ tap1, tap2, tap3, tap4 ];</p>
+<p class="p4"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span><span class="s3">LocalOut</span>.ar(tapArray);</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(0, <span class="s3">Mix</span>.new(tapArray));<span class="s7">//Output to AU host</span></p>
+<p class="p5">};</p>
+<p class="p4"><br></p>
+<p class="p5">specs =<span class="Apple-converted-space">  </span>#[<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>[0, 2 , <span class="s8">\Linear</span>, 0.1,<span class="s9">\Seconds</span> ] ,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[0, 0.5 , <span class="s8">\Linear</span>, 0.1,<span class="s9">\LinearGain</span> ] ,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[0, 2 , <span class="s8">\Linear</span>, 0.1,<span class="s9">\Seconds</span> ] ,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[0, 0.5 , <span class="s8">\Linear</span>, 0.1,<span class="s9">\LinearGain</span> ] ,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[0, 2 , <span class="s8">\Linear</span>, 0.1,<span class="s9">\Seconds</span> ] ,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[0, 0.5 , <span class="s8">\Linear</span>, 0.1,<span class="s9">\LinearGain</span> ] ,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[0, 2 , <span class="s8">\Linear</span>, 0.1,<span class="s9">\Seconds</span> ] ,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[0, 0.5 , <span class="s8">\Linear</span>, 0.1,<span class="s9">\LinearGain</span> ]<span class="Apple-converted-space"> </span></p>
+<p class="p5">];<span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p6">// this must be a four chars code. Either \aufx (effect) or \aumf (music effect).</p>
+<p class="p6">// music effects may receive MIDI but some applications won't recognize them</p>
+<p class="p6">// default is \aumf<span class="s4"><span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><br></p>
+<p class="p5">componentType = <span class="s8">\aufx;</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p6">// this must be a four chars code. It sould be unique in your system within all SuperColliderAU plugins.<span class="s4"><span class="Apple-tab-span">	</span></span></p>
+<p class="p5">componentSubtype = <span class="s8">\FEDL</span>;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">builder = <span class="s3">AudioUnitBuilder</span>.new(name, componentSubtype,func, specs, componentType);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">//build and install into ~/Library/Audio/Plug-Ins/Components</p>
+<p class="p5">builder.makeInstall;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">If all goes well your plugin should appear in any AudioUnits host.</p>
+<p class="p4"><br></p>
+<p class="p5">The specs array no longers creates SuperCollider Specs.<span class="Apple-converted-space"> </span></p>
+<p class="p5">Instead, it is now possible to use the mappings provided by the AudioUnits framework for parametr display.</p>
+<p class="p5">Each entry in the specs array should be an array like this: [min, max, display style, default value, unit]</p>
+<p class="p4"><br></p>
+<p class="p5">Here is the mapping for display styles:</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\Linear</span> -&gt; 0,</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\SquareRoot<span class="s4">-&gt;1,</span></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\Squared<span class="s4">-&gt;2,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\Cubed</span>-&gt;3,</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\CubeRoot<span class="s4">-&gt;4,</span></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\Exponential<span class="s4">-&gt;5,</span></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\Logarithmic<span class="s4">-&gt;6</span></p>
+<p class="p4"><br></p>
+<p class="p5">Note that these work the other way around than Spec, eg. use \Logarithmic where you would use \exp in SuperCollier.</p>
+<p class="p4"><br></p>
+<p class="p5">Here is the mapping for units:</p>
+<p class="p4"><br></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Generic</span><span class="s4">-&gt;0,<span class="Apple-tab-span">	</span></span>/* untyped value generally between 0.0 and 1.0 */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Indexed</span><span class="s4">-&gt; 1,<span class="Apple-tab-span">	</span></span>/* takes an integer value (good for menu selections) */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Boolean</span><span class="s4">-&gt; 2,<span class="Apple-tab-span">	</span></span>/* 0.0 means FALSE, non-zero means TRUE */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Percent</span><span class="s4">-&gt; 3,<span class="Apple-tab-span">	</span></span>/* usually from 0 -&gt; 100, sometimes -50 -&gt; +50 */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Seconds</span><span class="s4">-&gt; 4,<span class="Apple-tab-span">	</span></span>/* absolute or relative time */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\SampleFrames</span><span class="s4">-&gt; 5,<span class="Apple-tab-span">	</span></span>/* one sample frame equals (1.0/sampleRate) seconds */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Phase</span><span class="s4">-&gt; 6,<span class="Apple-tab-span">	</span></span>/* -180 to 180 degrees */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Rate</span><span class="s4">-&gt; 7,<span class="Apple-tab-span">	</span></span>/* rate multiplier, for playback speed, etc. (e.g. 2.0 -&gt;-&gt; twice as fast) */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Hertz</span><span class="s4">-&gt; 8,<span class="Apple-tab-span">	</span></span>/* absolute frequency/pitch in cycles/second */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Cents</span><span class="s4">-&gt; 9,<span class="Apple-tab-span">	</span></span>/* unit of relative pitch */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\RelativeSemiTones</span><span class="s4">-&gt; 10,<span class="Apple-tab-span">	</span></span>/* useful for coarse detuning */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\MIDINoteNumber</span><span class="s4">-&gt; 11,<span class="Apple-tab-span">	</span></span>/* absolute pitch as defined in the MIDI spec (exact freq may depend on tuning table) */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\MIDIController</span><span class="s4">-&gt; 12,<span class="Apple-tab-span">	</span></span>/* a generic MIDI controller value from 0 -&gt; 127 */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Decibels</span><span class="s4">-&gt; 13,<span class="Apple-tab-span">	</span></span>/* logarithmic relative gain */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\LinearGain</span><span class="s4">-&gt; 14,<span class="Apple-tab-span">	</span></span>/* linear relative gain */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Degrees</span><span class="s4">-&gt; 15,<span class="Apple-tab-span">	</span></span>/* -180 to 180 degrees, similar to phase but more general (good for 3D coord system) */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\EqualPowerCrossfade</span><span class="s4"> -&gt; 16,<span class="Apple-tab-span">	</span></span>/* 0 -&gt; 100, crossfade mix two sources according to sqrt(x) and sqrt(1.0 - x) */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\MixerFaderCurve1</span><span class="s4">-&gt; 17,<span class="Apple-tab-span">	</span></span>/* 0.0 -&gt; 1.0, pow(x, 3.0) -&gt; linear gain to simulate a reasonable mixer channel fader response */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Pan</span><span class="s4">-&gt; 18,<span class="Apple-tab-span">	</span></span>/* standard left to right mixer pan */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Meters</span><span class="s4">-&gt; 19,<span class="Apple-tab-span">	</span></span>/* distance measured in meters */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\AbsoluteCents</span><span class="s4">-&gt; 20,<span class="Apple-tab-span">	</span></span>/* absolute frequency measurement : if f is freq in hertz then */</p>
+<p class="p6"><span class="s4"><span class="Apple-converted-space">                               </span></span>/* absoluteCents -&gt; 1200 * log2(f / 440) + 6900*/</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Octaves</span><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>-&gt; 21,<span class="Apple-tab-span">	</span></span>/* octaves in relative pitch where a value of 1 is equal to 1200 cents*/</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\BPM</span><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>-&gt; 22,<span class="Apple-tab-span">	</span></span>/* beats per minute, ie tempo */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span></span><span class="s8">\Beats</span><span class="s4"> <span class="Apple-converted-space">              </span>-&gt; 23,<span class="Apple-tab-span">	</span></span>/* time relative to tempo, ie. 1.0 at 120 BPM would equal 1/2 a second */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Milliseconds</span><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>-&gt; 24,<span class="Apple-tab-span">	</span></span>/* parameter is expressed in milliseconds */</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\Ratio</span><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>-&gt; 25<span class="Apple-tab-span">	</span></span>/* for compression, expansion ratio, etc. */</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5">No check is done that you provide suitable numerical values. Use at your own risk.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #104eca; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0021e7}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #722a1c; min-height: 12.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #722a1c}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a31c0d}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a31c0d; min-height: 12.0px}
+span.s1 {color: #185dcf}
+span.s2 {text-decoration: underline ; color: #104eca}
+span.s3 {text-decoration: underline}
+span.s4 {color: #1154d9}
+span.s5 {color: #000000}
+span.s6 {color: #0000bf}
+span.s7 {color: #606060}
+span.s8 {color: #0d3fa2}
+span.s9 {color: #0033f1}
+span.s10 {color: #0026b4}
+span.s11 {color: #3b6d1f}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SVGFile</b></p>
+<p class="p2">Part of <a href="../wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">see also: <a href="SVG.html"><span class="s2">SVG</span></a></p>
+<p class="p4"><br></p>
+<p class="p2"><i>** requires DOMDocument classes v0-2 from the swiki **</i></p>
+<p class="p5"><span class="s3"><a href="http://swiki.hfbk-hamburg.de/MusicTechnology/750">http://swiki.hfbk-hamburg.de/MusicTechnology/750</a></span></p>
+<p class="p3"><br></p>
+<p class="p2">The SVGFile object contains all data of an SVG file. SVGFile can read and write SVG files and the data inside can be processed.</p>
+<p class="p3"><br></p>
+<p class="p2">SVGFiles can be viewed in:</p>
+<p class="p2"><i>FireFox 2.0</i></p>
+<p class="p2"><i>Safari (only embedded)</i></p>
+<p class="p2"><i>browsers with Adobe SVG Viewer plugin installed</i></p>
+<p class="p2"><i>...</i></p>
+<p class="p3"><br></p>
+<p class="p2">SVGFiles can be edited in:</p>
+<p class="p2"><i>Adobe Illustrator ®</i></p>
+<p class="p2"><i>InkScape (open source)</i></p>
+<p class="p2">...</p>
+<p class="p3"><br></p>
+<p class="p2">SVG is the standard vector file-type for <i>WikiPedia</i></p>
+<p class="p3"><br></p>
+<p class="p6"><b><span class="s3">creation</span></b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>SVGFile ( path, objects, width, height )</b></p>
+<p class="p2">creates a new SVGFile object</p>
+<p class="p3"><br></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>path </b>:<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>the path to the file. Nothing will be written to file until the <b>write </b>method is used.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The path can be relative and doesn't need to have a valid extension.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>objects </b>:<span class="Apple-tab-span">	</span>An <a href="SC://Array"><span class="s4">Array</span></a><span class="s4"> </span>of SVGObjects. May be empty or nil at creation</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>width, height </b>:<span class="Apple-converted-space">  </span>the width and height of the file's artboard in pixels</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p7">(</p>
+<p class="p8"><span class="s5">f = </span><span class="s6">SVGFile</span><span class="s5">( </span>"~/Desktop/test-sc"<span class="s5">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p9"><span class="Apple-tab-span">	</span>[ <span class="s6">SVGEllipse</span>( 200, 200, 75, 50, strokeColor: <span class="s7">"red"</span> ),</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span><span class="s6">SVGText</span>( <span class="s7">"circle"</span>, 200, 200, <span class="s7">"Helvetica"</span>, 24 )</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>.transform_( <span class="s6">SVGTransform</span>( <span class="s7">"skewX( -0.25 )"</span> ) ),</p>
+<p class="p9"><span class="Apple-tab-span">	</span>] );<span class="Apple-tab-span">	</span></p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p7">f.plot;</p>
+<p class="p3"><br></p>
+<p class="p2"><b>SVGFile.read ( path )</b></p>
+<p class="p2">reads an SVG file from disk</p>
+<p class="p3"><br></p>
+<p class="p9">f = <span class="s6">SVGFile</span>.read( <span class="s6">Document</span>.current.path.dirname ++ <span class="s7">"/example.svg"</span> );</p>
+<p class="p11"><br></p>
+<p class="p12">// example.svg is an SVG file created with Adobe Illustrator CS2 as SVG1.1</p>
+<p class="p12">// containing a rect, a line, a text ("test svg file") and a filled circle</p>
+<p class="p9">f.objects;</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">f.postTree; </span><span class="s7">""</span><span class="s5">; </span>// posts the tree of objects</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">f.plot; </span>// plots the file in a window ( works for SwingOSC as well )</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">f.format;<span class="Apple-converted-space">  </span></span>// returns the (reformatted) xml data</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">f.path_( </span><span class="s7">"~/Desktop/from-sc"</span><span class="s5"> ).write;<span class="Apple-converted-space">  </span></span>// write a new file to the desktop<span class="Apple-converted-space"> </span></p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s7">"~/Desktop/from-sc.svg"</span><span class="s5">.openWith( </span><span class="s7">"Firefox.app"</span><span class="s5"> ); </span>// in case you have FireFox 2.0 installed</p>
+<p class="p13"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>SVGFile.parseXML ( xml, path )</b></p>
+<p class="p2">parses raw SVG formatted XML data into a new SVGFile.</p>
+<p class="p3"><br></p>
+<p class="p7">(</p>
+<p class="p7">f = <span class="s8">SVGFile</span>.parseXML(<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="s5"><span class="Apple-tab-span">	</span></span>"&lt;svg width='300' height='250'&gt;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>&lt;rect<span class="Apple-converted-space">  </span>stroke-width='1' x='10' y='32' width='281' fill='none' height='168' stroke='red' /&gt;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>&lt;/svg&gt;"<span class="s5"> );</span></p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p7">f.plot;</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p6"><b><span class="s3">instance variables</span></b></p>
+<p class="p14"><br></p>
+<p class="p2"><b>objects</b></p>
+<p class="p2">all SVGObjects in an array. The order of the array is the order of execution; the last item is always the frontmost layer.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>path</b></p>
+<p class="p2">the file path. Can be relative and doesn't need to contain a ".svg" extension. The extension will be changed to that when <b>write</b> is called.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>width, height</b></p>
+<p class="p2">width and height</p>
+<p class="p3"><br></p>
+<p class="p2"><b>userUnit</b></p>
+<p class="p2">defaults to 'px', which is the only supported unit right now</p>
+<p class="p3"><br></p>
+<p class="p14"><br></p>
+<p class="p6"><b><span class="s3">instance methods</span></b></p>
+<p class="p14"><br></p>
+<p class="p2"><b>write ( overwrite, ask,<span class="Apple-converted-space">  </span>postFormat )</b></p>
+<p class="p2">writes the file to disk, on the path specified in the <b>path </b>variable.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>overwrite </b>: write checks if the file exists.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>true</b> : existing file will be overwritten without notice</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>false </b>(default) : behaviour depends on <b>ask</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>ask </b>: only used when overwrite == false</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>true </b>(default) : will show a <a href="../SCAlert.html"><span class="s4">SCAlert</span></a> with several renaming options</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>false </b>: will automatically generate a new name and save to that</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>postFormat </b>: if <b>true </b>(default) will post the formatted xml data as saved in the file</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If the <b>path </b>variable is nil no file will be written, but the data will still be posted</p>
+<p class="p3"><br></p>
+<p class="p7">f = <span class="s8">SVGFile</span>.read( <span class="s8">Document</span>.current.path.dirname ++ <span class="s7">"/example.svg"</span> );</p>
+<p class="p15"><span class="s5">f.write;<span class="Apple-converted-space">  </span></span>// a dialog should appear</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>read ( replaceObjects )</b></p>
+<p class="p2">reads the file specified in the <b>path </b>variable.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>replaceObjects </b>: if <b>true </b>(default) replaces the current object sin the SVGFile with the ones read from disk/</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if <b>false </b>the objects read from disk are added to the objects that are already in the <b>objects </b>array.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>parseXML ( xml, replaceObjects )</b></p>
+<p class="p2">same as creation version, but overwrites or adds to objects in the SVGFile.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>plot<span class="Apple-converted-space"> </span></b></p>
+<p class="p2">creates a <a href="SC://SCWindow"><span class="s4">SCWindow</span></a><span class="s4"> </span>and plots the file in it.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>draw</b></p>
+<p class="p2">to be used inside a drawHook or drawFunc; draws all objects in the file.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asRect</b></p>
+<p class="p2">returns a Rect derrived from the outer bounds of all objects inside the SVGFile</p>
+<p class="p3"><br></p>
+<p class="p7">f = <span class="s8">SVGFile</span>.read( <span class="s8">Document</span>.current.path.dirname ++ <span class="s7">"/example.svg"</span> );</p>
+<p class="p7">f.asRect;</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asGUICode ( penClass )</b></p>
+<p class="p2">returns a string with executable GUI-style pen code. If you copy the code to a file, enclose it in curly brackets ( { } ) and use it as a drawHook function for a GUI.window it will display the file again. Can also be called upon individual <a href="SVGObject.html"><span class="s9">SVGObject</span></a>s</p>
+<p class="p3"><br></p>
+<p class="p2"><b>asPostScript, writePostScript ( argPath )</b></p>
+<p class="p2">returns postscript code as string or writes it to a file (.eps). If no path is specified the path will be the same as that of the SVGFile, but with a ".ps" extension. Note that PostScript doesn't support transparencies, and SVGPathSegments of type 'arc' are currently not supported. For all other objects it should work as well as the SVGFile:plot function works. Reading from PostScript files is not supported, and probably never will be.</p>
+<p class="p2">PostScript files can be viewed in Preview.app (OSX) and from there converted to PDF.</p>
+<p class="p3"><br></p>
+<p class="p2"><i>Note: asPostScript and writePostScript can also be called upon regular drawHook functions, as long as they are written in GUI.pen style. This wslib feature is not yet documented (based on ColPen), but works very well.</i></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>writePDF ( argPath )</b></p>
+<p class="p2">Based on the above method SFGFile can also create PDF files. But only if the GhostScript unix executable is installed. If it's not, or not found, this method will display a message in the postwindow and create a PostScript file instead. If the GhostScript excutable (/usr/local/bin/gs) is found however, this method will first create a PostScript file in the /tmp directory, then convert it to PDF and then delete the PostScript file again. Much faster then the conversion used by Preview.app, but sometimes less solid.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p2">The GhostScript library can be downloaded at <span class="s3">http://www.ghostscript.com/awki</span></p>
+<p class="p3"><br></p>
+<p class="p7">(</p>
+<p class="p8"><span class="s5">f = </span><span class="s10">SVGFile</span><span class="s5">( </span>"~/Desktop/scribbly.svg"<span class="s5">, [ ] );</span></p>
+<p class="p7">10.do({</p>
+<p class="p7"><span class="Apple-tab-span">	</span>f.add( <span class="s10">SVGPath</span>([[<span class="s11">\M</span>, 200, 200]] ++ ({ [<span class="s11">\s</span>] ++ ({50.rand2}!4) }!10), strokeColor: <span class="s10">Color</span>.rand) );</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p7">f.plot;</p>
+<p class="p16"><span class="s5">f.writePDF; </span>// will produce a .ps file instead if GhostScript is not installed</p>
+<p class="p17"><br></p>
+<p class="p2"><i>Note: in the current version of gs (8.57) there seems to be a problem with the /findfont command, causing errors when text is involved.<span class="Apple-converted-space"> </span></i></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p6"><b><span class="s3">accessing / testing</span></b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>at ( index ), copySeries ( first, second, last ), put (index, item )</b></p>
+<p class="p2">calls .at and copySeries on <b>objects</b>, also to provide compatibility with the ..[..] syntax in SC</p>
+<p class="p3"><br></p>
+<p class="p7">f = <span class="s8">SVGFile</span>.read( <span class="s8">Document</span>.current.path.dirname ++ <span class="s7">"/example.svg"</span> );</p>
+<p class="p10"><br></p>
+<p class="p7">f[0];</p>
+<p class="p7">f[1..];</p>
+<p class="p7">f[[0,3]];</p>
+<p class="p10"><br></p>
+<p class="p2"><b>allObjects</b></p>
+<p class="p2">returns a flat array with all SVGObjects including the ones inside SVGGroups.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>hasCurves</b></p>
+<p class="p2">tests if there are any SVGPath objects in the SVGFile which contain \curveTo or \sCurveTo operations</p>
+<p class="p3"><br></p>
+<p class="p2"><b>postTree</b></p>
+<p class="p2">post a tre-like structure with all objects and groups contained in the <b>objects </b>array</p>
+<p class="p10"><br></p>
+</body>
+</html>

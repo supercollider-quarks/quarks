@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #007300}
+span.s4 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>AutoLoop</b></span><b> - record a single controller and play it back fluidly.</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// by hand, for a single controller</p>
+<p class="p3">(</p>
+<p class="p4">Ndef<span class="s2">(</span><span class="s3">\test</span><span class="s2">, { </span>|pFreq=100, pWidth=0.5, amp=0.2, pan, detune = 0.2|<span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Pan2.ar(<span class="s4">LPF</span>.ar(<span class="s4">LFPulse</span>.ar(pFreq + [detune, detune.neg], 0, pWidth).sum, 1500)<span class="s4">, pan,<span class="Apple-converted-space"> </span></span> <span class="s4">amp)</span><span class="Apple-converted-space"> </span></p>
+<p class="p3">});</p>
+<p class="p3"><span class="s4">Spec</span>.add(<span class="s3">\pFreq</span>, [2, 200, <span class="s3">\exp</span>]);</p>
+<p class="p3"><span class="s4">Spec</span>.add(<span class="s3">\pWidth</span>, [0.01, 0.5, <span class="s3">\exp</span>]);</p>
+<p class="p3"><span class="s4">Spec</span>.add(<span class="s3">\detune</span>, [0.01, 1, <span class="s3">\exp</span>]);</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s4">Ndef</span>(<span class="s3">\test</span>).play;</p>
+<p class="p5"><br></p>
+<p class="p3">c = <span class="s4">AutoLoop</span>(<span class="s3">\test</span>, (<span class="s3">\pFreq</span>: { <span class="s4">|val|</span> <span class="s4">Ndef</span>(<span class="s3">\test</span>).set(<span class="s3">\pFreq</span>, <span class="s3">\pFreq</span>.asSpec.map(val)) }));</p>
+<p class="p3">c.getFunc_({ <span class="s4">Ndef</span>(<span class="s3">\test</span>).getKeysValues([<span class="s3">\pFreq</span>])[0] });</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">n = </span>NodeProxyEditor<span class="s2">(</span>Ndef<span class="s2">(</span><span class="s3">\test</span><span class="s2">), 5);</span></p>
+<p class="p6">//n.edits[0].sliderView.mouseDownAction = {<span class="Apple-converted-space">  </span>if (c.autoIsOn) { c.autoOn(rec: true) }; };<span class="Apple-converted-space"> </span></p>
+<p class="p6">//n.edits[0].sliderView.mouseUpAction = { if (c.autoIsOn) { c.play } };<span class="Apple-converted-space"> </span></p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">CtLoop.verbose_(true);</p>
+<p class="p3">CtLoop.verbose_(false);</p>
+<p class="p3">c.startRec;</p>
+<p class="p3">c.play;</p>
+<p class="p3">c.stop;</p>
+<p class="p3">c.list.round(0.01).printcsAll; "";</p>
+<p class="p2"><br></p>
+<p class="p3">////////////<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s2">(<span class="Apple-tab-span">	</span></span>// make autoloop buttons for 5 sliders</p>
+<p class="p2"><br></p>
+<p class="p4">Ndef<span class="s2">(</span><span class="s3">\test</span><span class="s2">, { </span>|pFreq=100, pWidth=0.5, amp=0.2, pan, detune = 0.2|<span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Pan2.ar(<span class="s4">LPF</span>.ar(<span class="s4">LFPulse</span>.ar(pFreq + [detune, detune.neg], 0, pWidth).sum, 1500)<span class="s4">, pan,<span class="Apple-converted-space"> </span></span> <span class="s4">amp)</span><span class="Apple-converted-space"> </span></p>
+<p class="p3">});</p>
+<p class="p3"><span class="s4">Spec</span>.add(<span class="s3">\pFreq</span>, [2, 200, <span class="s3">\exp</span>]);</p>
+<p class="p3"><span class="s4">Spec</span>.add(<span class="s3">\pWidth</span>, [0.01, 0.5, <span class="s3">\exp</span>]);</p>
+<p class="p3"><span class="s4">Spec</span>.add(<span class="s3">\detune</span>, [0.01, 1, <span class="s3">\exp</span>]);</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">n = </span>NodeProxyEditor<span class="s2">(</span>Ndef<span class="s2">(</span><span class="s3">\test</span><span class="s2">), 5);</span></p>
+<p class="p3">n.w.bounds_(n.w.bounds.resizeBy(15,0));</p>
+<p class="p2"><br></p>
+<p class="p3">n.edits.do { <span class="s4">|ed, i|</span><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="s4">var</span> key = ed.labelView.string.asSymbol;</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span>var ctloop = </span><span class="s4">AutoLoop</span><span class="s2">((</span>\test ++ "_" ++ key).asSymbol, ()<span class="s2">);</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>ctloop.connectToProxyEditor(n, i);<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>ctloop.makeButton(n.w, <span class="s4">Rect</span>(340, i * 16 + 50, 12, 12));</p>
+<p class="p3">};</p>
+<p class="p3">)</p>
+</body>
+</html>

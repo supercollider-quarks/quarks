@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+span.s1 {color: #0000ff}
+span.s2 {color: #000000}
+span.s3 {color: #bf0000}
+span.s4 {color: #0000bf}
+span.s5 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>EqualTemperament</b></p>
+<p class="p2"><br></p>
+<p class="p3">EqualTemperament is the base class for a set of tuning classes. It implements equal temperament with any number of steps per octave.</p>
+<p class="p2"><br></p>
+<p class="p3">Currently two subclasses are implemented to support different tuning schemes: <a href="TuningOffset.html"><span class="s1">TuningOffset</span></a> and <a href="TuningRatios.html"><span class="s1">TuningRatios</span></a>. A third class, <a href="CompositeTuning.html"><span class="s1">CompositeTuning</span></a>, allows one of a set of tunings to be chosen per note (to support just intonation schemes that require different interval ratios depending on harmonic context).</p>
+<p class="p2"><br></p>
+<p class="p4"><b>*new(stepsPerOctave = 12, calibratefreq = 440, calibratenote = 69, args)</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>stepsPerOctave:</b> How many notes per octave.</p>
+<p class="p3"><b>calibratefreq:</b> What frequency to calibrate to.</p>
+<p class="p3"><b>calibratenote:</b> What note number should match the calibratefreq.</p>
+<p class="p3"><b>args:</b> Not used in this class. May be used in subclasses.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>calibrate(freq, noteindex)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Set the base frequency such that this.cps(noteindex) == freq. By default, 12ET calibrates to a=440. As such, a default EqualTemperament object behaves just like midicps. However, you can retune the EqualTemperament object to any pitch.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2">t = </span>EqualTemperament<span class="s2">();</span></p>
+<p class="p6">t.cps(69);</p>
+<p class="p6">440</p>
+<p class="p7"><br></p>
+<p class="p6">t.cps(60);</p>
+<p class="p6">261.6255653006</p>
+<p class="p7"><br></p>
+<p class="p6">60.midicps</p>
+<p class="p6">261.6255653006</p>
+<p class="p7"><br></p>
+<p class="p6">t.calibrate(415, 69);<span class="Apple-tab-span">	</span><span class="s3">// retune to a=415</span></p>
+<p class="p7"><br></p>
+<p class="p6">t.cps(60);</p>
+<p class="p6">246.76047636306</p>
+<p class="p2"><br></p>
+<p class="p4"><b>cps(noteindex)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Compute frequency in Hz for the given note index. Fractional indices are allowed (and should be allowed for all subclasses).</p>
+<p class="p2"><br></p>
+<p class="p4"><b>value(noteindex)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Delegates to .cps(noteindex), so that you can use a tuning object in place of a function that calculates cps.</p>
+<p class="p2"><br></p>
+<p class="p6">v = <span class="s4">Voicer</span>(10, <span class="s5">\default</span>);</p>
+<p class="p5"><span class="s2">k = </span>VoicerMIDISocket<span class="s2">(0, v);</span></p>
+<p class="p6">k.midiToFreq = <span class="s4">EqualTemperament</span>(12, 415, 69);</p>
+<p class="p2"><br></p>
+<p class="p3">Now you are playing your keyboard at a = 415.</p>
+<p class="p2"><br></p>
+<p class="p6">v.free;</p>
+</body>
+</html>

@@ -1,0 +1,83 @@
+TITLE:: Dejitter
+
+summary:: remove jitter from unstable control sources
+
+categories:: Utilities
+
+related:: Overviews/Modality, Classes/Debounce
+
+DESCRIPTION::
+
+Dejitter is useful for calming controls with some jitter, e.g. a joystick that toggles between two adjacent values. It will reduce control traffic, because its function will only be run when the incoming value changes are outside the current jitter range.
+More precisely, jitter range is a moving window of [hi, lo] within which changes are handled as follows:
+when the incoming value is within the current range window nothing happens;
+when the incoming value goes above hi, value and hi are set to incoming, func runs,
+and lo is pulled up to (hi - width), i.e. the range window is dragged up. The same happens conversely when value goes below lo. This way, values leading in one direction drag the range window along with full sensitivity; after a change of direction, the window has to be traversed before changes are passed on and dragging sets in again. Therefore, one should keep the width just above the average jitter to avoid "dead" zones on every direction change.
+
+code::
+
+j = Dejitter();
+j.func = { |val| "yo: %\n".postf(val) };
+j.set(0.5);
+j.dump
+j.set(0.51); // too close
+j.set(0.515); // nothing between 0.515 and 0.495
+j.set(0.51);
+j.set(0.505);
+j.set(0.50);
+j.set(0.495);
+j.set(0.494);  // ok, down
+j.set(0.493);  // further down in very small steps
+j.set(0.492);  // ok, down
+
+j.dump;
+
+// movement + jitter -
+(
+Tdef(\dejit, {
+	var val = 0.5, inc = 0.005, jit = 0.01;
+	a = List[];
+	100.do {
+		if (0.1.coin) { inc = inc.neg };
+		val = val + inc + jit.rand2;
+		if (j.set(val)) { a.add(val) } { a.add(j.value) };
+		0.05.wait;
+	};
+	defer { a.array.plot };
+}).play;
+)
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+create a new Dejitter
+
+  ARGUMENT:: width
+	the width within which to filter jitter
+
+  ARGUMENT:: func
+	the func to run when filtered value has changed
+
+  ARGUMENT:: value
+	an initial value
+
+INSTANCEMETHODS::
+
+METHOD:: value
+the current value
+
+METHOD:: func
+the func to run when filtered value has changed
+
+METHOD:: width
+the width of the moving range window
+
+METHOD:: set
+the method to set a new (jittery) value
+
+METHOD:: lo, hi
+the current lo and hi values of the moving range window
+
+private:: init

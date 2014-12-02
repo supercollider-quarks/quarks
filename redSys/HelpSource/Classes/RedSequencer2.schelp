@@ -1,0 +1,58 @@
+CLASS:: RedSequencer2
+SUMMARY:: simple sequencer
+CATEGORIES:: Red>redUGens
+RELATED:: Classes/RedSequencer
+
+DESCRIPTION::
+Just a wrapper for a link::Classes/Duty:: ugen. Use link::Classes/Duty:: for more advanced sequencing.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: array
+Values to be played in sequence or a link::Classes/Demand:: rate ugen like link::Classes/Drand::, link::Classes/Dseries:: or link::Classes/Dgeom::.
+
+ARGUMENT:: dur
+The time until a jump to the next value in array. Can also be a demand rate ugen
+
+ARGUMENT:: reset
+Makes the sequence start from the beginning.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+
+//basic usage
+a= {SinOsc.ar(RedSequencer2.ar([100, 500, 600, 700], MouseX.kr(0.01, 0.1)), 0, 0.1)}.play
+a.free
+a= {SinOsc.ar(RedSequencer2.ar([400, 500, 600], Dseq([0.2, 0.3], inf)), 0, 0.1)}.play
+a.free
+a= {SinOsc.ar(RedSequencer2.ar(Drand([100, 500, 600, 700], inf), 0.2), 0, 0.1)}.play
+a.free
+
+//array as dur expands to 2 channels
+a= {SinOsc.ar(RedSequencer2.ar([400, 500, 600], [0.2, 3]), 0, 0.1)}.play
+a.free
+
+//mouse trigger reset
+a= {SinOsc.ar(RedSequencer2.kr(Dgeom(400, 1.5, 8), 0.2, MouseX.kr>0.5), 0, 0.1)}.play
+a.free
+
+
+//more advanced example
+(
+SynthDef(\redseq2, {|out= 0|
+	var freq, dur, z, e;
+	freq= RedSequencer2.kr([200, 300, 400, 500], SinOsc.kr(0.2, 0, 0.1, 0.11));
+	dur= RedSequencer2.kr([0.5, 1, 2], SinOsc.kr(0.3, 0, 0.1, 0.11));
+	e= EnvGen.kr(Env.perc, Impulse.kr(dur));
+	z= SinOsc.ar(freq, 0, e);
+	Out.ar(out, Pan2.ar(z, 0, 0.4));
+}).send(s);
+)
+
+a= Synth(\redseq2)
+a.free
+::

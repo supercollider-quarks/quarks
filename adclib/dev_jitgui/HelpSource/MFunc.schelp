@@ -1,0 +1,342 @@
+TITLE:: MFunc
+summary:: MFunc is a proxy for multiple, modal functions.
+categories:: Modality
+related:: Classes/MFdef, Classes/JITView
+
+DESCRIPTION::
+MFunc is a proxy for multiple, modal functions which can replace a single function with easily configurable flexible behavior.
+
+It contains a dictionary of named functions (i.e. a behavior repertoire),
+an ordered list of the function names, lists of combinations of functions,
+and lists of the currently active functions and names.
+
+The MFunc's behavior can be reconfigured at any time:
+list::
+## functions can be added to or removed from the repertoire
+## known functions can be enabled and disabled individually by name
+## combinations of functions can be stored as named modes, both list::
+## additively/polyphonically,
+   i.e. the list of function names is activated in addition to any active functions,
+## or exclusively/modally,
+   i.e. a mode knows which other functions to turn off when activated.
+   ::
+::
+
+MFunc is intended for use in modal interfaces, so for example,
+when a single slider has an MFunc as its action, it can have functions that list::
+## record control values for looping,
+## log control values in a file,
+## send control values to any number of destinations, in parallel or exclusively
+## send control values by network
+## or whatever other behavior is desired.
+::
+
+This is intended to replace complicated cascades of if-statements
+(which easily accumulate when coding modal user interface functions).
+Instead of setting flags for modes and reading them in control structure logic, one can use MFuncs to switch between modes by
+a.  enabling the functions desired in the new mode,
+b. disabling the ones that should be off in the new mode, and
+c. keeping all other functions independent by leaving them untouched.
+
+code::
+
+// first a real example with a modal slider /////////////
+
+// make an empty MFunc
+m = MFunc();
+
+// slider uses the MFunc:
+e = EZSlider(nil, 300@30, "MFunc test", nil, m, 0.5);
+
+// basic tests posts slider values
+m.add(\test, { |sl| "test: %\n".postf(sl.value) });
+
+// now slider also sets Ndef(\a), using a global spec
+Ndef(\a, { |freq = 200| LFPulse.ar(freq * [1, 0.1, 0.01]).product * 0.1 }).play;
+m.add(\set_a, { |sl| Ndef(\a).set(\freq, \freq.asSpec.map(sl.value)) });
+
+// stop the posting, keep \set_a
+m.disable(\test);
+
+// slider also sets Ndef(\b)
+Ndef(\b, { |freq = 200| SinOsc.ar(freq * [1, 0.1, 0.01]).product * 0.3 }).play(1);
+// use setUni to let Ndef(\b) decide on mapping
+m.add(\set_b, { |sl| Ndef(\b).setUni(\freq, sl.value) });
+
+// change Ndef(\b)'s spec for freq - this requires JITLibExtensions
+Ndef(\b).addSpec(\freq, [200, 2000, \exp]);
+
+// turn off setting a
+m.disable(\set_a);
+
+// slider now also sets Ndef(\c)
+Ndef(\c, { |freq = 200| LFSaw.ar(freq * [1, 0.1, 0.01]).product * 0.1 }).play(0);
+m.addFirst(\set_c, { |sl| Ndef(\c).setUni(\freq, sl.value) });
+
+// range is reversed here
+Ndef(\c).addSpec(\freq, [2000, 20, \exp]);
+
+// slider movement could be recorded like this
+// (see KtlLoop quark for actual recording)
+m.addFirst(\record, { |sl| "fake rec/log: ['test', %]\n".postf(sl.value.round(0.001)) });
+// or could be sent via network
+m.addFirst(\netSend, { |sl| "fake netSend/broadcast: [\sl1, %]\n".postf(sl.value.round(0.001)) });
+
+// prepare for modal use with modeLists:
+
+// define the three set functions as a modeList.
+// this can be used for mutually turning the others off,
+m.modeLists.put(\abc, [\set_a, \set_b, \set_c]);
+
+// like this by hand:
+m.modes.put(\a_only, (on: \set_a, off: \abc));
+m.modes.put(\b_only, (on: \set_b, off: \abc));
+m.modes.put(\c_only, (on: \set_c, off: \abc));
+
+// or use the shorthand method for it:
+m.makeExclusiveModes(\abc_exc, [\set_a, \set_b, \set_c]);
+
+
+// prepare a polyphonic mode too, where a b and c are controlled
+m.modes.put(\abc, (on: \abc_exc));
+
+// now switch betwee single control destinations ...
+m.mode_(\a_only);
+m.mode_(\b_only);
+m.mode_(\c_only);
+
+// ... and polyphonic control for all three
+m.mode_(\abc);
+
+
+For more discussion of details, removing/adding variants etc. see examples below!
+
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+make a new MFunc, like this:
+code::
+(
+m = MFunc([
+	    \ada, { "ada".postln },
+	    \bob, { "bob".postln },
+	    \dada, { "dada".postln },
+		\ede, { "ede".postln }
+	],
+	modes: (
+		ada: (on: \ada, off: [\bob, \ede]),
+		bob: (on: \bob, off: \triplet)
+	),
+	initMode: \ada,
+	modeLists: (\triplet: [\ada, \bob, \ede])
+)
+)
+::
+
+
+INSTANCEMETHODS::
+
+METHOD:: activeNames
+the names of the currently active funcs
+
+METHOD:: mode
+get name of the currently active mode,
+set currently active mode by name.
+
+METHOD:: modes
+the available modes
+
+METHOD:: modeLists
+the modeLists
+
+METHOD:: funcDict
+the repertoire of all functions
+METHOD:: orderedNames
+the ordered names of all available functions
+METHOD:: activeFuncs
+the currently active functions
+
+METHOD:: value
+calls .value on the activeFuncs,
+returns a list of the return values.
+
+PRIVATE:: init, prEnable, activeIndices
+
+METHOD:: enable, disable
+enable and disable functions by name(s)
+
+METHOD:: add
+add or replace a function by name, optionally
+relative to another name.
+
+ARGUMENT:: name
+name by which to store func
+ARGUMENT:: func
+the func to store
+ARGUMENT:: active
+flag whether the func should become active
+ARGUMENT:: addAction
+optional addAction, default is \addLast
+ARGUMENT:: otherName
+addActions \addBefore, \addAfter need a name relative to which to add.
+
+METHOD:: remove
+fully remove functions by name or names
+
+METHOD:: addFirst, addLast, replace
+short methods indicating where to add or replace
+
+METHOD:: addBefore, addAfter
+short methods for adding relative to another name
+
+ARGUMENT:: name
+the name for the new func
+ARGUMENT:: func
+the new func to add
+ARGUMENT:: active
+flag whether active
+ARGUMENT:: otherName
+the name relative to which to add
+
+
+EXAMPLES::
+
+code::
+
+// make an MFunc
+(
+m = MFunc([
+	\ada, { "ada".postln },
+	\bob, { "bob".postln },
+	\dada, { "dada".postln },
+	\ede, { "ede".postln },
+])
+);
+)
+
+// its internals
+m.funcDict;               	// the repertoire
+m.orderedNames;           	// the order of evaluation of all funcs
+m.activeNames.postcs;    	// currently active names
+m.activeFuncs.postcs;"";    // currently active funcs
+m.modes;            		// modes to select from - see below
+
+// evaluates all activeFuncs,
+// returns a list of return values collected from each active function.
+m.value;
+m.disable(\ada);
+m.value;
+m.enable(\ada);
+m.value;
+
+
+
+// add and remove functions, always by name
+m.add(\cicely, { "cicely".postln }); // adds to tail
+m.orderedNames;
+m.value;
+
+m.remove(\ada);
+m.orderedNames;
+m.value;
+
+// adding at existing names keeps the name order
+m.add(\ada, {"ada*ada".postln });
+// bob remains at index 1
+m.add(\bob, {"bob*eve".postln });
+m.value;
+
+
+m.addFirst(\abacus, { "abacus" });
+m.orderedNames;            // the order of evaluation
+m.activeNames.postcs;""; // cuurently active names
+m.activeFuncs.postcs;"";    // cuurently active funcs
+m.value;
+
+m.addAfter(\alaska, { "alaska" }, true, \cicely);
+m.orderedNames;
+m.activeNames;
+m.value;
+
+m.add(\abacus, { "abacus".postln }).orderedNames;
+
+// cant enable missing functions
+m.enable(\cicada);
+
+// USING MODES:
+
+// define a mode to be used :
+m.modes.put(\ada, (on: [\ada], off: [\bob, \dada]))
+
+// mode ada switches off bob and dada,
+// leaves rest untouched
+m.mode_(\ada);
+m.activeNames
+
+// select a combination - all is there by default
+m.mode_(\all);
+m.activeNames;
+
+// bob excludes three others, abacus and cicely are untouched
+m.modes.put(\bobOnly, (on: [\bob], off: [\ada, \dada, \ede]));
+
+//
+m.mode_(\bobOnly);
+m.activeFuncs.postcs;
+m.activeNames;
+m.value;
+
+m.modes[\all];
+m.modes[\all].on; // always the full list
+
+// exclude all others, only keep \cicely
+m.modes.put(\cicelyOnly, (on: [\cicely], off: \all));
+m.mode_(\cicelyOnly);
+m.activeNames;
+m.value;
+
+// define a set of mutually exclusive functions
+m.modeLists.put(\triplet, [\ada, \bob, \dada]);
+// and exclusive modes
+m.modes.put(\ada3, (on: \ada, off: \triplet));
+m.modes.put(\bob3, (on: \bob, off: \triplet));
+m.modes.put(\dada3, (on: \dada, off: \triplet));
+
+// or do the same thing in short:
+
+m.makeExclusiveModes(
+	\triplet, // name of exclusive List
+	[\ada, \bob, \dada],  // names of the funcs
+	[\ada3, \bob3, \dada3]); // names of the modes if different from the funcs
+
+// see which funcs are on in which mode
+
+m.mode_(\all).activeNames;
+m.mode_(\ada3).activeNames;
+m.mode_(\bob3).activeNames;
+m.mode_(\dada3).activeNames;
+
+
+
+///////// MFdef is a named MFunc. /////
+
+(
+MFdef(\m,
+	    [
+		    \ada, { "ada".postln },
+		    \bob, { "bob".postln },
+		    \dada, { "dada".postln },
+		    \ede, { "ede".postln },
+]);
+)
+
+MFdef(\m) === MFdef(\m);
+MFdef(\m).value;
+
+// can't set an MFdef with new args after its creation for now;
+// maybe this should be supported later?
+MFdef(\m, []);
+::
+

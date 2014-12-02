@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWDataNode</TITLE>
+<META NAME="description" CONTENT="SWDataNode">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY >
+
+
+<H2><A NAME="SECTION00042000000000000000">
+SWDataNode</A>
+</H2>
+Base class for a data node
+
+<h3>- Example - </h3>
+
+<pre>
+// create a network client:
+y = SWDataNetworkClient.new( "192.168.0.104", "myname" );
+
+// subscribe to node 102
+y.subscribeNode( 102 );
+
+
+// -------- working with the data node:
+
+// get a reference to a DataNode in a variable:
+a = y.nodes[102];
+
+// if the node has a label, you acces it by its label:
+a = y[\minibee102];
+
+// access the values of all slots of the node:
+a.value;
+
+(
+SynthDef(\swexample,{ |out=0,amp=0.1,freq=400|
+	Out.ar( out, SinOsc.ar( freq, 0, amp ) );
+}).send(s)
+)
+
+// use it at synth instantiation:
+b = Synth.new( \swexample, [\amp,a.value ] );
+
+// set it again:
+b.set( \amp, a.value );
+
+// free the synth
+b.free;
+
+// instead of setting it manually each time, you can assign
+// an action to the data node to do this automatically:
+
+b = Synth.new( \swexample, [\amp,a.value ] );
+
+a.action= { |data| b.set( \amp, data )};
+
+// another method is to put the data automatically on a bus,
+// and grab the data from there:
+
+// reset the action:
+a.action = {};
+
+// create a bus:
+a.createBus(s);
+
+// map the amplitude of b to the bus:
+b.map( \amp, a.bus );
+
+b.free;
+
+// alternatively, you can use In.kr in your synthdef to read
+// from the bus:
+(
+SynthDef(\swexampleBus,{ |out=0,ampbus=0,freq=400|
+	Out.ar( out, SinOsc.ar( freq, 0, In.kr( ampbus, 1 ) ) );
+}).send(s)
+)
+
+b = Synth.new( \swexampleBus, [\ampbus,a.bus ] );
+
+b.free;
+
+</pre>
+
+<h3>- Methods - </h3>
+
+<P>
+<DL>
+<DT><STRONG>*new( ident, maxs )</STRONG></DT>
+	<DD>Create a new data node with ID <em>ident</em> and <em>maxs</em> slots</DD>
+
+<DT><STRONG>initSlots( )</STRONG></DT>
+	<DD>Initializes the slots for this node with <a href="SWDataSlot.html">SWDataSlots</a>.</DD>
+
+<h4>- Identifier and label - </h4>
+
+<DT><STRONG>id (  )</STRONG></DT>
+	<DD>The unique ID of the node</DD>
+<DT><STRONG>key (  )</STRONG></DT>
+	<DD>The label of the node</DD>
+<DT><STRONG>key_ (  )</STRONG></DT>
+	<DD>Set the label of the node (done internally when a mapping is added with the method <em>add</em> of SWDataNetwork)</DD>
+<DT><STRONG>type (  )</STRONG></DT>
+	<DD>The type of the node. 0 is number (float), 1 is string (see the subclass <a href="SWDataStringNode.html">SWDataStringNode</a>).</DD>
+
+<h4>- Slots and data - </h4>
+
+<DT><STRONG>slots (  )</STRONG></DT>
+	<DD>Retrieve the array of slots of the node</DD>
+<DT><STRONG>data_ ( indata )</STRONG></DT>
+	<DD>Set the data to each slot. This multiplies the <em>indata</em> with the scaling factor <code>scale</code>, sets it to the instance variable <em>data</em>, and then sets each slot with its value. Also sets the <code>lasttime</code> the data was set. Performs the <code>action</code> defined for the node (each slot will perform its own action as well).</DD>
+<DT><STRONG>data (  )</STRONG></DT>
+	<DD>An array with the data of the slots. These values do not have the further scaling and mapping which happens in the slot itself. So only the scaling of the node is applied.</DD>
+<DT><STRONG>value (  )</STRONG></DT>
+	<DD>Same as data.</DD>
+<DT><STRONG>scale (  )</STRONG></DT>
+	<DD></DD>
+<DT><STRONG>scale_ (  )</STRONG></DT>
+	<DD>The scaling factor for the data</DD>
+<DT><STRONG>setLastTime (  )</STRONG></DT>
+	<DD>sets the last time the node</DD>
+<DT><STRONG>lasttime (  )</STRONG></DT>
+	<DD>The last time the node was updated</DD>
+<DT><STRONG>elapsed (  )</STRONG></DT>
+	<DD>Get the elapsed time since the last time the node received new data.</DD>
+
+
+<h4>- Actions - </h4>
+
+<DT><STRONG>action (  )</STRONG></DT>
+	<DD></DD>
+<DT><STRONG>action_ (  )</STRONG></DT>
+	<DD>Function to be performed each time the data is set</DD>
+
+<DT><STRONG>restartAction (  )</STRONG></DT>
+	<DD></DD>
+<DT><STRONG>restartAction_ (  )</STRONG></DT>
+	<DD>Function to be performed when the elapsed time since the <code>lasttime</code> is larger than the <code>worrytime</code> of the network</DD>
+
+
+<h4>- Bus support - </h4>
+
+<DT><STRONG>createBus ( s )</STRONG></DT>
+	<DD>create a DataBus for the node on the server</DD>
+<DT><STRONG>freeBus (  )</STRONG></DT>
+	<DD>free the Bus on the server</DD>
+
+<DT><STRONG>bus_ (  )</STRONG></DT>
+	<DD>Set the bus for this node. Do this when e.g. the data for this node is generated from a control bus on the server (such as by an SWBusNode). In that case the DataBus is not used. This also means that the <em>scale</em> factor will not be used for the data on the bus.</DD>
+<DT><STRONG>bus (  )</STRONG></DT>
+	<DD>Return either the Bus object from the DataBus, or the bus that had been set for this node.</DD>
+<DT><STRONG>databus_ (  )</STRONG></DT>
+	<DD></DD>
+<DT><STRONG>databus (  )</STRONG></DT>
+	<DD>The instance of DataBus for this node. A DataBus updates the data on the control bus on a regular time interval.</DD>
+
+<DT><STRONG>kr (  )</STRONG></DT>
+	<DD>JITLib support. This creates the bus (if not already present) and provides an In.kr around the bus.</DD>
+
+
+<h4>- Debugging and monitoring - </h4>
+
+<DT><STRONG>debug_ ( onoff )</STRONG></DT>
+	<DD>print debugging messages for each slot</DD>
+
+<DT><STRONG>monitor ( onoff )</STRONG></DT>
+	<DD>Monitor the data in a plot. This uses the GNUPlot to plot the data and the interface class GNUPlot and BusMonitor, which can be found in the GNUPlot quark.</DD>
+
+<DT><STRONG>monitorClose (  )</STRONG></DT>
+	<DD>Cleans up the monitor (closing the pipe to GNUPlot).</DD>
+
+
+<DT><STRONG>busmonitor (  )</STRONG></DT>
+	<DD>Reference to the BusMonitor instance for monitoring the node.</DD>
+
+</DL>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+  HREF="SWDataSlot.html">SWDataSlot</A>
+</LI>
+<LI><I> Previous:</I> <A 
+  HREF="SWDataNetwork.html">SWDataNetwork</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<BR><HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</BODY>
+</HTML>

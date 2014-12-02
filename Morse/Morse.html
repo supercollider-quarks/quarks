@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1138.23">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #737373}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #d00c0c}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008323}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cf0c0c}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #162bc4}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #162bc4; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {text-decoration: underline}
+span.s3 {color: #1200c4}
+span.s4 {color: #162bc4}
+span.s5 {color: #000000}
+span.s6 {color: #008323}
+span.s7 {color: #737373}
+span.s8 {color: #d00c0c}
+span.s9 {color: #cf0c0c}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Morse<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>create time patterns based on Morse code.</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1">Morse looks dot-dash patterns (in MorseDict) for a given character or string<span class="Apple-converted-space"> </span></p>
+<p class="p1">and converts them to times for playback. Based on the Morse class by Hairi Vogel.</p>
+<p class="p3"><br></p>
+<p class="p1"><span class="s2">http://en.wikipedia.org/wiki/Morse_Code</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p1">based on ITU recommendation ITU-R M.1677, found here:<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="s2">http://www.godfreydykes.info/international\ morse\ code.pdf</span></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*timesFor (char)</b> get the times for a single character or symbol.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>char </b>- a single char or one of the supported special symbols.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Morse</span>.timesFor($a);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9">//<span class="Apple-tab-span">	</span>[ 0.1, 0.1, 0.3, 0.3 ]</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>dot (inside-char pause) dash (inside-word pause)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*word (word)</b> <span class="Apple-tab-span">	</span>get the time lists for a word.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>word </b>- a string without blank space.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Morse</span>.word("SOS").printAll;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>[ 0.1, 0.1, 0.1, 0.1, 0.1, 0.3 ]</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>di<span class="Apple-converted-space">        </span>di<span class="Apple-converted-space">        </span>dit</p>
+<p class="p10"><span class="Apple-tab-span">	</span>[ 0.3, 0.1, 0.3, 0.1, 0.3, 0.3 ]</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>dah <span class="Apple-converted-space">      </span>dah <span class="Apple-converted-space">      </span>dah</p>
+<p class="p10"><span class="Apple-tab-span">	</span>[ 0.1, 0.1, 0.1, 0.1, 0.1, 0.7 ]</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>di<span class="Apple-converted-space">        </span>di<span class="Apple-converted-space">        </span>dit<span class="Apple-converted-space">  </span>(pause between words)<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (text)</b><span class="Apple-tab-span">	</span>get the time lists for a string.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>text </b>- A string to be encoded, default value is "Morse Code".</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Morse</span>.new("Hello Hairi");</p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*signs (text)</b><span class="Apple-tab-span">	</span>get the dot-dash signs for a string.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Morse</span>.signs("SOS SOS");</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*verbose<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>a flag whether to post debug messages or not.</p>
+<p class="p8"><br></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The times for dots, dashes and pauses used as defaults<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>correspond to a speed of 12 words per minute.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*dot<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the time for a dot - default is 0.1</p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*dash<span class="Apple-tab-span">	</span></b>the time for a dot - default is 0.3</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*intra<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the time for an inside-char pause - default is 0.1</p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*short<span class="Apple-tab-span">	</span></b>the time for the pause between characters - default is 0.3</p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*medium<span class="Apple-tab-span">	</span></b>the time for the pause between words - default is 0.7</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b>Examples</b></p>
+<p class="p2"><br></p>
+<p class="p12"><span class="s5">z = </span>"Morse Code"<span class="s5">;<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="s4">Morse</span>(z).postln.flat;<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p13"><span class="s5"><span class="Apple-tab-span">	</span></span>// post the times for z in time:</p>
+<p class="p10">(</p>
+<p class="p10"><span class="s4">Tdef</span>(<span class="s6">\morse</span>, { <span class="s4">var</span> times;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>times = <span class="s4">Morse</span>(z).flat;<span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>(times.flat * 0.5).do({ <span class="s4">arg</span> time, i;<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>time.postln.wait;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>});</p>
+<p class="p10">}).play;</p>
+<p class="p10">)</p>
+<p class="p2"><br></p>
+<p class="p13">// example with JITLib<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p10">Ndef(\morse, { <span class="s4">arg</span> amp = 0; <span class="s4">SinOsc</span>.ar(600, 0, amp * 0.2); }).play;</p>
+<p class="p2"><br></p>
+<p class="p10">Ndef(\morse).set(<span class="s6">\amp</span>, 1);</p>
+<p class="p10">Ndef(\morse).set(<span class="s6">\amp</span>, 0);</p>
+<p class="p10">(</p>
+<p class="p14"><span class="s4">Tdef</span><span class="s5">(</span>\morse<span class="s5">, {<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s4">var</span> times;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>Ndef(\morse).play;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>times = <span class="s4">Morse</span>(z).postln.flat;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>(times.flat * 0.5).do({ <span class="s4">arg</span> time, i;<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Ndef(\morse).set(<span class="s6">\amp</span>, [ 1, 0 ].wrapAt(i));</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>time.wait;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>});</p>
+<p class="p10">});</p>
+<p class="p10">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p15"><span class="s5">z = </span><span class="s7">"Code"</span><span class="s5">;<span class="Apple-tab-span">	</span></span><span class="s4">Tdef</span><span class="s5">(</span><span class="s6">\morse</span><span class="s5">).play; </span>// z is the text to play.</p>
+<p class="p2"><br></p>
+<p class="p10"><span class="s4">Tdef</span>(<span class="s6">\morse</span>).stop.play;<span class="Apple-tab-span">	</span><span class="s8">// repeat</span></p>
+<p class="p2"><br></p>
+<p class="p12"><span class="s5">z = </span>"Cheers Hairi"<span class="s5">;</span></p>
+<p class="p10"><span class="s4">Tdef</span>(<span class="s6">\morse</span>).stop.play;<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p13"><span class="s5"><span class="Apple-tab-span">	</span></span>// gate any running sound with morse.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p10">Ndef(\src, { <span class="s4">FSinOsc</span>.ar(600, 0, 0.2); });</p>
+<p class="p2"><br></p>
+<p class="p10">Ndef(\morse).set(\amp, 0);</p>
+<p class="p2"><br></p>
+<p class="p10">Ndef(\morse, { <span class="s4">arg</span> amp = 0.0; Ndef(\src).ar * amp });</p>
+<p class="p10">Ndef(\morse).play;</p>
+<p class="p2"><br></p>
+<p class="p10">Ndef(\src).stop</p>
+<p class="p10">Ndef(\src).fadeTime = 5;</p>
+<p class="p2"><br></p>
+<p class="p13"><span class="s5"><span class="Apple-tab-span">	</span></span>// and change source while playing:<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="s5">z = </span>"Try Alternative Beeps Yourself"<span class="s5">;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">// new text.</span></p>
+<p class="p10"><span class="s4">Tdef</span>(<span class="s6">\morse</span>).stop.play;<span class="Apple-tab-span">	</span><span class="s8">// start over</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10">Ndef(\src, { <span class="s4">SinOsc</span>.ar(<span class="s4">LFNoise1</span>.kr([0.3, 0.31], 200, 800)).sum });</p>
+<p class="p2"><br></p>
+<p class="p10">Ndef(\src).play</p>
+<p class="p10">Ndef(\src).stop</p>
+<p class="p2"><br></p>
+<p class="p10"><span class="s4">Tdef</span>(<span class="s6">\morse</span>).stop.play;<span class="Apple-tab-span">	</span><span class="s9">// start over</span></p>
+<p class="p10">Ndef(\src, { LPF.ar(<span class="s4">Saw</span>.ar(<span class="s4">LFNoise1</span>.kr([0.3, 0.31], 200, 800)), 2000).sum * 0.5 });</p>
+<p class="p2"><br></p>
+<p class="p10"><span class="s4">Tdef</span>(<span class="s6">\morse</span>).stop.play;<span class="Apple-tab-span">	</span><span class="s9">// start over</span></p>
+<p class="p10">Ndef(\src, { <span class="s4">Impulse</span>.ar(<span class="s4">LFNoise1</span>.kr([0.3, 0.31], 200, 800)).sum.lag(0.001) * <span class="s4">LFPulse</span>.ar(80, 0, <span class="s4">LFNoise1</span>.kr(1, 0.5, 0.5)) });</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p10">~out.set(<span class="s6">\amp</span>, 0.2);</p>
+<p class="p10">~out.set(<span class="s6">\amp</span>, 0);</p>
+<p class="p2"><br></p>
+<p class="p10">Ndef(\src, { <span class="s4">GrayNoise</span>.ar(1, 1) * SinOsc.ar(600) * 0.2 });</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p10">(</p>
+<p class="p14"><span class="s4">Tdef</span><span class="s5">(</span>\morse<span class="s5">, {<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s4">var</span> times;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>Ndef(\morse).play;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>times = <span class="s4">Morse</span>(z).postln.flat;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>(times.flat * 0.3).do({ <span class="s4">arg</span> time, i;<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Ndef(\morse).set(<span class="s6">\amp</span>, [ 1, 0 ].wrapAt(i));</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>time.wait;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>});</p>
+<p class="p10">});</p>
+<p class="p10">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span>// Tests for MorseDict:</p>
+<p class="p10"><span class="s4">MorseDict</span>.postKeys</p>
+<p class="p16">MorseDict.keys;</p>
+<p class="p16">MorseDict<span class="s5">.strings</span></p>
+<p class="p16">MorseDict<span class="s5">.codes</span></p>
+<p class="p16">MorseDict<span class="s5">.at($a)</span></p>
+<p class="p16">MorseDict<span class="s5">.at(</span><span class="s6">'error'</span><span class="s5">)</span></p>
+<p class="p10"><span class="s4">MorseDict</span>.codes.keys.asArray.sort.postcs; <span class="s7">""</span>;</p>
+<p class="p2"><br></p>
+<p class="p10"><span class="s4">MorseDict</span>.signs($a).postcs</p>
+<p class="p10"><span class="s4">MorseDict</span>.wordSigns(<span class="s7">"abc"</span>).postcs</p>
+<p class="p10"><span class="s4">MorseDict</span>.wordSigns(<span class="s7">"abc def gh"</span>).postcs</p>
+<p class="p17"><br></p>
+<p class="p10"><span class="s4">MorseDict</span>.wordSigns(<span class="s7">"&amp;%!#"</span>).postcs</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p10"><span class="Apple-tab-span">	</span>// the test word for speed definition:</p>
+<p class="p10">Morse("Paris").flat.sum;<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p10"><span class="Apple-tab-span">	</span>// 5 secs means it could be transmitted 12 times in one minute;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>// so this speed is 12 words per minute, or WPM.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p10">(</p>
+<p class="p10">z = "Paris";</p>
+<p class="p14"><span class="s4">Tdef</span><span class="s5">(</span>\morse<span class="s5">, {<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s4">var</span> times;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>Ndef(\morse).play;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>times = <span class="s4">Morse</span>(z).postln.flat;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span>(times.flat).do({ <span class="s4">arg</span> time, i;<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Ndef(\morse).set(<span class="s6">\amp</span>, [ 1, 0 ].wrapAt(i));</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>time.wait;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>});</p>
+<p class="p10">}).play;</p>
+<p class="p10">)</p>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #0000ff}
+span.s2 {color: #001ab2}
+</style>
+</head>
+<body>
+<p class="p1"><b>MIDIBufManager</b></p>
+<p class="p2"><br></p>
+<p class="p3">Storage for as many <a href="MIDIRecBuf.html"><span class="s1">MIDIRecBuf</span></a> objects (MIDI record buffers) as needed. Also handles the starting and stopping of MIDI note recording, and presents a GUI for selection of buffers and triggering recording.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(clock, chan, ccnum)</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>clock:</b> The clock to use for measuring time while recording notes.</p>
+<p class="p3"><b>chan:</b> The MIDI channel to listen for notes. See <a href="BasicMIDISocket.html"><span class="s1">BasicMIDISocket</span></a> for a description of how to identify the MIDI channel.</p>
+<p class="p3"><b>ccnum:</b> A MIDI continuous controller may be used to select buffers. This is its controller number, or <a href="CControl.html"><span class="s1">CControl</span></a> object.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>free</b></p>
+<p class="p2"><br></p>
+<p class="p3">Release all objects belonging to this buffer manager.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Buffer access:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>add(buf)</b></p>
+<p class="p3"><b>remove(buf)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Adds or removes the given MIDIRecBuf.</p>
+<p class="p2"><br></p>
+<p class="p3">No two buffers in the same buffer manager may have the same name. The buffer manager has a Boolean flag, overwrite, that determines what to do if a buffer is added with the same name as an existing buffer. If true (the default behavior), the new buffer replaces the old one in the same index position. If false, an error is thrown.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>removeAt(index)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Remove a buffer by position (array index) or name.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>removeCurrent</b></p>
+<p class="p2"><br></p>
+<p class="p3">Remove the currently selected buffer.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>value_(index)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Set the current buffer to the buffer identified by the number or name provided.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>at(index)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Retrieve a buffer by array index or name.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>current</b></p>
+<p class="p2"><br></p>
+<p class="p3">Returns the currently selected buffer.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Recording control:</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>initRecord(properties)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Begin recording. Buffer properties may be set; see the <a href="MIDIRecBuf.html"><span class="s1">MIDIRecBuf</span></a><b> </b>help file for a description of MIDI buffer properties.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>stopRecord</b></p>
+<p class="p2"><br></p>
+<p class="p3">Complete recording, perform additional processing on the buffer and return the new buffer. The buffer is automatically saved in the currently selected buffer slot, set by value_.</p>
+<p class="p2"><br></p>
+<p class="p3">Additional processing is performed by the postRecFunc function, which belongs to the buffer manager. If you want all buffers to be quantized in a specific way, or parsed for grace notes, write the operation into this function. The function will apply to all buffers recorded in this buffer manager.</p>
+<p class="p2"><br></p>
+<p class="p5">myMBM.postRecFunc = { <span class="s2">|buf|</span> buf.quantize(0.25).parse };</p>
+</body>
+</html>

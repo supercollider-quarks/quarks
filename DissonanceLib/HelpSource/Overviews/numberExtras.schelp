@@ -1,0 +1,627 @@
+title:: number extras		
+summary:: Additions of psychoacoustic, music theoretical and harmonic math operations to numbers and collections
+
+categories:: SimpleNumber, SequenceableCollection
+related:: Overviews/DissonanceLib, Classes/Dissonance, Classes/PitchSet, Classes/HarmonicVector, Classes/HarmonicMetric
+
+Some of these added methods are used by the other classes in DissonanceLib. They are also useful for general calculations involving psychoacoustic units (barks, ERB and mels for pitch; phons and sones for loudness), music theory (simple methods for cents, representation of notes, and so on) and harmonic math. This latter means the use of ratios and harmonic measures.
+
+Ratios are handled in DissonanceLib as two element arrays. This may not be the best object oriented way of working but for now, it is more practical than working with a Ratio class, which may come later. There are methods for reducing and dividing ratios, for rationalizing decimal frequency ratios (asRatio and rationalize) and also for calculating harmonic measures (such asharmonicity, harmonic distance and gradus suavitatis). Included are also ancient Greek methods for dividing and generating proportional intervals as well as a few more recent methods by Augusto Novaro. 
+
+See link::Classes/HarmonicVector::, link::Classes/HarmonicMetric:: and link::Classes/PitchSet:: for more info regarding harmonic arithmetic. 
+
+section:: Additions to SimpleNumber
+
+	
+Some of these methods also work for collections of numbers, as implemented in SequenceableCollection
+
+subsection::cents
+Return the value of a frequency interval in cents: 
+
+code::
+500.cents(400);
+:: 
+
+equivalent to: 
+
+code::
+[500,400].cents;
+::
+		
+code::
+[ (1 + 5.sqrt)/2, 1.exp, pi].cents.round(0.1);
+::
+		
+subsection::addCents
+Add a cent value to a frequency:
+
+
+code::
+440.addCents(Array.series(12, 0, 100)).asNote;
+::
+
+subsection::cents2Frq(frq = 1)
+The same as the previous method but with a different semantic. If no frq argument is given, it is assumed one, which is semantically the same as converting from cents to frequency ratios:
+		
+code::
+[100, 150, 200, 300].cents2Frq
+::
+
+code::
+Array.series(7, 0, 100).cents2Frq(440).round(0.01).asNote
+::
+
+subsection:: asNote
+Represent a frequency as a note name and a deviation in cents from equal temperament:
+	
+code::
+440.asNote;
+550.asNote;
+[200,300,400,500].asNote;
+::
+
+subsection::asPitchBend(pb = 400)
+Calculate pitchbend value for midi playback of microtones (in cents).	
+
+pb is the pitch bend ammount (400 = +/- 1 tone, i.e. -200 to +200 cents)
+
+code::
+50.asPitchBend; // - > 16
+::
+
+subsection::asBark
+Return the bark (subjetive pitch) value of a frequency in Hz. See http://en.wikipedia.org/wiki/Bark_scale
+
+code::
+200.asBark; // -> 1.980..
+::
+
+subsection::barkToFreq
+Convert from bark to Hz interpolating from the edges of the critical bandwidth. 
+	
+code::
+(1..20).barkToFreq;
+::
+
+subsection::barkToHz
+Convert from bark to Hz using the inverse of the asBark function.
+	
+code::
+(1..20).barkToHz;
+::
+
+subsection::criticalBW
+Gives the size (in Hz) of the critical bandwidth given in barks: 
+	
+code::
+(1..10).criticalBW; // the numbers represent the width in Hz of each critical band
+::
+
+subsection::hzToErb
+Convert from Hz to ERB (Equivalent Rectangular Bandwidth, another scale based on the critical bandwidth: see http://en.wikipedia.org/wiki/Equivalent_rectangular_bandwidth). Also called the ERB-rate of a tone. It is used in the masking analysis methods of link::Classes/LoudnessModel::
+
+code::
+440.hzToErb;
+::
+
+subsection::hzToMel
+Yet another subjective pitch scale, not yet used by other classes but implemented for completeness. See http://en.wikipedia.org/wiki/Mel_scale
+	
+code::
+440.hzToMel;
+::
+	
+subsection::melToHz
+As its name imples. 
+
+code::
+100.melToHz;
+::
+
+subsection::phonToSone
+Convert from phons to sones. http://en.wikipedia.org/wiki/Phon
+
+code::
+[40,50,60,70,80,90].phonToSone
+::
+
+subsection::soneToPhon
+Convert sones to phons. http://en.wikipedia.org/wiki/Sone
+	
+code::
+Array.geom(6,1,2).soneToPhon;
+::
+
+subsection::asPhon(spl, calib = 0)
+Return the value in phons for a frequency at a certain db SPL level. Calib should be 0 if loudness is in dB SPL; a positive number if the values are in dBFS (dB's with respect to a full scale sine wave); or negative dB's relative to 0 which is the case when translating from amplitude value to dB with ampdb.
+	
+code::
+100.asPhon(100); // at 100Hz, 100dB is heard as 90.588dB
+::
+		
+subsection::asSone(spl, calib = 0)
+Return the value in sons for a frequency at a certain db SPL level. Calib should be 0 if loudness is in dB SPL; a positive number if the values are in dBFS (dB's with respect to a full scale sine wave); or negative dB's relative to 0 which is the case when translating from amplitude value to dB with ampdb.
+
+code::
+100.asSone(100); // 100Hz@100dB sounds perceptually as 33.33 sones
+::
+
+subsection::asDynamic(freq, ref = 100, fff = 3)
+Returns a symbol expressing the dynamic value (ppp-fff) of an amplitude and frequency. The number should be an amplitude; it is converted to dBFS, then phon, sone and musical dynamics. The reference value is 100, which assumes that the amplitude value of 1.0  at 1000Hz will translate to 64 sones, equivalent to fff (see also LoudnessModel). 
+	
+The upper boundary for sones is 64 because equal loudness contours stop at 100 phons. The fff argument is there to adjust how many f's correspond to 64 sones. The default of 3 is subtracted from 6, which is the  	power of two of 64, yielding 3f's. If it is less than 3, more f's will correspond to that maximum dynamic. 
+
+According to one's needs, values can go from, say,  ppppp-fffff. 
+
+Examples: 	
+
+code::
+1.0.asDynamic(100); 	// full code sine wave at 100Hz -> ff
+1.0.asDynamic(50) ; 	// only perceived as f an octave lower
+1.0.asDynamic(500) ; 	// and fff at 500Hz
+
+// descending scale of amplitudes in relation to 5000Hz:
+Array.geom(10, 1.0, 0.35).round(0.0001).postln.asDynamic(5000);  	
+// and in relation to 440Hz: 
+Array.geom(10, 1.0, 0.35).asDynamic(440);
+::
+
+For arrays of amps and freqs, you can use an array (of the same size as the amp array) for the freq arg:
+
+code::
+// a series o frequencies in relation to 0.5 amp 
+// (like the representation in musical notation of an equal loudness curve)
+({0.5}!25).asDynamic(Array.geom(25,20000, 0.75).round(0.1).postln);
+// the dynamic curve is shifted so that 64 sones is fffff: 
+({0.5}!25).asDynamic(Array.geom(25,20000, 0.75).round(0.1).postln, 100, 1);
+// random amps and freqs: 
+({rrand(0.0001, 0.1)}!8).round(0.001).postln.asDynamic(({rrand(50,2000)}!8).postln);
+::
+		
+subsection::bintodb(zeta = 8)
+Convert the magnitude of an fft bin to dB. Implemented according to a formula found in Nick Collins PhD Thesis. zeta is a calibration factor. Its value is 184262 in the formula, but from my experience, for practical purposes a value of 8 works well with SC's PV_MagBuffer and PV_FreqBuffer (see the topic link::Guides/LiveDissonance::).
+
+code::
+3.bintodb;
+3.bintodb(184262);
+3.bintodb(1)
+::
+
+subsection::asWavelength(c = 343)
+Return the wavelength size in meters of a frequency, c being the speed of sound in meters/second.The default value corresponds to the speed of sound at 20 degrees Celsius. 
+
+code::
+2400.asWavelength;
+440.asWavelength;
+100.asWavelength;
+20.asWavelength;
+::
+		
+subsection::minHarmonicityVector(pitchRange = 1, maxPrime = 11)
+Return a sequence of largest prime powers for a given harmonicity minimum. Pitch range is in octaves, ex, 0.03.minHarmonicityVector(1,13) yields [12, 8, 3, 2, 1, 1]. 
+They correspond to the powers of the harmonic space bases 2,3,5,7,11,and 13 inside an octave.
+	
+note::"A maximum powers sequence includes intervals, the harmonicities of which may lie below the minimum suggested [by this method]...The maximum power sequence guarantees merely that all intervals that are more harmonic than a given minimum [harmonicity] value can be expressed by the sequence. [12, 8, 3, 2, 1, 1] results in as many as 3,964 different intervals within one octave (!), of which only 211 are truly more harmonic than 0.03" ("Two Essays on Theory", C. Barlow (CMJ, 1987)). This is related to the highestPower method, see below.::
+	
+
+code::
+0.03.minHarmonicityVector(1,13); // -> [12, 8, 3, 2, 1, 1]
+::
+
+subsection::asRatio
+This is like SimpleNumber:asFraction but hacked in order to handle rounding errors for harmonic interpretation of periodic decimals (0.333 will be 1/3 and not 333/1000)
+	
+code::
+0.333.asRatio;	
+1.667.asRatio;	// compare with:
+1.667.asFraction;
+::		
+
+
+section::Additions to Integer
+Some of these methods are also implemented for SequenceableCollection
+
+
+subsection::indigestibility
+Barlow's indigestibility of an integer. A measure of how a number may be psychologically 'digestible' according to its prime factors. See Barlow, C, "Two Essays on Theory", Computer Music Journal, 1987.It is rarely used on its own but is the basis for the harmonicity function. 
+	
+
+Formula: 
+
+math::\xi(\mathcal{N}) = 2 \sum_{r=1}^{\infty}  \left ( \frac{ n_{r}(p_{r} -1)^2}{p_{r}} \right)
+::		   
+where: 
+
+math::
+\mathcal{N} = \prod_{r=1}^{\infty} p_{r}^{n_{r}}
+::
+
+math::
+
+\mathcal{N}, n, p \in 
+\mathbb{N}
+::
+
+math::
+
+p \in prime
+::
+
+Example: 
+code::
+// see how primes are much more indigestible than composites
+(0..31).collect(_.indigestibility).plot(\indigestibility, Rect(300,300,800,300))
+::
+
+subsection::harmonicity
+Barlow's harmonicity formula for an interval P/Q. It is the reciprocal of the sum of the indigestibilties of P and Q, with its sign indicating the interval's polarity.  
+
+math::
+\mathcal{H(P,Q)} = 
+\frac{ 
+	sgn
+		 \left  ( \xi( \mathcal{Q}) - \xi(\mathcal{P} \right )
+	)
+	}{
+		\xi(\mathcal{Q}) + \xi(\mathcal{P}) }
+::
+
+
+Negative polarity means that the interval is weighted towards its upper tone and not towards its lower tone, as with a positive value. As an example, a perfect fifth has its 'weight' on the lower tone, while its inverse, a perfect fourth, has its weight on the highest tone. The absolute value of a harmonicity is called harmonic intensity. 
+	 
+The harmonicity of 1/1 is infinite. There is a flag (clean = true) in the implementation of harmonicity for collections that is used for setting the harmonicity of 1/1 to 2 instead of NaN. 	
+
+Compare: 
+code::
+[[1,1],[2,1],[3,1],[8,1],[3,2]].harmonicity(false);
+[[1,1],[2,1],[3,1],[8,1],[3,2]].harmonicity;
+::
+	
+Examples:
+code::
+2.harmonicity(3); // harmonicity of a perfect fifth
+[3,2].harmonicity; // equivalent notation
+[[3,2],[2,3],[4,3],[3,4]].harmonicity; // notice the polarity of those intervals
+::
+
+subsection::highestPower
+Barlow's formula N(p) from "Two Essays on Theory". It is used by minHarmVector, see above. 
+	
+subsection::divisorSet
+Returns an array with all the integers that divide this. It is useful for making scales out of whole numbers. 
+See for example, Erkki Kurenniemi, "Chords, scales, and divisor lattices".
+		
+code::
+60.divisorSet; // -> [ 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60 ]
+::
+
+subsection::multiples(...primes)
+Returns an array with all the multiples of a list of primes up to this integer. 
+
+code::
+35.multiples(3,5,7); 	// -> [ 3, 5, 7, 9, 15, 21, 25, 27, 35 ]
+99.multiples(5,7,11);	// -> [ 5, 7, 11, 25, 35, 49, 55, 77 ]
+::
+
+subsection::harmonics(max)
+Returns an array with the harmonics of a number up to the highest harmonic (max).
+
+code::
+5.harmonics(48); 	// ->  [ 5, 10, 15, 20, 25, 30, 35, 40, 45 ]
+::
+
+subsection::primeHarmonics(maxPartial)
+Returns a nested array with all the harmonics up to maxPartial of a prime (this) along with all the lower primes.
+	
+code::
+17.primeHarmonics(20); // [ [ 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 ], 
+		 // [ 3, 6, 9, 12, 15, 18 ], [ 5, 10, 15, 20 ], 
+		// [ 7, 14 ], [ 11 ], [ 13 ], [ 17 ] 
+		// ]
+::		
+
+subsection::listOfHarmonics(max)
+Returns an array with the harmonics (up to max) of all the primes below (and including) this. It is equivalent to: highest_harmonic.multiples(array of primes up to this).
+
+code::
+7.listOfHarmonics(50)	
+::	
+
+
+section::Working with harmonic ratios
+These are methods implemented for SequenceableCollection. They assume arrays of two elements. 
+
+
+subsection::ratioDiv(that, reduce = true)
+Ratio division. If reduce = true,  the result will be expressed in its lowest terms.
+	
+code::
+[5,4].ratioDiv([3,2]); // -> [5, 6]
+[5,4].ratioDiv([3,2], false); 	// -> [10, 12]
+::		
+
+subsection::reduceRatio
+Reduce a ratio to its lowest terms [p,q] , where p and q are coprime. 
+	
+code::
+[20,15].reduceRatio; // -> [4,3]
+::
+
+subsection::ratioPost(char = ", ")
+Utiity for representing [p,q] ratios as p/q strings. If the array has only two elements, then the string "p/q" will be returned. If the array is an array of [p,q] it will return a string of "p1/q1 ... pn/qn" separated by char.
+
+code::
+[7,4].ratioPost;
+[ [1,1], [9,8], [81,64] ].ratioPost;
+[ [5,4], [4,3], [64,45] ].ratioPost(" -> ");
+::
+
+subsection::lcd
+The lowest common denominator to an array of [p, q] ratios.
+
+code::
+[[5,4], [4,3], [64,45]].lcd;
+[[1,1], [9,8], [81,64]].lcd;
+[[1,1], [9,8], [5,4]].lcd;
+[[1,1], [9,8], [6,5]].lcd;
+::
+		
+subsection::ratioToFreq
+Express and array of [p, q] ratios as decimal frequency ratios.
+	
+code::
+[[1,1], [9,8], [5,4]].ratioToFreq;
+::
+
+subsection::ratioDifferentiate
+Return an array of [p, q] ratios expressed as adjacency instead of absolute intervals.
+	
+code::
+[[1,1], [9,8], [5,4], [4,3], [45,32], [3,2]].ratioDifferentiate;
+::
+
+subsection::ratioToHarmonics
+Convert an array of [p, q] ratios to the harmonics that correspond to those ratios.
+	
+code::
+[[1,1], [9,8], [5,4], [4,3], [45,32], [3,2]].ratioToHarmonics;
+[[1,1], [5,4], [3,2]].ratioToHarmonics;	// a major chord corresponds to harmonics 4,5,6
+[[1,1], [6,5], [3,2]].ratioToHarmonics;	// a minor chord to harmonics 10,12,15
+[[1,1],[16,15],[6,5],[4,3],[3,2],[8,5],[9,5],[2,1]].ratioToHarmonics; 
+// Phrygian mode as a subset of the harmonic series -> [ 30, 32, 36, 40, 45, 48, 54, 60 ]
+::
+
+subsection::harmonicsToRatios
+Convert an array of integers to the ratios they represent as harmonics. 
+	
+code::
+[4,5,6,7].harmonicsToRatios; // a just seventh chord
+[24,27,30,32,36,40,45,48].harmonicsToRatios;
+//	a diatonic major scale  ->	[[1,1],[9,8],[5,4],[4,3],[3,2],[5,3],[15,8],[2,1]]
+60.divisorSet[5..].harmonicsToRatios;
+// The series of numbers mentioned in Plato's Timaeus
+// when the Demiurge harmoniously makes the World-Soul:
+		[6,8,9,12,16,18,24,27,32,36,48,54,81,108,162].harmonicsToRatios
+::
+
+subsection::subharmonicsToRatios
+Convert an array of integers to the ratios they represent as subharmonics. 	
+code::
+// For those who claim that Plato's numbers refer to slower rates of movement
+// and not to lengths of strings or pipes (see A. Barker, Harmonics in Ancient Greece, 322)
+
+[6,8,9,12,16,18,24,27,32,36,48,54,81,108,162].subharmonicsToRatios	
+::	
+
+subsection::rationalize(tolerance = 16, metric, type = \size, max)
+An important method used in Dissonance to convert an array of decimal frequency ratios into [p,q] ratios.
+	
+It first finds a rough approximation using asRatio (explained above). Then it compares from a list of intervals stored in the IntervalTable class (there are several possible tables, see its help file) and chooses the one with the highest harmonic metric within the given tolerance range.
+	
+The tolerance (in cents) defines the range within which the search for intervals will be made. 
+
+The metric is either an instance of HarmonicMetric or a symbol \harmonicity, \harmonicDistance or \gradusSuavitatis	
+If no metric is specified, \harmonicity will be used. See below for more on harmonic measures. 
+	
+The type is either \size or \prime. If \size is chosen, intervals in the table with numerator and denominator larger than max (which defaults to [729, 512]) will be ignored. If \prime is chosen, intervals containing prime factors larger than max (which defaults to 19) will be ignored. Default is \size.
+	
+Examples: 
+	
+code::
+[1.0, 1.125, 1.333, 1.37, 1.67, 1.87, 1.91, 2.1].rationalize;
+[1.0, 1.125, 1.333, 1.37, 1.67, 1.87, 1.91, 2.1].rationalize(5);	
+// notice how the second interval (a pythagorean ditone) is interpreted differently 
+// according to metric (and tolerance):	
+[1.125, 1.265625, 1.333, 1.36].rationalize(12, \harmonicDistance);	
+[1.125, 1.265625, 1.333, 1.36].rationalize(12, \harmonicity);
+[1.125, 1.265625, 1.333, 1.36].rationalize(12, \gradusSuavitatis);
+
+[1.125, 1.333, 1.37, 1.67, 1.897].rationalize(21, \harmonicity, \prime, 7);
+[1.125, 1.333, 1.37, 1.67, 1.897].rationalize(21, \gradusSuavitatis, \prime, 11);
+		
+// irrational numbers phi, e & pi, compare: 
+[(1 + 5.sqrt)/2, 1.exp, pi ].rationalize; // phi as 45/28
+[(1 + 5.sqrt)/2, 1.exp, pi ].rationalize(20);	// phi as 8/5 minor sixth
+[(1 + 5.sqrt)/2, 1.exp, pi ].rationalize(12, \harmonicDistance); // phi as 13/8, pi as 22/7
+		
+// to rationalize from cents to ratios use cents2Frq
+Array.series(13, 0, 100).cents2Frq.rationalize; //12ET
+::
+
+subsection::analyseScale(tolerance = 16, type = \size, maxNum = 729, maxDenom = 521, maxPrime = 31, post = true)
+This method is called by rationalize but can also be handy on its own if one wants to classify a set of intervals. The arguments are the same as above with the exception that the information type is not contained in a single argument max but independently in arguments maxNum, maxDenom and 
+maxPrime. Additionally, when used on its own, it outputs the inteval lists. See also ratioToName below. 
+		
+code::
+[1.0, 1.125, 1.333, 1.37, 1.67, 1.87, 1.91, 2.1].analyseScale
+::
+
+subsection::ratioToName(tolerance = 16, restore = true)
+For posting the names of ratios from a list taken from the Huygens-Fokker foundation of around 356 intervals inside and octave, which is why this method works only with octave-reduced intervals. 
+
+note::Because IntervalTable as a whole class keeps one interval list loaded at any given time, restore is a flag used to change the table back to the previously used one, as it is common to have a table that encompasses many octaves and more intervals (the default is a table, called \030, has all intervals with harmonicities higher than 0.03) but which don't contain a key for names. In this way, after posting the names, the previous tables are loaded back as they were.::
+	
+code::
+// Examples, see what is posted. May need a small font in the listener window to view properly
+[[1,1], [9,8], [4,3], [11,8], [5,3], [15,8], [48,25], [25,12]].ratioToName;
+[[1,1], [9,8], [4,3], [11,8], [5,3], [15,8], [48,25], [25,12]].ratioToName(2);
+::
+
+subsection::centsToName(tolerance = 16, restore = true)
+Same as above but the array is of cent values instead of ratios.
+	
+code::
+Array.fill(10, {|x| (x*10) + rrand(0, 50)}).centsToName;
+::	 
+
+subsection::arithmetic, harmonic, geometric means
+integerArithmetic and harmonic means
+Convert an array of integers to the ratios they represent as harmonics. 
+
+example of geometric means producing ET
+
+subsection::novaroSeries
+Augusto Novaro's arithmetic progressions generate interesting harmonic series out of divisions of an interval
+
+subsection::katapykne(n = 1)
+A method of densification of intervals used by ancient greek harmonists. See John Chalmers "Divisions of the Tetrachord", Chapter 2: "Katapyknosis consists of the division, or rather the filling-in, of a musical interval by multiplying its numerator and denominator by a set of integers of increasing magnitude ... The intervals form a series of microtones which are then recombined to produce the desired melodic division, usually composed of epimore [superparticular] ratios." n is the number of levels of this process 
+
+code::
+[5,4].katapykne;
+[5,4].katapykne(2); // 10/9 * 9/8 = 5/4
+[5,4].katapykne(5); // all those ratios divide 5/4 into epimore ratios
+[5,4].katapykne(5).product.reduceRatio;	// that intervallicaly sum to 5/4 
+::
+
+subsection::katapykne_ab(a = 1, b = 2)
+A variation on katapyknosis where the increment by factors a and b is not a simple arithmetic series .
+
+code::
+[5,4].katapykne_ab(1,2)
+[5,4].katapykne_ab(1,3)
+[5,4].katapykne_ab(2,3)
+[5,4].katapykne_ab(2,6)
+[5,4].katapykne_ab(4,2)
+[5,4].katapykne_ab(5,3)
+::		
+
+section::Harmonic measures
+There are 3 main harmonic measures implemented in DissonanceLib. See HarmonicMetric for more info.
+	
+subsection::harmonicity 
+See above for a discussion.
+
+subsection::harmonicDistance
+James Tenney's harmonic distance. Defined as a city-block metric of harmonic lattices (Discussed in his article, "John Cage and the Theory of Harmony", 1983).
+
+Formula for Harmonic Distance math::HD:: of a frequency ratio math::f_{a} / f_{b}::
+: 
+
+math:: 
+  HD(f_{a}, f_{b})  \varpropto \log{(a)} + \log{(b)} = \log{(a \cdot b)}
+::
+where: 
+math::
+a = f_{a}/\gcd{(f_{a}, f_{b})}, \: b = f_{b}/\gcd{(f_{a}, f_{b})}, \: \textrm{and} \; a \ge b
+::
+
+
+code::
+[4,3].harmonicDistance;
+[[1,1], [5,4], [3,2]].harmonicDistance; // -> [ 0, 2.995732273554, 1.7917594692281 ]
+::
+
+subsection::gradusSuavitatis
+Leonhard Euler's emphasis::Gradus Suavitatis:: (or degree of softness, 1739). Similar to Barlow's harmonicity in that it deals with divisibility (primes) as a measure of harmonic concordance, but with the disadvantage of giving the same measures for different intervals. (See John Chalmers, "Divisions of the Tetrachord").
+
+The emphasis::Gradus Suavitatis:: math::\Gamma:: of an number math::a:: is: 
+
+math::
+\Gamma{(a)} = 1 + \sum_{k = 1}^{n} e_{k}(p_{k} - 1)
+::
+where:
+math::
+a = \prod_{k=1}^{n} p_{k}^{e_{k}}
+::
+math::
+a \in \mathbb{N}
+::
+
+The emphasis::Gradus Suavitatis:: of a ratio math:: a/b:: is: 
+
+math::
+\Gamma(a \cdot b)
+::
+
+
+code::
+[4,3].gradusSuavitatis;
+[[1,1], [5,4], [3,2]].gradusSuavitatis;
+[[1,1],[9,8],[5,4],[4,3],[3,2],[5,3],[15,8],[2,1]].gradusSuavitatis;
+// -> [ 1, 8, 7, 5, 4, 7, 10, 2 ] notice how the GS of [5,4] and [5,3] is the same
+::
+
+subsection::gradusSuavitatisN
+Degree of sweetness of a scale or chord.
+
+Formula: 
+
+math::
+\Gamma(\textrm{lcm}(a_{1},a_{2},...,a_{n}))
+::
+
+where the math:: a_{1}...a_{n}:: are the notes of a chord or scale expressed as harmonics (see ratiosToHarmonics) and math::\textrm{lcm}:: is the least common multiple of those numbers. 
+
+code::
+[[1,1], [5,4], [3,2]].gradusSuavitatisN;
+[[1,1],[9,8],[5,4],[4,3],[3,2],[5,3],[15,8],[2,1]].gradusSuavitatisN;
+[4,5,6,7].harmonicsToRatios.gradusSuavitatisN;
+::
+	
+section::Convenience methods
+	
+The following are designed to work with arrays of pairs of frecuencies and intensities [freq, spl]:
+
+subsection::asPhon
+Return the values in phons of arrays of [freq, spl] pairs.
+	
+code::
+[100, 100].asPhon;
+[ [80,100], [160, 100], [320, 100], [640,100] ].asPhon;	
+::
+
+subsection::asSone
+Return the values in sones of arrays of [freq, spl] pairs.
+	
+code::
+[100, 100].asSone;
+[ [80,100], [160, 100], [320, 100], [640,100] ].asSone;	
+::
+		
+subsection::compensateMasking(gradient = 12)
+Returns the amplitudes of partials after masking. See link::Classes/LoudnessModel:: 
+
+Values are input as arrays of [spl, freq] pairs. 
+	
+code::
+[ [80,100], [160, 100], [320, 100],[640,100] ].compensateMasking.round(0.001);
+// -> [ 98.326, 98.084, 99.435, 100 ], meaning that after masking each is slightly lower 
+[ [440,100], [554.36, 100], [659.25, 100], [783.99, 100] ].compensateMasking.round(0.001);
+
+[ Array.series(3, 69, 1).midicps.round(0.001), 100!3].flop.compensateMasking.round(0.001)
+::	
+section::Other utility methods: 
+
+subsection::*primes(maxPrime = 11)
+A shortcut for making arrays of primes. 
+		
+code::
+Array.primes(11); // -> [2, 3, 5, 7, 11]
+::
+
+subsection::removeDuplicates
+A shortcut for removing duplicate items in a collection (does not preserve order). 
+
+code::
+[1,2,3,4,3,6,3,7].removeDuplicates
+::

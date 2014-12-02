@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001ab2}
+span.s1 {color: #0000ff}
+span.s2 {color: #001ab2}
+span.s3 {color: #000000}
+span.s4 {color: #36701f}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>PR(\aiBass)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Functionally, this process is almost identical to <a href="aiMel.html"><span class="s1">aiMel</span></a>. Consult that help file for details on construction and usage.</p>
+<p class="p2"><br></p>
+<p class="p3">The process adds the behavior of writing every output note into the global Library under a user-specified key. From there, harmonic processes like <a href="macroRh.html"><span class="s1">macroRh</span></a> and <a href="chTop.html"><span class="s1">chTop</span></a> can read the note and treat it as the root of the harmony they should generate.</p>
+<p class="p2"><br></p>
+<p class="p3">The key used in the library can be the same for every note if you assign a constant symbol, or if can change if you assign a pattern. A more sophisticated usage might examine the notes so that only certain notes get written into the key that the harmony players are listening to -- that is, the process could play elaborate figuration in the notes, but only pass less frequent chord changes into the harmony processes.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">BP</span><span class="s3">(</span><span class="s4">\bass</span><span class="s3">).bassID = </span><span class="s4">\roots</span><span class="s3">;<span class="Apple-tab-span">	</span></span>// every note gets saved with Library.put(\roots, note)</p>
+<p class="p5"><br></p>
+<p class="p4">// Every other note goes into \roots; the rest into \dummy (where presumably they are ignored)</p>
+<p class="p6"><span class="s2">BP</span>(<span class="s4">\bass</span>).bassID = <span class="s2">Pseq</span>([<span class="s4">\roots</span>, <span class="s4">\dummy</span>], <span class="s2">inf</span>);</p>
+<p class="p5"><br></p>
+<p class="p4">// look at velocity to determine which notes to pass</p>
+<p class="p4">// chord-change notes have a velocity higher than a given threshold</p>
+<p class="p4">// chucking syntax is also legit here</p>
+<p class="p5"><br></p>
+<p class="p7">Pfunc<span class="s3">({ </span>|event|</p>
+<p class="p6"><span class="Apple-tab-span">	</span>(event[<span class="s4">\note</span>].gate.notNil</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and: { event[<span class="s4">\note</span>].gate &gt;= 0.9 }).if({ <span class="s4">\roots</span> }, { <span class="s4">\dummy</span> });</p>
+<p class="p6">}) =&gt;.bassID <span class="s2">BP</span>(<span class="s4">\bass</span>);</p>
+</body>
+</html>

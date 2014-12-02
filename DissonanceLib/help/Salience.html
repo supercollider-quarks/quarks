@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #d61c10}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {color: #0022c6}
+span.s2 {color: #d61c10}
+span.s3 {color: #000000}
+span.s4 {color: #008318}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">//<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Salience:</p>
+<p class="p2">c = 60.midicps;<span class="Apple-converted-space"> </span></p>
+<p class="p1">//e = 71.midicps;<span class="Apple-converted-space"> </span></p>
+<p class="p2">e = c * 8/5; e.asNote</p>
+<p class="p2">f = <span class="s1">Array</span>.series(5, c, c) ++ <span class="s1">Array</span>.series(5, e, e);</p>
+<p class="p2">~vp = {<span class="s1">|freqs|</span> <span class="s1">Array</span>.series(9, 1, 2).collect{<span class="s1">|n|</span> freqs /n }}; <span class="s2">// subharmonics</span></p>
+<p class="p3"><br></p>
+<p class="p2">g = ~vp.(f)</p>
+<p class="p2">h = g.flop;</p>
+<p class="p2">h[0].asNote;</p>
+<p class="p2">w = [1, 0.5, 0.3, 0.2, 0.1, 0.06, 0.03, 0.015, 0.0075]; <span class="s2">// weights</span></p>
+<p class="p3"><br></p>
+<p class="p2">x = h.collect{<span class="s1">|hx,i|</span> hx.collect{<span class="s1">|hy, j|</span> [hy, w[j]]}};</p>
+<p class="p2">p = ();</p>
+<p class="p2">x.do{<span class="s1">|xx|</span> xx.do{<span class="s1">|xxx|</span> p[xxx[0]] = 0}};</p>
+<p class="p2">x.do{<span class="s1">|x0, i|</span> x0.do{<span class="s1">|x1, j|</span> p[x1.first] = p[x1.first] + x1.last}};</p>
+<p class="p3"><br></p>
+<p class="p2">p.keys.size</p>
+<p class="p2">p.keys.asArray.asNote</p>
+<p class="p2">d = p.values.select{<span class="s1">|h|</span> h &gt;= 0.5}.removeDuplicates;</p>
+<p class="p2">r = d.collect{<span class="s1">|dd|</span> [p.findKeyForValue(dd), dd]}</p>
+<p class="p2">r.do{<span class="s1">|rr|</span> [rr[0].asNote, rr[1]].postln}</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p1">////////////////////</p>
+<p class="p3"><br></p>
+<p class="p2">c = 60.midicps;<span class="Apple-converted-space"> </span></p>
+<p class="p2">e = c * 5/4; e.asNote</p>
+<p class="p2">g = 67.midicps;<span class="Apple-converted-space"> </span></p>
+<p class="p2">f = c.series(c * 2, c * 5) ++ e.series(e * 2, e * 5) ++ g.series(g * 2,g * 5);</p>
+<p class="p2">a = (1..5).reciprocal.ampdb + 90;</p>
+<p class="p2">~m1 = [f[0..4], a].flop.compensateMasking;</p>
+<p class="p2">~m2 = [f[5..9], a].flop.compensateMasking;</p>
+<p class="p2">~m3 = [f[10..14], a].flop.compensateMasking;</p>
+<p class="p3"><br></p>
+<p class="p2">[f[0..4], ~m1].flop.asSone.round(0.01);</p>
+<p class="p2">[f[5..9], ~m1].flop.asSone.round(0.01);</p>
+<p class="p2">[f[10..14], ~m1].flop.asSone.round(0.01);</p>
+<p class="p3"><br></p>
+<p class="p2">a = <span class="s1">Salience</span>.calc(f);</p>
+<p class="p2">a.pitches.values;</p>
+<p class="p2">a.pitches.scanFor(f[1]);</p>
+<p class="p1"><span class="s3">a.pitches[f[0]]; </span>// the salience value for the first note of the chord</p>
+<p class="p2">a.pitches.includesKey(f[0]);</p>
+<p class="p1"><span class="s3">l = a.select(1.5); </span>// shows the pitches with a salience of 1.5 or higher</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p1"><span class="s3">a.spectral; </span>// list of spectral pitches and their salience value</p>
+<p class="p1"><span class="s3">a.virtual; </span>// the list of virtual pitches and their salience</p>
+<p class="p2">a.virtual</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">z = <span class="s1">Dissonance</span>.make(<span class="s1">Array</span>.series(10, c, c), {1}!10, method:<span class="s4">\parncutt</span>)</p>
+<p class="p2">z.harmonicAnalysis</p>
+<p class="p2">z.play</p>
+</body>
+</html>

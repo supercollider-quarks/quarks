@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ff}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #5b4132; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #bf0000}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {color: #0000bf}
+span.s5 {color: #007300}
+span.s6 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>RedTrk<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a sort of timeline - slave track</b></p>
+<p class="p2"><br></p>
+<p class="p3"><br></p>
+<p class="p1">RedTrk is controlled by the master (RedMst).<span class="Apple-converted-space">  </span>each track must have a name, an item to play and an array specifying when to play (sections when active).</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">see also [<a href="RedMst.html"><span class="s3">RedMst</span></a>] [<a href="RedSeq.html"><span class="s3">RedSeq</span></a>] [<a href="RedTrk2.html"><span class="s3">RedTrk2</span></a>]</span></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new(key, item, sections)</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>create a new track.<span class="Apple-converted-space">  </span>it automatically adds itself to RedMst and gets removed with RedMst.clear.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>key</b> - a unique name for this track (Symbol).</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>item</b> - some object that responds to play and stop (eg Pbind, Tdef, Routine).</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>sections</b> - indices for which sections this track is active (Array).</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>can also be inf and then this track is always active.</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>&lt;key</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>name of track (Symbol).</p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>&lt;&gt;item</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>object to be controlled (eg Pbind, Tdef, Routine).</p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>&lt;&gt;sections</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which sections this track is active (Array).</p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>&lt;player</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>object returned by item after .play (eg Synth, EventStreamPlayer).</p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>&lt;isPlaying</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>boolean</p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6">add functions to the following if you have special classes that can not be controlled with .play/.stop,</p>
+<p class="p6">or classes that have argument keywords that does not match 'clock' and 'quant' (eg clk for clock),</p>
+<p class="p6">or classes that need to free resources on clear (eg free buffers).</p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>&lt;&gt;*playDict</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dictionary of custom play functions.<span class="Apple-converted-space">  </span>if class not found here then defaults to the .play message.</p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>&lt;&gt;*stopDict</b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dictionary of custom stop functions.<span class="Apple-converted-space">  </span>if class not found here then defaults to the .stop message.</p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>&lt;&gt;*clearDict</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>dictionary of custom clear functions.<span class="Apple-converted-space">  </span>if class not found here then defaults to the .free message.</p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6">the following methods are used by RedMst.<span class="Apple-converted-space">  </span>not very useful on their own.</p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>play</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>stop</b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>clear</b></p>
+<p class="p5"><br></p>
+<p class="p7"><br></p>
+<p class="p8">//--</p>
+<p class="p9"><span class="s4">RedMst</span>.clear</p>
+<p class="p9"><span class="s4">RedTrk</span>(<span class="s5">\t1</span>, <span class="s4">Pbind</span>(<span class="s5">\dur</span>, 0.8), [0])<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">//create a track</span></p>
+<p class="p9"><span class="s4">RedTrk</span>(<span class="s5">\t1</span>).item</p>
+<p class="p8"><span class="s4">RedTrk</span><span class="s2">(</span><span class="s5">\t1</span><span class="s2">).sections<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//when to be active</p>
+<p class="p10"><br></p>
+<p class="p9">s.boot</p>
+<p class="p8"><span class="s4">RedMst</span><span class="s2">.play<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//controller starts track on next quant beat</p>
+<p class="p10"><br></p>
+<p class="p8"><span class="s4">RedTrk</span><span class="s2">(</span><span class="s5">\t2</span><span class="s2">, </span><span class="s4">Pbind</span><span class="s2">(</span><span class="s5">\freq</span><span class="s2">, 880, </span><span class="s5">\dur</span><span class="s2">, 0.5), [0])<span class="Apple-tab-span">	</span></span>//add another track while playing</p>
+<p class="p8"><span class="s4">RedMst</span><span class="s2">.goto(0)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//have to restart section to activate new track</p>
+<p class="p10"><br></p>
+<p class="p8"><span class="s4">RedMst</span><span class="s2">.tracks<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//current tracks</p>
+<p class="p10"><br></p>
+<p class="p8"><span class="s4">RedTrk</span><span class="s2">(</span><span class="s5">\t1</span><span class="s2">, </span><span class="s4">Pbind</span><span class="s2">(</span><span class="s5">\freq</span><span class="s2">, 660), [0])<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//overwrite first track while playing</p>
+<p class="p8"><span class="s4">RedMst</span><span class="s2">.goto(0)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//have to restart section to hear the change</p>
+<p class="p10"><br></p>
+<p class="p8"><span class="s4">RedMst</span><span class="s2">.stop<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//stop all tracks on next quant beat</p>
+<p class="p8"><span class="s4">RedMst</span><span class="s2">.clear<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//remove tracks from master</p>
+<p class="p10"><br></p>
+<p class="p8">//see RedMst helpfile for more examples</p>
+</body>
+</html>

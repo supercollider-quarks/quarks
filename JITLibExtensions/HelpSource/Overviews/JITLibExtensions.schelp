@@ -1,0 +1,94 @@
+TITLE:: JITLibExtensions
+SUMMARY:: popular extensions of the Just-in-time Library
+CATEGORIES:: Libraries>JITLib
+
+JITLibExtensions include a wide range of Classes built with and for JITLib objects.
+
+BroadcastServer
+BufEnvir.superclasses
+EnvironmentRedirect.allSubclasses
+BusSynthDefs
+Client
+ClientFunc
+EnvirDispatch
+Halo
+HistoryDispatch
+LocalClient
+MasterFXGui
+NPVoicer
+NPVoicerL
+NdefPreset
+NdefPresetGui
+ParamGui
+PdefPreset
+PdefPresetGui
+PrePostUV
+PrePostView
+ProxyChain
+ProxyChainGui
+ProxyMeter
+ProxyPreset
+ProxyPresetGui
+Public
+RecNodeProxy
+RecordProxyMixer
+ResponderClientFunc
+TdefPreset
+TdefPresetGui
+
+SECTION:: Classes
+
+LIST::
+## link::Classes/CVCenter::
+::
+
+subsection:: Widgets
+LIST::
+## link::Classes/CVWidget:: - the abstract superclass of all CVWidgets. Implements some useful methods for all CVWidgets
+## link::Classes/CVWidgetKnob:: - a widget containing a knob to control one parameter at a time
+## link::Classes/CVWidget2D:: - a widget containing a 2D-slider to control two parameters at a time
+::
+
+subsection:: Utilities
+LIST::
+## link::Classes/CVCenterPreferences:: - save settings for CVCenter resp. CVWidgets to disk
+## link::Classes/OSCCommands:: - scan incoming OSC and save command-names to disk for later re-use
+## link::Classes/CVCenterControllersMonitor::
+::
+
+subsection:: Helpers
+LIST::
+## link::Classes/CVWidgetEditor::
+## link::Classes/CVWidgetSpecsEditor::
+::
+
+subsection:: Extensions to other Classes
+LIST::
+## link::Classes/Synth#-cvcGui::
+## link::Classes/NodeProxy#-cvcGui::
+::
+
+EXAMPLES::
+code::
+Ndef(\sawTest, { |damping| SinOsc.ar(damping * VarSaw.ar(\sawFreq.kr([100, 101]))).tanh * \amp.kr(0.5) });
+
+// Ndefs don't have metadata but you may add some specs ahead from creation
+Spec.add(\sawFreq, \freq);
+Spec.add(\damping, #[200, 20000, \exp, 0.0, 1000, " Hz"]);
+
+// create the GUI
+// have a look at the NodeProxy helpfile to see all possible arguments for cvcGui
+Ndef(\sawTest).cvcGui;
+
+// play the Ndef (turn the knobs if you don't hear anything immediately)
+Server.default.waitForBoot{ Ndef(\sawTest).play };
+
+// maybe play around with specs a bit...
+#[lo, hi].do(CVCenter.cvWidgets[\sawFreq].setSpec(#[20, 220, \exp], _);
+CVCenter.cvWidgets[\sawFreq].setSpec(#[17, 170, \exp], \lo);
+
+// clean up
+CVCenter.removeAll;
+Ndef(\sawTest).clear(10);
+::
+

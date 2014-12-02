@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.25">
+<style type="text/css">
+p.p3 {margin: 0.0px 0.0px 16.0px 0.0px; font: 16.0px Times}
+p.p4 {margin: 0.0px 0.0px 18.0px 0.0px; font: 19.0px Times}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; color: #b22222}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; color: #b8860b}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; min-height: 16.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times; min-height: 19.0px}
+p.p12 {margin: 0.0px 0.0px 8.0px 0.0px; font: 16.0px Times; min-height: 19.0px}
+span.s1 {font: 16.0px 'Lucida Grande'}
+span.s2 {color: #228b22}
+span.s3 {color: #bc8f8f}
+span.s4 {color: #3300d3}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<h1 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 32.0px Times"><b>GNUPlot</b></h1>
+<h2 style="margin: 0.0px 0.0px 19.0px 0.0px; font: 24.0px Times"><b>class to interface GNUPlot from SuperCollider</b></h2>
+<p class="p3"><i>Inherits from:</i>: <b>Object</b></p>
+<p class="p3">This class allows you to use the powerful plotting capabilities of GNUPlot from within SuperCollider.<span class="s1"><br>
+</span><b>You need to have GNUPlot installed in order to be able to use this class!</b></p>
+<h3 style="margin: 0.0px 0.0px 18.0px 0.0px; font: 19.0px Times"><b>Creation / Class Methods</b></h3>
+<p class="p5"><b>*new</b></p>
+<p class="p5">Create a new instance of GNUPlot.</p>
+<p class="p5"><b>*plot(data)</b></p>
+<p class="p5">Plots the data array with GNUPlot.<span class="Apple-converted-space"> </span></p>
+<p class="p5"><i>Note, you can call </i><b><i>.gnuplot</i></b><i> directly on an ArrayedCollection to plot it with this method.</i></p>
+<p class="p3"><b>- Example -</b></p>
+<p class="p6">// plot example</p>
+<p class="p7"><span class="s2">GNUPlot</span>.plot( [0,2,3,2,1,0.4] );</p>
+<p class="p6">// using the Collection extensions you can also directly use gnuplot on the</p>
+<p class="p8">array:</p>
+<p class="p7">[0,2,3,2,1,0.4].gnuplot;</p>
+<p class="p5"><b>*plotenv(env)</b></p>
+<p class="p5">Plot an envelope.<span class="Apple-converted-space"> </span></p>
+<p class="p5"><i>Note, you can call </i><b><i>.gnuplot</i></b><i> directly on an Env to plot it with this method</i></p>
+<p class="p7"><span class="s2">Env</span>.perc.gnuplot;</p>
+<p class="p7"><span class="s2">Env</span>.perc(0.1, 1.5).gnuplot;</p>
+<p class="p7"><span class="s2">Env</span>.adsr.gnuplot;</p>
+<h4 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 16.0px Times"><b>Note for Mac users:</b></h4>
+<p class="p3">GNUPlot can display its plots in various ways - this quark assumes that you want to plot in Aquaterm. If you want to send plots to X11 instead, run code similar to:</p>
+<p class="p6">// for mac users who want X:</p>
+<p class="p7"><span class="s2">GNUPlot</span>.initCode<span class="Apple-converted-space">    </span>= <span class="s2">GNUPlot</span>.initCode ++ <span class="s3">"\n set term x11 \n"</span>;</p>
+<p class="p7"><span class="s2">GNUPlot</span>.gnuplotpath = <span class="s2">GNUPlot</span>.pathToXLauncher.quote + <span class="s3">"/opt/local/bin/gnuplot"</span>;</p>
+<h3 style="margin: 0.0px 0.0px 18.0px 0.0px; font: 19.0px Times"><b>Accessing Instance and Class Variables</b></h3>
+<p class="p5"><b>start</b></p>
+<p class="p5">Start GNUPlot and creates a pipe to it. (called automatically when creating a new instance.)</p>
+<p class="p5"><b>stop</b></p>
+<p class="p5">Quit GNUPlot and close the pipe. Since GNUPlot is opened in "persist" mode, the window will not disappear, you will have to close it manually.</p>
+<h4 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 16.0px Times"><b>- Basic plotting -</b></h4>
+<p class="p5"><b>plot(data,ns,label)</b></p>
+<p class="p5">Plots the data, assuming ns rows, and using the label. This method uses a temporary file to pass on the data to GNUPlot.</p>
+<p class="p5"><i>data</i></p>
+<p class="p5">The data to plot.</p>
+<p class="p5"><i>ns</i></p>
+<p class="p5">Number of rows. Each row will be plotted as a separate graph line.</p>
+<p class="p5"><i>label</i></p>
+<p class="p5">Labels to use.</p>
+<p class="p3"><b>- Example -</b></p>
+<p class="p6">// create an instance and plot data:</p>
+<p class="p7">g = <span class="s2">GNUPlot</span>.new;</p>
+<p class="p7">g.plot( [0,2,3,2,1,0.4] );</p>
+<p class="p10"><br></p>
+<p class="p6">// plot several sets of data in one figure:</p>
+<p class="p7">g.plot( [ [0,2,3,2,1,0.4], [2,1,2,-2,0.4,0.2] ], 2 )</p>
+<p class="p7">g.stop</p>
+<p class="p5"><b>replot(data,ns,label)</b></p>
+<p class="p5">Add data to previous data and plot it.</p>
+<p class="p5"><i>data</i></p>
+<p class="p5">New data to be added.</p>
+<p class="p5"><i>ns</i></p>
+<p class="p5">Number of rows in the data (default 1)</p>
+<p class="p5"><i>label</i></p>
+<p class="p5">Label to use.</p>
+<p class="p5"><b>plotd(data,ns,label)</b></p>
+<p class="p5">Plots the data, assuming ns rows, and using the label. This method pipes the data directly to GNUPlot, without using a temporary file.</p>
+<p class="p5"><i>data</i></p>
+<p class="p5">The data to plot.</p>
+<p class="p5"><i>ns</i></p>
+<p class="p5">Number of rows. Each row will be plotted as a separate graph line.</p>
+<p class="p5"><i>label</i></p>
+<p class="p5">Labels to use.</p>
+<p class="p5"><b>write(path, term, termopts)</b></p>
+<p class="p5">Write the current plot to file. By default this attempts to write a PDF to the specified path. The optional "term" argument can be used to set a different output type (such as "png" or "eps"), depending on the output types supported by your gnuplot installation.</p>
+<p class="p5"><b>multiplot(onoff)</b></p>
+<p class="p5">Sets and unsets the multiplot option in GNUPlot.</p>
+<p class="p5"><b>setXrange(min,max)</b></p>
+<p class="p5">Sets the x-range for the data. This turns autoscaling off.</p>
+<p class="p5"><b>autoscaleX</b></p>
+<p class="p5">Turn on autoscaling for the x-axis</p>
+<p class="p5"><b>setYrange(min,max)</b></p>
+<p class="p5">Sets the y-range for the data. This turns autoscaling off.</p>
+<p class="p5"><b>autoscaleY</b></p>
+<p class="p5">Turn on autoscaling for the y-axis.</p>
+<h4 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 16.0px Times"><b>- Histogram plotting -</b></h4>
+<p class="p5"><b>plotdHisto(data,ns,label,verb)</b></p>
+<p class="p5">Plots the data in a histogram, assuming ns rows, and using the label. This method pipes the data directly to GNUPlot, without using a temporary file.</p>
+<p class="p5"><i>verb</i></p>
+<p class="p5">Whether or not to use verbosity while creating the histogram.</p>
+<p class="p5"><b>histoSteps</b></p>
+<p class="p11"><br></p>
+<p class="p5"><b>histoSteps_</b></p>
+<p class="p5">The number of bins to use in the histogram</p>
+<p class="p5"><b>histoMin</b></p>
+<p class="p11"><br></p>
+<p class="p5"><b>histoMin_</b></p>
+<p class="p5">Minimum bin value for the histogram</p>
+<p class="p5"><b>histoMax</b></p>
+<p class="p11"><br></p>
+<p class="p5"><b>histoMax_</b></p>
+<p class="p5">Maximum bin value for the histogram</p>
+<h4 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 16.0px Times"><b>- 3D and scatter -</b></h4>
+<p class="p5"><b>plot3( data, label )</b></p>
+<p class="p5">Creates a 3D plot.</p>
+<p class="p7">g = <span class="s2">GNUPlot</span>.new;</p>
+<p class="p7">g.plot3([[0,0,0], [1,0,0], [1,1,1], [2,1,2], [3,3,2], [4,5,4]], "wiggle");</p>
+<p class="p7">g.plot3({<span class="Apple-converted-space">  </span>{ 1.0.bilinrand<span class="Apple-converted-space">  </span>}.dup(3)<span class="Apple-converted-space">  </span>}.dup(1000), "hairball");</p>
+<p class="p10"><br></p>
+<p class="p7">// more plot3</p>
+<p class="p7">(</p>
+<p class="p7">h = GNUPlot.new;</p>
+<p class="p7">t = 2*pi*Array.series(1001, 0, 1/1000);</p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p7">( // helix</p>
+<p class="p7">var f1 = 10;</p>
+<p class="p7">var f2 = 10;</p>
+<p class="p7">d = [sin(f1*t), cos(f2*t), t].flop;</p>
+<p class="p7">h.plot3(d, \spiral)</p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p7">( // wound wiggle</p>
+<p class="p7">var f1 = 2;</p>
+<p class="p7">var f2 = 3;</p>
+<p class="p7">d = [sin(f1*t), cos(f2*t), t].flop;</p>
+<p class="p7">h.plot3(d, 'wiggly spiral')</p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p7">( // damped helix</p>
+<p class="p7">var f1 = 10;</p>
+<p class="p7">var f2 = 10;</p>
+<p class="p7">d = [sin(f1*t)*exp(t.neg), cos(f2*t)*exp(t.neg), t].flop;</p>
+<p class="p7">h.plot3(d, \damped)</p>
+<p class="p7">)</p>
+<p class="p5"><b>surf3( data, label, hidden3d, pm3d )</b></p>
+<p class="p5">Creates a 3D surface, where the input data is a 2D grid of 3D points. "hidden3d" (default=true) specifies whether "hidden line removal" is used.</p>
+<p class="p7">g = <span class="s2">GNUPlot</span>.new;</p>
+<p class="p10"><br></p>
+<p class="p7">g.surf3([[[0,0.5,0], [ 0.5,0,0], [ 1,-0.5,0]], <span class="Apple-converted-space">  </span>[[ 0.5,1,0], [ 1,0.5,0], [ 1.5,0,0]], [[ 1,1.5,0.5], [ 1.5,1,0.5], [ 2,0.5,0.5]]], "deckchair", pm3d: false);</p>
+<p class="p10"><br></p>
+<p class="p7">~xyz = (-10, -9.5 .. 10).collect{|x| (-10, -9.5 .. 10).collect{|y|<span class="Apple-converted-space">  </span>[x,y,sin(x+y)] } }</p>
+<p class="p7">g.surf3(~xyz, "undulathon", pm3d: true);</p>
+<p class="p10"><br></p>
+<p class="p5"><b>scatter( data, label )</b></p>
+<p class="p5">Creates a scatter plot. <b>data</b> can be an array of 2D co-ordinates (e.g. [[x0,y0],[x1,y1]...]) or an array of 3D co-ordinates. You can plot multiple datasets on one graph, by providing <b>data</b> as an array of arrays of co-ordinates (in which case <b>label</b> could either be one label or an array of labels).</p>
+<p class="p7">h = GNUPlot.new;</p>
+<p class="p10"><br></p>
+<p class="p7">// some 2d random distributions</p>
+<p class="p7">(</p>
+<p class="p7">d = {[1.0.sum3rand, exprand(0.001, 1.0)]}.dup(1000);</p>
+<p class="p7">h.scatter(d, 'y: exp/x: qgauss')</p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p7">(</p>
+<p class="p7">d = {{1.0.sum3rand}.dup(2)}.dup(1000);</p>
+<p class="p7">h.scatter(d, '2d quasi-gaussian')</p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p7">// 3d</p>
+<p class="p7">(</p>
+<p class="p7">d = {{1.0.sum3rand}.dup(3)}.dup(1000);</p>
+<p class="p7">h.scatter(d, '3d quasi-gaussian')</p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p7">// walking-stick map (see Henon map)</p>
+<p class="p7">(</p>
+<p class="p7">var gam, del, eps, ab, numit, wsm, res;</p>
+<p class="p7">wsm = {|gamma, delta, eps, ab|</p>
+<p class="p7"><span class="Apple-tab-span">	</span>var anp1, bnp1;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>#a, b = ab;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>anp1 = gamma * a * (1 - a) - b;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>bnp1 = (delta * b - eps) * (1 - (2 * a));</p>
+<p class="p7"><span class="Apple-tab-span">	</span>[anp1, bnp1]</p>
+<p class="p7">};</p>
+<p class="p10"><br></p>
+<p class="p7">gam = 3.8;</p>
+<p class="p7">del = 0.4;</p>
+<p class="p7">eps = 0.02;</p>
+<p class="p7">numit = 1000;</p>
+<p class="p7">res = Array.new(numit+1);</p>
+<p class="p7">res = res.add([0.8, 0.00001]);</p>
+<p class="p7">numit.do {|i|</p>
+<p class="p7"><span class="Apple-tab-span">	</span>res = res.add(wsm.value(gam, del, eps, res[i]));</p>
+<p class="p7">};</p>
+<p class="p7">h.scatter(res, \wsm);</p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p7">// Multiple datasets on one 3D scatter plot:</p>
+<p class="p7">(</p>
+<p class="p7">// We generate random clouds around three pre-defined centroids</p>
+<p class="p7">d = [[2,3,2], [-1,0,0], [0,5,0]].collect{|centroid|<span class="Apple-converted-space">  </span>{centroid + {2.5.sum3rand}.dup(3)}.dup(500) };</p>
+<p class="p7">h.scatter(d, ["fish", "hearts", "dolphins"]);</p>
+<p class="p7">)</p>
+<h4 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 16.0px Times"><b>- Data monitoring -</b></h4>
+<p class="p5"><b>monitor(updateF,dt,length,ns,skip)</b></p>
+<p class="p5">Creates a monitor for data.</p>
+<p class="p5"><i>Note: See also </i><b><i>BusMonitor</i></b><i>. There is a convenience method for Bus called </i><b><i>monitor</i></b><i> to monitor a control bus using this method.</i></p>
+<p class="p5"><i>length</i></p>
+<p class="p5">the number of data points to plot</p>
+<p class="p5"><i>dt</i></p>
+<p class="p5">time interval between updates</p>
+<p class="p5"><i>ns</i></p>
+<p class="p5">the number of rows in the data</p>
+<p class="p5"><i>updateF</i></p>
+<p class="p5">update function; this should return the additional data to be plotted.</p>
+<p class="p5"><i>skip</i></p>
+<p class="p5">how many updates are in between plots. If skip is 1 then every dt there is a new plot. If skip=10, then every ten updates of the data, it is actually plotted. This allows you to keep the graphical update rate lower than the data update rate.</p>
+<p class="p5"><b>startMonitor</b></p>
+<p class="p5">Start the monitor (either a regular monitor or histogram monitor)</p>
+<p class="p5"><b>monitorReset</b></p>
+<p class="p5">Reset the data of the monitor.</p>
+<p class="p5"><b>stopMonitor</b></p>
+<p class="p5">Stop the monitor</p>
+<p class="p5"><b>monitorHisto(updateF,dt,length,ns,skip)</b></p>
+<p class="p5">Creates a histogram monitor for data. Arguments as in <b>monitor</b>, but it also observes the histoStep, histoMin and histoMax variables.</p>
+<p class="p5"><i>Note: See also </i><b><i>BusHistoMonitor</i></b><i>. There is a convenience method for Bus called </i><b><i>monitorHisto</i></b><i> to monitor a control bus using this method.</i></p>
+<h4 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 16.0px Times"><b>- Direct interaction with GNUPlot -</b></h4>
+<p class="p5"><b>sendCmd</b></p>
+<p class="p5">Send an arbitrary gnuplot command to the gnuplot session. This should be something gnuplot understands.</p>
+<p class="p7">g.sendCmd("set title \"Ooo look at this\"");</p>
+<p class="p7">g.sendCmd("replot");</p>
+<h3 style="margin: 0.0px 0.0px 18.0px 0.0px; font: 19.0px Times"><b>Monitor example</b></h3>
+<p class="p7">g = <span class="s2">GNUPlot</span>.new;</p>
+<p class="p6">// one channel of random value data, at 0.3 seconds interval</p>
+<p class="p7">g.monitor( { 1.0.rand; }, 0.3, 20, 1 );<span class="Apple-converted-space"> </span></p>
+<p class="p7">g.startMonitor;</p>
+<p class="p7">g.stopMonitor;</p>
+<p class="p6">// monitor two values in one plot:</p>
+<p class="p7">g.monitor( { [1.0.rand, 2.0.rand] }, 0.3, 20, 2 );</p>
+<p class="p7">g.startMonitor;</p>
+<p class="p7">g.stopMonitor;</p>
+<p class="p6">// clean up:</p>
+<p class="p7">g.stop;</p>
+<p class="p10"><br></p>
+<p class="p4"><b>AbstractFunction support</b></p>
+<p class="p7">Allows to plot a function that outputs numerical values.</p>
+<p class="p10"><br></p>
+<p class="p7">(2*<span class="s4">_</span>+10).gnuplot(5,10)</p>
+<p class="p7">{<span class="s4">|x,y|</span> cos(2*pi*x)*sin(2*pi*y) }.surf3(Rect(0,0,2,2))</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<h4 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 16.0px Times"><b>Private class methods and variables</b></h4>
+<p class="p5"><b>*makeBackupFolder</b></p>
+<p class="p5">Creates the folder for the temporary files. This is called from *initClass.</p>
+<p class="p5"><b>*envarray(env)</b></p>
+<p class="p5">Converts an envelope into a plottable format for GNUPlot</p>
+<p class="p5"><b>*folder</b></p>
+<p class="p11"><br></p>
+<p class="p5"><b>*folder_</b></p>
+<p class="p5">Folder for temporary files (default SC_to_GNUPlot in the working directory)</p>
+<h4 style="margin: 0.0px 0.0px 21.0px 0.0px; font: 16.0px Times"><b>Private methods and variables</b></h4>
+<p class="p5"><b>lastdata</b></p>
+<p class="p5">The last data plotted. Used to add to from replot.</p>
+<p class="p5"><b>hisdata</b></p>
+<p class="p5">Stored data from the monitor</p>
+<p class="p5"><b>putCommand(command,tmpname,label)</b></p>
+<p class="p5">Put a plotting command to gnuplot. Do not use directly.</p>
+<p class="p5"><b>createTempFile(data,ns)</b></p>
+<p class="p5">Creates a temporary file to feed to gnuplot with the data. Is called from <i>plot</i>.</p>
+<p class="p12"><br></p>
+<p class="p3">This helpfile was created with the class HelpFile2</p>
+</body>
+</html>

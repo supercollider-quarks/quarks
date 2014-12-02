@@ -1,0 +1,79 @@
+TITLE:: Debounce
+
+summary:: debounce incoming signals from crackly switches.
+
+categories:: Utilities
+
+DESCRIPTION::
+Debounce is intended for cleaning up incoming signals from e.g. Arduinos that represent switching buttons. Such buttons often produce occasional wrong values,
+reporting e.g. off when the switch is on. Debouncing filters such signals, requiring at least e.g. 5 positiv values before actually switching to on.
+
+code::
+// onFunc runs when on condition is reached, onFunc when off. Size is the number of sequences in a row before triggering.
+
+d = Debounce({ "on!".postln; }, { "off...".postln }, 5);
+d.set(1).lastN; // run this several times until on
+d.set(0).lastN; // ... and off
+d.size = 8;     // change size of lastN
+d.set(1).lastN; // run this several times until d goes on.
+d.size = 5;
+
+// simulate input from arduino
+Tdef(\deb, {
+	var dt = 0.03;
+	inf.do {
+	30.do { d.set(1); dt.wait; };
+	"crackly on ".postln;
+	rrand(1, 10).do { d.set(2.rand.postln); dt.wait; };
+	30.do { d.set(0); dt.wait; };
+	"crackly off ".postln;
+	rrand(1, 10).do { d.set(2.rand.postln); dt.wait; };
+	};
+}).play;
+
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+  ARGUMENT:: onFunc
+a function that runs when on condition is reached
+
+  ARGUMENT:: offFunc
+a function that runs when off condition is reached
+
+  ARGUMENT:: size
+the list of how many lastN values to keep
+
+INSTANCEMETHODS::
+
+METHOD:: isOn
+get and set whether debounce is now on or not
+
+METHOD:: set
+enter next value, and if change of status happened,
+run onFunc or offFunc
+
+  ARGUMENT:: val
+0 or 1
+
+METHOD:: sum
+the current sum of lastN values
+
+METHOD:: size
+get and set size of the list of how many lastN values to keep
+
+METHOD:: onFunc
+get and set function that triggers when debounce switches to on
+
+METHOD:: offFunc
+get and set function that triggers when debounce switches to off
+
+METHOD:: check
+check whether to switch status
+
+METHOD:: lastN
+the last n values recorded
+

@@ -1,0 +1,83 @@
+TITLE:: QuNeoButton
+summary:: A button controller used by the QuNeo class.
+categories:: Hardware>QuNeo
+related:: Classes/QuNeo, Classes/MidiCcBus, Classes/MidiNoteFunc, Classes/QuNeoCircleControl, Classes/QuNeoDrumPad, Classes/QuNeoGridPad, Classes/QuNeoLongSlider, Classes/QuNeoSlider
+
+DESCRIPTION::
+A button controller used by the QuNeo class.  Represents the record, stop and play buttons.  Can also be used for the bank select buttons depending on the setup.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new button controller.  During regular use this is called from the QuNeo.createButton method.
+
+ARGUMENT:: noteNum
+MIDI note number for the control.
+
+ARGUMENT:: pressCC
+MIDI CC number for pressure data.
+
+ARGUMENT:: name
+Name of the control, used when printing debug info.
+
+ARGUMENT:: channel
+MIDI channel the control responds to.
+
+ARGUMENT:: scInPort
+Port that Supercollider will recieve MIDI data from.
+
+ARGUMENT:: scOutPort
+Port that Supercollider will send MIDI data to.
+
+returns:: A new QuNeo button control
+
+
+INSTANCEMETHODS::
+
+
+METHOD:: name
+Name of the control, used when printing debug info.
+
+
+METHOD:: noteNum
+The note number that data will be recieved on.
+
+
+METHOD:: note
+The MidiNoteFunc that deals with MIDI data related to the note.
+
+
+METHOD:: press
+MIDI CC number for pressure data.
+
+
+
+METHOD:: channel
+MIDI channel that the control will use to recieve MIDI data.
+
+
+
+METHOD:: scInPort
+Port that will recieve MIDI data from the QuNeo.
+
+
+METHOD:: scOutPort
+Port that will send MIDI data to the QuNeo.
+
+
+METHOD:: debug
+Allows you to enable or disable debugging for the control.  This setting can also be changed on a per datasource basis.
+
+ARGUMENT:: setDebug
+Enable debugging? true/false.
+
+
+PRIVATE:: init
+
+
+EXAMPLES::
+
+code::
+See QuNeo class for examples
+::

@@ -1,0 +1,32 @@
+CLASS:: TraerSpring
+SUMMARY:: act on two particles
+CATEGORIES:: TraerPhysics
+RELATED:: Overviews/TraerPhysicsOverview, Classes/TraerAttraction, Classes/TraerParticle, Classes/TraerParticleSystem
+
+DESCRIPTION::
+Springs connect 2 particles and try to keep them a certain distance apart. They have 3 properties:
+NUMBEREDLIST::
+##Rest Length - the spring wants to be at this length and acts on the particles to push or pull them exactly this far apart at all times.
+##Strength - If they are strong they act like a stick. If they are weak they take a long time to return to their rest length.
+##Damping - If springs have high damping they don't overshoot and they settle down quickly, with low damping springs oscillate.
+::
+
+NOTE::
+Documentation is only very slightly adapted to comply with the SuperCollider port. See the original by Jeffrey Traer Bernstein here... http://murderandcreate.com/physics/
+::
+
+INSTANCEMETHODS::
+
+PRIVATE::initTraerSpring
+
+METHOD::getOneEnd, getTheOtherEnd
+Return the particles that are on either end of this spring.
+
+RETURNS::
+a LINK::Classes/TraerParticle::
+
+METHOD::currentLength
+The current length of the spring.
+
+RETURNS::
+a LINK::Classes/Float::

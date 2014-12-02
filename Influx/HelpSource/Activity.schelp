@@ -1,0 +1,107 @@
+TITLE:: Activity
+summary:: model activity level and its subjective decay over time.
+categories:: Influx
+related:: Classes/Influx, Classes/KtlLoop
+
+DESCRIPTION::
+Activity models the decay of perceived activity level over time. Can be used to track how active some playing interface is being used, and slowly winding down a process if it gets no playing attention.
+
+code::
+a = Activity();
+a.action = { |a| a.level.round(a.floor).postln }; // post level
+
+	// do this several times to charge up level
+a.add(1);
+a.level;
+a.dt = 0.1; // slow down model
+a.stop;		// stop
+a.play;		// play again
+a.action = nil; // stop posting
+
+(
+SynthDef(\ting, { |freq, amp|
+	Out.ar(0, (SinOsc.ar(freq) * Line.kr(amp, amp * 0.001, 0.2, 5, doneAction: 2)).tanh ! 2);
+}).add;
+
+	// more activity creates wider melody jumps,
+	// and higher amplitude/distortion
+Tdef(\ting, {
+	loop {
+		if (a.level > 0) {
+			(instrument: \ting,
+				note: (12 * a.level.rand2.clip2(4)),
+				amp: a.level).play;
+		};
+		0.1.wait;
+	}
+}).play;
+)
+// add to activity level while process is playing
+a.add(1);
+a.add(3);
+
+// set decaytime of model
+a.decaytime = 2;
+
+(
+var w, mp;
+w = Window.new.front;
+StaticText(w, w.bounds.moveTo(0,0)).align_(\center)
+.string_("click and drag to charge activity level.");
+w.view.mouseMoveAction = { |view, x, y|
+	var mousepos = (x@y);
+	var diff = mousepos - (mp ? mousepos);
+	a.add(diff.rho * 0.05);
+	mp = mousepos;
+	a.level.postln;
+};
+)
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: decaytime
+time after which level will have decayed by -60dB.
+
+ARGUMENT:: dt
+delta time at which model calculation steps happen
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: skip
+a skipjack running the calculation
+
+METHOD:: floor
+a minimum value below which energy is set to 0.
+
+METHOD:: decaytime
+get and set decaytime, i.e. time after which level has decayed by -60dB.
+
+METHOD:: dt
+get and set delta time at which model calculation steps happen.
+
+METHOD:: level
+the current activity level
+
+private:: init
+
+METHOD:: play, stop
+play or stop skipjack that runs calculation.
+
+METHOD:: add
+add a value to current level. When current level is > 1, added level will be scaled down by 1/level.
+ARGUMENT:: val
+the value to add
+
+METHOD:: action
+an action to perform after each calculation step. can be used for debugging,
+or informing related processes about level updates.
+
+METHOD:: decay
+next model step: calculate new level based on dt and decaytime.
+

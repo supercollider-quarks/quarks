@@ -1,0 +1,31 @@
+TITLE:: TraerPhysicsOverview
+SUMMARY:: overview of classes and examples
+CATEGORIES:: TraerPhysics
+
+SECTION::Classes
+TABLE::
+## link::Classes/TraerParticle:: || TraerParticle(m) - move around in 3D space based on forces applied to them (m is mass)
+## link::Classes/TraerParticleSystem:: || TraerParticleSystem(gx, gy, gz, drag) - takes care of gravity, drag, making particles, applying forces and advancing the simulation (gx, gy, gz are default gravity)
+## link::Classes/TraerAttraction:: || TraerAttraction(a, b, k, distanceMin) - act on two particles (a and b, k is strength)
+## link::Classes/TraerSpring:: || TraerSpring(a, b, ks, d, r) - act on two particles (a and b, ks is spring constant, d is damping and r rest length)
+## TraerVector3D || TraerVector3D(x, y, z) - vector class
+## TraerForce || abstract class for TraerAttractor and TraerSpring
+## TraerIntegrator || abstract class for the integrator classes
+## TraerRungeKuttaIntegrator || the default integrator (\RUNGE_KUTTA)
+## TraerModifiedEulerIntegrator || alternative integrator that requires less cpu (\MODIFIED_EULER)
+## TraerEulerIntegrator || unused integrator
+::
+
+SECTION::Examples
+TABLE::
+## link::Quarks/TraerPhysics/Examples/Simple_Pendulum.scd:: || Simple Pendulum by Jeffrey Traer Bernstein
+## link::Quarks/TraerPhysics/Examples/Bouncy_Balls.scd:: || Bouncy Balls by Jeffrey Traer Bernstein
+## link::Quarks/TraerPhysics/Examples/cloth.scd:: || cloth by Jeffrey Traer Bernstein
+## link::Quarks/TraerPhysics/Examples/Random_Arboretum.scd:: || Random Arboretum by Jeffrey Traer Bernstein
+## link::Quarks/TraerPhysics/Examples/red00.scd:: || red00 by redFrik
+## link::Quarks/TraerPhysics/Examples/red01.scd:: || red01 by redFrik
+## link::Quarks/TraerPhysics/Examples/red02.scd:: || red02 by redFrik
+## link::Quarks/TraerPhysics/Examples/red03.scd:: || red03 by redFrik
+## link::Quarks/TraerPhysics/Examples/red04.scd:: || red04 by redFrik
+## link::Quarks/TraerPhysics/Examples/red05.scd:: || red05 by redFrik
+::

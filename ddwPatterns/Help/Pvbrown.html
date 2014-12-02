@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #0000ff}
+span.s2 {color: #001ab2}
+</style>
+</head>
+<body>
+<p class="p1"><b>Pvbrown : Pattern</b></p>
+<p class="p2"><br></p>
+<p class="p3">Like <a href="SC://Pbrown"><span class="s1">Pbrown</span></a>, except that you specify a pattern to calculate each step.</p>
+<p class="p2"><br></p>
+<p class="p3">*new(lo, hi, step, length = inf)</p>
+<p class="p2"><br></p>
+<p class="p3"><b>lo, hi:</b> Output value range.</p>
+<p class="p3"><b>step:</b> A pattern outputting increments for Pvbrown's value. This value is multiplied randomly by +1 or -1; your pattern may output only positive numbers and the output values will increment and decrement randomly.</p>
+<p class="p3"><b>length:</b> How many numbers to return.</p>
+<p class="p2"><br></p>
+<p class="p3">Pvbrown(lo, hi, Pfunc({ maxStep.xrand }), inf) behaves exactly like Pbrown(lo, hi, maxStep, inf).</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">// no successive values are ever closer than 0.1 or farther than 0.4</p>
+<p class="p5"><br></p>
+<p class="p6">p = <span class="s2">Pvbrown</span>(0.0, 1.0, <span class="s2">Pwhite</span>(0.1, 0.4, <span class="s2">inf</span>), <span class="s2">inf</span>).asStream;</p>
+<p class="p6">p.nextN(10);</p>
+<p class="p6">[ 0.25818018913269, 0.39941074848175, 0.69911118745804, 0.57881119251251, 0.33701903820038, 0.48915663957596, 0.65856301784515, 0.33630520105362, 0.6348381280899, 0.97818950414658 ]</p>
+</body>
+</html>

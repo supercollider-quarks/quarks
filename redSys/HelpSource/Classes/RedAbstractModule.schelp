@@ -1,0 +1,73 @@
+CLASS:: RedAbstractModule
+SUMMARY:: abstract class
+CATEGORIES:: Red>redModule
+RELATED:: Classes/RedEffectModule, Classes/RedInstrumentModule
+
+DESCRIPTION::
+WARNING::
+Do not instantiate. Use its subclasses.
+::
+NOTE::
+Requires link::Classes/Conductor:: quark.
+::
+
+CLASSMETHODS::
+
+PRIVATE:: initClass
+
+METHOD:: new
+
+ARGUMENT:: out
+
+ARGUMENT:: group
+If code::nil:: then code::Server.default.defaultGroup:: will be used
+
+ARGUMENT:: defaultAddAction
+
+METHOD:: all
+Array of all registered modules.
+
+SUBSECTION:: subclass responsibility
+
+METHOD:: def
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedAbstract
+
+METHOD:: defaults
+Revert all link::Classes/CV::s to their defaults.
+
+METHOD:: out
+Get or set current bus.
+
+METHOD:: cvFromControlName
+Mainly used internally for looking up link::Classes/CV::s from link::Classes/SynthDef:: control names.
+
+METHOD:: def
+Returns the link::Classes/SynthDef:: as defined in link::#*def::.
+
+SUBSECTION:: subclass responsibility
+
+METHOD:: prepareForPlay
+
+METHOD:: free
+
+METHOD:: gui
+
+EXAMPLES::
+
+CODE::
+a= RedEfxDist(0);
+b= {SinOsc.ar([400, 404], 0, 0.5)}.play
+a.group
+a.cvs
+a.cvs.distMix.input= 0.4
+a.args
+a.cvFromControlName(\out).dump
+a.cvFromControlName(\depth).dump
+a.def
+a.defaultAddAction
+a.free
+b.free
+::

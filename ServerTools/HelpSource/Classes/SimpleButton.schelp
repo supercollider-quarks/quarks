@@ -1,0 +1,75 @@
+CLASS:: SimpleButton
+summary:: a simple button with a title and an action
+categories:: GUI
+related:: Classes/Button
+
+DESCRIPTION::
+Size is automatic based on the size of the title string.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: title
+
+argument:: action
+a function to execute when the button is pressed
+
+argument:: bounds
+nil = autosizes, number = minWidth, Rect = bounds, Point = width @ height
+
+argument:: font
+
+
+returns:: this
+
+METHOD:: viewClass
+private: differentiates between the SimpleLabel implementation in the superclass
+
+returns:: GUI.button
+
+
+INSTANCEMETHODS::
+
+METHOD:: action
+set a new action
+
+argument:: argAction
+
+
+
+METHOD:: label
+
+
+argument:: title
+set a new title string
+
+
+METHOD:: color
+set the text color
+
+argument:: color
+
+
+
+METHOD:: background
+set the background color
+
+argument:: color
+
+
+
+EXAMPLES::
+
+code::
+SimpleButton(nil,"push me",{
+ "you pushed me".postln
+})
+::
+
+Note that a parent view is not needed.

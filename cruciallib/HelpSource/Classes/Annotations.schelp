@@ -1,0 +1,141 @@
+CLASS:: Annotations
+summary:: stores names and notations for Nodes, identifying the Node's owner and its purpose
+categories:: Libraries>crucial>Debugging
+related:: Classes/AnnotatedDebugNodeWatcher
+
+DESCRIPTION:: Helps in debugging to identify Synths and Groups by naming them. For example a Player can annotate a group that it created as "efxGroup".  Then in debugging views it will show that name.
+
+All Players annotate their nodes.
+
+This is used in Insp and ServerNodeTree.
+
+You don't have to do anything with this class, its used internally.
+
+But feel free to try annotating your Nodes so you can see them in debug views.
+
+
+
+CLASSMETHODS::
+
+METHOD:: put
+
+
+argument:: things
+
+
+argument::  ... notes
+
+
+
+METHOD:: at
+
+
+argument:: thing
+
+
+
+METHOD:: register
+
+
+argument:: object
+
+
+
+METHOD:: unregister
+
+
+argument:: object
+
+
+
+METHOD:: find
+
+
+argument::  ... clauses
+
+
+
+METHOD:: findBus
+
+
+argument:: index
+
+
+argument:: rate
+
+
+
+METHOD:: findNode
+
+
+argument:: nodeID
+
+
+
+METHOD:: guiFindNode
+
+
+argument:: nodeID
+
+
+argument:: layout
+
+
+
+METHOD:: guiFindBus
+
+
+argument:: index
+
+
+argument:: rate
+
+
+argument:: layout
+
+
+
+METHOD:: prAnnotate
+
+
+argument:: thing
+
+
+argument:: notes
+
+
+
+METHOD:: packNotes
+
+
+argument:: notes
+
+
+
+METHOD:: unpackNotes
+
+
+argument:: notes
+
+
+
+METHOD:: initClass
+
+
+
+METHOD:: new
+
+
+argument:: weakRef
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: dereference
+
+
+
+
+

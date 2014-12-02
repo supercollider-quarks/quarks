@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {text-decoration: underline ; color: #0000ff}
+span.s3 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>RedDiskInPlayer</b></span><b><span class="Apple-tab-span">	</span>simple GUI for soundfile playback from disk</b></p>
+<p class="p2"><br></p>
+<p class="p1">uses <a href="RedDiskInSampler.html"><span class="s2">RedDiskInSampler</span></a> to stream soundfiles from disk.<span class="Apple-converted-space">  </span>use it to play back long soundfiles.</p>
+<p class="p2"><br></p>
+<p class="p1">GUI:</p>
+<p class="p1"><span class="Apple-tab-span">	</span>'vol' - playback volume</p>
+<p class="p1"><span class="Apple-tab-span">	</span>'env' - attack and release time in seconds</p>
+<p class="p1"><span class="Apple-tab-span">	</span>'bus' - output bus index</p>
+<p class="p1"><span class="Apple-tab-span">	</span>'loop' - keep repeating the soundfile.<span class="Apple-converted-space">  </span>note: not smooth because of file preloading</p>
+<p class="p1"><span class="Apple-tab-span">	</span>'folder' - select a file to set path to all soundfiles.<span class="Apple-converted-space">  </span>it is also possible to drag files and folders into the listview</p>
+<p class="p1"><span class="Apple-tab-span">	</span>'filter' - 0 = all soundfiles, 1 = only mono files, 2 = stereo etc.</p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>*new(server, bus, numItems)</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>server - if nil then the default server will be used.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bus - output bus.<span class="Apple-converted-space">  </span>defaults to 0.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>numItems - number of soundfiles visible in the list.<span class="Apple-converted-space">  </span>default 10.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>&lt;sampler</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a RedDiskInSampler</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>&lt;isPlaying</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>boolean</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>&lt;soundFiles</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>current files in list</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>bus</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>current outbut bus</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>free</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>closes the window and stops the synth</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">//--</p>
+<p class="p5"><span class="s3">a= </span>RedDiskInPlayer<span class="s3">(s);</span></p>
+<p class="p6">a.sampler</p>
+<p class="p6">a.isPlaying</p>
+<p class="p6">a.soundFiles</p>
+<p class="p6">a.bus</p>
+<p class="p4"><span class="s3">a.free<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//or close the window, or press cmdperiod</p>
+</body>
+</html>

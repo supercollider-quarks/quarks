@@ -1,0 +1,63 @@
+title:: Instr Patterns
+summary:: Using Instr in Patterns
+categories:: Libraries>crucial>Instr
+
+
+section::Patterns
+
+Just as for SynthDef, an Instr supports .add which will compile a SynthDef and add it to the SynthDescLib that the Pattern system uses.
+
+But when using the Event \type \instr it will also just figure it out.
+
+So you can actually keep your Instr in separate files and there is no need to load or .add
+
+There might be a delay while it loads, so it would be safest to preload your Instr ( use Instr.loadAll )
+
+code::
+(
+	Instr("minimoog.two",{ arg freq=440,int1=5,int2 = -5,width1=0.1,width2=0.1,width3=0.1,
+			ffreqInterval=0,rq=0.4;
+		var p;
+
+		p=Pulse.ar([ freq  * int1.midiratio, freq, freq * int2.midiratio],
+				[ width1,width2,width3],0.3);
+
+		RLPF.ar(Mix(p),freq * ffreqInterval.midiratio,rq)
+			* EnvGen.kr(Env.perc,doneAction: 2)
+
+	});
+
+	Pbind(
+		\type, \instr,
+		\instr, "minimoog.two",
+		// note is converted to freq by things in NotePlayer
+		\note,Prand([10,20,30],inf),
+		// args are passed into the function
+		\int1, Prand([-3,0,7,11,13],inf),
+		\dur, 0.5
+	).play
+)
+
+::
+
+Note that it IS possible to dynamically change the SynthDef architecture using Instr. If the architecture differs than it will compile the new one and send it.
+
+
+section:: Creating a single Event and spawning it
+
+code::
+Instr("minimoog.two").spawnEvent( (freq: 100) )
+::
+
+METHOD:: spawnEvent
+This will take an Event and set it to type='instr' and set the \instr name.  It will then play the event.
+
+argument:: event
+proto event which it will spawn.  The keys in the Event are used to satisfy args of the Instr
+
+returns:: this
+
+
+
+see also link::Classes/InstrGateSpawner:: and link::Classes/InstrSpawner::
+

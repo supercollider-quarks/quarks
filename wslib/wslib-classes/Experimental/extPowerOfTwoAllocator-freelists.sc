@@ -1,0 +1,3 @@
++ PowerOfTwoAllocator {
+	freeLists { ^freeLists }
+	}

@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0018e6}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0028d6}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0020de}
+span.s1 {color: #1240d5}
+span.s2 {text-decoration: underline ; color: #0b35c9}
+span.s3 {text-decoration: underline}
+span.s4 {color: #0634e3}
+span.s5 {text-decoration: underline ; color: #0018e6}
+span.s6 {color: #052fcf}
+span.s7 {text-decoration: underline ; color: #0028d6}
+span.s8 {color: #000000}
+span.s9 {text-decoration: underline ; color: #0020de}
+span.s10 {color: #0028d6}
+span.s11 {color: #0023f2}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SVG</b></p>
+<p class="p2">support for the SVG file format<b>. </b>Part of <a href="../wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2"><i>** requires XML quark **</i></p>
+<p class="p3"><span class="Apple-converted-space"> </span></p>
+<p class="p2">Reads and writes SVG files. SVG is an XML-based format for vector graphics, which can be read by most popular graphic vector applications. SVG filea can also be viewed by some web browsers, in some cases with a plugin.The Class is based on the SVG1.1 specification as found on the w3c site</p>
+<p class="p2"><span class="Apple-converted-space"> </span>(<a href="http://www.w3.org/TR/SVG11/"><span class="s2">http://www.w3.org/TR/SVG11/</span></a><span class="s3">)</span> and checked with Adobe's SVG web-browser plugin and Adobe Illustrator®.</p>
+<p class="p2"><span class="Apple-converted-space"> </span>The aim is to be able to display svg files and extract their contents for use in sc, and vice versa (encode and export). The export can be useful for scoring sc events and generating visual feedback from objects.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-converted-space"> </span>The SVG standard is only partially implemented in this class; there are a lot more types of possible elements. Since many functions of SVG 1.1 can not be visualized by the SC graphic system anyway. For example: gradients, style sheets, markers, filter effects, animation, dotted lines, clipping paths, embedded fonts and hyperlinks are currently not supported. This might cause errors or plotting differences when reading some SVG files. Some objects are still read and even saved as SVGUnknown objects.</p>
+<p class="p3"><span class="Apple-converted-space"> </span></p>
+<p class="p2">The <a href="SC://Pen"><span class="s4">Pen</span></a> class methods in sc look a lot like the instructions found in SVG files, so almost all vector elements can be drawn in SCWindows using the dedicated <b>plot</b> methods. SVGFiles and SVGObjects can even be converted to GUI.pen style code using <b>asGUICode</b>.<b> </b>This also works the other way around; by using <b>asSVGFile</b> on a GUI.pen style coded drawHook function.</p>
+<p class="p3"><br></p>
+<p class="p2"><span class="s5"><a href="SVGFile.html">SVGFile</a></span> <span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><a href="SVGLine.html"><span class="s7">SVGLine</span></a></span></p>
+<p class="p2"><span class="s5"><a href="SVGObject.html">SVGObject</a></span> <span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><a href="SVGRect.html"><span class="s7">SVGRect</span></a></span></p>
+<p class="p4"><span class="s8"><span class="Apple-tab-span">	</span><a href="SVGGroup.html"><span class="s9">SVGGroup</span></a> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><a href="SVGCircle.html"><span class="s3">SVGCircle</span></a></span></p>
+<p class="p5"><span class="s8"><span class="Apple-tab-span">	</span><a href="SVGText.html"><span class="s9">SVGText</span></a><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><a href="SVGEllipse.html"><span class="s7">SVGEllipse</span></a></span><span class="s8"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span></p>
+<p class="p4"><span class="s8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><a href="SVGTSpan.html"><span class="s3">SVGTSpan</span></a><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><a href="SVGPolyLine.html"><span class="s3">SVGPolyLine</span></a><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span></p>
+<p class="p4"><span class="s8"><span class="Apple-tab-span">	</span><a href="SVGPath.html"><span class="s3">SVGPath</span></a><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><a href="SVGPolygon.html"><span class="s3">SVGPolygon</span></a><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s10"><span class="Apple-tab-span">	</span></span><span class="s11"><span class="Apple-tab-span">	</span><a href="SVGPathSegment.html"><span class="s9">SVGPathSegment</span></a><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><a href="SVGTransform.html"><span class="s9">SVGTransform</span></a></span></p>
+</body>
+</html>

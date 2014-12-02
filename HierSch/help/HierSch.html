@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -29.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 57.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -29.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -29.0px; font: 9.0px Monaco}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #b42a27}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #236b22}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0026ad}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #d00c0c}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 12.0px Monaco}
+span.s3 {color: #0026ad}
+span.s4 {color: #000000}
+span.s5 {color: #236b22}
+span.s6 {color: #606060}
+span.s7 {color: #b42a27}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>HierSch</b></span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b><span class="Apple-tab-span">	</span>Hierarchical Scheduler</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p1">HierSch schedules and quantises prioritised<b> </b>functions to a TempoClock grid. At any given time by default only the function with the highest priority is evaluated.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(aTempoClock)</b></p>
+<p class="p4">aTempoClock.default is used if aTempoClock is not supplied.<span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><br></p>
+<p class="p3"><b>test</b></p>
+<p class="p4">prints 4 beats of test values<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>testRate</b></p>
+<p class="p4">prints 1 beat's worth of test values at <b>rate</b><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>schedAbs(beat, priority, function, interval, quant, schedQuant)</b></p>
+<p class="p4">schedules a <b>function</b> at a particular <b>beat</b>. <span class="Apple-converted-space"> </span></p>
+<p class="p4"><b>priority</b> is an integer between 0 (highest)<span class="Apple-converted-space">  </span>and 12 (lowest).<span class="Apple-converted-space"> </span></p>
+<p class="p4">By default <b>priority</b> 0 functions always play, others play according to the settings outlined below.</p>
+<p class="p4"><b>interval</b> if nil defaults to a one shot stream. <span class="Apple-converted-space"> </span></p>
+<p class="p4"><b>quant</b> is time per beat to quant to, default value is 32 dividions. <span class="Apple-converted-space"> </span></p>
+<p class="p4"><b>schedQuant</b> determines at what point on the grid the first function will be scheduled, should the quant be different to <b>rate</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>sched(priority, function, interval, quant)</b></p>
+<p class="p4">schedules a function at next beat, arguments as per schedAbs</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>schedBar(priority, function, interval, quant)</b></p>
+<p class="p4">schedule a function at next bar, arguments as per schedAbs</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>mute</b></p>
+<p class="p4">do not evaluate functions if true</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>play</b></p>
+<p class="p4">unmute<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><br></p>
+<p class="p3"><b>restart</b></p>
+<p class="p4">restarts after command period, scheduled streams do not survive</p>
+<p class="p5"><br></p>
+<p class="p3"><b>stop</b></p>
+<p class="p4">stop task that checks for functions to paly, scheduled streams survive upon restart</p>
+<p class="p5"><br></p>
+<p class="p3"><b>rate_(int)</b></p>
+<p class="p4">sets rate at which the checker runs</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>rate</b></p>
+<p class="p4">retruns rate at which the checker runs, default is 32 divisions per beat</p>
+<p class="p6"><br></p>
+<p class="p3"><b>cease</b></p>
+<p class="p4">stops all scheduled functions; does not require restart</p>
+<p class="p5"><br></p>
+<p class="p3"><b>stop</b></p>
+<p class="p4">temporarily stops all scheduled functions; requires restart</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p3">The methods below change the default playing behaviour in relation to priorities</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>ignore_(arr)</b></p>
+<p class="p4">mute particular fns with priorities listed in the arr</p>
+<p class="p5"><br></p>
+<p class="p3"><b>unignore</b></p>
+<p class="p4">unmute listed priority functions<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>playOnly_(arr)</b></p>
+<p class="p4">opposite of ignore_</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>playGT_(int)</b></p>
+<p class="p4">equivalent to ignore_((1..int))</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>playLT_(int)</b></p>
+<p class="p4">equivalent to ignore_((int..1))</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>flip_(bool)</b></p>
+<p class="p4">inverts priorities to play if true</p>
+<p class="p5"><br></p>
+<p class="p3"><b>width_(int)</b></p>
+<p class="p4">the number of priority levels to play, default is 1</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>single_(bool)</b></p>
+<p class="p4">determines whether only one function within the chosen priority plays, true by default. If true, the played function is chosen randomly from among those of the dominant priority<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>playEach</b></p>
+<p class="p4">equivalent to width_(12); single_(true)</p>
+<p class="p5"><br></p>
+<p class="p3"><b>playAll</b></p>
+<p class="p4">equivalent to width_(12); single_(false)</p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b>default</b></p>
+<p class="p4">equivalent to width_(1); single_(true)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b>muteH0_(bool)</b></p>
+<p class="p4">mutes or unmutes Hierachy 0 (false by default)</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p3">The functions when evaluated have the following arguments passed in:</p>
+<p class="p8"><span class="s3">arg</span> beat, priority, durToNextVal, counter;</p>
+<p class="p2"><br></p>
+<p class="p9"><br></p>
+<p class="p10">// Examples</p>
+<p class="p11"><br></p>
+<p class="p10"><span class="s4">t = </span><span class="s3">TempoClock</span><span class="s4">.default </span>// assign a TempoClock to t</p>
+<p class="p12">b = <span class="s3">HierSch</span>.new(t)</p>
+<p class="p11"><br></p>
+<p class="p12">b.test</p>
+<p class="p11"><br></p>
+<p class="p12">b.rate</p>
+<p class="p12">b.testRate</p>
+<p class="p11"><br></p>
+<p class="p12">s.boot</p>
+<p class="p12">(</p>
+<p class="p13"><span class="s3">SynthDef</span><span class="s4">.new(</span>\midiPing<span class="s4">, {</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s3">arg</span> out = 0, mfreq = 69, pan = 0, gain = 0.2, dur = 0.25;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(out, <span class="s3">Pan2</span>.ar(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s3">SinOsc</span>.ar(mfreq.midicps, 0,<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s3">EnvGen</span>.kr(envelope: (<span class="s3">Env</span>.perc(0.01, dur)), doneAction: 2)),</p>
+<p class="p12"><span class="Apple-tab-span">	</span>pan, gain));</p>
+<p class="p12">}).add;</p>
+<p class="p11"><br></p>
+<p class="p12">m = {<span class="s3">|f|</span> <span class="s3">Synth</span>(<span class="s5">\midiPing</span>, [<span class="s5">\mfreq</span>, f + 69]);}</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p12">b.sched(1, {<span class="s6">"prio 0, a oneShot stream"</span>.postln; m.value(0)});<span class="Apple-converted-space"> </span></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// Priorities range from 0 ("highest") to 12 ("lowest")</p>
+<p class="p10">// By default, only the highest p-fns play</p>
+<p class="p11"><br></p>
+<p class="p12">(</p>
+<p class="p10">//<span class="Apple-converted-space">  </span>only priority-function 1 plays by default</p>
+<p class="p12">b.sched(1, {<span class="s6">"prio 1"</span>.postln; m.value(0)}, 1);<span class="Apple-converted-space"> </span></p>
+<p class="p12">b.sched(2, {<span class="s6">"prio 2"</span>.postln; m.value(4)}, 1);<span class="Apple-converted-space"> </span></p>
+<p class="p12">b.sched(3, {<span class="s6">"prio 3a"</span>.postln; m.value(5)}, 1);<span class="Apple-converted-space"> </span></p>
+<p class="p12">b.sched(3, {<span class="s6">"prio 3b"</span>.postln; m.value(6)}, 1);<span class="Apple-converted-space"> </span></p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">b.mute</p>
+<p class="p12">b.play</p>
+<p class="p11"><br></p>
+<p class="p12">b.flip_(<span class="s3">true</span>)</p>
+<p class="p12">b.single_(<span class="s3">false</span>)</p>
+<p class="p12">b.single_(<span class="s3">true</span>)</p>
+<p class="p12">b.flip_(<span class="s3">false</span>)</p>
+<p class="p11"><br></p>
+<p class="p12">b.ignore_([1])</p>
+<p class="p12">b.unignore</p>
+<p class="p12">b.width_(2)</p>
+<p class="p12">b.ignore_([1])</p>
+<p class="p12">b.unignore</p>
+<p class="p12">b.width_(1)</p>
+<p class="p11"><br></p>
+<p class="p10"><span class="s4">b.playEach </span>// play every prio, though only 1 of each</p>
+<p class="p10"><span class="s4">b.playAll </span>// play every prio and each within</p>
+<p class="p12">b.default</p>
+<p class="p11"><br></p>
+<p class="p10"><span class="s3">thisProcess</span><span class="s4">.stop </span>// kill off streams</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// Quantisation demonstration</p>
+<p class="p12">b.restart</p>
+<p class="p12">t.tempo_(48/60);</p>
+<p class="p12">b.rate_(128); <span class="s7">// per beat</span></p>
+<p class="p12">b.playAll;</p>
+<p class="p11"><br></p>
+<p class="p12">(</p>
+<p class="p12"><span class="s3">var</span> quant, freqsArr5, freqsArr4, freqsArr3, freqsArr7, beatsArr;<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="s3">var</span> beats, r, fn, durStrm, quantArr;</p>
+<p class="p14"><span class="s4">fn = {</span>|arr, pan|<span class="s4"> {</span>|b, p, d, c|<span class="s4"><span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">Synth</span>(<span class="s6">"midiPing"</span>,[<span class="s5">\mfreq</span>, arr[c%arr.size], <span class="s5">\pan</span>, pan, <span class="s5">\gain</span>, 0.1]);<span class="Apple-converted-space"> </span></p>
+<p class="p12">}};</p>
+<p class="p12">durStrm = {<span class="s3">|num, beats|</span> <span class="s3">Pser</span>.new([num.reciprocal], num * beats) };</p>
+<p class="p12">beatsArr = [ 8, 8, 8, 10, 9, 8, 7, 6, 5, 4, 3, 2, 4];</p>
+<p class="p12">freqsArr7 = [0, 2, 4, 5, 7, 9, 11] + 40;</p>
+<p class="p12">freqsArr5 = (7..3) + 88;</p>
+<p class="p12">freqsArr4 = [12, 7, 4, 7] + 64;</p>
+<p class="p12">freqsArr3 = [0, 7, 12] + 52;</p>
+<p class="p12">quantArr = [b.rate, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];</p>
+<p class="p12">r = <span class="s3">Routine</span>.new({<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>(beatsArr.size).do({ <span class="s3">|i|</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>quant = quantArr[i];</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s6">"Quant is"</span>, quant].postln;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>beats = beatsArr[i];</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b.sched(4, fn.value(freqsArr7, -0.5), durStrm.value(7, beats), quant);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b.sched(3, fn.value(freqsArr5, 1), durStrm.value(5, beats), quant);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b.sched(2, fn.value(freqsArr4, -1), durStrm.value(4, beats),quant);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b.sched(1, fn.value(freqsArr3, 0.5), durStrm.value(3, beats),quant);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>(beats + 1).wait;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>});</p>
+<p class="p12">});</p>
+<p class="p12">t.play(r);</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p15">// Try each below while the above running</p>
+<p class="p10"><span class="s4">b.default; </span>// many notes are not played due to the quant values</p>
+<p class="p10"><span class="s4">b.playAll; </span>// all notes played</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+</body>
+</html>

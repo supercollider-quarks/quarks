@@ -1,0 +1,137 @@
+CLASS:: RedPerlin
+SUMMARY:: a perlin noise generator
+CATEGORIES:: Red>redUniverse>additional
+
+DESCRIPTION::
+A class that generates 1, 2 or 3 dimensional perlin noise. See http://freespace.virgin.net/hugo.elias/models/m_perlin.htm
+
+INSTANCEMETHODS::
+
+PRIVATE:: prNoise2, prNoise3, prNoise1
+
+METHOD:: noise1D
+Return a float at location x. Cosine interpolation.
+
+METHOD:: noise2D
+Return a float at location x, y. Cosine interpolation.
+
+METHOD:: noise3D
+Return a float at location x, y, z. Interpolation not implemented
+
+METHOD:: spook
+Inflicts the random seed.
+
+EXAMPLES::
+
+CODE::
+a= RedPerlin.new
+a.noise1D(3)			//always the same with default random seed
+a.noise2D(3, 3)
+a.noise3D(3, 3, 3)
+
+a.spook= 30			//kind of random seed
+
+Array.fill(100, {|x| a.noise1D(x/100, 0.75, 6, 1)}).normalize.plot
+Array.fill(100, {|x| a.noise1D(x/100, 0.99, 6, 1)}).normalize.plot	//more persistence
+Array.fill(100, {|x| a.noise1D(x/100, 0.50, 6, 1)}).normalize.plot	//less persistence
+Array.fill(100, {|x| a.noise1D(x/100, 0.75, 9, 1)}).normalize.plot	//more octaves
+Array.fill(100, {|x| a.noise1D(x/100, 0.75, 3, 1)}).normalize.plot	//fewer octaves
+Array.fill(100, {|x| a.noise1D(x/100, 0.75, 3, 0)}).normalize.plot	//interpolation off
+
+//--1d pen test
+(
+	var width= 300, height= 300, w, u, a, persistance= 0.75, octaves= 8;
+	w= Window("perlin test 1d", Rect(128, 64, width, height), false);
+	u= UserView(w, Rect(0, 0, width, height));
+	u.background= Color.black;
+	a= RedPerlin.new;
+	u.drawFunc= {
+		Pen.strokeColor= Color.white;
+		width.do{|x|
+			Pen.addRect(Rect.aboutPoint(Point(x, a.noise1D(x/width, persistance, octaves)*0.5+0.5*height), 1, 1));
+		};
+		Pen.stroke;
+	};
+	w.front;
+)
+
+//--2d pen test
+(
+	var width= 160, height= 120, w, a, u, persistance= 0.75, octaves= 8, scale= 2;
+	w= Window("perlin test 2d", Rect(128, 64, width*scale, height*scale), false);
+	u= UserView(w, Rect(0, 0, w.bounds.width, w.bounds.height));
+	u.background= Color.black;
+	a= RedPerlin.new;
+	u.drawFunc= {
+		height.do{|y|
+			width.do{|x|
+				//Pen.strokeColor= Color.grey(a.noise2D(x, y, persistance, octaves));
+				Pen.strokeColor= Color.grey(a.noise2D(x/width, y/height, persistance, octaves));
+				Pen.strokeRect(Rect.aboutPoint(x@y*scale, scale, scale));
+			};
+		};
+	};
+	w.front;
+)
+
+//--many windows 2d
+(
+	var width= 80, height= 60, a, r, persistance, octaves, ws= [];
+	r= Routine{
+		a= RedPerlin.new;
+		8.do{|wy|
+			8.do{|wx|
+				var w, u;
+				persistance= 0.1*wx+0.25;
+				octaves= 1*wy+2;
+				[\persistance, persistance, \octaves, octaves].postln;
+				w= Window("p"++persistance+"o"++octaves, Rect(width*wx+128, height*wy+64, width, height), false, false);
+				u= UserView(w, Rect(0, 0, w.bounds.width, w.bounds.height));
+				u.background= Color.black;
+				u.drawFunc= {
+					height.do{|y|
+						width.do{|x|
+							Pen.strokeColor= Color.grey(a.noise2D(x/width, y/height, persistance, octaves));
+							Pen.strokeRect(Rect.aboutPoint(x@y, 1, 1));
+						};
+					};
+				};
+				w.front;
+				ws= ws.add(w);
+				0.01.wait;
+			};
+		};
+	};
+	r.play(AppClock);
+	CmdPeriod.doOnce{ws.do{|w| w.close}};
+)
+
+//--3d pen test (3rd dimension is time)
+(
+	var width= 50, height= 50, frames= 50, w, u, a, r, persistance= 0.85, octaves= 4;
+	var scale= 3;
+	w= Window("perlin test 3d", Rect(128, 64, width*scale, height*scale), false);
+	u= UserView(w, Rect(0, 0, width*scale, height*scale));
+	u.background= Color.black;
+	r= Routine{
+		a= RedPerlin.new;
+		a.spook= 12;
+		frames.do{|z|
+			(1/25).wait;
+			("frame:"+z).postln;
+			u.refresh;
+			u.drawFunc= {
+				height.do{|y|
+					width.do{|x|
+						Pen.strokeColor= Color.grey(a.noise3D(x/width, y/height, z/frames, persistance, octaves, 0));
+						Pen.strokeRect(Rect.aboutPoint(x@y*scale, scale, scale));
+						
+					};
+				};
+			};
+		};
+	};
+	w.front;
+	r.play(AppClock);
+)
+::

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {color: #0000bf}
+</style>
+</head>
+<body>
+<p class="p1"><b>Plimitsum : Pconst</b></p>
+<p class="p2"><br></p>
+<p class="p3">Plimitsum embeds values from the given pattern into the stream until the sum of the output values exceeds the given threshold. Then the pattern terminates without returning the last value, ensuring that the total of all the output values will always be less than or equal to the threshold.</p>
+<p class="p2"><br></p>
+<p class="p3">This is different from Pconst, which outputs a final value when the threshold is crossed so that the total value is exactly equal to the desired sum.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(sum, pattern, tolerance)</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Example:</b></p>
+<p class="p2"><br></p>
+<p class="p4">p = <span class="s1">Plimitsum</span>(10.0, <span class="s1">Pwhite</span>(0.5, 1.5, <span class="s1">inf</span>)).asStream;</p>
+<p class="p4">q = p.nextN(30);</p>
+<p class="p4">q.reject(<span class="s1">_</span>.isNil).sum</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">// compare to Pconst, whose sum should be exactly 10.0</p>
+<p class="p5"><br></p>
+<p class="p4">p = <span class="s1">Pconst</span>(10.0, <span class="s1">Pwhite</span>(0.5, 1.5, <span class="s1">inf</span>)).asStream;</p>
+<p class="p4">q = p.nextN(30);</p>
+<p class="p4">q.reject(<span class="s1">_</span>.isNil).sum</p>
+</body>
+</html>

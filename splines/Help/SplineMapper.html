@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #00128a}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SplineMapper</b></p>
+<p class="p2"><br></p>
+<p class="p3">Use a spline as a mapping function.</p>
+<p class="p3">X will be enforced to be monotonic</p>
+<p class="p3">but Y (value) may curve back on itself</p>
+<p class="p4"><br></p>
+<p class="p3">spline<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a spline</p>
+<p class="p3">dimension: <span class="Apple-tab-span">	</span>0: x is input, y is output</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>1: y is input, x is output</p>
+<p class="p3">inSpec:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ControlSpec of the input range</p>
+<p class="p3">outSpec:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ControlSpec of the output range</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5">b = BSpline([ [ 0.0, 0.0 ], [ 0.28177966101695, 0.27 ], [ 0.77118644067797, 0.932 ], [ 0.89618644067797, 0.424 ], [ 1.0, 0.132 ] ], 4.0, false);</p>
+<p class="p5">b.gui(<span class="s1">nil</span>,500@500,\unipolar,\unipolar);</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">b.normalizeDim(0)</p>
+<p class="p5">b.normalizeDim(1)</p>
+<p class="p2"><br></p>
+<p class="p5">b.asCompileString</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5">{</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">PinkNoise</span>.ar * <span class="s1">SplineMapper</span>(b).kr( <span class="s1">MouseX</span>.kr(0,1),32 )</p>
+<p class="p5">}.play</p>
+<p class="p5">)</p>
+<p class="p3">the output is limited to the outputSpec, so curvatures that map to outside of the range will be clipped within.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p5">b = BSpline([ [ -1.0, -1.0 ], [ 0.36864406779661, -0.292 ], [ 1.0, 1.0 ] ], 4.0, false);</p>
+<p class="p5">b.gui(<span class="s1">nil</span>,500@500,\bipolar,\bipolar);</p>
+<p class="p5">)</p>
+<p class="p5">(</p>
+<p class="p5">{</p>
+<p class="p5"><span class="Apple-tab-span">	</span>w = <span class="s1">LFSaw</span>.ar(MouseX.kr(40,4000,\exponential));</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">SplineMapper</span>(b).ar( <span class="s1">w</span>, 64 ) * MouseY.kr(0.7,0.0)</p>
+<p class="p5">}.play</p>
+<p class="p3"><span class="Apple-converted-space"> </span>)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p3">By passing spec and domainSpec to the gui<span class="Apple-converted-space"> </span></p>
+<p class="p3">it will size the display to precisely the range</p>
+<p class="p3">and limit the points to movement within the range.</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5">b = <span class="s1">BSpline</span>([ [ 0.0, 0.028571428571429 ], [ 0.2890365448505, 0.39428571428571 ], [ 0.7641196013289, 1.0 ], [ 1.0, 0.0 ] ], 4.0, <span class="s1">false</span>);</p>
+<p class="p2"><br></p>
+<p class="p5">b.gui(<span class="s1">nil</span>,500@500,\unipolar,\unipolar);</p>
+<p class="p2"><br></p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// not working as expected</p>
+<p class="p5">(</p>
+<p class="p5">b = BezierSpline( Point(-1,-1), [], Point(1,1),[],false);</p>
+<p class="p5">b.gui(<span class="s1">nil</span>,500@500,\bipolar,\bipolar);</p>
+<p class="p5">)</p>
+<p class="p5">(</p>
+<p class="p5">{</p>
+<p class="p5"><span class="Apple-tab-span">	</span>x = MouseX.kr(-1,1,\linear);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>y = <span class="s1">SplineMapper</span>(b).kr( <span class="s1">x</span>, 64 );</p>
+<p class="p5"><span class="Apple-tab-span">	</span>//Saw.ar( y.linlin(-1,1, 400,6000) )</p>
+<p class="p5"><span class="Apple-tab-span">	</span>Saw.ar * (y * 0.5 + 1)</p>
+<p class="p5">}.play</p>
+<p class="p3"><span class="Apple-converted-space"> </span>)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">make a SplineMapperEditor that limits visibile and points to specs.<span class="Apple-converted-space"> </span></p>
+<p class="p3">limits drawing to clip range</p>
+<p class="p3">highlights in red any reverses in domain</p>
+<p class="p3">highlights in yellow any reverses in level</p>
+<p class="p3">normalize button</p>
+<p class="p3"># compile string</p>
+<p class="p4"><br></p>
+</body>
+</html>

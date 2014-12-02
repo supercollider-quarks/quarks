@@ -1,0 +1,215 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf410
+{\fonttbl\f0\fnil\fcharset77 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red191\green0\blue0;\red0\green115\blue0;
+\red96\green96\blue96;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs18 \cf0 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 SoftClock\cf0  : \cf2 TempoClock\cf0  \{\
+\
+	\cf2 var\cf0  <dt = 0.1, <>verbose = \cf2 false\cf0 ;\
+	\cf2 var\cf0  fadeTask, fading=\cf2 false\cf0 , isPlaying=\cf2 true\cf0 ;\
+	\cf2 var\cf0  <rateOfChange = 1.0;\
+	\
+	tempo_ \{ \cf2 arg\cf0  newTempo;\
+		newTempo = max(newTempo, 1e-256); \cf3 // zero not allowed.\cf0 \
+		rateOfChange = newTempo / \cf2 this\cf0 .tempo;\
+		\cf2 super\cf0 .tempo = newTempo;\
+	\}\
+	\
+	pause \{ \cf2 arg\cf0  dur = 0;\
+		\cf2 this\cf0 .fadeTempo(0.0, dur)\
+	\}\
+	dt_ \{\
+		\cf2 this\cf0 .shouldNotImplement(\cf2 thisMethod\cf0 ); \cf3 // not yet. needs a change in SkipJack, dt.value..\cf0 \
+	\}\
+	\
+	fadeTempo \{ \cf2 arg\cf0  newTempo, dur, warp = \cf4 \\cos\cf0 , clock;\
+		\cf2 var\cf0  start = \cf2 this\cf0 .tempo, interpol;\
+		warp = warp.asWarp;\
+		if (warp.isKindOf(\cf2 ExponentialWarp\cf0 )) \{ warp.spec.minval_(0.01) \};\
+		if (fading) \{ fadeTask.stop \}; \
+		fadeTask = \cf2 Task\cf0  \{ \
+			fading = \cf2 true\cf0 ;\
+			\cf5 "fadeTempo starts. going from: % to: %\\n"\cf0 .postf(\
+				start.round(0.001), newTempo.round(0.001));\
+			(1 .. (dur / dt + 1).asInteger).normalize.do \{ \cf2 |val|\cf0 \
+				interpol = blend(start, newTempo, warp.map(val));\
+				\cf2 this\cf0 .tempo = interpol;\
+				if (verbose) \{ \cf5 "fadeTempo index: % tempo: %\\n"\cf0 .postf(\
+					val.round(0.001), interpol.round(0.001)) \};\
+				dt.wait;\
+			\};\
+			fading = \cf2 false\cf0 ;\
+			\cf5 "fadeTempo done. tempo was: % new tempo is: %\\n"\cf0 .postf(\
+				start.round(0.001), interpol.round(0.001));\
+		\}; \
+		clock = clock ? \cf2 SystemClock\cf0 ;\
+		fadeTask.play(clock);\
+	\}\
+	\
+	warpTempo \{ \cf2 arg\cf0  frac, beats, warp = \cf4 \\cos\cf0 ;\
+		\cf2 this\cf0 .fadeTempo(frac * \cf2 this\cf0 .tempo, beats, warp, \cf2 this\cf0 )\
+	\}\
+\
+\
+\}\
+\
+\
+\cf2 ListeningClock\cf0  : \cf2 SoftClock\cf0  \{\
+	\
+	\cf2 var\cf0  <listener;\
+	\cf2 var\cf0  <>empathy = 0.5, <>confidence=0.5;\
+	\cf2 var\cf0  <others, <>weights;\
+	\
+	\cf2 classvar\cf0  <allClocks;\
+	\
+	init \{ \cf2 arg\cf0  tempo, beats, seconds, queueSize;\
+		allClocks = allClocks.add(\cf2 this\cf0 );\
+		\cf2 super\cf0 .init(tempo, beats, seconds, queueSize)\
+	\}\
+	\
+	*stopAll \{\
+		allClocks.do \{ \cf2 |clock|\cf0 \
+			clock.permanent = \cf2 false\cf0 ;\
+			if(clock.isPlaying) \{ clock.stop \};\
+		\};\
+		allClocks = \cf2 nil\cf0 ;\
+	\}\
+	\
+	stop \{\
+		\cf2 this\cf0 .stopListen;\
+		isPlaying = \cf2 false\cf0 ;\
+		\cf2 super\cf0 .stop;\
+		if(allClocks.notNil) \{ allClocks.take(\cf2 this\cf0 ) \};\
+	\}\
+	\
+	startListen \{\
+		listener = if(\cf2 this\cf0 .allPermanent) \{\
+			\cf2 SkipJack\cf0 (\{ if(isPlaying) \{ \cf2 this\cf0 .adjust \} \}, dt).start;\
+		\} \{\
+			\cf2 Task\cf0  \{ loop \{ dt.wait; if(isPlaying) \{ \cf2 this\cf0 .adjust \} \} \}.play;\
+		\};\
+	\}\
+	stopListen \{\
+		listener.stop;\
+	\}\
+	\
+	allPermanent \{\
+		^permanent and: \{ others.every(\cf2 _\cf0 .permanent) \}\
+	\}\
+		\
+	setClocks \{ \cf2 arg\cf0  clocks, argWeights;\
+		\cf2 this\cf0 .stopListen;\
+		if(clocks.isNil or: \{ clocks.isEmpty \}) \{\
+			^\cf2 this\cf0 \
+		\};\
+		others = clocks;\
+		weights = (argWeights ?? \{ 1.dup(clocks.size) \}).normalizeSum; \cf3 // not yet used.\cf0 \
+		\cf2 this\cf0 .startListen;\
+	\}\
+	\
+	othersMeanTempo \{\
+		^others.collect(\cf2 _\cf0 .elapsedBeats).mean \cf3 // weights here later.\cf0 \
+	\}\
+	\
+	othersMeanBeat \{\
+		^others.collect(\cf2 _\cf0 .tempo).mean\
+	\}\
+	\
+	adjust \{	\
+		\cf2 var\cf0  avgDeltaBeats = \cf2 this\cf0 .othersMeanBeat - \cf2 this\cf0 .elapsedBeats;\
+		\cf2 var\cf0  avgTempo = \cf2 this\cf0 .othersMeanTempo; \
+		\cf2 var\cf0  myTempo = \cf2 this\cf0 .tempo;\
+		\cf2 var\cf0  timeComp = (avgDeltaBeats * empathy); \
+		\cf2 var\cf0  newTempo = (blend(avgTempo, myTempo, confidence) + timeComp).max(0.01);\
+		\
+		if (verbose \
+			and: \{ (avgDeltaBeats.abs > 0.001)  \
+			or: \{ (newTempo - myTempo).abs > 0.001 \} \}) \
+		\{ \
+			\cf5 "LC - adjust - avgDeltaBeats: % 	avgTempo: % timeComp: % newTempo: %"\cf0 \
+			.format(*[avgDeltaBeats, avgTempo, timeComp, newTempo].round(0.0001)).postln;\
+		\};\
+		\cf2 this\cf0 .adjustTempo(newTempo, \cf2 this\cf0 .beats);\
+	\}\
+	\
+	\cf3 // subclass: set tempo without sending new tempo to network\cf0 \
+	adjustTempo \{ \cf2 arg\cf0  newTempo, beats;\
+		\cf2 _TempoClock_SetTempoAtBeat\cf0 \
+		^\cf2 this\cf0 .primitiveFailed\
+	\}\
+\
+\}\
+\
+\
+\
+\
+\cf2 TelepathicClock\cf0  : \cf2 ListeningClock\cf0  \{\
+	\
+	\cf2 var\cf0  <>channel = \cf4 \\teleclock\cf0 ;\
+	\cf2 var\cf0  <>empathy = 0.5, <>confidence=0.5;\
+	\
+	\cf2 var\cf0  <>addr, <responder;\
+	\
+	\cf2 var\cf0  <teleBeats, <teleTempo;\
+	\
+	\cf3 // listens initially by default\cf0 \
+	\
+	startListen \{\
+		responder.add;\
+		\cf2 super\cf0 .startListen;\
+	\}\
+	stopListen \{\
+		responder.remove;\
+		\cf2 super\cf0 .stopListen;\
+	\}\
+	\
+	\
+	\cf3 // same with beats todo\cf0 \
+	tempo_ \{ \cf2 arg\cf0  newTempo;\
+		\cf2 super\cf0 .tempo_(newTempo);\
+		\cf2 this\cf0 .share;\
+	\}\
+	\
+	allPermanent \{ ^permanent \}\
+	\
+	init \{ \cf2 arg\cf0  tempo, beats, seconds, queueSize;\
+		\
+		\cf2 super\cf0 .init(tempo, beats, seconds, queueSize);\
+		\cf2 NetAddr\cf0 .broadcastFlag = \cf2 true\cf0 ;\
+		\cf5 "broadcast was switched on.."\cf0 .postln;\
+		addr = \cf2 NetAddr\cf0 .broadcastIP;\
+		\
+		responder = \cf2 OSCresponder\cf0 (\cf2 nil\cf0 , channel, \{ \cf2 |t, r, msg|\cf0 \
+			teleBeats = msg[1];\
+			teleTempo = msg[2];\
+			\cf5 "received new tempo:. % beats: %\\n"\cf0 .postf(teleTempo, teleBeats);\
+		\});\
+		\
+		\cf2 this\cf0 .startListen;\
+	\}\
+	\
+	share \{\
+		if(addr.isNil) \{ \
+			\cf5 "TeleClock: No broadcast address found. Please contact your system"\cf0 .warn;\
+			addr = \cf2 NetAddr\cf0 .broadcastIP;\
+		\} \{ \
+			\cf5 "sending new tempo: % beats: %\\n"\cf0 .postf(\cf2 this\cf0 .tempo, \cf2 this\cf0 .beats);\
+			addr.sendMsg(channel, \cf2 this\cf0 .beats, \cf2 this\cf0 .tempo) \
+		\}\
+	\}\
+	\
+	othersMeanTempo \{\
+		^teleBeats ??  \{ \cf2 this\cf0 .tempo \}\
+	\}\
+	\
+	othersMeanBeat \{\
+		^teleTempo ?? \{ \cf2 this\cf0 .beats \}\
+	\}\
+\
+	\
+\}\
+}

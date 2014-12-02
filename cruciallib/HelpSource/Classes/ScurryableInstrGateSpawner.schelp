@@ -1,0 +1,29 @@
+CLASS:: ScurryableInstrGateSpawner
+summary:: a Pbind-like spawner that plays an Instr with streams supplied to its inputs. this one scurries
+categories:: Libraries>crucial>Instr, Libraries>crucial>Players
+related:: Classes/Instr, Classes/Pbind, Classes/InstrSpawner
+
+DESCRIPTION:: SC does not have the most stable language side scheduling.  Higher CPU load can cause scheduling events to be delayed and OSC can be sent unevenly.
+
+This InstrGateSpawner can scurry ahead — it can prepare many events and send all of them with OSC scheduling.  This can be done just before doing something disruptive like loading files in the client.  The events will already be sent to the server and people won't stop dancing to look at you funny because the music is choking.
+
+
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: scurry
+
+
+argument:: by
+
+
+
+METHOD:: makeTask
+
+
+
+
+

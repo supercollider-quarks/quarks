@@ -1,0 +1,138 @@
+TITLE:: InteractiveEnvironment
+summary:: Utility Class to easily create interactive musical environments
+categories:: Libraries>Interactive Environments
+related:: Classes/Dimple, Classes/AmbisonicPan
+
+DESCRIPTION::
+This class provides utility methods to setup interactive musical environments using DIMPLE.
+It it useful to
+
+list::
+## manage and create environment instances
+## access and process objects
+## track object attributes
+## sonify objects (with support for sounds in 3D space)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new environment instance.
+
+ARGUMENT:: dimple
+link::Classes/Dimple:: instance to associate the environment with.
+
+returns:: An instance of InteractiveEnvironment.
+
+
+INSTANCEMETHODS::
+
+METHOD:: dimple
+returns:: The DIMPLE instance associated with this environment.
+
+
+METHOD:: creationFunc
+Gets/sets the creation function, which contains code to create the environment. It is automatically invoked each time the link::#-create:: method is triggered. The DIMPLE instance is given as parameter.
+
+
+METHOD:: create
+Creates the environment. Therefore, a createFunction has to specified using link::#-creationFunc::.
+Furthermore, the object map (link::#-objects::) is initialized and the object Function (link::#-objectFunc#::) is invoked for each object in the environment.
+
+ARGUMENT:: clear
+Specifies if the environment and the object map should be cleared before creating the environment.
+
+
+METHOD:: handleCollisions
+Enables collision detection and registers a callback function to be invoked for every collision.
+
+ARGUMENT:: callback
+Callback function to be invoked when a collision occurs. The following parameters are given:
+
+numberedlist::
+## Name of the first collided object (as Symbol)
+## Name of the second collided object (as Symbol)
+## Velocity of the collision
+::
+
+METHOD:: objects
+returns:: Returns a map from object names (Symbols) to link::Classes/Dimple:: object instances.
+
+
+METHOD:: updateObjects
+Updates the object map.
+
+METHOD:: objectFunc
+Gets/sets a function which is invoked for each object in the environment. It receives a link::Classes/Dimple:: object as parameter.
+
+
+METHOD:: handleAttribute
+Registers a callback function to track changes of an object's attribute.
+
+ARGUMENT:: object
+Object to track
+
+ARGUMENT:: attribute
+Attribute to track, specified as Symbol (e.g. \position, \color)
+
+ARGUMENT:: interval
+Interval (in milliseconds) for attribute updates
+
+ARGUMENT:: callback
+Callback function which is invoked on every attribute update. It receives the following arguments:
+
+numberedlist::
+## The current value of the attribute of interest
+## The associated object instance
+::
+
+
+METHOD:: sonifyObject
+Sonifies a moving object in the environment. Therefore a handler is automatically installed which updates the object's position regularly.
+A sound synthesis algorithm is specified in terms of a function which is installed as a link::Classes/Ndef::.
+
+ARGUMENT:: object
+Object to be sonified.
+
+ARGUMENT:: ndefFunc
+Sound synthesis algorithm, which is installed as Ndef. It receives the following parameters:
+
+numberedlist::
+## X Position of the object [-1;1]
+## Y Position of the object [-1;1]
+## Z Position of the object [-1;1]
+::
+
+ARGUMENT:: positionUpdateRate
+Position update interval (in milliseconds)
+
+
+METHOD:: clear
+Clears all objects in the environment as well as the object map.
+
+
+EXAMPLES::
+
+code::
+d = Dimple.new;
+e = InteractiveEnvironment(d);
+e.creationFunc_ {
+	d.createSphere(0,0,0.1);
+	e.handleCollisions({ |object1Name, object2Name, velocity|
+		var amp = velocity.expexp(1e-6, 0.5, 0.1, 1);
+		Synth(\collision, [\amp, amp]);
+	});
+};
+
+e.objectFunc_{ |object, i|
+	
+	var ndefFunc = { |x=0, y=0, z=0|
+		var snd = PinkNoise.ar(0.1);
+		AmbisonicPan.ar(snd, x, y, z, ~decoder);
+	};
+	e.sonifyObject(object, ndefFunc, 10);
+};
+
+e.create
+
+::

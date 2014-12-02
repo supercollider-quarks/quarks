@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; color: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+</style>
+</head>
+<body>
+<p class="p1"><b>DOMDocument</b></p>
+<p class="p2"><br></p>
+<p class="p3">DOMDocument is the main class for acessing XML documents. This class and all related DOMXxx-classes implement a subset of the DOM-Level-1 specification for XML parsers, adopted to the the SuperCollider language.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">See http://www.w3.org/TR/REC-DOM-Level-1/level-one-core.html for the full level 1 specification of the Document Object Model (DOM).</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p3">All interfaces specified by the DOM, if used at all in this implementation, are directly mapped to SuperCollider classes. The original interface inheritance hierarchy is thus preserved in the class hierarchy (which is not necessarily required for the implementation of interfaces, see DOM-Level-1, 1.1.2).</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p3">Classes implementing the DOM interfaces are:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>DOMDocument</b><span class="Apple-converted-space"> </span></p>
+<p class="p3">The central class for accessing XML documents. This is the only class whose instances get created using 'DOMDocument.new', instances of any other class are either created internally during parsing of an XML-string,</p>
+<p class="p3">or programmatically through calls on 'DOMDocument.createElement(..)', 'DOMDocument.createText(..)', etc.</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p3"><b>DOMElement</b></p>
+<p class="p3">Represents an XML-tag.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>DOMAttr</b></p>
+<p class="p3">Represents an attribute of an XML-tag. The implementation considers this class as a helper class and only partially implements the DOM specification of DOMAttr. Attribute values should only be accessed via the corresponding getAttribute, setAttribute methods of DOMElement.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>DOMCharacterData</b></p>
+<p class="p3">Abstract class. This is the common superclass of all nodes in the document which carry free-form string content.</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p3"><b>DOMText</b></p>
+<p class="p3">Text in the document.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>DOMComment</b></p>
+<p class="p3">Comment in the document (ignored by default during parsing, set DOMDocument.parseComments=true to get access to comment nodes).</p>
+<p class="p2"><br></p>
+<p class="p3"><b>DOMCDATASection</b><span class="Apple-converted-space"> </span></p>
+<p class="p3">Raw text section.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>DOMProcessingInstruction</b></p>
+<p class="p3">Processing instruction nodes.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>DOMNode</b></p>
+<p class="p3">The common superclass of all nodes. Each node can also be accessed via the</p>
+<p class="p3">methods of this class only, which the DOM calls a 'flat'-access to the document</p>
+<p class="p3">nodes (flat in terms of meta-model classes, the document-structure of course</p>
+<p class="p3">is always composed of nodes in a tree structure described by the parent-children</p>
+<p class="p3">relationship, see DOM-Level-1, 1.1.4).</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-converted-space"> </span>Some interfaces specified in the DOM-Level-1 are not implemented by this adoption:</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p3"><i>DOMString</i></p>
+<p class="p3">Not implemented, SuperCollider's own String class is used for best integration into SuperCollider.</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p3"><i>NodeList, NamedNodeMap</i></p>
+<p class="p3">Not implemented, SuperCollider's own collection classes are used for best integration into SuperCollider.</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p3"><i>DOMException</i></p>
+<p class="p3">Not implemented, in most cases errors will result from SuperCollider's own exception handling, especially in cases of errors resulting from collection classes. Parse errors are handled by method DOMDocument.parseError which by default will simply output a text message and exit the program. This might be overwritten for a more subtle handling of parse errors.</p>
+<p class="p2"><i></i><br></p>
+<p class="p3"><i>DOMDocumentType, DOMNotation</i></p>
+<p class="p3">Not implemented. DTDs are no longer up-to-date technology anyway (use XML-Schema instead), and in most cases it will not be necessary to validate an XML document from within SuperCollider. External tools could easily be used in cases where DTD-based validation is required. Calling DOMDocument.getDoctype will always return nil (as allowed by the specification, see DOM-Level-1, 1.3). During parsing, doctype declarations will be treated like comments.</p>
+<p class="p2"><br></p>
+<p class="p3"><i>DOMEntity, DOMEntityReference</i></p>
+<p class="p3">Not implemented, only a fixed set of simple character-entities in Text-nodes is supported.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">As a notation convention, all methods marked as 'public' ('+') in the UML class diagram belong to the implementations of DOM interfaces. In contrast to that, all methods marked as 'friendly' ('~') are additions specific to this SuperCollider-implementations. The code generated from the class diagram does, however, not distinguish between different levels of visibility, so the 'friendly' methods are still publicly accessibly from any other SuperCollider class. (There are also methods marked as 'protected' ('#'), these are intended to be internal</p>
+<p class="p3"><span class="Apple-converted-space"> </span>methods of the implementation. They should not be called from outside code.)</p>
+<p class="p2"><br></p>
+<p class="p3">Note: The DOM-Level-1 specification covers version 1.0 of the XML standard only. Newer versions of the DOM also include features like XML namespaces, which are explicitly not supported by this adoption, but might not be required for most applications within SuperCollider anyway.</p>
+</body>
+</html>

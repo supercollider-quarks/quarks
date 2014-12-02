@@ -1,0 +1,71 @@
+CLASS:: RedTest
+SUMMARY:: generate test signals
+CATEGORIES:: Red>redTest
+RELATED:: Classes/RedSFPlayer, Classes/RedTapTempoGUI
+
+CLASSMETHODS::
+
+METHOD:: ar
+Returns a link::Classes/SinOsc:: - stereo pseudo ugen.
+
+METHOD:: sf
+Starts a mono soundfile on bus+group.
+
+METHOD:: sf2
+Starts a stereo soundfile on bus+group.
+
+METHOD:: speaker
+Pink noise speaker test.
+
+ARGUMENT:: channels
+Should be an array of output channel indices.
+
+ARGUMENT:: amp
+used to scale amplitude
+
+ARGUMENT:: dur
+used to change duration between notes
+
+METHOD:: speaker2
+Ping speaker test.
+
+ARGUMENT:: channels
+Should be an array of output channel indices.
+
+ARGUMENT:: amp
+used to scale amplitude
+
+ARGUMENT:: dur
+used to change duration between notes
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedTestSF
+
+METHOD:: sfBus
+Set output bus for soundfile.
+
+METHOD:: sfGrp
+Return the link::Classes/Group:: for soundfile.
+
+METHOD:: sfFree
+Free buffer and synth for soundfile.
+
+EXAMPLES::
+
+CODE::
+s.boot
+a= {RedTest.ar(MouseY.kr(1, 0), MouseX.kr(-1, 1))}.play	//x= amp, y= pan
+a.free;
+a= {RedTest.ar(SinOsc.kr(1), SinOsc.ar(0.75))}.play
+a.free;
+
+a= RedTest.sf2(0, s.defaultGroup);		//out bus and group
+a.sfFree
+
+a= RedTest.speaker([0, 1])
+a.stop
+
+a= RedTest.speaker2([0, 1, 2])
+a.stop
+::

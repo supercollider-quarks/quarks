@@ -1,0 +1,114 @@
+title:: Introducing 3Dj
+summary:: Introduction to 3Dj: Tools for Interactive Sound Spatialization
+categories:: Libraries>3Dj
+
+
+
+section:: Introduction
+
+3Dj is a SuperCollider library that aims to provide a compact, complete and open framework for live sound spatialization. 
+
+
+section:: Structure
+
+In a [live] spatialization system, the user is able to manipulate in real-time the spatial characteristics of the sound, given an external audio input. Manipulating all other sound parameters is outside the spatialization system's scope.
+
+Following image is a scheme of a [live] spatialization system, with the current class implementation.
+
+image::3Dj_structure.png::
+
+
+In short, a [live] spatialization system has mainly three parts:
+definitionlist::
+	## User Interface + Mapping
+	|| The device with which the user(s) interact(s) with the system. We provide the link::Classes/OrientationController::, a convenience class for mapping sensor devices
+	## Sound Scene Simulation
+	|| A virtual representation of all sound objects. It is implemented through the class link::Classes/SSWorld:: and the sound object instances link::Classes/SSObject::
+	## Spatial Render
+	|| A system which receives spatial information and audio, and does the "panning" according to a spatialization technique. It is managed by the class link::Classes/SpatialRender::, and its functionality extended by link::Classes/SpatDifLogger:: and link::Classes/SpatDifPlayer::. In our implementation, the audio is routed in from Jack, and the metadata comes from SSWorld. Possible current spatialization techniques are Ambisonics, VBAP and Binaural/HRTF.
+::
+
+For a short tutorial, readers are encouraged to look through the examples provided in link::Classes/SSWorld:: and link::Classes/SpatialRender:: .
+
+section:: Features
+list::
+
+## Spatial Render:
+	list::
+	##3D source position
+	##    Spatialization techniques: ambisonics, vbap and binaural
+	##    Up to full 3rd order Ambisonics, with different source shapes: punctual, ring, semi-meridian and extended
+    	##SpatDIF compatible
+    	##Log and playback SpatDIF scenes
+    	##Remote performance
+   	## Distance cues
+    	##Jack compatible
+	::
+## Scene Simulator:
+	list::
+    	##Unlimited number of sound objects
+    	##Source interaction: top-down (absolute objects control) and bottom-up (physical model-based)
+    	##Predefined source motions: orbital, shm, brownian...
+    	##Scene visualization
+    	##SpatDIF compatible
+	::
+## Interaction:
+	list::
+    	##OSC compatible
+    	##Log and playback user interface gestures
+	::
+::
+
+subsection:: Depencencies
+3Dj depends on some external libraries.
+list::
+##Spatial Render
+	definitionlist::
+	##AmbDec (ambisonics)
+	||link::http://kokkinizita.linuxaudio.org/linuxaudio/::
+  	##SC3 plugins (vbap)
+	||link::https://github.com/supercollider/sc3-plugins::
+    	##ATK: Ambisonics Toolkit (binaural)
+	||link::http://www.ambisonictoolkit.net/wiki/tiki-index.php::
+	::
+##Scene Simulator
+	list::
+	## Quarks: MathLib, redUniverse
+	::
+::
+
+subsection:: SpatDIF
+
+SpatDIF is a scene description format, intended for the standardization of spatial sound information. It provides a unified system for spatial data exchange between sound scene simulators and spatial renders.
+We are proud to offer the first SuperCollider SpatDIF implementation. Users can make use of our implementation, or alternatively interchange any of its parts for the software of their election.  
+
+More information can be found at the SpatDIF website: link::http://spatdif.org::.
+
+
+subsection:: Remote configurations
+
+Thanks to the network distributed paradigm of SuperCollider, it is possible to run the different library parts distributed over a network. This can be useful in several situations: from splitting the CPU load, to remote performances. 
+
+subsection:: Extra utilities
+
+In the 3Dj GitHub repository (link::https://github.com/andresperezlopez/rt-spatialization::) we provide some extra tools to be used with the library.
+definitionlist::
+##Python
+||Scripts for Ambisonics encoding visualization
+##Sounds
+||4 mono tracks, ready for spatialization!
+##Android
+||a Processing sketch providing sensor data in OSC through the local network, in the OrientationController required format. Ready to compile with Processing-Android
+::
+
+
+section:: Further info
+All the code is provided under the GPL v3 license.
+
+The project has been developed by Andrés Pérez López as the practical implementation of the concepts developed in his Master Thesis at Music Technology Group, UPF, in collaboration with Fundació Barcelona Media. The Thesis report, with all related State-of-the-Art and research, can be accessed through this link: http://www.andresperezlopez.com/sites/default/files/Andres_Perez_Master_Thesis.pdf
+
+Contact: contact@andresperezlopez.com
+
+link::http://www.andresperezlopez.com::
+
+

@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.29">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd0b0b}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #2b30fa; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #2024c7}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #0000ee}
+span.s4 {color: #2b30fa}
+span.s5 {color: #000000}
+span.s6 {color: #008417}
+span.s7 {color: #2024c7}
+span.s8 {color: #737373}
+span.s9 {color: #1d20b9}
+span.s10 {color: #426f13}
+span.s11 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>JSBKtl</b></span><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>a MIDIKtl class for adc and haho's JoyStickBox -<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a Doepfer PocketControl kit with 8 joysticks.</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">The layout is:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>js1X/Y<span class="Apple-converted-space">  </span>js2X/Y<span class="Apple-converted-space">  </span>js3X/Y<span class="Apple-converted-space">  </span>js4X/Y <span class="Apple-converted-space"> </span></p>
+<p class="p3">snap</p>
+<p class="p3"><span class="Apple-tab-span">	</span>js5X/Y<span class="Apple-converted-space">  </span>js6X/Y<span class="Apple-converted-space">  </span>js7X/Y<span class="Apple-converted-space">  </span>js8X/Y <span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p1">See also<b><span class="Apple-converted-space">  </span></b><a href="MIDIKtl.html"><span class="s3"><b>MIDIKtl</b></span></a><b>, </b><a href="PFKtl.html"><span class="s3"><b>PFKtl</b></span></a><b>,<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b><a href="NanoKtl.html"><span class="s4"><b>NanoKtl</b></span></a><b>, etc</b></p>
+<p class="p4"><br></p>
+<p class="p1"><b>first example</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// make a new PFKtl</p>
+<p class="p3">f = JSBKtl.new;</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s5"><span class="Apple-tab-span">	</span></span>// map a single slider's action</p>
+<p class="p3">f.mapCC(<span class="s6">\js1X</span>, { <span class="s7">|ccval|</span> <span class="s8">"</span>JSBKtl<span class="s8">: js1X ccval %\n"</span>.postf(ccval) });<span class="Apple-converted-space"> </span></p>
+<p class="p3">f.mapCC(<span class="s6">\js1Y</span>, { <span class="s7">|ccval|</span> <span class="s8">"</span>JSBKtl<span class="s8">: js1Y ccval %\n"</span>.postf(ccval) });<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p1"><b>Class Variables</b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>*verbose <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>// a flag whether the class posts extended info <span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>PFKtl.verbose = true;</p>
+<p class="p1"><span class="Apple-tab-span">	</span>PFKtl.verbose = false;</p>
+<p class="p4"><br></p>
+<p class="p1"><b>Instance Variables</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>softWithin </b><span class="Apple-tab-span">	</span>how close controllers should be for soft takeOver (default 0.05).</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>see also <a href="SC://softSet"><span class="s4">softSet</span></a><span class="s4">.<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><br></p>
+<p class="p1"><span class="s4"><span class="Apple-tab-span">	</span></span><b>ctlNames<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>a dictionary of the controller element names and their midi info.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s4"><span class="Apple-tab-span">	</span></span><b>lastVals<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the last values that come from each controller element (used for softSet)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p1"><b>Methods</b></p>
+<p class="p6"><br></p>
+<p class="p1"><span class="s4"><b><span class="Apple-tab-span">	</span></b></span><b>*new(uid)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>make a new PFKtl. uid is an optional ID for the MIDI port to listen to.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3">f = JSBKtl.new;</p>
+<p class="p3">f.dump</p>
+<p class="p4"><br></p>
+<p class="p1"><span class="s2"><span class="Apple-tab-span">	</span></span><b>mapCC(ctl, action)</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s5"><span class="Apple-tab-span">	</span></span>// map a single slider's action</p>
+<p class="p3">f.mapCC(<span class="s6">\js8X</span>, { <span class="s7">|ccval|</span> <span class="s8">"JSBKtl test: js8X ccval %\n"</span>.postf(ccval) });<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s5"><span class="Apple-tab-span">	</span></span>// all valid names are:</p>
+<p class="p3">f.orderedCtlNames;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>mapToEnvirGui(gui, indices) <span class="Apple-tab-span">	</span></b>- map to an EnvirGui.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>gui</b> <span class="Apple-tab-span">	</span>the <b>gui</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>indices</b><span class="Apple-tab-span">	</span>which sliders to map to. default is [1, 2 .. 8].<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p3"><span class="s7">Spec</span>.add(<span class="s6">\harm</span>, [1, 100]);</p>
+<p class="p3">e = <span class="s7">EnvirGui</span>.new( (freq: 120, amp: 0.2, harm: 12, otto: 10), 4);</p>
+<p class="p3">f.mapToEnvirGui(e);</p>
+<p class="p3">)</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>mapToPdefGui(gui, indices) <span class="Apple-tab-span">	</span></b>- map to a PdefGui.</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>mapToTdefGui(gui, indices) <span class="Apple-tab-span">	</span></b>- map to a TdefGui.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>gui</b> <span class="Apple-tab-span">	</span>the <b>gui</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>indices</b><span class="Apple-tab-span">	</span>which sliders to map to. default is [1, 2 .. 8].<span class="Apple-converted-space"> </span></p>
+<p class="p3">(</p>
+<p class="p3"><span class="s9">Tdef</span>(<span class="s10">\a</span>, { <span class="s9">|e|</span> 100.do { <span class="s9">|i|</span> i.postln; 0.5.wait } });</p>
+<p class="p3">t = <span class="s9">TdefGui</span>(<span class="s9">Tdef</span>(<span class="s10">\a</span>), 4);</p>
+<p class="p3"><span class="s9">Tdef</span>(<span class="s10">\a</span>).set(\freq, 200, \dur, 0.1, <span class="s10">\otto</span>, 12, <span class="s10">\ann</span>, 1234);</p>
+<p class="p4"><br></p>
+<p class="p3">f.mapToPdefGui(t, (5..8));</p>
+<p class="p3">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>mapToNdefGui(gui, indices, lastIsVol) <span class="Apple-tab-span">	</span></b>- map to an NdefGui.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>gui</b> <span class="Apple-tab-span">	</span>the gui</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>indices</b><span class="Apple-tab-span">	</span>which sliders to map to. default is [1, 2 .. 8].<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>lastIsVol</b><span class="Apple-tab-span">	</span>flag whether the last slider becomes a volume control for that editor.</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s5">(<span class="Apple-tab-span">	</span></span>// make an Ndef and its editor first</p>
+<p class="p3"><span class="s7">Spec</span>.add(<span class="s6">\harm</span>, [2, 200, <span class="s6">\exp</span>]);</p>
+<p class="p7">Ndef<span class="s5">(</span><span class="s6">\a</span><span class="s5">, { </span>|freq = 20, harm = 20, pan, amp, rate, rq, detune|<span class="s5"> </span>Blip<span class="s5">.ar(freq, harm) });</span></p>
+<p class="p3">g = <span class="s7">NdefGui</span>(<span class="s7">Ndef</span>(<span class="s6">\a</span>), 8);</p>
+<p class="p4"><br></p>
+<p class="p3">f.mapToNdefGui(g, (9..16));</p>
+<p class="p3">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p1"><span class="s2"><span class="Apple-tab-span">	</span></span><b>mapToMixer(mixer, numVols, lastEdIsVol, lastIsMaster)</b><span class="Apple-tab-span">	</span>map to a proxymixer.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mixer </b>is the mixer to map to.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the left hand sliders (sliders 1 to splitIndex) are mapped to volumes;</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the right hand sliders<span class="Apple-converted-space">  </span>map to the mixer.editGui parameters.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>lastIsMaster: </b>if true, the rightmost control maps to server volume.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b><span class="Apple-tab-span">	</span>lastEdIsVol: </b>if true, the last free slider on the right side is used for<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the edited proxy's volume.</p>
+<p class="p3">(</p>
+<p class="p3"><span class="s7">Spec</span>.add(<span class="s6">\harm</span>, [2, 200, <span class="s6">\exp</span>]);</p>
+<p class="p7">Ndef<span class="s5">(</span><span class="s6">\a</span><span class="s5">, { </span>|freq = 20, harm = 20, pan, amp, rate, rq, detune|<span class="s5"> </span>Blip<span class="s5">.ar(freq, harm) });</span></p>
+<p class="p3">10.do { <span class="s9">|i|</span><span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Ndef((<span class="s11">"test"</span> ++ i).asSymbol, {<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">Pan2</span>.ar(<span class="s9">Ringz</span>.ar(<span class="s9">Impulse</span>.ar(exprand(0.5, 4)), exprand(300, 3000), 0.02), 1.0.rand2, 0.2)<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>}).play(vol: 0.2)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>;<span class="Apple-converted-space"> </span></p>
+<p class="p3">};</p>
+<p class="p4"><br></p>
+<p class="p3">m = <span class="s7">NdefMixer</span>(s, 7);</p>
+<p class="p3">m.switchSize(2);</p>
+<p class="p3">m.editGui.proxy_(<span class="s7">Ndef</span>(<span class="s6">\a</span>));</p>
+<p class="p4"><br></p>
+<p class="p3">f.mapToMixer(m, 7);<span class="Apple-converted-space"> </span></p>
+<p class="p3">)</p>
+<p class="p3"><span class="Apple-tab-span">	</span>// maybe add flags for mapping arScroller and paramGui.scroller as well?</p>
+<p class="p4"><br></p>
+</body>
+</html>

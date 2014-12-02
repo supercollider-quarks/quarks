@@ -1,0 +1,80 @@
+CLASS:: RedAbstractMix
+SUMMARY:: abstract class
+CATEGORIES:: Red>redMix
+RELATED:: Overviews/redMixOverview, Classes/RedMixGUI, Classes/RedMixMono, Classes/RedMixStereo, Classes/RedMixStereoMono, Classes/RedMatrixMixer, Classes/RedMixer
+
+DESCRIPTION::
+WARNING::
+Do not instantiate. Use its subclasses.
+::
+NOTE::
+Requires link::Classes/Conductor:: quark.
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: inA
+First mono input.
+
+ARGUMENT:: inB
+Second mono input.
+
+ARGUMENT:: out
+Stereo output.
+
+ARGUMENT:: group
+code::nil:: boots the default server and uses the code::defaultGroup::. Adds to tail.
+
+ARGUMENT:: lag
+Ramp for mix controllers in seconds.
+
+SUBSECTION:: subclass responsibility
+
+METHOD:: def
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedAbstractMix
+
+METHOD:: free
+Free the mixer synth.
+
+METHOD:: gui
+create a link::Classes/RedMixGUI::.
+
+METHOD:: group
+The link::Classes/Group:: in use.
+
+METHOD:: cvs
+Dictionary of link::Classes/CV::s:
+
+TABLE::
+## inA || input bus offset
+## inB || second bus offset
+## out || output bus offset
+## mix || mix control -1 to 1
+## amp || volume 0 to 1
+## lag || ramp time in seconds for mix and amp
+::
+
+EXAMPLES::
+
+CODE::
+a= RedMixMono(2, 4, 0);
+b= Pbind(\degree, Pseq([0, 1, 5, 4, 3], inf), \dur, 0.25, \pan, -1, \out, 2).play;
+c= Pbind(\degree, Pseq([10, 11, 16, 15], inf), \dur, 0.25, \pan, -1, \out, 4).play;
+
+a.cvs.mix.value= -0.9;
+a.cvs.mix.value= 0.9;
+a.cvs.lag.value= 2;
+a.cvs.mix.value= 0;
+a.cvs.amp.value= 0.2;
+a.args
+a.gui
+
+b.stop;
+c.stop;
+a.free;
+::

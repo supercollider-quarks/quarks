@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.27">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #003ca9}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ac1c17}
+span.s1 {color: #0055f0}
+span.s2 {color: #000000}
+span.s3 {color: #225718}
+span.s4 {color: #003ca9}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>JInT_Surface</b></p>
+<p class="p2"><br></p>
+<p class="p3">implementation of <a href="JInT.html"><span class="s1">JInT</span></a> for a surface equipped with a contact microphone.</p>
+<p class="p2"><br></p>
+<p class="p4">s.boot</p>
+<p class="p5"><span class="s2">k = </span>JInT_Surface<span class="s2">(s, 8)</span></p>
+<p class="p6"><br></p>
+<p class="p4">k.start</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">k.stop</p>
+<p class="p6"><br></p>
+<p class="p4">k.info;</p>
+<p class="p6"><br></p>
+<p class="p4">k[<span class="s3">\knock</span>].action = {<span class="s4">|me|</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>me.value.postln</p>
+<p class="p4">};</p>
+<p class="p7">// turn off again;</p>
+<p class="p4">k[<span class="s3">\knock</span>].action = <span class="s4">nil</span>;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">p = <span class="s4">ProxySpace</span>.push(s)</p>
+<p class="p5">ProxyMixer<span class="s2">(p)</span></p>
+<p class="p6"><br></p>
+<p class="p4">k.sensitivity = 0.25</p>
+<p class="p4">k.dt = 0.1</p>
+<p class="p4">k.audioInBus = 1</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">~a = {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">var</span> trig = k[<span class="s3">\knock</span>].ar;</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span></span>//Poll.ar(trig, trig);</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span>Splay<span class="s2">.ar(</span>Ringz<span class="s2">.ar(</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">Demand</span>.ar(trig, 0, <span class="s4">Dseq</span>([</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>49, 46, 46, 47, 44, 44, 42, 44, 46, 47, 49, 49, 49,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>49, 46, 46, 47, 44, 44, 42, 46, 49, 49, 42,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>44, 44, 44, 44, 44, 46, 47,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>46, 46, 46, 46, 46, 47, 49,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>49, 46, 46, 47, 44, 44, 42, 46, 49, 49, 42], <span class="s4">inf</span>)).midicps *.t [2, 4, 7],</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.11</p>
+<p class="p4"><span class="Apple-tab-span">	</span>))</p>
+<p class="p4">}</p>
+<p class="p6"><br></p>
+<p class="p7">// shootout</p>
+<p class="p4">~a = {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">var</span> trig = k[<span class="s3">\knock</span>].ar;</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span>Splay<span class="s2">.ar(</span>Ringz<span class="s2">.ar(</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[400, 800, 1600]*<span class="s4">TRand</span>.ar(0.5, 2, k[<span class="s3">\knock</span>].ar),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.1</p>
+<p class="p4"><span class="Apple-tab-span">	</span>))</p>
+<p class="p4">}</p>
+<p class="p4">~a.rebuild</p>
+<p class="p6"><br></p>
+<p class="p4">{<span class="s4">K2ATrig1</span>.ar(k[<span class="s3">\knock</span>].kr)}.plot(0.5)</p>
+</body>
+</html>

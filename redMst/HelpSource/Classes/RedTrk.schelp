@@ -1,0 +1,88 @@
+CLASS:: RedTrk
+SUMMARY:: a sort of timeline - slave track
+CATEGORIES:: Red>redMst
+RELATED:: Classes/RedMst, Classes/RedSeq, Classes/RedTrk2
+
+DESCRIPTION::
+RedTrk is controlled by the master ( link::Classes/RedMst:: ). Each track must have a name, an item to play and an array specifying when to play (sections when active).
+
+CLASSMETHODS::
+
+PRIVATE:: initClass
+
+METHOD:: new
+Create a new track. It automatically adds itself to link::Classes/RedMst:: and gets removed with code::RedMst.clear::.
+
+ARGUMENT:: key
+A unique name for this track ( link::Classes/Symbol:: ).
+
+ARGUMENT:: item
+Some object that responds to play and stop (e.g. link::Classes/Pbind::, link::Classes/Tdef::, link::Classes/Routine:: ).
+
+ARGUMENT:: sections
+An array of indices.
+
+SUBSECTION:: Special class methods
+Add functions to the following class variables if you have special classes that can not be controlled with code::.play:: / code::.stop::, or classes that have argument keywords that does not match code::clock:: and code::quant:: (e.g. when 'clk' is used instead of 'clock'), or classes that need to free resources on clear (e.g. free buffers).
+
+METHOD:: playDict
+Dictionary of custom play functions. If class not found here then defaults to the code::.play:: message.
+
+METHOD:: stopDict
+Dictionary of custom stop functions. If class not found here then defaults to the code::.stop:: message.
+
+METHOD:: clearDict
+Dictionary of custom clear functions. If class not found here then defaults to the code::.free:: message.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedTrk, printOn, storeArgs
+
+METHOD:: key
+Name of track ( link::Classes/Symbol:: ).
+
+METHOD:: item
+Object to be controlled (e.g. link::Classes/Pbind::, link::Classes/Tdef::, link::Classes/Routine:: ).
+
+METHOD:: sections
+Which sections this track is active ( link::Classes/Array:: ).
+
+METHOD:: player
+Object returned by item after code::.play:: (e.g. link::Classes/Synth::, link::Classes/EventStreamPlayer:: ).
+
+METHOD:: isPlaying
+A boolean.
+
+SUBSECTION:: Not so useful instance methods
+The following methods are used internally by link::Classes/RedMst::. Not very useful on their own.
+
+METHOD:: play
+
+METHOD:: stop
+
+METHOD:: clear
+
+EXAMPLES::
+
+CODE::
+RedMst.clear
+RedTrk(\t1, Pbind(\dur, 0.8), [0])		//create a track
+RedTrk(\t1).item
+RedTrk(\t1).sections				//when to be active
+
+s.boot
+RedMst.play					//controller starts track on next quant beat
+
+RedTrk(\t2, Pbind(\freq, 880, \dur, 0.5), [0])	//add another track while playing
+RedMst.goto(0)					//have to restart section to activate new track
+
+RedMst.tracks					//current tracks
+
+RedTrk(\t1, Pbind(\freq, 660), [0])		//overwrite first track while playing
+RedMst.goto(0)					//have to restart section to hear the change
+
+RedMst.stop					//stop all tracks on next quant beat
+RedMst.clear					//remove tracks from master
+::
+
+see link::Classes/RedMst:: helpfile for more examples.

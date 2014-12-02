@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+span.s1 {color: #0000ff}
+span.s2 {color: #0000bf}
+span.s3 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>KrBusWatcher : NodeWatcher</b></p>
+<p class="p2"><br></p>
+<p class="p3">Repeatedly polls control buses for their value and updates dependents assigned to the bus objects. Based on <a href="SC://NodeWatcher"><span class="s1">NodeWatcher</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*newFrom(server)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Returns the KrBusWatcher belonging to this server. If the KrBusWatcher has already been created, the same one will be returned; otherwise a new one will be created.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*register(bus)</b></p>
+<p class="p3"><b>*unregister(bus)<span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><b>register(bus)</b></p>
+<p class="p3"><b>unregister(bus)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Add or remove a bus from the list of buses to monitor. Buses may be given as any object that responds to .asBus</p>
+<p class="p2"><br></p>
+<p class="p3"><b>startAliveThread</b></p>
+<p class="p3"><b>stopAliveThread<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Start and stop the routine that periodically asks the server for the bus values.</p>
+<p class="p2"><br></p>
+<p class="p3">You should not need to use these methods manually. The alive thread is started whenever you register a bus, and it's stopped when all buses are unregistered.</p>
+<p class="p2"><br></p>
+<p class="p3">Buses get updated based on /c_setn responses coming from the server. To get these responses, the client has to send /c_getn messages. The alive thread sends these messages.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Note:</b> if the bus watcher is running when you press cmd-., all the buses will be unregistered and the alive thread will be stopped.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Every cycle, all the dependents of the Bus object will receive the .update message with the args (bus, value). value will be an array with one float for each channel in the bus. One channel buses will return a one element array.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Updater</b> (crucial lib) is a useful class that sets up a function as a dependant of any Object.</p>
+<p class="p2"><br></p>
+<p class="p3">Example:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4">s.boot;</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p4">b = <span class="s2">Bus</span>.control(s, 1);</p>
+<p class="p4">a = { <span class="s2">LFNoise1</span>.kr(0.1, 0.5, 0.5) }.play(s, b);</p>
+<p class="p4"><span class="s2">KrBusWatcher</span>.register(b);</p>
+<p class="p5"><br></p>
+<p class="p4">f = <span class="s2">FlowView</span>.new;</p>
+<p class="p4">x = <span class="s2">GUI</span>.slider.new(f, <span class="s2">Rect</span>(0, 0, 100, 15));</p>
+<p class="p6"><span class="s3">u = </span>Updater<span class="s3">(b, { </span>|bus, val|</p>
+<p class="p4"><span class="Apple-tab-span">	</span>{ x.value_(val[0]); }.defer;</p>
+<p class="p4">});</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p4"><span class="s2">KrBusWatcher</span>.unregister(b);</p>
+<p class="p4">u.remove;</p>
+<p class="p4">a.free; b.free;</p>
+<p class="p4">a = b = f = x = u = <span class="s2">nil</span>;</p>
+<p class="p4">)</p>
+</body>
+</html>

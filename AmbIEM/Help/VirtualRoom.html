@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica; min-height: 16.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad140d}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001bb9}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {color: #000000}
+span.s2 {color: #ad140d}
+span.s3 {color: #001bb9}
+span.s4 {color: #606060}
+span.s5 {color: #007300}
+span.s6 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>VirtualRoom</b></p>
+<p class="p2"><br></p>
+<p class="p3">a convenience class for easy creation and management of virtual audio environments</p>
+<p class="p3">The rendering is done in a class method (ar) while multiple instances of a VirtualRoom</p>
+<p class="p3">may be defined to be able to switch between them (its also possible to play them<span class="Apple-converted-space"> </span></p>
+<p class="p3">simultaniously, if that makes sense to some application)</p>
+<p class="p2"><br></p>
+<p class="p3">Note: For better performance the following server options should be set before booting the server:</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s1">s.options.blockSize_(128)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// sets kr blocksize; default = 64</p>
+<p class="p6">s.options.memSize_(8192 * 16);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">// more memory for delay lines</span></p>
+<p class="p5"><span class="s1">s.reboot;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// dont forget to reboot the server after this</p>
+<p class="p4"><br></p>
+<p class="p6">p = <span class="s3">ProxySpace</span>.push;</p>
+<p class="p2"><br></p>
+<p class="p3">First thing is to set the path to the full Kemar HRTFs (dowloadable from http://sound.media.mit.edu/KEMAR/full.tar.Z). Default is "KemarHRTF/" (located in the SC3 application folder)</p>
+<p class="p4"><br></p>
+<p class="p5">// set the Kemar path</p>
+<p class="p6"><span class="s3">VirtualRoom</span>.kemarPath = <span class="s4">"KemarHRTF/"</span>;</p>
+<p class="p2"><br></p>
+<p class="p3">Then init the class - that will switch on the rendering (and consumes CPU) and route the output to the standard output with .play</p>
+<p class="p4"><br></p>
+<p class="p5">// create instance</p>
+<p class="p7"><span class="s1">v = </span>VirtualRoom<span class="s1">.new;</span></p>
+<p class="p4"><br></p>
+<p class="p5">// initialise rendering</p>
+<p class="p6">v.init;</p>
+<p class="p4"><br></p>
+<p class="p5">// set the room properties<span class="Apple-converted-space"> </span></p>
+<p class="p5">// reverbration gain, hf damping, early reflections gain</p>
+<p class="p6">(</p>
+<p class="p6">v.revGain = 0.1;</p>
+<p class="p6">v.hfDamping = 0.5;</p>
+<p class="p6">v.refGain = 0.8;</p>
+<p class="p6">)</p>
+<p class="p4"><br></p>
+<p class="p5">// A gui is also available<span class="Apple-converted-space"> </span></p>
+<p class="p6">v.gui;</p>
+<p class="p2"><br></p>
+<p class="p3">Note:</p>
+<p class="p3">the coordinate system is given according to the listener's head:<span class="Apple-converted-space">  </span>x-axis (nose), y-axis (left-ear) and z-axis (vertex) and Rooms are defined by the origin and width/depth/height</p>
+<p class="p4"><br></p>
+<p class="p5">// a room 8m wide (y), 5m deep(x) and 5m high(z) - nose is always along x</p>
+<p class="p6">v.room = [0, 0, 0, 5, 8, 5];</p>
+<p class="p4"><br></p>
+<p class="p5">// make it<span class="Apple-converted-space">  </span>play to standard out</p>
+<p class="p6">v.play;</p>
+<p class="p4"><br></p>
+<p class="p5">// listener is a NodeProxy.kr, set the source</p>
+<p class="p6">v.listener.source = { [ <span class="s3">MouseY</span>.kr(5,0), <span class="s3">MouseX</span>.kr(8,0), 2.5, 0] };</p>
+<p class="p4"><br></p>
+<p class="p5">// more static</p>
+<p class="p6">v.listener.source = { <span class="s3">|x=2.5, y=4, z=2.5, o=0|</span> [ x, y, z, o] };</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">// adding sources to the scene</p>
+<p class="p6">(</p>
+<p class="p6">~noisy = { <span class="s3">EnvGen</span>.kr(<span class="s3">Env</span>.adsr, <span class="s3">Impulse</span>.kr(3)) * <span class="s3">PinkNoise</span>.ar(1) };</p>
+<p class="p6">~sinus = { <span class="s3">EnvGen</span>.kr(<span class="s3">Env</span>.adsr, <span class="s3">Impulse</span>.kr(3)) * <span class="s3">SinOsc</span>.ar(440,0.8) };</p>
+<p class="p6">~dust = { <span class="s3">Dust</span>.ar(400) };</p>
+<p class="p6">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p8">v.addSource( ~noisy, <span class="s5">\test1</span>, [1, 2, 2.5]);</p>
+<p class="p8">v.addSource( ~sinus, <span class="s5">\test2</span>, [4, 7, 2.5]);</p>
+<p class="p8">v.addSource( ~dust, <span class="s5">\test3</span>, [2, 5, 2.5]);</p>
+<p class="p4"><br></p>
+<p class="p5">// change the source position</p>
+<p class="p8">v.sources[<span class="s5">\test1</span>].setn(<span class="s5">\xpos</span>, [2.5, 3, 2.5]);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">// right</span></p>
+<p class="p8">v.sources[<span class="s5">\test1</span>].setn(<span class="s5">\xpos</span>, [2.5, 5, 2.5]);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">// left</span></p>
+<p class="p8">v.sources[<span class="s5">\test1</span>].setn(<span class="s5">\xpos</span>, [2, 4, 2.5]);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">// back</span></p>
+<p class="p8">v.sources[<span class="s5">\test1</span>].setn(<span class="s5">\xpos</span>, [3, 4, 2.5]);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">// front</span></p>
+<p class="p9"><br></p>
+<p class="p10">// change the listener position</p>
+<p class="p8">v.listener.setn(<span class="s5">\x</span>, [3, 5, 2.5, 0])<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">// source to the right</span></p>
+<p class="p8">v.listener.setn(<span class="s5">\x</span>, [3, 5, 2.5, pi/2])<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">// turn, source to the front</span></p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p10">// remove the sources</p>
+<p class="p8">v.removeSource(<span class="s5">\test1</span>);</p>
+<p class="p8">v.removeSource(<span class="s5">\test2</span>);</p>
+<p class="p8">v.removeSource(<span class="s5">\test3</span>);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">// the light version of addSource is used if a lot of sources are needed</p>
+<p class="p5">// consumes 63% CPU on iBook G4 1Ghz</p>
+<p class="p6">(</p>
+<p class="p6">x = (1..6).collect ({ <span class="s3">|i|</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s3">var</span> test, testpos;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>test = <span class="s3">NodeProxy</span>.audio(s,1);<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>test.source = { <span class="s3">EnvGen</span>.kr(<span class="s3">Env</span>.adsr, <span class="s3">Impulse</span>.kr(3)) * <span class="s3">SinOsc</span>.ar(440.rand,0.6) };</p>
+<p class="p6"><span class="Apple-tab-span">	</span>v.addSourceLight(test, i.asString, [1 , 4, 2.5] );</p>
+<p class="p6"><span class="Apple-tab-span">	</span>test;</p>
+<p class="p6">});</p>
+<p class="p6">)</p>
+<p class="p4"><br></p>
+<p class="p5">// remove the sources and free the node proxies</p>
+<p class="p6">6.do ({ <span class="s3">|i|</span><span class="Apple-converted-space">  </span>v.removeSource(i.asString); x[i].free; });</p>
+<p class="p4"><br></p>
+<p class="p5">// adjust the room properties as you like</p>
+<p class="p6">v.gui;</p>
+<p class="p4"><br></p>
+<p class="p5">// Create a second virtual room</p>
+<p class="p7"><span class="s1">w = </span>VirtualRoom<span class="s1">.new;</span></p>
+<p class="p4"><br></p>
+<p class="p5">// initialise rendering</p>
+<p class="p6">w.init;</p>
+<p class="p4"><br></p>
+<p class="p5">// set the room properties (reverberation time and gain,</p>
+<p class="p5">// hf damping on reverb and early reflections gain</p>
+<p class="p6">(</p>
+<p class="p6">w.revTime = 0;</p>
+<p class="p6">w.revGain = 0;</p>
+<p class="p6">w.hfDamping = 1;</p>
+<p class="p6">)</p>
+<p class="p4"><br></p>
+<p class="p5">// same listener, same room dimensions</p>
+<p class="p6">w.listener.source = { <span class="s3">|x=2.5, y=4, z=2.5, o=0|</span> [ x, y, z, o] };</p>
+<p class="p6">w.room = [0, 0, 0, 5, 8, 5];</p>
+<p class="p4"><br></p>
+<p class="p5">// play it on channels 2, 3</p>
+<p class="p6">w.out.playN([2,3]);</p>
+<p class="p6">~dust = { <span class="s3">Dust</span>.ar(400) };</p>
+<p class="p6">w.addSource( ~dust, <span class="s4">\test3</span>, [3, 3, 2.5]);</p>
+<p class="p6">w.removeSource(<span class="s4">\test3</span>);</p>
+<p class="p4"><br></p>
+<p class="p5">// free the virtual room</p>
+<p class="p6">v.free;</p>
+<p class="p6">w.free;</p>
+<p class="p4"><br></p>
+<p class="p5">// remove the ProxySpace</p>
+<p class="p6">p.pop;</p>
+<p class="p4"><br></p>
+</body>
+</html>

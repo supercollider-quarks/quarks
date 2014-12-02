@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 36.0px; text-indent: -36.0px; font: 12.0px Helvetica}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+    span.s1 {color: #0000bf}
+    span.s2 {color: #000000}
+    span.s3 {color: #007300}
+    span.s4 {color: #bf0000}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>VoicerSequencer : QuantTask</b></p>
+<p class="p2"><br></p>
+<p class="p3">A powerful and flexible sequencer for Voicer. Frequency, gate and note length get separate streams; any other argument can be streamed optionally as well. Any of these streams can be changed on-the-fly.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(voicer, freqs, durs, lengths, absLengths = true ... args)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Makes a new sequencer.</p>
+<p class="p2"><br></p>
+<p class="p4"><i>voicer</i>: The voicer to play on. It should have its clock and latency values already set. The clock should be a TempoClock. The voicer's latency will be used for better timing.</p>
+<p class="p4"><i>freqs</i>: A Stream or Pattern returning frequency values you want to use. Chords can be played by including an array in the stream. Rests should be written as an empty array (i.e. a chord of zero notes).</p>
+<p class="p4"><i>durs</i>: A Stream or Pattern returning the number of beats until the next note or chord should sound. This must be an integer or float; arrays are not allowed here.</p>
+<p class="p4"><i>lengths</i>: A Stream or Pattern returning the length of each note (which may be longer or shorter than the duration of this note, since Voicer is polyphonic). Alternately, you may provide an Integer or Float, which will be multiplied by the duration to get the note length--or nil, to use the duration exactly.</p>
+<p class="p4"><i>absLengths</i>: if true, the values returned by the length stream will be used as is. If false, the values will be multiplied by the note's duration, allowing you to treat the length stream as a legato/staccato/overlap parameter.</p>
+<p class="p4"><i>args</i>: An array of pairs: [\argname, Stream/Pattern, \argname, Stream/Pattern, etc.]</p>
+<p class="p2"><br></p>
+<p class="p3"><b>play(quant, offset, clock, doReset = false)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Play the sequence. It will begin at the next <i>quant</i> boundary, plus <i>offset</i> beats.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>reset</b></p>
+<p class="p2"><br></p>
+<p class="p3">Reset all streams to the beginning.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>stop</b></p>
+<p class="p2"><br></p>
+<p class="p3">Stop playing.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>freqs_(newStream, quant, offset)</b></p>
+<p class="p3"><b>durs_(newStream, quant, offset)</b></p>
+<p class="p3"><b>lengths_(newStream, quant, offset)</b></p>
+<p class="p3"><b>putArg_(name, newStream, quant, offset)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Change a stream on the fly. If you do putArg on an argument that already has a stream, the old stream will be thrown out first.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>latency_(val)</b></p>
+<p class="p2"><br></p>
+<p class="p3">The latency desired in beats. This should match the voicer's latency; if not, notes will not play when you expect.</p>
+<p class="p2"><br></p>
+<p class="p3">Example:</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p6"><span class="s1">Instr</span><span class="s2">([</span>\test<span class="s2">, </span>\seqpantest<span class="s2">], {</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">arg</span> freq = 440, gate = 0, env, amp = 1, ffreq = 1000, rq = 1, pan = 0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">var</span> out;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>out = <span class="s1">EnvGen</span>.kr(env, gate, doneAction:2) *</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">RLPF</span>.ar(<span class="s1">Pulse</span>.ar(freq, 0.25, amp), ffreq, rq);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">Pan2</span>.ar(out, pan)</p>
+<p class="p5">}, [<span class="s3">\freq</span>, <span class="s3">\amp</span>, <span class="s1">nil</span>, <span class="s1">nil</span>, <span class="s3">\freq</span>, [1, 0.05], [-1, 1]]);</p>
+<p class="p7"><br></p>
+<p class="p5">v = <span class="s1">Voicer</span>(10, <span class="s1">Instr</span>.at([<span class="s3">\test</span>, <span class="s3">\seqpantest</span>]), [<span class="s3">\rq</span>, 0.783, <span class="s3">\amp</span>, 0.25, <span class="s3">\ffreq</span>, 15238, <span class="s3">\env</span>, <span class="s1">Env</span>.adsr(0, 0.1, 0.75, 0.1), <span class="s3">\pan</span>, 0]).latency_(0.2);</p>
+<p class="p7"><br></p>
+<p class="p5">t = <span class="s1">TempoClock</span>.new(96/60);</p>
+<p class="p8">//t.gui;<span class="Apple-tab-span">	</span>// skip this if you don't have TempoClockGui</p>
+<p class="p5">v.clock_(t);</p>
+<p class="p7"><br></p>
+<p class="p5">f = <span class="s3">\freq</span>.asSpec;</p>
+<p class="p7"><br></p>
+<p class="p9"><span class="s2">q = </span>VoicerSequencer<span class="s2">(v,<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">Pseq</span>([57, 60, 62, 64, 67].midicps, <span class="s1">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">Prand</span>([ <span class="s1">Pseq</span>([0.20], 20)<span class="s4">/*, Pseq([0.5], 1)*/</span> ], <span class="s1">inf</span>),</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s1">nil</span><span class="s2">,<span class="Apple-tab-span">	</span></span>// use durations as lengths</p>
+<p class="p5"><span class="Apple-tab-span">	</span>[<span class="s3">\ffreq</span>, <span class="s1">Pfunc</span>({ f.map(0.5.rand + 0.5)}),</p>
+<p class="p5"><span class="Apple-tab-span">	</span> <span class="s3">\pan</span>, <span class="s1">Pfunc</span>({ 1.0.rand2 })]</p>
+<p class="p5">);</p>
+<p class="p5">)</p>
+<p class="p7"><br></p>
+<p class="p8">// make rq gui-adjustable</p>
+<p class="p5">c = v.mapGlobal(<span class="s3">\rq</span>, <span class="s1">nil</span>, 0.783, [0.05, 1]);</p>
+<p class="p5">v.gui;</p>
+<p class="p7"><br></p>
+<p class="p5">q.insp;</p>
+<p class="p7"><br></p>
+<p class="p5">q.play(quant: 4);</p>
+<p class="p5">q.stop;</p>
+<p class="p5">q.reset;</p>
+<p class="p5">q.start;</p>
+<p class="p7"><br></p>
+<p class="p8">// for a rest, specify [] as a frequency: voicer thinks you want a chord of 0 notes</p>
+<p class="p5">q.freqs_(<span class="s1">Prand</span>([<span class="s1">Pseq</span>([59, 60, 62, 64, 67].midicps, 3), <span class="s1">Pseq</span>([[]], 1)], <span class="s1">inf</span>), 4);</p>
+<p class="p5">q.freqs_(<span class="s1">Pseq</span>([57, 60, 62, 64, 67].midicps, <span class="s1">inf</span>), 4, 2);</p>
+<p class="p7"><br></p>
+<p class="p8">// can play a chord by including an array in your freqs pattern</p>
+<p class="p5">q.freqs_(<span class="s1">Pseq</span>([[57, 74, 66, 64], 60, 62, 64, 67].midicps, <span class="s1">inf</span>), 4);</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p8">// note durations don't change but they sustain longer</p>
+<p class="p5">q.lengths_(<span class="s1">Pfunc</span>({ 1.0.rand + 0.1 }));</p>
+<p class="p5">q.lengths_(3);</p>
+<p class="p5">q.lengths_(<span class="s1">nil, 4</span>);</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p8">// change filter and panning patterns</p>
+<p class="p5">q.putArg(<span class="s3">\ffreq</span>, <span class="s1">Pseq</span>([<span class="s1">Pgeom</span>(800, 1.2, 18)], <span class="s1">inf</span>));</p>
+<p class="p5">q.putArg(<span class="s3">\pan</span>, <span class="s1">Pseq</span>([<span class="s1">Pseries</span>(-1, 0.05, 40)], <span class="s1">inf</span>));</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2">q.stop;<span class="Apple-tab-span">	</span></span>// you should stop the sequencer before stopping the clock;</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// otherwise some notes may get stuck</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5">v.free; t.stop;</p>
+</body>
+</html>

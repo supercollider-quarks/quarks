@@ -1,0 +1,451 @@
+TITLE:: SpatialRender
+summary:: a SpatDIF compilant spatial render
+categories:: Libraries>3Dj
+related:: Guides/3Dj, Classes/SpatDifLogger, Classes/SpatDifPlayer
+
+DESCRIPTION::
+A SuperCollider implementation of a Spatial Render. It reads OSC messages in SpatDIF format (from link::Classes/SSWorld:: or any other Sound Scene Simulator), as well as audio streams from Jack, and renders the corresponding audio.
+
+Three different audio spatialization techniques are available, which can be changed on the fly:
+
+NUMBEREDLIST:: 
+## SOFT::Ambisonics:: Up to full 3rd order. Decoding is provided externally by the AmbDec software.
+warning::AmbDec must be installed in the system in order to get the proper spatialized audio. The SpatialRender manages internally the connexions::
+## SOFT::VBAP:: Thanks to the link::Classes/VBAP:: implementation
+## SOFT::Binaural:: Provided by the wonderful EMPHASIS::Ambisonic Toolkit::, first encodes in HOA and then decodes using the HRTF models
+::
+
+It also handles internally a link::Classes/SpatDifLogger:: with autosaving features for recording the incoming messages.
+
+
+See link::Guides/3Dj:: for a deeper insight into the concepts.
+CLASSMETHODS::
+
+METHOD:: new
+
+Create a instance of SpatialRender.
+
+Default render parameters are CODE::\binaural:: decoder, CODE::\listen:: head, hrtfID CODE::1002::
+
+ARGUMENT:: server
+Reference to the server
+
+ARGUMENT:: spatDifLoggerPath
+String with the path to the folder in which save the log files.
+
+If CODE::nil::, the default path CODE::"~/.local/share/SuperCollider/SpatialRender":: will be used
+
+DISCUSSION::
+When a code::SpatialRender:: is instanciated, the server is (re)booted, in order to load VBAP and Binaural Buffers.
+
+It also sets the SuperCollider output number to 24 (this parameter is accesible in the variable numAudioOutputs), and sets the required Jack connexions.
+
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: init, endSource, initSpatDifLogger, initBinauralSynthDef, sourcePresent, getAmbisonicsSynthName, mediaChannel, preserveArea, newMethod, initSynthDefs, disconnectSC_System, connectSC_System_VBAP, setPosition, setAudioOutput, setSourceWidth, connectSC_AmbDec, mediaType, addReceiverFunction, connectSC_System_2,newSource, sendToWorld, initVbapSynthDef, sourceType
+
+
+
+
+
+SUBSECTION:: Spatializatoin Techniques
+
+METHOD:: spatialTechnique
+Get the current spatialization technique.
+
+METHOD:: setSpatializationTechnique
+Set the desired spatialization technique. The possible values are either CODE::\ambisonics::, CODE::\binaural:: or CODE::\vbap::.
+
+It manages internally the required Jack connexions (and eventually AmbDec instanciation/quit)
+
+
+SUBSECTION:: Ambisonics
+
+METHOD:: ambisonicsParameters
+Get a Dictionary with the form CODE::(sourceName -> [order, shape] )::
+
+METHOD:: setAmbisonicsParameters
+If ambisonics is the current spatialization technique, configure its properties.
+
+argument:: source
+
+A CODE::Symbol:: with the name of one source, or CODE::nil:: for applying to all sources
+
+NOTE:: Notice that, in ambisonics, each source can be encoded in a different order, and with a different shape ::
+
+argument:: order
+CODE::Integer:: with the desired order. For the moment, between 0 and 3. Default to 3.
+
+argument:: shape
+One of the following
+NUMBEREDLIST::
+## CODE::\point:: classical punctual source. Default
+## CODE::\ring::  arbitrary width ring-type surface around a virtual sphere's surface
+## CODE::\extended:: arbitrary squared surface around a virtual sphere's surface
+## CODE::\meridian:: a half meridian shape
+::
+
+argument:: internal
+Private use
+
+SUBSECTION:: Binaural
+
+METHOD:: binauralDecoder
+Get the current binaural decoder type
+
+METHOD:: binauralSubjectID
+Get the current subject ID for the binaural model used
+
+METHOD:: setBinauralDecoder
+Configure the binaural model, if CODE::\binaural:: is the current spatialization technique.
+
+decoderType should be one of these: CODE::\spherical::, CODE::\listen:: or CODE::\cipic::.
+subjectID is the integer holding the subject code.
+NOTE::subjectID number are not consecutive. Please check the reference::
+
+For more information about binaural decoders, check link::Classes/FoaDecoderKernel::.
+
+
+SUBSECTION:: Vbap
+
+METHOD:: vbapSpeakerArray
+Get the current vbap speaker configuration
+METHOD:: vbapSpeakerBuffer
+Get the current vbap speaker buffer
+METHOD:: vbapNumSpeakers
+get the current number of speakers in vbap
+
+METHOD:: setVbapParameters
+Set the vbap speaker configuration. 
+
+speakerArray is an instance of link::Classes/VBAPSpeakerArray::
+
+
+
+
+
+SUBSECTION:: Rendering Parameters
+
+METHOD:: setMaximumAttenuation
+Set the maximum attenuation used used for the distance attenuation function.
+Default to 0.000016.
+
+METHOD:: setMaximumDistance
+Set the maximum source distance used for the distance attenuation function.
+Default to 62500 m.
+
+METHOD:: setReferenceDistance
+Set the reference distance used for the distance attenuation function.
+Default to 1 m.
+
+METHOD:: absorptionModel
+
+METHOD:: setAbsorptionModel
+Select the air absorption model. 
+The possible values are  0 for no model, 1 for standard model, or code::\default::. Default to 1.
+
+Check link::http://redmine.spatdif.org/attachments/download/105/SpatDIF-specs-V0.3.pdf::, Appendix F
+
+
+METHOD:: attenuationModel
+
+METHOD:: setAttenuationModel
+Select the distance attenuation model. 
+Possible values are 0 for no model, 1 for higher attenuation model, 2 for lower attenuation model, or code::\default::. Default to 2.
+
+Check link::http://redmine.spatdif.org/attachments/download/105/SpatDIF-specs-V0.3.pdf::, Appendix F
+
+
+
+
+
+SUBSECTION:: Network Communication
+
+METHOD:: worldAddresses
+Get the list of all code::Classes/SSWorld:: addresses where to send back the scene information (in case of code::SpatDifPlayer:: playback) or remote control. Multiple addresses are allowed.
+
+At instanciation, the only address available will be link::Classes/NetAddr#-localAddr::. It is responsability of the user to provide a correct address, when working in remote. 
+
+METHOD:: addWorldAddress
+
+Add a code::NetAddress:: to the link::Classes/SpatialRender#-worldAddresses:: list.
+
+METHOD:: removeWorldAddress
+
+Remove a code::NetAddress:: from the link::Classes/SpatialRender#-worldAddresses:: list.
+returns:: The removed code::NetAddress:: if succesful, or code::nil:: if not.
+
+METHOD:: resendToWorld
+
+Get/set whether scene information will be resended to all associated code::SSWorld::, when there is no code::SpatDifPlayer:: playback.
+
+By default it will be code::false::. User should set it only for remote visualization.
+
+
+
+
+
+SUBSECTION:: Control
+
+METHOD:: sourceNames
+Get a code::List:: with all source names
+
+METHOD:: receiverFunctions
+Get a code::Dictionary:: in the form [sourceName -> OSCReceiver function associated]
+
+
+
+
+SUBSECTION:: SpatDIF Logger
+
+A link::Classes/SpatDifLogger:: instance is provided with the Spatial Render. It is recommended to control it from the following methods.
+
+METHOD:: spatDifLoggerPath
+Get the current path for the SpatDIF log file.
+
+METHOD:: spatDifLoggerFilename
+Get the complete file name for the SpatDIF log file.
+
+METHOD:: logOSC
+Set wheter the SpatDifLogger is active or inactive.
+
+METHOD:: autosaveOSC
+Activate or deactivate the autosave functionality of the log file.
+Default to CODE::true::.
+
+METHOD:: autosavePeriod
+Get/set the period between consecutive autosavings of the log file.
+Default to 10 s.
+
+
+SUBSECTION:: SpatDIF Player
+
+A link::Classes/SpatDifPlayer:: instance is provided with the Spatial Render. It is recommended to control it from the following methods.
+
+
+METHOD:: spatDifPlayer_load
+
+Load the content of a OSC-SpatDIF file and prepare it for playback.
+argument:: aFile
+code::String:: with the path to the file.
+
+
+METHOD:: spatDifPlayer_start
+Start playback from the beggining of the document.
+argument:: loop
+Set the looping. 1 for one-shot, 2 for two repetitions... inf for eternal repeat
+
+METHOD:: spatDifPlayer_play
+Starts playback from where it was paused last time.
+
+METHOD:: spatDifPlayer_pause
+Pauses playback. Next call to link::Classes/SpatialRender#-spatDifPlayer_play:: will start from where it was paused.
+
+METHOD:: spatDifPlayer_stop
+Stop playback. Next call to link::Classes/SpatialRender#-spatDifPlayer_play:: will start from the beginning
+
+METHOD:: spatDifPlayer_reset
+Next call to link::Classes/SpatialRender#-spatDifPlayer_play:: will start from the beginning
+
+METHOD:: spatDifPlayer_isPlaying
+Answer whether the player is currently playing. See link::Classes/SpatDifPlayer#-isPlaying::
+
+METHOD:: spatDifPlayer_verbose
+If code::true::, it will print all sended messages.
+
+
+SUBSECTION:: Other
+
+METHOD:: verbose
+If verbose is set to true, outcoming messages will be printed
+
+METHOD:: close
+Close all OSCResponders, free all synths, close the OSC Logger file.
+
+METHOD:: server
+Get the used server
+
+
+
+
+EXAMPLES::
+
+code::
+
+
+
+// instanciate a Spatial Render
+r=SpatialRender.new(s);
+
+//create a sound scene
+(
+w = SSWorld([20,20,10]).showView;
+o = SSObject(w,loc:[2,0,0],channel:0).setMotion(\orbit)
+)
+
+
+// NOTICE that, even if the object's radius is 1, the render is receiving 2.
+// This is because SSWorld adjusts internally the minimum radius to the sweetSpotSize:
+w.sweetSpotSize
+w.setSweetSpotSize(1)
+
+// by default, the render is verbose. we can change it...
+r.verbose_(false)
+
+
+// each object has a SuperCollider input associated...
+o.channel // will answer 0 (default)
+
+// ...which can be setted at any time
+o.setChannel(1)
+
+// now, connect something to the second SuperCollider input and listen
+// (remember to use headphones, we are using binaural for the moment)
+
+// ......
+
+
+
+
+
+
+// // // // // // SPATDIF LOG AND PLAYBACK // // // // // //
+
+// let's say we liked the sound scene we just produced.
+// everything is logged in...
+r.spatDifLoggerFilename
+// ...because the log option is by default set to true
+r.logOSC
+
+// we can stop the scene
+w.pause;
+
+// and playback it (remember to save the file first!)
+(
+r.spatDifLogger.save;
+r.spatDifPlayer_load(r.spatDifLoggerFilename);
+r.spatDifPlayer_start
+)
+
+// looping is also allowed
+r.spatDifPlayer_start(inf)
+r.spatDifPlayer_start(3)
+
+// spatDifPlayer is verbose by default
+r.spatDifPlayer.verbose
+r.spatDifPlayer_verbose(false)
+
+// and usual task controls provided
+r.spatDifPlayer.pause
+r.spatDifPlayer_play
+r.spatDifPlayer_reset
+r.spatDifPlayer_isPlaying
+
+r.spatDifPlayer_stop
+
+
+
+
+
+// // // // // // RENDERING PARAMETERS // // // // // //
+
+// we have some options for the distance cues: air absorption and distance attenuation
+
+// let's put another source and listen to them
+(
+o.setMotion(\static);
+o.stop;
+o.loc_([2,0,0]);
+SSObject(w,loc:[5,0,0],channel:1);
+)
+
+// there are two absorption models: 0 (no absorption) and 1 (lpf)
+r.absorptionModel
+r.setAbsorptionModel(0)
+
+// and 3 attenuation models: 0 (no attenuation), and 1 and 2 (around 1/r^2)
+r.attenuationModel
+r.setAttenuationModel(0)
+
+// we can also control the attenuation parameters
+r.setMaximumAttenuation(0.0002)
+r.setMaximumDistance(100);
+r.setReferenceDistance(0.5)
+
+// see the SpatialRender helpfile for more information about
+
+
+
+
+
+
+// // // // // // SPATIALIZATION PARAMETERS // // // // // //
+
+///// BINAURAL (HTRF)
+
+// there are three different possible spatialization techniques
+
+// by default, the one used is binaural (provided by ATK)
+r.spatialTechnique
+
+// we can see the decoder parameters
+r.binauralDecoder // \cipic model, ID 65
+
+// and set them. Search the one that most match your perception
+r.setBinauralDecoder(\cipic,131)
+r.setBinauralDecoder(\listen,1030)
+r.setBinauralDecoder(\spherical,0005)
+
+// see FoaDecoderKernel for more info about binaural decoding
+
+
+///// VBAP
+
+r.setSpatializationTechnique(\vbap)
+
+// by default, a 5.1 speaker array is provided
+r.vbapNumSpeakers
+r.vbapSpeakerArray
+r.vbapSpeakerBuffer
+
+// we can set the speaker array.
+// remember that the given speaker order is the output channels order
+r.setVbapParameters(VBAPSpeakerArray.new(2,[45,135,-135,-45])) //quad
+
+//// AMBISONICS
+
+// we provide a custom set of ambisonic encoders, up to 3rd order
+// decoding is managed by AmbDec
+
+r.setSpatializationTechnique(\ambisonics)
+// an instance of AmbDec appeared. Select your choice decoding configuration there
+
+// also the Jack/SC/AmbDec connexions are managed internally. take a look..
+
+// when using ambisonics, every source can have a different order and shape..
+r.ambisonicsParameters
+
+// .. thus, we can set them individually or together
+r.setAmbisonicsParameters(order:1)
+r.setAmbisonicsParameters(\0,order:2)
+
+// source shape should be changed from SSWorld in order to visualize it
+w.getObject(\0).shape_(\extended).dAzimuth_(pi/2).dElevation_(pi/4)
+w.getObject(\1).shape_(\ring).locSph_(ele:pi/8)
+w.getObject(\1).shape_(\meridian).locSph_([3,pi,0])
+
+
+
+
+
+
+
+
+
+
+
+
+
+::

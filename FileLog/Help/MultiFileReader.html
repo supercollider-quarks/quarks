@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: MultiFileReader</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>MultiFileReader</h1>
+<h2>reading back multiple files as created by MultiFileWriter.</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> </p>
+
+<p>This class allows you to read back files that you created with MultiFileWriter.</p>
+
+<p>See also: <a href="MultiFileWriter.html">MultiFileWriter</a> 
+and <a href="MultiFilePlayer.html">MultiFilePlayer</a>
+</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*new(fn,fc)</STRONG></DT>
+<DD>Create a new instance.<DL>
+<DT><EM>fn</EM></DT>
+<DD>The filename, this is either the path to the tarfile, or to the folder containing all files.</DD>
+<DT><EM>fc</EM></DT>
+<DD>The fileClass to use for reading the individual files (default TabFileReader)</DD>
+</DL>
+
+</DD>
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+<DT><STRONG>next</STRONG><DT>
+<DD>Read the next line in the files</DD>
+
+<DT><STRONG>nextInterpret</STRONG><DT>
+<DD>Read the next line in the files and interpret</DD>
+
+
+<DT><STRONG>openFile(ind)</STRONG></DT>
+<DD>Open a file from the bundle.<DL>
+<DT><EM>ind</EM></DT>
+<DD>The id of the file (the line at which it occurs in the index file)</DD>
+</DL>
+</DD>
+
+<DT><STRONG>fileClass_</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>fileClass</STRONG></DT>
+<DD>The Class used to open the individual files.</DD>
+
+
+<DT><STRONG>reset</STRONG></DT>
+<DD>Go back to the beginning of the first file.</DD>
+
+
+<DT><STRONG>closeFile</STRONG></DT>
+<DD>Close the individual file.</DD>
+
+
+<DT><STRONG>close</STRONG></DT>
+<DD>Close the index file, and any open current file.</DD>
+
+
+<DT><STRONG>skipToNextFile</STRONG></DT>
+<DD>Skips to the next file.</DD>
+
+<DT><STRONG>tarBundle</STRONG></DT>
+<DD>Whether or not we are reading from a tarfile.</DD>
+
+<DT><STRONG>zipSingle</STRONG></DT>
+<DD>Whether the single files are zipped. This is detected from the index file.</DD>
+
+
+
+<DT><STRONG>openIndexFile</STRONG></DT>
+<DD>Opens the index file (called automatically from new).</DD>
+
+<DT><STRONG>readIndexLine( ind )</STRONG></DT>
+<DD>Reads the line <em>ind</em> and returns the result.</DD>
+
+
+<DT><STRONG>fileName</STRONG></DT>
+<DD>The base filename.</DD>
+
+<DT><STRONG>pathDir</STRONG></DT>
+<DD>The base path in which the tarfile or the folder lies.</DD>
+
+<DT><STRONG>indexFile</STRONG></DT>
+<DD>The file instance of the index file</DD>
+
+<DT><STRONG>indexfn</STRONG></DT>
+<DD>The filename of the index file.</DD>
+
+<DT><STRONG>curFile</STRONG></DT>
+<DD>The instance of the currently open file.</DD>
+
+<DT><STRONG>curid</STRONG></DT>
+<DD>ID of the currently open file.</DD>
+
+
+
+</DL>
+
+<h3> Example 1 </h3>
+    <pre>
+m = <span class="type">MultiFileWriter</span>.new( <span class="string">"testfile15.txt"</span>);
+
+<span class="type">Task</span>({
+
+    3.do{
+        m.open;
+
+        20.do{
+            m.writeLine( <span class="type">Array</span>.fill( 10, { 1.0.rand }));
+            0.25.wait;
+        };
+        m.close;
+        
+        1.0.wait;
+    };
+    <span class="string">"done"</span>.postln;
+    
+}).play;
+
+n = <span class="type">MultiFileReader</span>.new( <span class="string">"testfile15.tar"</span>);
+
+n.next;
+n.next;
+n.next;
+
+<span class="comment-delimiter">// </span><span class="comment">MultiFileReader will automatically jump to the next file, if we</span>
+<span class="comment-delimiter">// </span><span class="comment">are at the end of the current file.</span>
+
+
+<span class="comment-delimiter">// </span><span class="comment">Jump to another file, and continue reading from there:</span>
+n.openFile( 2 );
+n.next;
+
+n.closeFile;
+
+n.close;
+</pre>
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

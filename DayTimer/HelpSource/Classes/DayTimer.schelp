@@ -1,0 +1,181 @@
+TITLE:: DayTimer
+summary:: make actions happen at specific times of the day - hour/minute/second
+categories:: Utilities
+related:: SkipJack
+
+DESCRIPTION::
+DayTimer allows scheduling actions to happen at specific times of day. This can be useful for installations that run unattended in museum or gallery situations. A DayTimer is stored by name, and can keep multiple actions to run at different times of day.
+There is a global DayTimer instance which may suffice for simple uses.
+
+code::
+
+// Use the global top DayTimer
+// put an action in - at every full 10 seconds, post.
+DayTimer.putDate(\ten, { |date| date.second % 10 == 0 }, { "10 sec.".postln });
+
+DayTimer.start; // now do it.
+// post every three seconds
+DayTimer.putDate(\three, { |date| date.second % 3 == 0 }, { "3 sec.".postln });
+// remove
+DayTimer.removeAt(\ten);
+DayTimer.putDate(\two, { |date| date.second % 2 == 0 }, { "2 sec.".postln });
+DayTimer.removeAt(\three);
+
+DayTimer.stop;
+
+// Make a daytimer and use it
+d = DayTimer(\otto);
+d.start;
+	// do this every full minute - id so you can remove it again
+d.putDate(\perMin, { |date| date.second == 0 }, { "full minute!".postln });
+
+	// do this every minute at seconds 25 and 35
+d.putDate(\min2, { |date| [25, 35].includes(date.second) }, { "twice a min".postln });
+    // once a day at a specific time [h, m, s] -
+d.putDate(\onceT, [12, 35, 40], { "once a day only!".postln } );
+
+d.stop;
+::
+
+CLASSMETHODS::
+
+METHOD:: all
+a global dictionary where all DayTimers are stored.
+
+METHOD:: at
+look up a DayTimer in DayTimer.all by name.
+
+
+METHOD:: top
+A global instance of DayTimer provided for convenience.
+
+METHOD:: putDate
+add an action at <id> to the top DayTimer dates.
+
+ARGUMENT:: id
+a symbol for the action to add to it.
+
+ARGUMENT:: test
+a test whether to do the action at the current date/time.
+can be a function that looks at current date, or a list of
+[hour, minute, second] values.
+
+ARGUMENT:: func
+the action to do when the time is right (test is true)
+
+METHOD:: removeAt
+remove the action at <id> in the top DayTimer.
+
+METHOD:: start
+start the top DayTimer.
+
+METHOD:: stop
+stop the top DayTimer.
+
+
+METHOD:: new
+store a new DayTimer or access an existing instance at the given name;
+optionally give it an id, a test whether the time of day is right, and the corresponding action.
+
+ARGUMENT:: name
+a symbol for the DayTimer instance name.
+
+ARGUMENT:: id
+a symbol for the action to add to it.
+
+ARGUMENT:: test
+a test whether to do the action at the current date/time.
+can be a function that looks at current date, or a list of
+[hour, minute, second] values.
+
+ARGUMENT:: func
+the action to do when the time is right (test is true)
+
+returns:: A new or existing DayTimer.
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: name
+get the DayTimer name
+
+returns:: a Symbol
+
+METHOD:: dates
+a dict of the named actions to do
+
+METHOD:: putDate
+add an action at <id> to the DayTimer dates.
+
+ARGUMENT:: id
+a symbol for the action to add to it.
+
+ARGUMENT:: test
+a test whether to do the action at the current date/time.
+can be a function that looks at current date, or a list of
+[hour, minute, second] values.
+
+ARGUMENT:: func
+the action to do when the time is right (test is true)
+
+METHOD:: removeAt
+remove an action from dates by id
+
+ARGUMENT:: id
+
+METHOD:: start
+start the DayTimer.
+
+METHOD:: stop
+stop the DayTimer.
+
+
+METHOD:: skip
+internal - a SkipJack that runs when DayTimer is active.
+
+METHOD:: checkList
+internal - checks which time tests for actions match the current time,
+and performs the actions if any.
+
+EXAMPLES::
+
+code::
+d = DayTimer(\otto);
+d.name;
+d.skip;		// the skipjack that does the watching
+d.dates;
+
+	// do this every full minute - id so you can remove it again
+d.putDate(\perMin, { |date| date.second == 0 }, { "full minute!".postln });
+
+	// do this every minute at seconds 25 and 35
+d.putDate(\min2, { |date| [25, 35].includes(date.second) }, { "twice a min".postln });
+
+d.dates;
+
+(	// do this every third minute
+d.putDate(\min3,
+	{ |date| (date.minute * 60 + date.second) % 180 == 60 },
+	{ "every 3 minutes".postln });
+)
+
+d.start;
+
+	// once a day at a specific time [h, m, s] -
+	// maybe set this to the next full minute for testing
+d.putDate(\onceT, [12, 35, 40], { "once a day only!".postln } );
+
+
+	// daytimer tests and posts when a function fails,
+	// but continues watching.
+d.putDate(\failZ, { |d| [20, 40].includes(d.second) }, { 1.blork });
+
+	// remove a date, here the failing date/task
+d.removeAt(\failZ);
+
+d.dates.postcs;
+
+d.stop;
+::

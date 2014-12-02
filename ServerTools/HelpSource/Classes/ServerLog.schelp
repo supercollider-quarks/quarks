@@ -1,0 +1,255 @@
+CLASS:: ServerLog
+summary:: records OSC traffic to and from a Server and displays this in a browseable searchable interface
+categories:: Debugging, External Control>OSC
+related:: Classes/Server, Classes/ServerLogGui
+
+DESCRIPTION::
+Records OSC traffic to and from a Server and displays this in a browseable searchable interface.  Greatly speeds problem solving and identifies probably causes
+
+Numerical commands ( 9 = /s_new ) are converted to human readable equivalents.
+Nodes and defNames are displayed with consistent color coding to increase visual clarity.
+Integrated with inspect so that defNames can be clicked on in the log display and the SynthDef itself can be quickly examined.
+Integrated with ServerTreeGui so the current state of the tree can be cross checked with the log.
+Cross check of Synth and SynthDef is performed so it flags probably errors like misnamed arguments.
+
+TODO: add refresh, scrolling, search
+
+Note: When ServerLog is activated it inserts itself into the Server object by replacing the NetAddr. It then records traffic and forwards it.  I'm not sure how much it has to eat before it bloats up and dies, I've never had it happen.  So it should be harmless but I usually only turn it on when there is a problem to investigate.
+
+code::
+ServerLog.start;
+
+ServerLog.gui;
+
+ServerLog.stop;
+::
+
+
+CLASSMETHODS::
+
+
+METHOD:: start
+Creates and activates a ServerLog for the specified Server. If one already exists for the Server then it will used. (its idimpotent).  If the ServerLog has previously been stopped then this will restart it.
+
+argument:: server
+default: default Server
+
+returns:: a ServerLog
+
+METHOD:: stop
+Stops recording and removes the ServerLog from the Server's NetAddr slot.
+
+argument:: server
+
+returns:: a ServerLog
+
+
+
+METHOD:: new
+identical to ServerLog.start
+
+argument:: server
+default: default Server
+
+returns:: a ServerLog
+
+
+METHOD:: forServer
+internal
+
+argument:: server
+default: default Server
+
+returns:: a ServerLog
+
+
+
+METHOD:: ifActive
+
+argument:: server
+
+argument:: func
+
+
+
+
+METHOD:: guiMsgsForSynth
+A type of search function: shows all OSC messages that referenced a Synth, creating a small ServerLogGui inteface to display them.  Used in many debugging views.  This matches both sent and received messages (like node end).
+
+argument:: synth
+the Synth object
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: showTimes
+boolean: to show the sending times. some small debugging interfaces can get too cluttered with the times.
+
+
+METHOD:: guiMsgsForSynthDef
+A type of search function: shows all messages that referenced a SynthDef name, creating a small ServerLogGui inteface to display them.  Used in many debugging views.
+
+argument:: defName
+SynthDef name to search for
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: server
+default: default Server. the Server to search for traffic
+
+argument:: showTimes
+boolean: to show the sending times. some small debugging interfaces can get too cluttered with the times.
+
+
+METHOD:: guiMsgsForBus
+A type of search function: shows all messages that referenced a Bus. It matches by looking for arguments named "*bus*" followed by an index argument matching this bus.  Creates a small ServerLogGui inteface to display them.  Used in many debugging views.
+
+argument:: index
+index number of bus
+
+argument:: rate
+rate of bus
+
+argument:: layout
+the parent view, FlowView or window to place the results on
+
+argument:: server
+which server the bus is on
+
+argument:: showTimes
+boolean: to show the sending times. some small debugging interfaces can get too cluttered with the times.
+
+
+
+METHOD:: cmdString
+converts an integer Server OSC command name to its human string name.
+
+argument:: cmd
+integer or string. if already a string or if the cmd number is unknown then it returns cmd
+
+returns:: string
+
+
+METHOD:: prGuiMsgsFor
+private
+
+argument:: performList
+
+
+argument:: server
+
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: showTimes
+boolean: to show the sending times. some small debugging interfaces can get too cluttered with the times.
+
+
+argument:: title
+
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: msgs
+
+returns:: array of ServerLogSentEvent/ServerLogReceivedEvent
+
+
+METHOD:: tail
+print all OSC messages to console as they are sent to server.  like unix tail
+
+
+METHOD:: server
+
+returns:: a Server
+
+
+METHOD:: remove
+
+returns:: (returnvalue)
+
+
+METHOD:: filterBySynthDef
+
+
+argument:: defName
+
+
+returns:: (returnvalue)
+
+METHOD:: filterBySynth
+
+
+argument:: nodeID
+
+
+returns:: (returnvalue)
+
+METHOD:: filterByBus
+
+
+argument:: index
+
+
+argument:: rate
+
+
+returns:: (returnvalue)
+
+METHOD:: matchMsgs
+
+
+argument:: matchFunc
+
+
+returns:: (returnvalue)
+
+METHOD:: slinit
+
+
+argument:: s
+
+
+returns:: (returnvalue)
+
+METHOD:: sendMsg
+
+
+argument::  ... args
+
+
+returns:: (returnvalue)
+
+METHOD:: sendBundle
+
+
+argument:: time
+
+
+argument::  ... args
+
+
+returns:: (returnvalue)
+
+METHOD:: guiClass
+
+
+returns:: (returnvalue)
+
+METHOD:: getSortedEvents
+
+
+argument:: tail
+
+
+argument:: callback
+
+
+returns:: (returnvalue)
+
+

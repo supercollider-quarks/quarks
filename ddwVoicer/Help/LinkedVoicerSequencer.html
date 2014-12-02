@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000; min-height: 12.0px}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+    span.s1 {color: #000000}
+    span.s2 {color: #0000bf}
+    span.s3 {color: #606060}
+    span.s4 {color: #bf0000}
+    span.s5 {color: #007300}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>LinkedVoicerSequencer : VoicerSequencer</b></p>
+<p class="p2"><br></p>
+<p class="p3">In VoicerSequencer, the frequency, duration, length and other patterns run independently, making it impossible to choose between patterns of different lengths. LinkedVoicerSequencer plays a pattern that returns NoteSequences. Each <b>[NoteSequence]</b> acts as a mini-VoicerSequencer, with the advantage that several of them can be used in a pattern stream and each one will be kept intact.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(voicer, pattern)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">voicer: The voicer that will play the sequence.</p>
+<p class="p3">pattern: The pattern of NoteSequences. The pattern must return NoteSequences; if it does not, you will get an error.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>play(quant = 1, offset = 0)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Play the sequence beginning at the desired quantize and offset values.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>reset(quant = 1, offset = 0)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Reset the sequence to its beginning.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>stop(quant = 1, offset = 0)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Stop playing.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Example:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">This is a big example borrowed from an electro/jazz track of mine built in SuperCollider. I'm giving you this element of the piece in its entirety because it really demonstrates the power of this kind of sequencing. It uses a finite state machine to generate an improv solo--not as good as a real performer, but surprisingly coherent.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s1">m = </span><span class="s2">MixerChannel</span><span class="s1">.new(</span><span class="s3">"lead"</span><span class="s1">, s, 1, 2, level:0.4);<span class="Apple-tab-span">	</span></span>// allow time for server to boot if needed</p>
+<p class="p5"><br></p>
+<p class="p4">// execute all of the following</p>
+<p class="p6">(</p>
+<p class="p6"><span class="s2">var</span> sens;</p>
+<p class="p7"><br></p>
+<p class="p6">sens = { <span class="s2">arg</span> scaler, value, sense;<span class="Apple-tab-span">	</span><span class="s4">// for building the instrument</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>(scaler == 0).if({</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1</p>
+<p class="p6"><span class="Apple-tab-span">	</span>}, {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(scaler == 1).if({</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(value-1) * sense + 1</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}, {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>scaler * ((value - 1) * sense + 1)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p6">};</p>
+<p class="p7"><br></p>
+<p class="p6">t = <span class="s2">TempoClock</span>(128/60);</p>
+<p class="p4">// the instrument</p>
+<p class="p6"><span class="s2">Instr</span>([<span class="s5">\analog</span>, <span class="s5">\sawpulse</span>], { <span class="s2">arg</span> freq, gate, freqlag, env, fenv, ffreq, rq, width, vsens, fenvsens, detune, pb, plfofreq, mw, plfoClass;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s2">var</span> sig, plfo, amp, fcurve;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>amp = <span class="s2">Latch</span>.kr(sens.value(1, gate, vsens), gate);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>plfo = plfoClass.kr(plfofreq, mul:mw, add:1);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>freq = <span class="s2">Lag</span>.kr(freq, freqlag) * pb * plfo;<span class="Apple-tab-span">	</span><span class="s4">// pb = pitch bend factor</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>fcurve = sens.value(ffreq, <span class="s2">EnvGen</span>.kr(fenv, gate), fenvsens);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>sig = <span class="s2">Mix</span>.ar([<span class="s2">Pulse</span>.ar(freq, width), <span class="s2">Saw</span>.ar(freq*detune)]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>sig = <span class="s2">RLPF</span>.ar(sig, fcurve, rq) * <span class="s2">EnvGen</span>.kr(env, gate, doneAction:2) * amp;</p>
+<p class="p6">}, #[<span class="s5">\freq</span>, <span class="s5">\amp</span>, [0.000001, 20, <span class="s5">\exponential</span>], <span class="s2">nil</span>, <span class="s2">nil</span>, <span class="s5">\freq</span>, [1, 0.001], [0.0001, 0.9999], <span class="s2">nil</span>, <span class="s2">nil</span>, [0.95, 1.05263, <span class="s5">\exponential</span>, 0, 1], [0.5, 2, <span class="s5">\exponential</span>, 0, 1], [0, 10], [0, 0.1], <span class="s2">nil</span>]);</p>
+<p class="p7"><br></p>
+<p class="p6">~lead = <span class="s2">MonoPortaVoicer</span>(1, <span class="s2">Instr</span>.at([<span class="s5">\analog</span>, <span class="s5">\sawpulse</span>]), [<span class="s5">\env</span>, <span class="s2">Env</span>.adsr(0.04, 0.2, 0.6, 0.1), <span class="s5">\fenv</span>, <span class="s2">Env</span>.adsr(0, 0.3, 0.1, 20), <span class="s5">\width</span>, `0.9, <span class="s5">\vsens</span>, `0.8, <span class="s5">\fenvsens</span>, `0.7, <span class="s5">\detune</span>, `1.007, <span class="s5">\pb</span>, 1, <span class="s5">\plfofreq</span>, `6, <span class="s5">\mw</span>, <span class="s2">KrNumberEditor</span>(0, #[0, 0.1]).lag_(0.25), <span class="s5">\rq</span>, `0.3, <span class="s5">\plfoClass</span>, <span class="s2">SinOsc</span>], target: m).clock_(t).latency_(1).portaTime_(0.05);</p>
+<p class="p7"><br></p>
+<p class="p6">p = ~lead.addProcess([</p>
+<p class="p6"><span class="Apple-tab-span">	</span>[<span class="s3">"Stop"</span>, { <span class="s2">arg</span> p, g; g.stopAll },</p>
+<p class="p8"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>LinkedVoicerSequencer<span class="s1">(~lead, </span>Pfsm<span class="s1">([</span></p>
+<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>#[0, 3, 1],<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// starting places</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([78, 81, 78, 76, 78, 76, 72, 71, 69, 66].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25, 1.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.3, 1.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2],1 ),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[1, 0.5, 0.75, 0.5, 0.75, 0.5, 0.75, 0.5, 0.75, 0.5], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, <span class="s2">Pseq</span>([0, 0.03, <span class="s2">Pseq</span>(#[0], <span class="s2">inf</span>)], 1)]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[1, 2, 3, 4, 7],</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([64, 66, 69, 71, 72, 73].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25], 6),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.3, 0.2, 0.2, 0.2, 0.3, 0.2], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[1, 0.5, 0.5, 0.5, 0.5, 0.5], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, 0]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[1, 2, 3, 4, 5].weight(#[4, 2, 2, 2, 1]),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([69, 71, 69, 66, 64, 69, 71, 69].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.125, 0.625, 0.25, 0.25, 0.25, 0.25, 0.25, 0.75], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.2, 0.64, 0.2, 0.2, 0.2, 0.3, 0.3, 0.75], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[0.5, 0.75, 0.5, 0.5, 0.5, 1, 0.5, 0.5], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, 0]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[0, 1, 3, 5].weight(#[1, 4, 4, 1]),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([72, 73, 76, 72, 71, 69, 66, 71, 69].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25, 0.25, 0.25, 0.083, 0.083, 0.084, 0.25, 0.25, 0.25], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.3, 0.2, 0.2, 0.1, 0.07, 0.07, 0.2, 0.3, 0.2], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[1, 0.5, 0.5, 1, 0.3, 0.3, 0.75, 0.75, 0.5], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, 0]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[1, 3, 4].weight(#[4, 2, 3]),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([64, 66, 69, 71, 72, 73, 71, 69, 66, 71, 69, 66, 64, 69].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25, 0.25, 0.25, 0.25, 0.125, 0.375, 0.166, 0.166, 0.168,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.5, 0.166, 0.166, 0.168, 0.5], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.3, 0.2, 0.2, 0.2, 0.14, 0.4, 0.2, 0.2, 0.2, 0.6, 0.2, 0.2, 0.2, 0.5],1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true</span>,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[0.5, 0.5, 0.6, 0.8, 1, 0.5, 0.5, 0.5, 0.5, 1,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.5, 0.5, 0.5, 0.45], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, 0]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[0, 1, 3, 5].weight(#[1, 4, 2, 1]),</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([72, 73, 76, 78, 81, 78, 83, 81, 84, 85].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25, 0.25, 0.25, 0.25, 0.5, 0.5, 0.5, 0.5, 0.125, 1.125], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.3, 0.2, 0.2, 0.2, 0.95, 0.25, 0.95, 0.25, 0.2, 1.13], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[0.7, 0.5, 0.5, 0.5, 0.7, 0.5, 0.8, 0.5, 1, 0.5], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, <span class="s2">Pseq</span>([<span class="s2">Pseq</span>(#[0], 9), 0.03], 1)]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[6, 8, 9, 10, 11, 13].weight(#[3, 1, 1, 4, 2, 2]),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([83, 81, 78, 83, 81, 78, 76, 72, 73, 78, 72, 72, 71].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.25, 2], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.3, 0.3, 0.2, 0.3, 0.3, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 2], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[0.5, 0.5, 0.5, 0.8, 0.5, 0.5, 0.5, 0.8, 0.5, 0.8, 0.5,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1, 0.4], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, <span class="s2">Pseq</span>([<span class="s2">Pseq</span>([0], 12), 0.03], 1)]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[0, 7, 3].weight(#[1, 5, 4]),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([69, 71, 72, 71, 69, 66, 64, 69, 71].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25, 0.25, 0.25, 0.25, 0.166, 0.167, 0.167, 0.25, 0.25], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.2, 0.2, 0.3, 0.2, 0.2, 0.2, 0.14, 0.3, 0.2], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[0.5, 0.5, 0.8, 0.5, 0.5, 0.5, 0.5, 0.8, 0.5], 1)]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[3, 4, 5].weight(#[3, 2, 1]),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([84, 85, 84, 84, 88, 84, 83, 81, 83, 81, 78, 76, 81, 83].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.125, 0.535, 0.67, 1.92, 0.25, 0.166, 0.167, 0.167,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.25, 0.25, 0.25, 0.25, 0.25, 0.25], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.2, 3.12, 0.2, 0.2, 0.2, 0.2, 0.2, 0.15, 0.3, 0.2, 0.2, 0.2,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.3, 0.2], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[1, 0.8, 0.8, 0.8, 1, 1, 0.8, 0.8, 1, 0.8, 0.8, 0.8,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1, 0.8], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, <span class="s2">Pseq</span>([0, 0.005, 0.005, 0.06, <span class="s2">Pseq</span>(#[0], 10)], 1)]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[10, 11, 12].weight(#[3, 4, 3]),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// same as #4, 8va</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>(([64, 66, 69, 71, 72, 73, 71, 69, 66, 71, 69, 66, 64, 69]+12).midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25, 0.25, 0.25, 0.25, 0.125, 0.375, 0.166, 0.166, 0.168,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.5, 0.166, 0.166, 0.168, 0.5], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.3, 0.2, 0.2, 0.2, 0.14, 0.4, 0.2, 0.2, 0.2, 0.6, 0.2, 0.2, 0.2, 0.5],1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[0.5, 0.5, 0.6, 0.8, 1, 0.5, 0.5, 0.5, 0.5, 1,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.5, 0.5, 0.5, 0.45], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, 0]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[11, 12].weight(#[5, 2]),</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([81, 84, 83, 81, 78, 76, 81, 83].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25], 8),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.2, 0.3, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[0.5, 1, 0.5, 0.5, 0.6, 0.5, 0.8, 0.5], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, 0]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[0, 9, 11, 12].weight(#[1, 2, 2, 5]),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// same as #1, 8va</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>(([64, 66, 69, 71, 72, 73]+12).midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25], 6),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.3, 0.2, 0.2, 0.2, 0.3, 0.2], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[1, 0.5, 0.5, 0.5, 0.5, 0.5], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, 0]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[6, 8, 9, 10, 13].weight(#[2, 1, 4, 4, 3]),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([78, 81, 83, 78, 83, 84, 78, 84, 85].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25, 0.25, 0.5, 0.25, 0.25, 0.5, 0.25, 0.25, 1.75], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.2, 0.3, 0.2, 0.2, 0.3, 0.2, 0.2, 0.3, 1.75], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[0.4, 0.8, 0.5, 0.4, 0.8, 0.5, 0.4, 1, 0.8], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, <span class="s2">Pseq</span>([<span class="s2">Pseq</span>([0], 8), 0.03], 1)]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[8, 13].weight(#[1, 2]),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">NoteSequence</span>(<span class="s2">Pseq</span>([88, 84, 83, 81, 83, 81, 78, 76, 81, 83].midicps, 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.25, 0.166, 0.167, 0.167,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.25, 0.25, 0.25, 0.25, 0.25, 0.25], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseq</span>(#[0.2, 0.2, 0.2, 0.15, 0.3, 0.2, 0.2, 0.2,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.3, 0.2], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">true, nil, [</span><span class="s5">\gate</span>, <span class="s2">Pseq</span>(#[1, 1, 0.8, 0.8, 1, 0.8, 0.8, 0.8,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1, 0.8], 1),</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\mw</span>, 0]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>), #[10].weight(#[5, 2])</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>], <span class="s2">inf</span>))</p>
+<p class="p6"><span class="Apple-tab-span">	</span>],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>[<span class="s3">"Improv 1"</span>, { <span class="s2">arg</span> p, g; g.stopOthers(p); p.reset.play }]</p>
+<p class="p6">]);</p>
+<p class="p7"><br></p>
+<p class="p4">// control the filter cutoff with the modwheel (or gui slider)</p>
+<p class="p6">~leadsock = <span class="s2">VoicerMIDISocket</span>(0, ~lead);</p>
+<p class="p6">~leadsock.addControl(<span class="s5">\mw</span>, <span class="s5">\ffreq</span>, 2000, [800, 20000, <span class="s5">\exponential</span>], <span class="s5">\omni</span>);</p>
+<p class="p7"><br></p>
+<p class="p6">~lead.gui;</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p4">// Now, to play the sequence, choose it from the menu.</p>
+<p class="p4">// When you choose a menu item, it will wait for the next barline to take action.</p>
+<p class="p7"><br></p>
+<p class="p6">~lead.free; m.free;<span class="Apple-tab-span">	</span><span class="s4">// when done</span></p>
+</body>
+</html>

@@ -1,0 +1,77 @@
+TITLE:: MorseDict
+summary:: a dictionary of Morse code signs.
+categories:: HistoricalCommunication
+related:: Classes/Morse
+
+DESCRIPTION::
+MorseDict is used by the Morse class to look up Morse symbols as defined in the standard Morse alphabet.
+It can do several kinds of lookups and conversions which may be useful for different
+
+code::
+	// Tests for MorseDict:
+MorseDict.keys.postcs; // all supported morse keys
+MorseDict.postKeys; // post
+MorseDict.codes;  // numerical codes for each key
+MorseDict.strings;  // strings used for display
+
+// lookup methods for signs and codes
+MorseDict.signs($a).postcs;
+MorseDict.signs('error').postcs;
+MorseDict.at($a);
+MorseDict.at('error');
+
+// for words and texts
+MorseDict.wordSigns("abc").postcs
+MorseDict.wordSigns("abc def gh").postcs
+MorseDict.wordSigns("&%!#").postcs
+MorseDict.wordSigns([$a, $b, $c, 'endOfWork']).postcs
+
+// reverse lookup - get chars or symbols for signs
+MorseDict.letters;
+MorseDict.letter('.'); // e == dot
+MorseDict.letter('..'); // i == dot dot
+MorseDict.letter('---'); // o == dash dash dash
+
+::
+
+
+CLASSMETHODS::
+
+METHOD:: keys
+all keys that are defined in the Morse alphabet.
+
+METHOD:: postKeys
+a convenience method to post all keys.
+
+METHOD:: strings
+the strings used to transliterate dot, dash, word break.
+
+METHOD:: codes
+the dict of all dot-and-dash patterns corresponding to each key in the Morse alphabet. E.g. the pattern for $a is dot-dash, encoded here as [0, 1].
+
+METHOD:: signs
+get the signs for a single character or symbol
+
+ARGUMENT:: char
+the char to look up
+
+METHOD:: wordSigns
+get the sequence of signs for a word or text
+ARGUMENT:: word
+a string or sequence of chars and symbols
+
+METHOD:: at
+look up code for single char or symbol
+ARGUMENT:: code
+a single char or symbol as defined in the keys
+
+METHOD:: fromAscii
+same as at method
+
+METHOD:: letters
+lookup dict from dot-dash patterns to characters or symbols
+
+METHOD:: letter
+look up the corresponding letter or symbol for a given dot-dash code.
+ARGUMENT:: code
+a string of dots and dashes.

@@ -1,0 +1,112 @@
+TITLE:: GameLoop Tutorial
+summary:: A more in depth look on GameLoop Structure
+categories:: Guide
+related:: Overviews/GameLoop_Overview, Classes/GameLoop, SVUnit
+
+In this document we will learn how to use GameLoop without the convenience classes (Units). If you haven't done so yet, go to link::Guides/QuickStart:: for a quick intro as this tutorial will go through the same material but with explicit creation of entities and representations. I will assume that you have completed the quick start guide where some of the concepts are introduced.
+
+NOTE::If you are looking for an in dpeth look of setting up the environment as well (EntityManager, RepresentationManager and the game loop) have a look at the code in the GameLoop class. The game loop can be found in the play method.::
+
+section::Basics
+
+Before we start making sound let's have a look at entities and representations in more detail. As we saw on the quick start guide we first create an environment. In this environment/world we are going to add certain elements that can move around, interact etc. These elements we call Entities. As we saw at the most basic level an entity has a radius that describes its size and a position in space. For a full list of attributes that entities can have check the link::Classes/Entity.schelp##Entity help::.
+
+It is important to understand that an entity is an abstract thing. When we add an entity to the world it begins to move and interact (if capable) but we can not hear or see anything. In order to achieve that we need to create one or more representations. The advantage of this method is that we can add more than one representations to an entity. Some examples should make the concept clear.
+
+First let's create our decoder.
+
+code::
+GameLoopDecoder.newStereo;
+::
+
+and the environment.
+
+code::
+(
+ ~gameloop = GameLoop(40, 40, 1).play(0.05);
+ ~gameloop.gui;
+)
+::
+
+Now let's explicitly create a simple unit comprised of 1) an entity, 2) a visual representation and 3) a sound representation.
+
+code::
+(
+~entity = Vehicle(
+  ~gameloop.entManager,
+  position: RealVector2D[18,22],
+  radius: 0.4
+);
+
+~visrep = VisualRepresentation(
+  ~gameloop.repManager
+);
+~entity.attach(~visrep);
+
+~rep = SoundRepresentation(
+  ~gameloop.repManager
+);
+~entity.attach(~rep);
+)
+::
+
+As in the SVUnit example in the QuickStart guide, since we did not specify any input, we can hear the default Impulse based sound (we are at the center of the space). The sound appears 2 metres left and 2 metres forward. Notice that we had to pass the EntityManager by calling .entManager and the RepresentationManager by calling the relevant methods on ~gameloop. You do not need to know what each of these are doing, just that they are required for the correct functioning of our entities and representations respectively.
+
+section::Motion and Interaction
+
+Still working with the default sound let's make it move around. Notice that the force_ method is called on the entity.
+
+code::
+
+~steeringBehavior = Arrive(~entity, RealVector2D[20, 20.5]);
+
+(
+~entity.force_({ arg entity;
+  ~steeringBehavior.value;
+});
+)
+::
+
+Let's change the target position of Arrive on the fly. Evaluate this a few time to move the entity to random points.
+
+code::
+~steeringBehavior.targetPos = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
+
+::
+
+The interactions work in exactly the same way as the examples we saw in the QuickStart guide. We just need to call the relevant methods on the entity. The only thing to keep in mind is that we can assign a collision function for the entity but also a separate one for every representation. The reason is that if we want a collision or other interaction to have an effect on the sound or visuals it makes sense to assign that collision function on the representation itself. If on the other hand we want the collision to affect the mass, velocity, send a force or anything else that is relevant to the entity, we want to assign it to the entity.
+
+section::Navigating the Environment
+
+To add a camera without using the CameraUnit we can construct it from scratch. Realistically we would not do that unless we want to achieve something special.
+
+code::
+(
+~camera = Camera2D(
+  ~gameloop.entManager,
+  position: ~gameloop.entManager.center,
+  radius: 0.8
+);
+
+~camrep =Camera2DRepresentation(
+  ~gameloop.repManager,
+  color: Color.white
+).shape_(1);
+
+~camera.attach(~camrep);
+)
+::
+
+Focus the viusalisation window by clicking on it and use the left/right arrows to rotate and front/back to move forward and backwards.
+
+Finally removing the entity removes all the associated representations:
+
+code::
+~entity.remove;
+::
+
+and remove the camera:
+
+code::
+~camera.remove(true);
+::

@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #36701f}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+span.s1 {color: #001ab2}
+span.s2 {color: #000000}
+span.s3 {color: #36701f}
+span.s4 {color: #a41919}
+span.s5 {color: #0000ff}
+span.s6 {font: 9.0px Monaco; color: #001ab2}
+span.s7 {font: 9.0px Monaco}
+span.s8 {font: 9.0px Monaco; color: #36701f}
+span.Apple-tab-span {white-space:pre}
+td.td1 {width: 41.0px; padding: 2.0px 2.0px 2.0px 2.0px}
+td.td2 {width: 77.0px; padding: 2.0px 2.0px 2.0px 2.0px}
+td.td3 {width: 133.0px; padding: 2.0px 2.0px 2.0px 2.0px}
+td.td4 {width: 94.0px; padding: 2.0px 2.0px 2.0px 2.0px}
+</style>
+</head>
+<body>
+<p class="p1"><b>Chucklib storage classes</b></p>
+<p class="p2"><br></p>
+<p class="p3">Four types, categorized by index type and creation method:</p>
+<p class="p2"><br></p>
+<table cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td valign="middle" class="td1">
+<p class="p3"><b>Index</b></p>
+</td>
+<td valign="middle" class="td2">
+<p class="p3"><b>Creation type</b></p>
+</td>
+<td valign="middle" class="td3">
+<p class="p3"><b>Abstract class</b></p>
+</td>
+<td valign="middle" class="td4">
+<p class="p3"><b>Collection class</b></p>
+</td>
+</tr>
+<tr>
+<td valign="middle" class="td1">
+<p class="p3">Integer</p>
+</td>
+<td valign="middle" class="td2">
+<p class="p3">prNew</p>
+</td>
+<td valign="middle" class="td3">
+<p class="p3">AbstractChuckArray</p>
+</td>
+<td valign="middle" class="td4">
+<p class="p3">Array</p>
+</td>
+</tr>
+<tr>
+<td valign="middle" class="td1">
+<p class="p3">Integer</p>
+</td>
+<td valign="middle" class="td2">
+<p class="p3">Automatic</p>
+</td>
+<td valign="middle" class="td3">
+<p class="p3">AbstractChuckNewArray</p>
+</td>
+<td valign="middle" class="td4">
+<p class="p3">Array</p>
+</td>
+</tr>
+<tr>
+<td valign="middle" class="td1">
+<p class="p3">Symbol</p>
+</td>
+<td valign="middle" class="td2">
+<p class="p3">prNew</p>
+</td>
+<td valign="middle" class="td3">
+<p class="p3">AbstractChuckDict</p>
+</td>
+<td valign="middle" class="td4">
+<p class="p3">IdentityDictionary</p>
+</td>
+</tr>
+<tr>
+<td valign="middle" class="td1">
+<p class="p3">Symbol</p>
+</td>
+<td valign="middle" class="td2">
+<p class="p3">Automatic</p>
+</td>
+<td valign="middle" class="td3">
+<p class="p3">AbstractChuckNewDict</p>
+</td>
+<td valign="middle" class="td4">
+<p class="p3">IdentityDictionary</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="p2"><br></p>
+<p class="p3"><b>Automatic creation types</b> are for objects which may have an unlimited number of instances (such as process prototypes or bound processes):</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s1">PR</span><span class="s2">(</span>\aiMel<span class="s2">) =&gt; </span><span class="s1">BP</span><span class="s2">(</span>\mel1<span class="s2">);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>prNew types</b> require you to create the instance explicitly using prNew before chucking something into it. Intended for objects and that require only a few instances that are reused over and over (like VP, VoicerProxy). The use of prNew prevents you from accidentally creating extra instances that might mess up a GUI, for instance.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s1">VC</span>(<span class="s3">\buzz</span>) =&gt; <span class="s1">VP</span>.prNew(0);<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">For array prNew types, common usage is to create the arrayed instances during initialization:</p>
+<p class="p2"><br></p>
+<p class="p5">6.do({ <span class="s1">|i|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">VoicerProxy</span>.new =&gt; <span class="s1">VP</span>.prNew(i);</p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span></span>// here you can make a gui for the new VoicerProxy if you want</p>
+<p class="p5">});</p>
+<p class="p5"><span class="s1">VC</span>(<span class="s3">\buzz</span>) =&gt; <span class="s1">VP</span>(0);<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p7"><b>General methods</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*all</b></p>
+<p class="p3"><b>*values</b></p>
+<p class="p3">Returns all the instances of the given storage class.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s1">PR</span>.all;</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*keys</b></p>
+<p class="p3">Returns all the indexes (for array classes) or names (for dictionary classes) of the instances of this class.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s1">PR</span>.keys;</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*exists(index)</b> or <b>*exists(name)</b></p>
+<p class="p3">Answers whether an object exists at the index or name specified.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s1">PR</span><span class="s2">.exists(</span>\thisDoesntExist<span class="s2">);<span class="Apple-tab-span">	</span></span><span class="s4">// returns false</span></p>
+<p class="p6"><span class="s1">PR</span><span class="s2">.exists(</span><span class="s3">\mel1</span><span class="s2">);<span class="Apple-tab-span">	</span></span>// this does exist, returns true</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*freeAll</b></p>
+<p class="p3">Release all of the objects in the storage class.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>collIndex</b></p>
+<p class="p3">When addressed to an instance of the storage class, responds with its index or name.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>v</b></p>
+<p class="p3"><b>value</b></p>
+<p class="p3">Responds with the object being stored in this storage object. If the <b>passThru</b> flag (see below) is true, it may not be necessary to access the object explicitly. <b>v</b> is included as a short form for convenience.</p>
+<p class="p2"><br></p>
+<p class="p3">Note one exception: <a href="Func.html"><span class="s5">Func</span></a> responds to <b>.value</b> by executing its function, rather than returning the function. If you need to get the function object itself, use <b>v</b>.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>exists</b></p>
+<p class="p3">A storage class instance may exist but not hold anything at this time. Check whether the storage object is active using this method. Answers with a Boolean.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>free</b></p>
+<p class="p3">Release the object held in this storage instance.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>path</b></p>
+<p class="p3">If the object was loaded from a file saved on disk, this method answers with the full path to that file.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>openFile</b></p>
+<p class="p3">If the path for this object exists, open the file in a document window.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*prNew(index)</b> or <b>*prNew(name)</b></p>
+<p class="p3">Should be used only for classes that require explicit creation of instances, as described above.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s1">VoicerProxy</span>.new =&gt; <span class="s1">VP</span>.prNew(0);</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*passThru</b></p>
+<p class="p3"><b>*passThru_(bool)</b></p>
+<p class="p3">A flag that determines whether or not messages that storage classes do not respond to will be passed automatically to the object being stored. If this flag is false, you must explicitly access the value of the storage object before addressing messages to the target. The default is true, meaning that explicit access is often not required.</p>
+<p class="p2"><br></p>
+<p class="p3">The flag applies to all storage classes simultaneously; it is not independent per class.</p>
+<p class="p2"><br></p>
+<p class="p3">Note that because of the ways SuperCollider looks up messages, if the storage class implements a method, that method will "swallow" the call and the message will not be delegated to the target. Usually this is not problem, but watch out for methods defined in Object.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p7"><b>Convenience methods</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*runFile</b></p>
+<p class="p3">Present an open file dialog to the user. After the file is chosen, execute its contents.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*loadGui</b></p>
+<p class="p3">Load the GUI definition saved in Prototypes/gui.txt.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*open</b></p>
+<p class="p3"><b>*openCodeDoc(path)</b></p>
+<p class="p3">After the GUI definition is loaded, coordinates for a document window should be saved in <span class="s6">Library</span><span class="s7">.at(</span><span class="s8">\codeBounds</span><span class="s7">)</span>. These methods open a document and automatically move it to those coordinates. <b>openCodeDoc</b> takes the path as an argument; <b>open</b> lets the user choose the file from an open file dialog.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p7"><b>Subtypes</b></p>
+<p class="p2"><br></p>
+<p class="p3">Related objects may be grouped together under a subType identifier. This allows you to access the objects as a group. I use it to categorize the built-in objects defined in the prototypes directory. During performance, they can keep all the objects belonging to a section/piece/track under the same subType; then, when that section is over, I can release all of its objects using the group identifier.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*defaultSubType</b></p>
+<p class="p3"><b>*defaultSubType_(symbol)</b></p>
+<p class="p3">Get or set the default subType. From that point forward, new objects will be assigned this subType automatically. This applies globally to all storage classes; it cannot be set individually per class.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>subType</b></p>
+<p class="p3"><b>subType_(symbol)</b></p>
+<p class="p3">Get or set the subType for a given instance.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*subTypes</b></p>
+<p class="p3">Responds with an array of the unique subTypes that exist in the storage class.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s1">PR</span>.subTypes;</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*allOfType(symbol)</b></p>
+<p class="p3">Responds with an array of the objects in this storage class that have the given subType.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s1">PR</span><span class="s2">.allOfType(</span>\drumSequencer<span class="s2">);</span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*freeType</b></p>
+<p class="p3">Release all the objects in the storage class that have the given subType.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*freeTypeAll</b></p>
+<p class="p3">Go through all storage classes and release all the objects that have the given subType. This is a very useful "seek and destroy" method to clean up at the end of a section of a larger performance.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p7"><b>The classes<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Process management</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s5"><a href="PR.html">PR</a></span> -- Process prototype</p>
+<p class="p3"><span class="s5"><a href="BP.html">BP</a></span> -- Bound Process</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Voicer and Synth management</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s5"><a href="Fact.html">Fact</a></span> -- factory -- automatic creation<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="s5"><a href="VC.html">VC</a></span> -- VoiCer -- automatic creation<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="s5"><a href="SY.html">SY</a></span> -- SYnth -- automatic creation</p>
+<p class="p2"><br></p>
+<p class="p3"><b>GUI management</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s5"><a href="VP.html">VP</a></span> -- VoicerProxy -- prNew<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="s5"><a href="MCG.html">MCG</a></span> -- MixerChannel Gui -- prNew<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="s5"><a href="MT.html">MT</a></span> -- MIDI Trigger -- automatic</p>
+<p class="p2"><br></p>
+<p class="p3"><b>MIDI input management</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s5"><a href="MBM.html">MBM</a></span> -- MIDIBufManager -- prNew<span class="Apple-converted-space"> </span></p>
+<p class="p3">MRS -- MIDIRecSocket<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Process component management</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s5"><a href="Func.html">Func</a></span> -- adaptation function -- automatic<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="s5"><a href="ProtoEvent.html">ProtoEvent</a></span> -- automatic<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="s5"><a href="Mode.html">Mode</a></span> -- automatic<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>MicRh</b> -- microrhythm -- automatic</p>
+<p class="p3"><b>MacRh</b> -- macrorhythm -- automatic</p>
+<p class="p3"><b>ArpegPat</b> -- arpeggiation pattern -- automatic<span class="Apple-converted-space"> </span></p>
+</body>
+</html>

@@ -1,0 +1,287 @@
+TITLE:: redSysOverview
+SUMMARY:: general red system overview
+CATEGORIES:: Red
+
+Work in progress. Includes mixers, effects, instruments, presets, tools, gui etc.
+
+Released under GNU GPL V2 license. Please give credit if you use it extensively in your work. http://www.fredrikolofsson.com/
+
+NOTE::
+Requires the link::Classes/Conductor:: quark, SuperCollider 3.4 or later.
+Not all guis are guarantied to work with SwingOSC, but non-gui classes should run cross platform.
+::
+
+SECTION:: redEffects (sound modulators)
+TABLE::
+## link::Classes/RedEfxAuto:: || auto tuner
+## link::Classes/RedEfxBit8:: || bitcrusher with ringmodulation
+## link::Classes/RedEfxBitc:: || bitcrusher
+## link::Classes/RedEfxBitx:: || bitcrusher
+## link::Classes/RedEfxBoom:: || boomeranging effect
+## link::Classes/RedEfxComb:: || comb delay
+## link::Classes/RedEfxComp:: || compressor
+## link::Classes/RedEfxDelp:: || delay with pitchshift
+## link::Classes/RedEfxDely:: || delay
+## link::Classes/RedEfxDist:: || distortion
+## link::Classes/RedEfxGuit:: || guitar amp
+## link::Classes/RedEfxFreq:: || frequency shifter
+## link::Classes/RedEfxOcta:: || octavider
+## link::Classes/RedEfxPch2:: || pitch shifter
+## link::Classes/RedEfxPchN:: || pitch shifter
+## link::Classes/RedEfxRing:: || ring modulator
+## link::Classes/RedEfxRoom:: || reverb
+## link::Classes/RedEfxRvrs:: || reverses sound
+## link::Classes/RedEfxTanh:: || distortion
+## link::Classes/RedEfxTank:: || tank reverb
+## link::Classes/RedEfxTape:: || tape echo
+## link::Classes/RedEfxWave:: || waveshaping
+## link::Classes/RedEfxVerb:: || reverb
+## link::Classes/RedEfxVoco:: || vocoder
+## link::Classes/RedEfxZzzz:: || limiter and check bad values
+::
+
+SECTION:: redEffectsRack (effects system)
+
+TABLE::
+## link::Classes/RedEffectsRack:: || allround effects rack for link::Classes/RedEffectModule::
+## link::Classes/RedEffectsRackGUI:: || gui for RedEffectsRack
+::
+
+SECTION:: redGUI (gui)
+
+TABLE::
+## link::Overviews/redGUIOverview:: || overview of gui wrappers
+::
+
+SECTION:: redGUI2 (gui)
+
+TABLE::
+## ... || TODO!!!
+::
+
+SECTION:: redInstrument (sound generators)
+
+TABLE::
+## ... || TODO!!!
+::
+
+SECTION:: redMatrixMixer (matrix mixing)
+
+TABLE::
+## link::Classes/RedMatrixMixer:: || mix any number of input and output channels
+## link::Classes/RedMatrixMixerGUI:: || gui for RedMatrixMixer
+::
+
+SECTION:: redMix (small mixer units)
+
+TABLE::
+## link::Overviews/redMixOverview:: || overview of redMix classes
+## link::Classes/RedAbstractMix:: || abstract class
+## link::Classes/RedMixGUI:: || gui for RedMixMono, RedMixStereo, RedMixStereoMono
+## link::Classes/RedMixMono:: || mix 2 mono channels in stereo
+## link::Classes/RedMixStereo:: || mix 2 stereo channels in stereo
+## link::Classes/RedMixStereoMono:: || mix 1 stereo channel and 1 mono channel in stereo
+::
+
+SECTION:: redMixer (mixer system)
+
+TABLE::
+## link::Classes/RedMixer:: || create and hold multiple RedMixerChannel
+## link::Classes/RedMixerChannel:: || channel strip
+## link::Classes/RedMixerChannelGUI:: || gui for RedMixerChannel
+## link::Classes/RedMixerGUI:: || gui for RedMixer
+::
+
+SECTION:: redModule (modular system)
+
+TABLE::
+## link::Classes/RedAbstractModule:: || abstract class
+## link::Classes/RedEffectModule:: || abstract class
+## link::Classes/RedEffectModuleGUI:: || gui for RedEffectModule
+## link::Classes/RedInstrumentModule:: || abstract class
+## link::Classes/RedInstrumentModuleGUI:: || gui for RedInstrumentModule
+::
+
+SECTION:: redSF (sound file player)
+
+TABLE::
+## link::Classes/RedSFPlayer:: || play soundfiles from memory
+## link::Classes/RedSFPlayerDisk:: || play soundfiles from disk
+::
+
+SECTION:: redTapTempo (tap tempo)
+
+TABLE::
+## link::Classes/RedTapTempoGUI:: || average tempo of the last n taps/clicks
+## link::Classes/RedTempoClockGUI:: || list and edit active tempo clocks
+::
+
+SECTION:: redTest (test signals)
+
+TABLE::
+## link::Classes/RedTest:: || generate test signals
+::
+
+SECTION:: redTools (various)
+
+TABLE::
+## link::Classes/RedALF:: || ascii to list-of-floats conversion
+## link::Classes/RedArduino:: || for uploading sketches to arduino
+## link::Classes/RedBase64:: || base64 encoding/decoding
+## link::Classes/RedBencode:: || bencode encoder and decoder
+## link::Classes/RedBitStream:: || stream bits
+## link::Classes/RedBMP:: || bitmap image
+## link::Classes/RedDifferentialManchesterCode:: || differential manchester encoding
+## link::Classes/RedDifferentialManchesterCodeNegative:: || differential manchester encoding
+## link::Classes/RedGIF:: || gif image decoder
+## link::Classes/RedHarmonicTree:: || sorted harmonic tree
+## link::Classes/RedHuffman:: || huffman coding
+## link::Classes/RedIntelHex:: || read and decode intel hex files
+## link::Classes/RedInterpolator:: || holds a value and interpolates to new target
+## link::Classes/RedLZ77:: || lz77 compression/decompression
+## link::Classes/RedLZ78:: || lz78 compression/decompression
+## link::Classes/RedLZSS:: || lzss compression/decompression
+## link::Classes/RedLZW:: || lzw compression/decompression
+## link::Classes/RedManchesterCode:: || manchester encoding
+## link::Classes/Redraw:: || simple drawing with the mouse
+## link::Classes/RedRLE:: || run-length compression/decompression
+## link::Classes/RedTime:: || calculate with time
+## link::Classes/RedToolsMenu:: || various tools
+## link::Classes/RedTween:: || tweening for sclang and scserver
+::
+
+SECTION:: redUGens (pseudo ugens)
+
+TABLE::
+## link::Classes/RedAutoScale:: || scales an unknown signal to a known range
+## link::Classes/RedComb:: || comb delay line with crossfade
+## link::Classes/RedDelay:: || delay line with crossfade
+## link::Classes/RedDestroyer:: || distortion effect
+## link::Classes/RedDTMF:: || old-skool telephone
+## link::Classes/RedFrik:: || noise socks!
+## link::Classes/RedDirection:: || detects inc/dec of a signal
+## link::Classes/RedImpulse:: || resettable impulse train
+## link::Classes/RedLFSR4:: || 4-bit linear feedback shift register
+## link::Classes/RedLFSR4BitStream:: || 4-bit linear feedback shift register
+## link::Classes/RedLine:: || resettable line generator
+## link::Classes/RedLive:: || sample and repeat
+## link::Classes/RedOnePole:: || one pole filter with separate up and down coefficients
+## link::Classes/RedOverdub:: || overdub recording
+## link::Classes/RedRamp:: || resettable phasor with per period rate control
+## link::Classes/RedSequencer:: || simple sequencer
+## link::Classes/RedSequencer2:: || simple sequencer
+## link::Classes/RedSlide:: || logarithmic lag
+## link::Classes/RedStereo:: || panning effect
+## link::Classes/RedStereo2:: || panning effect
+## link::Classes/RedTapeRecorder:: || sampling and looping
+::
+
+SECTION:: changeLog
+
+code::
+//--changes 131228:
+//added default values for RedTime-new and some more examples
+//--changes 130927:
+//minor speed up by replacing & with bitAnd, << with leftShift and >> with rightShift
+//--changes 130902:
+//added RedTween and RedInterpolator
+//--changes 130807:
+//added RedArduino
+//--changes 130612:
+//added RedLFSR4 and RedLFSR4BitStream
+//--changes 130524:
+//added RedIntelHex
+//--changes 130522:
+//added RedManchesterCode, RedDifferentialManchesterCode, RedDifferentialManchesterCodeNegative
+//removed all old html helpfiles and the redSys.html overview
+//--changes 130226:
+//added RedBencode
+//--changes 130131:
+//RedTest: added dur arguments
+//--changes 130108:
+//RedTest: added amp arguments
+//--changes 121126:
+//RedEfxKomp: postGain was in the wrong place.  changed default postGain from 0.25 to 1
+//RedTest: speaker and speaker2 classmethods also boot default server.  fix initRedTestSF to read correct sound
+//--changes 121007:
+//RedMixer: thanks to Roberto Lombardo .store now also saves effect inserts and their settings
+//--changes 121005:
+//RedMixer: improved helpfile with more examples, bugfix for when only one stereo input, changes for save&recall
+//--changes 121001:
+//added RedTempoClockGUI
+//--changes 120825:
+//fix crashing bug in RedToolsMenu under qt
+//--changes 120608:
+//many gui windows did not show under sc3.5 cocoa osx due to alpha channel bug.  now fixed
+//--changes 120317:
+//some minor fixes to look better with gui qt, fix for 3.5 random helpfile lookup in redtoolsmenu, removed RedEfxFFTA from redEffects because it needs sc3-plugins installed
+//--changes 120221:
+//added RedOnePole, RedSlide
+//--changes 120208:
+//added RedRamp
+//--changes 120205:
+//added RedLine
+//--changes 120122:
+//added RedImpulse
+//--changes 111115:
+//added RedEfxFreq, RedEfxRvrs, RedOverdub
+//--changes 111113:
+//added RedEfxAuto, RedEfxBoom, RedEfxFFTA, RedEfxKomp, RedEfxPch2, RedEfxPchN, RedEfxVoco
+//minor fix to RedAbstractModule - avoid multiple synthdef builds with a pdDef variable
+//--changes 110927:
+//all helpfiles converted to scdoc format
+//--changes 110920:
+//some first fixes to sc3.5 qt gui
+//--changes 110216:
+//added RedALF class
+//minor fix to RedAutoScale - changed to inf and -inf for min and max
+//--changes 101129:
+//RedBMP bugfixes, added support for reading 16bit files, added writing and creating 2, 4, 8, 16 and 24bit files.
+//--changes 101121:
+//RedFrik now needs GlitchRHPF from sc3-plugins
+//added RedBMP class
+//changed RedGIF to use smoothing_ instead of setSmoothing
+//--changes 100907:
+//some changes to RedToolsMenu.  no separate Red menu any longer.  using Library.
+//--changes 100728:
+//added RedSF, RedEfxBit8, RedEfxBitx, RedEfxRoom, RedEfxZzzz
+//added functions in comments for each effect.  useful for pasting into ndef filters
+//--changes 100703:
+//changed some more memStore to add
+//--changes 100702:
+//changed some store and memStore to add
+//improvements to RedToolMenu: normalize and userview
+//bugfix in RedMatrixMixerGUI
+//--changes 100210:
+//minor changes to RedToolsMenu
+//bugfix for RedEfxComp
+//--changes 100124:
+//added RedGIF and RedBitStream
+//minor optimisation to RedLZW
+//--changes 100109:
+//bugfix for RedLZ78, swapped distance and length for RedLZ77 and RedLZSS, small optimisation to RedLZW
+//--changes 100107:
+//complete rewrite of RedLZ77 and RedLZSS
+//--changes 100101:
+//added RedLZ78
+//improved helpfiles for all compressors
+//RedHuffman changed from encode/decode to compress/decompress and to have it take all kinds of data
+//RedLZW now works with 8bit integers
+//--changes 091230:
+//added RedLZ77, RedLZSS
+//modified RedRLE to take arrays instead of strings
+//--changes 091229:
+//added RedRLE
+//--changes 091226:
+//added RedHuffman
+//--changes 091025:
+//some changes to RedToolsMenu
+//added Redraw
+//--changes 091009:
+//new effects: RedEfxDely, RedEfxWave, RedEfxDelp, RedEfxTanh
+//added a limiter to RedEfxTank
+//argument name changes for RedEfxOcta and RedEfxGuit
+//added template to RedEffectModule.sc file
+//--changes 090916:
+//added RedEfxTanh, RedEfxWave and a template in the RedEffectModule.sc file
+::

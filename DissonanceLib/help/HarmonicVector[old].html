@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 22.0px Monaco; color: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Monaco; color: #bf0000}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Monaco; color: #0000bf}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 22.0px Monaco; color: #000000; min-height: 30.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 22.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 25.0px Helvetica; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 22.0px Monaco; color: #606060}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 25.0px Helvetica; color: #000000; min-height: 30.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 25.0px Helvetica; color: #000000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 19.0px Helvetica; color: #bf0000}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 19.0px Helvetica; color: #000000; min-height: 23.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 19.0px Helvetica; color: #000000}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+span.s3 {color: #007300}
+span.s4 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">h = <span class="s1">HarmonicVector</span>.with([0,3,0])</p>
+<p class="p1">1200 - h.cents</p>
+<p class="p1">1.addCents(1200-h.cents).asRatio</p>
+<p class="p2">// different representations of h:</p>
+<p class="p3">HarmonicVector<span class="s2">.repr = </span><span class="s3">\vector</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p3">HarmonicVector<span class="s2">.repr = </span><span class="s3">\reduced</span></p>
+<p class="p3">HarmonicVector<span class="s2">.repr = </span><span class="s3">\ratio</span></p>
+<p class="p3">HarmonicVector<span class="s2">.repr = </span><span class="s3">\pow2</span></p>
+<p class="p2"><span class="s1">HarmonicVector</span><span class="s2">.repr = </span><span class="s3">\reducedRatio</span><span class="s2"> </span>//back to default</p>
+<p class="p4"><br></p>
+<p class="p1">a = <span class="s1">HarmonicVector</span>.with([-2])</p>
+<p class="p1">b = <span class="s1">HarmonicVector</span>.with([2,-1])</p>
+<p class="p1">a + b</p>
+<p class="p1">a - b</p>
+<p class="p1">b - a</p>
+<p class="p1">a * b</p>
+<p class="p1">a / b</p>
+<p class="p1">b / a</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2">(b - a).cents; </span>// difference is a syntonic comma</p>
+<p class="p5"><span class="s2">(a + b).cents; </span>// sum is a just minor sixth:</p>
+<p class="p1">1.addCents(813.6862).asRatio;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2">(a * b).cents; </span>// what does mult mean?</p>
+<p class="p1">1.addCents(792.17999).asRatio; <span class="s4">// a low sixth?</span></p>
+<p class="p5"><span class="s2">(a + b) - (a * b); </span>// which is a syntonic comma away from the sum? Mult as a simmetric sum?</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2">(a/b).cents; </span>// and what about division? It gives a 4/3?</p>
+<p class="p4"><br></p>
+<p class="p5">// the following is very interesting:</p>
+<p class="p5"><span class="s2">(a / b) * (b - a); </span>// a fourth times a comma the sixth lowered by a syntonic comma</p>
+<p class="p5"><span class="s2">(a / b) / (b - a); </span>// fourth dividied by comma: unison!</p>
+<p class="p5"><span class="s2">(a / b) + a; </span>// fourth plus 3 lim min 7: pyth maj6</p>
+<p class="p5"><span class="s2">(a / b) + b; </span>// fourth plus 5 lim min 7: 5 lim min3</p>
+<p class="p5"><span class="s2">(a / b) * a; </span>// error, check what going on...</p>
+<p class="p4"><br></p>
+<p class="p1">(a * b) * (a / b); <span class="s4">// does not compute</span></p>
+<p class="p1">(a * b) / (b - a)</p>
+<p class="p4"><br></p>
+<p class="p1">w = <span class="s1">HarmonicVector</span>.from([3,2]);</p>
+<p class="p1">x = <span class="s1">HarmonicVector</span>.from([16,15]);</p>
+<p class="p1">w + x</p>
+<p class="p1">w - x</p>
+<p class="p5"><span class="s2">w / x; </span>// strange, again 4/3</p>
+<p class="p5"><span class="s2">w * x; </span>// Error!</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2">c = </span><span class="s1">HarmonicVector</span><span class="s2">.with([12]); </span>// Pithagorean comma</p>
+<p class="p1">c.cents.round(0.001)</p>
+<p class="p1">1.addCents(c.cents).asRatio;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p1">e = <span class="s1">HarmonicVector</span>.with([0,0,3])</p>
+<p class="p1">f = <span class="s1">HarmonicVector</span>.with([-1])</p>
+<p class="p1">g = e - f</p>
+<p class="p1">g.cents</p>
+<p class="p1">1.addCents(g.cents).asRatio</p>
+<p class="p4"><br></p>
+<p class="p1">j = <span class="s1">HarmonicVector</span>.with([12,0,0])</p>
+<p class="p1">k = <span class="s1">HarmonicVector</span>.with([4,-1])</p>
+<p class="p1">j - k</p>
+<p class="p1">j + k</p>
+<p class="p1">1.addCents((j-k).cents).asRatio</p>
+<p class="p4"><br></p>
+<p class="p1">m = <span class="s1">HarmonicVector</span>.with([3,2,2])</p>
+<p class="p1">1.addCents(m.cents).asRatio</p>
+<p class="p4"><br></p>
+<p class="p1"><span class="s1">HarmonicVector</span>.with([2,2,-1])</p>
+<p class="p1"><span class="s1">HarmonicVector</span>.with([-7,4,1])</p>
+<p class="p4"><br></p>
+<p class="p6">/*<span class="Apple-converted-space">  </span>*/</p>
+<p class="p4"><br></p>
+<p class="p1">z = ();</p>
+<p class="p7"><span class="s2">z.d = </span><span class="s1">Object</span><span class="s2">.readArchive(</span>"/docs/supercolaider/Dissonance\ Curves/pitch_sets/even\ harmonics\ \[16,\ 4\ oct\].dis"<span class="s2">);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1">z.v = z.d.ratios.asHvector</p>
+<p class="p1">z.v.do(<span class="s1">_</span>.postln)</p>
+<p class="p4"><br></p>
+<p class="p1">z.v[19].vector</p>
+<p class="p4"><br></p>
+<p class="p1"><span class="s1">HarmonicVector</span>.from([256,27]);</p>
+<p class="p1">z.d.play</p>
+<p class="p6">/* <span class="Apple-converted-space">  </span>*/</p>
+<p class="p8"><br></p>
+<p class="p9">x.magnitude</p>
+<p class="p9">x.ratio.harmonicDistance</p>
+<p class="p9">x.vector.normalize</p>
+<p class="p4"><br></p>
+<p class="p1">~comma1 = <span class="s1">HarmonicVector</span>.with([2,2,-1])</p>
+<p class="p1">~comma2 = <span class="s1">HarmonicVector</span>.with([-7,4,1])</p>
+<p class="p1">~comma3 = <span class="s1">HarmonicVector</span>.with([12])</p>
+<p class="p1">~comma4 = <span class="s1">HarmonicVector</span>.with([4,-1])</p>
+<p class="p1">w = <span class="s1">HarmonicVector</span>.from([3,2]);</p>
+<p class="p1">x = <span class="s1">HarmonicVector</span>.from([16,15]);</p>
+<p class="p1">y = <span class="s1">HarmonicVector</span>.from([7,4]);</p>
+<p class="p1">~comma2.isInIsland</p>
+<p class="p1">x.isInIsland</p>
+<p class="p1">y.isInIsland</p>
+<p class="p1">x.reduced</p>
+<p class="p1">y.reduced</p>
+<p class="p1">~um = [[-1,3,2],[-7,-1,3],[2,2,1]];</p>
+<p class="p1">x.isInIsland(~um)</p>
+<p class="p4"><br></p>
+<p class="p1">~harmonic = [];</p>
+<p class="p1">~timbral = [];</p>
+<p class="p1">~partition = {<span class="s1">|pitchSet|</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>pitchSet.do{<span class="s1">|pitch|</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if (pitch.isInIsland(~um)) {</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~harmonic = ~harmonic.add(pitch)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}{</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~timbral = ~timbral.add(pitch)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p1"><span class="Apple-tab-span">	</span>}</p>
+<p class="p1">};</p>
+<p class="p4"><br></p>
+<p class="p1">~partition.(z.v)</p>
+<p class="p4"><br></p>
+<p class="p1">~harmonic.size</p>
+<p class="p1">~timbral.size</p>
+<p class="p4"><br></p>
+<p class="p1">~harmonic.do(<span class="s1">_</span>.postln)</p>
+<p class="p1">~timbral.do(<span class="s1">_</span>.postln)</p>
+<p class="p1">~harmonic[0].reduced</p>
+<p class="p4"><br></p>
+<p class="p1">~comma1 - x</p>
+<p class="p1">~comma3.magnitude</p>
+<p class="p1">x.magnitude</p>
+<p class="p1">v = <span class="s1">HarmonicVector</span>.with([2,3,-1])</p>
+<p class="p1">v.vector.magnitude</p>
+<p class="p4"><br></p>
+<p class="p1">z.harmIsland = [];</p>
+<p class="p1">z.timbrIsland = [];</p>
+<p class="p1">z.v.collect{<span class="s1">|x|</span><span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>if(x.magnitude.postln &lt; ~comma4.magnitude) {</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>z.harmIsland = z.harmIsland.add(x)</p>
+<p class="p1"><span class="Apple-tab-span">	</span>}{</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>z.timbrIsland = z.timbrIsland.add(x)</p>
+<p class="p1"><span class="Apple-tab-span">	</span>}</p>
+<p class="p1">}</p>
+<p class="p4"><br></p>
+<p class="p1">z.timbrIsland</p>
+<p class="p1">z.harmIsland.size</p>
+<p class="p1">z.v.size<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p10">/*artículo fokker:*/</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p1"><span class="s1">HarmonicVector</span>.with([2,2,-1])</p>
+<p class="p1"><span class="s1">HarmonicVector</span>.with([-6,-2,-1])</p>
+<p class="p1"><span class="s1">HarmonicVector</span>.with([2,-6,1])</p>
+<p class="p1"><span class="s1">HarmonicVector</span>.with([4,1,-2])</p>
+<p class="p1"><span class="s1">HarmonicVector</span>.with([1,6,-2])</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">[[3,2]].asHvector</p>
+<p class="p11"><br></p>
+<p class="p12">[ [-5, -2, 2]].toHVector[0].cents</p>
+<p class="p12">[ [-4,3,3]].toHVector[0]</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">~unisonmatrix = [ [4, 2, 0], [4, -3, 2], [2, 2, -1] ];</p>
+<p class="p12">~isInIsland = {<span class="s1">|vector|</span> <span class="s1">var</span> max, min, tvect, truth=<span class="s1">true</span>;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>max = ~unisonmatrix.collect{<span class="s1">|x|</span> max(0,x)};</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>min = ~unisonmatrix.collect{<span class="s1">|x|</span> min(x,0)};<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>max = max.flop.collect{<span class="s1">|x|</span> x.maxItem};</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>min = min.flop.collect{<span class="s1">|x|</span> x.minItem};</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[min,max].postln;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tvect = vector.collect{<span class="s1">|v,i|</span> v.inclusivelyBetween(min[i], max[i])};</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tvect.collect{<span class="s1">|x|</span> if (x!=<span class="s1">true</span>) {truth = <span class="s1">false</span>}};</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>truth</p>
+<p class="p12">};</p>
+<p class="p12">~isInIsland.([4,-3,2]);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12">~partitionIsland = {<span class="s1">|pitchSet|</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12">};</p>
+<p class="p11"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><br></p>
+<p class="p12">~max<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><br></p>
+<p class="p12">~mm = ~max.flop.collect{<span class="s1">|x|</span> x.maxItem};</p>
+<p class="p12">~mn = ~min.flop.collect{<span class="s1">|x|</span> x.minItem};</p>
+<p class="p12">([0,3,1] &lt;= ~mm) and: ([0,1,1] &gt;= ~mn)</p>
+<p class="p11"><br></p>
+<p class="p12">~tvect = [0,3,1].collect{<span class="s1">|v,i|</span> v.inclusivelyBetween(~mn[i], ~mm[i])};</p>
+<p class="p12">~truth = <span class="s1">true</span>;</p>
+<p class="p12">~tvect.collect{<span class="s1">|x|</span> if (x == <span class="s1">true</span>) {}{~truth = <span class="s1">false</span>}}</p>
+<p class="p12">~truth</p>
+</body>
+</html>

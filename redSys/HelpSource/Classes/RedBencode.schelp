@@ -1,0 +1,171 @@
+CLASS:: RedBencode
+SUMMARY:: Bencode encoder and decoder
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedBase64
+
+DESCRIPTION::
+Read about this format here... http://en.wikipedia.org/wiki/Bencode
+
+CLASSMETHODS::
+
+METHOD:: encode
+Encodes an array of items as a bencoded string.
+
+ARGUMENT:: array
+Expects an link::Classes/Array:: with items of the following kind...
+LIST::
+## link::Classes/Integer::
+## link::Classes/String::
+## link::Classes/Array:: (or link::Classes/List:: etc.)
+## link::Classes/Dictionary:: (or link::Classes/Event:: etc.)
+::
+For example here is a valid argument with different items...
+CODE::
+["test", 4766, [555, [24, -50]], 40000, Dictionary[\one->111, \two->222]]
+::
+
+RETURNS::
+A link::Classes/String:: containing the encoded data. For example...
+CODE::
+4:testi4766eli555eli24ei-50eeei40000ed3:onei111e3:twoi222ee
+::
+
+METHOD:: encodeBytes
+Same as link::#*encode:: but returns an array with 8bit bytes suitable for sending over serial port.
+
+RETURNS::
+An link::Classes/Int8Array:: containing the encoded data as 8bit bytes. For example...
+CODE::
+Int8Array[52, 58, 116, 101, 115, 116, 105, 52, 55, 54, 54, 101, 108, 105, 53, 53, 53, 101, 108, 105, 50, 52, 101, 105, 45, 53, 48, 101, 101, 101, 105, 52, 48, 48, 48, 48, 101, 100, 51, 58, 111, 110, 101, 105, 49, 49, 49, 101, 51, 58, 116, 119, 111, 105, 50, 50, 50, 101, 101]
+::
+
+METHOD:: decodeBytes
+Same as link::#*decode:: but useful when decoding data received from the serial port.
+
+ARGUMENT:: array
+An link::Classes/Int8Array:: with 8bit values.
+
+METHOD:: decodeString
+Same as link::#*decode:: but takes a link::Classes/String:: as argument. This is the more common method for decoding (compare link::#*decode:: and link::#*decodeBytes::).
+
+ARGUMENT:: string
+A bencoded link::Classes/String::
+
+METHOD:: decode
+Decodes a bencoded stream of characters in to an array of items (Integer, String, Array, Dictionary). Usually it is easier to use the link::#*decodeString:: method as it will automatically create a CollStream out of the argument string.
+
+NOTE::
+Event will become Dictionary and List will become Array.
+::
+
+ARGUMENT:: stream
+A link::Classes/CollStream::.
+
+EXAMPLES::
+
+CODE::
+//some items in an array to be encoded
+a= ["test", 4766, [555, [24, -50]], 40000, Dictionary[\one->111, \two->222]];
+//encode
+b= RedBencode.encode(a);
+b//this is now the bencode string
+
+//decode
+c= RedBencode.decodeString(b);
+a==c//convert back - should be the same array as above
+::
+
+CODE::
+//--arduino real world test reading bencoded data from the serial port
+//upload the serialSend example from https://github.com/jcw/embencode to an arduino
+(
+var port= SerialPort("/dev/tty.usbmodemfa131", 57600);//modify this port name
+CmdPeriod.doOnce({port.close});
+Routine.run({
+	var lastByte= -1, stream;
+	inf.do{
+		var byte;
+		while({byte= port.read; byte.notNil}, {
+			if(byte==10 and:{lastByte==13}, {
+				if(stream.notNil, {//skip the initial "\n[serialSend]"
+					stream.pos= 0;
+					RedBencode.decode(stream).postln;//should post the result every 3sec
+				});
+				stream= CollStream.new;
+				lastByte= -1;
+				}, {
+					if(lastByte!= -1, {
+						if(stream.notNil, {//skip the initial "\n[serialSend]"
+							stream.put(lastByte.asAscii);
+						});
+					});
+					lastByte= byte;
+			});
+		});
+	};
+});
+)
+::
+
+CODE::
+//--arduino real world test sending bencoded data to the serial port
+//upload the serialReceive example from https://github.com/jcw/embencode to an arduino
+(
+var port= SerialPort("/dev/tty.usbmodemfa131", 57600);//modify this port name
+CmdPeriod.doOnce({port.close});
+Routine.run({
+	var lastByte= -1, stream= CollStream.new;
+	inf.do{
+		var byte;
+		while({byte= port.read; byte.notNil}, {
+			if(byte==10 and:{lastByte==13}, {
+				stream.contents.postln;
+				stream= CollStream.new;
+				lastByte= -1;
+				}, {
+					if(lastByte!= -1, {
+						stream.put(byte.asAscii);
+					});
+					lastByte= byte;
+			});
+		});
+		
+	};
+});
+Routine.run({
+	var arr;
+	inf.do{
+		3.wait;
+		arr= RedBencode.encodeBytes(["abcde", "123", 12345, [987, [654], 321], 999999999, Dictionary[\one->11, \two->22], "bye!"]);
+		port.putAll(arr);
+	};
+});
+)
+::
+
+CODE::
+//--arduino real world test
+//upload the blinky example from https://github.com/jcw/embencode to an arduino
+(
+~port= SerialPort("/dev/tty.usbmodemfa131", 57600);//modify this port name
+CmdPeriod.doOnce({~port.close});
+Routine.run({
+	var stream= CollStream.new;
+	inf.do{
+		var byte;
+		while({byte= ~port.next; byte.notNil}, {
+			stream.put(byte.asAscii);
+		});
+		if(stream.pos>0, {
+			stream.pos= 0;
+			RedBencode.decode(stream).postln;
+			stream= CollStream.new;
+		});
+		0.01.wait;
+	};
+});
+)
+
+~port.putAll(RedBencode.encode([["rate", 250], ["trigger", 4], ["count", 10]]));
+~port.putAll(RedBencode.encode([["rate", 100], ["trigger", 10], ["count", 20]]));
+::

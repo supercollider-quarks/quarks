@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #e00000}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #797979}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #3200ff}
+span.s3 {color: #001af9}
+span.s4 {text-decoration: underline ; color: #0000ee}
+span.s5 {color: #001cbb}
+span.s6 {color: #000000}
+span.s7 {color: #2500cf}
+span.s8 {color: #be00ac}
+span.s9 {color: #e00000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>FbNode<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>an even more painless way to create a feedback loop within a SynthDef</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: UGen</b></p>
+<p class="p3"><br></p>
+<p class="p1">There are many ways to create feedback loops in SuperCollider.<span class="Apple-converted-space">  </span>Similarly to <a href="Fb.html"><span class="s2">Fb</span></a>, FbNode aims to help you create them in as painless a way as possible.<span class="Apple-converted-space">  </span>The easiest way to understand it is probably to skip to the examples section.<span class="Apple-converted-space">  </span>FbNode is part of the <a href="Feedback.html"><span class="s2">Feedback</span></a> quark.</p>
+<p class="p2"><br></p>
+<p class="p1">Ways of creating feedback loops in SuperCollider can be divided into two types: those that use busses to route signals between SynthDefs, and those that create a feedback loop within a SynthDef. FbNode is of the latter type.</p>
+<p class="p2"><br></p>
+<p class="p1">The traditional way to create feedback within a SynthDef is to use <a href="sc://LocalIn"><span class="s3">LocalIn</span></a>/<a href="sc://LocalOut"><span class="s3">LocalOut</span></a>.<span class="Apple-converted-space">  </span>FbNode is designed to be close to this model, but has a very major advantage over it, which is that you can have as many FbNodes as you like in a single SynthDef instead of just one, and have them all feed back into each other as much as you want. This makes it much easier to make complex networks of feedback lines, and leads to much more readable code.</p>
+<p class="p2"><br></p>
+<p class="p1">Additionally, FbNode has an optional built-in multi-tap delay line, so you can easily control the time period of your feedback loops.<span class="Apple-converted-space">  </span>As with (almost) all methods of achieving feedback in SuperCollider, the minimum delay is given by the server's block size, which is usually 64 samples.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>FbNode vs. Fb</b></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s4"><a href="Fb.html">Fb</a></span> is the original way of doing feedback from the Feedback quark. After several years of using it, it became clear that although it worked very well in a lot of cases, for some things it just wasn't the right tool for the job. FbNode is designed to be both more flexible and more intuitive to use than Fb. Fb has a model in which the output of a function is fed back into its input, whereas FbNode is more about writing to and reading from delay lines. FbNode is probably the best one to learn first, but they're both useful and it's worth learning both and seeing which one best fits a given situation.<span class="Apple-converted-space">  </span>You can use both of them in the same SynthDef if you want.</p>
+<p class="p2"><br></p>
+<p class="p1">One plus-point of Fb over FbNode is that it does multichannel expansion, at least in most cases. FbNode tries to make it easy to do multichannel feedback, but you have to ask for it explicitly - it doesn't try to do it for you.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Another tiny potential disadvantage of FbNode over Fb is that it allocates an additional blockSize of samples for every feedback loop, in order to do some necessary double buffering. The chances of this tiny bit of extra memory use being a significant problem in most applications are very small, however.</p>
+<p class="p2"><br></p>
+<p class="p1">On the other hand, FbNode makes it much easier to have multiple interacting feedback delay lines, especially if you want them all to have different delay times.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>A caveat regarding multiple servers</b></p>
+<p class="p2"><br></p>
+<p class="p1">The following will not be an issue for most users, but because of the way FbNode works, it needs to know the server's sample rate and block size at the time the SynthDef is compiled. To do this, it uses Server.default.options.blockSize (because there's no way to get the block size of a running server) and Server.default.sampleRate (because there's no way to reliably get the sample rate of a server that <i>isn't</i> running). This means that the server has to be booted in order to compile SynthDefs containing FbNodes, and there's no way to compile such SynthDefs for a remote server that has a different sample rate from the default one. I'd like to fix this, but I don't know the best way to approach it.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="Fb.html"><span class="s2">Fb</span></a>, <a href="sc://FbL"><span class="s5">FbL</span></a>, <a href="sc://FbC"><span class="s5">FbC</span></a>, <a href="FbK.html"><span class="s2">FbK</span></a>, <a href="sc://LocalIn"><span class="s3">LocalIn</span></a>, <a href="sc://InFeedback"><span class="s3">InFeedback</span></a>, <a href="sc://NodeProxy"><span class="s3">NodeProxy</span></a>, <a href="sc://LocalBuf"><span class="s3">LocalBuf</span></a>, and also the single sample feedback file in the Examples folder that comes with SC. These are all alternative ways to do feedback in SuperCollider.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (numChannels, maxdelaytime, interpolation)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>This creates a new feedback node, which you can then read from and write to.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>numChannels </b>- the number of channels that the feedback loop will have. This defaults to 1. Note that you can either use this argument, or you can just create more than one FbNode. Multi-channel FbNodes are useful for things like stereo delay lines, but if you're doing something complicated with lots of channels, it will probably be better to use multiple FbNodes, as in the last example below.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>maxdelaytime </b>- the maximum delay time in seconds. Used to initialize the delay buffer size. You do not need to subtract <a href="sc://ControlDur"><span class="s3">ControlDur</span></a>.ir from this, as this is handled automatically.<span class="Apple-converted-space">  </span>If you don't set it, or you set it to less than one control period (i.e. less than 64/44100 ≈ 0.014s) then no extra delay line will be added.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>interpolation </b>- what kind of interpolation to use when reading back from the delay line. (This is only relevant if maxdelaytime is set.) This argument uses the same numbering scheme as <a href="sc://BufRd"><span class="s2">BufRd</span></a>'s interpolation argument, which for some reason goes like this:</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1 - no interpolation</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2 - linear interpolation</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>4 - cubic interpolation</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the default is 2 (linear interpolation).</p>
+<p class="p9"><br></p>
+<p class="p10"><b>Reading from an FbNode</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p1">You don't have to do anything special to read from an FbNode if you don't want to add a delay to its output - just pass the node itself as an argument to a UGen. (See the third example below.)</p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>delay (delaytime)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Output the FbNode's feedback signal with an added delay. The delay time can be modulated. The maximum delay time and the interplolation method must be given when you create the FbNode. You can use this method as many times as you want, with different delay times, so this effectively gives you a multi-tap delay line on every FbNode.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>delaytime </b>- the amount by which to delay the signal. This will be clipped to be between one block size (about 14 milliseconds by default) and<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the FbNode's maxdelaytime. If you didn't set a maxdelaytime when creating the FbNode then this argument will be ignored and the signal will be delayed by one block size. This defaults to the FbNode's maxdelaytime.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b>Writing to an FbNode</b></p>
+<p class="p9"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>write (signal)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Write a signal to the FbNode's internal buffer. You can do this before or after you read from it, or both. In either case, the signal you get when you read from the FbNode will be the signal that was written to it in the previous control period.<span class="Apple-converted-space">  </span>This method returns its input.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If you write to a FbNode more than once, the two signals will be added. (But note that a BufWr UGen will be created every time you write to the node, even though only the last of these is necessary. If you're doing it a lot it's better to sum the signals manually and only write once.)</p>
+<p class="p9"><br></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>signal </b>- the signal to write to the FbNode's buffer. This signal must have the same number of channels as the FbNode, otherwise you will get a<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>buffer mismatch error.</p>
+<p class="p9"><br></p>
+<p class="p8">It isn't possible to write to only one channel of an FbNode at a time. If you want to do that, it's better to create an array of FbNodes.</p>
+<p class="p9"><br></p>
+<p class="p7"><br></p>
+<p class="p10"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p6">The first two examples are the same as for Fb, so you can see how FbNode compares for basic tasks.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p11">// simple dub delay effect</p>
+<p class="p3"><br></p>
+<p class="p12"><span class="s6">b = </span><span class="s7">Buffer</span><span class="s6">.read(s,</span>"sounds/a11wlk01.wav"<span class="s6">)</span></p>
+<p class="p3"><br></p>
+<p class="p13">(</p>
+<p class="p13">{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> in = <span class="s7">PlayBuf</span>.ar(<span class="s8">1</span>,b);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> fbNode = <span class="s7">FbNode</span>(<span class="s8">1</span>,<span class="s8">0.6</span>);</p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span></span><span class="s7">var</span><span class="s6"> signal = fbNode.delay; </span>// read the feedback bus and delay the result.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// The delay time defaults to the max delay time, 0.6 s in this case.</p>
+<p class="p3"><br></p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span></span>// Add the input to the feedback signal, then filter and distort it.</p>
+<p class="p13"><span class="Apple-tab-span">	</span>signal = <span class="s7">BPF</span>.ar(signal*<span class="s8">0.8 </span>+ in, <span class="s8">2000</span>, <span class="s8">3.8</span>).distort;</p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span></span>// for fun effects, try changing the 0.8 to something greater than one</p>
+<p class="p3"><br></p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span></span>// write the signal to the feedback buffer</p>
+<p class="p13"><span class="Apple-tab-span">	</span>fbNode.write(signal);</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">DetectSilence</span>.ar(signal ,doneAction:<span class="s8">2</span>);</p>
+<p class="p13"><span class="Apple-tab-span">	</span>signal!<span class="s8">2</span>;</p>
+<p class="p13">}.play;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p13">b.free</p>
+<p class="p3"><br></p>
+<p class="p11">// Karplus-Strong style plucked string algorithm (see also <a href="sc://Pluck"><span class="s4">Pluck</span></a>)</p>
+<p class="p13">(</p>
+<p class="p13">{</p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span></span><span class="s7">var</span><span class="s6"> in = </span><span class="s7">Impulse</span><span class="s6">.ar(</span><span class="s8">0</span><span class="s6">)!</span><span class="s8">2</span><span class="s6">; </span>// stereo input (although in this case both channels are the same)</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> freq = <span class="s8">200</span>;</p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span></span><span class="s7">var</span><span class="s6"> fbNode = </span><span class="s7">FbNode</span><span class="s6">(</span><span class="s8">2</span><span class="s6">, </span><span class="s8">0.1</span><span class="s6">); </span>// two channel feedback with a maximum delay time of 0.1 s</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> signal = fbNode.delay(<span class="s8">1</span>/freq);</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span>signal = <span class="s7">LPF</span>.ar(<span class="s7">LeakDC</span>.ar(signal),<span class="s8">8000</span>)*<span class="s8">0.99 </span>+ in;</p>
+<p class="p3"><br></p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span>fbNode.write(signal); </span>// two channel signal being written into two-channel FbNode</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">DetectSilence</span>.ar(signal,doneAction:<span class="s8">2</span>);</p>
+<p class="p13"><span class="Apple-tab-span">	</span>signal;</p>
+<p class="p13">}.play</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p11">// basic usage without adding a delay line: self-modulating sine wave.</p>
+<p class="p13">(</p>
+<p class="p13">{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> fbNode = <span class="s7">FbNode</span>(<span class="s8">1</span>);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> signal = <span class="s7">SinOsc</span>.ar(<span class="s8">100</span>, fbNode * <span class="s7">Line</span>.kr(<span class="s8">0</span>,<span class="s8">2</span>,<span class="s8">10</span>) );<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the FbNode is used to modulate the SinOsc's phase</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>fbNode.write(signal);</p>
+<p class="p13"><span class="Apple-tab-span">	</span>signal ! <span class="s8">2</span>;</p>
+<p class="p13">}.play;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p11">// Two delay lines with cross talk. This would be quite awkward to do with Fb.</p>
+<p class="p13">(</p>
+<p class="p13">{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> in = <span class="s7">WhiteNoise</span>.ar*<span class="s7">Line</span>.kr(<span class="s8">1</span>,<span class="s8">0</span>,<span class="s8">0.1</span>);</p>
+<p class="p3"><br></p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span></span>// create two FbNodes with different delay times</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> fbNode1 = <span class="s7">FbNode</span>(<span class="s8">1</span>,<span class="s8">9</span>/<span class="s8">8</span>);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> fbNode2 = <span class="s7">FbNode</span>(<span class="s8">1</span>,<span class="s8">1</span>);</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig1 = in + (fbNode1.delay * <span class="s8">0.8</span>) + (fbNode2.delay * <span class="s8">0.1</span>);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig2 = in + (fbNode1.delay * <span class="s8">0.1</span>) + (fbNode2.delay * <span class="s8">0.8</span>);</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span>fbNode1.write(sig1);</p>
+<p class="p13"><span class="Apple-tab-span">	</span>fbNode2.write(sig2);</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">Pan2</span>.ar(sig1, <span class="s8">-0.8</span>) + <span class="s7">Pan2</span>.ar(sig2, <span class="s8">0.8</span>);</p>
+<p class="p13">}.play;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p11">// using the multi-tap delay feature</p>
+<p class="p13">(</p>
+<p class="p13">{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> in = <span class="s7">Saw</span>.ar([<span class="s8">100</span>,<span class="s8">102</span>])*<span class="s7">Line</span>.kr(<span class="s8">1</span>,<span class="s8">0</span>,<span class="s8">0.1</span>); <span class="s9">// stereo input signal</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> fbNode = <span class="s7">FbNode</span>(<span class="s8">2</span>, <span class="s8">1.0</span>);</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> signal = <span class="s7">Mix</span>.fill(<span class="s8">10</span>,{fbNode.delay(<span class="s8">1.0</span>.rand)});</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>fbNode.write(in + (signal*<span class="s8">0.1</span>));</p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span></span>// if you want, you can use FbNode as a normal multi-tap delay, just by not adding in the</p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span></span>// feedback signal here.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>signal;</p>
+<p class="p3"><br></p>
+<p class="p13">}.play;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p11">// How to create an array of many feedback delay lines.</p>
+<p class="p11">// (This doesn't sound great, but it illustrates the technique.)</p>
+<p class="p13">(</p>
+<p class="p13">{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> in = <span class="s7">WhiteNoise</span>.ar*<span class="s7">Line</span>.kr(<span class="s8">1</span>,<span class="s8">0</span>,<span class="s8">0.05</span>);<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> n = <span class="s8">10</span>;</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> fbNodes = {<span class="s7">FbNode</span>( <span class="s8">1</span>, rrand(<span class="s8">0.1</span>,<span class="s8">1.0</span>) )}!n;<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// create n mono FbNodes, each with a different max delay time.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">var</span> signals = n.collect {</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">arg</span> i;</p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the nodes are arranged in a circle, with each one getting some feedthough from</p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the nodes on either side.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">var</span> signal = in + (fbNodes[i].delay*<span class="s8">0.4</span>)</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>+ (fbNodes[(i+<span class="s8">1</span>)%n].delay*<span class="s8">0.3</span>)</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>+ (fbNodes[(i-<span class="s8">1</span>)%n].delay*<span class="s8">0.3</span>);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fbNodes[i].write(signal);</p>
+<p class="p13"><span class="Apple-tab-span">	</span>};</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">Splay</span>.ar(signals);</p>
+<p class="p13">}.play;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

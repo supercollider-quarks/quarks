@@ -1,0 +1,56 @@
+TITLE:: DimpleGUI
+summary:: Graphical User Interface for DIMPLE environments
+categories:: GUI
+related:: Classes/Dimple
+
+DESCRIPTION::
+This class provides a graphical user interface to control an instance of the DIMPLE environment.
+
+The following parameters can be controlled with the GUI:
+
+list::
+## Camera position
+## Point the camera is looking at
+## Gravity
+::
+
+Furthermore, objects can be created, listed and their attributes can be monitored and changed. The GUI currently supports editing the following attributes:
+
+list::
+## Position
+## Size (for prisms and meshes)
+## Radius (for spheres)
+## Velocity
+## Acceleration
+## Force
+## Mass
+## Density
+## Color
+## Static Friction
+## Dynamic Friction
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new GUI instance.
+
+ARGUMENT:: dimple
+DIMPLE instance to control
+
+returns:: A DimpleGUI instance
+
+
+INSTANCEMETHODS::
+private:: init, addAttribute, createGUI, createControlSection, createObjectBrowser, updateObjectList, createAttributeSection, createUpdateControl, updateAttributes, updateNumberBox, getObject, createAttributeInterface, createAttributeNumberBox, setNewValue, postNewValue, create3DControlSection, createHeading
+
+METHOD:: dimple
+returns:: The current DIMPLE instace controlled with the GUI.
+
+
+EXAMPLES::
+
+code::
+d = Dimple.new;
+DimpleGUI.new(d);
+::

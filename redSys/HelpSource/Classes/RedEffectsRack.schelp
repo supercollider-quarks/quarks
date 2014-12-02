@@ -1,0 +1,81 @@
+CLASS:: RedEffectsRack
+SUMMARY:: allround effects rack for RedEffectModule
+CATEGORIES:: Red>redEffectsRack
+RELATED:: Classes/RedEffectsRackGUI, Classes/RedMatrixMixer, Classes/RedMixer
+
+DESCRIPTION::
+NOTE::
+Requires the link::Classes/Conductor:: quark.
+::
+
+CLASSMETHODS::
+
+PRIVATE:: initClass
+
+METHOD:: new
+
+ARGUMENT:: efxClasses
+An array of red effects to be used.
+
+ARGUMENT:: out
+Output bus.
+
+ARGUMENT:: group
+code::nil:: creates a group after the code::defaultGroup::.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedEffectsRack
+
+METHOD:: free
+Free synths and, if created, the internal group.
+
+METHOD:: out
+Returns a link::Classes/CV:: that is used for controlling out busses for all effect modules.
+
+METHOD:: defaults
+Revert all link::Classes/CV::s to their defaults.
+
+METHOD:: gui
+Creates a link::Classes/RedEffectsRackGUI::
+
+ARGUMENT:: position
+A link::Classes/Point::.
+
+METHOD:: group
+The link::Classes/Group:: in use.
+
+METHOD:: cvs
+Dictionary of link::Classes/CV::s:
+
+table::
+## out || input bus offset
+## ringMix || dry/wet control for ring modulator
+## ringFreq || ring modulator frequency
+## ringMul || ring modulator amplitude
+## ringRate || ring modulator rate
+## tapeMix || dry/wet control for tape effect
+::
+etc. See individual classes for complete list. If two or more of the same class, then suffix _1, _2, _3 etc is added to cvs keys.
+
+METHOD:: efxs
+Array of effects.
+
+EXAMPLES::
+
+CODE::
+a= RedEffectsRack();
+b= Pbind(\degree, Pseq([0, 1, 5, 4, 3, 4], inf), \dur, 0.25).play;
+a.cvs.ringMix.value_(0.5);
+a.out.value= 1
+a.free;
+b.stop;
+
+
+a= RedEffectsRack([RedEfxRing, RedEfxGuit, RedEfxVerb]);
+b= Pbind(\degree, Pseq([0, 1, 5, 4, 3, 4], inf), \dur, 0.25).play;
+a.cvs.verbMix.input= 0.5;
+a.cvs.guitMix.input= 1;
+a.free;
+b.stop;
+::

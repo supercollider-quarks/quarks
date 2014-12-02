@@ -1,0 +1,28 @@
+TITLE:: Arrive
+summary:: Implementation of the arrive steering behaviour
+categories:: Class
+related:: Overviews/Gameloop_Overview, Reference/SteeringBehaviors
+
+DESCRIPTION::
+Arrive is a behavior that steers the agent in such a way it decelerates onto the target position.
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: entity
+the entity on which the steering force will be applied
+
+ARGUMENT:: targetPos
+the position of arrival
+
+ARGUMENT:: deceleration
+a number from 1 to 3 (low = 3, normal = 2, fast = 1)
+
+ARGUMENT:: tweak
+a number that is multiplied with the deceleration. For tweaking (duh)
+
+INSTANCEMETHODS::
+
+METHOD:: value
+Get the calculated force. To be used in the .force_ method of the entity. This is how the steering forces are applied.

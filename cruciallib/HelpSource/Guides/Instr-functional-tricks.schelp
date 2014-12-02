@@ -1,0 +1,56 @@
+title:: Instr Functional Tricks
+summary:: Partial application and function composition with Instr
+categories:: Libraries>crucial>Instr
+
+
+section:: Function Composition
+
+In mathematics, function composition is the application of one function to the results of another. For instance, the functions f: X → Y and g: Y → Z can be composed by computing the output of g when it has an argument of f(x) instead of x.
+
+code::
+(
+Instr(\saw, { arg freq=200,amp=0.5;
+	LFSaw.ar(freq,0.0, amp);
+});
+    
+Instr(\rlpf, { arg in,freq=200,rq=0.1;
+	RLPF.ar(in, freq, rq);
+});
+    
+
+i = Instr("saw") <>> Instr("rlpf");
+
+i.gui
+)
+::
+
+This connects the output of the Saw to the first input of the RLPF.  It makes a compound Instr with all arguments combined, except for the RLPF "in" which is already satisfied.
+
+See link::Classes/CompositeInstr:: to connect to inputs other than the first.
+
+
+section:: Partial Application
+
+In computer science, partial application (or partial function application) refers to the process of fixing a number of arguments to a function, producing another function of smaller arity.
+
+A partially applied Instr produces a PappliedInstr that references the Instr (by name) and which arguments are satisfied.  A PappliedInstr is usable as any normal Instr but it has fewer arguments than the original.
+
+See link::Classes/PappliedInstr::
+
+section:: Subroutines
+
+Instr can also be used as subroutines.
+
+code::
+Instr(\saw, { arg freq=200,amp=0.5;
+	LFSaw.ar(freq,0.0, amp);
+});
+    
+Instr(\rlpf, { arg freq=200,ffreq=400,rq=0.1;
+	var saw;
+	saw = Instr(\saw).ar(freq)
+	RLPF.ar(in, ffreq, rq);
+});
+
+Patch(\rlpf).gui
+::

@@ -1,0 +1,164 @@
+title:: ilisp - a lisp dialect using Instr
+summary:: construct larger instr and signal chains using compact lisp
+categories:: Libraries>crucial>Instr
+related:: Guides/Instr-library, Guides/Instr-SynthDefs, Guides/Instr-Patterns, Classes/InstrBrowser
+
+This is a baby Lisp. Something that seemed interesting to me on a Saturday morning.  If you are really into Lisp then you should use Clojure.
+
+The methods that make this work are all in the extension file ilisp.sc
+
+First you'll probably want to know the basics of Lisp.
+
+section:: evaluating sexpressions
+
+code::
+
+// prefix notation
+['+', 1, 2].ilisp
+3
+
+// inner sexpressions are evaluated
+['+', 1, ['+', 2, 3]].ilisp
+// 2 + 3 = 5
+// 1 + 5 = 6
+6
+
+// use a backtick to escape a list so it doesn't get evaluated as a sexpr
+['+', 1, `[2, 3]].ilisp
+
+::
+
+section:: Instr are the functions
+
+Functions are stored in the Instr library
+
+Operators that are strings are references to Instr
+and are loaded from disk if needed.
+
+code::
+// define some instr
+Instr("random-list", { arg qty=100, min=0.0, max=1.0;
+    Array.rand(qty, min, max)
+});
+
+Instr("pseq", { arg list, repeats=128;
+    Pseq(list, repeats)
+});
+
+
+// create a randomly filled list
+["random-list", 20].ilisp;
+
+// create a random Pseq
+["pseq", ["random-list", 20, 40, 90], inf].ilisp;
+
+
+
+Instr("pulse", { arg freq=300, width=0.5, amp=1.0;
+    Pulse.ar(freq, width, amp)
+});
+
+// but this returns a Pulse.ar !
+["pulse", 440, 0.3, 0.3].ilisp
+// a Pulse
+
+{
+    ["pulse", 440, 0.3, 0.3].ilisp
+}.play
+
+// keyword arguments
+{
+    ["pulse", (width: 0.1)].ilisp
+}.play
+
+// functions get .dereference called on them
+// so they get evaluated in place
+{
+    ["pulse", (freq: { LFSaw.kr(0.5).range(100,400) }, width: 0.1)].ilisp
+}.play
+
+::
+
+
+section:: Macros
+
+A true macro happens at the reader level and processes source code and then emits different source code.
+
+These are pseudo-macros, just using instrument functions to do abbreviations and tricks.
+
+To return an Instr rather than evaluate it we can use a macro.
+
+Any Instr that starts with #
+does not evaluate its input forms
+but is instead passed those forms (an array)
+to operate on.
+
+code::
+// this is a macro
+Instr("#instr", { arg instr ... args;
+    if(args.size == 0,{
+        [\asInstr, `instr]
+    },{
+	if(args.size == 1 and: { args.first.isKindOf(Dictionary) },{
+            args = args.first
+        });
+	[\papply, [\asInstr, `instr], `args]
+    })
+});
+
+Instr("pulse", { arg freq=300, width=0.5, amp=1.0;
+	Pulse.ar(freq, width, amp)
+});
+
+Instr("rlpf", { arg in, freq=300, rq = 1.0;
+	RLPF.ar(in, freq, rq)
+});
+
+// using the #instr macro it returns an instr
+// with some arguments papplied
+// (rather than evaluating the instr function)
+i = ["#instr", "pulse", (freq: 300)];
+
+// evaluate the form
+i.ilisp
+// _papply.pulse|d  partially applied Instr
+
+// play it
+[\play, i].ilisp
+
+// make a SynthDef
+[\asSynthDef, i].ilisp
+
+
+// not working
+// i = ["#instr", "rlpf", ["pulse", (freq: 300)],  800];
+
+// evaluate the form
+i.ilisp
+
+// play it
+[\play, i].ilisp
+
+::
+
+
+section:: Complete Lisp
+
+To be a complete Lisp it would require only:
+
+atom, quote, eq, car, cdr, cons, cond, lambda, label, apply
+
+code::
+
+// CDR aka first
+[\first, `[1, 2, 3]].ilisp
+1
+
+// LAMBDA
+// you can use functions for lambdas
+// remember to ` escape it otherwise it would get
+// resolved when evaluating the sexpr
+
+[\collect, `[1, 2, 3], `{ arg x; x + 3 }].ilisp
+
+::

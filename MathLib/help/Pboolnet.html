@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #0000bf}
+span.s3 {color: #007300}
+span.s4 {color: #000000}
+span.s5 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><br></p>
+<p class="p2"><span class="s1"><b>Pboolnet</b></span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>boolean network pattern</b></p>
+<p class="p1"><br></p>
+<p class="p2"><b>Pboolnet.new(list, repeats, loops)</b></p>
+<p class="p1"><br></p>
+<p class="p2">Boolean network pattern after:<span class="Apple-converted-space">  </span>[http://farben.latrobe.edu.au/mikropol/volume6/dorin_a/dorin_a.html]</p>
+<p class="p1"><b></b><br></p>
+<p class="p2"><b>list</b> - a list of pairs of initial states (0 or 1) and binary boolean operation selectors (e.g., \and, \or, \xor).</p>
+<p class="p2"><b>repeats</b> - number of times to repeat the pattern.</p>
+<p class="p2"><b>loops</b> - number of times to loop a particular network configuration</p>
+<p class="p1"><br></p>
+<p class="p3">// Print out the stream to demonstrate what it looks like</p>
+<p class="p4"><br></p>
+<p class="p5">(<span class="s2">var</span> boolnet, stream;</p>
+<p class="p5">boolnet = <span class="s2">Pboolnet</span>([</p>
+<p class="p5"><span class="Apple-tab-span">	</span>0, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\or</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\or</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>0, <span class="s3">\and</span></p>
+<p class="p5">], 2);</p>
+<p class="p4"><br></p>
+<p class="p5">stream = boolnet.asStream;</p>
+<p class="p5">11.do({stream.next.postln})</p>
+<p class="p5">)</p>
+<p class="p4"><span class="Apple-converted-space">  </span></p>
+<p class="p3"><span class="s4">(</span>// same as above, but with a loop</p>
+<p class="p5"><span class="s2">var</span> boolnet, stream;</p>
+<p class="p5">boolnet = <span class="s2">Pboolnet</span>([</p>
+<p class="p5"><span class="Apple-tab-span">	</span>0, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\or</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\or</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>0, <span class="s3">\and</span></p>
+<p class="p5">], 2, 2);</p>
+<p class="p4"><br></p>
+<p class="p5">stream = boolnet.asStream;</p>
+<p class="p5">11.do({stream.next.postln})</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="s4">(</span>// display some long evolutions</p>
+<p class="p5"><span class="s2">var</span> nodeFunc, boolnets, displayFunc;</p>
+<p class="p4"><br></p>
+<p class="p5">nodeFunc = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s2">Array</span>.fill(7, {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[[0,1].choose, [<span class="s3">\and</span>, <span class="s3">\or</span>, <span class="s3">\xor</span>, <span class="s3">\not</span>].choose]</p>
+<p class="p5"><span class="Apple-tab-span">	</span>}).flat</p>
+<p class="p5">};</p>
+<p class="p4"><br></p>
+<p class="p5">boolnets = <span class="s2">Array</span>.fill(4, {<span class="s2">Pboolnet</span>(nodeFunc.value, <span class="s2">inf</span>)});</p>
+<p class="p4"><br></p>
+<p class="p5">displayFunc = {<span class="s2">arg</span> stream;</p>
+<p class="p3"><span class="s4"><span class="Apple-tab-span">	</span>105.do({</span><span class="s2">arg</span><span class="s4"> i; </span>// 105 is divisible by 7</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>stream.next.post;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>((i+1)%7 == 0).if({<span class="s5">""</span>.postln});</p>
+<p class="p5"><span class="Apple-tab-span">	</span>})</p>
+<p class="p5">};</p>
+<p class="p4"><br></p>
+<p class="p5">boolnets.do({<span class="s2">arg</span> item;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>displayFunc.value(item.asStream);</p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"--------------"<span class="s4">.postln</span></p>
+<p class="p5">});</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p5">sound examples</p>
+<p class="p5">(<span class="s2">SynthDef</span>(<span class="s5">"sine"</span>, <span class="Apple-tab-span">	</span>{ <span class="s2">arg</span> out=0, freq=440, dur=0.05, amp=0.1;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> env;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>env = <span class="s2">EnvGen</span>.kr(<span class="s2">Env</span>.perc(0.01, dur, amp), doneAction:2);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Out</span>.ar(out, <span class="s2">SinOsc</span>.ar(freq, 0, env))<span class="Apple-tab-span">	</span>}).store;)</p>
+<p class="p3"><span class="s4">(</span>// simple pattern</p>
+<p class="p5"><span class="s2">var</span> boolnet, pattern;</p>
+<p class="p5">boolnet = <span class="s2">Pboolnet</span>([</p>
+<p class="p5"><span class="Apple-tab-span">	</span>0, <span class="s3">\or</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\xor</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>0, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\xor</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span></p>
+<p class="p5">], <span class="s2">inf</span>);</p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s4">pattern = </span><span class="s2">Pbind</span><span class="s4">(<span class="Apple-tab-span">	</span></span>\instrument<span class="s4">, </span>\sine<span class="s4">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\dur</span>, 0.1,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\amp</span>, boolnet * 0.3</p>
+<p class="p5">);</p>
+<p class="p5">pattern.play</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="s4">(</span>// more complex -- has a Pseq for the boolean operation</p>
+<p class="p5"><span class="s2">var</span> boolnet, pattern;</p>
+<p class="p5">boolnet = <span class="s2">Pboolnet</span>([</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s2">Pseq</span>([<span class="s3">\xor</span>, <span class="s3">\or</span>, <span class="s3">\and</span>], <span class="s2">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s2">Pseq</span>([<span class="s3">\and</span>,<span class="s3">\xor</span>,<span class="s3">\or</span>], <span class="s2">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\xor</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\xor</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span></p>
+<p class="p5">], <span class="s2">inf</span>, 2);</p>
+<p class="p4"><br></p>
+<p class="p5">pattern = <span class="s2">Pbind</span>(</p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span></span>\instrument<span class="s4">, </span>\sine<span class="s4">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\freq</span>, 200,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\dur</span>, 0.2,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\amp</span>, boolnet * 0.3</p>
+<p class="p5">);</p>
+<p class="p5">pattern.play</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="s4">(</span>// play a couple of patterns in parallel</p>
+<p class="p5"><span class="s2">var</span> boolnet, pattern1, pattern2;</p>
+<p class="p5">boolnet = <span class="s2">Pboolnet</span>([</p>
+<p class="p5"><span class="Apple-tab-span">	</span>0, <span class="s3">\or</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s2">Pseq</span>([<span class="s3">\and</span>,<span class="s3">\and</span>,<span class="s3">\or</span>], <span class="s2">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\xor</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>0, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\xor</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span></p>
+<p class="p5">], <span class="s2">inf</span>, 2);</p>
+<p class="p4"><br></p>
+<p class="p5">pattern1 = <span class="s2">Pbind</span>(</p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span></span>\instrument<span class="s4">, </span>\sine<span class="s4">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\freq</span>, 550,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\dur</span>, 0.3,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\amp</span>, boolnet * 0.3</p>
+<p class="p5">);</p>
+<p class="p4"><br></p>
+<p class="p5">boolnet = <span class="s2">Pboolnet</span>([</p>
+<p class="p5"><span class="Apple-tab-span">	</span>0, <span class="s3">\or</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s2">Pseq</span>([<span class="s3">\and</span>,<span class="s3">\and</span>,<span class="s3">\or</span>], <span class="s2">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\xor</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>0, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\xor</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span></p>
+<p class="p5">], <span class="s2">inf</span>, 2);</p>
+<p class="p4"><br></p>
+<p class="p5">pattern2 = <span class="s2">Pbind</span>(</p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span></span>\instrument<span class="s4">, </span>\sine<span class="s4">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\freq</span>, 440,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\dur</span>, 0.2,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\amp</span>, boolnet * 0.1</p>
+<p class="p5">);</p>
+<p class="p8">Ppar<span class="s4">([</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>pattern1,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>pattern2</p>
+<p class="p5">]).play</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p3"><span class="s4">( </span>// use a boolnet with a Pmulp and a Paddp to make meoldies and rhythms</p>
+<p class="p5"><span class="s2">var</span> boolnet, pattern1, pattern2;</p>
+<p class="p5">boolnet = <span class="s2">Pboolnet</span>([</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s2">Pseq</span>([<span class="s3">\xor</span>, <span class="s3">\or</span>, <span class="s3">\and</span>], <span class="s2">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s2">Pseq</span>([<span class="s3">\and</span>,<span class="s3">\xor</span>,<span class="s3">\not</span>], <span class="s2">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\xor</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\xor</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>1, <span class="s3">\and</span></p>
+<p class="p5">], <span class="s2">inf</span>, 2);</p>
+<p class="p4"><br></p>
+<p class="p5">pattern1 = <span class="s2">Pbind</span>(</p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span></span>\instrument<span class="s4">, </span>\sine<span class="s4">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\freq</span>, 500,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\dur</span>, 0.4,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\amp</span>, 0.5</p>
+<p class="p5">);</p>
+<p class="p4"><br></p>
+<p class="p5">pattern1 = <span class="s2">Pmulp</span>(</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\amp</span>, boolnet * 0.1,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>pattern1</p>
+<p class="p5">);</p>
+<p class="p4"><br></p>
+<p class="p5">pattern2 = <span class="s2">Pbind</span>(</p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span></span>\instrument<span class="s4">, </span>\sine<span class="s4">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\degree</span>, boolnet * 0.1,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\dur</span>, 0.2,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">\amp</span>, 0.5</p>
+<p class="p5">);</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s2">Ppar</span>([pattern1, pattern2]).play</p>
+<p class="p5">)</p>
+</body>
+</html>

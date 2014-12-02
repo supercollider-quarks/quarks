@@ -1,0 +1,57 @@
+TITLE:: SignalCharacteristicsGui
+summary:: Creates a GUI to show SignalCharacteristics
+categories:: Control
+related:: Classes/SignalCharacteristics
+
+DESCRIPTION::
+SignalCharacteristics analyses data properties and allows you to display these in this GUI.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new window to display the SignalCharacteristics
+
+ARGUMENT:: signal
+an instance of SignalCharacteristics
+
+
+INSTANCEMETHODS::
+
+private:: init
+
+METHOD:: updateVals
+Method to update the values displayed in the window
+
+
+METHOD:: fillWindow
+Fills the window with the GUI elements
+
+
+METHOD:: updater
+The SkipJack that updates the window.
+
+
+METHOD:: window
+The Window in which the GUI is displayed
+
+METHOD:: signalc
+The SignalCharacteristics that are displayed
+
+
+
+EXAMPLES::
+
+code::
+c = SignalCharacteristics.new( 1000 );
+c.makeGui;
+
+(
+Tdef( \generateData, {
+	loop{
+		c.addValue( 1.0.rand );
+		rrand(0.05,0.1).wait;
+	}
+}).play;
+);
+::

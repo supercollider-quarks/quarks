@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; color: #615e52; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #615e52; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a81b16}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #43506a}
+span.s3 {color: #56678f}
+span.s4 {color: #003de0}
+span.s5 {color: #59688c}
+span.s6 {color: #615e52}
+span.s7 {font: 9.0px Monaco; color: #615e52}
+span.s8 {font: 9.0px Monaco}
+span.s9 {color: #001bb7}
+span.s10 {color: #606060}
+span.s11 {color: #000000}
+span.s12 {color: #326f17}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>ZPlane<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a Z-plane object for SC with graphical interface</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="../../../../../Applications/SuperCollider/Help/Core/Object.html"><span class="s2"><b>Object</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p1">A class for graphing poles and zeros on a Z-plane. Filters of arbitrary order can be designed by specifying the location of the desired poles and zeros on the Z-plane and feeding these polar coordinates to <a href="FilterCoef.html"><span class="s3">FilterCoef</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p1">ZPlane can also calculate the frequency and phase response of the desired filter. A number of convenience methods are also implemented for easier use, like automatic detection of identical pole/zero pairs and automatic conjugate adding when specifying a pole/zero (thus resulting in real-valued filter coefficients).<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new(poles, zeros, function, real)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new instance of ZPlane. Multiple instances are allowed to co-exist peacefully.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>poles </b>- An <a href="SC://Array"><span class="s2">Array</span></a> containing a number of poles of type <a href="SC://Polar"><span class="s2">Polar</span></a>.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>zeros</b> - An <a href="SC://Array"><span class="s2">Array</span></a> containing a number of zeros of type <a href="SC://Polar"><span class="s2">Polar</span></a>.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>function </b>- A <a href="SC://Function"><span class="s4">Function</span></a><span class="s4"> </span>evaluated each time the mouse is moved in the gui. Can be used to update specific settings when a pole or zero is dragged to another location on the Z-plane.<span class="s4"><span class="Apple-converted-space"> </span></span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>real </b>- A <a href="../../../../../Applications/SuperCollider/Help/Core/Boolean.html"><span class="s2">Boolean</span></a><span class="s2"> </span>indicating whether the filter should be real or complex. When set to true, the conjugates of any specified poles and zeros are added automatically.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><br></p>
+<p class="p9"><b>Instance Methods</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>addPole(index, location)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Add a pole to the Z-plane. Index must denote a valid integer location into the poles array. Alternatively, index can be specified as nil, which means the pole will be added to the tail of the poles array. Poles can also be added by calling .gui on an instance of Z-plane, clicking on the desired location of the graphical representation of the Z-plane and pressing 'ctrl- p'.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>index</b> - An instance of <a href="SC://Integer"><span class="s5">Integer</span></a> or nil</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>location</b> - An instance of <a href="SC://Polar"><span class="s5">Polar</span></a></p>
+<p class="p7"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>addZero(index, location)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Add a zero to the Z-plane. Index must denote a valid integer location into the zeros array. Alternatively, index can be specified as nil, which means the zero will be added to the tail of the zeros array. Zeros can also be added by calling .gui on an instance of Z-plane, clicking on the desired location of the graphical representation of the Z-plane and pressing 'ctrl- z'.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>index</b> - An instance of <a href="SC://Integer"><span class="s5">Integer</span></a> or nil</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>location</b> - An instance of <a href="SC://Polar"><span class="s5">Polar</span></a></p>
+<p class="p7"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>removePole(index)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Removes the pole specified by index of type <a href="SC://Integer"><span class="s5">Integer</span></a>. If there is a conjugate, this is removed too. This method returns the (possibly modified) index in response to a call. Internally, this is used by setPole.</p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>removeZero(index)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Removes the zero specified by index of type <a href="SC://Integer"><span class="s5">Integer</span></a>. If there is a conjugate, this is removed too. This method returns the (possibly modified) index in response to a call. Internally, this is used by setZero.</p>
+<p class="p7"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>removeAllPoles</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Removes all poles associated with this instance of ZPlane. (Poles might be added at 0, 0 however, to keep the nr. of poles and zeros equal.)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>removeAllZeros</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Removes all poles associated with this instance of ZPlane. (Poles might be added at 0, 0 however, to keep the nr. of poles and zeros equal.)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s6"><b><span class="Apple-tab-span">	</span></b></span><b>setPole(index, location)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Change the location of a particular pole specified by index. If there is a conjugate this will be moved too.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>index</b> - An instance of <a href="SC://Integer"><span class="s5">Integer</span></a> or nil</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>location</b> - An instance of <a href="SC://Polar"><span class="s5">Polar</span></a></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>setZero(index, location)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Change the location of a particular zero specified by index. If there is a conjugate this will be moved too.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>index</b> - An instance of <a href="SC://Integer"><span class="s5">Integer</span></a> or nil</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>location</b> - An instance of <a href="SC://Polar"><span class="s5">Polar</span></a></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s7"><span class="Apple-tab-span">	</span></span><b>calcAmpResp(res, norm)</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Calculates the frequency response of the filter and returns an <a href="SC://Array"><span class="s5">Array</span></a><span class="s5"> </span>of <a href="SC://Integer"><span class="s5">Integer</span></a> length res (default is 512),<span class="s5"> </span>holding the result. Norm is a<span class="Apple-converted-space">  </span><a href="../../../../../Applications/SuperCollider/Help/Core/Boolean.html"><span class="s2">Boolean</span></a><span class="s2"> </span>indicating wether the response should be normalized to 1.0 or not. The default for norm is 'true'.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s6"><b><span class="Apple-tab-span">	</span></b></span><b>calcPhaseResp(res, unwrap, derivative)</b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Calculates the phase response of the filter and returns an <a href="SC://Array"><span class="s5">Array</span></a> of <a href="SC://Integer"><span class="s5">Integer</span></a> length res (default is 512), holding the result. Unwrap is a <a href="../../../../../Applications/SuperCollider/Help/Core/Boolean.html"><span class="s2">Boolean</span></a><span class="s2"> i</span>ndicating wether the phase of the filter should be unwrapped or not. The default for unwrap is ' true'. Derivative is a <a href="../../../../../Applications/SuperCollider/Help/Core/Boolean.html"><span class="s2">Boolean</span></a><span class="s2"> i</span>ndicating wether the negative valued derivative (group delay) of the phase of the filter should be calculated too. The default for derivative is ' true'.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>calcAmpAndPhaseResp(res, norm, unwrap, derivative)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Calculates the frequency and phase response of the filter and returns an <a href="SC://Array"><span class="s5">Array</span></a> of arrays, both of <a href="SC://Integer"><span class="s5">Integer</span></a> length res (default is 512), holding the results. Norm is a<span class="Apple-converted-space">  </span><a href="../../../../../Applications/SuperCollider/Help/Core/Boolean.html"><span class="s2">Boolean</span></a><span class="s2"> </span>indicating wether the response should be normalized to 1.0 or not, and unwrap is a <a href="../../../../../Applications/SuperCollider/Help/Core/Boolean.html"><span class="s2">Boolean</span></a><span class="s2"> i</span>ndicating wether the phase of the filter should be unwrapped or not. Derivative is a <a href="../../../../../Applications/SuperCollider/Help/Core/Boolean.html"><span class="s2">Boolean</span></a><span class="s2"> i</span>ndicating wether the negative valued derivative (group delay)<span class="Apple-converted-space">  </span>of the phase of the filter should be calculated too. The default for all three is ' true'.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><i>If one desires the frequency and phase response simultaneously, this method is slightly more efficient than calling calcAmpResp and calcPhaseResp separately.</i><span class="s8"><span class="Apple-tab-span">	</span></span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>gui(bounds)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Makes a<span class="s2"> <a href="SC://Window"><span class="s5">Window</span></a></span><span class="s5"> </span>with a graphical interface of the Z-plane. The user can drag the poles and zeros to different location across the graph. By clicking inside the graph for the Z-plane and pressing ctrl- p, a new pole will be created at that location. Similarly, by pressing ctr- z a new zero will be created. To delete an item, click on a pole or zero and press ctrl- d. By dragging the bottom right corner, the view can be magnified or de-magnified. Bounds is a <a href="SC://Rect"><span class="s5">Rect</span></a><span class="s5"> </span>indicating the dimensions of the graphical interface.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><b>close</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>If a Z-plane graph gui is open, close it.</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><b>Examples</b></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">// Creating a new instance of ZPlane.</p>
+<p class="p13">(</p>
+<p class="p12">// Create a new instance of ZPlane with a pole at 0.25, 0.25pi and a zero at 0.25, 0.75pi.</p>
+<p class="p13">a = <span class="s9">ZPlane</span>.new([<span class="s9">Polar</span>.new(0.25, 0.25pi)], [<span class="s9">Polar</span>.new(0.25, 0.75pi)]);</p>
+<p class="p12">// Notice that ZPlane automatically accounts for the complex conjugates.</p>
+<p class="p13">a.poles.postln;</p>
+<p class="p13">a.zeros.postln;</p>
+<p class="p3"><br></p>
+<p class="p12">// Add a second pole at 0.75, 0.0pi</p>
+<p class="p13">a.addPole(<span class="s9">nil</span>, <span class="s9">Polar</span>.new(0.75, 0.0pi));</p>
+<p class="p12">// Notice that ZPlane automatically added a zero at 0.0, 0.0pi to keep the nr. of poles and zeros</p>
+<p class="p12">// equal.</p>
+<p class="p13">a.poles.postln;</p>
+<p class="p13">a.zeros.postln;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p12">// Controlling things graphically. Try to move poles and zeros around or to create new poles and <span class="Apple-converted-space"> </span></p>
+<p class="p12">// zeros by clicking inside the view and pressing ctrl- p or ctrl- z respectively. Delete poles or <span class="Apple-converted-space"> </span></p>
+<p class="p12">// zeros by clicking on an item and pressing ctrl- d.</p>
+<p class="p13">(</p>
+<p class="p12">// Create a new instance of ZPlane with a pole at 0.25, 0.25pi and a zero at 0.25, 0.75pi.</p>
+<p class="p13">a = <span class="s9">ZPlane</span>.new([<span class="s9">Polar</span>.new(0.25, 0.25pi)], [<span class="s9">Polar</span>.new(0.25, 0.75pi)], { <span class="s9">|me|</span> [me.poles, me.zeros].postln });</p>
+<p class="p3"><br></p>
+<p class="p13">a.gui;</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p12">// Plotting the amplitude and phase response of a filter</p>
+<p class="p13">(</p>
+<p class="p12">// Create a new instance of ZPlane with a pole at 0.8, 0.25pi and a zero at 1.0/0.8, 0.25pi. An<span class="Apple-converted-space"> </span></p>
+<p class="p12">// example of an allpass filter.</p>
+<p class="p13">a = <span class="s9">ZPlane</span>.new([<span class="s9">Polar</span>.new(0.8, 0.25pi)], [<span class="s9">Polar</span>.new(0.8.reciprocal, 0.25pi)]);</p>
+<p class="p3"><br></p>
+<p class="p13">b = a.calcAmpAndPhaseResp;</p>
+<p class="p13">b[0].plot(<span class="s10">"Amplitude Response"</span>, <span class="s9">Rect</span>(50, 300, 400, 200), minval: 0.0, maxval: 1.2);</p>
+<p class="p13">b[1].plot(<span class="s10">"Phase Response"</span>, <span class="s9">Rect</span>(460, 300, 400, 200));</p>
+<p class="p13">b[2].plot(<span class="s10">"Group Delay"</span>, <span class="s9">Rect</span>(870, 300, 400, 200));</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p12">// Using ZPlane together with FilterCoef to generate filter coefficients.</p>
+<p class="p13">(</p>
+<p class="p12">// Create a new instance of ZPlane with a zero at 0.8, 0.75pi. A lowpass filter.</p>
+<p class="p13">a = <span class="s9">ZPlane</span>.new(zeros: [<span class="s9">Polar</span>.new(0.8, 0.75pi)]);</p>
+<p class="p13">b = a.calcAmpAndPhaseResp;</p>
+<p class="p13">b[0].plot(<span class="s10">"Amplitude Response"</span>, <span class="s9">Rect</span>(50, 300, 400, 200));</p>
+<p class="p13">b[1].plot(<span class="s10">"Phase Response"</span>, <span class="s9">Rect</span>(460, 300, 400, 200));</p>
+<p class="p13">b[2].plot(<span class="s10">"Group Delay"</span>, <span class="s9">Rect</span>(870, 300, 400, 200));</p>
+<p class="p3"><br></p>
+<p class="p12">// Calculate the (normalized) time domain filter coefficients</p>
+<p class="p13"><span class="s9">FilterCoef</span>.calc(a.poles, a.zeros);</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p12">// Sound examples:</p>
+<p class="p13"><span class="s9">Server</span>.default = <span class="s9">Server</span>.internal;</p>
+<p class="p13">s = <span class="s9">Server</span>.default;</p>
+<p class="p13">s.boot;</p>
+<p class="p3"><br></p>
+<p class="p12">// Using ZPlane together with FilterCoef and LTI.</p>
+<p class="p13">(</p>
+<p class="p12">// Make a new instance of ZPlane with 7 poles evenly distributed from 0 to pi</p>
+<p class="p13">a = <span class="s9">ZPlane</span>.new([<span class="s9">Polar</span>.new(0.997, 0.0pi), <span class="s9">Polar</span>.new(0.997, (1/6)*pi), <span class="s9">Polar</span>.new(0.997, (1/3)*pi), <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">Polar</span>.new(0.997, (1/2)*pi), <span class="s9">Polar</span>.new(0.997, (2/3)*pi), <span class="s9">Polar</span>.new(0.997, (5/6)*pi), <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">Polar</span>.new(0.997, pi)]);</p>
+<p class="p3"><br></p>
+<p class="p12"><span class="s11">a.gui;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Watch the Z-plane graph</p>
+<p class="p12"><span class="s11">b = a.calcAmpAndPhaseResp;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Calculate amplitude and phase response</p>
+<p class="p13">b[0].plot(<span class="s10">"Amplitude Response"</span>, <span class="s9">Rect</span>(50, 90, 400, 200));</p>
+<p class="p13">b[1].plot(<span class="s10">"Phase Response"</span>, <span class="s9">Rect</span>(460, 90, 400, 200));</p>
+<p class="p13">b[2].plot(<span class="s10">"Group Delay"</span>, <span class="s9">Rect</span>(870, 90, 400, 200));</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p13">(</p>
+<p class="p12">// Calculate time-domain coefficients and fill the buffers needed by LTI.</p>
+<p class="p13">c = <span class="s9">FilterCoef</span>.calc(a.poles, a.zeros);</p>
+<p class="p13">d = <span class="s9">Buffer</span>.sendCollection(s, c[0].real, 1);</p>
+<p class="p13">e = <span class="s9">Buffer</span>.sendCollection(s, c[1][1..c[1].lastIndex].real, 1);</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="s9">SCFreqScopeWindow</span>.new(400, 200, 0);</p>
+<p class="p3"><br></p>
+<p class="p13">x = { <span class="s9">LTI</span>.ar(<span class="s9">WhiteNoise</span>.ar(0.4).dup(2), e.bufnum, d.bufnum) }.play;</p>
+<p class="p13">x.free</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p12">// CAUTION: The following example is a bit dangerous, since we are updating the coefficients in<span class="Apple-converted-space"> </span></p>
+<p class="p12">// real-time. As long as we keep the poles inside the unit circle and don't add or delete any poles<span class="Apple-converted-space"> </span></p>
+<p class="p12">// or zeros we should be fine.</p>
+<p class="p13">(</p>
+<p class="p13"><span class="s9">var</span> func;</p>
+<p class="p3"><br></p>
+<p class="p13"><span class="s9">Server</span>.internal.boot.scope;</p>
+<p class="p13">func = { <span class="s9">|me|</span> <span class="s9">var</span> coef = <span class="s9">FilterCoef</span>.calc(me.poles, me.zeros);</p>
+<p class="p13"><span class="Apple-tab-span">	</span>x.set(<span class="s12">\a0</span>, coef[0][0].real, <span class="s12">\a1</span>, coef[0][1].real, <span class="s12">\a2</span>, coef[0][2].real, <span class="s12">\b1</span>, coef[1][1].real, <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s12">\b2</span>, coef[1][2].real)</p>
+<p class="p13">};</p>
+<p class="p13">a = <span class="s9">ZPlane</span>.new([<span class="s9">Polar</span>.new(0.25, 0.25pi)], [<span class="s9">Polar</span>.new(0.5, 0.75pi)], func);</p>
+<p class="p13">a.gui;</p>
+<p class="p3"><br></p>
+<p class="p13">x = { <span class="s9">arg</span> a0 = 0.36224217105666, a1 = 0.2561438955859, a2 = 0.090560542764165,<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>b1 = 0.35355339059327, b2 = -0.0625;<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s9">SOS</span>.ar(<span class="s9">WhiteNoise</span>.ar(0.4).dup, a0, a1, a2, b1.neg, b2.neg)<span class="Apple-converted-space"> </span></p>
+<p class="p13">}.play(<span class="s9">Server</span>.internal);</p>
+<p class="p13">)</p>
+<p class="p3"><br></p>
+<p class="p13">s.makeBundle(<span class="s9">nil</span>, { x.free });</p>
+<p class="p3"><br></p>
+</body>
+</html>

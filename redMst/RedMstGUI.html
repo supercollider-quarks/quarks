@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ff}
+p.p4 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #bf0000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {color: #0000bf}
+span.s5 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>RedMstGUI<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>gui window for RedMst</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">escape key is the same as RedMst.next.</p>
+<p class="p1">left/right arrow keys is next and prev.</p>
+<p class="p1">space key toggles play and stop.</p>
+<p class="p2"><br></p>
+<p class="p1">use this class for lowest cpu usage.</p>
+<p class="p1">gui versions 2 and 3 adds metronome and transport view but takes a little bit more to update.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">see also [<a href="RedMst.html"><span class="s3">RedMst</span></a>], [<a href="RedMstGUI2.html">RedMstGUI2</a>], [<a href="RedMstGUI3.html">RedMstGUI3</a>]</span></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>*new(size, skin)</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>size is fontsize.<span class="Apple-converted-space">  </span>default= 24</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>skin is a GUI.skin.<span class="Apple-converted-space">  </span>if not gives a red skin will be provided.</p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>&lt;&gt;dur</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>how often redraw the window in beats.<span class="Apple-converted-space">  </span>default= 0.25.<span class="Apple-converted-space">  </span>which means every 16th note.</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>it uses RedMst.clock.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">//--simple example</p>
+<p class="p8">(</p>
+<p class="p8">s.waitForBoot{</p>
+<p class="p8"><span class="s4">RedMst</span>.clear;</p>
+<p class="p8"><span class="s4">RedMst</span>.clock= <span class="s4">TempoClock</span>(140/60);</p>
+<p class="p8"><span class="s4">RedMst</span>.quant= 8;</p>
+<p class="p9">RedMstGUI<span class="s2">(20);</span></p>
+<p class="p10"><br></p>
+<p class="p9">RedTrk<span class="s2">(</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span></span>\bass<span class="s2">,</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s4">Pbind</span>(<span class="s5">\degree</span>, <span class="s4">Pseq</span>([0, 5], <span class="s4">inf</span>), <span class="s5">\octave</span>, 4),</p>
+<p class="p8"><span class="Apple-tab-span">	</span>#[0, 1, 2, 3]<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8">);</p>
+<p class="p9">RedTrk<span class="s2">(</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span></span>\melody<span class="s2">,</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s4">Pbind</span>(<span class="s5">\degree</span>, <span class="s4">Pseq</span>([0, 5, 2, 3, 3, 1], <span class="s4">inf</span>), <span class="s5">\dur</span>, <span class="s4">Pseq</span>([0.25, 0.25, 0.5], <span class="s4">inf</span>)),</p>
+<p class="p8"><span class="Apple-tab-span">	</span>#[1, 2, 5]</p>
+<p class="p8">);</p>
+<p class="p9">RedTrk<span class="s2">(</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span></span>\melody2<span class="s2">,</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s4">Pbind</span>(<span class="s5">\degree</span>, <span class="s4">Pseq</span>([7, 6, 4, 3], <span class="s4">inf</span>), <span class="s5">\dur</span>, 2, <span class="s5">\octave</span>, 6),</p>
+<p class="p8"><span class="Apple-tab-span">	</span>#[2, 3]</p>
+<p class="p8">);</p>
+<p class="p8">}</p>
+<p class="p8">)</p>
+<p class="p10"><br></p>
+<p class="p8"><span class="s4">RedMst</span>.play;</p>
+<p class="p8"><span class="s4">RedMst</span>.next;</p>
+<p class="p8"><span class="s4">RedMst</span>.next;</p>
+<p class="p8"><span class="s4">RedMst</span>.quant= 2;</p>
+<p class="p10"><br></p>
+<p class="p12"><span class="s4">RedMstGUI</span><span class="s2">(64);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//add more guis</p>
+<p class="p8"><span class="s4">RedMstGUI</span>(24, <span class="s4">GUI</span>.skins.default);</p>
+<p class="p9">RedMstGUI<span class="s2">(9);</span></p>
+<p class="p10"><br></p>
+<p class="p8"><span class="s4">RedMst</span>.next;</p>
+<p class="p8"><span class="s4">RedMst</span>.stop;</p>
+<p class="p8"><span class="s4">RedMst</span>.clear;</p>
+</body>
+</html>

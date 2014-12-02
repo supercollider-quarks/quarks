@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.33">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #001afb}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #782727}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline ; color: #0000ff}
+span.s4 {color: #0429b8}
+span.s5 {color: #001afb}
+span.s6 {color: #0027b3}
+span.s7 {color: #556b17}
+span.s8 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>XMLScore<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Holds XMLVoices for output to MusicXML files</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p3"><br></p>
+<p class="p1">Holds XMLVoice objects. XMLScore can take multiple XMLVoice instances. Handles output of MusicXML files.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2"><b>See also:</b> <a href="XMLPart.html"><span class="s3">XMLPart</span></a></span><span class="s4"> </span><span class="s2">and <a href="XMLNote.htm">XMLNote</a></span><span class="s4"> </span><span class="s2">as well as</span><span class="s4"> <a href="MusicXMLOverview.htm"><span class="s5">MusicXMLOverview</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>create a new instance of XMLScore</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>add (part)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Add an XMLPart object to an XMLScore. XMLPart instances can be added before any XMLNotes are added to the XMLPart, so you can set up your score structure before doing anything else.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>output (pathname)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Output a MusicXML file based on the contents of an instance of XMLScore.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>pathname </b>- the path to write a MusicXML file to</p>
+<p class="p6"><br></p>
+<p class="p10"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p11">// simple example</p>
+<p class="p12">(</p>
+<p class="p11">// create an XMLScore</p>
+<p class="p12">z = <span class="s6">XMLScore</span>.new;</p>
+<p class="p11">// add a voice to the XMLScore</p>
+<p class="p12">z.add(y = <span class="s6">XMLPart</span>(meter: <span class="s6">XMLMeter</span>(4, 4), key: <span class="s6">XMLKey</span>.major(<span class="s7">\Bf</span>)));</p>
+<p class="p11">// create a B-flat major scale in quarter notes</p>
+<p class="p11">// uses XMLVoice's internal 'clock' to keep track of beats</p>
+<p class="p12">[58, 60, 62, 63, 65, 67, 69, 70].do({<span class="s6">arg</span> keynum;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>y.add(<span class="s6">XMLNote</span>(keynum, y.now, <span class="s7">\e</span>));</p>
+<p class="p12"><span class="Apple-tab-span">	</span>// advance the clock to the next beat.</p>
+<p class="p12"><span class="Apple-tab-span">	</span>y.incNextBeat;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>});</p>
+<p class="p11">// output the XMLScore</p>
+<p class="p12">z.output(<span class="s8">"~/Desktop/test.xml"</span>.standardizePath);</p>
+<p class="p12">);</p>
+</body>
+</html>

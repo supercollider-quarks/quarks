@@ -1,0 +1,623 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Arial}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Arial; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #9d200d}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #4d4d4d}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; color: #000000}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0018a8}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #431709}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1d1d1d}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001076}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1a2509}
+p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #431709; min-height: 12.0px}
+p.p22 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0012af}
+p.p23 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p24 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p25 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p26 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000ff}
+p.p27 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #295d0e}
+span.s1 {color: #0012af}
+span.s2 {color: #295d0e}
+span.s3 {color: #4d4d4d}
+span.s4 {color: #000000}
+span.s5 {color: #9d200d}
+span.s6 {color: #007300}
+span.s7 {color: #001076}
+span.s8 {color: #1a2509}
+span.s9 {color: #431709}
+span.s10 {color: #1d1d1d}
+span.s11 {color: #0000bf}
+span.s12 {color: #bf0000}
+span.s13 {color: #606060}
+span.s14 {font: 12.0px Arial}
+span.s15 {font: 9.0px Monaco; color: #0000ff}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>API</b></p>
+<p class="p2"><b>a lightweight Application Programming Interface</b></p>
+<p class="p3"><br></p>
+<p class="p4">An API is a way to encapsulate all of the publically callable functions for a single application, composition, piece, class, service etc. in one universally accessible place. <span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p4">API can be used to register simple functions or can register methods on objects.<span class="Apple-converted-space">  </span>These registered functions can then be called through the API object or by making an API call using the API class.</p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p6">a = <span class="s1">API</span>(<span class="s2">'myApp'</span>);</p>
+<p class="p7"><br></p>
+<p class="p8">// define</p>
+<p class="p6">a.add(<span class="s2">'wiggle'</span>,{ <span class="s1">arg</span> numTimes;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>"------commencing wiggling------".postln;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>numTimes.do({</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">"wiggling"</span>.postln;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span>"------wiggling completed------".postln;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>"".postln;</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span></span>"this is the return value"<span class="s4"> </span><span class="s5">// return value</span></p>
+<p class="p6">});</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p8">// wiggle it</p>
+<p class="p6">a.wiggle(3)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p10"><b>OSC</b></p>
+<p class="p5"><br></p>
+<p class="p4">The API can also easily be mounted to OSC and the piece can be easily controlled via Processing, Quartz Composer etc.<span class="Apple-converted-space">  </span>Since the interface of the API is queryable it would be easily possible to auto-configure MIDI devices.</p>
+<p class="p5"><br></p>
+<p class="p6">a.mountOSC;</p>
+<p class="p7"><br></p>
+<p class="p6">// send a message to self (the supercollider client)</p>
+<p class="p6"><span class="s1">NetAddr</span>.localAddr.sendMsg( <span class="s2">'/myApp/wiggle'</span>, 4 )</p>
+<p class="p7"><br></p>
+<p class="p2">But notice that we didn't listen for a response, so we didn't see the return value.</p>
+<p class="p3"><br></p>
+<p class="p2">Let's listen:</p>
+<p class="p7"><br></p>
+<p class="p6">(</p>
+<p class="p6">o = OSCresponderNode(<span class="s1">NetAddr</span>.localAddr,'/response',</p>
+<p class="p11"><span class="s4">{ </span>|time, responder, msg|<span class="s4"><span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>(<span class="s3">"time:"</span> + time).postln;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>("msg:" + msg).postln;</p>
+<p class="p6">}).add;</p>
+<p class="p7"><br></p>
+<p class="p6">// and send the message to self again</p>
+<p class="p6"><span class="s1">NetAddr</span>.localAddr.sendMsg( <span class="s2">'/myApp/wiggle'</span>, 4 )</p>
+<p class="p7"><br></p>
+<p class="p6">)</p>
+<p class="p6">o.remove</p>
+<p class="p7"><br></p>
+<p class="p6">See the OSC second below for more</p>
+<p class="p5"><br></p>
+<p class="p5"><span class="Apple-converted-space"> </span></p>
+<p class="p12"><b>Other Benefits</b></p>
+<p class="p5"><br></p>
+<p class="p4">Even when not working with external applications, its beneficial to use an API to keep the primary functions of your application separate from the particulars of your GUI, key commands, MIDI controllers, OSC and other input devices.<span class="Apple-converted-space">  </span>This means you Don't Repeat Yourself (DRY) by having a view action and a key command do the same thing.<span class="Apple-converted-space">  </span>You also keep your your data (whether in variables or model classes) separate from your application (actions on that data). <span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p13">button.action = {</p>
+<p class="p13"><span class="Apple-tab-span">	</span>a.wiggle(1);</p>
+<p class="p13">}</p>
+<p class="p14"><br></p>
+<p class="p15">// make a function</p>
+<p class="p13">slider.action = a.func(<span class="s6">'wiggle'</span>)</p>
+<p class="p14"><br></p>
+<p class="p15">// call the API using lookup by API name</p>
+<p class="p16">NoteOnResponder<span class="s4">({ </span>|src,chan,note,vel|<span class="s4"> </span>API<span class="s4">(</span><span class="s6">'myApp'</span><span class="s4">).call(</span><span class="s6">'wiggle'</span><span class="s4">,vel) });</span></p>
+<p class="p5"><br></p>
+<p class="p4">If a new device (midi/keyboard) comes along you can quickly attach it to your musical code and play around with it.</p>
+<p class="p5"><br></p>
+<p class="p4">Tools for configuring MIDI, touch, arduinio devices etc could configure themselves automatically or using a GUI by querying APIs.</p>
+<p class="p5"><br></p>
+<p class="p4">When the time comes to hook it up to OSC your application is easily mounted. <span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p4">It also allows a simple way for your application to resuse functionality in other SC applications by calling commands via the API rather than using global or environment variables.</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p7"><br></p>
+<p class="p12"><b>Creating an API</b></p>
+<p class="p7"><br></p>
+<p class="p4">You specify an API by name and it is created or if an API has already been created by that name it is fetched from the API registry.</p>
+<p class="p7"><br></p>
+<p class="p6">a = <span class="s7">API</span>(<span class="s8">'myApp'</span>);</p>
+<p class="p7"><br></p>
+<p class="p6">b = API('myApp');</p>
+<p class="p7"><br></p>
+<p class="p6">// true</p>
+<p class="p6">a === b</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p12"><b>Defining functions</b></p>
+<p class="p5"><br></p>
+<p class="p4"><b>add(selector,function)</b></p>
+<p class="p7"><br></p>
+<p class="p17"><span class="Apple-tab-span">	</span>// define a single function</p>
+<p class="p6"><span class="s9"><span class="Apple-tab-span">	</span></span>a.add(<span class="s8">'wiggle'</span>,{</p>
+<p class="p18"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"wiggling"</p>
+<p class="p6"><span class="s10"><span class="Apple-tab-span">	</span></span>});</p>
+<p class="p7"><br></p>
+<p class="p17"><span class="Apple-tab-span">	</span>// with as many arguments as wanted</p>
+<p class="p6"><span class="s9"><span class="Apple-tab-span">	</span></span>a.add(<span class="s8">'viggle'</span>,{ <span class="s7">arg</span> one,two;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">"vee bitte ?"</span> + (one * two)</p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><br></p>
+<p class="p2"><b>addAll(dictionary)</b></p>
+<p class="p7"><br></p>
+<p class="p17"><span class="Apple-tab-span">	</span>// add several methods using a dictionary</p>
+<p class="p19"><span class="s9"><span class="Apple-tab-span">	</span></span><span class="s4">a.addAll(</span>IdentityDictionary<span class="s4">[</span></p>
+<p class="p20"><span class="s7"><span class="Apple-tab-span">	</span></span><span class="s4"><span class="Apple-tab-span">	</span></span>'woggle'<span class="s4"> -&gt; {</span></p>
+<p class="p6"><span class="s8"><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">"woggling"</span>.postln;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p6"><span class="Apple-tab-span">	</span>]);</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p17"><span class="s4"><span class="Apple-tab-span">	</span></span>// add several methods using an Event</p>
+<p class="p17"><span class="Apple-tab-span">	</span>// note that<span class="Apple-converted-space">  </span>( ) creates an Event which is often abused for its laconic syntax</p>
+<p class="p6"><span class="s9"><span class="Apple-tab-span">	</span></span>a.addAll((</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>worgle: {</p>
+<p class="p18"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"worgling"</p>
+<p class="p6"><span class="s10"><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span>}</p>
+<p class="p6"><span class="Apple-tab-span">	</span>));</p>
+<p class="p7"><br></p>
+<p class="p2"><b>make(makeFunction)</b></p>
+<p class="p7"><br></p>
+<p class="p17"><span class="Apple-tab-span">	</span>// add several methods using a make function (see Environment-make)</p>
+<p class="p6"><span class="s9"><span class="Apple-tab-span">	</span></span>a.make({</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~waggle = { <span class="s7">arg</span> one,two;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>one.do({</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">"waggling"</span>.postln;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>two</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><br></p>
+<p class="p2"><b>exposeMethods(object,methodNameList)</b></p>
+<p class="p21"><br></p>
+<p class="p2"><span class="Apple-tab-span">	</span>for each method name in the list add an API entry that will call that method on the object passing in args</p>
+<p class="p21"><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>// expose methods on an object</p>
+<p class="p13"><span class="Apple-tab-span">	</span>b = <span class="s11">Pseq</span>([1,2,3,4],<span class="s11">inf</span>).asStream;</p>
+<p class="p13"><span class="Apple-tab-span">	</span>a.exposeMethods(b,[<span class="s6">'next'</span>,<span class="s6">'reset'</span>]);</p>
+<p class="p14"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span>s.boot;</p>
+<p class="p14"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>p = <span class="s11">Pbind</span>(<span class="s6">\freq</span>, <span class="s11">Prand</span>([300, 500, 231.2, 399.2], <span class="s11">inf</span>), <span class="s6">\dur</span>, <span class="s11">Prand</span>([0.1, 0.3], <span class="s11">inf</span>));</p>
+<p class="p13"><span class="Apple-tab-span">	</span>a = <span class="s11">API</span>(<span class="s6">'p'</span>).exposeMethods(p,[<span class="s6">\play</span>]);</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>// 6 methods</p>
+<p class="p13"><span class="Apple-tab-span">	</span>a.functionNames</p>
+<p class="p14"><br></p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>// I have no default synth def, no idea why<span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>a.play</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p2"><b>exposeAllExcept(object,methodNamesToExclude)</b></p>
+<p class="p7"><br></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Useful for full blown Application classes where most every method should be callable through the API</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p22"><span class="s4"><span class="Apple-tab-span">	</span></span>TrApp<span class="s4"> {</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">   </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span><span class="s1">var</span> model;</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span>*new { <span class="s1">arg</span> model;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">        </span>^<span class="s1">super</span>.newCopyArgs(model)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span>}</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span>publish {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">        </span><span class="s1">API</span>(<span class="s2">'total'</span>).exposeAllExcept(<span class="s1">this</span>,[<span class="s2">\publish</span>,<span class="s2">\mount</span>,<span class="s2">\prFindMode</span> ]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span>}</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">   </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span>mount {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">        </span><span class="s1">API</span>(<span class="s2">'total'</span>).mountOSC</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span>}</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">   </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>// public applications methods ...</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>play {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>stop {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>etc.</p>
+<p class="p6"><span class="Apple-tab-span">	</span>}</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span>trapp = TrApp(tracker);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>trapp.publish.mount;</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>or take any object you are fond of and expose it.</p>
+<p class="p7"><br></p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>// should be methods native to Pbind only</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>// may change this, but its a safety/cleanliness issue</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>// maybe expose can find any responding method</p>
+<p class="p14"><br></p>
+<p class="p13"><span class="Apple-tab-span">	</span>s.boot;</p>
+<p class="p14"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>p = <span class="s11">Pbind</span>(<span class="s6">\freq</span>, <span class="s11">Prand</span>([300, 500, 231.2, 399.2], <span class="s11">inf</span>), <span class="s6">\dur</span>, <span class="s11">Prand</span>([0.1, 0.3], <span class="s11">inf</span>));</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span>a = </span><span class="s11">API</span><span class="s4">(</span><span class="s6">'p'</span><span class="s4">).exposeAllExcept(p); </span>// exposes all because there are no methods excluded</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>// 6 methods</p>
+<p class="p13"><span class="Apple-tab-span">	</span>a.functionNames</p>
+<p class="p14"><br></p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>// not a method of Pbind<span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>a.play</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p12"><b>Calling API functions</b></p>
+<p class="p7"><br></p>
+<p class="p2">API calls return the value from the function.<span class="Apple-converted-space">  </span>The examples here assume you executed the code in the examples above, or they will complain that the api call was not recognized.</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p20"><span class="s7">API</span><span class="s4">(</span>'myApp'<span class="s4">).call(</span>'wiggle'<span class="s4">)</span></p>
+<p class="p7"><br></p>
+<p class="p17">// passing in arguments</p>
+<p class="p20"><span class="s7">API</span><span class="s4">(</span>'myApp'<span class="s4">).call(</span>'waggle'<span class="s4">,5,</span><span class="s10">"done"</span><span class="s4">)</span></p>
+<p class="p7"><br></p>
+<p class="p4">Functions may also be called directly on the API object as though they were native methods of the API object</p>
+<p class="p7"><br></p>
+<p class="p6">a = <span class="s1">API</span>(<span class="s2">'myApp'</span>);</p>
+<p class="p7"><br></p>
+<p class="p6">a.waggle(16)</p>
+<p class="p7"><br></p>
+<p class="p4">But only if the API class (or Object) does not already implement a method by that name</p>
+<p class="p7"><br></p>
+<p class="p8">// Pseq has next and reset methods</p>
+<p class="p6">b = <span class="s1">Pseq</span>([1,2,3,4],<span class="s1">inf</span>).asStream;</p>
+<p class="p6">a.exposeMethods(b,[<span class="s2">'next'</span>,<span class="s2">'reset'</span>]);</p>
+<p class="p7"><br></p>
+<p class="p8">// but so does Object</p>
+<p class="p8">// so this calls Object-next rather than looking up a responding API function</p>
+<p class="p6">a.next</p>
+<p class="p7"><br></p>
+<p class="p8">// solution: be explicit by using call</p>
+<p class="p8">// this finds the stream's next and reset defined above</p>
+<p class="p6">a.call(<span class="s2">'next'</span>)</p>
+<p class="p6">a.call(<span class="s2">'reset'</span>)</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p12"><b>Functions for use in view actions etc.</b></p>
+<p class="p7"><br></p>
+<p class="p2"><b>func(selector, ... presetArgs)</b></p>
+<p class="p7"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>returns a function that will call the API when valued.</p>
+<p class="p4"><span class="Apple-tab-span">	</span>presetArgs if supplied allow you to "bake in" arguments to the API call</p>
+<p class="p7"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6">a = <span class="s1">API</span>(<span class="s2">'myApp'</span>);</p>
+<p class="p7"><br></p>
+<p class="p6">a.add(<span class="s3">"funcMe"</span>,{ <span class="s1">arg</span> b,c;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>[b,c].postln;</p>
+<p class="p22"><span class="s4"><span class="Apple-tab-span">	</span></span>nil</p>
+<p class="p6">});</p>
+<p class="p7"><br></p>
+<p class="p8">// create a function</p>
+<p class="p6">f = a.func(<span class="s3">"funcMe"</span>);</p>
+<p class="p7"><br></p>
+<p class="p8">// execute it</p>
+<p class="p9"><span class="s4">f.value(</span>"like"<span class="s4">,</span>"you did"<span class="s4">)</span></p>
+<p class="p7"><br></p>
+<p class="p8">// baking in arguments</p>
+<p class="p9"><span class="s4">g = a.func(</span>"funcMe"<span class="s4">,</span>"arguments defined at func creation time precede arguments supplied when valued"<span class="s4">);</span></p>
+<p class="p7"><br></p>
+<p class="p9"><span class="s4">g.value(</span>"like"<span class="s4">,</span>"you did"<span class="s4">);</span></p>
+<p class="p8">// notice that in this case funcMe only takes 2 arguments so "you did" is not handled by the function</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6">(</p>
+<p class="p6">w = <span class="s1">Window</span>.new.front;</p>
+<p class="p6">l = <span class="s1">Slider</span>(w, <span class="s1">Rect</span>(20, 60, 150, 20));</p>
+<p class="p6">l.action = a.func(<span class="s3">"funcMe"</span>);</p>
+<p class="p6">l.keyDownAction = g;</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p12"><b>OSC</b></p>
+<p class="p7"><br></p>
+<p class="p2"><b>a.mountOSC(baseCmdName,addr)</b></p>
+<p class="p5"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>mounts the commands on OSCresponders so that the whole API is available at baseCmdName.</p>
+<p class="p4"><span class="Apple-tab-span">	</span>functions are passed the OSC message as args.<span class="Apple-converted-space">  </span>time and addr are not passed through as</p>
+<p class="p4"><span class="Apple-tab-span">	</span>the functions are assumed to be device neutral.</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>baseCmdName</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>by default will be mounted at the name of the API</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>eg. '/myApp/method'</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if set to "" then all commands will be available at the root:</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>"/method"</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>addr</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>nil by default meaning that it will respond to messages from any IP address</p>
+<p class="p7"><br></p>
+<p class="p6">(</p>
+<p class="p6"><span class="Apple-tab-span">	</span>a.mountOSC</p>
+<p class="p6">)</p>
+<p class="p3"><br></p>
+<p class="p2">Results of the function will be returned to the address. <span class="Apple-converted-space"> </span></p>
+<p class="p2">TODO: decide how the baseCmdName for the response is best specified.</p>
+<p class="p5"><br></p>
+<p class="p4">provisional:</p>
+<p class="p4"><span class="Apple-tab-span">	</span>If called via OSC the return value is treated as a list: ['/response' ] ++ result.asArray</p>
+<p class="p4"><span class="Apple-tab-span">	</span>so your function may return a single item or an array.</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>NOTE: processing sketch in help file does not get the response. not sure where the problem is yet.</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>A better solution is required.</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>Exceptions will result in an "/exception meaCulpaText callingMsg" response</p>
+<p class="p4"><span class="Apple-tab-span">	</span>and API functions will be allowed to throw a malformed input exception that returns "/error scoldingText callingMsg"</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>a.unmountOSC</b></p>
+<p class="p5"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>unmounts all previously mounted OSCresponders</p>
+<p class="p7"><br></p>
+<p class="p6">(</p>
+<p class="p6"><span class="Apple-tab-span">	</span>a.unmountOSC</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b>Processing Example</b></p>
+<p class="p7"><br></p>
+<p class="p2">A basic OSC receiving processing sketch is included in the Help folder that works with this basic example.</p>
+<p class="p3"><br></p>
+<p class="p2">You need the http://www.sojamo.de/oscP5 library.</p>
+<p class="p3"><br></p>
+<p class="p5"><br></p>
+<p class="p6">(</p>
+<p class="p23"><span class="s4">a = </span><span class="s11">API</span><span class="s4">(</span>'osctest'<span class="s4">);</span></p>
+<p class="p14"><br></p>
+<p class="p15">// define</p>
+<p class="p13">a.add(<span class="s6">'wiggle'</span>,{ arg x,y;</p>
+<p class="p24"><span class="s4"><span class="Apple-tab-span">	</span>(</span>"wiggling" + x + y)<span class="s4">.postln;</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span></p>
+<p class="p24"><span class="s4"><span class="Apple-tab-span">	</span></span>"wiggled" + Main.elapsedTime<span class="s4"> </span><span class="s12">// return value</span></p>
+<p class="p13">});</p>
+<p class="p14"><br></p>
+<p class="p6">a.add(<span class="s6">'click'</span>,{ <span class="s11">arg</span> x,y;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>[x,y].postln;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s13">""</span>.postln;</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p24"><span class="s4"><span class="Apple-tab-span">	</span></span>"You clicked" + x + y<span class="s4"> </span><span class="s12">// return value</span></p>
+<p class="p6">});</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p13">a.mountOSC</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p2"><span class="s14">Open Help/</span>osctest.pde and run it.</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p4">The Processing osc lib appears to send from a different port each time it starts the applet.</p>
+<p class="p5"><br></p>
+<p class="p4">The sketch sends a <span class="s15">/API/registerListener</span> command so that SC knows the addr/port to reply to</p>
+<p class="p5"><br></p>
+<p class="p15">// this is processing code</p>
+<p class="p13">(</p>
+<p class="p24"><span class="s4"><span class="Apple-converted-space">  </span></span><span class="s11">OscMessage</span><span class="s4"> msg = new </span><span class="s11">OscMessage</span><span class="s4">(</span>"/API/registerListener"<span class="s4">);</span></p>
+<p class="p13"><span class="Apple-converted-space">  </span>msg.add(listeningPort);</p>
+<p class="p13"><span class="Apple-converted-space">  </span>oscP5.send(msg, sc);</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p4">Or you can register from the SC side:</p>
+<p class="p5"><br></p>
+<p class="p25"><b>API.registerListener( callsFromNetAddr,sendResponseToNetAddr,responseCmdName)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>callsFromNetAddr:<span class="Apple-converted-space">  </span>calls from this address</p>
+<p class="p2"><span class="Apple-tab-span">	</span>sendResponseToNetAddr: responses will be sent here</p>
+<p class="p2"><span class="Apple-tab-span">	</span>responseCmdName:<span class="Apple-converted-space">  </span>optional response OSC path (default /response)</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>// or just set it up from SC</p>
+<p class="p15"><span class="s4"><span class="Apple-tab-span">	</span></span>// all requests will respond to /response on port 12000 locally</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s11">API</span>.routeResponses( '/response/, nil, NetAddr(nil,12000) )</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p4">For the other app to get a response sent to a path other than the default responseCmdName:</p>
+<p class="p5"><br></p>
+<p class="p26"><span class="Apple-tab-span">	</span>/API/call /pathToSendReturnValue /myApp/funcName arg1 arg2<span class="Apple-converted-space"> </span></p>
+<p class="p7"><br></p>
+<p class="p6">note: this may change to be within the specific API's directory</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p1"><b>An Example</b></p>
+<p class="p7"><br></p>
+<p class="p6">s.boot;</p>
+<p class="p7"><br></p>
+<p class="p6">(</p>
+<p class="p6"><span class="s1">var</span> seq,numSteps,step,patt,pbind,playing,api;</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p8">// SOUND APPLICATION</p>
+<p class="p6">numSteps = 1024;</p>
+<p class="p6">seq = <span class="s1">Array</span>.fill(4, {<span class="s1">Array</span>.fill(numSteps,0)});</p>
+<p class="p6">step = 0;</p>
+<p class="p6">patt = <span class="s1">Pfunc</span>({</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> ev;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>step = step.clip(0,numSteps-1);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev = (degree: seq[0][step],nharms: seq[1][step],amp:seq[2][step],pan:seq[3][step],instrument:<span class="s2">\tinker</span>,dur:0.125);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>step = (step + 1).wrap(0,numSteps-1);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ev</p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p22">SynthDef<span class="s4">(</span><span class="s2">\tinker</span><span class="s4">, { </span>| out, freq = 440, amp = 0.1, nharms = 10, pan = 0, gate = 1 |</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">var</span> audio = <span class="s1">Blip</span>.ar(freq, nharms,amp);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">var</span> env = <span class="s1">Linen</span>.kr(gate, doneAction: 2);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">OffsetOut</span>.ar(out, <span class="s1">Pan2</span>.ar(audio, pan, env) );</p>
+<p class="p6">}).add;</p>
+<p class="p8">// I never use patterns. I don't get why amp doesn't work or why &lt;&gt; doesn't work</p>
+<p class="p8"><span class="s4">pbind = patt; </span>//patt &lt;&gt; Pbind(\instrument,\tinker,\dur,0.125)</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p8">// API</p>
+<p class="p6">api = <span class="s1">API</span>(<span class="s2">'stepper'</span>);</p>
+<p class="p6">api.make({</p>
+<p class="p6"><span class="Apple-tab-span">	</span>~play = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(playing.isNil,{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playing = pbind.play;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span>~stop = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(playing.notNil,{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playing.stop;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playing = <span class="s1">nil</span>;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span>~isPlaying = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playing.notNil</p>
+<p class="p6"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span>~setNumSteps = { <span class="s1">arg</span> ns;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>numSteps = ns;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span>~numSteps = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>numSteps</p>
+<p class="p6"><span class="Apple-tab-span">	</span>};</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>~setStep = { <span class="s1">arg</span> st;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>step = st.clip(0,numSteps-1);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span>~resize = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(seq[0].size &gt; numSteps,{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>seq = seq.collect({ <span class="s1">arg</span> sq; sq.copyRange(0,numSteps-1) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(seq[0].size &lt; numSteps,{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>seq = seq.collect({ <span class="s1">arg</span> sq; sq.extend(numSteps,0) });</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span>~put = { <span class="s1">arg</span> parami,i,val;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if(i &lt; numSteps,{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>seq[parami][i] = val;</p>
+<p class="p22"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>true</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},{</p>
+<p class="p22"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>false</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p6"><span class="Apple-tab-span">	</span>};</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>~rand = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>seq = [<span class="s1">Array</span>.rand(numSteps,0,12),<span class="s1">Array</span>.rand(numSteps,0,12),<span class="s1">Array</span>.rand(numSteps,-1,1),<span class="s1">Array</span>.rand(numSteps,0.0,1.0)];</p>
+<p class="p6"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6">});</p>
+<p class="p7"><br></p>
+<p class="p6">api.rand()</p>
+<p class="p7"><br></p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p6">(</p>
+<p class="p8">// a boring gui</p>
+<p class="p27"><span class="s4">a = </span><span class="s1">API</span><span class="s4">(</span>'stepper'<span class="s4">);</span></p>
+<p class="p6">w = <span class="s1">Window</span>.new.front;</p>
+<p class="p6">w.flow({ <span class="s1">arg</span> l;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">Button</span>(l,80@17)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.states_([</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s3">"stop"</span>, <span class="s1">Color</span>.black, <span class="s1">Color</span>.red]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>])</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_(a.func(<span class="s2">'stop'</span>));</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">Button</span>(l,80@17)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.states_([</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s3">"play"</span>, <span class="s1">Color</span>.black, <span class="s1">Color</span>.green]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>])</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_(a.func(<span class="s2">'play'</span>));</p>
+<p class="p6"><span class="Apple-tab-span">	</span>l.startRow;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">EZSlider</span>(l,200@17,</p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"set numSteps:"<span class="s4">,</span></p>
+<p class="p22"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>StaticIntegerSpec<span class="s4">(1,1024),</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s1">arg</span> nb;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setNumSteps(nb.value.asInteger);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.resize;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},a.numSteps);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>l.startRow;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">Button</span>(l,80@17)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.states_([</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s3">"randomize"</span>, <span class="s1">Color</span>.black, <span class="s1">Color</span>.blue]</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>])</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_(a.func(<span class="s2">'rand'</span>));</p>
+<p class="p6">},<span class="s1">Rect</span>(10,10,400,400));</p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p4">Note that this GUI has no dependency relationship on anything.<span class="Apple-converted-space">  </span>It addresses the stepper API by name.</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p12"><b>Map Images to sequence data</b></p>
+<p class="p5"><br></p>
+<p class="p4">OS X only I think</p>
+<p class="p4">Open an image file, scale it down to 1 row (letting the graphics system smudge and average each column).</p>
+<p class="p4">Maps the pixels of the image onto the sequence above using the API</p>
+<p class="p7"><br></p>
+<p class="p6">(</p>
+<p class="p9"><span class="s1">File</span><span class="s4">.openDialog(</span>"Choose an image file..."<span class="s4">,{ </span><span class="s1">arg</span><span class="s4"> path;</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s1">var</span> img,numSteps,scale;</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p27"><span class="s4"><span class="Apple-tab-span">	</span>a = </span><span class="s1">API</span><span class="s4">(</span>'stepper'<span class="s4">);</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>img = <span class="s1">Image</span>(path);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>img.scalesWhenResized = <span class="s1">true</span>;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>img.setSize( img.width, 1 );</p>
+<p class="p6"><span class="Apple-tab-span">	</span>v = img.plot(<span class="s3">"Scaled down to one row"</span>,<span class="s1">Rect</span>(100,100,img.width,100));</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span></span>//a.setNumSteps( min(img.width,1024));</p>
+<p class="p6"><span class="Apple-tab-span">	</span>numSteps = a.numSteps;</p>
+<p class="p6"><span class="Apple-tab-span">	</span>scale = img.width.asFloat / numSteps.asFloat;</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>a.numSteps.do({ <span class="s1">arg</span> i;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> c,hue,sat,val,alpha;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = img.getPixel( (i * scale).asInteger, 0 );</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c = <span class="s1">Color</span>.new255(p.red,p.green,p.blue,p.alpha);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span># hue,sat,val,alpha = c.asHSV;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[hue,sat,val,alpha].debug;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.put(0, i, (hue * 32).asInteger.debug(<span class="s3">"degree"</span>) ); <span class="s5">// hue to degree</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.put( 1, i, (val * 10).debug(<span class="s3">"nharms"</span>) );<span class="s5">// value to nharms</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.put( 3, i, (sat * 0.1).debug(<span class="s3">"amp"</span>) );<span class="s5">// saturation to amp</span></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//a.put( 1, i, val * 10.postln );// value to pan</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">""</span>.debug;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span></span>// click on the image to move the sequence play head</p>
+<p class="p6"><span class="Apple-tab-span">	</span>v.view.children[0].mouseDownAction = { <span class="s1">arg</span> view,x,y;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">var</span> step;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>step = (x / scale).asInteger;</p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>step.debug(</span>"play from step"<span class="s4">);</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.setStep( step );</p>
+<p class="p6"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span>if(a.isPlaying.not,{</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a.play</p>
+<p class="p6"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6">});</p>
+<p class="p7"><br></p>
+<p class="p6">)</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p12"><b>A note on the use of Application classes</b></p>
+<p class="p5"><br></p>
+<p class="p4">MVC would have a Controller to coordinate communication between the Model and the View(s). In larger systems this often leaves a confusion about where "state" is stored.<span class="Apple-converted-space">  </span>Some state is musical/data and some state has to do with how the application is being used. <span class="Apple-converted-space">  </span>Ideally a controller should only coordinate communication between views and model and should have no state.<span class="Apple-converted-space">  </span>In practice they tend to swell into applications. <span class="Apple-converted-space">  </span>A controller starts off just creating views and specifying the actions, but as complexity grows it starts to store state in its own variables and gradually becomes an application in itself.<span class="Apple-converted-space">  </span>But it is an application that is tied to a specific GUI.<span class="Apple-converted-space">  </span>If key commands, MIDI or even OSC are attached to that controller/application, it quickly becomes limiting and the controller has exceeded its scope.<span class="Apple-converted-space">  </span>The controller is GUI-centric. <span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p4">The solution to this bloat is to create an application class that encapsulates state regardless of which interface system is used to change that state.<span class="Apple-converted-space">  </span>This class has intimate knowledge of the Model(s) but should not need to know anything about the views, controllers or external devices that connect to it.<span class="Apple-converted-space">  </span>The API exposes that application class' methods.<span class="Apple-converted-space">  </span>A controller creates views and connects their actions to call the API.<span class="Apple-converted-space">  </span>Any musical state (eg. currently selected pattern) or data would be stored in the model, and any application state (related to your current session of using the music, its editor etc.) is stored in the application object.</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+</body>
+</html>

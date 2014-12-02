@@ -1,0 +1,73 @@
+CLASS:: RedDiskInSamplerGiga
+SUMMARY:: playing soundfiles from disk - fast trigger version
+CATEGORIES:: Red>redSampler
+RELATED:: Classes/RedDiskInSampler, Classes/RedSampler, Classes/RedDiskInPlayer
+
+DESCRIPTION::
+This version is recommended when syncing to a beat, triggering samples from MIDI or just need to start sample playback instantly. It works similar to the commercial giga sampler software as it preloads/cues small buffers into RAM and then streams the rest from disk. This allows you to have quick access to gigabytes of samples. Many more soundfiles than would fit in RAM.
+
+This subclass works just as its parent link::Classes/RedDiskInSampler:: except that the preload happens when a sample stops. Therefore all preloaded soundfiles are kept open all the time and can thereby start playing right away.
+
+NOTE::
+With this class you can not preload more than about 244 (122 if you have 2 overlaps etc.) files due to UNIX system limitations of how many files allowed to be kept open at the same time.
+
+You may overcome this limitation with the following terminal command...
+code::
+"launchctl limit maxfiles 2048 unlimited".unixCmd	//set the number to power of 2
+"launchctl limit".unixCmd				//post status
+::
+::
+
+INSTANCEMETHODS::
+
+PRIVATE:: prCreateVoice
+
+EXAMPLES::
+
+code::
+s.boot;
+a= RedDiskInSamplerGiga(s);
+
+//-- setting up which samples to use and prepare them
+a.prepareForPlay(\snd1, Platform.resourceDir +/+ "sounds/a11wlk01-44_1.aiff");
+a.prepareForPlay(\snd2, "~/sounds/break.wav".standardizePath);	//add your own soundfile
+a.prepareForPlay(\snd3, Platform.resourceDir +/+ "sounds/a11wlk01-44_1.aiff", 44100);	//offset 44100 samples
+
+//-- play
+a.play(\snd1);			//play the whole soundfile
+a.voicesLeft(\snd1)
+a.stop(\snd1);			//stop
+
+a.play(\snd1, 1, 0, 0.05);	//play with slow attack and quick release
+
+a.play(\snd2);			//play another sample
+a.play(\snd3);			//and another
+a.play(\snd3, 0.1, 0.1, 0.1);	//very short
+
+a.play(\snd2, loop:1);		//looping
+a.stop(\snd2, 4);		//stop with 4 second fadetime
+
+(				//start many at once
+a.play(\snd1);
+a.play(\snd2);
+a.play(\snd3);
+)
+a.flush(0);			//stop all right away
+
+a.play(\snd2);
+a.play(\snd2);
+a.voicesLeft(\snd2);		//check if any free voices
+a.stop(\snd2, 0);
+a.stop(\snd2, 0);
+a.voicesLeft(\snd2);		//check if any free voices
+
+a.loadedKeys;			//report all keys that have soundfiles loaded
+a.numFrames;			//report size of preload buffer
+a.overlaps;			//how many voices allowed to play simultaneously
+
+a.length(\snd1);		//how long is the soundfile in seconds
+a.channels(\snd1);		//how many channels
+a.buffers(\snd1);		//access buffers for a key. one for each overlap
+
+a.free;				//stop and clear
+::

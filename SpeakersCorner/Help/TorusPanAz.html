@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0014bc; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+span.s3 {color: #007300}
+span.s4 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>TorusPanAz</b></p>
+<p class="p2"><br></p>
+<p class="p3">a panner for toroidal shaped setups. Can also be used for<span class="Apple-converted-space"> </span></p>
+<p class="p3">cylinders where panning beyond the top wraps back into<span class="Apple-converted-space"> </span></p>
+<p class="p3">the bottom.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>*ar(numSpeakers, in, hPos, vPos, level, hWidth, vWidth)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>numSpeakers <span class="Apple-tab-span">	</span></b>number of speakers per ring, default is #[ 16, 12, 8, 4 ]</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>in<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the input signal to pan</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hPos <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>horizontal position, default is 0 (first speaker in ring)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>vPos<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>vertical position, default is 0 (bottom ring)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>level<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>amplitude control, kr (default 1)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hWidth <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>horizontal width, max number of speakers that sound together (default 2)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>vWidth<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>vertical width, max number of speakers that sound together (default 2)</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hOrients <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the orientations where vPos 0 on every ring pan to (cf. orientation for PanAz).</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>E.g. 0 means to speaker 0 in that ring, 0.5 is between speaker 0 and 1, etc.</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>vOrient<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>vertical orientation, default 0, the first ring specified.</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s1">Server</span>.internal.boot;</p>
+<p class="p5">(</p>
+<p class="p6"><span class="s2">z = { </span>|hPos=0, vPos=0, hWidth=2, vWidth=2|<span class="s2"><span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">TorusPanAz</span>.ar([8, 4, 4], <span class="s1">Dust</span>.ar(1000), hPos, vPos, 1, hWidth, vWidth);</p>
+<p class="p5">}.scope;</p>
+<p class="p5">)</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>// If present, check with SpatioScope:</p>
+<p class="p5"><span class="s1">SpatioScope</span>.rings([8, 4, 4]);</p>
+<p class="p7"><br></p>
+<p class="p5">z.set(<span class="s3">\hPos</span>, 0.25);</p>
+<p class="p5">z.set(<span class="s3">\hPos</span>, 0.5);</p>
+<p class="p7"><br></p>
+<p class="p5">z.set(<span class="s3">\hPos</span>, 0, <span class="s3">\vPos</span>, 0.667);<span class="Apple-tab-span">	</span><span class="s4">// into middle ring</span></p>
+<p class="p5">z.set(<span class="s3">\hPos</span>, 0.5);</p>
+<p class="p5">z.set(<span class="s3">\hPos</span>, 1);<span class="Apple-converted-space"> </span></p>
+<p class="p7"><br></p>
+<p class="p5">z.set(<span class="s3">\hPos</span>, 0, <span class="s3">\vPos</span>, 1.333);<span class="Apple-tab-span">	</span><span class="s4">// into top ring</span></p>
+<p class="p5">z.set(<span class="s3">\hPos</span>, 0.5);</p>
+<p class="p5">z.set(<span class="s3">\hPos</span>, 1);</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2">z.set(</span><span class="s3">\hPos</span><span class="s2">, 0, </span><span class="s3">\vPos</span><span class="s2">, 1.666);<span class="Apple-tab-span">	</span></span>// wrap back into bottom ring: half ...</p>
+<p class="p8"><span class="s2">z.set(</span><span class="s3">\hPos</span><span class="s2">, 0, </span><span class="s3">\vPos</span><span class="s2">, 2);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// ... and fully back</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2">z.set(</span><span class="s3">\hWidth</span><span class="s2">, 4);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// horizontal width</p>
+<p class="p5">z.set(<span class="s3">\hPos</span>, 0.25);</p>
+<p class="p5">z.set(<span class="s3">\hPos</span>, 0.5);</p>
+<p class="p7"><br></p>
+<p class="p5">z.set(<span class="s3">\hWidth</span>, 2);</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2">z.set(</span><span class="s3">\vWidth</span><span class="s2">, 3);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// vertical width; not usually useful.</p>
+<p class="p5">z.set(<span class="s3">\vPos</span>, 0.666);</p>
+<p class="p5">z.set(<span class="s3">\vPos</span>, -0.666);</p>
+<p class="p7"><br></p>
+<p class="p5">z.set(<span class="s3">\vWidth</span>, 2);</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>// use for panning gon a sphere:</p>
+<p class="p5">(</p>
+<p class="p6"><span class="s2">z = { </span>|hPos, vPos|<span class="s2"><span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">TorusPanAz</span>.ar([1, 4, 6, 4, 1], <span class="s1">Dust</span>.ar(1000), hPos, vPos, 1, vOrient: 2);</p>
+<p class="p5">}.scope;</p>
+<p class="p5">)</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2">z.set(</span><span class="s3">\vPos</span><span class="s2">, 0);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// middle ring</p>
+<p class="p5">z.set(<span class="s3">\vPos</span>, 0.4);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">// top ring</span></p>
+<p class="p5">z.set(<span class="s3">\vPos</span>, 0.8);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">// top 1</span></p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2">z.set(</span><span class="s3">\hPos</span><span class="s2">, 1);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// turn horiz 180 deg</p>
+<p class="p8"><span class="s2">z.set(</span><span class="s3">\vPos</span><span class="s2">, 0.4);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// top ring, other side</p>
+<p class="p5">z.set(<span class="s3">\vPos</span>, 0);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">// mid ring</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p5">z.set(<span class="s3">\vPos</span>, -0.4);<span class="Apple-tab-span">	</span><span class="s4">// bottom ring</span></p>
+<p class="p5">z.set(<span class="s3">\vPos</span>, -0.8);<span class="Apple-tab-span">	</span><span class="s4">// bottom 1</span></p>
+<p class="p8"><span class="s2">z.set(</span><span class="s3">\hPos</span><span class="s2">, 0);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// rotate back.</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p8">// to do : demonstrate conversion between xy field and panning on a dome.</p>
+</body>
+</html>

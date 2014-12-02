@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #005ef0}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a82214; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+span.s1 {color: #000000}
+span.s2 {text-decoration: underline}
+span.s3 {color: #0042a9}
+span.s4 {font: 12.0px Helvetica}
+span.s5 {font: 14.0px Helvetica}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Matrix</b></p>
+<p class="p2"><b>Superclass: Array</b></p>
+<p class="p3"><br></p>
+<p class="p2">original class by sc.solar</p>
+<p class="p3"><br></p>
+<p class="p2">Matrices are 2-dimensional Arrays whose slots may only contain (at the moment 'real' ) numbers.</p>
+<p class="p2">Their shape is fully described by the number of rows and columns(cols). Each element can be</p>
+<p class="p2">adressed by 2 indices (row,col), where row (col) ranges between 0 and rows-1 (cols-1).</p>
+<p class="p2">For a lesson on matrices, read your math books from school.</p>
+<p class="p2">Or this reference if you like it the hard way:</p>
+<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span></span><span class="s2">http://www.ee.ic.ac.uk/hp/staff/dmb/matrix/intro.html#Intro</span></p>
+<p class="p3"><br></p>
+<p class="p2">Array2D</p>
+<p class="p2">Matrix uses an <i>array-of-rows–</i>notation. This is the same concept as found in [<b><span class="s2">Array2D</span></b>].</p>
+<p class="p2">As a subclass of Array, Matrix responds to far more methods than given in</p>
+<p class="p2">this helpfile. Be aware of strange results when using them. This is meant to support only the basic matrix</p>
+<p class="p2">manipulations. Most of this is not designed for realtime action. To slow, not optimized.</p>
+<p class="p3"><br></p>
+<p class="p2">Suggestions, bugs, improvements to<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>sc.solar(at)studiobeige.de or<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>tboverma(at)techfak.uni-bielefeld.de</p>
+<p class="p5"><br></p>
+<p class="p3"><br></p>
+<p class="p6"><b><span class="s2">Class Methods</span></b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>*newClear(rows, cols)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Create a new Matrix of shape (rows, cols) filled with zeros.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Matrix</span>.newClear(3,3).postln;</p>
+<p class="p3"><br></p>
+<p class="p2"><b>*with(array)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Create a new Matrix whose rows are filled with the given subarrays.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span>Matrix</span>.with([[1,2,3],[4,5,6],[7,8,9]]).postln;</p>
+<p class="p3"><br></p>
+<p class="p2"><b>*withFlatArray( rows, cols, array)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Create a new Matrix from a 1-dimensional array of shape (rows , cols).</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Matrix</span>.withFlatArray(3,3,[1,2,3,4,5,6,7,8,9]).postln;</p>
+<p class="p3"><br></p>
+<p class="p2"><b>*newIdentity(n)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Create a new identity matrix of shape (n,n).</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Matrix</span>.newIdentity(3).postln;</p>
+<p class="p8"><br></p>
+<p class="p2"><b>*fill (rows, cols, function)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>fill the matrix by evaluating function.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>function is passed two arguments: row, col</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>*mul(ArrayA, ArrayB)</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span>a = [[1,2],[3,4]];</p>
+<p class="p7"><span class="Apple-tab-span">	</span>b = [[1,2],[1,2]];</p>
+<p class="p9"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>Matrix.mul(a,b);</p>
+<p class="p8"><br></p>
+<p class="p6"><b><span class="s2">Instance Methods</span></b></p>
+<p class="p8"><br></p>
+<p class="p2"><b>rows</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns the number of rows</p>
+<p class="p8"><br></p>
+<p class="p2"><b>cols</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns the number of columns</p>
+<p class="p3"><br></p>
+<p class="p2"><b>shape</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns the number of rows and columns as array [rows, cols]</p>
+<p class="p3"><br></p>
+<p class="p2"><b>postmln</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>post the matrix as 2D representation.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span></span><span class="s3">Matrix</span>.withFlatArray(3,3,[1,2,3,4,5,6,7,8,9]).postln;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Matrix</span>.withFlatArray(3,3,[1,2,3,4,5,6,7,8,9]).postmln;</p>
+<p class="p3"><br></p>
+<p class="p2"><b>doRow (row, function)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>evaluate function for each element of row;</p>
+<p class="p2"><span class="Apple-tab-span">	</span>function is passed two arguments: item, col</p>
+<p class="p3"><br></p>
+<p class="p2"><b>doCol (col, function)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>evaluate function for each element of col;</p>
+<p class="p2"><span class="Apple-tab-span">	</span>function is passed two arguments: item, row</p>
+<p class="p3"><br></p>
+<p class="p2"><b>doMatrix (function)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>evaluate function for each element ;</p>
+<p class="p2"><span class="Apple-tab-span">	</span>function is passed three arguments: item, row,col;</p>
+<p class="p8"><br></p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s2">Changing Matrices:</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>put (row, col, value)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>put a single element at (row, col)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>putRow (row, values)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>put a row of elements at (row)</p>
+<p class="p9"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Matrix</span>.newClear(3,3).putRow(0,[2,4,6]).postln</p>
+<p class="p3"><br></p>
+<p class="p2"><b>putCol (col, values)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>put a column of elements at (col)</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s3">Matrix</span>.newClear(3,3).putCol(1,[2,4,6]).postln</p>
+<p class="p3"><br></p>
+<p class="p2"><b>fillRow (row, function)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>fill a row by evaluating function for each element;</p>
+<p class="p2"><span class="Apple-tab-span">	</span>function is passed two arguments: row, col.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>fillCol (col, function)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>fill a column by evaluating function for each element;</p>
+<p class="p2"><span class="Apple-tab-span">	</span>function is passed two arguments: row, col.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>exchangeRow (rowA, rowB)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>exchange two rows</p>
+<p class="p3"><br></p>
+<p class="p2"><b>exchangeCol (colA, colB)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>exchange two cols</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s2">Return Arrays:</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>at (row, col)<span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><b>get (row, col)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns element at (row,col)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>getRow (row)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns an array from row<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>getCol (col)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns an array from column<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>getDiagonal</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns an array from the diagonal elements<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>asArray</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns an array of rows</p>
+<p class="p3"><br></p>
+<p class="p2"><b>flat</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns a one slot array of all elements</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s2">Return</span><span class="Apple-converted-space">  </span><span class="s2">Matrices:</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>fromRow (row)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns a new matrix from row</p>
+<p class="p3"><br></p>
+<p class="p2"><b>fromCol (col)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns a new matrix from column</p>
+<p class="p3"><br></p>
+<p class="p2"><b>addRow (values)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>add a row (values) to the matrix and return.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>receiver is unchanged.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>addCol (values)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>add a column (values) to the matrix and return.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>receiver is unchanged.</p>
+<p class="p3"><span class="Apple-converted-space"> </span></p>
+<p class="p2"><b>insertRow (col, values)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>insert a row (values) in matrix and return.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>receiver is unchanged.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>insertCol (row, values)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>insert a column (values) in matrix and return.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>receiver is unchanged.</p>
+<p class="p3"><span class="Apple-converted-space"> </span></p>
+<p class="p2"><b>removeRow (row)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns a new matrix without row</p>
+<p class="p3"><br></p>
+<p class="p2"><b>removeCol (col)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns a new matrix without column</p>
+<p class="p3"><br></p>
+<p class="p2"><b>collect (function)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns a new matrix by evaluating function for each element.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>function is passed three arguments: item, row, col.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>sub (row, col)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns a submatrix that results from matrix by crossing out row and<span class="Apple-converted-space">  </span>col</p>
+<p class="p3"><br></p>
+<p class="p2"><b>flop<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the transpose of matrix</p>
+<p class="p3"><br></p>
+<p class="p2"><b>adjoint</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the adjoint or adjugate of a square matrix</p>
+<p class="p3"><br></p>
+<p class="p2"><b>inverse</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the inverse of a square matrix</p>
+<p class="p3"><br></p>
+<p class="p2"><b>gram</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the gram matrix</p>
+<p class="p2"><span class="Apple-tab-span">	</span>(the transpose of matrix multiplied with matrix)</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>T^t * T</p>
+<p class="p2"><b>psydoInverse</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the psydoinverse of a matrix</p>
+<p class="p3"><br></p>
+<p class="p2"><b>* matrix2</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the result of matrix multiplication: matrix * matrix2</p>
+<p class="p2"><span class="Apple-tab-span">	</span>matrix.cols must equal matrix2.rows</p>
+<p class="p3"><br></p>
+<p class="p2"><b>* aNumber</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns multiplication with aNumber for each element</p>
+<p class="p3"><br></p>
+<p class="p2"><b>+ matrix2</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns (matrix + matrix2)</p>
+<p class="p2"><span class="Apple-tab-span">	</span>matrix must have the same shape as matrix2</p>
+<p class="p3"><br></p>
+<p class="p2"><b>+ aNumber</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns summation with aNumber for each element</p>
+<p class="p3"><br></p>
+<p class="p2"><b>- matrix2</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns (matrix - matrix2)</p>
+<p class="p2"><span class="Apple-tab-span">	</span>matrix must have the same shape as matrix2</p>
+<p class="p3"><br></p>
+<p class="p2"><b>- aNumber</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns subtraction with aNumber for each element</p>
+<p class="p3"><br></p>
+<p class="p2"><b>center(mean)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns a matrix centred around the mean vector (which will be calculated for you if not supplied)</p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s2">Return characteristic values</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>sum</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the sum of all elements</p>
+<p class="p3"><br></p>
+<p class="p2"><b>sumRow (row)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the sum of all elements of desired row</p>
+<p class="p2"><b>sumCol (col)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the sum of all elements of desired column</p>
+<p class="p2"><b>sumRows(function)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>return an array giving the sum for every row</p>
+<p class="p2"><b>sumCols(function)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>return an array giving the sum for every column</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>grammian</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the grammian of a<span class="Apple-converted-space">  </span>matrix</p>
+<p class="p2"><span class="Apple-tab-span">	</span>(determinant of the gram matrix)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>mean</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the mean array, calculated over the rows</p>
+<p class="p2"><b>cov(mean)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns the sample covariance, if rows represent observations</p>
+<p class="p2"><b>covML(mean)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns the Maximum-Likelihood covariance estimate, if rows represent observations and the distribution is assumed to be Gaussian</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s2">Return characteristic values of square</span><span class="Apple-converted-space">  </span><span class="s2">matrices:</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>det<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the determinant</p>
+<p class="p3"><br></p>
+<p class="p2"><b>cofactor (row, col)</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the cofactor to element (row, col)</p>
+<p class="p2"><span class="Apple-tab-span">	</span>this is the determinant of the matrix.sub(row, col) mutiplied with (-1)**(row+col)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>trace</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the trace of matrix:</p>
+<p class="p2"><span class="Apple-tab-span">	</span>(sum of the diagonal elements)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>norm</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns the euclidean norm of matrix</p>
+<p class="p2"><span class="Apple-tab-span">	</span>( sqrt( tr [ A*A(T) ] ) )</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s2">testing</span></p>
+<p class="p10"><br></p>
+<p class="p2"><b>isSquare</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns true for (n x n) - matrices</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isSingular</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns true if determiant is zero</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isRegular</b></p>
+<p class="p2"><span class="s5"><span class="Apple-tab-span">	</span></span>returns true if determiant is Non-zero</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isSymmetric</b></p>
+<p class="p2"><span class="s5"><span class="Apple-tab-span">	</span></span>returns true if matrix is symmetric</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isAntiSymmetric</b></p>
+<p class="p2"><span class="s5"><span class="Apple-tab-span">	</span></span>returns true if matrix is antisymmetric</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isPositive</b></p>
+<p class="p2"><span class="s5"><span class="Apple-tab-span">	</span></span>returns true if matrix is strictly positive</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isNonNegative</b></p>
+<p class="p2"><span class="s5"><span class="Apple-tab-span">	</span></span>returns true if matrix is<span class="Apple-converted-space">  </span>positive / non negative (zeros allowed)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isNormal</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns true if matrix is<span class="Apple-converted-space">  </span>normal</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isZero</b></p>
+<p class="p2"><span class="s5"><span class="Apple-tab-span">	</span></span>returns true for a zero matrix</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isIntegral</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns true if matrix is integral</p>
+<p class="p2"><span class="Apple-tab-span">	</span>An Integral matrix is one whose elements are all integers.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>isIdentity</b></p>
+<p class="p2"><span class="s5"><span class="Apple-tab-span">	</span></span>returns true if matrix is an identity matrix</p>
+<p class="p2"><span class="Apple-tab-span">	</span>(the diagonal elements are all 1; the nondigonal elements are all zero)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isDiagonal</b></p>
+<p class="p2"><span class="s5"><span class="Apple-tab-span">	</span></span>returns true if matrix is diagonal</p>
+<p class="p2"><span class="Apple-tab-span">	</span>a(i,j)=0 unless i=j.<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>isOrthogonal</b></p>
+<p class="p2"><span class="s5"><span class="Apple-tab-span">	</span></span>returns true if matrix is orthogonal</p>
+<p class="p2"><span class="Apple-tab-span">	</span>(the matrix multiplied with its transpose is an identity matrix)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>isIdempotent</b></p>
+<p class="p2"><span class="s5"><span class="Apple-tab-span">	</span></span>returns true if matrix is idempotent</p>
+<p class="p2"><span class="Apple-tab-span">	</span>(the squared matrix equals itself)</p>
+<p class="p3"><br></p>
+<p class="p2"><b>== matrix2</b></p>
+<p class="p2"><span class="s5"><span class="Apple-tab-span">	</span></span>returns true if matrix equals matrix2</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s2">unary operators:</span> matrix.uop</p>
+<p class="p3"><br></p>
+<p class="p2"><b>neg, bitNot, abs, ceil, floor, frac, sign, squared, cubed, sqrt, exp, reciprocal;</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>returns new matrices.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p6"><span class="s2">binary operators:</span><span class="Apple-converted-space"> </span></p>
+<p class="p6">usage: <span class="Apple-tab-span">	</span>matrix<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>bop<span class="Apple-converted-space">  </span>aNumber</p>
+<p class="p6">or: <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>aNumber <span class="Apple-tab-span">	</span>bop matrix</p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="Apple-converted-space"> </span>/, div, %, **, min, max;</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>returns new matrices.</p>
+<p class="p3"><br></p>
+</body>
+</html>

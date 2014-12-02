@@ -1,0 +1,812 @@
+TITLE:: TabbedView2
+summary:: A Tabbed View which holds TabbedViewTabs
+categories:: GUI>Views
+related:: Classes/TabbedViewTab,Classes/CompositeView
+
+DESCRIPTION::
+There are extensive explanations in the LINK::#Examples:: section on how to use TabbedView2 with its many configuration options .
+
+SUBSECTION:: Version and Author
+version: 1.04 , May 2, 2014
+
+author: Jost Muxfeldt
+
+SUBSECTION:: New Features
+TabbedView2 has a number of new features compared with TabbedView.
+LIST::
+##Tabs are draggable, both for their order and view position.
+##Under QtGUI, tabs can be dragged (using cmd/ctrl-drag) to other TabbedView2s, even between windows.
+##Under QtGUI tabs can be detached.
+##Double-clicking tabs changes their orientation.
+##Tabs can be set to be closable.
+##Tabs are individually configurable, not just globally, though global defaults are settable.
+::
+NOTE::
+Try the LINK::#Demo#DEMO:: Code to test all the features, and go through the LINK::#Examples#EXAMPLES::.
+::
+SUBSECTION:: Differences to older TabbedView
+The new TabbedView2 now holds an Array of TabbedViewTab instances.
+The creation syntax is just like other Views:
+
+
+CODE::
+ *new(parent, bounds);
+ ::
+
+You then add defaults, followed by the individual tabs, setting their individual instance variables.
+NOTE::
+You never dierectly create TabbedViewTab instances, but rather use TabbedView2.add to add tabs.
+Many instance variables for  TabbedView, are now (arrays of) default values for TabbedViewTab instances. TabbedViewTab instances can in turn override those defaults. This way you can customize individual tabs.
+
+See LINK::Classes/TabbedViewTab:: .
+::
+STRONG::Example:::
+
+STRONG::Old Syntax::
+
+CODE::
+(
+// create the TabbedView, tabs,color, etc.
+t=TabbedView.new(nil,nil,
+	["test1","test2","test3"],
+	[Color.red.alpha_(0.1), Color.blue.alpha_(0.1),Color.green.alpha_(0.1)],
+	"test window",
+	scroll:true);
+
+//add defaults
+t.tabHeight_(20).tabCurve_(3);
+
+//populate view
+v=t.views[0];
+Slider(v, Rect(20,20,320,20));
+
+//add more views
+t.add("extraTab, but not custom")
+)
+::
+STRONG::New Syntax::
+CODE::
+
+(
+// create the TabbedView2
+t=TabbedView2.new;
+
+//add defaults, before creating tabs
+t.backgrounds_([Color(0.9,0.85,0.85),Color(0.85,0.85,0.9),Color(0.9,0.9,0.85)]);
+t.unfocusedColors_([Color(0.9,0.75,0.75),Color(0.75,0.75,0.9),Color(0.9,0.9,0.75)]);
+t.labelColors_([Color.red,Color.blue,Color.yellow]);
+
+t.tabHeight_(20);
+
+// now add a tab and populate it with a slider;
+v=t.add("test1", scroll:true); //scroll must be decided upon creation.
+Slider(v, Rect(20,20,320,20));
+
+//add some closable tabs
+t.add("test2", scroll:true).closable_(true);
+t.add("test3", scroll:true).closable_(true);
+t.add("test4", scroll:true).closable_(true);
+
+// override defaults in a custom tab
+m=t.add("Custom Configured Tab", scroll:true);
+m.labelColor=Color.green.alpha_(1);
+m.unfocusedColor=Color.green.alpha_(0.4);
+m.background=Color.green.alpha_(0.1);
+
+t.refresh;
+)
+
+::
+CLASSMETHODS::
+METHOD:: new
+create a Tabbed View
+
+ARGUMENT:: parent
+a parent view. if nil, then a new window is created
+
+ARGUMENT:: bounds
+Rect .  if nil then the parent Rect is used
+returns:: returns a TabbedView2
+
+SUBSECTION:: Convenience Creation Methods
+CODE::
+
+// choose one.   .demo adds some tabs automatically
+TabbedView2.newPacked.demo;    //create a very space efficient TabbedView2
+TabbedView2.newFlat.demo;    // create a  flat  TabbedView2
+TabbedView2.newTall.demo;    // create a tall TabbedView2
+TabbedView2.newColor.demo;    // create a Tabbed View with  rgb tabs
+TabbedView2.newColorLabels.demo;    // create a Tabbed View with  rgb labels
+TabbedView2.newBasic.demo;    // create a very basic TabbedView2
+TabbedView2.newTransparent.demo;    // create a transparent TabbedView2
+
+::
+
+PRIVATE::newPacked
+PRIVATE::newFlat
+PRIVATE::newTall
+PRIVATE::newColor
+PRIVATE::newColorLabels
+PRIVATE::newBasic
+PRIVATE::newTransparent
+
+INSTANCEMETHODS::
+
+SUBSECTION:: Views and Windows
+
+METHOD:: view
+RETURNS:: the container for all the views
+
+METHOD::alwaysOnTop
+ARGUMENT:: boolean
+If a window was created automatically, then this sets whether it is always on top.
+
+METHOD::window
+If a window was created automatically, then this returns the window.
+NOTE::
+If the last tab of this window is closed or dragged (under QT only), then the window closes as well.
+::
+
+METHOD::tabAt
+get the TabbedViewTab instance at index.
+RETURNS:: a TabbedViewTab instance. A TabbedViewTab instance responds to .asView, so it can be used to fill a parent argument, just like any other view can.
+
+
+METHOD:: tabViews
+RETURNS:: an array of TabbedViewTab instances.
+
+
+
+METHOD:: resize
+sets the resize flag (1-9 ) of the enclosing view.  see LINK::Reference/Resize::
+
+METHOD::clone
+Creates a new TabbedView2, copying all of the settings of the current on, other that the tabs.
+This method is also used internally when detaching tabs under QT.
+ARGUMENT:: parent
+a parent view. if none, a new window is created.
+ARGUMENT:: x
+If a new window is created, it will be created offset from this x position by 20px (mainly for internal use)
+ARGUMENT:: y
+If a new window is created, it will be created offset from this y position by 20px (mainly for internal use)
+RETURNS::
+The new TabbedView2 instance.
+
+
+SUBSECTION:: Adding, Removing, Dragging, and Detaching Tabs
+
+NOTE::
+STRONG::Double-Clicking and Dragging. ::
+Double-clicking or dragging  a tab widget within its view will  change the tab followEdges or position (\left, \top, \right, or \bottom), as well as changing the order of the tabs; You can use  methods  tabPosition and followEdges to do the same programmatically.
+To prevent dragging or double clicking, use lockPosition and followEdges=false, or dragTabs=false.
+::
+NOTE::
+STRONG::DraggingTabs between Views and Windows. ::
+Under QT, you can cmd-drag (or ctrl-drag) a tab between different TabbedView2 instances, even if they are in different window.
+::
+NOTE::
+STRONG::DetachingTabs. ::
+Under QT, you can right click to detach a tab. In reality, this clones the parent TabbedView2, places the clone in its own window, and then migrates the tab into the new view, using Qt's set Parent. If the last Tab of this window is closed or dragged, then the window closes as well.
+::
+
+
+
+METHOD:: add
+adds a TabbedViewTab instance
+
+
+
+ARGUMENT:: label
+string, the label
+
+ARGUMENT:: index
+int, (optional) the index at which the tab is inserted (if nil, add to the end)
+
+ARGUMENT:: scroll
+Boolean,  default false. Must be set before creation of tab.
+
+RETURNS::  the new TabbedViewTab
+
+METHOD:: insert
+inserts a TabbedViewTab instance  at index
+
+ARGUMENT:: index
+the index at which the tab is inserted
+
+ARGUMENT:: label
+(describe argument here)
+
+ARGUMENT:: scroll
+Boolean,  default false. Must be set before creation of tab.
+
+returns::  the new TabbedViewTab
+
+METHOD::dragTabs
+Boolean or Function:  {arg thisView;   return boolean}.
+default: true; Set to false to disable regular tab dragging (position or order changing by drag);
+
+METHOD::detachedClosable
+if tabs are detached, you can lose a tab if you close its window. so this allows you to prevent that by setting it to false.
+The window will still close when the last tab has been dragged out of it.
+
+
+METHOD::demo
+quickly creates a bunch of tabs. for texting TabbedView2 settings
+Tab labels will be i++string
+
+ARGUMENT:: i
+
+ARGUMENT:: string
+
+
+METHOD:: removeAt
+remove tab at Index
+
+ARGUMENT:: index
+the index of the tab to be removed
+
+
+METHOD:: focus
+selects one of the tabs
+
+ARGUMENT:: index
+int, the index to focus
+
+METHOD:: activeTab
+returns:: returns the  focused tab
+
+
+
+SUBSECTION::Set tabPosition and followEdges
+NOTE::
+Double-clicking or dragging  a tab widget will  change the tab followEdges or position (\left, \top, \right, or \bottom), or the order of the tabs.
+You can use  methods  tabPosition and followEdges to do the same programmatically.
+::
+
+
+METHOD:: tabPosition
+
+ARGUMENT:: symbol
+  \left, \top, \right, or \bottom.
+
+METHOD:: lockPosition
+Lockes the  \left, \top, \right, or \bottom position of the tabs. You still can change the order of the tabs themselves by dragging.
+
+ARGUMENT:: bool
+default false.
+
+METHOD:: followEdges
+Boolean or Function:  {arg thisView;   return boolean}.
+Set tabs parallel or perpendicular to container edges.
+default true. (Set tabs parallel);
+
+METHOD:: lockEdges
+Prevents Double-Click changing of followEdges.
+
+ARGUMENT:: bool
+default false.
+
+SUBSECTION:: Examples: Set tabPosition and followEdges
+STRONG::Setting the position or followEdges instance variables::
+CODE::
+(
+v=TabbedView2.newColorLabels; //default
+v.tabHeight = 25;
+5.do{arg i; var q="aa"; i.do{q=q++"a"}; v.add(q) };
+v.tabViews[0].flow({arg w;
+	Button(w,360@50).states_([["tabs top (or drag tab to top)"]]).action_({v.tabPosition_(\top)});
+	w.startRow;
+	Button(w,178@50).states_([["tabs left (or drag tab to left)"]]).action_({v.tabPosition_(\left)});
+	Button(w,178@50).states_([["tabs right (or drag tab to right)"]]).action_({v.tabPosition_(\right)});
+	w.startRow;
+	Button(w,360@50).states_([["tabs top (or drag tab to botom)"]]).action_({v.tabPosition_(\bottom)});
+
+
+	Button(w,360@50)
+	.states_([["set followEdges=false \n(or double-click on tabs)",Color.black,Color.red.alpha_(0.2)],
+		["set followEdges=true \n(or double-click on tabs)",Color.black,Color.green.alpha_(0.2)]])
+	.action_({arg b;(b.value==1).if{v.followEdges_(false)}{v.followEdges_(true)};});
+});
+)
+(
+TabbedView2.newColorLabels.tabPosition_(\right).followEdges_(false).demo(25,"");
+TabbedView2.newTall.tabPosition_(\left).demo(25,"test");
+TabbedView2.newTall(nil,Rect(100,500,400,100)).tabPosition_(\bottom).demo(5,"test");
+
+
+)
+::
+
+SUBSECTION::Setting Colors
+NOTE::
+Many of these methods take arrays of Color instances. These colors are used as the defaults for new tabs. If the array is shorter than the amount of tabs, then the color choice will cycle through the array. However, TabbedViewTab instances will retain their color when their positions change, and they can also have individual color definitions, which override the defaults. These defaults are only there in order to prevent repeating code when creating new tabs.
+::
+
+METHOD::resetColors
+reset the tab colors, cycling through default color arrays.
+WARNING::
+This will reset individual colors that were overriden in the tab instances!
+::
+
+METHOD:: labelColors
+
+ARGUMENT:: colorArray
+Array of Colors sets the default  colors of the tab widgets. New tabs will cycle through these colors, though these can be overridden in the TabbedViewTab instance.
+
+METHOD:: unfocusedColors
+
+ARGUMENT:: colorArray
+Array of Colors sets the default unfocusedColors colors of the tab widgets. New tabs will cycle through these colors, though these can be overridden in the TabbedViewTab instance.
+
+METHOD:: backgrounds
+
+ARGUMENT:: colorArray
+Array of Colors sets the default background colors of the Composite/Scroll Views. New tabs will cycle through these colors, though these can be overridden in the TabbedViewTab instance.
+
+
+METHOD:: stringColors
+ARGUMENT:: colorArray
+Array of Colors sets the default label string colors. New tabs will cycle through these colors, though these can be overridden in the TabbedViewTab instance.
+
+METHOD:: stringFocusedColors
+ARGUMENT:: colorArray
+Array of Colors sets the default focused label string colors. New tabs will cycle through these colors, though these can be overridden in the TabbedViewTab instance.
+
+
+SUBSECTION::Setting Geometry and Fonts
+NOTE::
+tabWidth and labelPadding  are defaults which can be overridden in individual tabs
+::
+METHOD::refresh
+recalculate all geometry values and redraw tabs
+
+METHOD:: tabWidth
+ARGUMENT:: int
+ int or  \auto ;  a fixed tab width, or "auto" for automatic tab width (default "auto", unless using themes).
+ Can be overridden in in the TabbedViewTab instance.
+
+METHOD:: labelPadding
+ARGUMENT:: int
+if autosizing is on, then this determines left and right padding from the label text.
+Can be overridden in in the TabbedViewTab instance.
+
+METHOD:: tabHeight
+ARGUMENT:: int
+int or  \auto .  a fixed tab height, or "auto" for automatic tab height (default "auto", unless using themes)
+
+METHOD:: tabCurve
+ARGUMENT:: int
+the radius in pixels of the rounded tab corners
+
+METHOD::clickbox
+ARGUMENT:: int
+set the size of the clickbox and detach icons in pixels. default is 15
+
+METHOD:: swingFactor
+ARGUMENT:: point
+Point ;  a multiplication factor for a string/tab width for GUI.swing only. default Point(0.52146,1.25)
+
+METHOD:: font
+set the font
+
+
+PRIVATE:: doActions
+PRIVATE:: tabViews
+PRIVATE:: updateViewSizesTop
+PRIVATE:: updateViewSizesLeft
+PRIVATE:: updateViewSizesRight
+PRIVATE:: updateViewSizesBottom
+PRIVATE:: updateViewSizes
+PRIVATE:: paintTab
+PRIVATE:: updateFocus
+PRIVATE:: stringBounds
+PRIVATE:: init
+PRIVATE::closeIcon
+PRIVATE::closeIcon = value
+PRIVATE::closestIndexOf (x, y)
+PRIVATE::context
+PRIVATE::pen
+PRIVATE::pr_refreshIndex
+PRIVATE::pr_removeTab (index)
+PRIVATE::tabWidths
+PRIVATE::updateViewRectsBottom
+PRIVATE::updateViewRectsLeft
+PRIVATE::updateViewRectsRight
+PRIVATE::updateViewRectsTop
+PRIVATE::views
+PRIVATE:: focusFrameColor
+PRIVATE:: unfocusTabs
+PRIVATE:: closestIndexOf
+PRIVATE:: pr_removeTab
+PRIVATE:: pr_setHandlers
+
+
+
+PRIVATE::closestIndexOf (x, y)
+PRIVATE::defineIcons
+
+
+
+
+PRIVATE::detachIcon
+PRIVATE::pr_removeTab (index)
+
+
+EXAMPLES::
+
+SUBSECTION::Usage:
+
+STRONG:: use CompositeView style GUI ::
+
+CODE::
+(
+t=TabbedView2.new;
+v=t.add("tab1");
+ Button( v,Rect(50,50,200,100)).states_([["go to next tab "]]).action_({t.focus(1)});
+t.add("tab2");
+t.add("tab3");
+)
+::
+
+STRONG::use FlowView style GUI ::
+
+CODE::
+(
+t=TabbedView2.new; // use Flow Style
+
+	t.add("test1").flow({|w|
+		GUI.button.new(w,Rect(50,50,250,50))
+		.states_([["control the tab with method 'focus' -->"]]).action_({t.focus(1)})
+	});
+
+	t.add("test2").flow({|w|
+		GUI.button.new(w,Rect(50,50,200,100))
+		.states_([["go to last tab"]]).action_({t.focus(2)})
+	});
+	t.add("test2");
+)
+::
+
+
+SUBSECTION:: Quick styling with variations on  *new:
+(There are some color differences for swing)
+CODE::
+//.demo automatically adds 3 tabs.
+
+TabbedView2.newBasic.demo
+TabbedView2.newColor.demo
+TabbedView2.newColorLabels.demo
+TabbedView2.newFlat.demo
+TabbedView2.newTall.demo
+TabbedView2.newTransparent.demo
+(
+t = TabbedView2.newPacked;
+20.do{|i| t.add(i.asString)}; //very good for tons of tabs :
+)
+::
+
+
+
+
+
+SUBSECTION:: Drag objects from one tab to another (under cocoa and qt only at the moment):
+CODE::
+(
+v=TabbedView2.newColorLabels.demo;
+n = GUI.dragSource.new(v.tabViews[0], Rect(50, 50, 140, 24));
+			n.object = "Drag me to Tab2";
+ GUI.textView.new (v.views[1], Rect(50, 50, 140, 80));
+)
+::
+
+SUBSECTION:: Add, removeAt, insert  tabs
+
+defaults on *new, but other themes use fixed widths:
+
+CODE::
+v=TabbedView2.newTall.demo(3)
+
+v.add("I am last")
+
+v.insert(2,"squeeze me in")
+
+v.removeAt(2)
+::
+
+SUBSECTION:: resize
+CODE::
+(
+w=GUI.window.new.front;
+v=TabbedView2.newTall(w,Rect(40,40,280,280)).demo(8)
+	.tabPosition_(\right).followEdges_(false);
+v.resize_(5);
+GUI.slider.new(v.views[0],Rect(10,80,200,30)).resize_(2);
+)
+::
+
+SUBSECTION:: Nest TabbedView2 & use scrolling
+
+uses  scroll:true in the inner tab
+
+CODE::
+(
+v=TabbedView2.newPacked(nil,Rect(200,200,600,400).insetBy(20,20)).demo(3,"")
+		.tabHeight_(40).tabPosition_(\right).followEdges_(false);
+
+q=TabbedView2.newColorLabels(v.tabViews[0],nil)
+	.tabPosition_(\right).resize_(5).followEdges_(false);
+["tab1.1","tab1.2","tab1.3"].do{arg text; q.add(text, scroll: true)};
+
+q.tabViews[0].flow({ arg w;
+	78.do({ arg i;
+		b = Button(w, Rect(rrand(20,300),rrand(20,300), 75, 24));
+		b.states = [["Start "++i, Color.black, Color.rand],
+		["Stop "++i, Color.white, Color.red]];
+	});
+});
+GUI.slider.new(q.tabViews[1], Rect(20,20,200,20));
+)
+
+::
+
+SUBSECTION:: User functions:   focus and unfocus
+
+ turn on/off scopes , e.g.
+
+CODE::
+(
+v=TabbedView2.new;
+v.add("test1").focusAction={"tab2 is focused".postln};
+v.add("test2").unfocusAction={"tab2 just unfocused".postln};
+v.add("test3");
+)
+
+::
+
+
+SUBSECTION:: Swing Special: focusFrameColor_(color) and unfocusTabs_(bool)
+The tabs are drawn with user view which have a clear focus frame on Cocoa. On Swing, the frame cannot be made clear, so by default the tabs are unfocused after clicking. You can change this if it interferes with your tabbing scheme.
+
+CODE::
+(
+v=TabbedView2.new.demo;
+
+v.unfocusTabs_(false);  // default is false on Cocoa and QT, true otherwise;
+v.focusFrameColor_(Color.red); //cocoa only
+
+)
+::
+
+SUBSECTION:: Fixed tab widths and \auto tab widths
+
+tabWidth defaults to \auto on *new, but other themes use fixed widths:
+
+CODE::
+( // *newFlat has fixed width, so you might need to adjust it
+t = TabbedView2.newFlat(nil,Rect(150,100,400,500));
+t.tabWidth_(\auto); //change default width to auto
+t.add("1");
+t.add("two");
+t.add("threeeeeeeeeeee");
+t.add("four");
+t.add("5");
+)
+
+// Or you can keep the tab width fixed, but adjust the individual tab
+
+( // newFlat has fixed width, so you might need to adjust it
+t = TabbedView2.newFlat(nil,Rect(150,100,400,500));
+t.add("1");
+t.add("two");
+t.add("threeeeeeeeeeee").tabWidth_(110); // adjust width of this tab only
+t.add("four");
+t.add("5");
+t.tabWidth_(\auto);
+)
+
+::
+
+
+SUBSECTION:: Set Font
+
+Swing fonts only work within certain limits for now. use swingFactor_   to adjust the conversion.
+
+CODE::
+
+TabbedView2.newBasic.font_(GUI.font.new("Monaco",9)).tabHeight_(18).demo;
+TabbedView2.newBasic.font_(GUI.font.new("Monaco",36)).demo;
+TabbedView2.newBasic.font_(GUI.font.new("Helvetica",14)).tabHeight_(\auto).demo;
+TabbedView2.newTall.font_(GUI.font.new("Helvetica",18)).tabPosition_(\left).demo;
+TabbedView2.newTall.font_(GUI.font.new("Helvetica",36)).tabHeight_(\auto).tabWidth_(\auto).demo;
+
+::
+
+
+SUBSECTION:: Set colors very specifically to your own taste using set methods
+
+CODE::
+
+
+(
+t=TabbedView2.new;
+//set default colors
+c=[Color.rand,Color.rand,Color.rand];
+t.labelColors_(c);
+t.unfocusedColors_(c.collect{|c| c.alpha_(0.4)});
+t.backgrounds_(c.collect{|c| c.alpha_(0.4)});
+t.stringColors_([Color.black,Color.blue]);
+t.stringFocusedColors_([Color.white]);
+t.demo(8);  // make tabs
+
+// set colors of tab7 to yellow
+t.tabAt(6).labelColor_(Color.red)
+	.unfocusedColor_(Color.blue)
+	.background_(Color.yellow.alpha_(0.1));
+t.refresh;
+)
+
+t.resetColors;  //resets individual tabs to default. ( use this, e.g., if you dragged a tab (under QT) to another TabbedView2 that has different default colors).
+::
+
+
+SUBSECTION:: Adjust padding and curves
+
+labelPadding  only has an effect on auto width
+
+CODE::
+(
+v=TabbedView2.new;
+v.labelPadding_(8);  	//tighter padding
+v.tabCurve_(0);   		//sharper curves
+v.stringColors_([Color.black]);
+v.backgrounds_([Color.white.alpha_(0.3)]);
+v.demo(20,"")
+)
+
+// or simply use *newPacked:
+
+(
+v=TabbedView2.newPacked.demo(20,"");
+)
+::
+
+SUBSECTION::  Adjust tab height and curves
+CODE::
+// super flat and elegant
+
+(
+v=TabbedView2.new.tabWidth_(70).tabHeight_(13).tabCurve_(0).demo(5);
+)
+
+// super tall and clear
+
+(
+TabbedView2.new.tabWidth_(70).tabHeight_(30).demo(5);
+)
+
+::
+SECTION::Demo
+Execute the code below to test all the features and parameters.
+SUBSECTION::All Features and Parameters
+CODE::
+
+(
+w=Window.new("TabbedView Examples").front.setTopLeftBounds(Rect(50,50,1050,700));
+// setup views
+~t1v=TabbedView2.newTall(w.view, Rect(50,50,450,600));
+~t1t1= ~t1v.add("Tab 1.1");
+~t1t2= ~t1v.add("Tab 1.2").closable_(true);
+~t1t3= ~t1v.add("Tab 1.3").useDetachIcon_(true);
+
+
+~t2v=TabbedView2.newTall(w.view, Rect(550,50,450,600));
+~t2t1= ~t2v.add("Tab 2.1");
+~t2t2= ~t2v.add("Tab 2.2").closable_(true);
+~t2t3= ~t2v.add("Tab 2.3").closable_(true);
+
+// populate
+~t1t1.flow({arg w;
+
+Button(w,Rect(0,0,360,22)).states_([["Add Tab"]]).action_({~t1t1.tabbedView.add("extra"+~t1t1.tabbedView.tabViews.size).closable_(true)});
+
+StaticText(w,Rect(0,0,360,130)).string_("
+- Drag the index position of the tags (no cmd key needed).
+- Drag the top,left,botom,right postion of the tabs.
+- Double-click on tabs to change followEdges option
+- Under QT, right-click on tab to detach it.
+- Under QT, Cmd/ctrl-drag tabs between tab views, even between windows.");
+StaticText(w,Rect(0,0,360,22)).string_(" TabbedViewTab color variables:").background_(Color.grey(0.85));
+Button(w,Rect(0,0,360,22))
+	.states_([["background_ of this tab Color.blue.alpha_(0.1)"]])
+	.action_({~t1t1.background_(Color.blue.alpha_(0.1));~t1t1.focus});
+Button(w,Rect(0,0,360,22))
+	.states_([["labelColor_ of this tab Color.blue.alpha_(0.1)"]])
+	.action_({~t1t1.labelColor_(Color.blue.alpha_(0.1));~t1t1.focus});
+Button(w,Rect(0,0,360,22))
+	.states_([["unfocusedColor_ of this tab Color.blue"]])
+	.action_({~t1t1.unfocusedColor_(Color.blue);~t1t2.focus;{{~t1t1.focus}.defer(1)}.fork});
+Button(w,Rect(0,0,360,22))
+	.states_([["stringFocusedColor_ of this tab Color.red"]])
+	.action_({~t1t1.stringFocusedColor_(Color.red);~t1t1.focus});
+Button(w,Rect(0,0,360,22))
+	.states_([["stringColor_ of this tab Color.green"]])
+	.action_({~t1t1.stringColor_(Color.green);~t1t2.focus;{{~t1t1.focus}.defer(1)}.fork});
+Button(w,Rect(0,0,360,22))
+	.states_([[".resetColors"]])
+	.action_({~t1t1.tabbedView.resetColors;~t1t2.focus;~t1t1.focus});
+StaticText(w,Rect(0,0,360,22)).string_(" TabbedView2 color variables:").background_(Color.grey(0.85));
+
+StaticText(w,Rect(0,0,360,88)).string_("Use the same variable names as above, but in plural, to set defaults before adding tabs. All default colors are set as arrays of colors, and tabs cylcle though the colors upon being created.");
+},~t1t1.bounds.insetBy(15,0));
+
+
+~t2t1.flow({arg w;
+	Button(w,Rect(0,0,360,22))
+		.states_([["Add Tab"]])
+		.action_({~t2t1.tabbedView.add("extra"+ ~t2t1.tabbedView.tabViews.size).closable_(true)});
+	StaticText(w,Rect(0,0,360,22)).string_(" TabbedView2 instance variables").background_(Color.grey(0.85));
+	//CheckBox(w,Rect(0,0,179,22)).string_("followEdges_").action_{|b| ~t2v.followEdges=b.value}.value_(true);
+	EZPopUpMenu(w,Rect(0,0,177,22),"followEdges_:",[ \true ->{~t2v.followEdges=true}, \false ->{~t2v.followEdges=false}],labelWidth:100)
+	 	.labelView.align_(\left);
+
+
+	EZPopUpMenu(w,Rect(0,0,177,22),"tabPosition_:",
+		 [
+   		  \top ->{~t2v. tabPosition_(\top)},
+   			 \right ->{~t2v. tabPosition_(\right)},
+   			 \bottom ->{~t2v. tabPosition_(\bottom)},
+   			 \left ->{~t2v. tabPosition_(\left)},
+ 		],labelWidth:100);
+	StaticText(w,Rect(0,0,360,22)).string_("Prevent dragging:");
+	EZPopUpMenu(w,Rect(0,0,177,22),"lockEdges_:",[ \false ->{~t2v.lockEdges=false}, \true ->{~t2v.lockEdges=true}],labelWidth:100)
+	 	.labelView.align_(\left);
+	EZPopUpMenu(w,Rect(0,0,177,22),"dragTabs_:",[ \true ->{~t2v.dragTabs=true}, \false ->{~t2v.dragTabs=false}],labelWidth:100);
+
+	EZPopUpMenu(w,Rect(0,0,177,22),"lockPosition_:",[ \false ->{~t2v.lockPosition=false}, \true ->{~t2v.lockPosition=true}],labelWidth:100)
+		.labelView.align_(\left);
+	CompositeView(w,Rect(0,0,177,22));
+
+	EZPopUpMenu(w,Rect(0,0,177,22),"tabHeight_:",[
+		 \30 ->{~t2v.tabHeight=30;~t2v.refresh},
+		 \40 ->{~t2v.tabHeight=40;~t2v.refresh},
+		 \20 ->{~t2v.tabHeight=20;~t2v.refresh},
+		 \auto ->{~t2v.tabHeight=\auto;~t2v.refresh}],
+		labelWidth:100).labelView.align_(\left);
+	EZPopUpMenu(w,Rect(0,0,177,22),"labelPadding_:",[
+		 \20 ->{~t2v.labelPadding=20;~t2v.refresh},
+		 \40 ->{~t2v.labelPadding=40;~t2v.refresh},
+		 \60 ->{~t2v.labelPadding=60;~t2v.refresh}],
+		labelWidth:100);
+	EZPopUpMenu(w,Rect(0,0,360,22),"font_:",[
+		 'Helvetica 12' ->{~t2v.font=Font("Helvetica",12);~t2v.refresh},
+		 'Helvetica 14' ->{~t2v.font=Font("Helvetica",14);~t2v.refresh},
+		 'Helvetica 18' ->{~t2v.font=Font("Helvetica",18);~t2v.refresh},
+		 'Helvetica 24' ->{~t2v.font=Font("Helvetica",24);~t2v.refresh}],
+		labelWidth:100).labelView.align_(\left);
+
+	StaticText(w,Rect(0,0,360,22)).string_(" labelPadding_ only effects tabWidth:\\auto .");
+
+	StaticText(w,Rect(0,0,360,22)).string_(" TabbedViewTab instance variables").background_(Color.grey(0.85));
+	EZPopUpMenu(w,Rect(0,0,177,22),"closable_:",[ \false ->{~t2t1.closable=false;~t2v.refresh}, \true ->{~t2t1.closable=true;~t2v.refresh}],
+		labelWidth:100).labelView.align_(\left);
+	EZPopUpMenu(w,Rect(0,0,177,22),"useDetachIcon_:",[ \false ->{~t2t1.useDetachIcon=false;~t2v.refresh}, \true ->{~t2t1.useDetachIcon=true;~t2v.refresh}],
+		labelWidth:100).labelView.align_(\left);
+	EZPopUpMenu(w,Rect(0,0,177,22),"tabWidth_:",[
+		 \70 ->{~t2t1.tabWidth=70;~t2v.refresh},
+		 \100 ->{~t2t1.tabWidth=100;~t2v.refresh},
+		 \120 ->{~t2t1.tabWidth=120;~t2v.refresh},
+		 \auto ->{~t2t1.tabWidth=\auto;~t2v.refresh}],
+		labelWidth:100).labelView.align_(\left);
+
+},~t2t1.bounds.insetBy(15,0));
+
+
+StaticText(~t1t2,Rect(20,60,360,40))
+	.string_("- I am closable: .closable_(true)");
+
+StaticText(~t1t3,Rect(20,60,360,40))
+	.string_("- Under QT, I have a detach icon: .useDetachIcon_(true)");
+)
+::
+
+

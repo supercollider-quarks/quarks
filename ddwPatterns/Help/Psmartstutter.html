@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001fb6}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {color: #0016ff}
+span.s2 {color: #001fb6}
+span.s3 {color: #000000}
+span.s4 {color: #366f1a}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Psmartstutter : Pstutter</b></p>
+<p class="p2"><br></p>
+<p class="p3">Exactly like <a href="SC://Pstutter"><span class="s1">Pstutter</span></a>, except for a small but significant implementation detail.</p>
+<p class="p2"><br></p>
+<p class="p3">In Pstutter, values are retrieved from the main pattern and repeated n times, where n is obtained from a second pattern. When the caller requests a new value from the Pstutter stream, it may optionally pass in a value (such as an event prototype, for event streams). This value is passed into Pstutter's child streams, so that they may be decisions about the next value to return based on the caller's request. In particular, the n stream has only information from the caller on which to base its calculation.</p>
+<p class="p2"><br></p>
+<p class="p3">Psmartstutter, by contrast, passes the caller's input value to its main pattern, but then passes the main pattern's return value into the n stream, so that the n stream can use <i>the value that will be repeated</i> to determine <i>how many times</i> to repeat it.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(n, pattern)</b></p>
+<p class="p2"><br></p>
+<p class="p3">n: Pattern returning the number of times to repeat successive values from the main pattern.</p>
+<p class="p3">pattern: The main pattern, which returns the values to be repeated.</p>
+<p class="p2"><br></p>
+<p class="p3">Simple example - the number <i>x</i> gets repeated <i>x</i> times. This is not possible with Pstutter while it's trivial with Psmartstutter.</p>
+<p class="p2"><br></p>
+<p class="p4">p = <span class="s2">Psmartstutter</span>(<span class="s2">Pfunc</span>({ <span class="s2">|n|</span> n }), <span class="s2">Pxrand</span>((1..5), <span class="s2">inf</span>)).asStream;</p>
+<p class="p4">p.nextN(20);</p>
+<p class="p4">[ 1, 5, 5, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 1, 2, 2, 3, 3, 3, 2 ]</p>
+<p class="p2"><br></p>
+<p class="p3">If you want lower return values to be repeated more times.</p>
+<p class="p2"><br></p>
+<p class="p4">p = <span class="s2">Psmartstutter</span>(<span class="s2">Pfunc</span>({ <span class="s2">|x|</span> (10 / x).asInteger }), <span class="s2">Pwhite</span>(1, 10, <span class="s2">inf</span>)).asStream;</p>
+<p class="p4">p.nextN(30);</p>
+<p class="p4">[ 8, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 5, 5, 8, 6, 10, 2, 2, 2, 2, 2, 4, 4, 8, 3, 3, 3, 8 ]</p>
+<p class="p2"><br></p>
+<p class="p3">Using a similar concept for Pbind deltas:</p>
+<p class="p2"><br></p>
+<p class="p5">SynthDef<span class="s3">(</span><span class="s4">\sinGrain</span><span class="s3">, { </span>|outbus = 0, freq, amp, dur, pan|</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">var</span><span class="Apple-tab-span">	</span>sig = <span class="s2">Pan2</span>.ar(<span class="s2">SinOsc</span>.ar(freq, 0, amp) * <span class="s2">EnvGen</span>.kr(<span class="s2">Env</span>.sine(dur), doneAction:2), pan);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">Out</span>.ar(outbus, sig);</p>
+<p class="p4">}).memStore;</p>
+<p class="p6"><br></p>
+<p class="p4">p = <span class="s2">Pbind</span>(</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">\freq</span>, <span class="s2">Pwhite</span>(0.0, 1.0, <span class="s2">inf</span>).linexp(0.0, 1.0, 300.0, 2400.0),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">\amp</span>, <span class="s2">Pwhite</span>(0.5, 1.0, <span class="s2">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">\delta</span>, <span class="s2">Psmartstutter</span>(<span class="s2">Pfunc</span>({ <span class="s2">|x|</span> (0.5 / x).asInteger }), <span class="s2">Pwhite</span>(0.1, 0.5, <span class="s2">inf</span>)),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">\dur</span>, <span class="s2">Pkey</span>(<span class="s4">\delta</span>) * <span class="s2">Pwhite</span>(1.0, 1.8, <span class="s2">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">\pan</span>, <span class="s2">Pwhite</span>(-0.8, 0.8, <span class="s2">inf</span>)</p>
+<p class="p4">).play;</p>
+<p class="p6"><br></p>
+<p class="p4">p.stop;</p>
+<p class="p2"><br></p>
+</body>
+</html>

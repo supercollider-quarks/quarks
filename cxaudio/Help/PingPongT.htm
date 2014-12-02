@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>PingPongT</b></p>
+<p class="p2"><br></p>
+<p class="p3">beat/tempo based ping pong delay with wobble</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p4">s = <span class="s1">Server</span>.local;</p>
+<p class="p4">b = <span class="s1">Buffer</span>.alloc(s,44100,2);</p>
+<p class="p2"><br></p>
+<p class="p4">{</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span> <span class="s1">var</span> input;</p>
+<p class="p4"><span class="Apple-tab-span">	</span> input = <span class="s1">Decay2</span>.ar(<span class="s1">Impulse</span>.ar([0.6,0.5], 0.25), 0.01, 0.25,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">SinOsc</span>.ar(<span class="s1">SinOsc</span>.kr(3.7,0,200,500)),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Resonz</span>.ar(<span class="s1">PinkNoise</span>.ar(4), <span class="s1">SinOsc</span>.kr(2.7,0,1000,2500), 0.2)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s1">PingPongT</span>.ar(b.bufnum, input, 0.5, 0.8,0.1,1,<span class="s1">Tempo</span>.tempo)</p>
+<p class="p2"><br></p>
+<p class="p4">}.play</p>
+<p class="p2"><br></p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">bug: the tempo and beats aren't changing ?</p>
+<p class="p2"><br></p>
+<p class="p4">(</p>
+<p class="p2"><br></p>
+<p class="p4">b = <span class="s1">Buffer</span>.alloc(s,44100,2);</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s1">Patch</span>({ <span class="s1">arg</span> bufnum=0, tempo=1.0,beats=0.5,feedback=0.8,wobble=0.1;</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span> <span class="s1">var</span> input;</p>
+<p class="p4"><span class="Apple-tab-span">	</span> input = <span class="s1">Decay2</span>.ar(<span class="s1">Impulse</span>.ar([0.6,0.5], 0.25), 0.01, 0.25,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">SinOsc</span>.ar(<span class="s1">SinOsc</span>.kr(3.7,0,200,500)),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s1">Resonz</span>.ar(<span class="s1">PinkNoise</span>.ar(4), <span class="s1">SinOsc</span>.kr(2.7,0,1000,2500), 0.2)</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>]);</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s1">PingPongT</span>.ar(bufnum, input, beats, feedback,wobble,1,tempo)</p>
+<p class="p2"><br></p>
+<p class="p4">},[</p>
+<p class="p4"><span class="Apple-tab-span">	</span>b.bufnum,</p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span>TempoPlayer<span class="s2">.new</span></p>
+<p class="p4">]).topGui</p>
+<p class="p2"><br></p>
+<p class="p4">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

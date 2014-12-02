@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #431709}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #7c210d}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #7c210d}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001076}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #2c1006}
+span.s1 {color: #001076}
+span.s2 {color: #00139d}
+span.s3 {color: #29480e}
+span.s4 {color: #000000}
+span.s5 {color: #1a2509}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>BSpline</b></p>
+<p class="p2"><br></p>
+<p class="p3"><br></p>
+<p class="p4"><b>BSpline(points,order,isClosed)</b></p>
+<p class="p3"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>points:<span class="Apple-tab-span">	</span>an array of Points,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>may also be an array of arrays for splines in 3 or more dimensions</p>
+<p class="p4"><span class="Apple-tab-span">	</span>order:<span class="Apple-tab-span">	</span>curvature of interpolation</p>
+<p class="p4"><span class="Apple-tab-span">	</span>isClosed:<span class="Apple-tab-span">	</span>true/false if the end point loops back to the first point</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p5">(</p>
+<p class="p5">b = <span class="s1">BSpline</span>([0@0,1@1,3.2@2,4@4]);</p>
+<p class="p5">b.gui(<span class="s1">nil</span>,1000@200);</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p6">// edited splines can be saved:</p>
+<p class="p5">b.asCompileString</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>interpolate</b></p>
+<p class="p2"><br></p>
+<p class="p4">returns points spaced evenly along the spline in 2D space</p>
+<p class="p2"><br></p>
+<p class="p5">b.interpolate(512).postln.flop.plot2</p>
+<p class="p2"><br></p>
+<p class="p4">due to the wslib implementation this returns 512 interpolations PER segment</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">// use ScatterView in MathLib to show interpolated points</p>
+<p class="p5">(</p>
+<p class="p5">w = <span class="s2">Window</span>(bounds: <span class="s2">Rect</span>(40, 40, 800, 800)).front;</p>
+<p class="p5">a = <span class="s2">ScatterView</span>(w, <span class="s2">Rect</span>(10, 10, 760, 760),b.interpolate(20),<span class="s2">ControlSpec</span>(0.0,5.0),<span class="s2">ControlSpec</span>(0.0,5.0));</p>
+<p class="p5">a.drawAxis_(<span class="s2">true</span>).drawMethod_(<span class="s3">\fillOval</span>)</p>
+<p class="p5"><span class="Apple-tab-span">	</span>.symbolColor_(<span class="s2">Color</span>.blue(0.5, 0.5)).symbolSize_(5)</p>
+<p class="p2"><br></p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p4"><b>bilinearInterpolate</b></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-converted-space"> </span>return y values for evenly spaced intervals along x (eg. steady time increments)</p>
+<p class="p4"><span class="Apple-converted-space"> </span>whereas interpolate returns a series of points evenly spaced along the spline path</p>
+<p class="p4"><span class="Apple-converted-space"> </span><span class="s2">this</span> linear interpolates between those known points to find y.</p>
+<p class="p3"><span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-converted-space"> </span>This is useful to interpret a spline as a function of time, like an envelope, and is used by SplineGen to create a lookup table.</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span>divisions: number of interpolations</p>
+<p class="p4"><span class="Apple-tab-span">	</span>domain:<span class="Apple-tab-span">	</span>the dimension along which evenly spaced divisions occur</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0: returns y values for evenly spaced x</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1: return x values for evenly spaced y</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Any higher dimensions are ignored and a domain of higher than 0/1 won't work</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>fillEnds: true/false to fill the beginning and end with the first and last point respectively</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if false then those values are nil</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5">b = <span class="s2">BSpline</span>([ [ 0.42695473251029, 2.275 ], [ 1, 1 ], [ 2.5102880658436, 3.1 ], [ 4, 4 ] ]);</p>
+<p class="p5">b.gui;</p>
+<p class="p7">// to use X as time we need y values spaced in even X units</p>
+<p class="p5">d = b.bilinearInterpolate(512);</p>
+<p class="p2"><br></p>
+<p class="p5">d.plot2;</p>
+<p class="p5">x = 5.0/512;</p>
+<p class="p7">// collect into points for plotting</p>
+<p class="p5">e = d.collect({ <span class="s2">|dd,i|</span> [x * i,dd] });</p>
+<p class="p2"><br></p>
+<p class="p5">w = <span class="s2">Window</span>(bounds: <span class="s2">Rect</span>(40, 40, 800, 800)).front;</p>
+<p class="p5">a = <span class="s2">ScatterView</span>(w, <span class="s2">Rect</span>(10, 10, 760, 760),</p>
+<p class="p5"><span class="Apple-tab-span">	</span>e,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s2">ControlSpec</span>(0.0,5.0),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s2">ControlSpec</span>(0.0,5.0));</p>
+<p class="p5">a.drawAxis_(<span class="s2">true</span>).drawMethod_(<span class="s3">\fillOval</span>)</p>
+<p class="p5"><span class="Apple-tab-span">	</span>.symbolColor_(<span class="s2">Color</span>.blue(0.5, 0.5)).symbolSize_(5);</p>
+<p class="p2"><br></p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p4"><b>The bend in the road</b></p>
+<p class="p2"><br></p>
+<p class="p4">If X is time, then time must of course march ever onwards.</p>
+<p class="p3"><br></p>
+<p class="p4">If a spline point is to the left of a previous spline point then the spline path has travelled backwards in time</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5">b = <span class="s2">BSpline</span>([ [ 0, 2.5 ], [ 2.9044117647059, 1.225 ], [ 2.5275735294118, 2.8946875 ], [ 5.5836397058824, 4.58734375 ] ]);</p>
+<p class="p2"><br></p>
+<p class="p5">b.gui;</p>
+<p class="p2"><br></p>
+<p class="p5">b.bilinearInterpolate(512).plot2</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p5">So you can see that the interpolation which progresses always forward in time is bounded in the X dimension until the spline resumes travelling forward in the X direction.</p>
+<p class="p2"><br></p>
+<p class="p4">... or even with certain curvature settings:</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5">b = <span class="s2">BSpline</span>([ [ 0, 2.5 ], [ 2.9044117647059, 1.225 ], [ 3.1479779411765, 2.55125 ], [ 5.5836397058824, 4.58734375 ] ], 3.0);</p>
+<p class="p2"><br></p>
+<p class="p5">b.gui;</p>
+<p class="p2"><br></p>
+<p class="p5">b.bilinearInterpolate(512).plot2</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p4">then mapping along the X dimension can only yield one value for Y.<span class="Apple-converted-space">  </span>That is always the first encountered value. This is to stop you from going back in time to kill your Grandfather.</p>
+<p class="p3"><br></p>
+<p class="p4">In 3D this would be visibility: if the road curves to the left of the mountain, you cannot see it until it comes back out.<span class="Apple-converted-space">  </span>In 3D rendering the area behind the curve would not be visible.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">TODO:</p>
+<p class="p3"><br></p>
+<p class="p4">Negative time</p>
+<p class="p3"><br></p>
+<p class="p4">it is mathematically legal for a spline to have points with negative x.<span class="Apple-converted-space">  </span>maybe should not assume to start interpolating at 0</p>
+<p class="p3"><br></p>
+<p class="p4">also currently you cannot edit points "off screen" - those with negative x</p>
+<p class="p3"><br></p>
+<p class="p4">(</p>
+<p class="p5">b = <span class="s2">BSpline</span>([ [ -0.42695473251029, 2.275 ], [ 1, 1 ], [ 2.5102880658436, 3.1 ], [ 4, 4 ] ]);</p>
+<p class="p5">b.bilinearInterpolate(100).plot2</p>
+<p class="p4">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">is looping working correctly ?</p>
+<p class="p4">a loop in 2D space is not what you are looking for in order to loop a spline in time.</p>
+<p class="p4">but it still should give the correct (but unexpected) result</p>
+<p class="p4">(</p>
+<p class="p2"><br></p>
+<p class="p5">b = <span class="s2">BSpline</span>([ [ 0, 2.5 ], [ 2.9044117647059, 1.225 ], [ 2.5275735294118, 2.8946875 ], [ 5.5836397058824, 4.58734375 ] ],3.0,true);</p>
+<p class="p2"><br></p>
+<p class="p5">b.gui;</p>
+<p class="p2"><br></p>
+<p class="p5">b.bilinearInterpolate(512).plot2</p>
+<p class="p4">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p4">bicubic bilinear interpolation would be better</p>
+<p class="p3"><br></p>
+<p class="p4">many interesting interpolations exist</p>
+<p class="p4">see:</p>
+<p class="p8">http://en.wikipedia.org/wiki/Multivariate_interpolation</p>
+<p class="p3"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6">// animate</p>
+<p class="p5">(</p>
+<p class="p5">b = <span class="s1">BSpline</span>([ <span class="s1">Point</span>(0,0), <span class="s1">Point</span>(0.58963874282376, 0.4134375), <span class="s1">Point</span>(2.2682499386103, 0.826875), <span class="s1">Point</span>(4.8180390967671, 0.013125) ], 2.3870967741935,<span class="s1">false</span>);</p>
+<p class="p5">b.gui(<span class="s1">nil</span>,1000@200);</p>
+<p class="p9"><span class="s4">n = </span>NumberEditor<span class="s4">.new;</span></p>
+<p class="p5">n.gui;</p>
+<p class="p5">b.animate(n,<span class="s5">'value_'</span>);</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p10">// todo: click handler on gui to change read position</p>
+<p class="p10">// method to allocate and fill a buffer</p>
+<p class="p10">// so that it can be edited and changes updated to buffer<span class="Apple-converted-space"> </span></p>
+</body>
+</html>

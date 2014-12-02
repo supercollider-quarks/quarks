@@ -1,0 +1,54 @@
+
+TITLE:: EntityRepresentation
+summary:: An abstract class for defining representations
+categories:: Undocumented classes
+related:: Classes/SomeRelatedClass, Reference/SomeRelatedStuff, etc.
+
+DESCRIPTION::
+EntityRepresentation is the base class for all representations. A representation is added as a dependant to an entity using the attach method.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create an EntityRepresentation.
+
+ARGUMENT:: repManager
+an instance of link::RepresentationManager::
+
+ARGUMENT:: collisionFunc
+A function to be evaluated when a collision is detected. The function is passed the representation, entity and an array with the colliding entities.
+
+INSTANCEMETHODS::
+
+METHOD:: preUpdate
+Private method to allow for interpolation we can preUpdate the new positions that will be assigned in the next time step (dt).
+
+METHOD:: addAll
+Synchronously add the entity and the representation to the relevant managers.
+
+ARGUMENT:: delay
+A delay for the addition of the representation. Typically used for the addition of the entity after the latency used for jitlib NodeProxy instantiation.
+
+METHOD:: colliding
+Returns true or false
+
+METHOD:: add
+Add to the RepresentationManager
+
+METHOD:: speed
+Returns the current speed of the entity.
+
+METHOD:: attached
+Returns true or false
+
+METHOD:: type
+Sound or visual
+
+METHOD:: getData
+Get the data from the entity and store it in the relevant variables.
+
+METHOD:: update
+The method that receives the messages when the entity is changed.
+
+METHOD:: remove
+Remove the representation from the representation manager. Used internally. Use detach on the entity to remove a representation.

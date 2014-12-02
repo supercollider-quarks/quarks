@@ -1,0 +1,41 @@
+CLASS:: RedALF
+SUMMARY:: ascii to list-of-floats conversion
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedBase64
+
+DESCRIPTION::
+Based on two old Max/MSP externals by Cycling'74 that came with the Pluggo installer.
+
+CLASSMETHODS::
+
+METHOD:: atolf
+Converts a link::Classes/String:: into an array of link::Classes/Float:: values. The floats will be between 0. and 1.
+
+NOTE::
+There is a maximum string length in supercollider of 8192.
+::
+
+METHOD:: lftoa
+Converts an array of link::Classes/Float:: values into a link::Classes/String::. The floats must be between 0. and 1.
+
+NOTE::
+You will get unexpected values if you try to create your own array from scratch. Always use an array that first have been converted with the atolf method above.
+::
+
+EXAMPLES::
+
+CODE::
+a= RedALF.atolf("abcdefg");
+RedALF.lftoa(a);
+
+
+//--convert the text in this helpfile into floats
+a= RedALF.atolf(Document.current.string);
+a.plot
+
+s.boot
+b= Buffer.loadCollection(s, a.normalize(-1, 1));
+c= b.play(true, 0.1)
+c.free
+b.free
+::

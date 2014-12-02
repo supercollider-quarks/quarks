@@ -1,0 +1,43 @@
+INSTANCEMETHODS::
+
+subsection:: Extensions by DissonanceLib
+
+method::rationalize
+An important method used in Dissonance to convert an array of decimal frequency ratios into [p,q] ratios. See link::Overviews/numberExtras:: for related and more detailed info. 
+	
+The tolerance (in cents) defines the range within which the search for intervals will be made. 
+
+The metric is either an instance of HarmonicMetric or a symbol \harmonicity, \harmonicDistance or \gradusSuavitatis	
+If no metric is specified, \harmonicity will be used. See below for more on harmonic measures. 
+	
+The type is either \size or \prime. If \size is chosen, intervals in the table with numerator and denominator larger than max (which defaults to [729, 512]) will be ignored. If \prime is chosen, intervals containing prime factors larger than max (which defaults to 19) will be ignored. Default is \size.
+	
+Examples: 
+	
+code::
+[1.0, 1.125, 1.333, 1.37, 1.67, 1.87, 1.91, 2.1].rationalize;
+[1.0, 1.125, 1.333, 1.37, 1.67, 1.87, 1.91, 2.1].rationalize(5);	
+// notice how the second interval (a pythagorean ditone) is interpreted differently 
+// according to metric (and tolerance):	
+[1.125, 1.265625, 1.333, 1.36].rationalize(12, \harmonicDistance);	
+[1.125, 1.265625, 1.333, 1.36].rationalize(12, \harmonicity);
+[1.125, 1.265625, 1.333, 1.36].rationalize(12, \gradusSuavitatis);
+
+[1.125, 1.333, 1.37, 1.67, 1.897].rationalize(21, \harmonicity, \prime, 7);
+[1.125, 1.333, 1.37, 1.67, 1.897].rationalize(21, \gradusSuavitatis, \prime, 11);
+		
+// irrational numbers phi, e & pi, compare: 
+[(1 + 5.sqrt)/2, 1.exp, pi ].rationalize; // phi as 45/28
+[(1 + 5.sqrt)/2, 1.exp, pi ].rationalize(20);	// phi as 8/5 minor sixth
+[(1 + 5.sqrt)/2, 1.exp, pi ].rationalize(12, \harmonicDistance); // phi as 13/8, pi as 22/7
+		
+// to rationalize from cents to ratios use cents2Frq
+Array.series(13, 0, 100).cents2Frq.rationalize; //12ET
+::
+
+method:: asPitchSet
+Make an array of [p,q] ratios into a link::Classes/PitchSet::
+
+code::
+[[1,1],[10,9],[7,6],[6,5],[5,4],[4,3],[3,2],[7,4]].asPitchSet;
+::

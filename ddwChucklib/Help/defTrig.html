@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001ab2}
+span.s1 {color: #0000ff}
+span.s2 {color: #001ab2}
+span.s3 {color: #36701f}
+span.s4 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>PR(\defTrig)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Like <a href="defPerc.html"><span class="s1">defPerc</span></a>, this process generates rhythms based on user defined synthdefs. In defPerc, however, the synthdef is expected to produce one percussive note and release itself when it's finished. PR(\defTrig) is for synthdefs that should run continuously, and respond to rhythmically occurring triggers. This is useful for sounds that should fluctuate briefly when triggered, or for effects that should be connected to a pulse.</p>
+<p class="p2"><br></p>
+<p class="p3">As in defPerc, the <b>~objects</b> array provides the synthdefs. Each synthdef should have a <b>t_trig</b> argument, which will receive the value from the <b>~amps</b> array on every note. Because of the prefix t_, the argument is "trigger rate," meaning that when its value is changed, it will hold the new value for one control cycle (the same duration as Impulse.kr) and then fall immediately back to zero so that it can be retriggered on the next /n_set message. (So, if you want to use the trigger value as an amplitude scaler, you should latch it: <b>Latch.kr(t_trig, t_trig)</b>.)</p>
+<p class="p2"><br></p>
+<p class="p3">For every item in the objects array, one synth node is created when you play the process. Where PR(\defPerc) used the <b>~defs</b> array to choose which synthdef to play, here, the same array chooses which node to trigger. Only one node can trigger at one time.</p>
+<p class="p2"><br></p>
+<p class="p3">The synthdef may also include a <b>gate</b> argument for the final release when the process stops. If the gate argument is absent, the synth will be killed brutally with /n_free, which could result in audio clicks. Better practice generally is to include a master envelope in the synth with a gate argument for a smooth release.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Example</b></p>
+<p class="p2"><br></p>
+<p class="p5">// Using defTrig as an effect.</p>
+<p class="p5">// Since is an effect, it should play on the source MixerChannel.</p>
+<p class="p5">// So, we create the MixerChannel externally and pass it in via the ~chan parameter.</p>
+<p class="p5">// (The process knows that it didn't create the mixer, so it leaves it alone on .free!)</p>
+<p class="p6"><br></p>
+<p class="p7">s.boot;</p>
+<p class="p7"><span class="s2">TempoClock</span>.default.tempo = 2;</p>
+<p class="p6"><br></p>
+<p class="p7">m = <span class="s2">MixerChannel</span>(<span class="s3">\source</span>, s, 1, 2);</p>
+<p class="p6"><br></p>
+<p class="p7">a = m.play({</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s2">Klank</span>.ar(`[</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ rrand(500.0, 1200.0) } ! 5,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ rrand(0.5, 1.0) } ! 5,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ rrand(0.4, 0.8) } ! 5</p>
+<p class="p7"><span class="Apple-tab-span">	</span>], <span class="s2">PinkNoise</span>.ar(0.05))</p>
+<p class="p7">});</p>
+<p class="p7">a.free;</p>
+<p class="p6"><br></p>
+<p class="p7">(</p>
+<p class="p7"><span class="s2">PR</span>(<span class="s3">\defTrig</span>).chuck(<span class="s2">BP</span>(<span class="s3">\ex1</span>), parms: (</p>
+<p class="p7"><span class="Apple-tab-span">	</span>chan: m,</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span>isFx: </span><span class="s2">true</span><span class="s4">,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// otherwise the synths will be regular sound sources</p>
+<p class="p7"><span class="Apple-tab-span">	</span>objects: [</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// because isFx == true, this will use ReplaceOut instead of Out</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ </span>|outbus, t_trig, gate = 1|</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// trigger controls wet/dry so you will hear the effect spike in and out</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// master envelope is also here</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span><span class="Apple-tab-span">	</span>wet = <span class="s2">Decay2</span>.kr(t_trig, 0.01, 0.15)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* <span class="s2">EnvGen</span>.kr(<span class="s2">Env</span>.asr(0.1, 1, 0.1), gate, doneAction: 2),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s2">In</span>.ar(outbus, 1),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ringfreq = <span class="s2">TExpRand</span>.kr(100, 1000, t_trig),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig2 = sig * <span class="s2">SinOsc</span>.ar(ringfreq);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">XFade2</span>.ar(sig, sig2, wet * 2 - 1)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p7"><span class="Apple-tab-span">	</span>],</p>
+<p class="p5"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// just a fixed rhythm here</p>
+<p class="p7"><span class="Apple-tab-span">	</span>amps: #[1, 0, 0, 0, 1, 0, 0, 0.6, 0, 0.8, 0, 0, 0.9, 0, 0, 0]</p>
+<p class="p7">));</p>
+<p class="p7">)</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s2">BP</span>(<span class="s3">\ex1</span>).play;</p>
+<p class="p7"><span class="s2">BP</span>(<span class="s3">\ex1</span>).stop;</p>
+<p class="p7"><span class="s2">BP</span>(<span class="s3">\ex1</span>).free;</p>
+<p class="p6"><br></p>
+<p class="p7">a.free;</p>
+<p class="p7">m.free;</p>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 29.0px; text-indent: -29.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {text-decoration: underline}
+span.s2 {color: #0000bf}
+span.s3 {color: #bf0000}
+span.s4 {color: #000000}
+span.s5 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>ModalSpec</b></p>
+<p class="p2"><br></p>
+<p class="p3">Maps note indices onto scale degrees, with chromatic awareness. Note indices are assumed to be integers. Chromatics are encoded using the fractional part of the note index.</p>
+<p class="p2"><br></p>
+<p class="p3">If there is a half step (only one note index difference) between adjacent scale degrees, the fractional part of the scale degree is meaningless.</p>
+<p class="p2"><br></p>
+<p class="p3">If a whole step (a two note index difference), the chromatic step between them is encoded as a 0.5 offset, e.g., if c is scale degree 0 and d is scale degree 1, c# is scale degree 0.5.</p>
+<p class="p2"><br></p>
+<p class="p3">If the distance is a minor third (as in harmonic minor), chromatic steps are encoded as 1/3 intervals, e.g., if Ab is scale degree 5 and B is scale degree 6, A is 5.333333 and Bb is 5.6666667.</p>
+<p class="p2"><br></p>
+<p class="p3">If your music has a diatonic reference in any way, the ability to convert between diatonic and chromatic representations is essential. The default event framework handles this using the degree parameter, in conjunction with scale and steps per octave. I find it helpful, however, when processing note data to be able to refer to a modal definition as an object, and do the conversion in both directions (not just scale degree to MIDI note as in the default event). For instance, a mode may be stored along with MIDI data in the properties dictionary of a MIDIRecBuf so that the notes are inherently associated with the mode.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>*new(scale, stepsPerOctave, root, tuning, cpsFunc)</b></p>
+<p class="p2"><br></p>
+<p class="p5"><b>scale:</b> The note indices, starting with 0, for each scale degree. These should all be integers.</p>
+<p class="p5"><b>stepsPerOctave:</b> The number of note indices included in one octave, e.g., 12 for any 12-note temperament.</p>
+<p class="p5"><b>root:</b> The note index corresponding to degree 0; "tonic" in tonal scales. For D major, you would give a root of 2.</p>
+<p class="p5"><b>tuning:</b> A tuning adjustment that will be added to note indices when mapping modal values onto note numbers. If you need to match pitch of a sample that is slightly sharp, you can specify a small positive value. 1.0 will transpose up by a note index.</p>
+<p class="p5"><b>cpsFunc:</b> Attach a custom note index --&gt; Hz function. Can be a function or a tuning object (see <b>[</b><b><span class="s1">EqualTemperament</span></b><b>]</b> and its subclasses). The default is 12ET using midicps.</p>
+<p class="p2"><br></p>
+<p class="p3">The defaults produce a C major scale: ModalSpec(#[0, 2, 4, 5, 7, 9, 11], 12, 0, 0)</p>
+<p class="p2"><br></p>
+<p class="p4"><b>map(key)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Maps a note index value into the mode specified by this object. The "key" may be a number, array, SequenceNote, or MIDIRecBuf object.</p>
+<p class="p2"><br></p>
+<p class="p3">This method works by delegating to the mapMode method for the key argument; therefore, you can save a dispatch by calling mapMode directly.</p>
+<p class="p2"><br></p>
+<p class="p6">// use default C major modal spec</p>
+<p class="p7">m = <span class="s2">ModalSpec</span>.new;</p>
+<p class="p7">m.map(60);</p>
+<p class="p7">60.mapMode(m);</p>
+<p class="p7">[60, 64, 67].mapMode(m);</p>
+<p class="p6">// [ 35, 37, 39 ]<span class="Apple-converted-space">  </span>-- 37 - 35 = 2, indicating a third - this is a triad</p>
+<p class="p2"><br></p>
+<p class="p4"><b>unmap(degree)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Reverses the mapping: takes a modal degree as input and outputs the corresponding note index (ready to be converted to Hz for play). The same object types are allowed as the argument.</p>
+<p class="p2"><br></p>
+<p class="p7">[35, 37, 39].unmapMode(m); <span class="Apple-converted-space">  </span><span class="s3">// --&gt; [ 60, 647, 67 ]</span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>cps(degree)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Converts a modally mapped value to Hz, using the cpsFunc belonging to this ModalSpec.</p>
+<p class="p2"><br></p>
+<p class="p7">m.cps(35);</p>
+<p class="p7">m.cps(35) == 60.midicps;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s3">// true</span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>includes(key)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Responds with true if the specified note index is a member of the scale -- that is, if it is a diatonic note rather than a chromatic note.</p>
+<p class="p2"><br></p>
+<p class="p6">// use default C major modal spec</p>
+<p class="p7">m = <span class="s2">ModalSpec</span>.new;</p>
+<p class="p6"><span class="s4">m.includes(60);<span class="Apple-tab-span">	</span></span>// includes middle C?</p>
+<p class="p8">true</p>
+<p class="p9"><br></p>
+<p class="p7">m.includes(61);<span class="Apple-tab-span">	</span><span class="s3">// includes C#?</span></p>
+<p class="p8">false</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Example:</b></p>
+<p class="p2"><br></p>
+<p class="p3">Note -- this example is not terribly impressive, and in fact can already be accomplished using ~degree. ModalSpec supports many more uses, though.</p>
+<p class="p2"><br></p>
+<p class="p6">// planing over a major scale</p>
+<p class="p6">// this is a very hacky way to do it</p>
+<p class="p9"><br></p>
+<p class="p6"><span class="s4">~mode = </span><span class="s2">ModalSpec</span><span class="s4">.new;<span class="Apple-tab-span">	</span></span>// default = C major</p>
+<p class="p9"><br></p>
+<p class="p7">x = 0; ~chord = { x &lt;! (x = x + rrand(1, 3)) } ! 4;</p>
+<p class="p9"><br></p>
+<p class="p7"><span class="s2">SynthDescLib</span>.global.read;</p>
+<p class="p9"><br></p>
+<p class="p7">p = <span class="s2">Pbind</span>(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s5">\mode</span>, ~mode,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s5">\bottom</span>, <span class="s2">Pvbrown</span>(30, 39, <span class="s2">Pwrand</span>(#[1, 2, 3], #[0.4, 0.35, 0.25], <span class="s2">inf</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* <span class="s2">Prand</span>(#[-1, 1], <span class="s2">inf</span>), <span class="s2">inf</span>),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s5">\notes</span>, <span class="s2">Pkey</span>(<span class="s5">\bottom</span>) + ~chord,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s5">\freq</span>, <span class="s2">Pfunc</span>({ <span class="s2">|ev|</span> ev[<span class="s5">\mode</span>].cps(ev[<span class="s5">\notes</span>]) }),</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s5">\dur</span>, <span class="s2">Pwhite</span>(1, 4, <span class="s2">inf</span>) * 0.5,</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span></span>\instrument<span class="s4">, </span>\default</p>
+<p class="p7">).play;</p>
+<p class="p9"><br></p>
+<p class="p7">p.stop;</p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p6">// better way if you do this kind of thing often:</p>
+<p class="p6">// create a new protoevent, replacing the ~freq function with one referencing cps</p>
+<p class="p9"><br></p>
+<p class="p7">(</p>
+<p class="p7">e = <span class="s2">Event</span>.default.copy;</p>
+<p class="p7">e.parent.superFreq = e[<span class="s5">\freq</span>];</p>
+<p class="p7">e.parent.freq = {</p>
+<p class="p7"><span class="Apple-tab-span">	</span>~mode.notNil.if({</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~mode.cps(~midinote.value + ~ctranspose) * ~harmonic</p>
+<p class="p7"><span class="Apple-tab-span">	</span>}, {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~superFreq.value</p>
+<p class="p7"><span class="Apple-tab-span">	</span>});</p>
+<p class="p7">};</p>
+<p class="p7">)</p>
+<p class="p9"><br></p>
+<p class="p7">p = <span class="s2">Pbind</span>(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s5">\mode</span>, ~mode,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s5">\bottom</span>, <span class="s2">Pvbrown</span>(30, 39, <span class="s2">Pwrand</span>(#[1, 2, 3], #[0.4, 0.35, 0.25], <span class="s2">inf</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>* <span class="s2">Prand</span>(#[-1, 1], <span class="s2">inf</span>), <span class="s2">inf</span>),</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span></span>\midinote<span class="s4">, </span><span class="s2">Pkey</span><span class="s4">(</span>\bottom<span class="s4">) + ~chord,</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s5">\dur</span>, <span class="s2">Pwhite</span>(1, 4, <span class="s2">inf</span>) * 0.5,</p>
+<p class="p10"><span class="s4"><span class="Apple-tab-span">	</span></span>\instrument<span class="s4">, </span>\default</p>
+<p class="p7">).play;</p>
+<p class="p9"><br></p>
+<p class="p7">p.stop;</p>
+</body>
+</html>

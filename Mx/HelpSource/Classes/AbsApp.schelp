@@ -1,0 +1,74 @@
+CLASS:: AbsApp
+summary:: Abstract super class for the various MxApp scripting objects
+categories:: Mx
+
+
+DESCRIPTION::
+Each of the app objects is an code interface for an implementation class.
+
+link::Classes/MxApp:: => link::Classes/Mx::, link::Classes/MxChannelApp:: => link::Classes/MxChannel::, link::Classes/MxUnitApp:: => link::Classes/MxUnit::, link::classes/MxInletApp:: => link::classes/MxInlet::
+
+see also link::Classes/MxQuery::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+These objects are created by accessing them from the Mx.  You do not create them manually.
+
+code::
+x = Mx.new.app; // MxApp
+c = x.channel(0); // MxChannelApp
+u = c.units.at(0); // MxUnitApp although its nil right now
+i = u.inlets.at(0); // MxInletApp
+::
+
+argument:: model
+
+
+argument:: mxapp
+
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: model
+The Mx implementation object. link::Classes/MxApp:: => Mx, link::Classes/MxChannelApp:: => MxChannel, link::Classes/MxUnitApp:: => MxUnit etc
+
+
+
+METHOD:: prInit
+
+
+
+
+
+METHOD:: mx
+The Mx object that this unit, channel, iolet etc. is inside.
+
+
+
+METHOD:: printOn
+
+
+argument:: stream
+
+
+
+
+
+METHOD:: source
+The musical object (Instr, NDef, Spline etc) that is contained by the MxUnit.
+
+
+
+METHOD:: dereference
+
+
+
+
+
+
+

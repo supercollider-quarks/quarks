@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #162bc4}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #d00c0c}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #162bc4}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008323}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #162bc4}
+span.s3 {color: #000000}
+span.s4 {color: #008323}
+span.s5 {color: #737373}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>GamePad<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a sketch for using GamePads as music controllers.</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Note - this is a temporary version of GamePad, which has been around for 5 years or so.</b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>To be included in / adapted for the new Ktl scheme real soon!<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span></b>written by adc and haho.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>General Info</b></p>
+<p class="p2"><br></p>
+<p class="p1">GamePad lets you use Playstation-style GamePad controllers to play with multiple<span class="Apple-converted-space"> </span></p>
+<p class="p1">JITLib-style proxies; see <span class="s2">Ndef</span>, <span class="s2">Tdef</span>, <span class="s2">Pdef</span>, <span class="s2">ProxySpace</span>.<span class="Apple-converted-space"> </span></p>
+<p class="p1">One can record loops of controller movements<span class="Apple-converted-space">  </span>that can be modified while played back,<span class="Apple-converted-space"> </span></p>
+<p class="p1">e.g. rescaled and inverted in value ranges, with changeable tempo and direction, etc.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">To use a gamepad with the Gamepad class, it has to have:<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>2 analog joysticks,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>4-direction compass,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>4 numbered buttons, and</p>
+<p class="p1"><span class="Apple-tab-span">	</span>4 buttons on the shoulders.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1">The Saitek company makes pretty good models; e.g. the (now gone) Saitek <span class="s2">Impact</span> X6-38U<span class="Apple-converted-space"> </span></p>
+<p class="p1">has a fine resolution of 256 values per joystick dimension.<span class="Apple-converted-space"> </span></p>
+<p class="p1">Currently, the Thrustmaster <span class="s2">Ferrari </span>also has great resolution, plus three extra continuous<span class="Apple-converted-space"> </span></p>
+<p class="p1">controllers.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Subclasses have the differing controller specs, and vendorIDs:<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="s3"><span class="Apple-tab-span">	</span></span>Impact, ImpactNu, Ferrari, Betop, Eaxus;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>for others, you can make your own subclasses, see</p>
+<p class="p1"><span class="Apple-tab-span">	</span>"GamePad_more".openHelpFile</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Overview</b></p>
+<p class="p2"><br></p>
+<p class="p1">You can use 4 groups (wings) of 4 proxies each, and navigate between them<span class="Apple-converted-space"> </span></p>
+<p class="p1">with the compass on the left and the 4 button on the right side.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">W, S, E, N on the compass (the left hand direction switch),<span class="Apple-converted-space"> </span></p>
+<p class="p1">switch the proxies within one group (or 'rooms' in one wing),<span class="Apple-converted-space"> </span></p>
+<p class="p1">wich are stored as numbers 0, 1, 2, 3.<span class="Apple-converted-space"> </span></p>
+<p class="p1">and the 4 right hand 4 buttons (labeled 1 2 3 4)</p>
+<p class="p1">switch between the 4 proxy groups (or 'wings' in the building).<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s3">s.boot;<span class="Apple-tab-span">	</span></span>// server must be booted, then:</p>
+<p class="p6"><br></p>
+<p class="p7">(</p>
+<p class="p5"><span class="s2">GamePad</span><span class="s3">.startHID; <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// builds the setup automatically.</p>
+<p class="p5"><span class="s3">p = p ?? { </span><span class="s2">ProxySpace</span><span class="s3">(s); }; p.push;<span class="Apple-tab-span">	</span></span>// make a proxyspace but only if needed.</p>
+<p class="p7">)</p>
+<p class="p6"><br></p>
+<p class="p5">// Now switch your gamepad to analog mode, and test that you get numbers:</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s2">GamePad</span><span class="s3">.verbose = </span><span class="s2">true</span><span class="s3">; <span class="Apple-tab-span">	</span></span>// move joysticks to see e.g. [ hid, 19, 0.95686274509804 ] posted.</p>
+<p class="p7"><span class="s2">GamePad</span>.verbose = <span class="s2">false</span>;<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p5">//<span class="Apple-tab-span">	</span>GamePad.stop; <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// stop HID event loop to turn gamePad off.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">// Then you can put a proxy in room 0</p>
+<p class="p7">(</p>
+<p class="p5">// a simple proxy : modulating formant frequency, root and number of harmonics</p>
+<p class="p7">~formsing = { <span class="s2">arg</span> formfrq=500, root=300, harm=20, amp=0.4, lag= 0.2;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s2">var</span> in = <span class="s2">Blip</span>.ar(root.lag(lag), harm.lag(lag), 0.1);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s2">Formlet</span>.ar(in, formfrq.lag(lag) * [1, 1.06], 0.005, 0.04)<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>* 5 * amp.lag(lag);</p>
+<p class="p7">};</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// make sure it plays sound</p>
+<p class="p7">~formsing.play(vol: 0.25);</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// make controlspecs for its parameters:</p>
+<p class="p7"><span class="s2">Spec</span>.specs.put(<span class="s4">\formfrq</span>, <span class="s2">ControlSpec</span>(100, 5000, <span class="s4">\exp</span>));</p>
+<p class="p7"><span class="s2">Spec</span>.specs.put(<span class="s4">\root</span>, <span class="s2">ControlSpec</span>(5, 500, <span class="s4">\exp</span>));</p>
+<p class="p7"><span class="s2">Spec</span>.specs.put(<span class="s4">\harm</span>, <span class="s2">ControlSpec</span>(1, 256, <span class="s4">\exp</span>));</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s2">Spec</span>.add(<span class="s4">\formfrq</span>, [100, 5000, <span class="s4">\exp</span>]);</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// make a GUI for the ProxySpace:</p>
+<p class="p8">ProxyMixer<span class="s3">(p);</span></p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// then put the proxy into the GamePad, at wing 0 + room 0;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// wings are in groups of 4 proxies each.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="s2">GamePad</span>.putProxy(0,<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="s3"><span class="Apple-tab-span">	</span></span>\formsing<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>(</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>joyRY: { <span class="s2">arg</span> val; ~formsing.group.set(<span class="s4">\amp</span>, <span class="s4">\amp</span>.asSpec.map(val)) },<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>joyLX: { <span class="s2">arg</span> val; ~formsing.group.set(<span class="s4">\formfrq</span>, <span class="s4">\formfrq</span>.asSpec.map(val)) },<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>joyLY: { <span class="s2">arg</span> val; ~formsing.group.set(<span class="s4">\root</span>, <span class="s4">\root</span>.asSpec.map(val)) },<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>joyRX: { <span class="s2">arg</span> val; ~formsing.group.set(<span class="s4">\harm</span>,<span class="s4">\harm</span>.asSpec.map(val)) }<span class="Apple-tab-span">	</span>)</p>
+<p class="p7">);<span class="Apple-converted-space"> </span></p>
+<p class="p7">)</p>
+<p class="p10"><br></p>
+<p class="p1">To make this proxy controllable, click on wing 0 (right side, button "1"),<span class="Apple-converted-space"> </span></p>
+<p class="p1">and select room 0 (left side compass, click direction west /left).</p>
+<p class="p2"><br></p>
+<p class="p1">Now you can control the 4 parameters of ~formSing with the 2 joysticks.<span class="Apple-converted-space"> </span></p>
+<p class="p1">Right top fire button (cookie 9) pauses the proxy (muting).<span class="Apple-converted-space"> </span></p>
+<p class="p1">Hold down left top fire button to record a loop of control events;<span class="Apple-converted-space"> </span></p>
+<p class="p1">End recording by letting go.<span class="Apple-converted-space"> </span></p>
+<p class="p1">then play/stop that loop with left bottom fire button.<span class="Apple-converted-space"> </span></p>
+<p class="p1">when playing back, right lower fire button gets you into<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>METACONTROL mode:<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><span class="Apple-tab-span">	</span>Now Right Joystick:</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>up/down sets control loop tempo,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hatswitch flips loop direction.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lr introduces jitter : when outside the center pos,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the next event that gets played is chosen from<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a zone around the current loop pos.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>Left Joystick:<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>l-r scales the control values to a center value (left is flat),<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>up-down moves that center.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>Joyst L hatswitch mirrors the control values around the center value.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>switching center right button (cookie 12) toggles joyst l mapping<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>between this (scale/center) and loopstart / looplength.</p>
+<p class="p2"><br></p>
+<p class="p1">to disconnect GamePad, use</p>
+<p class="p10"><br></p>
+<p class="p11">GamePad.stop;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">Here is a documentation image for the GamePad control layout,</p>
+<p class="p1">as used in the now historical Bejing setup:<span class="Apple-converted-space"> </span></p>
+<p class="p10"><br></p>
+<p class="p11">unixCmd(<span class="s5">"open"</span> + <span class="s2">Document</span>.current.path.dirname.quote +/+ <span class="s5">"impact.jpg"</span>);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>ToDo Dev</b>:<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>* use GeneralHID for setup;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>* ! STOP HOGGING THE HIDDevcieService.action ! *</p>
+<p class="p1"><span class="Apple-tab-span">	</span>* use a HIDResponder (to be written)</p>
+<p class="p1"><span class="Apple-tab-span">	</span>* integrate into new Ktl scheme (Ktl quark)</p>
+<p class="p1"><span class="Apple-tab-span">	</span>* Tdefs, Pdefs: support pause/resume; setting params, recording ctloops.</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>* untangle from BufBank for live sampling ...<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>* integrate RecBuf patch/sketch</p>
+<p class="p1"><span class="Apple-tab-span">	</span>* make a usable JITGui for it<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>* general cleanup ...<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

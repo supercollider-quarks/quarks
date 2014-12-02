@@ -1,0 +1,63 @@
+CLASS:: RedDiskInPlayer
+SUMMARY:: simple GUI for soundfile playback from disk
+CATEGORIES:: Red>redSampler
+RELATED:: Classes/RedDiskInSampler
+
+DESCRIPTION::
+Uses link::Classes/RedDiskInSampler:: to stream soundfiles from disk. Use it to play back long soundfiles.
+
+The GUI works as follows...
+table::
+## vol || playback volume
+## env || attack and release time in seconds
+## bus || output bus index
+## loop || keep repeating the soundfile. Note: not smooth because of file preloading
+## folder || select a file to set path to all soundfiles. It is also possible to drag files and folders into the listview
+## filter || 0 = all soundfiles, 1 = only mono files, 2 = stereo etc.
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: server
+If code::nil:: then the default server will be used.
+
+ARGUMENT:: bus
+Output bus. Defaults to 0.
+
+ARGUMENT:: numItems
+Number of soundfiles visible in the list. Default 10.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prPlayFunc, prStopFunc, initRedDiskInPlayer, prUpdateInfo
+
+METHOD:: sampler
+A link::Classes/RedDiskInSampler::
+
+METHOD:: isPlaying
+A boolean.
+
+METHOD:: soundFiles
+Current files in list.
+
+METHOD:: bus
+Current outbut bus.
+
+METHOD:: free
+Closes the window and stops the synth.
+
+METHOD:: win
+Access the window created.
+
+EXAMPLES::
+
+code::
+a= RedDiskInPlayer(s);
+a.sampler
+a.isPlaying
+a.soundFiles
+a.bus
+a.free		//or close the window, or press cmdperiod
+::

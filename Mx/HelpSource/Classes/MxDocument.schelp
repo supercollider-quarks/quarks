@@ -1,0 +1,150 @@
+CLASS:: MxDocument
+summary:: a wrapper for placing code Documents onto the Mx grid
+categories:: Mx
+
+
+DESCRIPTION::
+This is for adding code documents to an Mx.
+
+code::
+x = Mx.new.app;
+d = x.add( MxDocument.new );
+// double click on it to open the document
+x.gui
+::
+
+The contents of the document will be saved with the Mx.  If the document is saved (command-S and just save it as you would normally) then the Mx will save the path of the file instead of the contents.
+
+You can add any previously existing document.
+
+code::
+x = Mx.new.app;
+d = x.add( MxDocument("path/to/something/you/like.scd") );
+// double click on it to open the document
+x.gui
+::
+
+The document will execute when it is loaded.
+
+The document has the environment of the unit.  Any v
+
+See MxUnit/varPooling for sharing variable spaces between units and documents.  You can set variables in your document and other documents can listen downstream for those.
+
+code::
+// the unit
+~this;
+
+// query for other units on the grid and set them en masse
+~this.mx.units.whereIsA(NDef).set(\source_,{ SinOsc.ar([400, 408] * 0.8, 0, 0.2) });
+
+// create some neighbors
+~this.mx.insertAt(~this.point + 0@1, Ndef('neighborhor'));
+::
+
+These examples arent so exciting since you can more easily do this in a normal source code file. There isnt an advantage to having the document in the Mx
+
+
+The plan:
+
+code::
+// make some sounds when play is started
+~this.sched(0,{
+    ~sound = make sound
+},{
+    ~sound.stop
+});
+
+
+// sched at beat 16, visible on the timeline
+~this.sched(16,{
+    ~sound = make sound
+},{
+    ~sound.stop
+});
+
+
+// sched using a name, moveable on the timeline, duplicatable on the timeline
+~this.sched(\intro,{
+    ~sound = make sound
+},{
+    ~sound.stop
+});
+
+
+::
+
+Dragging documents onto the grid will be supported.
+
+You can of course always just place a bus or a Ndef or similar onto the Mx in order to get an audio input injected to the mixer.
+
+Possibly settings or different classes for live coding documents (that do not executed when loaded like this one does) and documents that s
+
+CLASSMETHODS::
+
+METHOD:: new
+
+argument:: path
+
+
+argument:: content
+
+
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: eval
+
+
+
+
+
+METHOD:: path
+
+
+
+
+
+METHOD:: content
+
+
+
+
+
+METHOD:: name
+
+
+
+
+
+METHOD:: printOn
+
+
+argument:: stream
+
+
+
+
+
+METHOD:: storeArgs
+
+
+
+
+
+METHOD:: gui
+
+
+argument:: parent
+
+
+argument:: bounds
+
+
+
+
+
+
+

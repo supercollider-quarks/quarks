@@ -1,0 +1,62 @@
+{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;\f1\fswiss\fcharset77 Helvetica;\f2\fnil\fcharset77 Monaco;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red0\green0\blue0;\red191\green0\blue0;
+\red96\green96\blue96;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b\fs36 \cf2 RedBuffer\cf3 			buffer a segment of a soundfile
+\f1\b0\fs24 \
+
+\f0\b\fs36 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\fs24 \cf3 superclass: \cf2 Object
+\fs36 \cf3 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f1\b0\fs24 \cf0 This class\cf3  creates buffers with segments from soundfiles.
+\f0\b\fs36 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\fs24 \cf0 Class Methods
+\fs36 \cf3 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\fs24 \cf3 \
+\cf2 RedBuffer\cf3 .new(server, path, segmentOffset, segmentLength)
+\f1\b0  - create, load and return a buffer\
+
+\f0\b \
+server - 
+\f1\b0 where to create the buffer
+\f0\b \
+path - 
+\f1\b0 which soundfile
+\f0\b \
+segmentOffset - 
+\f1\b0 in percent
+\f0\b \
+segmentLength - 
+\f1\b0 in seconds\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f2\fs18 \cf3 \
+\
+s.boot;\
+\
+\cf4 //load a 1 second long segment from 10% into the file\cf3 \
+b= \cf2 RedBuffer\cf3 (s, \cf5 "sounds/a11wlk01.wav"\cf3 , 0.1, 1);\
+b.plot;\
+b.play;\
+b.free;\
+\
+\cf4 //load a 200 milliseconds long segment from 90% into the file\cf3 \
+b= \cf2 RedBuffer\cf3 (s, \cf5 "sounds/a11wlk01.wav"\cf3 , 0.9, 0.2);\
+b.plot;\
+b.play;\
+b.free;\
+\
+}

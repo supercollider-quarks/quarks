@@ -1,0 +1,64 @@
+CLASS:: RedTime
+SUMMARY:: calculate with time
+CATEGORIES:: Red>redTools
+
+DESCRIPTION::
+A simple class for keeping track of and calculating with time.
+
+INSTANCEMETHODS::
+
+METHOD:: setLocalTime
+Uses code::Date.localtime:: to reset link::#-h::, link::#-m::, link::#-s::.
+
+METHOD:: +
+Adds time. Wraps around 00:00:00 - 23:59:59
+
+METHOD:: -
+Subtracts time. Wraps around 00:00:00 - 23:59:59
+
+METHOD:: h
+Hours.
+
+METHOD:: m
+Minutes.
+
+METHOD:: s
+Seconds.
+
+EXAMPLES::
+
+CODE::
+a= RedTime(12, 0, 1)		//one second past noon
+b= RedTime.newLocalTime		//now
+a==b				//compare two times
+c= b-a				//time since noon
+c= b+a				//time 12 hours from now
+
+c= c.addSec(10)			//+10 sec ahead
+c= c.addMin(-1)			//-1 min earier
+c= c.addHour(3)			//+3 hours ahead
+
+c.h_(23).m_(59).s_(59)		//set new hour, min, sec
+c.setLocalTime			//update now
+c.asSeconds
+c.asMinutes
+c.asHours
+c.h_(0).m_(0).s_(1)
+c.asSeconds
+c.asMinutes
+c.asHours
+
+c.asArray
+::
+
+CODE::
+//calculating the number of hours and minutes between two points in time
+RedTime(13, 30)-RedTime(12, 20)	//from 13:30 backwards to 12:20
+//-> 1h 10m difference
+
+RedTime(3, 30)-RedTime(12, 20)	//from 03:00 backwards to 12:20
+//-> 15h 10m difference
+
+RedTime(0, 0, 50)-RedTime(22, 10, 51)	//from 00:00:50 backwards to 22:10:51
+//-> 1h 49m 59s difference
+::

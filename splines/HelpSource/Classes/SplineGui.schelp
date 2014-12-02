@@ -1,0 +1,156 @@
+CLASS:: SplineGui
+summary:: 2 dimensional spline GUI and editor
+categories:: Splines>GuiClasses
+related:: Classes/LinearSpline, Classes/BSplineGui, Classes/BezierSplineGui, Classes/VectorSplineGui
+
+DESCRIPTION::
+GUI class for viewing and editing a link::Classes/LinearSpline:: and the parent class for the other Spline GUI classes.
+
+Splines with more dimension than 2 will display only the first 2 dimensions. See link::Classes/VectorSplineGui:: for editing multi-dimensional splines.
+
+A spline gui may be placed on a window or composite view just like any other gui, but it may also be placed onto a link::Classes/UserView:: so it can be integrated with other more complex UserView based applications.
+
+The interpolation is currently done during the drawFunc which isn't the most efficient way to do it and the interpolation method shows some errors around sharp corners.
+
+A SplineInterpolator class is planned that will cache results and can implement a more accurate fit to the data.  This class will also be useful for using interpolations in sequencing and for updating server side buffers.
+
+subsection:: Interface
+
+code::
+(
+l = LinearSpline({ { 4.0.rand } ! 2 } ! 9);
+l.gui
+)
+::
+
+Double click to create a new point. Click a point to select it, hit delete to delete it.
+
+Hold down shift-control while moving a point to limit movements to the vertical axis.  Hold down control to limit it to the horizontal.
+
+Bezier Splines have control points — hold down ALT while clicking to create or edit those.
+
+BSplines have an order control.  At the moment this is on top of the UserView.
+
+INSTANCEMETHODS::
+
+METHOD:: gui
+See also examples below.
+
+code::
+(
+d = Array.fill(32,{ arg i;
+		// time       5-dims of rand data
+		[i * 0.25] ++ Array.fill(5,{ (32.rand + 32).midicps })
+    });
+l = LinearSpline(d);
+
+// simplest way. the Spline class will know its gui class
+// and will create one (a SplineGui), create a window and add a UserView with auto resize
+l.gui;
+
+// place it on a window
+w = Window.new.front;
+l.gui(w,Rect(0,0,500,200),[10,2000,\exp],[0,48]);
+
+// place it on a UserView
+w = Window.new.front;
+u = UserView(w,Rect(0,0,500,200));
+u.drawFunc = {
+	Pen.stringAtPoint("Custom View",120@30,Font.sansSerif(20));
+};
+// it adds itself to the drawFunc
+g = l.gui(nil,Rect(0,0,500,200),[10,2000,\exp],[0,48],u);
+// and returns the SplineGui
+
+// alternate way to  call it: make the SplineGui and THEN gui that
+w = Window.new.front;
+g = SplineGui(l);
+l.gui(w,Rect(0,0,500,200),[10,2000,\exp],[0,48]);
+
+)
+::
+
+	argument:: parent
+	nil, Window, composite view, link::Classes/FlowView::
+
+	argument:: bounds
+	nil or link::Classes/Rect::
+
+	argument:: argSpec
+	optional spec
+
+	argument:: argDomainSpec
+	optional spec, see below
+
+	argument:: userView
+	optional UserView to place the SplineGui upon.
+
+	returns:: this (a SplineGui)
+
+
+METHOD:: spec
+	Get or set the spec of the vertical dimension. By default it will guess the spec.
+
+	argument:: spec
+	ControlSpec
+
+	returns:: ControlSpec
+
+METHOD:: domainSpec
+	Get or set the spec of the horizontal dimension. By default it will guess this and does a good job.  Note that if the spec has a custom GridLines set then this will be used for drawing Grid lines on the plot.  A time based GridLines class is planned which will draw beats/bars and smpte time.
+
+	returns:: ControlSpec
+
+METHOD:: density
+	Lines between the spline's points are drawn using an interpolation of the spline. This is the density per spline segment.  Default is 256 which will cause some errors in drawing around sharp corners.  Densities of 1024 will be more accurate but make the response fairly slow.
+
+returns:: integer
+
+METHOD:: gridLines
+	access the DrawGrid object which has two GridLines for each of the domains.
+
+	returns:: link::Classes/DrawGrid::
+
+METHOD:: onSelect
+	A handler evaluated when you select a point.  arg: selected index, splinegui
+
+	returns:: function
+
+
+METHOD:: setDomainSpec
+	(describe method here)
+
+	argument:: dsp
+	(describe argument here)
+
+	argument:: setGridLines
+	(describe argument here)
+
+	returns:: link::Classes/ControlSpec::
+
+METHOD:: setZoom
+	Zoom along the horizontal domain to a subset of the entire spline.
+
+	argument:: argFromX
+	X value at the left edge
+
+	argument:: argToX
+	X value at the right edge
+
+
+METHOD:: select
+	Clicking on a point selects it. This programmatically selects a point.
+
+	argument:: i
+	integer index or nil to deselect.
+
+	returns:: integer or nil
+
+METHOD:: background
+	Get or set the background of the UserView
+
+	argument:: color
+
+	returns:: link::Classes/Color::
+
+

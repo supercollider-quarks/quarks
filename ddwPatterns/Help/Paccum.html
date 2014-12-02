@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+span.s1 {color: #0000bf}
+span.s2 {color: #007300}
+</style>
+</head>
+<body>
+<p class="p1"><b>Paccum : Pattern</b></p>
+<p class="p2"><br></p>
+<p class="p3">An accumulator -- repeatedly performs a binary operation on the previous stream value and the result of a second stream. Each output value becomes the input value for the next calculation.</p>
+<p class="p2"><br></p>
+<p class="p3">Where Pseries adds a constant value on successive iterations, here the second operand is variable.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(lo = -inf, hi = inf, step, length = inf, start, operator = '+')</b></p>
+<p class="p2"><br></p>
+<p class="p3">lo = minimum output value; values lower than this are .fold-ed back in range</p>
+<p class="p3">hi = maximum output value</p>
+<p class="p3">step = pattern for the second operand</p>
+<p class="p3">length = number of values to output</p>
+<p class="p3">start = starting value; if not given, the stream will start with rrand(lo, hi)</p>
+<p class="p3">operator = by default, '+'; you may use other operators. This may be a pattern to do different operations per iteration.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Examples:</b></p>
+<p class="p2"><br></p>
+<p class="p4">p = <span class="s1">Pseries</span>(0, 1, <span class="s1">inf</span>).asStream;</p>
+<p class="p4">p.nextN(10);</p>
+<p class="p4">[ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]</p>
+<p class="p5"><br></p>
+<p class="p4">p = <span class="s1">Paccum</span>(step: 1, length: <span class="s1">inf</span>, start: 0).asStream;</p>
+<p class="p4">p.nextN(10);</p>
+<p class="p4">[ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]</p>
+<p class="p5"><br></p>
+<p class="p4">p = <span class="s1">Paccum</span>(step: <span class="s1">Pwhite</span>(1, 5, <span class="s1">inf</span>), length: <span class="s1">inf</span>, start: 0).asStream;</p>
+<p class="p4">p.nextN(10);</p>
+<p class="p4">[ 0, 4, 8, 10, 11, 14, 17, 18, 23, 25 ]</p>
+<p class="p5"><br></p>
+<p class="p4">p = <span class="s1">Paccum</span>(step: <span class="s1">Pwhite</span>(1, 5, <span class="s1">inf</span>), length: <span class="s1">inf</span>, start: 200, operator: <span class="s2">'/'</span>).asStream;</p>
+<p class="p4">p.nextN(10);</p>
+<p class="p4">[ 200, 100, 20, 10, 2, 1, 1, 0.33333333333333, 0.16666666666667, 0.033333333333333 ]</p>
+<p class="p5"><br></p>
+</body>
+</html>

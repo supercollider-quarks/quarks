@@ -1,0 +1,753 @@
+CLASS:: Mx
+summary:: A mixer and dynamic patching
+categories:: Mx
+
+
+DESCRIPTION::
+This is the Mx class itself that implements patching and updating.  Normal interaction with an Mx is done through the gui (MxGui) and the scripting objects (see link::Classes/MxApp::).
+
+The scripting objects (link::Classes/MxApp:: etc) are designed for efficiency of usage, clarity and convienience.  The implementation classes like Mx, MxChannel, MxUnit etc. are designed for efficiency of internal implementation.
+
+Most internal commands for units or channels go through the Mx object which notes all changes like adding or removing of objects or cables in its removing and adding arrays and then performs all these changes on .update.  When using the gui or the scripting objects the .update is called automatically.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+argument:: data
+Mx saves a data dump that contains the objects that have been added to it, their connections and their saved state.  Each supported class defines its load and save methods in its drivers/ file.  The data dump is not especially readable and is not meant to be hand coded or read.  A binary format will be introduced later to support Mx with large amounts of data.
+
+argument:: endBeat
+Relavant to the timeline, this is the total length of the timeline in beats.
+
+argument:: loop
+Not yet implemented.  An Mx may in the future loop in the timeline.
+
+argument:: bpm
+The bpm as was set in (the global) Tempo when the Mx was saved.
+
+returns:: an Mx
+
+
+METHOD:: defaultFrameRate
+See frameRate instance method
+
+returns:: int
+
+INSTANCEMETHODS::
+
+METHOD:: app
+Returns the link::Classes/MxApp:: object which is used to communicate with the Mx.
+code::
+x = Mx.new.app
+::
+returns:: an link::Classes/MxApp::
+
+
+
+METHOD:: channels
+Graphically speaking, each channel is a vertical column in the mixer.
+
+returns:: an array of link::Classes/MxChannel:: objects
+
+METHOD:: cables
+MxCable objects connect the outlets and inlets of units together.  This is the collection of all cables.
+
+returns:: an MxCableCollection
+
+METHOD:: inlets
+Just like an individual unit, an Mx can have inlets and can be loaded inside another Mx.  (not yet fully implemented)
+
+returns:: array of MxInlet
+
+METHOD:: outlets
+Just like an individual unit, an Mx can have outlets and can be loaded inside another Mx.  (not yet fully implemented)  By default an Mx has one audio stereo output.  It will be able to have any number and type of outlets.  ie. multi channel audio, kr outputs, event stream outputs and even files, images or geometries.
+
+returns:: array of link::Classes/MxOutlet::
+
+METHOD:: autoCable
+When adding audio rate objects, if autoCable is true (default: true) then a cable will be connected from the unit to its channel's fader.
+
+returns:: boolean
+
+METHOD:: endBeat
+Relavant to the timeline, this is the total length of the timeline in beats.
+
+returns:: float
+
+METHOD:: loop
+Not yet implemented.  An Mx may in the future loop in the timeline.
+
+returns:: boolean
+
+METHOD:: bpm
+The bpm that the Mx should play at.  This sets the global Tempo when play starts and is saved with the Mx document.
+
+returns:: float. beats per minute
+
+METHOD:: master
+The master link::Classes/MxChannel:: (on the right side), with channel number inf.  Each link::Classes/MxChannel:: is cabled to the input (top right) of the master channel.  Units may be placed in the master channel for master eq, compression etc.
+
+returns:: an link::Classes/MxChannel::
+
+METHOD:: frameRate
+Units in an Mx can declared Frame Rate Devices that will be ticked at this rate.  SplineFr is an example of a pure Frame Rate Device. Default is 24/beat.  The timeline engine uses a frame rate device for its automation.
+
+returns:: int
+
+METHOD:: position
+a Position object that holds the current play position for the timeline.  It updates at every frameRate tick
+
+returns:: a link::Classes/Position::
+
+
+METHOD:: nextID
+
+returns:: int
+
+
+METHOD:: register
+adds an object to an internal registery of all objects and iolets
+
+argument:: object
+
+argument:: uid
+optional
+
+returns:: uid
+
+
+
+
+METHOD:: atID
+retrieves an object from the registry
+
+argument:: uid
+
+returns:: object
+
+
+
+
+METHOD:: findID
+find registery object for id
+
+argument:: object
+
+returns:: uid
+
+
+
+
+METHOD:: unregister
+
+argument:: uid
+
+
+
+
+
+METHOD:: registerUnit
+
+argument:: unit
+
+argument:: uid
+
+
+
+
+
+METHOD:: registerChannel
+
+argument:: channel
+
+argument:: uid
+
+
+
+
+
+METHOD:: findMasterInput
+locate or make an input unit on the master channel
+
+returns:: link::Classes/MxChannelInput::
+
+
+
+
+METHOD:: add
+create a new channel and add one or more objects to it
+
+argument::  ... objects
+
+returns:: link::Classes/MxChannel::
+
+
+
+
+METHOD:: channelAt
+
+argument:: chan
+
+returns:: link::Classes/MxChannel::
+
+
+
+
+METHOD:: indexOfChannel
+
+
+argument:: channel
+
+returns:: int
+
+
+
+
+METHOD:: extendChannels
+
+argument:: toSize
+
+
+
+
+
+METHOD:: insertChannel
+Create a channel at the index and add objects to it
+
+argument:: index
+
+
+argument:: objects
+
+returns:: link::Classes/MxChannel::
+
+
+
+
+METHOD:: putChannel
+Create a channel, replacing any previous channel at this index. Add supplied objects to it
+
+argument:: index
+
+
+argument:: objects
+
+returns:: link::Classes/MxChannel::
+
+
+
+
+METHOD:: removeChannel
+
+
+argument:: index
+
+
+
+
+
+METHOD:: prRemoveChannel
+
+
+argument:: index
+
+
+
+
+
+METHOD:: prMakeChannel
+
+
+argument:: units
+
+returns:: link::Classes/MxChannel::
+
+
+
+
+METHOD:: addOutput
+Add a new output.  Default is one stereo audio out.  Adding an output adds additional MxOutlets to the Mx
+
+argument:: rate
+Symbol
+
+argument:: numChannels
+int
+
+returns:: link::Classes/MxChannel::
+
+
+
+
+METHOD:: at
+Retreive the MxUnit at the channel and index. returns nil if unoccupied
+
+argument:: chan
+int
+
+argument:: index
+int
+
+returns:: link::Classes/MxUnit::
+
+
+
+
+METHOD:: put
+put an object at channel @ index, wrapping it in an MxUnit
+
+argument:: chan
+int
+
+argument:: index
+int
+
+argument:: object
+object
+
+returns:: link::Classes/MxUnit::
+
+
+
+
+METHOD:: copy
+
+argument:: fromChan
+
+argument:: fromIndex
+
+argument:: toChan
+
+argument:: toIndex
+
+returns:: link::Classes/MxUnit::
+
+
+
+
+METHOD:: prMakeUnit
+
+argument:: object
+
+returns:: link::Classes/MxUnit::
+
+
+
+
+METHOD:: prPutToChannel
+
+argument:: channel
+
+argument:: index
+
+argument:: object
+
+returns:: link::Classes/MxUnit::
+
+
+
+
+METHOD:: putMaster
+
+
+argument:: index
+
+
+argument:: object
+
+returns:: link::Classes/MxUnit::
+
+
+
+
+METHOD:: move
+
+
+argument:: chan
+
+
+argument:: index
+
+
+argument:: toChan
+
+
+argument:: toIndex
+
+
+
+
+
+METHOD:: remove
+schedules the object at chan@index to be removed at the next update.
+removes the object from the grid (if any) immediately.
+
+argument:: chan
+
+
+argument:: index
+
+
+
+
+
+METHOD:: insert
+
+
+argument:: chan
+
+
+argument:: index
+
+
+argument:: object
+
+returns:: link::Classes/MxUnit::
+
+
+
+
+METHOD:: removeUnit
+remote the unit, whever it is located. see remove
+
+argument:: unit
+
+
+
+
+
+METHOD:: pointForUnit
+find the chan@index point for a unit
+
+argument:: unit
+
+returns:: Point or nil for private units like the fader's unit
+
+
+
+
+METHOD:: unitAddFrameRateDevices
+call the unit's handlers offering it the chance to add frame rate devices.
+
+argument:: unit
+
+
+
+
+
+METHOD:: addFrameRateDevice
+add a frame rate device : a function that will be called at frame rate (default 24/s)
+
+argument:: func
+
+argument:: forUnit
+unit that owns the frame rate device
+
+returns:: link::Classes/MxFrameRateDevice::
+
+
+
+
+METHOD:: removeFrameRateDeviceForUnit
+
+argument:: unit
+
+
+
+
+
+METHOD:: initialTick
+set position to 0.0 and set frame rate devices to 0.0
+
+
+
+
+METHOD:: startTicker
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: stopTicker
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: beatDuration
+longest duration of any unit. total length of the song.
+
+returns:: float
+
+
+
+
+METHOD:: getInlet
+
+
+argument:: point
+
+
+argument:: index
+
+returns:: link::Classes/MxInlet::
+
+
+
+
+METHOD:: getOutlet
+
+
+argument:: point
+
+
+argument:: index
+
+returns:: link::Classes/MxOutlet::
+
+
+
+
+METHOD:: connect
+make a connection, adding an MxCable.  actual connection happens on next update
+
+argument:: fromUnit
+
+
+argument:: outlet
+
+
+argument:: toUnit
+
+
+argument:: inlet
+
+
+argument:: mapping
+
+
+
+
+
+METHOD:: disconnect
+
+argument:: fromUnit
+
+
+argument:: outlet
+
+
+argument:: toUnit
+
+
+argument:: inlet
+
+
+
+
+
+METHOD:: disconnectCable
+
+argument:: cable
+
+
+
+
+
+METHOD:: disconnectUnit
+
+argument:: unit
+
+
+
+
+
+METHOD:: disconnectInlet
+
+argument:: inlet
+
+
+
+
+
+METHOD:: disconnectOutlet
+
+argument:: outlet
+
+
+
+
+
+METHOD:: mute
+
+argument:: channel
+
+argument:: boo
+
+
+
+
+
+METHOD:: solo
+
+argument:: channel
+
+
+argument:: boo
+
+
+
+
+
+METHOD:: gotoBeat
+
+
+argument:: beat
+
+
+argument:: q
+
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: update
+Enact all changes to the server after things have been added/removed dis/connected.  So .add and .remove etc are called, then .update is called that syncs the server to the new state in one bundle.
+
+argument:: bundle
+link::Classes/MixedBundle:: or nil
+
+If bundle is supplied then it will not send it and will return the bundle.  If nil then it creates and sends the bundle.
+
+returns:: link::Classes/MixedBundle::
+
+
+METHOD:: updateVarPooling
+set up parent chain of unit environments that participate in varPooling
+
+
+
+
+
+METHOD:: allUnits
+iterator over all units
+
+code::
+mx.allUnits.do { arg unit;
+  //
+}
+::
+
+argument:: includeChanUnit
+boolean
+each MxChannel has an MxUnit for its fader.  you may wish to exclude those and just iterate over the units on the grid.
+
+returns:: Routine
+
+
+
+
+METHOD:: clearPending
+very private
+clears any state changes requested through .add and .remove
+
+
+
+
+
+METHOD:: children
+all channels including the master channel
+
+returns:: array of MxChannel
+
+
+
+
+METHOD:: loadDefFileToBundle
+
+argument:: b
+
+argument:: server
+
+
+
+
+
+METHOD:: prepareChildrenToBundle
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: spawnToBundle
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: spawnCablesToBundle
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: updateAutoCables
+
+returns:: array of MxCable
+
+
+
+
+METHOD:: stopToBundle
+
+argument:: bundle
+link::Classes/MixedBundle::
+
+
+
+METHOD:: gui
+
+argument:: parent
+
+argument:: bounds
+
+returns:: MxGui
+
+
+
+
+METHOD:: guiClass
+
+returns:: MxGui
+
+
+
+
+METHOD:: draw
+
+argument:: pen
+
+argument:: bounds
+
+argument:: style
+
+
+
+
+
+
+EXAMPLES::
+
+code::
+x = Mx.new.app;
+x.gui
+::

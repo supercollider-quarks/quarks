@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+  </style>
+</head>
+<body>
+<p class="p1"><b>BusDict<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">A bus allocator that stores descriptive names of buses in a global dictionary. The dictionaries record each server for which a bus is allocated, pointing to another dictionary keyed by bus number.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Use BusDict instead of Bus if you want names of your allocated buses to appear in MixingBoards that you create.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(server)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Adds the required dictionary entries for the given server. This does not return a Bus object! It only initializes BusDict for this server. Use one of the following three methods to create a new bus.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*alloc(rate, server, numChannels, name)<span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><b>*audio(server, numChannels, name)</b></p>
+<p class="p3"><b>*control(server, numChannels, name)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Allocates a Bus. This works exactly like the corresponding methods in Bus, except for the name argument, which may be a string or a symbol.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*at(rate, server, index)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Looks up a bus object in the dictionary. If a bus was allocated using Bus and you try to use BusDict.at to look it up, you'll get nil. If you just want a pointer to a bus that's already been allocated, use Bus.new instead.</p>
+<p class="p2"><br></p>
+<p class="p3">To look up the name of an individual bus, use <b>BusDict.audioNames.at(server).at(index)</b> or <b>BusDict.controlNames.at(server).at(index)</b>.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*free(bus)<span class="Apple-converted-space"> </span></b></p>
+<p class="p3"><b>*freeAt(rate, server, index)</b></p>
+<p class="p3"><b>*freeAll(server)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Frees previously allocated buses and removes their entries from the appropriate dictionary.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*postServer(server)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">List all the names of the buses registered for the server.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*post</b></p>
+<p class="p3"><b>*postln<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">List the names of the buses registered in all servers. This can be useful for debugging, to make sure the buses were allocated as you thought they were.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*menuItems(server, rate)</b></p>
+<p class="p2"><br></p>
+<p class="p3">Returns an array giving the name of every bus, with an array item for each possible bus index. Multichannel buses are expanded into multiple items: a four-channel bus would appear as [..., quad bus, quad bus.1, quad bus.2, quad bus.3, ...]. This is so that the bus index and the array index can be identical. Used by MixingBoard.</p>
+</body>
+</html>

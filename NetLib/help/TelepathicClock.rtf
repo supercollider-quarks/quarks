@@ -1,0 +1,97 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf410
+{\fonttbl\f0\fnil\fcharset77 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red191\green0\blue0;\red0\green0\blue191;
+\red0\green115\blue0;\red96\green96\blue96;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs18 \cf2 \
+\cf3 // these two clocks can be created at different times:\cf2 \
+(\
+fork \{\
+	t = \cf4 TelepathicClock\cf2 (permanent: \cf4 false\cf2 ).verbose_(\cf4 true\cf2 );\
+	3.0.rand.wait;\
+	u = \cf4 TelepathicClock\cf2 (permanent: \cf4 false\cf2 ).verbose_(\cf4 true\cf2 );\
+	[t, u].do(\cf4 _\cf2 .stopListen);\
+	s.boot;\
+\}\
+);\
+\
+t.dt = 0.5;\
+u.dt = 0.5;\
+\
+\cf3 // it should start posting adjustments.\cf2 \
+\cf3 // if you don't get the broadcast working, use local communication:\cf2 \
+\cf3 // t.addr = NetAddr("127.0.0.1", 57120);\cf2 \
+\cf3 // u.addr = NetAddr("127.0.0.1", 57120);\cf2 \
+\
+u.tempo;\
+t.tempo;\
+\
+u.startListen;\
+\cf3 // t.startListen;\cf2 \
+\
+\
+\
+u.empathy = 0.5;\
+t.empathy = 0.5;\
+\
+t.othersData\
+u.othersData\
+\pard\pardeftab720\ql\qnatural
+\cf2 \
+(\
+\cf4 SynthDef\cf2 (\cf5 \\ping\cf2 , \{\cf4 |freq, pan, amp=0.3|\cf2 \
+	\cf4 var\cf2  e, z;\
+	e= \cf4 EnvGen\cf2 .ar(\cf4 Env\cf2 .perc(0, 0.1, amp), doneAction:2);\
+	z= \cf4 SinOsc\cf2 .ar(freq, 0, 0.2);\
+	\cf4 OffsetOut\cf2 .ar(0, \cf4 Pan2\cf2 .ar(z*e, pan));\
+\}).store;\
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf4 Pdef\cf2 (\cf5 \\a\cf2 ,\
+	\cf4 Pbind\cf2 (\cf5 \\instrument\cf2 , \cf5 \\ping\cf2 ,\
+		\cf5 \\degree\cf2 , \cf4 Pseq\cf2 ((0..7), \cf4 inf\cf2 ),\
+		\cf5 \\dur\cf2 , 0.25, \cf5 \\pan\cf2 , -0.5, \cf5 \\amp\cf2 , 0.5\
+	)\
+).play(t);\
+\
+\cf4 Pdef\cf2 (\cf5 \\b\cf2 ,\
+	\cf4 Pbind\cf2 (\
+		\cf5 \\instrument\cf2 , \cf5 \\ping\cf2 ,\
+		\cf5 \\degree\cf2 , \cf4 Pseq\cf2 ((0..7), \cf4 inf\cf2 ) + 7,\
+		\cf5 \\dur\cf2 , 0.25, \cf5 \\pan\cf2 , 0.5, \cf5 \\amp\cf2 , 0.5\
+	)\
+).play(u);\
+)\
+\
+t.tempo = 0.5;\
+\cf3 // u.tempo = 2.5;\cf2 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 t.fadeTempo(exprand(0.5, 4.0), 4); \
+\cf3 // u.fadeTempo(exprand(0.5, 4.0), 4); \cf2 \
+\cf3 // u.fadeTempo(1, 4); \cf2 \
+\
+t.verbose_(\cf4 false\cf2 );\
+u.verbose_(\cf4 false\cf2 );\
+\
+t.tempo = 0.9;\
+u.tempo;\
+u.tempo = 4;\
+\
+t.share;\
+t.addr.sendMsg(\cf6 "/test/me"\cf2 );\
+\
+[t, u].do(\cf4 _\cf2 .stopListen);\
+[t, u].do(\cf4 _\cf2 .stop);\
+t.stopListen;\
+\
+\cf3 // todo:\cf2 \
+\cf3 // TelepathicClock.stopAll;\cf2 \
+\
+\
+\cf4 thisProcess\cf2 .recvOSCfunc = \{\cf4 |t,r,msg|\cf2  if(msg[0] != \cf5 'status.reply'\cf2 ) \{ msg.postln \} \};\
+\cf4 thisProcess\cf2 .recvOSCfunc = \{\cf4 |t,r,msg|\cf2   msg.postln  \};\
+\
+\cf4 thisProcess\cf2 .recvOSCfunc = \cf4 nil\cf2 ;}

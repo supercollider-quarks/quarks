@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #4d4d4d}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0019a9; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #8d1614}
+span.s1 {text-decoration: underline ; color: #052fcf}
+span.s2 {color: #0019a9}
+span.s3 {color: #000000}
+span.s4 {font: 12.0px Helvetica}
+span.s5 {color: #4d4d4d}
+span.s6 {color: #0023f2}
+span.s7 {color: #315c0e}
+span.s8 {color: #8d1614}
+span.s9 {color: #0000ff}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SCAlert</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">An alert window class</p>
+<p class="p3"><br></p>
+<p class="p2"><i>Note: not yet SwingOSC compatible</i></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2">SCAlert</span><span class="s3">( </span>"Are you alerted now?"<span class="s3">, [ </span>"No"<span class="s3">, </span>"Yes"<span class="s3"> ] );</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6"><b>creation</b><span class="s4">:</span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>SCAlert( string, buttons, actions, color, background, iconName, border )</b></p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>string </b>: a string containing the message to be displayed. You can use $\n characters in it as well</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>buttons </b>: an Array containing the names of the buttons. It can also contain SCButton states.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>buttons defaults to [ <span class="s5">"cancel"</span>, <span class="s5">"ok"</span> ]</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>actions </b>: an Array containing a function for each button</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>color </b>: the color of the border stripe around the window and the icon. Defaults to <span class="s2">Color</span>.red.alpha_(0.75)</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>background </b>: the background color of the window. Defaults to white</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>iconName </b>: the name of the icon to be displayed from <a href="DrawIcon.html"><span class="s6">DrawIcon</span></a>. Defaults to <span class="s7">'warning'</span></p>
+<p class="p2"><span class="s7"><span class="Apple-tab-span">	</span></span><b>border </b>: Should the window have a border? Defaults to <span class="s2">true</span></p>
+<p class="p7"><br></p>
+<p class="p2">SCAlert also listens to key strokes. If you type a letter it will find the button of which the name starts with that letter and hit it (just like in most alert windows).</p>
+<p class="p3"><br></p>
+<p class="p8">(</p>
+<p class="p5"><span class="s2">SCAlert</span><span class="s3">( </span>"What do you want to hear now?\n</p>
+<p class="p5">type 'n' for nothing, 's' for a sine wave</p>
+<p class="p5">and 'p' for a pulse"<span class="s3">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span>[ </span>"nothing"<span class="s3">, [</span>"sine wave"<span class="s3">, </span><span class="s2">Color</span><span class="s3">.red(0.2)], </span>"pulse"<span class="s3"> ],<span class="Apple-converted-space">  </span></span><span class="s8">// buttons</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>[ <span class="Apple-tab-span">	</span><span class="s2">nil</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ { <span class="s2">Env</span>.sine(0.25, 0.25).kr(2) * <span class="s2">SinOsc</span>.ar(440) }.play;<span class="Apple-converted-space">  </span>},</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ { <span class="s2">Env</span>.sine(0.25, 0.25).kr(2) * <span class="s2">Pulse</span>.ar(440) }.play;<span class="Apple-converted-space">  </span>} ], <span class="s8">// actions</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">Color</span>.blue(0.2),</p>
+<p class="p8"><span class="Apple-tab-span">	</span>iconName: <span class="s7">'sign_$?'</span> );</p>
+<p class="p8">);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p6"><b>class vars:</b></p>
+<p class="p9"><b></b><br></p>
+<p class="p2"><b>modal</b></p>
+<p class="p2">if true (default) runs all SCAlerts in modal mode (see <a href="SC://SCModalWindow"><span class="s9">SCModalWindow</span></a>)</p>
+<p class="p3"><br></p>
+<p class="p6"><b>elements of the SCAlert:</b></p>
+<p class="p3"><br></p>
+<p class="p2"><b>buttons</b></p>
+<p class="p2">An Array of button states for each button</p>
+<p class="p3"><br></p>
+<p class="p2"><b>buttonViews</b></p>
+<p class="p2">An Array containing all SCButton objects</p>
+<p class="p3"><br></p>
+<p class="p2"><b>window</b></p>
+<p class="p2">The SCWindow itself</p>
+<p class="p3"><br></p>
+<p class="p2"><b>string / string_</b></p>
+<p class="p2"><b>actions / actions_</b></p>
+<p class="p2"><b>color / color_</b></p>
+<p class="p2"><b>background / background_</b></p>
+<p class="p2"><b>iconName / iconName_</b></p>
+<p class="p2">actions, Colors and iconName can all be changed after creation</p>
+<p class="p3"><br></p>
+<p class="p2"><b>onCloseIndex / onCloseIndex_</b></p>
+<p class="p2">the index of the button action which is eveluated when the SCAlert window is closed using it's close box.</p>
+<p class="p2">Defaults to -1, which means that none of the actions is used.</p>
+<p class="p3"><br></p>
+<p class="p8">(</p>
+<p class="p8">a = <span class="s2">SCAlert</span>( <span class="s5">"hello!"</span> );</p>
+<p class="p8">a.color = <span class="s2">Color</span>.green(0.2);</p>
+<p class="p8">b = <span class="s2">Task</span>({</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">var</span> i = 0;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>loop {<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ a.iconName = (<span class="s5">"wait_"</span> ++ (i = i+(1/16))).asSymbol; }.defer;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>0.1.wait;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>};</p>
+<p class="p8"><span class="Apple-tab-span">	</span>}).start;</p>
+<p class="p8">a.actions = [ { b.stop }, { b.stop } ];</p>
+<p class="p8">a.onCloseIndex = 0;</p>
+<p class="p8">)</p>
+<p class="p4"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>buttonClosesWindow / buttonClosesWindow_</b></p>
+<p class="p2">defaults to true, if false the window is not closed when one of the butons is hit.</p>
+<p class="p3"><br></p>
+<p class="p2"><b>buttonLabel ( index ) / buttonLabel_ ( index, newLabel )</b></p>
+<p class="p2">changes the name of the button at index</p>
+<p class="p3"><br></p>
+<p class="p2"><b>focus ( index )</b></p>
+<p class="p2">sets the focus to the button at index</p>
+<p class="p3"><br></p>
+<p class="p2"><b>enable ( index ) / disable ( index )</b></p>
+<p class="p2">enables or disables the button at index</p>
+<p class="p3"><br></p>
+<p class="p4"><br></p>
+<p class="p8">(</p>
+<p class="p5"><span class="s3">a = </span><span class="s2">SCAlert</span><span class="s3">( </span>"try out these buttons"<span class="s3">, [</span>"cancel"<span class="s3">, </span>"disable me"<span class="s3">, </span>"change text"<span class="s3">] );</span></p>
+<p class="p8">a.buttonClosesWindow_( <span class="s2">false</span> );</p>
+<p class="p8">a.actions_( [<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span>{ a.window.close }, </span>// cancel closes the window</p>
+<p class="p8"><span class="Apple-tab-span">	</span>{ a.disable( 1 ); },<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span>{ a.string_( </span><span class="s5">"text changed"</span><span class="s3"> ); </span>// first hit changes text</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.buttonLabel_( 2, <span class="s5">"ok"</span> );</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.actions[2] = { a.window.close; } <span class="s8">// next hit closes window</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>} ] );</p>
+<p class="p8">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><b>hit</b></p>
+<p class="p2">hits the currently focused button</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

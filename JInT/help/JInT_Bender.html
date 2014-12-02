@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #991a1a}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #991a1a; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #004492}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {text-decoration: underline}
+span.s2 {color: #000000}
+span.s3 {color: #003ca9}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>JInT_Bender</b></p>
+<p class="p2"><b>superclass: JInt_WISE</b></p>
+<p class="p3">/**</p>
+<p class="p3"><span class="Apple-tab-span">	</span>2007<span class="Apple-converted-space">  </span>Till Bovermann (Bielefeld University)</p>
+<p class="p3">*/</p>
+<p class="p4"><br></p>
+<p class="p2">implements [<b><span class="s1">JustInTerface</span></b>] for the Bender Interface.</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">s.boot;</p>
+<p class="p7"><br></p>
+<p class="p8"><span class="s2">k = </span>JInT_Bender<span class="s2">.new</span></p>
+<p class="p6">k.start</p>
+<p class="p6">k.stop</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6">k[0].action = {|me| me.value.postln}</p>
+<p class="p6">k[0].action = nil</p>
+<p class="p7"><br></p>
+<p class="p6">p = ProxySpace.push(s)</p>
+<p class="p6">~a = {SinOsc.ar!2}</p>
+<p class="p7"><br></p>
+<p class="p9">// watch the volume</p>
+<p class="p6">~a = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span>Splay.ar((1..5).collect{|i| <span class="s3">SinOsc</span>.ar(k[i].kr.exprange(400, 800))}) * k[0].kr.range(0, 1)</p>
+<p class="p6">}</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6">~a = {</p>
+<p class="p6"><span class="Apple-tab-span">	</span>Splay.ar((1..5).collect{|i| <span class="s3">SinOsc</span>.ar(k[i].kr.exprange(400, 800)) * LFPulse.ar(k[i].kr.exprange(2, 8)).lag(0.01)}) * k[0].kr.range(0, 1)</p>
+<p class="p6">}</p>
+<p class="p7"><br></p>
+<p class="p7"><br></p>
+<p class="p6">~a.clear</p>
+<p class="p6">~a.play</p>
+<p class="p7"><br></p>
+<p class="p6">~a.stop</p>
+</body>
+</html>

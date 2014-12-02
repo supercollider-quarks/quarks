@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; min-height: 22.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad140d}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad140d; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #9d1c12}
+span.s1 {text-decoration: underline ; color: #002fe0}
+span.s2 {color: #0024f8}
+span.s3 {text-decoration: underline ; color: #0026b4}
+span.s4 {color: #0026b4}
+span.s5 {color: #606060}
+span.s6 {color: #000000}
+span.s7 {color: #001bb9}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>asCode</b></p>
+<p class="p2"><b>SCView extensions</b></p>
+<p class="p3"><br></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p4"><br></p>
+<p class="p2">Method for generating <a href="SC://GUI"><span class="s2">GUI</span></a> style code from <a href="SC://SCView"><span class="s3">SCView</span></a> objects</p>
+<p class="p2"><i>note: asCode only works on CocoaGUI objects for now</i></p>
+<p class="p5"><br></p>
+<p class="p2"><b>asCode ( varName, extraMethods )</b></p>
+<p class="p2">asCode works as an 'asCompileString' for SCViews.</p>
+<p class="p4"><br></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>varName : </b>name of the var used in the code (default: "w" )</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>extraMethods : </b>every view has specific methods to be added to the code, based on its properties.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>These methods can be Symbols, or arrays with one Symbol and a value which is regarded as the</p>
+<p class="p2"><span class="Apple-tab-span">	</span>default value for that specific method. If no default value is specified, asCode uses nil as the default</p>
+<p class="p2"><span class="Apple-tab-span">	</span>value. A method is only posted if the value it returns is different from the default value. The extraMethods</p>
+<p class="p2"><span class="Apple-tab-span">	</span>argument is used internally by asCode, but as a user you can also specify extra methods to be posted.</p>
+<p class="p4"><br></p>
+<p class="p2">Every Object in SuperCollider will respond to asCode, but for most objects the reponse will be the same as</p>
+<p class="p2">asCompileString. For SCViews and SCWindows and some related classes asCode produces full code for</p>
+<p class="p2">the recreation of that view or window. This includes the decorators for SCWindow and SCContainerView too.</p>
+<p class="p4"><br></p>
+<p class="p6">(</p>
+<p class="p6">w = <span class="s4">SCWindow</span>( <span class="s5">"test-asCode"</span> ).front;</p>
+<p class="p6">10.do({ <span class="s4">SCSlider</span>( w, <span class="s4">Rect</span>.rand( 380, 380, 100, 100 ) ).value_( 1.0.rand ); });</p>
+<p class="p6">w.view.background = <span class="s4">Color</span>.blue(0.8).alpha_(0.25);</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p6">w.asCode;</p>
+<p class="p5"><br></p>
+<p class="p7">/* result:</p>
+<p class="p8"><br></p>
+<p class="p7">w = GUI.window.new("test-asCode", Rect(128, 64, 400, 400) ).front;</p>
+<p class="p7">w.view.background_(Color(0.0, 0.0, 0.8, 0.25));</p>
+<p class="p8"><br></p>
+<p class="p7">*/</p>
+<p class="p5"><br></p>
+<p class="p9"><span class="s6">w[0].asCode;<span class="Apple-converted-space">  </span></span>// (note the SC2 compatible .at for SCWindow views)</p>
+<p class="p5"><br></p>
+<p class="p7">/* result:</p>
+<p class="p8"><br></p>
+<p class="p7">GUI.slider.new( w, Rect(44.0, 200.0, 32.0, 4.0) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( 0.5038806200027466 );</p>
+<p class="p8"><br></p>
+<p class="p7">*/</p>
+<p class="p8"><br></p>
+<p class="p6">w.drawHook = { <span class="s7">GUI</span>.pen.width_(5).line( 10@10, 390@390 ).stroke }; w.refresh;</p>
+<p class="p5"><br></p>
+<p class="p7"><span class="s6">w.asCode;<span class="Apple-converted-space">  </span></span>// includes drawHook functions. But only if they use GUI.pen</p>
+<p class="p5"><br></p>
+<p class="p7">/*</p>
+<p class="p7">w = GUI.window.new("test-asCode", Rect(128, 64, 400, 400) ).front;</p>
+<p class="p7">w.view.background_(Color(0.0, 0.0, 0.8, 0.25));</p>
+<p class="p7">w.drawHook = {</p>
+<p class="p7"><span class="Apple-tab-span">	</span>GUI.pen.width_( 5 );</p>
+<p class="p7"><span class="Apple-tab-span">	</span>GUI.pen.moveTo( Point(10, 10) );</p>
+<p class="p7"><span class="Apple-tab-span">	</span>GUI.pen.lineTo( Point(390, 390) );</p>
+<p class="p7"><span class="Apple-tab-span">	</span>GUI.pen.stroke;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>};</p>
+<p class="p7">*/</p>
+<p class="p4"><br></p>
+<p class="p2"><b>SCWindow:asFullCode ( varName, extraMethods )</b></p>
+<p class="p2">calls asCode on all views in a window and returns the code for the full window, between brackets</p>
+<p class="p4"><br></p>
+<p class="p9"><span class="s6">w.asFullCode( </span><span class="s5">"~window"</span><span class="s6"> ); </span>// if the window from the above examples is still open</p>
+<p class="p5"><br></p>
+<p class="p7">/* result:</p>
+<p class="p7">(</p>
+<p class="p7">~window = GUI.window.new("test-asCode", Rect(128, 64, 400, 400) ).front;</p>
+<p class="p7">~window.view.background_(Color(0.0, 0.0, 0.8, 0.25));</p>
+<p class="p7">~window.drawHook = {</p>
+<p class="p7"><span class="Apple-tab-span">	</span>GUI.pen.width_( 5 );</p>
+<p class="p7"><span class="Apple-tab-span">	</span>GUI.pen.moveTo( Point(10, 10) );</p>
+<p class="p7"><span class="Apple-tab-span">	</span>GUI.pen.lineTo( Point(390, 390) );</p>
+<p class="p7"><span class="Apple-tab-span">	</span>GUI.pen.stroke;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>};</p>
+<p class="p8"><br></p>
+<p class="p7">GUI.slider.new( ~window, Rect(44.0, 200.0, 32.0, 4.0) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( 0.5038806200027466 );</p>
+<p class="p7">GUI.slider.new( ~window, Rect(170.0, 169.0, 1.0, 25.0) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( 0.0577695369720459 );</p>
+<p class="p7">GUI.slider.new( ~window, Rect(95.0, 32.0, 31.0, 82.0) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( 0.041653990745544434 );</p>
+<p class="p7">GUI.slider.new( ~window, Rect(317.0, 332.0, 20.0, 98.0) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( 0.87993323802948 );</p>
+<p class="p7">GUI.slider.new( ~window, Rect(128.0, 98.0, 8.0, 73.0) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( 0.3661167621612549 );</p>
+<p class="p7">GUI.slider.new( ~window, Rect(366.0, 110.0, 77.0, 19.0) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( 0.23308014869689941 );</p>
+<p class="p7">GUI.slider.new( ~window, Rect(191.0, 368.0, 14.0, 29.0) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( 0.41184818744659424 );</p>
+<p class="p7">GUI.slider.new( ~window, Rect(306.0, 198.0, 9.0, 31.0) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( 0.4233088493347168 );</p>
+<p class="p7">GUI.slider.new( ~window, Rect(211.0, 170.0, 51.0, 23.0) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( 0.5840545892715454 );</p>
+<p class="p7">GUI.slider.new( ~window, Rect(248.0, 291.0, 23.0, 80.0) )</p>
+<p class="p7"><span class="Apple-tab-span">	</span>.value_( 0.12104594707489014 );</p>
+<p class="p7">);</p>
+<p class="p8"><br></p>
+<p class="p7">*/</p>
+<p class="p4"><br></p>
+</body>
+</html>

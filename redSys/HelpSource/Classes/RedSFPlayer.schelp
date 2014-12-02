@@ -1,0 +1,82 @@
+CLASS:: RedSFPlayer
+SUMMARY:: plays soundfiles (from memory)
+CATEGORIES:: Red>redSF
+RELATED:: Classes/RedSFPlayerDisk
+
+DESCRIPTION::
+Based on link::Classes/PlayBuf::. Use link::Classes/RedSFPlayerDisk:: for playing back soundfiles from disk instead.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new player on a link::Classes/Server::.
+
+ARGUMENT:: server
+If code::nil:: it will use code::Server.default::.
+
+METHOD:: read
+Create a new player on a link::Classes/Server::.
+
+ARGUMENT:: path
+A link::Classes/String:: pointing to a soundfile.
+
+ARGUMENT:: server
+If code::nil:: it will use code::Server.default::.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prSendDefs, prStop, prFree, prPlay, prRead
+
+METHOD:: read
+The server should be booted before reading.
+
+ARGUMENT:: path
+A link::Classes/String:: pointing to a soundfile.
+
+METHOD:: loop, play
+Starts playing the soundfile.
+
+ARGUMENT:: out
+Output bus.
+
+ARGUMENT:: rate
+Playback rate.
+
+ARGUMENT:: fadeTime
+In seconds.
+
+METHOD:: stop
+
+ARGUMENT:: fadeTime
+In seconds.
+
+METHOD:: free
+Stop playing and free internal buffer.
+
+METHOD:: amp
+Get or set the amplitude.
+
+METHOD:: isPlaying
+A link::Classes/Boolean::
+
+METHOD:: duration
+Length of the soundfile in seconds. Updated after reading.
+
+METHOD:: channels
+Number of channels of the soundfile. Updated after reading.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= RedSFPlayer.new
+a.read(Platform.resourceDir +/+ "sounds/a11wlk01-44_1.aiff")
+a.play			//default is play out on bus 0 with rate 1 and 0 fadeTime
+a.stop
+
+a.loop(0, 3, 4)		//start looping with long fadeTime and high rate
+a.loop(0, -2, 8)	//crossfade to backwards rate
+a.stop(4)		//fadeout
+
+a.free
+::

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.46">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ff}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #0000b5}
+span.s2 {color: #000000}
+span.s3 {color: #0000bf}
+span.s4 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>PowerMate</b></p>
+<p class="p2"><b>Inherits from: </b><a href="../../../../../../../../localvol/sound/src/SuperCollider/build/Help/Core/Object.html"><span class="s1"><b>Object</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p2">(Brought to you by <a href="http://LFSaw.de">http://LFSaw.de</a>)</p>
+<p class="p4"><span class="s2">Built on <a href="SC://GeneralHID">GeneralHID</a></span></p>
+<p class="p5"><br></p>
+<p class="p6"><b>Attention</b></p>
+<p class="p2">To use this HID object, and the Griffin PowerMate at all in a useful fashion as a HID object on osx, you need the PowerMate kext provided here:</p>
+<p class="p2"><span class="Apple-tab-span">	</span><a href="http://www.oatbit.com/~jg/index.php?w=newsite/files/knob_drivers/">http://www.oatbit.com/~jg/index.php?w=newsite/files/knob_drivers/</a></p>
+<p class="p2">Load the kext by evaluating this line</p>
+<p class="p7">"cd /Users/tboverma/Documents/myProjects/sc/wiki/tools/PowerMate-KnobKext; ./load"<span class="s2">.runInTerminal;</span></p>
+<p class="p5"><br></p>
+<p class="p2">Currently, this class only supports one PowerMate at a time. More to come.</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p6"><b>Creation / Class Methods</b></p>
+<p class="p3"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*new</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>create a new Instance</p>
+<p class="p3"><br></p>
+<p class="p9"><b>Accessing Instance and Class Variables</b></p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>downAction</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>downAction_ (func)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>define action to be evaluated when PowerMate is pressed</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>upAction</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>upAction_ (func)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>define action to be evaluated when PowerMate is released</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>turnAction</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>turnAction_ (func)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>define action to be evaluated when PowerMate is rotated</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>downTurnAction</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>downTurnAction_ (func)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>define action to be evaluated when PowerMate is rotated while pressed</p>
+<p class="p3"><br></p>
+<p class="p6"><b>Example</b></p>
+<p class="p3"><br></p>
+<p class="p10"><span class="s2">q = q ? ();<span class="Apple-converted-space">  </span></span>// a dictonary</p>
+<p class="p11"><br></p>
+<p class="p10">// Build device list.<span class="Apple-converted-space"> </span></p>
+<p class="p10">// Make sure the Powermate is plugged in before evaluating this line</p>
+<p class="p12"><span class="s3">GeneralHID</span>.buildDeviceList;</p>
+<p class="p11"><br></p>
+<p class="p10">// create the PowerMate and start the HID event loop</p>
+<p class="p12">q.knob = <span class="s3">PowerMate</span>.new;</p>
+<p class="p12"><span class="s3">GeneralHID</span>.startEventLoop</p>
+<p class="p11"><br></p>
+<p class="p10">// define some actions</p>
+<p class="p12">(</p>
+<p class="p12">q.knob.downAction = {<span class="s4">"down"</span>.postln};</p>
+<p class="p12">q.knob.upAction = {<span class="s4">"up"</span>.postln};</p>
+<p class="p11"><br></p>
+<p class="p12">q.knob.turnAction = {<span class="s3">|k, vel|</span> (vel &gt; 0).if({</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"right for %\n"<span class="s2">.postf(vel)</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>},{</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"left for %\n"</span>.postf(vel.abs)</p>
+<p class="p12"><span class="Apple-tab-span">	</span>})</p>
+<p class="p12">};</p>
+<p class="p11"><br></p>
+<p class="p12">q.knob.downTurnAction = {<span class="s3">|k, vel|</span> (vel &gt; 0).if({</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"down right for %\n"<span class="s2">.postf(vel)</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>},{</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"down left for %\n"<span class="s2">.postf(vel.abs)</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>})</p>
+<p class="p12">};</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// stop everything</p>
+<p class="p12">q.knob.downAction = <span class="s3">nil</span>;</p>
+<p class="p12">q.knob.upAction = <span class="s3">nil</span>;</p>
+<p class="p12">q.knob.turnAction = <span class="s3">nil</span>;</p>
+<p class="p12">q.knob.downTurnAction = <span class="s3">nil</span>;</p>
+<p class="p13"><span class="s3">GeneralHID</span>.stopEventLoop</p>
+</body>
+</html>

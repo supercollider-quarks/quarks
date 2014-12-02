@@ -1,0 +1,250 @@
+TITLE:: EventListPlayer
+summary:: plays lists of Events using the \beat parameter
+categories:: Libraries>crucial>Players, Streams-Patterns-Events>Patterns
+related:: Classes/Pbind, Classes/Event, Classes/AbstractPlayer
+
+DESCRIPTION::
+Patterns play sequential streams of Events. EventListPlayer takes a different approach by instead taking a list of Event objects and playing each one at the time indicated in the Event's \beat param.
+
+The Events do not need to be sorted and multiple events can play at the same \beat.
+
+This is useful when you have a sequence or array of things you would like to play and it doesn't make sense to translate this into the delta based timing model of a Pbind.
+
+
+code::
+(
+// create a cluster of events around beat 12
+var events = Array.fill(64, { arg i;
+			// an Event object
+			(
+				// gaussian distribution with 2.0 standard deviations around beat 12.0
+				beat: 12.0.gauss(2.0),
+				degree: 20.rand,
+
+				type: \instr,
+				instr: "schelp.EventListPlayer",
+				env: Env.perc
+			)
+	});
+
+Instr("schelp.EventListPlayer", { arg freq=440, env;
+	SinOsc.ar(freq) * EnvGen.kr(env, doneAction:2)
+});
+
+e = EventListPlayer.new(events);
+
+e.play;
+)
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+(describe method here)
+
+ARGUMENT:: events
+list of Event objects
+
+ARGUMENT:: spec
+Output spec of the events. Usually this is \audio
+
+ARGUMENT:: postFilter
+An optional dictionary or Event that will be used to filter the output of the stream.
+
+ARGUMENT:: protoEvent
+An optional Event that will be copied into each Event in the stream.  This is to avoid excessive duplication if all events have a param that is the same. It can also be used for dynamic settings like \bus.  It is also useful in that it is saved with the EventListPlayer and each event is saved so it makes for a much more efficient compile string.
+
+returns:: am EventListPlayer
+
+
+INSTANCEMETHODS::
+
+METHOD:: beat
+get current beat while playing
+
+returns:: Float
+
+METHOD:: addEvent
+add a new Event. this can be done while playing
+
+ARGUMENT:: ev
+an Event
+
+returns:: this
+
+METHOD:: guiClass
+EventListPlayerGui
+
+returns:: EventListPlayerGui
+
+METHOD:: removeEvent
+remove an event by supplying the event to be matched.  can be done while playing
+
+ARGUMENT:: ev
+the Event
+
+
+METHOD:: storeArgs
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: prSched
+(describe method here)
+
+ARGUMENT:: beat
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: setEventBeat
+set the beat for the event at the given index.  This is better than directly manipulating the event in that it will correctly resched events if youa re currently playing.
+
+ARGUMENT:: i
+index
+
+ARGUMENT:: beat
+Float
+
+
+METHOD:: playEvent
+play an Event on the fly. Doesn't matter if the event is scheduled, in the list or not on the list. It is used for auditioning sounds. When using the gui you can double click on an event to make it play.  protoEvent and postFilter will be processed as well.
+
+ARGUMENT:: event
+an Event
+
+ARGUMENT:: inval
+optional Event that will be copied into the Event.  (non-destructive)
+
+
+METHOD:: stopToBundle
+private
+
+ARGUMENT:: b
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: beatDuration
+total beatDuration is the last beat of any event in the list. Does not take into account \duration of that event.
+
+returns:: float
+
+METHOD:: schedFromNow
+private
+
+returns:: (describe returnvalue here)
+
+METHOD:: schedNext
+private
+
+ARGUMENT:: newEi
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: findNextAfter
+private
+
+ARGUMENT:: beat
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: getEventBeat
+get the beat for an event in the list at index i
+
+ARGUMENT:: i
+integer
+
+returns:: float
+
+METHOD:: gotoBeat
+while playing, relocate to a beat
+
+ARGUMENT:: beat
+float
+
+ARGUMENT:: atBeat
+(describe argument here)
+
+ARGUMENT:: bundle
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: playEventAt
+play an event by index
+
+ARGUMENT:: i
+integer
+
+ARGUMENT:: inval
+optional post filter event
+
+
+METHOD:: initElp
+private
+
+returns:: (describe returnvalue here)
+
+METHOD:: spawnToBundle
+private
+
+ARGUMENT:: bundle
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: events
+get or set the list of events
+
+ARGUMENT:: evs
+list of Event
+
+returns:: (describe returnvalue here)
+
+METHOD:: sorted
+the list of events
+
+returns:: (describe returnvalue here)
+
+
+EXAMPLES::
+
+The gui requires the crucialviews quark for the UserViewObjectsManager. This enables selecting events, option-drag to copy, "delete" to delete, move events around.
+
+If used inside an Mx you can open the timeline view and zoom and click in the timeline to relocate.
+
+code::
+(
+// create a cluster of events around beat 12
+var events = Array.fill(64, { arg i;
+			// an Event object
+			(
+				// gaussian distribution with 2.0 standard deviations around beat 12.0
+				beat: 12.0.gauss(2.0),
+				degree: 20.rand,
+
+				type: \instr,
+				instr: "schelp.EventListPlayer",
+				env: Env.perc
+			)
+	});
+
+Instr("schelp.EventListPlayer", { arg freq=440, env;
+	SinOsc.ar(freq) * EnvGen.kr(env, doneAction:2)
+});
+
+e = EventListPlayer.new(events);
+
+// e.gui
+
+x = Mx.new;
+x.add(e);
+x.gui;
+
+)
+::
+

@@ -1,0 +1,42 @@
+CLASS:: RedLoopDisk
+SUMMARY:: loop a soundfile from disk
+CATEGORIES:: Red>redSampler
+RELATED:: Classes/RedLoop, Classes/RedDiskInSampler, Classes/RedDiskInPlayer
+
+DESCRIPTION::
+Nothing fancy. This class just streams a soundfile from disk using link::Classes/DiskIn::.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new RedLoopDisk instance. If code::Server.default:: is not booted, then this will boot it.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prType
+
+METHOD:: amp
+Set the amplitude.
+
+METHOD:: channels
+Returns the number of channels in the soundfile.
+
+METHOD:: length
+Returns the duration of the soundfile in seconds.
+
+METHOD:: buffer
+Pointless. Just here to keep the same interface as link::Classes/RedLoop::
+
+METHOD:: free
+Stops playing and frees the buffer.
+
+EXAMPLES::
+
+code::
+a= RedLoopDisk(Platform.resourceDir +/+ "sounds/a11wlk01-44_1.aiff")
+a.amp= 0.3
+a.channels
+a.length
+a.buffer	//pointless in this class - just returns the DiskIn streaming buffer
+a.free
+::

@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #e10000}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #797979}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #001af9}
+span.s3 {color: #3200ff}
+span.s4 {color: #001cbb}
+span.s5 {color: #000000}
+span.s6 {color: #2500cf}
+span.s7 {color: #be00ac}
+span.s8 {text-decoration: underline ; color: #0000ee}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Fb<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a painless way to create a feedback loop within a SynthDef</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p3"><br></p>
+<p class="p1">There are many ways to create feedback loops in SuperCollider.<span class="Apple-converted-space">  </span>Fb is a convenience class that allows you to create them in as painless a way as possible.<span class="Apple-converted-space">  </span>It achieves this by using <a href="sc://LocalBuf"><span class="s2">LocalBuf</span></a> internally.<span class="Apple-converted-space">  </span>The easiest way to understand it is probably to skip to the examples section. Fb is part of the Feedback quark.</p>
+<p class="p2"><br></p>
+<p class="p1">In addition to Fb, the Feedback quark provides <a href="FbNode.html"><span class="s3">FbNode</span></a>, which is a different way of doing the same thing. FbNode is more flexible and arguably more intuitive than Fb. See its help file for a comparison between the two classes.<span class="Apple-converted-space">  </span>There is also <a href="FbK.html"><span class="s3">FbK</span></a>, which is like Fb but for control-rate (kr) signals.</p>
+<p class="p2"><br></p>
+<p class="p1">Ways of creating feedback loops in SuperCollider can be divided into two types: those that use busses to route signals between SynthDefs, and those that create a feedback loop within a SynthDef.<span class="Apple-converted-space">  </span>Fb is of the latter type.</p>
+<p class="p2"><br></p>
+<p class="p1">The traditional way to create feedback within a SynthDef is to use <a href="sc://LocalIn"><span class="s2">LocalIn</span></a>/<a href="sc://LocalOut"><span class="s2">LocalOut</span></a>.<span class="Apple-converted-space">  </span>Fb has several advantages over this:</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space"> </span>* You can have more than one instance of Fb in a single SynthDef -- either sequentially or nested inside each other -- allowing greater readability of code and more complex networks of feedback loops than would be practical with LocalIn/LocalOut.</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space"> </span>* Fb does multichannel expansion in most cases, so you don't have to worry so much about how many channels to use</p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space"> </span>* Fb will not crash the server if you send it the wrong number of channels</p>
+<p class="p2"><br></p>
+<p class="p1">Fb has a built-in delay line, so you can control the time period of the feedback loop.<span class="Apple-converted-space">  </span>As with (almost) all methods of achieving feedback in SuperCollider, the minimum delay is given by the server's block size, which is usually 64 samples.<span class="Apple-converted-space">  </span>Fb's inbuilt delay line does not interpolate (i.e. it uses <a href="sc://DelayN"><span class="s2">DelayN</span></a>), but its sister classes <a href="sc://FbL"><span class="s4">FbL</span></a> and <a href="sc://FbC"><span class="s4">FbC</span></a> use linear and cubic interpolation.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also: </b><a href="FbNode.html"><span class="s3">FbNode</span></a>, <a href="sc://FbL"><span class="s4">FbL</span></a>, <a href="sc://FbC"><span class="s4">FbC</span></a>, <a href="sc://LocalIn"><span class="s2">LocalIn</span></a>, <a href="sc://InFeedback"><span class="s2">InFeedback</span></a>, <a href="sc://NodeProxy"><span class="s2">NodeProxy</span></a>, <a href="sc://LocalBuf"><span class="s2">LocalBuf</span></a>, and also the single sample feedback file in the Examples folder that comes with SC.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (func, maxdelaytime, delaytime, numChannels)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Create a feedback loop within a SynthDef</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>func </b>- This function should contain the UGens that will be inside the feedback loop.<span class="Apple-converted-space">  </span>Its output is delayed and then fed into its input.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>maxdelaytime </b>- the maximum delay time in seconds. used to initialize the delay buffer size.<span class="Apple-converted-space">  </span>You do not need to subtract <a href="sc://ControlDur"><span class="s2">ControlDur</span></a>.ir from this, as it is done automatically.<span class="Apple-converted-space">  </span>If you set it to less than<span class="Apple-converted-space">  </span><a href="sc://ControlDur"><span class="s2">ControlDur</span></a>.ir (i.e. less than 64/44100 ≈ 0.014s) then no extra delay line will be added.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>delaytime </b>- delay time in seconds.<span class="Apple-converted-space">  </span>If not set, this defaults to <b>maxdelaytime</b>.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>numChannels </b>- How many channels of audio to be fed back.<span class="Apple-converted-space">  </span>If this is not set, Fb will make a guess by sending <b>func</b> a mono signal and seeing how many channels it returns.<span class="Apple-converted-space">  </span>This is a good guess in a lot of cases, but if you're doing something complicated with lots of multichannel expansion it's worth setting this expicitly.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p8">Note that some of these examples use <a href="sc://FbL"><span class="s4">FbL</span></a> for linear interpolation.</p>
+<p class="p3"><br></p>
+<p class="p10">// simple dub delay effect</p>
+<p class="p3"><br></p>
+<p class="p11"><span class="s5">b = </span><span class="s6">Buffer</span><span class="s5">.read(s,</span>"sounds/a11wlk01.wav"<span class="s5">)</span></p>
+<p class="p3"><br></p>
+<p class="p12">(</p>
+<p class="p12">{</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">var</span> in = <span class="s6">PlayBuf</span>.ar(<span class="s7">1</span>,b);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">var</span> out = in + <span class="s6">Fb</span>({</p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6">arg</span><span class="s5"> feedback; </span>// this will contain the delayed output from the Fb unit</p>
+<p class="p3"><br></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// filter and distort the feedback signal. <span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Note that the input signal is fed in here as well:</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">BPF</span>.ar(feedback*<span class="s7">0.8 </span>+ in, <span class="s7">2000</span>, <span class="s7">3.8</span>).distort;</p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// for fun effects, try changing the 0.8 to something greater than one</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>},<span class="s7">0.6</span>);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">DetectSilence</span>.ar(out,doneAction:<span class="s7">2</span>);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>out!<span class="s7">2</span>;</p>
+<p class="p12">}.play;</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p12">b.free</p>
+<p class="p3"><br></p>
+<p class="p10">// Karplus-Strong style plucked string algorithm (see also <a href="sc://Pluck"><span class="s8">Pluck</span></a>)</p>
+<p class="p12">(</p>
+<p class="p12">{</p>
+<p class="p10"><span class="s5"><span class="Apple-tab-span">	</span></span><span class="s6">var</span><span class="s5"> sig = </span><span class="s6">Impulse</span><span class="s5">.ar(</span><span class="s7">0</span><span class="s5">)!</span><span class="s7">2</span><span class="s5">; </span>// stereo input - feedback will expand to two channels <span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">var</span> freq = <span class="s7">200</span>;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig = <span class="s6">FbL</span>({<span class="s6">arg</span> fb; <span class="s6">LPF</span>.ar(<span class="s6">LeakDC</span>.ar(fb),<span class="s7">8000</span>)*<span class="s7">0.99</span>+sig;},<span class="s7">1</span>/freq);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">DetectSilence</span>.ar(sig,doneAction:<span class="s7">2</span>);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig;</p>
+<p class="p12">}.play</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p10">// Multiple instances in one SynthDef: three Karplus-Strong style algorithms in a row</p>
+<p class="p12">(</p>
+<p class="p12">{</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">var</span> sig = <span class="s6">Impulse</span>.ar(<span class="s7">0</span>);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig = <span class="s6">FbL</span>({<span class="s6">arg</span> fb; <span class="s6">LPF</span>.ar(<span class="s6">LeakDC</span>.ar(fb),<span class="s7">8000</span>)*<span class="s7">0.99</span>+sig;},<span class="s7">1</span>/<span class="s7">300</span>);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig = <span class="s6">FbL</span>({<span class="s6">arg</span> fb; <span class="s6">LPF</span>.ar(<span class="s6">LeakDC</span>.ar(fb),<span class="s7">8000</span>)*<span class="s7">0.99</span>+sig;},<span class="s7">1</span>/<span class="s7">400</span>);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig = <span class="s6">FbL</span>({<span class="s6">arg</span> fb; <span class="s6">LPF</span>.ar(<span class="s6">LeakDC</span>.ar(fb),<span class="s7">8000</span>)*<span class="s7">0.99</span>+sig;},<span class="s7">1</span>/<span class="s7">500</span>);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">DetectSilence</span>.ar(sig,doneAction:<span class="s7">2</span>);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig!<span class="s7">2</span>;</p>
+<p class="p12">}.play</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+<p class="p10">// You can nest feedback loops inside each other</p>
+<p class="p12">(</p>
+<p class="p12">{</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">var</span> sig = <span class="s6">Decay</span>.kr(<span class="s6">Impulse</span>.kr(<span class="s7">1</span>/<span class="s7">2</span>),<span class="s7">0.6</span>)*<span class="s6">PinkNoise</span>.ar(<span class="s7">1</span>!<span class="s7">2</span>);</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig = <span class="s6">FbL</span>({</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">arg</span> fb1;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = sig + <span class="s6">FbL</span>({</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">arg</span> fb2;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(<span class="s6">OnePole</span>.ar(<span class="s6">LeakDC</span>.ar(<span class="s7">0</span>-fb2),<span class="s7">0.2</span>)*<span class="s7">0.99</span>*<span class="s7">1</span>)+(fb1*<span class="s7">9</span>) / <span class="s7">10</span>;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>},<span class="s7">1</span>/<span class="s7">250</span>);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">OnePole</span>.ar(sig,<span class="s7">-0.01</span>);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>},<span class="s7">0.1</span>);</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig;</p>
+<p class="p12">}.play;</p>
+<p class="p12">)</p>
+<p class="p3"><br></p>
+</body>
+</html>

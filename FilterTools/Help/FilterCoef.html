@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #626046; min-height: 12.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #95251e}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #2b4782}
+span.s3 {color: #385dad}
+span.s4 {color: #315bb3}
+span.s5 {color: #0024f4}
+span.s6 {color: #506596}
+span.s7 {font: 14.0px Helvetica}
+span.s8 {color: #2154c0}
+span.s9 {font: 9.0px Monaco}
+span.s10 {color: #0026af}
+span.s11 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>FilterCoef<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>calculates time-domain filter coefficients</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="../../Core/Object.html"><span class="s2"><b>Object</b></span></a></p>
+<p class="p3"><br></p>
+<p class="p1">FilterCoef generates the a and b coefficients for the general linear difference equation for a filter in response to the location of n poles and/or zeros on the Z-plane graph. These coefficients can be used by <a href="SC://SOS"><span class="s3">SOS</span></a>, <a href="SC://FOS"><span class="s3">FOS</span></a> or <a href="http://../sc3-plugins/SLUGens/help/LTI.html"><span class="s3">LTI</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Important notes</b></p>
+<p class="p1">Unlike <a href="ZPlane.html"><span class="s4">ZPlane</span></a>, FilterCoef does no automatic checking for identical pole/zero pairs. Neither does it check if the number of poles and zeros are equal or does it add a conjugate pole/zero automatically. Please also note that if you normalize the frequency response with <a href="ZPlane.html"><span class="s4">ZPlane</span></a>, this does not mean that the time-domain coefficients are normalized too. If you want the time-domain coefficients to be normalized, you have to state this explicitly when you call .calc for FilterCoef (the default behaviour is to normalize the frequency response as well as the time-domain coefficients). See the examples for a further explanation.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new(poles, zeros, real, norm)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new instance of FilterCoef.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>poles </b>- An <a href="SC://Array"><span class="s2">Array</span></a> containing a number of poles of type <a href="SC://Polar"><span class="s2">Polar</span></a>.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>zeros</b> - An <a href="SC://Array"><span class="s2">Array</span></a> containing a number of zeros of type <a href="SC://Polar"><span class="s2">Polar</span></a>.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>real </b>- A <a href="SC://Boolean"><span class="s5">Boolean</span></a><span class="s5"> </span>indicating whether the filter coefficients returned are real or complex. See also instance method 'checkIfReal'.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>norm </b>- A <a href="SC://Boolean"><span class="s5">Boolean</span></a><span class="s5"> </span>indicating whether the time-domain coefficients should be normalized.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*calc(poles, zeros, norm)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Calculates the time-domain coefficients for the general linear difference equation for a filter. If norm is set to true (by default), the a coefficients are scaled by the reciprocal of the maximum value of the frequency response. Returns an <a href="SC://Array"><span class="s6">Array</span></a> of arrays holding the a coefficients: (a0, a1, a2... an) and the b coefficients: (b1, b2, b3... bn).</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>poles </b>- An <a href="SC://Array"><span class="s2">Array</span></a> containing a number of poles of type <a href="SC://Polar"><span class="s2">Polar</span></a>.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>zeros</b> - An <a href="SC://Array"><span class="s2">Array</span></a> containing a number of zeros of type <a href="SC://Polar"><span class="s2">Polar</span></a>.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>norm</b> - A <a href="../../Core/Boolean.html"><span class="s2">Boolean</span></a> indicating whether the time-domain coefficients should be normalized.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b>Instance Methods</b></p>
+<p class="p12"><b></b><br></p>
+<p class="p6"><span class="s7"><b><span class="Apple-tab-span">	</span></b></span><b>checkIfReal</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Checks if the specified poles and zeros result in a real or complex valued function. Modifies the 'real' variable in response.</p>
+<p class="p10"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>calc(norm)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Calculates the time-domain coefficients for the general linear difference equation for a filter. If norm is set to true (by default), the a coefficients are scaled by the reciprocal of the maximum value of the frequency response. Returns an <a href="SC://Array"><span class="s6">Array</span></a> of arrays holding the a coefficients: (a0, a1, a2... an) and the b coefficients: (b1, b2, b3... bn).</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>norm</b> - A <a href="../../Core/Boolean.html"><span class="s2">Boolean</span></a> indicating whether the time-domain coefficients should be normalized.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>calcImpResp</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Calculates the impulse response of the filter. Returns an <a href="SC://Array"><span class="s8">Array</span></a> with the result.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9"><span class="Apple-tab-span">	</span></span></p>
+<p class="p11"><b>Examples: also see </b><a href="ZPlane.html"><span class="s4"><b>ZPlane</b></span></a></p>
+<p class="p13"><br></p>
+<p class="p13"><br></p>
+<p class="p3"><br></p>
+<p class="p14">// An allpass filter example.</p>
+<p class="p15">(</p>
+<p class="p15">a = <span class="s10">FilterCoef</span>.new([<span class="s10">Polar</span>.new(0.8, 0.25pi), <span class="s10">Polar</span>.new(0.8, -0.25pi)], [<span class="s10">Polar</span>.new(0.8.reciprocal, 0.25pi), <span class="s10">Polar</span>.new(0.8.reciprocal, -0.25pi)]).postln;</p>
+<p class="p3"><br></p>
+<p class="p15">a.calc.postln;</p>
+<p class="p15">a.calcImpResp.real.plot(<span class="s11">"Impulse Response"</span>, discrete: <span class="s10">true</span>)</p>
+<p class="p15">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p14">// Use of FilterCoef together with SOS.</p>
+<p class="p3"><br></p>
+<p class="p14">// Bandpass filter at 0.03 pi (corresponds roughly to 211 Hz at a sampling rate of 44.1 kHz).</p>
+<p class="p15">(</p>
+<p class="p15">c = <span class="s10">FilterCoef</span>.calc([<span class="s10">Polar</span>.new(0.9997, 0.03pi), <span class="s10">Polar</span>.new(0.9997, -0.03pi)], [<span class="s10">Polar</span>.new(0.0, 0.0pi), <span class="Apple-tab-span">	</span><span class="s10">Polar</span>.new(0.0, 0.0pi)])</p>
+<p class="p15">);</p>
+<p class="p3"><br></p>
+<p class="p15"><span class="s10">Server</span>.default = <span class="s10">Server</span>.internal;</p>
+<p class="p15">s = <span class="s10">Server</span>.default;</p>
+<p class="p15">s.boot;</p>
+<p class="p15"><span class="s10">SCFreqScopeWindow</span>.new(400, 200, 0);</p>
+<p class="p15">s.scope;</p>
+<p class="p3"><br></p>
+<p class="p14">// IMPORTANT: The b (feedback) coefficients need to be negated.</p>
+<p class="p15">{ <span class="s10">SOS</span>.ar(<span class="s10">WhiteNoise</span>.ar(0.9).dup(2), c[0][0].real, 0, 0, c[1][1].real.neg, c[1][2].real.neg) }.play</p>
+<p class="p3"><br></p>
+</body>
+</html>

@@ -1,0 +1,124 @@
+TITLE:: KeyPlayerRec
+summary:: a simple recorder for KeyPlayer
+categories:: Undocumented classes
+related:: Classes/KeyPlayer, Reference/KeyPlayerGui
+
+DESCRIPTION::
+KeyPlayerRec can record a series of key presses made with KeyPlayer,
+and play it back with some flexibility, e.g. with variable speed.
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+create a KeyPlayerRec for an existing KeyPlayer
+
+code::
+	// make a KeyPlayerRec explicitly:
+r = KeyPlayerRec.new();
+k = KeyPlayer(\help);
+k.rec = r;
+
+KeyPlayer.gui;
+
+	// or simpler, make it implicitly from KeyPlayer:
+k.makeRec;
+::
+
+ARGUMENT:: player
+the player KeyPlayerRec will record.
+
+METHOD:: verbose
+get and set flag whether to post debug messages.
+
+
+
+INSTANCEMETHODS::
+
+subsection:: Instance Variables
+
+METHOD:: player
+the player KeyPlayerRec records
+
+METHOD:: list
+current list of/for recorded/recording events
+
+METHOD:: lists
+all recorded lists of events since creation
+
+METHOD:: isOn
+flag whether recording isOn.
+
+METHOD:: loop
+get and set flag whether playback will loop isOn.
+
+METHOD:: speed
+get and set relative playback speed. default = 1 = orig. speed.
+
+
+subsection:: Instance Methods
+
+METHOD:: startRec, stopRec, toggleRec
+start, stop and toggle recording keystroke events
+
+METHOD:: recordEvent
+record a keystroke event
+
+METHOD:: play
+start playback of current event list. will stop recording.
+
+METHOD:: togglePlay
+toggle playback on/off
+
+METHOD:: playOnce
+play once through list. this is polyphonic, like Tdef.fork.
+
+METHOD:: changeSpeed
+change speed by a factor
+
+EXAMPLES::
+
+code::
+k = KeyPlayer(\kRec);
+k.makeRec;
+k.gui;
+
+// prepare some random notes to play
+(
+var notes = ();
+thisThread.randSeed = Date.getDate.year;
+"qwertzuiopasdfghjklyxcvbnm".do { |char|
+    notes.put(char, rrand(36, 96));
+
+    KeyPlayer(\kRec).put(char, { |char|
+        char.postln;
+        (midinote: notes[char], dur: 0.1).play
+    });
+};
+)
+
+// now play and record something ...
+
+k.rec.startRec; KeyPlayerRec.verbose = true;
+
+// then stop
+k.rec.stopRec;
+
+k.rec.play;
+k.rec.loop = true;
+
+k.rec.playOnce; // polyphonic, like fork
+
+k.rec.list.printcsAll;
+k.rec.lists;
+
+
+    // try using extra keys for record and play on/off
+    // this is not ideal, as these keys get recorded as well...
+    // would be better if rec params were shown on gui.
+k.putDown($,, { k.rec.toggleRec }, noRep: true);
+k.putDown($., { k.rec.togglePlay }, noRep: true);
+
+
+::

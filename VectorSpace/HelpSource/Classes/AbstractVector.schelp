@@ -1,0 +1,107 @@
+CLASS:: AbstractVector
+SUMMARY:: an element of F^N
+CATEGORIES:: Math
+RELATED:: Overviews/VectorSpace
+
+DESCRIPTION::
+Represents an element of F^N, where F is either the real numbers R or the complex numbers C. Usual operations are implemented. Examples are given with link::Classes/RealVector::.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create new vector from a n-tuple of real numbers. Dimension of the vector is determined by the amount of numbers.
+
+code::
+RealVector[1.2,0.3,5.6,3.2]
+::
+
+METHOD:: gramSchmidt
+Applies the gramSchmidt process to the vectors and returns an array of orthogonal vectors that span the same subspace as the original vectors.
+NOTE::
+rounding errors will usually not give you completely orthogonal vectors.
+::
+	
+code::
+a = RealVector[1,2];
+b = RealVector[3,4];
+
+c = RealVector.gramSchmidt([a,b])
+
+c[0]<|>c[1]
+::
+
+INSTANCEMETHODS::
+
+METHOD:: x, y, z
+components for vectors up to 3 dimensions.
+
+code::
+RealVector[1,2,3].x
+::
+
+METHOD:: <|>
+inner product.
+
+code::
+RealVector[1,2,3]<|>RealVector[2,5,7]
+ComplexVector[Complex(1,0),Complex(1,2)]<|>ComplexVector[Complex(1,3),Complex(0,2)]
+
+// the canonical base in R^N is orthogonal
+3.collect{ |i|  RealVector.canonB(i, 3)<|>RealVector.canonB((i+1).mod(3), 3) };
+::
+
+METHOD:: dist
+distance.
+
+code::
+RealVector[1,2,3].dist(RealVector[2,5,7])
+ComplexVector[Complex(1,0),Complex(1,2)].dist(ComplexVector[Complex(1,3),Complex(0,2)])
+::
+
+METHOD:: norm
+euclidian norm -  sqrt( vector <|> vector ).
+
+code::
+RealVector[0,2,0].norm
+ComplexVector[Complex(1,0),Complex(1,2)].norm
+::
+
+METHOD:: normalize
+
+code::
+RealVector[7,2,3].normalize.norm
+ComplexVector[Complex(1,0),Complex(1,2)].normalize.norm
+::
+
+METHOD:: isOrthogonal
+
+code::
+RealVector[0,0,1,0].isOrthogonal(RealVector[1,0,0,0])
+ComplexVector[Complex(1,0),Complex(0,2)].isOrthogonal(ComplexVector[Complex(0,3),Complex(0,2)])
+::
+
+METHOD:: transpose
+returns the transposed vector as a one row matrix.
+
+code::
+RealVector[0,0,1,0].transpose
+::
+
+METHOD::proj
+projects vector into the current vector.
+
+code::
+RealVector[0,0,1].proj(RealVector[3.2,5.6,3.6])
+::
+
+EXAMPLES::
+
+usual vector space operations
+
+code::
+RealVector[1,2,3] + RealVector[4,5,6]
+RealVector[1,2,3]*2
+
+ComplexVector[Complex(1,0),Complex(0,2)]+ComplexVector[Complex(0,3),Complex(0,2)]
+ComplexVector[Complex(1,0),Complex(0,2)]*Complex(1,2)
+::

@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: FileWriter</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>FileWriter</h1>
+<h2>easily create files that can be read by FileReader</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> : <strong>AbstractFunction</strong> : <strong>Stream</strong> : <strong>IOStream</strong> : <strong>UnixFILE</strong> : <strong>File</strong> </p>
+
+<p>With FileWriter, you can create files that can be read by FileReader, and most common spreadsheet programs.</p>
+<p>Subclasses: TabFileWriter, CSVFileWriter, SemiColonFileWriter</p>
+<p>See also: FileReader, <a href="FilePlayer.html">FilePlayer</a>.
+</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*new(pathName,mode,stamp,del)</STRONG></DT>
+<DD>Create a new instance of FileWriter<DL>
+<DT><EM>stamp</EM></DT>
+<DD>Whether or not to add a time stamp at the beginning of each line (default false)</DD>
+<DT><EM>del</EM></DT>
+<DD>The delimiter to use (default a space, or rather the classvar <em>delim</em>)</DD>
+<DT><EM>mode</EM></DT>
+<DD>Mode of writing (default "w"). Other useful option could be "a" to append to the file. Since we are writing a textfile, you should not use a binary format. See also File.</DD>
+<DT><EM>pathName</EM></DT>
+<DD>The filename to write to.</DD>
+</DL>
+
+</DD>
+
+<DT><STRONG>*delim</STRONG></DT>
+<DD>The default delimiter to use (is overridden in the subclasses)</DD>
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+
+<DT><STRONG>writeLine(array)</STRONG></DT>
+<DD>Write a line to the file.<DL>
+<DT><EM>array</EM></DT>
+<DD>An Array with values to write. The contents of the Array will be written to the file as the compile string of each item, and delimited by the delimiter.</DD>
+</DL>
+</DD>
+
+<DT><STRONG>close</STRONG></DT>
+<DD>Close the file.
+</DD>
+
+<DT><STRONG>delimiter</STRONG></DT>
+<DD>The current delimiter.</DD>
+<DT><STRONG>delimiter_</STRONG></DT>
+<DD>Set the delimiter.</DD>
+
+<DT><STRONG>stringMethod</STRONG></DT>
+<DD>The current stringMethod.</DD>
+<DT><STRONG>stringMethod_</STRONG></DT>
+<DD>The stringMethod is the way the data is written to a file
+ (default is \asString, other option could be \asCompileString).</DD>
+
+<DT><STRONG>timeStamp</STRONG></DT>
+<DD>Whether or not to add a time stamp at the beginning of each line (default false)</DD>
+<DT><STRONG>timeStamp_</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>timebase</STRONG></DT>
+<DD>  </DD>
+<DT><STRONG>timebase_</STRONG></DT>
+<DD>Whether to use local time or greenwich mean time (default: \local, other option: \gm)</DD>
+
+</DL>
+
+<h3> Example 1 </h3>
+    <pre>
+f = <span class="type">TabFileWriter</span>.new( <span class="string">"testfile2.txt"</span>, <span class="string">"w"</span>, <span class="builtin">true</span>);
+
+<span class="type">Task</span>({
+    20.do{
+        f.writeLine( <span class="type">Array</span>.fill( 10, { 1.0.rand }));
+        1.0.wait;
+    };
+    <span class="string">"done"</span>.postln;
+}).play;
+
+f.close;
+</pre>
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

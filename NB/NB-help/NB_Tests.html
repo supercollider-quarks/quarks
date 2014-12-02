@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {color: #000000}
+span.s2 {color: #0000bf}
+span.s3 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1">// NB TESTS</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>/* ----- ----- ----- */</p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//////////////////////</p>
+<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>/* ----- ----- ----- */</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">// PRELIMINARY-PRELIMINARY NOTE: use the "rm -r *" command (in terminal) carefully)</p>
+<p class="p1">// BE SURE THAT YOU"RE IN THE PROPER DIRECTORY BEFORE RUNNING IT</p>
+<p class="p1">// BECAUSE "rm -r *" deletes ALL_FILES in a directory</p>
+<p class="p3"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/* ----- ----- ----- */</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>//////////////////////</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/* ----- ----- ----- */</p>
+<p class="p3"><br></p>
+<p class="p1">// PRELIMINARY - in terminal</p>
+<p class="p1">// the result should be bash ... assuming that it is, go on to TEST 1</p>
+<p class="p3"><br></p>
+<p class="p4">echo $SHELL</p>
+<p class="p2"><br></p>
+<p class="p1">// in terminal .... go to the SuperCollider folder and make an "nb_test" directory</p>
+<p class="p1">// ... this doesn't have to be done through the terminal .... it's ok to make the directory</p>
+<p class="p1">// from the Finder (File-&gt;NEW FOLDER in the SuperCollider folder)</p>
+<p class="p2"><br></p>
+<p class="p4">cd /Applications/SuperCollider</p>
+<p class="p4">mkdir nb_test</p>
+<p class="p3"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/* ----- ----- ----- */</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>//////////////////////</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/* ----- ----- ----- */</p>
+<p class="p3"><br></p>
+<p class="p1">// TEST 1 - in terminal (to show if console.py works (or not)</p>
+<p class="p1">// evaluate each line, one at a time</p>
+<p class="p1">// the result should be test.png in /Applicatons/SuperCollider/nb_test/</p>
+<p class="p1">// if test.png appears in /Appllications/SuperCollider/nb_test, then move on to TEST 2</p>
+<p class="p2"><br></p>
+<p class="p4">cd /Applications/SuperCollider/nb_test</p>
+<p class="p4">pwd</p>
+<p class="p4">export PYTHONPATH=/Applications/NodeBox/NodeBox.app/Contents/Resources/</p>
+<p class="p4">echo $PYTHONPATH</p>
+<p class="p4">python /Applications/SuperCollider/nb_test/console.py test.py test.png</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/* ----- ----- ----- */</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>//////////////////////</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/* ----- ----- ----- */</p>
+<p class="p5"><br></p>
+<p class="p1">// TEST 2 - move to this step only if TEST 1 succeeds</p>
+<p class="p1">// the result of this test should be a "test2.py" file in the /tmp/ directory</p>
+<p class="p3"><br></p>
+<p class="p1">// FIRST, evaluate each line in terminal</p>
+<p class="p1">// - the first line goes to the /tmp directory</p>
+<p class="p1">// - the second line deletes all files in the /tmp directory (so that we have a "clean"</p>
+<p class="p1">// workspace to start</p>
+<p class="p1">// - the third line verifies that nothing is in /tmp (ls should return a "blank" line)</p>
+<p class="p3"><br></p>
+<p class="p4">cd /tmp</p>
+<p class="p4">rm -r *</p>
+<p class="p4">ls</p>
+<p class="p2"><br></p>
+<p class="p1">// then, in SuperCollider ... success is an open window (with code) in NodeBox</p>
+<p class="p1">// AND, look in /tmp. Is "test2.py" there? (then we have complete success).</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p4"><span class="s2">NB</span>(<span class="s3">"test2"</span>, 320, 240);</p>
+<p class="p4">n.background(1, 1, 1);</p>
+<p class="p4">n.fill(1, 0, 0);</p>
+<p class="p4">n.rect(10, 10, 100, 100);</p>
+<p class="p4">n.fill(0, 0, 0);</p>
+<p class="p6"><span class="s1">n.text(</span>"I am the 2nd test"<span class="s1">, 10, 140);</span></p>
+<p class="p4">n.displayCode</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/* ----- ----- ----- */</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>//////////////////////</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/* ----- ----- ----- */</p>
+<p class="p3"><br></p>
+<p class="p1">// TEST 3 - move to this step only if TEST 2 succeeds</p>
+<p class="p3"><br></p>
+<p class="p1">// first, in terminal (delete all files in /tmp and verify that nothing is there)</p>
+<p class="p4">cd /tmp</p>
+<p class="p4">rm -r *</p>
+<p class="p4">ls</p>
+<p class="p2"><br></p>
+<p class="p1">// then, in SuperCollider ... success will be a "test3.png" file in /tmp</p>
+<p class="p2"><br></p>
+<p class="p6">(</p>
+<p class="p4"><span class="s2">n = NB</span>(<span class="s3">"test3"</span>, 320, 240);</p>
+<p class="p4">n.background(0, 0, 0);</p>
+<p class="p4">n.fill(0, 0, 1);</p>
+<p class="p4">n.rect(10, 10, 100, 100);</p>
+<p class="p4">n.fill(1, 1, 1);</p>
+<p class="p6"><span class="s1">n.text(</span>"This is the 3rd test"<span class="s1">, 10, 140);</span></p>
+<p class="p4">n.render</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p1">// then, in SuperCollider (this should show, in the Post window, that a "test3.png" file is in /tmp</p>
+<p class="p6">"ls /tmp/"<span class="s1">.unixCmd</span></p>
+<p class="p2"><br></p>
+<p class="p1">// assuming the "test3.png" file _IS in /tmp ...</p>
+<p class="p1">// (in SuperCollider)</p>
+<p class="p6">"open /tmp/test3.png"<span class="s1">.systemCmd</span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/* ----- ----- ----- */</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>//////////////////////</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>/* ----- ----- ----- */</p>
+<p class="p3"><br></p>
+<p class="p1">// TEST 4 - move to this step only if TEST 3 succeeds</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p4">n = <span class="s2">NB</span>(<span class="s3">"test4"</span>, 320, 240);</p>
+<p class="p4">n.background(0, 0, 0);</p>
+<p class="p4">n.fill(1, 0, 1);</p>
+<p class="p4">n.rect(10, 10, 100, 100);</p>
+<p class="p4">n.fill(1, 1, 1);</p>
+<p class="p4">n.text(<span class="s3">"TEST NO. 4"</span>, 10, 140);</p>
+<p class="p4">n.render;</p>
+<p class="p4">n.openWith(<span class="s3">"Preview"</span>)</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p1">// IF this test _FAILS, look in the /tmp directory. Is "test4.png" there?</p>
+<p class="p5"><br></p>
+<p class="p1">/* ----- ----- ----- */</p>
+<p class="p1">//////////////////////</p>
+<p class="p1">/* ----- ----- ----- */</p>
+<p class="p3"><br></p>
+<p class="p1">// TEST 5 - move to this step only if TEST 4 _succeeds</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p4"><span class="s2">n = NB</span>(<span class="s3">"test5"</span>, 320, 240, true, "pdf");</p>
+<p class="p4">n.background(0, 0, 0);</p>
+<p class="p4">n.fill(1, 0, 1);</p>
+<p class="p4">n.rect(10, 10, 100, 100);</p>
+<p class="p4">n.fill(1, 1, 1);</p>
+<p class="p4">n.fontsize(12);</p>
+<p class="p6"><span class="s1">n.text(</span>"GOOD NEWS! EVERYTHING WORKS!!"<span class="s1">, 10, 140);</span></p>
+<p class="p4">n.renderAndDisplayImage</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p1">// IF this test _FAILS, look in the /tmp directory. Is "test5.png" there?</p>
+<p class="p5"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><br></p>
+</body>
+</html>

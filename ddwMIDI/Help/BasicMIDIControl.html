@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 72.0px; text-indent: -36.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001ab2}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+span.s1 {color: #36701f}
+span.s2 {color: #001ab2}
+span.s3 {color: #0000ff}
+span.s4 {color: #000000}
+span.s5 {color: #606060}
+span.s6 {color: #a41919}
+span.s7 {font: 9.0px Monaco; color: #001ab2}
+span.s8 {font: 9.0px Monaco}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>BasicMIDIControl<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">MIDI controls respond to continuous controller or pitch bend messages from your keyboard. BasicMIDIControl lets you assign a function to be executed on receipt of a controller message. More complex controllers can be written using the instructions below.</p>
+<p class="p2"><br></p>
+<p class="p3">Like MIDI sockets, you may have an unlimited number of control objects responding to the same MIDI controller on the same channel.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(channel, control_num, func)<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Channel: the port and channel this socket should listen to. It may be specified several ways:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4">chan_num (simple integer): this number is the channel number; the port will be assumed 0</p>
+<p class="p4"><span class="s1">\omni</span>: respond to any channel on port 0</p>
+<p class="p4"><span class="s2">nil</span>: assume port 0, channel 0</p>
+<p class="p4">[port_num, chan_num]: specify a port as well as channel. port_num can be the uid belonging to the port (see MIDIClient and MIDIEndPoint), or an integer index to the sources initialized by MIDIClient.</p>
+<p class="p4">[port_num, <span class="s1">\omni</span>]: respond to any channel on this port<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">control_num: An integer representing the controller number or an instance of <a href="CControl.html"><span class="s3">CControl</span></a>. You may also specify nil, in which case a free controller will be obtained from this channel's <a href="CCAllocator.html"><span class="s3">CCAllocator</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p3">func: The function to execute, which will receive the controller value as an argument.</p>
+<p class="p2"><br></p>
+<p class="p3">port_num here refers to an index into the MIDIPort.sources array, e.g., on my machine:</p>
+<p class="p2"><br></p>
+<p class="p5">MIDIPort<span class="s4">.init;</span></p>
+<p class="p6"><br></p>
+<p class="p7">Sources: [ FastLane USB #2 : Port A, FastLane USB #2 : Port B, UltraLite : Midi Port ]</p>
+<p class="p7">Destinations: [ FastLane USB #2 : Port A, FastLane USB #2 : Port B, UltraLite : Midi Port ]</p>
+<p class="p7">MIDIPort</p>
+<p class="p2"><br></p>
+<p class="p3">In this configuration,</p>
+<p class="p2"><br></p>
+<p class="p3">port 0 = FastLane USB #2 : Port A</p>
+<p class="p3">port 1 = FastLane USB #2 : Port B</p>
+<p class="p3">port 2 = UltraLite : Midi Port</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>free<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Deactivate the control and remove it from the hierarchy.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">Example:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p7">m = <span class="s2">BasicMIDIControl</span>(<span class="s1">\omni</span>, 1, { <span class="s2">arg</span> val; [<span class="s5">"mw"</span>, val].postln });<span class="Apple-converted-space">  </span><span class="s6">// 1 = mod wheel</span></p>
+<p class="p7">p = <span class="s2">BasicMIDIControl</span>(<span class="s1">\omni</span>, <span class="s1">\pb</span>, { <span class="s2">arg</span> val; [<span class="s5">"\tpb"</span>, val].postln }); <span class="s6">// \pb = pitch bend</span></p>
+<p class="p6"><br></p>
+<p class="p8">// move the controllers on your keyboard</p>
+<p class="p8">// when done:</p>
+<p class="p6"><br></p>
+<p class="p7">m.free;</p>
+<p class="p8"><span class="s4">p.free;<span class="Apple-tab-span">	</span></span>// now the controllers do nothing</p>
+<p class="p2"><br></p>
+<p class="p9"><b>Writing your own controllers</b></p>
+<p class="p2"><br></p>
+<p class="p3">All MIDI controllers should be subclasses of AbstractMIDIControl. The abstract class handles the details of initializing the MIDI channel and placing the controller into the hierarchy. The <i>*new</i> message is always in the format: <b>new(channel, ccnum, destination, args)</b>. <i>*new</i> should not be overridden in your subclass.</p>
+<p class="p2"><br></p>
+<p class="p3">Any further initialization should be done in the method <i>init</i>. <i>Init</i> will receive any arguments after the channel number and destination given in the <i>new</i> call. For example, in BasicMIDIControl:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>init {<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>func = destination;<span class="Apple-tab-span">	</span></span>// since I'm the destination (see below), I can use the</p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>destination = </span><span class="s2">this</span><span class="s4">;<span class="Apple-tab-span">	</span></span>// destination variable to get my func, then set dest. to me</p>
+<p class="p7"><span class="Apple-tab-span">	</span>}</p>
+<p class="p2"><br></p>
+<p class="p3">In this case, the controller is its own destination, so I do some swapping of variables to make the syntax cleaner. If you have a different destination, leave the destination variable alone.</p>
+<p class="p2"><br></p>
+<p class="p3">AbstractMIDISocket-free removes the object from the hierarchy, then calls the <i>clear</i> method.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>clear {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>func = <span class="s2">nil</span>;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>}</p>
+<p class="p2"><br></p>
+<p class="p3">The instance variable <i>destination</i> holds the object being played by the socket. It is set to the second argument to <i>new()</i> before your init method is called.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">The destination must respond to <i>active</i> with a Boolean which is true if the object being played is still in action and false if that object has been freed. When <i>MIDIPort.update</i> is called, it scans all the objects in the hierarchy and if <i>.destination.active</i> is false, that responder is freed. In the case of VoicerMIDISocket, which can create several MIDI controller objects in addition to the MIDI socket, the voicer (destination) calls <i>MIDIPort.update</i> when it's freed, and Voicer's <i>active</i> method tells MIDIPort that its MIDI objects can disappear. Your player should do this as well.</p>
+<p class="p2"><br></p>
+<p class="p3">If the destination is <i>this</i> (as above), then your control must implement <i>active</i>. From BasicMIDIControl:</p>
+<p class="p2"><br></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span>active { ^onPlayer.notNil }<span class="Apple-tab-span">	</span></span>// since I'm the destination, I must say if I'm active or not</p>
+<p class="p2"><br></p>
+<p class="p3">Most controllers will use a ControlSpec to map the incoming value (divided by 127) onto another range. The <i>spec</i> method should return this spec. The easiest way is to have an instance variable with a getter:<span class="Apple-converted-space">  </span><span class="s7">var</span><span class="s8"> &lt;spec;</span></p>
+<p class="p2"><br></p>
+<p class="p3">For some gui purposes, you might want to give your controller a name. The <i>name</i> method should return this. If you don't supply a name, the object.asString is the default.</p>
+<p class="p2"><br></p>
+<p class="p3">Finally, the socket must implement <i>set</i>, which is the controller's action. It takes the controller's value as its argument. From BasicMIDIControl:</p>
+<p class="p2"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span>set { <span class="s2">arg</span> value; func.value(value) }</p>
+<p class="p2"><br></p>
+<p class="p3">BasicMIDIControl in its entirety:</p>
+<p class="p2"><br></p>
+<p class="p5">BasicMIDIControl<span class="s4"> : </span>AbstractMIDIControl<span class="s4"> {</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s2">var</span> &lt;&gt;func;</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>init {<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>func = destination;<span class="Apple-tab-span">	</span></span>// see BasicMIDISocket for an explanation of this trick</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>destination = <span class="s2">this</span>;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>}</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>clear {</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>func = <span class="s2">nil</span>;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>}</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="s4"><span class="Apple-tab-span">	</span>active { ^func.notNil }<span class="Apple-tab-span">	</span></span>// since I'm the destination, I must say if I'm active or not</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>spec { ^[0, 1].asSpec }</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span>set { <span class="s2">arg</span> value; func.value(value) }</p>
+<p class="p7">}</p>
+<p class="p6"><br></p>
+</body>
+</html>

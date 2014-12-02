@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: BusMonitor</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>BusMonitor</h1>
+<h2>class to monitor a control bus graphically with GNUPlot</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> </p>
+
+<p>This creates a GNUPlot.monitor on the bus, with an update time of 0.05, a data size of 1000, and a skip of 20.<br>You can also get a BusHistoMonitor directly from a control bus, by calling <em>bus.monitor</em><br>
+<b>See also: GNUPlot</b><br>
+You need to have GNUPlot installed in order to be able to use this class!</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*new(bus,hisSize,skip)</STRONG></DT>
+<DD>Create a monitor on bus "bus".<DL>
+<DT><EM>hisSize</EM></DT>
+<DD>The amount of points plotted</DD>
+<DT><EM>skip</EM></DT>
+<DD>The amount of points after which to make an update to the plot.</DD>
+</DL>
+
+</DD>
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+<DT><STRONG>start</STRONG></DT>
+<DD>Start the monitor.</DD>
+
+<DT><STRONG>reset</STRONG></DT>
+<DD>Reset the monitor.</DD>
+
+<DT><STRONG>stop</STRONG></DT>
+<DD>Stop the monitor.</DD>
+
+<DT><STRONG>initMonitor</STRONG></DT>
+<DD>Initialize the monitor. Called upon class initialization, but should also be called if <em>hisSize</em>, <em>skip</em> or <em>dt</em> are changed.</DD>
+
+<DT><STRONG>setRange(min,max)</STRONG></DT>
+<DD>Set the minimum and maximum of the plotting (x) range.<DL>
+<DT><EM>min</EM></DT>
+<DD>default 0</DD>
+<DT><EM>max</EM></DT>
+<DD>default 1</DD>
+</DL>
+
+</DD>
+
+<DT><STRONG>dt</STRONG></DT>
+<DD>  </DD>
+
+<DT><STRONG>dt_</STRONG></DT>
+<DD>Set the update time of the monitor (default 0.05).</DD>
+
+<DT><STRONG>bus</STRONG></DT>
+<DD>The bus that is monitored</DD>
+
+<DT><STRONG>hisSize</STRONG></DT>
+<DD>  </DD>
+
+<DT><STRONG>hisSize_</STRONG></DT>
+<DD>Set the history size.</DD>
+
+<DT><STRONG>skip</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>skip_</STRONG></DT>
+<DD>Set the amount of points after which to make an update to the plot.</DD>
+
+
+<DT><STRONG>cleanUp</STRONG></DT>
+<DD>Quit GNUPlot and close the pipe to it.</DD>
+
+
+
+
+
+<DT><STRONG>data</STRONG></DT>
+<DD>The last data added to the plot.</DD>
+
+<DT><STRONG>gnuplot</STRONG></DT>
+<DD>The instance of GNUPlot.</DD>
+
+
+</DL>
+
+<h3> Example 1 </h3>
+    <pre>
+s = <span class="type">Server</span>.local.boot;
+b = <span class="type">Bus</span>.control(s,1);
+{ <span class="type">Out</span>.<span class="function-name">kr</span>( b.index, <span class="type">Mix</span>.new( <span class="type">SinOsc</span>.<span class="function-name">kr</span>( [0.125, 0.25], 0, [0.6,0.4] ) ) )
+}.play;
+a = <span class="type">BusMonitor</span>.new( b );
+a.start;
+a.setRange( -1, 1 );
+a.stop;
+a.cleanUp;
+</pre><hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

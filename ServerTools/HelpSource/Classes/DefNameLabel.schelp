@@ -1,0 +1,48 @@
+CLASS:: DefNameLabel
+summary:: color coded button displaying a SynthDef name
+categories:: Debugging
+related:: Classes/ServerLog, Classes/ServerTreeGui, Classes/SynthDef, Classes/InstrSynthDef
+
+DESCRIPTION::
+This is used in ServerTreeGui, ServerLog and when inspecting Synth, SynthDef and related classes. The color for a def name will be the same in any view so you can use your color modality to focus better. 
+
+If using cruciallib the defName is an InstrSynthDef (was created by using an Instr) then it can link to inspect the InstrSynthDef and perform searches on the ServerLog to see when it was created, sent and any Synths that were created for it. 
+
+TODO: search SynthDescLib for normal SynthDefs
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: name
+name as a String or Symbol
+
+argument:: server
+default: default Server. The server you are working with for use in searching for references to this SynthDef
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: minWidth
+Label will automatically size itself to fit the name. minWidth specifies a minimum width so that multiple labels will align nicely.
+
+
+
+
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+SynthDef("example_defname",{ arg out=0,freq;
+    Out.ar(out,Saw.ar(freq))
+}).add;
+DefNameLabel(nil,"example_defname");
+::
+
+TODO: Instr example
+

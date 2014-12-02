@@ -1,0 +1,79 @@
+CLASS:: AbstractSplineGui
+summary:: Parent class for SplineGui
+categories:: Splines>GuiClasses
+related:: Classes/SplineGui, Classes/VectorSplineGui
+
+DESCRIPTION::
+This abstract parent class creates the UserView itself. Of most interest are the getter/setter methods for the colors and fonts.
+
+
+INSTANCEMETHODS::
+
+METHOD:: alpha
+get/set view opacity of spline and its grid lines.
+
+returns:: float
+
+METHOD:: color
+get/set color of spline
+
+returns:: link::Classes/Color::
+
+METHOD:: crossHairsColor
+get/set the cross hairs that are displayed when selecting and moving a point
+
+returns:: link::Classes/Color::
+
+METHOD:: textColor
+get/set the color of the value label that shows the values of the currently selected point.
+
+returns:: link::Classes/Color::
+
+METHOD:: pointSize
+get/set the diameter of the points. This also determines the hit size for mouse clicks, so don't make it too small.
+
+returns:: integer : pixels diameter
+
+METHOD:: font
+get/set the Font used for the value.  To set the font for the GridLines, access those directly.
+
+returns:: link::Classes/Font::
+
+METHOD:: showGrid
+boolean: show the GridLines or not. Useful when displaying multiple splines on top of each other.
+
+returns:: boolean
+
+METHOD:: gui
+called by the concrete subclasses
+
+argument:: parent
+(describe argument here)
+
+argument:: bounds
+(describe argument here)
+
+argument:: userView
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: initColors
+called by the concrete subclasses.
+
+returns:: (returnvalue)
+
+METHOD:: makeView
+called by the concrete subclasses
+
+argument:: parent
+(describe argument here)
+
+argument:: bounds
+(describe argument here)
+
+argument:: userView
+(describe argument here)
+
+returns:: (returnvalue)
+

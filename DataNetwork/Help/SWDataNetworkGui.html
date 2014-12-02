@@ -1,0 +1,333 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SWDataNetworkGui</TITLE>
+<META NAME="description" CONTENT="SWDataNetworkGui">
+<META NAME="keywords" CONTENT="datanetwork">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="datanetwork.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node10.html">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+</HEAD>
+
+<BODY >
+
+
+<H2><A NAME="SECTION00045000000000000000">
+SWDataNetworkGui - SWDataNodeGui - SWDataSlotGui</A>
+</H2>
+These classes implement a Gui for the Data Network.
+
+Most of the methods of this class are only used by the class itself to create the gui.
+
+
+
+<h4>- Example - </h4>
+
+    <pre>
+
+<span class="comment-delimiter">// </span><span class="comment">Define the network
+</span>x = <span class="type">SWDataNetwork</span>.new;
+
+<span class="comment-delimiter">// </span><span class="comment">Create a GUI for it
+</span>x.makeGui;
+
+<span class="comment-delimiter">// </span><span class="comment">Access to the GUI:</span>
+x.gui
+
+</span></pre>
+
+
+<h3> - Methods - SWDataNetworkGui - </h3>
+
+<DL>
+<DT><STRONG>*new( network, w )</STRONG></DT>
+<DD>Create a new instance of SWDataNetworkGui for the SWDataNetwork <em>network</em>. <em>w</em> is an optional parent window to embed the GUI in.</DD>
+
+<DT><STRONG>hide (  )</STRONG></DT>
+<DD>Hide the GUI</DD>
+<DT><STRONG>show (  )</STRONG></DT>
+<DD>Show the GUI</DD>
+
+<DT><STRONG>setInfo ( string )</STRONG></DT>
+<DD>Set information in the info static text.</DD>
+
+<DT><STRONG>updateRate_ ( dt )</STRONG></DT>
+<DD>Set the update rate for the GUI.</DD>
+
+<h4>Internal methods</h4>
+
+<DT><STRONG>w (  )</STRONG></DT>
+<DD>The main window or the parent of the GUI.</DD>
+<DT><STRONG>w_ (  )</STRONG></DT>
+<DD><em>private</em> - should only be called from within the *new method</DD>
+<DT><STRONG>network (  )</STRONG></DT>
+<DD>The SWDataNetwork for which this is the GUI.</DD>
+<DT><STRONG>network_ (  )</STRONG></DT>
+<DD><em>private</em> - should only be called from within the *new method</DD>
+
+<DT><STRONG>watcher (  )</STRONG></DT>
+<DD>The watcher for the GUI</DD>
+<DT><STRONG>key (  )</STRONG></DT>
+<DD>Network name textfield</DD>
+<DT><STRONG>verb (  )</STRONG></DT>
+<DD>Verbosity button</DD>
+<DT><STRONG>debug (  )</STRONG></DT>
+<DD>Debug button</DD>
+<DT><STRONG>watch (  )</STRONG></DT>
+<DD>Watch button</DD>
+<DT><STRONG>worry (  )</STRONG></DT>
+<DD>Worry time text field</DD>
+<DT><STRONG>info (  )</STRONG></DT>
+<DD>Info static text</DD>
+
+<DT><STRONG>nodeview (  )</STRONG></DT>
+<DD>View holding the small version of the nodes</DD>
+<DT><STRONG>nv2 (  )</STRONG></DT>
+<DD>Container view for the small nodes</DD>
+<DT><STRONG>nodes (  )</STRONG></DT>
+<DD>The small version nodes</DD>
+<DT><STRONG>addNodeSmall ( node )</STRONG></DT>
+<DD>Add a node to the small nodes view</DD>
+<DT><STRONG>addNode ( node )</STRONG></DT>
+<DD>Forwards to addNodeSmall</DD>
+
+<DT><STRONG>slotview (  )</STRONG></DT>
+<DD>View holding the big version of the nodes</DD>
+<DT><STRONG>sv2 (  )</STRONG></DT>
+<DD>Container view for the big nodes</DD>
+<DT><STRONG>bigNodes (  )</STRONG></DT>
+<DD>The big version nodes</DD>
+<DT><STRONG>updateSlotView (  )</STRONG></DT>
+<DD>Update the slot view</DD>
+<DT><STRONG>addNodeBig ( node )</STRONG></DT>
+<DD>Add a node to the big nodes view</DD>
+<DT><STRONG>removeNodeBig ( bnode )</STRONG></DT>
+<DD>Remove a node from the big nodes view</DD>
+<DT><STRONG>refreshBigNodes (  )</STRONG></DT>
+<DD>Refresh the display of the big nodes</DD>
+
+<DT><STRONG>updateVals (  )</STRONG></DT>
+<DD>Called by the watcher to update the values in the GUI views</DD>
+</DL>
+
+<h3> - Methods - SWDataNodeGui - </h3>
+
+This class is used inside SWDataNetworkGui to build up the node information. You would not normally need to use this directly.
+
+<DL>
+
+<DT><STRONG>*new ( node, w, xpos, ypos )</STRONG></DT>
+<DD>Create a new instance of SWDataNodeGui for the SWDataNode <em>node</em> in the big version (i.e. containing GUI's for the slots). <em>w</em> is an optional parent window to embed the GUI in, e.g. the SWDataNetworkGui.</DD>
+<DT><STRONG>*newSmall ( node, w, xpos, ypos )</STRONG></DT>
+<DD>Create a new instance of SWDataNodeGui for the SWDataNode <em>node</em> in the small version. <em>w</em> is an optional parent window to embed the GUI in, e.g. the SWDataNetworkGui.</DD>
+<DT><STRONG>initSmall ( xpos, ypos )</STRONG></DT>
+<DD>Initialisation specific to the small version.</DD>
+<DT><STRONG>initBig ( xpos, ypos )</STRONG></DT>
+<DD>Initialisation specific to the big version.</DD>
+<DT><STRONG>init ( xpos, ypos )</STRONG></DT>
+<DD>Common initialisation</DD>
+
+<DT><STRONG>hide (  )</STRONG></DT>
+<DD>Hide the GUI</DD>
+<DT><STRONG>show (  )</STRONG></DT>
+<DD>Show the GUI</DD>
+
+<DT><STRONG>start (  )</STRONG></DT>
+<DD>Start the watcher of this node GUI (only necessary if the GUI is not part of a SWDataNetworkGui).</DD>
+<DT><STRONG>updateRate_ ( dt )</STRONG></DT>
+<DD>Update rate of the watcher.</DD>
+
+<DT><STRONG>expand ( exp )</STRONG></DT>
+<DD>Expand the view, i.e. create or remove a big version of the GUI.</DD>
+
+<DT><STRONG>ysize (  )</STRONG></DT>
+<DD>Vertical size of the view</DD>
+
+<DT><STRONG>w (  )</STRONG></DT>
+<DD>The main window or the parent of the GUI.</DD>
+<DT><STRONG>w_ (  )</STRONG></DT>
+<DD><em>private</em> - should only be called from within the *new method</DD>
+
+<DT><STRONG>node (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>node_ (  )</STRONG></DT>
+<DD>The node of which this is the GUI.</DD>
+
+<DT><STRONG>watcher (  )</STRONG></DT>
+<DD>The watcher for the GUI</DD>
+
+<DT><STRONG>cw (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>cw_ (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>key (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>elaps (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>bus (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>debug (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>mon (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>expandBut (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>nslots (  )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>slots (  )</STRONG></DT>
+<DD>The slots' GUIs</DD>
+
+<DT><STRONG>parent (  )</STRONG></DT>
+<DD>The parent GUI of this one (should be a SWDataNetworkGui)</DD>
+<DT><STRONG>parent_ ( p )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>bigNode (  )</STRONG></DT>
+<DD>Corresponding large version of the node</DD>
+<DT><STRONG>bigNode_ (  )</STRONG></DT>
+<DD></DD>
+
+<DT><STRONG>updateVals (  )</STRONG></DT>
+<DD>Called by the watcher or the parent window to update the data in this GUI</DD>
+</DL>
+
+<h3> - Methods - SWDataSlotGui - </h3>
+<DL>
+<DT><STRONG>*new ( slot, w )</STRONG></DT>
+<DD>Create a new instance of SWDataSlotGui for the SWDataSlot <em>slot</em>. <em>w</em> is an optional parent window to embed the GUI in, e.g. a SWDataNodeGui.</DD>
+
+<DT><STRONG>updateVals (  )</STRONG></DT>
+<DD>Called by the watcher or the parent window to update the data in this GUI</DD>
+
+<DT><STRONG>hide (  )</STRONG></DT>
+<DD>Hide the GUI</DD>
+<DT><STRONG>show (  )</STRONG></DT>
+<DD>Show the GUI</DD>
+
+<DT><STRONG>slot (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>slot_ (  )</STRONG></DT>
+<DD>The slot of which this is the GUI.</DD>
+
+<DT><STRONG>start (  )</STRONG></DT>
+<DD>Start the watcher of this node GUI (only necessary if the GUI is not part of a SWDataNetworkGui).</DD>
+<DT><STRONG>updateRate_ ( dt )</STRONG></DT>
+<DD>Update rate of the watcher.</DD>
+
+<DT><STRONG>w (  )</STRONG></DT>
+<DD>The main window or the parent of the GUI.</DD>
+<DT><STRONG>w_ (  )</STRONG></DT>
+<DD><em>private</em> - should only be called from within the *new method</DD>
+
+<DT><STRONG>parent (  )</STRONG></DT>
+<DD>The parent GUI of this one (should be a SWDataNetworkGui)</DD>
+<DT><STRONG>parent_ ( p )</STRONG></DT>
+<DD></DD>
+
+
+<DT><STRONG>watcher (  )</STRONG></DT>
+<DD>The watcher for the GUI</DD>
+
+<DT><STRONG>cw (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>key (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>val (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>bus (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>debug (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>slider (  )</STRONG></DT>
+<DD></DD>
+<DT><STRONG>mon (  )</STRONG></DT>
+<DD></DD>
+
+</DL>
+
+<BR><HR>
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<UL>
+<LI>
+<I> Next: </I> <A NAME="tex2html79"
+    HREF="SWBusNode.html">SWBusNode</A>
+</LI>
+<LI><I> Previous:</I> <A 
+  HREF="SWDataNetworkLog.html">SWDataNetworkLog</A>
+</LI>
+<LI><I>Up: </I><A 
+  HREF="SenseWorldDataNetwork.html">SenseWorldDataNetwork</A></LI>
+</UL>
+
+</DIV>
+<!--End of Navigation Panel-->
+
+<P>
+<BR><HR>
+<ADDRESS>
+Marije Baalman
+2009-03-16
+</ADDRESS>
+</BODY>
+</HTML>

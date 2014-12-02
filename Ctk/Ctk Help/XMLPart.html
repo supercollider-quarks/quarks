@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.33">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0018ea}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a91616}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #0018ea}
+span.s5 {color: #0013bc}
+span.s6 {color: #307109}
+span.s7 {color: #606060}
+span.s8 {color: #0000bf}
+span.s9 {color: #007300}
+span.s10 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>XMLPart<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>holds XMLVoice and XMLNote events for a musical line.</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p3"><br></p>
+<p class="p1">A structure to handle a single voice of XMLNotes. XMLNotes can be added to an XMLVoice for inclusion in an XMLScore and output to a MusicXML file. Notes are added according to beat. For any given voice, where a note isn't given, rests will be filled in for you.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2"><b>See also:</b> <a href="XMLScore.htm"><span class="s3">XMLScore</span></a> and <a href="XMLNote.htm"><span class="s3">XMLNote</span></a> as well as <a href="MusicXMLOverview.htm"><span class="s3">MusicXMLOverview</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Some Important Issues Regarding XMLPart (optional)</b></p>
+<p class="p2"><br></p>
+<p class="p1">MusicXML is a VERY complex system, and different notation programs handle the code in different ways. Overall, the MusicXML files created from SuperCollider should open fine in Finale, Sibelius and NoteAbility Pro. Also, while this first version (June 2008) works well, until a number of people have used it there may be some instability in the library. While future changes will attempt to be backwards compatible, this may not always be possible.</p>
+<p class="p2"><br></p>
+<p class="p1">ONLY single melodic lines are now possible. This should be remedied soon.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (partName, id, meter, key, clef)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a container for a single voice of XMLNote instances. All creation arguments are optional.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>partName </b>- a symbol to be used for the part's name.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>id </b>- An integer to be used as an id in the XML file.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>meter </b>- An instance of <a href="XMLMeter.htm"><span class="s4">XMLMeter</span></a> to be used as a global default.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>key </b>- An instance of <a href="XMLKey.htm"><span class="s4">XMLKey</span></a> to be used as a global default.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>clef </b>- An instance of <a href="XMLClef.htm"><span class="s4">XMLClef</span></a> to be used as a global default.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p10"><b>Accessing Instance and Class Variables</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>keySigs</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns an array consisting of measure numbers and the key signatures associated with the measure.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>timeSigs</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns an array consisting of measure numbers and the time signatures associated with the measure.<span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>clefs</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns an array consisting of measure numbers and the clefs associated with the measure.<span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>notes</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns the notes associated with an XMLVoice.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b>Keeping track of time, beats and a voice's attributes</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>now</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns the current beat (as calcualted from the end of the last note's beat). Beats are kept track of with an instance of <a href="BeatKeeper.htm"><span class="s4">BeatKeeper</span></a> that handles rounding, and pays attention to notes that are added in relation to the current meter of an XMLVoice.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>now_ (newNow)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Sets the value of 'now' to a new beat value (handy for creating rests).</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>addMeter (measure, meter)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>measure </b>- The measure to add a meter change.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>meter </b>- An instance of XMLMeter to take effect at the given measure.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>addKey (measure, key)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>measure </b>- The measure to add a key change.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>key </b>- An instance of XMLKey to take effect at the given measure.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>addClef (measure, clef)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>measure </b>- The measure to add a key change.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>clef </b>- An instance of XMLClef to take effect at the given measure.</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>add (noteEvents)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Add XMLNotes to an XMLVoice.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>noteEvents </b>- one or more instances of XMLNote</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><b>getMeasureFromBeat (beat)</b></p>
+<p class="p11"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Return the measure number from a given beat.</p>
+<p class="p11"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>getBeatDurFromBeat (beat)</b></p>
+<p class="p11"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Return the duration of a given beat (e.g. 0.25 = quarter note)</p>
+<p class="p11"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>getMeterForMeasure (measureNum)</b></p>
+<p class="p11"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Return the XMLMeter for a given measure.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>getMeterFromBeat (beat)</b></p>
+<p class="p11"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Return the XMLMeter for a given beat.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p12">// simple example</p>
+<p class="p13">(</p>
+<p class="p12">// create an XMLScore</p>
+<p class="p13">z = <span class="s5">XMLScore</span>.new;</p>
+<p class="p12">// add a voice to the XMLScore</p>
+<p class="p13">z.add(y = <span class="s5">XMLPart</span>(meter: <span class="s5">XMLMeter</span>(4, 4), key: <span class="s5">XMLKey</span>.major(<span class="s6">\Bf</span>)));</p>
+<p class="p12">// create a B-flat major scale in quarter notes</p>
+<p class="p12">// uses XMLVoice's internal 'clock' to keep track of beats</p>
+<p class="p13">[58, 60, 62, 63, 65, 67, 69, 70].do({<span class="s5">arg</span> keynum;</p>
+<p class="p13"><span class="Apple-tab-span">	</span>y.add(<span class="s5">XMLNote</span>(keynum, y.now, <span class="s6">\e</span>));</p>
+<p class="p13"><span class="Apple-tab-span">	</span>y.now_(y.now.ceil);</p>
+<p class="p13"><span class="Apple-tab-span">	</span>});</p>
+<p class="p12">// output the XMLScore</p>
+<p class="p13">z.output(<span class="s7">"~/Desktop/test.xml"</span>.standardizePath);</p>
+<p class="p13">);</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p12">// a short melodic example with changing meters, and tuplets in simple meters</p>
+<p class="p13">(</p>
+<p class="p14"><span class="s8">var</span> curkey, notedur, tuplet, curMeter, i;</p>
+<p class="p14">i = 0;</p>
+<p class="p15">// create an XMLScore</p>
+<p class="p14">z = <span class="s8">XMLScore</span>.new;</p>
+<p class="p15">// add a voice to the XMLScore</p>
+<p class="p14">z.add(y = <span class="s8">XMLPart</span>(key: <span class="s8">XMLKey</span>.major(<span class="s9">\Bf</span>)));</p>
+<p class="p14">y.addMeter(1, <span class="s8">XMLMeter</span>(4, 4));</p>
+<p class="p14">y.addMeter(2, <span class="s8">XMLMeter</span>(6, 8, <span class="s9">\compound</span>)); <span class="s10">// a compound meter</span></p>
+<p class="p14">y.addMeter(4, <span class="s8">XMLMeter</span>(4, 4));</p>
+<p class="p14">k = y.addVoice;</p>
+<p class="p14">k.add(<span class="s8">XMLNote</span>(52, 1.0, 2.0));</p>
+<p class="p14">while({</p>
+<p class="p14"><span class="Apple-tab-span">	</span>curkey = [58, 60, 62, 63, 65, 67, 69, 70].choose;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>curMeter = y.getMeterFromBeat(y.now);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>tuplet = (curMeter.type == <span class="s9">\compound</span>).if({<span class="s8">nil</span>}, {3/2});</p>
+<p class="p14"><span class="Apple-tab-span">	</span>y.add(<span class="s8">XMLNote</span>(curkey, y.now, 0.125, tuplet));</p>
+<p class="p14"><span class="Apple-tab-span">	</span>i = i + 1;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>i &lt; 120;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>});</p>
+<p class="p16"><br></p>
+<p class="p16"><span class="Apple-tab-span">	</span></p>
+<p class="p15">// output the XMLScore</p>
+<p class="p14">z.output(<span class="s7">"~/Desktop/test.xml"</span>.standardizePath);</p>
+<p class="p13">)</p>
+</body>
+</html>

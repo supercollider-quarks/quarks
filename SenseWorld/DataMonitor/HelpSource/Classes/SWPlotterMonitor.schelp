@@ -1,0 +1,119 @@
+TITLE:: SWPlotterMonitor
+summary:: makes a scrolling plot by evaluating a function regularly
+categories:: Plotting
+related:: Classes/SWDataMonitor, Classes/Plotter
+
+DESCRIPTION::
+SWPlotterMonitor allows you to plot data as it comes in, so you can get an idea of the "shape" over time of the data.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new SWPlotterMonitor.
+
+ARGUMENT:: updater
+The Function to evaluate to generate new data. This Function should either return a SimpleNumber, or an Array of numbers.
+
+ARGUMENT:: length
+The amount of points to plot.
+
+ARGUMENT:: nc
+The number of channels in the data - this should match what the updater function returns.
+
+ARGUMENT:: dt
+The deltatime with which to evaluate the function.
+
+ARGUMENT:: skip
+How often to plot, in multiples of dt. So if you set this to 5, the updater function will be evaluated 5 times at a time interval of dt, and then update the plot.
+
+returns:: an instance of SWPlotterMonitor
+
+
+INSTANCEMETHODS::
+
+private:: init
+
+METHOD:: setRange
+Sets the minimum and maximum value for the plot. See also the specs method of link::Classes/Plotter::
+
+ARGUMENT:: min
+minimum value for the spec
+
+ARGUMENT:: max
+maximum value for the spec
+
+
+METHOD:: plotter
+The intance of Plotter, into which is plotted.
+
+METHOD:: monitor
+An instance of SWDataMonitor, which monitors the data of that is plotted.
+
+
+METHOD:: start
+Starts the SWPlotterMonitor and makes the plot window if not open already.
+
+
+METHOD:: isPlaying
+Boolean to indicate whether the SWPlotterMonitor is currently running.
+
+
+METHOD:: stop
+Stop the SWPlotterMonitor
+
+
+METHOD:: cleanUp
+Stop and close the SWPlotterMonitor.
+
+
+EXAMPLES::
+
+code::
+// A very simple example use, plotting some fake data:
+
+(
+// some fake data
+e = 0;
+f = 0;
+r = Routine{
+    loop {
+        e = 0.0.rrand(1);
+        f = 0.0.rrand(1).cos;
+        0.5.wait;
+    }
+}.play;
+
+
+// look at the data
+m = SWPlotterMonitor.new( {
+    //data to plot
+    [
+    [e, f], // view the two streams superimposed
+    [e - f], // view their differene
+    [(e-f).sign] // view sign of difference
+    ]},
+    200, //nr of points to plot
+    2, // channels
+    0.25, // plot dtime
+    1 // write every n data points
+    ).start;
+
+)
+// stop and restart the data
+r.stop
+r.reset.play
+
+// stop and restart the plotter
+m.stop;
+m.start;
+
+// you can access Plotter and send it messages:
+// e.g. change window appearence
+m.plotter.parent.close;
+m.plotter.name_("plot some fake data");
+m.plotter.bounds_( Rect(100, 100, 700, 700))
+m.plotter.makeWindow;
+
+// also, all the keyboard shortcuts from Plotter work (found in the Plotter helpfile)
+::

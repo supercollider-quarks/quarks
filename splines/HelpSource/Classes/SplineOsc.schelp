@@ -1,0 +1,59 @@
+CLASS:: SplineOsc
+summary:: Plays a spline in a loop with X as time, ignoring any time reversals
+categories:: UGens>Generators, Splines
+related:: Classes/SplineGen
+
+DESCRIPTION::
+Not functioning as expected.  Hmmmmmmm.
+
+code::
+(
+y = BSpline([ [0,0],[1,1],[2,-1] ], 2.0,true);
+
+y.gui;
+
+
+{
+	SplineOsc(y,0,true).ar(200) * 0.2
+}.play
+
+
+)
+::
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: ar
+(describe method here)
+
+argument:: freq
+(describe argument here)
+
+argument:: phase
+(describe argument here)
+
+argument:: divisions
+(describe argument here)
+
+argument:: rate
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: kr
+(describe method here)
+
+argument:: freq
+(describe argument here)
+
+argument:: phase
+(describe argument here)
+
+argument:: divisions
+(describe argument here)
+
+returns:: (returnvalue)
+

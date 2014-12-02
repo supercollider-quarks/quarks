@@ -1,0 +1,61 @@
+TITLE:: TdefPreset
+summary:: storing and morphing between presets for Tdefs
+categories:: Undocumented classes
+related:: Classes/ProxyPreset, Classes/PdefPreset, Classes/NdefPreset
+
+DESCRIPTION::
+Like ProxyPreset, TdefPreset stores settings and can morph between them.
+
+code::
+to follow
+::
+
+CLASSMETHODS::
+
+TdefPreset
+METHOD:: all
+the global dict for all TdefPreset instances
+
+METHOD:: proxyClass
+the class to be used with TdefPreset: Tdef.
+
+private:: initClass
+
+METHOD:: new
+access an existing TdefPreset or make a new one for a Tdef.
+
+ARGUMENT:: key
+If key is key of an existing TdefPreset, then that is accessed. If key is a Tdef, then a net TdefPreset with that Tdef's key will be created.
+
+ARGUMENT:: namesToStore
+which paramNames to store in the presets. if none given, inferred from the current proxy settings.
+
+ARGUMENT:: settings
+provide preset settings for the proxy
+
+ARGUMENT:: specs
+provide preset specs for the proxy, mainly for randomizing and morphing.
+if none given here, and object has a halo of specs, those in halo will be used.
+
+ARGUMENT:: morphFuncs
+special functions to provide for morphing between non-numerical settings.
+not used yet.
+
+
+INSTANCEMETHODS::
+
+private:: proxy, prAdd
+
+METHOD:: key
+the key under which the TdefPreset is stored in TdefPreset.all
+
+METHOD:: getFromProxy
+get current values for namesToStore from proxy, except those given in <except>
+
+
+
+EXAMPLES::
+
+code::
+to follow
+::

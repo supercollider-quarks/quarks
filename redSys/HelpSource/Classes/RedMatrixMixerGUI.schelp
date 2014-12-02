@@ -1,0 +1,50 @@
+CLASS:: RedMatrixMixerGUI
+SUMMARY:: gui for RedMatrixMixer
+CATEGORIES:: Red>redMatrixMixer
+RELATED:: Classes/RedMatrixMixer, Classes/RedEffectsRackGUI, Classes/RedMixerGUI
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: redMatrixMixer
+A link::Classes/RedMatrixMixer:: object.
+
+ARGUMENT:: position
+A link::Classes/Point::.
+
+INSTANCEMETHODS::
+
+PRIVATE:: initRedMatrixMixerGUI
+
+METHOD:: close
+Close the window if open.
+
+METHOD:: time
+Slider to go from now to later.
+
+EXAMPLES::
+
+CODE::
+a= RedMatrixMixerGUI(RedMatrixMixer());
+(
+SynthDef(\redMatrixMixerTest, {|out= 0, freq= 400, gate= 1, amp= 0.1|
+	var e= EnvGen.kr(Env.asr(0.01, 1, 0.01), gate, doneAction:2);
+	var z= SinOsc.ar(freq, 0, amp);
+	Out.ar(out, z*e);
+}).add;
+)
+b= Pbind(\instrument, \redMatrixMixerTest, \degree, Pseq([0, 1, 5, 4], inf), \dur, 0.25, \out, Pseq((0..7), inf)).play;
+
+(
+Routine({
+	10.do{|x|
+		a.redMatrixMixer.cvs.do{|x| if(x.value.isArray, {x.value= x.value.rotate})};
+		0.2.wait;
+	};
+}).play(AppClock);
+)
+
+a.close
+b.stop
+::

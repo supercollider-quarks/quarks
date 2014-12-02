@@ -1,0 +1,240 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+ <hmtl>
+ 
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>SuperCollider Help -CartoonModel</title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #d40000}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #d40000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #1200c4}
+span.s3 {color: #1200c4}
+span.s4 {color: #000000}
+span.s5 {color: #1200c4}
+span.s6 {color: #d40000}
+span.s7 {font: 12.0px Helvetica; color: #000000}
+span.s8 {color: #1200c4}
+span.s9 {color: #1200c4}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+ <body>
+ 
+<p class="p1"><span class="s1"><b>CartoonModel<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><b> Object : Soundscape </b></p>
+<p class="p3"><br></p>
+<p class="p1">CartoonModel gathers information about Cartoonification model (simplified sound design technique
+for the creation of sounds related to physical processes and spatial cues). The concatenative synthesis is performed to simulate
+the sound objects, while the spatialisation model just affords an amplitude attenuation by distance listener-sound object and a stereophonic panning.
+Textural, physical model and procedural synthesis could individuates further model, creating new Soundscape subclasses.
+</p>
+<p class="p1">
+Overview: Graph is the sequencing format that stores information about vertex
+(sound objects), their parameters and the whole structure relationships; Runner generates messages about the actants navigating the graph structures (this
+determine which vertex identifiers (vID) are playing); GeoListener sends
+information about the listener interaction; finally the CartoonModel performs the spatial and concatenative sound synthesis.
+The designer defines which are the most relevant sound cues able to represent a
+target soundscape. He has to collect samples to simulate the relevant cues and he has to organise them in a database. In order to determine the relevant cues it is
+well recommended that the designer analyses the soundscape.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also:</b> <a href="Soundscape.html"><span class="s2">Soundscape</span></a>, 
+<a href="GeoListener.html"><span class="s2">GeoListener</span></a>,
+<a href="Runner.html"><span class="s2">Runner</span></a>,
+<a href="Graph.html"><span class="s2">Graph</span></a></p>
+
+<p class="p2"><br></
+ 
+  
+<p class="p11"><b>Accessing Instance and Class Variables</b></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+  
+<p class="p6"><b><span class="Apple-tab-span">	</span>bufDict</b></p>
+ 
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>IdentityDictionary, it indexes to the Buffer where the samples are load up. It is used on method play and modifplay to map the vertex name activated by actants to the allocated sound buffer.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+ 
+
+<p class="p6"><b><span class="Apple-tab-span">	</span>gain</b></p>
+ 
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Parameter to amplify all the vertex (i.e. the whole soundscape loudness).</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+ 
+
+<p class="p6"><b><span class="Apple-tab-span">	</span>m</b></p>
+ 
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Ratio VirtualUnit/meter, in order to adjust the amplitude function by distance accordingly to the distance unit of measure.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+
+ 
+
+<p class="p6"><b><span class="Apple-tab-span">	</span>samplesPath</b></p>
+ 
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the path of your sample database.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+ 
+
+<p class="p6"><b><span class="Apple-tab-span">	</span>offsetVertexStandardListenedArea</b></p>
+ 
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>In meter, the area where a sound object is perceived clearly , this means that if the
+ distance listener vertex is higher than perceptionArea + offsetVertexStandardListenedArea, a LowBandPass filter is applied in this.filter:
+  <b>offsetVertexStandardListenedArea</b> is a specific attribute of each vertex, while <b>perceptionArea</b> is a listener attribute.</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value is 60 meter.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+ 
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>name</b></p>
+ 
+<p class="p7"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>You could need it, if you have several CartoonModel instances in the same soundscape = several sound zones of the soundscape or several sound layer as group of sound objects to be controlled together (gain, m...).</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p> 
+
+ 
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+ <p class="p11"><b>Class methods</b></p>
+<p class="p12"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+                  
+                  
+                  
+                  
+<p class="p6"><b><span class="Apple-tab-span">	</span>initAudio(aSamplesPath, nameList, ext)</b></p>
+
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b> Initialisation method: aPath is the path of your samples database. MP3 format is not supported. For a list of supported format see <a href="SC://SoundFile"><span class="s2">SoundFile</span></a> help</p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b> NOTE: You don't need nameList and ext. if you provide just the path, and nameList = nil, the system updates the identityDictionary bufDict with the name of the sound files with this.loadDatabase(aPath) method</p>
+
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aSamplesPath </b>- The path of your sample database.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>nameList </b>- a list of all the names of your sample files, those labels will name the vertexes.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>ext </b>- The extention of the audio files. Default value is  "wav".</p>
+
+
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// creation and init</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s5">CartoonModel</span>new(runner,geoListner);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.initAudio(aPath); <span class="s6"></span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.initAudio(aPath,[\v1,\v2,\v3], "wav"); <span class="s6"></span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+
+
+<p class="p6"><b><span class="Apple-tab-span">	</span>sendDef</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Send the synthDef to the server</p>
+<p class="p5"><br></p>
+ <p class="p5"><br></p>
+
+<p class="p6"><b><span class="Apple-tab-span">	</span>setListenedArea(vID, val, aGraph)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b> set the offsetVertexListenedArea parameter in the vertex options vector of a graph. Args are: the vertex ID, the value of offsetVertexListenedArea, a graph object </p>
+<p class="p5"><br></p>
+ <p class="p5"><br></p>
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>setDy(vID, val, aGraph)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b> set the automatic normalisation parameter in the vertex options vector of a graph. The parameter is used to correct the distance of recordings if different from 5m. Args are: the vertex ID, the value of dy, a graph object.
+
+</p>
+<p class="p5"><br></p>
+ <p class="p5"><br></p>
+
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>setGain(value)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>gain = value</p>
+<p class="p5"><br></p>
+ <p class="p5"><br></p>
+ 
+ 
+ <p class="p6"><b><span class="Apple-tab-span">	</span>readGain</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>return gain</p>
+<p class="p5"><br></p>
+ <p class="p5"><br></p>
+ 
+ 
+ <p class="p6"><b><span class="Apple-tab-span">	</span>setVirtualUnitMeterRatio(ratio)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>m = ratio</p>
+<p class="p5"><br></p>
+ <p class="p5"><br></p> 
+ 
+ <p class="p6"><b><span class="Apple-tab-span">	</span>fromRecDistanceToNormalisationAmp(recordingDistance)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Take as arg the recording distance of a sound object, return the amp value for the automatic normalisation parameter "dy" (see filter method). The normalisation is computed with a 2 degree polynomial approximation of the law: each time the distance double the amp changes in -6db </p>
+<p class="p5"><br></p>
+ <p class="p5"><br></p> 
+ 
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>filter (aXv, aYv, aA, aB, aOffsetVertexListenedArea, aDy)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>It calculates the parameters for the synthesis: amp and cutFrequecy. The amplitude is computed from the point to point distance vertex-listener.
+Following the OPEN_GL standard, the amplitude by distance formula is: amp = m*dy/(dy + (rol * (d - dy)).
+Loudness in real life approximately changes -6db each times the distance doubles: if at 10m the loudness of a source is 50db, at d = 5m, Loudness = 44db.
+In supercollider, each times the amp double this simulates a change of +6 db, for example evaluate this:
+
+ <p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	[0.125, 0.25, 0.5, 1, 2].ampdb;</p>
+
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>
+The variable offsetListenedArea (simplified as rol) is a roll off to increase the perception of a vertex depending on the same distance; dy is a normalisation parameter of each vertex to scale a sound depending on the distance it was recorded. The standard Rec_distance is 5m where dy = 1, if Rec_distance = 2.5m dy = 0.5, if Rec_distance = 10, dy = 2. The variable m is the Ratio virtualUnit/Meter.
+  If the vertex is a non point source, the distance is computed as point - rect distance: the distance between the listener and the nearest point of the rect representing the area of the non
+   point vertex.
+ The cutFrequency is computed as: exp(10 - ( 7 *((d - (m*perceptionArea*2))/(m*offsetListenedArea + m*perceptionArea))));</p>
+<p class="p5"><br></p> 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aXv </b>- x coordinate of a vertex.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aYv </b>- y coordinate of a vertex.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aA </b>- x Listener coordinate.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aB </b>- y Listener coordinate.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aOffsetVertexListenedArea </b>- vertex roll off.</p>
+ 
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>aDy </b>- The distance of recording if different from the standard 5m. From aDy the filter method computes "dy", that is the normalisation parameter.</p>
+ 
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+ <p class="p5"><br></p>
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>play (message)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Play method takes message as an argument. Message is the vertex ativated by an actant.
+Play call filter and GeoListener.calculatepanning, it takes the amp, pan and cutFrequency values and it allocates a new Synth with the parameters. It stores the Synth activated in the
+ synthplaying IndentityDictionary.</p>
+ 
+ 
+<p class="p5"><br></p>
+ <p class="p5"><br></p>
+ 
+<p class="p6"><b><span class="Apple-tab-span">	</span>modifplay (message)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Modifplay method takes message as an argument. Message is the new position and orientation of the
+listener. The method calls the methods to calculate amp, cutFrequency and pan for all the active vertexes. Then, it iterates on all the Synth playing (synthplaying IdentityDictionary) the modification of the synth parameters.</p>
+ 
+
+ </body> </html>

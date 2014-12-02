@@ -1,0 +1,99 @@
+CLASS:: RootFinder
+summary:: a multi-dimensional root finder 
+categories:: Math
+
+DESCRIPTION::
+A multi-dimensional root finder based on the STRONG::Levenberg-Marquardt:: optimization algorithm footnote::The SC code is based on the MATLAB implementation of the algorithm found at http://www2.imm.dtu.dk/~hbn/Software/::. The LM algorithm is an iterative technique that finds a local minimum of a function that is expressed as the sum of squares of nonlinear functions. It has become a standard technique for nonlinear least-squares problems and can be thought of as a combination of steepest descent and the Gauss-Newton method. When the current solution is far from the correct one, the algorithm behaves like a steepest descent method: slow, but guaranteed to converge. When the current solution is close to the correct solution, it becomes a Gauss-Newton method footnote::http://www.ics.forth.gr/~lourakis/levmar/::.
+
+NOTE::
+CODE::RootFinder:: requires the user to provide an analytic Jacobian (or the single analytic derivative in the case of one function and one independent variable) in order to work. See the examples below.
+::
+
+CLASSMETHODS::
+
+METHOD:: findRoot
+Find a shared root of MATH::N:: real-valued functions each containing MATH::M:: independent variables.
+
+ARGUMENT:: func
+An (array of) instance(s) of link::Classes/AbstractFunction::, where each instance returns a single scalar value of type link::Classes/SimpleNumber::. These are the functions MATH::F_n \left(x\right):: to be minimized.
+
+ARGUMENT:: jacobian
+An (array of) instance(s) of link::Classes/AbstractFunction::, where each instance returns a single scalar value of type link::Classes/SimpleNumber::. This is the Jacobian: a matrix of all first-order partial derivatives of a scalar-valued function MATH::F\left(x\right):: with respect to the coordinate vector MATH::x = \left[x_1,x_2,\dots,x_{M-1},x_M\right]::.
+
+ARGUMENT:: x0
+An (array of) instance(s) of link::Classes/SimpleNumber::. This denotes the initial guess MATH::x_0=\left[x_{0,1},x_{0,2},\dots,x_{0,M-1},x_{0,M}\right]:: for the location of the root.
+
+ARGUMENT:: param
+An optional link::Classes/Collection:: or single instance of link::Classes/SimpleNumber::. This may be used for supplying any additional function parameters.
+
+ARGUMENT:: opts
+An instance of link::Classes/Array:: holding 4 optional parameters which are used in the stopping criteria of the algorithm. The first parameter MATH::\tau:: is a number between  MATH::1\times10^{-8}:: and MATH::1::. Smaller values apply if it is assumed that MATH::x_0:: is already close to MATH::x_r::. The second parameter MATH::\epsilon_1:: is used in the stoping criterion MATH::\Vert F'\left(x\right)\Vert \leq \epsilon_1::, the third parameter MATH::\epsilon_2:: is used in the stopping criterion MATH::\Vert h\Vert \leq \epsilon_2 \Vert x\Vert::, and the fourth parameter MATH::k_\text{max}:: denotes the maximum nr. of iterations so that the algorithm stops as soon as the iteration count MATH::k:: satisfies the condition MATH::k \geq k_\text{max}::.
+
+returns:: An link::Classes/Array:: holding the location MATH::x_r:: of the shared root.
+
+DISCUSSION::
+First example: solving a system of two equations in two unknowns
+MATH::
+\begin{align}
+2x_1 - x_2 - e^{-x_1} &= 0 \\
+-x_1 + 2x_2 - e^{-x_2} &= 0
+\end{align}
+::
+with initial guess MATH::x_0 = \left[-5,-5\right]::.
+
+Second example: finding a root of one equation in one unknown
+MATH::
+2x-e^{-x} = 0
+::
+with initial guess MATH::x_0 = 0::.
+
+
+EXAMPLES::
+
+code::
+// corresponds to the first example described above
+(
+var f,df,x0;
+
+// define the functions
+f = List.new
+	.add({ |x| 2*x[0]-x[1]-exp(x[0].neg) })
+	.add({ |x| x[0].neg+(2*x[1])-exp(x[1].neg) });
+
+// define the associated Jacobian
+df = List.new
+	.add({ |x| 2+exp(x[0].neg) })		// df_1/dx_1
+	.add({ |x| -1 })			// df_1/dx_2
+	.add({ |x| -1 })			// df_2/dx_1
+	.add({ |x| 2+exp(x[1].neg) });		// df_2/dx_2
+
+// initial guess for x
+x0 = [0,0];
+
+// solve the system (i.e. find the shared root)
+x = RootFinder.findRoot(f,df,x0);
+
+// test: this should return 0 (or at least a very small number)
+f collect: _.(x)
+)
+
+// corresponds to the second example described above
+(
+var f,df,x0;
+
+// define the function
+f = { |x| 2*x-exp(x.neg) };
+
+// define the first derivative
+df = { |x| 2+exp(x.neg) };
+
+// initial guess for x
+x0 = 0;
+
+// find the root
+x = RootFinder.findRoot(f,df,0);
+
+// test: this should return 0 (or at least a very small number)
+f.(x);
+)
+::

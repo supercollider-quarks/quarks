@@ -1,0 +1,133 @@
+CLASS:: MxChannelApp
+summary:: scripting object for an MxChannel, one channel in an Mx
+categories:: Mx
+related:: Classes/MxChannel, Classes/MxApp
+
+DESCRIPTION::
+Add, remove, insert units.  Mute, solo and change levels on the fader.
+
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: at
+get the unit by slot number
+
+argument:: i
+slot number
+
+returns:: an MxUnitApp
+
+METHOD:: put
+put an object (Instr, Ndef, Spline etc) in the slot, replacing anything that might be there
+
+argument:: i
+slot number
+
+argument:: source
+the object to add
+
+returns:: an MxUnitApp whose .source is the object you added
+
+METHOD:: removeAt
+remove unit at the index
+
+argument:: i
+slot number
+
+returns:: this
+
+METHOD:: insertAt
+insert object at the index, moving other units down.  cables are connected by unit, not by the slot number, so nothing is disturbed
+
+argument:: i
+slot number
+
+argument:: source
+obejct to add
+
+returns:: MxUnitApp whose .source is the object you added
+
+METHOD:: units
+gets an link::Classes/MxQuery:: of all units in the channel, not including any nil slots.  Because some slots may be empty, the index numbers in the query set are not the same as the slot numbers.
+
+returns:: link::Classes/MxQuery::
+
+
+
+METHOD:: add
+add one or more objects to the end of the channel
+
+argument::  ... sources
+one or more objects
+
+returns:: an MxUnitApp or an array of them
+
+METHOD:: dup
+Duplicate the item from one slot to another.  Connections are not preserved (yet).
+
+argument:: fromIndex
+integer
+
+argument:: toIndex
+integer
+
+returns:: MxUnitApp
+
+METHOD:: fader
+the MxChannelFader is an audio unit with level, mute, solo and circuit breaker protection (bad values and sudden peaks).  This returns that unit.  You can connect to it:  unit.out >> channel.fader
+
+returns:: MxChannelFader
+
+METHOD:: mute
+Mute the channel fader
+
+returns:: this
+
+METHOD:: muted
+is muted ?
+
+returns:: boolean
+
+METHOD:: unmute
+Unmute the fader.
+
+returns:: this
+
+METHOD:: toggle
+Toggle mute
+
+returns:: this
+
+METHOD:: solo
+Solo fader
+
+returns:: this
+
+METHOD:: unsolo
+Unsolo fader
+
+returns:: this
+
+METHOD:: soloed
+is soloed ?
+
+returns:: boolean
+
+METHOD:: db
+get or set level by dB
+
+argument:: db
+dB
+
+returns:: dB
+
+METHOD:: channelNumber
+This objects current channelNumber.  Note that you can freely rearrange channels so this does change.
+
+returns:: integer
+
+
+

@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica; color: #0000bf}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {color: #000000}
+span.s2 {color: #0000bf}
+span.s3 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Benchmarking</b><span class="s1"><b> </b></span><b>KDTree</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">KDTree</span> should be fast for searches, although not necessarily fast for creation/addition/deletion.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4">/////////// Construction</p>
+<p class="p5">(</p>
+<p class="p4">// Change these two parameters if you like:</p>
+<p class="p5">~dims = 3;</p>
+<p class="p5">~num = 10000;</p>
+<p class="p4">// Test either with uniformly-distributed data or quasi-gaussian data - will get different performance</p>
+<p class="p5">~rand = {<span class="s2">|n|</span> n.rand };</p>
+<p class="p5">~rand = {<span class="s2">|n|</span> n.sum3rand };</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">~halffillsize = (~num * 2).pow(1/~dims).floor.asInteger;</p>
+<p class="p5">~array = { {~rand.value(~halffillsize)}.dup(~dims) }.dup(~num);</p>
+<p class="p7">"KDTree construction:"<span class="s1">.postln;</span></p>
+<p class="p5">bench{~tree = <span class="s2">KDTree</span>(~array)};</p>
+<p class="p7">""</p>
+<p class="p5">);</p>
+<p class="p6"><br></p>
+<p class="p4">////////// Exact-match search</p>
+<p class="p4">// Note: this exact-match finding is only faster than Array for large dataset sizes (e.g. 100000, I find).</p>
+<p class="p4">// But the other types of search (e.g. nearest neighbour) are very fast, compared to<span class="Apple-converted-space"> </span></p>
+<p class="p4">// the brute-force approach that would have to be used on a flat array.</p>
+<p class="p5">(</p>
+<p class="p7">"100 finds using array:"<span class="s1">.postln;</span></p>
+<p class="p5">bench{</p>
+<p class="p5"><span class="Apple-tab-span">	</span>100.do{</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~array.indexOf({~halffillsize.rand}.dup(~dims));</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">};</p>
+<p class="p7">"100 finds using kd-tree:"<span class="s1">.postln;</span></p>
+<p class="p5">bench{</p>
+<p class="p5"><span class="Apple-tab-span">	</span>100.do{</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~tree.find({~halffillsize.rand}.dup(~dims));</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">};</p>
+<p class="p7">""</p>
+<p class="p5">);</p>
+<p class="p6"><br></p>
+<p class="p4">/////////// general nearest neighbour to arbitrary spatial point</p>
+<p class="p5">(</p>
+<p class="p7">"Nearest neighbour query time estimated average:"<span class="s1">.postln;</span></p>
+<p class="p5">(<span class="s3">""</span>++(bench({</p>
+<p class="p5">100.do{</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~tree.nearest({~halffillsize.rand}.dup(~dims));</p>
+<p class="p5">}</p>
+<p class="p5">}, <span class="s2">false</span>)/100) + <span class="s3">"seconds"</span>).postln;</p>
+<p class="p7">""</p>
+<p class="p5">);</p>
+<p class="p4">//////////// nearest neighbour to a node - this test will TAKE A WHILE for large trees since it runs once on each node</p>
+<p class="p5">(</p>
+<p class="p7">"Nearest neighbour to each node, queried separately - query time average:"<span class="s1">.postln;</span></p>
+<p class="p5">(<span class="s3">""</span>++(bench({</p>
+<p class="p5">~tree.collect{ <span class="s2">|node|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>node.nearestToNode</p>
+<p class="p5">}</p>
+<p class="p5">}, <span class="s2">true</span>)/~tree.size) + <span class="s3">"seconds per node"</span>).postln;</p>
+<p class="p7">""</p>
+<p class="p5">);</p>
+<p class="p4">//////////// All Nearest Neighbours. Can theoretically re-use data to optimise re the separate query above.</p>
+<p class="p5">(</p>
+<p class="p7">"All Nearest Neighbours (single call, should ideally be faster due to ability to re-use data):"<span class="s1">.postln;</span></p>
+<p class="p5">(<span class="s3">""</span>++(bench({</p>
+<p class="p5">~tree.allNearest</p>
+<p class="p7"><span class="s1">}, </span><span class="s2">true</span><span class="s1">)/~tree.size) + </span>"seconds per node (but note: individual queries don't exist)"<span class="s1">).postln;</span></p>
+<p class="p7">""</p>
+<p class="p5">);</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+</body>
+</html>

@@ -1,0 +1,25 @@
+CLASS:: PTDelay
+SUMMARY:: UGenPatterns quark library
+CATEGORIES:: Streams-Patterns-Events>UGenPatterns>Modifiers
+RELATED:: Overviews/UGenPatterns
+
+DESCRIPTION::
+Based on link::Classes/TDelay::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: pattern
+
+ARGUMENT:: dur
+
+EXAMPLES::
+
+CODE::
+s.boot;
+a= Pbind(\dur, 1/3, \legato, 0.4, \midinote, PTDelay(Pseq([0, 2, 4, 4], inf), 1).trace*5+50).play
+a.stop
+a= Pbind(\dur, 1/6, \legato, 0.2, \degree, Pseq([0, 1, 2, 3], inf), \amp, PTDelay(PImpulse(4), Pstutter(8, Pseq([1, 2, 3], inf))).trace*0.5).play
+a.stop
+::

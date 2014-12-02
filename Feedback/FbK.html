@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #e00000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #3200ff}
+span.s3 {color: #001cbb}
+span.s4 {color: #001af9}
+span.s5 {color: #2500cf}
+span.s6 {color: #000000}
+span.s7 {color: #be00ac}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>FbK<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a painless way to create a feedback loop within a SynthDef, at control rate.</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p3"><br></p>
+<p class="p1">FbK is quite similar to <a href="Fb.html"><span class="s2">Fb</span></a>, except that it works for control-rate signals instead of audio-rate ones. It also doesn't have the additional delay line feature that Fb has. The best way to think of it is as a way to iterate difference equations at control-rate.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also: </b><a href="FbNode.html"><span class="s2">FbNode</span></a>, <a href="sc://FbL"><span class="s3">FbL</span></a>, <a href="sc://FbC"><span class="s3">FbC</span></a>, <a href="sc://LocalIn"><span class="s4">LocalIn</span></a>, <a href="sc://InFeedback"><span class="s4">InFeedback</span></a>, <a href="sc://NodeProxy"><span class="s4">NodeProxy</span></a>, <a href="sc://LocalBuf"><span class="s4">LocalBuf</span></a>, and also the single sample feedback file in the Examples folder that comes with SC.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Creation / Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*new (func, initVals)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Create a feedback loop within a SynthDef</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>func </b>- This function should contain the UGens that will be inside the feedback loop.<span class="Apple-converted-space">  </span>Its output should be a control-rate UGen or an array of control-rate UGens. This is delayed by one control period and then fed into the function's input.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>initVals </b>- The initial values that the function's arguments will have on the first iteration. If this argument is supplied, its size will determine the number of feedback channels. If FbK will try to guess the number of channels from its <b>func</b> parameter, and they will all have initial values of zero. If in doubt, supply this parameter.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><b>Examples</b></p>
+<p class="p3"><br></p>
+<p class="p10">(</p>
+<p class="p11">// A sine-wave LFO, implemented similarly to SinOscFB</p>
+<p class="p11">// (of course it would be better to use SinOsc.kr - this is just for demonstration purposes)</p>
+<p class="p10">play {</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s5">var</span> lfo;</p>
+<p class="p11"><span class="s6"><span class="Apple-tab-span">	</span></span><span class="s5">var</span><span class="s6"> x = </span><span class="s5">SinOsc</span><span class="s6">.kr(</span><span class="s7">0.02</span><span class="s6">).exprange(</span><span class="s7">0.01</span><span class="s6">,</span><span class="s7">0.1</span><span class="s6">); </span>// related to the lfo rate</p>
+<p class="p10"><span class="Apple-tab-span">	</span>lfo = <span class="s5">FbK</span>({</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">arg</span> fb;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fb[<span class="s7">0</span>] = fb[<span class="s7">0</span>] +<span class="Apple-tab-span">	</span>(x*fb[<span class="s7">1</span>]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fb[<span class="s7">1</span>] = fb[<span class="s7">1</span>] -<span class="Apple-tab-span">	</span>(x*fb[<span class="s7">0</span>]);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fb</p>
+<p class="p10"><span class="Apple-tab-span">	</span>}, [<span class="s7">0</span>,<span class="s7">1</span>]);</p>
+<p class="p3"><br></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(lfo[<span class="s7">0</span>].linexp(<span class="s7">0</span>,<span class="s7">1</span>,<span class="s7">100</span>,<span class="s7">400</span>))!<span class="s7">2</span>;</p>
+<p class="p10">}</p>
+<p class="p10">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p10">(</p>
+<p class="p11">// you can use control-rate UGens inside the update function</p>
+<p class="p10">play {</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s5">var</span> lfo;</p>
+<p class="p10"><span class="Apple-tab-span">	</span>lfo = <span class="s5">FbK</span>({</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">arg</span> fb;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.kr(<span class="s7">1</span>,fb*<span class="s7">2</span>);</p>
+<p class="p10"><span class="Apple-tab-span">	</span>}, [<span class="s7">0</span>]).poll;</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(lfo.linexp(<span class="s7">0</span>,<span class="s7">1</span>,<span class="s7">100</span>,<span class="s7">400</span>))!<span class="s7">2</span>;</p>
+<p class="p10">}<span class="Apple-tab-span">	</span></p>
+<p class="p10">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

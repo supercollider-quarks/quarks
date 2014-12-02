@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0b15e8}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #252e9e}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1721ae}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #1721ae; min-height: 12.0px}
+span.s1 {color: #1320f3}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {color: #0910ba}
+span.s5 {color: #252e9e}
+span.s6 {color: #222ba2}
+span.s7 {color: #5f692d}
+span.s8 {color: #54971e}
+span.s9 {color: #b62825}
+span.s10 {color: #1f28a6}
+span.s11 {color: #606060}
+span.s12 {color: #5c6a29}
+span.s13 {color: #536c21}
+span.s14 {color: #1721ae}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Writing Hadron Plugins<span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><br></p>
+<p class="p4">All <a href="Hadron.html"><span class="s1">Hadron</span></a> plugins are SuperCollider classes and they inherit a supplied class called <a href="HadronPlugin.html"><span class="s1">HadronPlugin</span></a>. If you are not familiar with writing classes in SC, the standard <a href="SC://Writing-Classes"><span class="s1">Writing-Classes</span></a> help will accompany. Hopefully the info here will also give you some little insights on how SC classes work. If you have never written a class for SC, there is nothing to be afraid of, nothing is harder than dealing with the regular environment.</p>
+<p class="p2"><br></p>
+<p class="p4">In this tutorial, we are going to create a plugin called HrDoNothing that will just pass its inputs to its outputs.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2"><b>See also:</b> <a href="Hadron.html"><span class="s3">Hadron</span></a> <a href="HadronPlugin.html"><span class="s3">HadronPlugin</span></a> <a href="HadronModTargetControl.html"><span class="s3">HadronModTargetControl</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p6"><b>Inherit HadronPlugin Class to Make It Work For You</b></p>
+<p class="p2"><br></p>
+<p class="p4">Your plugin needs to inherit the HadronPlugin class, so here is what we have at the beginning (with some necessary default code):</p>
+<p class="p2"><br></p>
+<p class="p7">HrDoNothing<span class="s2"> : </span>HadronPlugin</p>
+<p class="p8">{</p>
+<p class="p8"><span class="Apple-tab-span">	</span>*initClass</p>
+<p class="p8"><span class="Apple-tab-span">	</span>{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">this</span>.addHadronPlugin;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>}</p>
+<p class="p3"><br></p>
+<p class="p8">}</p>
+<p class="p2"><br></p>
+<p class="p4">You need to save this as a class file into the Hadron plugin directory (don't forget to save it as a Class file with .sc extension by selecting "Class" from the save dropdown menu). The *initClass method is necessary if you want to have your plugin recognized by the system.</p>
+<p class="p2"><br></p>
+<p class="p4">Now if you launch Hadron:</p>
+<p class="p2"><br></p>
+<p class="p7">Hadron<span class="s2">.new;</span></p>
+<p class="p3"><br></p>
+<p class="p4">You will see your plugin in the "New Inst." window list. But you can't create it yet, it will throw an error. We need to handle the initialization of the class by supplying necessary parameters. This is what it should look like, add this into your class:</p>
+<p class="p2"><br></p>
+<p class="p8">*new</p>
+<p class="p7"><span class="s2">{</span>|argParentApp, argIdent, argUniqueID, argExtraArgs, argCanvasXY|</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">var</span> numIns = 2;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">var</span> numOuts = 2;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">var</span> bounds = <span class="s5">Rect</span>(200, 200, 350, 50);</p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s5">var</span><span class="s2"> name = </span>"HrDoNothing"<span class="s2">;</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>^<span class="s5">super</span>.new(argParentApp, name, argIdent, argUniqueID, argExtraArgs, bounds, numIns, numOuts, argCanvasXY).init;</p>
+<p class="p8">}</p>
+<p class="p2"><br></p>
+<p class="p4">This looks more or less the same for most plugins. You need to specify number of inputs you will have (2 in this example), number of outputs you will have (again, 2 in this example), default screen bounds for your plugin, and a name string that will be seen on the canvas and the GUI window title. The rest should stay intact for your plugin to work.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4">If you want your plugin to have arguments, you should parse the argExtraArgs argument passed into *new which is an <a href="SC://Array"><span class="s1">Array</span></a> of <a href="SC://String"><span class="s1">String</span></a> arguments and use them. For example, if you want your plugin to have variable number of inputs and / or outputs whose count will be determined by arguments supplied by user from the Hadron GUI, you can grab the values here, and use them. To see an example of this in action, see the sources of <a href="../plugins/Help/HrStereoSplitter.html"><span class="s1">HrStereoSplitter</span></a> and <a href="../plugins/Help/HrStereoMixer.html"><span class="s1">HrStereoMixer</span></a>. They get arguments to determine how many inlets or outlets they are going to have, and have default values employed if there are no arguments supplied. In your plugin implementation, you can always access these arguments from the variable "extraArgs".</p>
+<p class="p2"><br></p>
+<p class="p4">The last line of the code (^super.new(...)) initializes the superclass first (HadronPlugin) and the chain of events call our "init" method. Init is the place where you define your GUI, define synths, possibly send them to server etc.</p>
+<p class="p2"><br></p>
+<p class="p4">In your init method and possibly in other methods, you will be using some variables that are provided to you by the HadronPlugin interface, here is the list:</p>
+<p class="p2"><br></p>
+<p class="p4"><b>inBusses: </b>This is an array of audio busses (see: <a href="SC://Bus"><span class="s1">Bus</span></a>) that holds the input busses of your plugin. The size of the array is<span class="Apple-converted-space">  </span>determined by the number of input channels you define in your *new class method. You should get audio from these busses (in our case, there are two inputs and they are inBusses[0] and inBusses[1]) using <a href="SC://InFeedback"><span class="s1">InFeedback</span></a>. These busses should be sent as arguments to your synth.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>outBusses: </b>This is an array of audio busses (see: <a href="SC://Bus"><span class="s1">Bus</span></a>) that holds the output busses of your plugin. The size of the array is<span class="Apple-converted-space">  </span>determined by the number of output channels you define in your *new class method. You should write to those busses with <a href="SC://Out"><span class="s1">Out</span></a>. These busses should be sent as arguments to your synth.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>uniqueID: </b>An Integer between 0 and 65536 unique to the instances of your plugins. Every plugin active in a running Hadron system has a uniqueID. This number is provided to you by the HadronPlugin interface.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>ident: </b>The ident text as String, if supplied by the user.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>window: </b>This is an instance of <a href="SC://CompositeView"><span class="s1">CompositeView</span></a>. You should use this as the parent view when drawing your widgets to your GUI. This window is embedded into the outerWindow (which you should not use) which shows the standard In/Outs, Kill and Hide buttons for all plugins. The bounds of the canvas are defined in your *new method.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>extraArgs: </b>If extra arguments for your objects are supplied by the user, they are stored in this variable. This is an <a href="SC://Array"><span class="s1">Array</span></a> of <a href="SC://String"><span class="s1">String</span></a>s. You might want to check out the source codes of <a href="../plugins/Help/HrStereoMixer.html"><span class="s1">HrStereoMixer</span></a> and <a href="../plugins/Help/HrStereoSplitter.html"><span class="s1">HrStereoSplitter</span></a> to see them in action.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>saveGets: </b>An uninitialized <a href="SC://Array"><span class="s1">Array</span></a> you should fill with functions that will return the values you need to save when the user saves the state of his / her patch, when evaluated. For example, if you need to save the values of a <a href="SC://NumberBox"><span class="s1">NumberBox</span></a> and a <a href="SC://Slider"><span class="s1">Slider</span></a>, you need to say:</p>
+<p class="p2"><br></p>
+<p class="p10">saveGets = [ { myNumBox.value; }, { mySlider.value; } ];</p>
+<p class="p2"><br></p>
+<p class="p4"><b>saveSets: </b>An uninitialized <a href="SC://Array"><span class="s1">Array</span></a> you should fill with functions that will set the values of the parameters saved from obtaining the values of functions from the saveGets variable. The functions will be passed the saved value. The ordering must be same with the functions declared in the saveGets variable. So the companion for the above saveGets variable will be:</p>
+<p class="p2"><br></p>
+<p class="p10">saveSets = [{<span class="s6">|argVal|</span> myNumBox.valueAction_(argVal);}, {<span class="s6">|argVal|</span> mySlider.valueAction_(argVal);} ];</p>
+<p class="p2"><br></p>
+<p class="p4"><b>modSets: </b>This is an empty <a href="SC://Dictionary"><span class="s1">Dictionary</span></a>. If you want any of the controls / values of your plugin to be modulatable, you should fill this dictionary with key - value pairs where keys will be the descriptive names you give to the modulatable parameter, and the values will be functions that will be passed values which should get the argument and do the relevant action for modulation. So if we have a level slider in our GUI and want it to be modulatable with the help of <a href="HadronModTargetControl.html"><span class="s1">HadronModTargetControl</span></a> (see its help for more info) we might put:</p>
+<p class="p2"><br></p>
+<p class="p10">modSets.put(<span class="s7">\level</span>, {<span class="s6">|argVal|</span> myLevelSlider.valueAction_(argVal); });</p>
+<p class="p11"><br></p>
+<p class="p4"><b>modGets: </b>This is essentially the same with modSets (a dictionary), but in the functions, you should return the value instead of setting one. So the complementary modGets for the above modSets would be:</p>
+<p class="p2"><br></p>
+<p class="p10">modGets.put(<span class="s8">\level</span>, { myLevelSlider.value; }); <span class="s9">//returns value</span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>group: </b>This is a <a href="SC://Group"><span class="s1">Group</span></a> reserved for your synth. Your <a href="SC://Group"><span class="s1">Group</span></a>s and <a href="SC://Synth"><span class="s1">Synth</span></a>s should have this group in their targets. See <a href="SC://Synth"><span class="s1">Synth</span></a> and <a href="SC://Group"><span class="s1">Group</span></a> help for more info.</p>
+<p class="p2"><br></p>
+<p class="p4">Now that we have more info about the variables provided for us, let's move on to the init method. We will have no GUI widgets for our HrDoNothing plugin so nothing fancy here. We will just change the background color of our view.</p>
+<p class="p2"><br></p>
+<p class="p8">init</p>
+<p class="p8">{</p>
+<p class="p8"><span class="Apple-tab-span">	</span>window.background_(<span class="s10">Color</span>.gray(0.8));</p>
+<p class="p8">}</p>
+<p class="p2"><br></p>
+<p class="p4">At this stage, if you save your code, recompile the lib, and add the plugin to Hadron.plugins, you should be able to crate the instance from the Hadron GUI, it will be an empty window, with the standard buttons at the bottom. And if you look at the canvas (or the In / Outs window), you will see that our plugin has 2 inputs and 2 outputs. Unfortunately, it doesn't do much yet. We need to define out synth and send it to server first. Here is the code:</p>
+<p class="p2"><br></p>
+<p class="p8">init</p>
+<p class="p8">{</p>
+<p class="p8"><span class="Apple-tab-span">	</span>window.background_(<span class="s10">Color</span>.gray(0.6));</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>fork</p>
+<p class="p8"><span class="Apple-tab-span">	</span>{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">SynthDef</span>(<span class="s11">"hrDoNothing"</span>++uniqueID,</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">arg</span> inBus0, inBus1, outBus0, outBus1;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">var</span> sound = [<span class="s10">InFeedback</span>.ar(inBus0), <span class="s10">InFeedback</span>.ar(inBus1)];</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">Out</span>.ar(outBus0, sound[0]);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">Out</span>.ar(outBus1, sound[1]);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).memStore;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">Server</span>.default.sync;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>synthInstance =<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">Synth</span>(<span class="s11">"hrDoNothing"</span>++uniqueID,</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s12">\inBus0</span>, inBusses[0],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s12">\inBus1</span>, inBusses[1],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s12">\outBus0</span>, outBusses[0],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s12">\outBus1</span>, outBusses[1]</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>], target: group);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>}</p>
+<p class="p8">}</p>
+<p class="p2"><br></p>
+<p class="p4">fork{ } returns a <a href="SC://Routine"><span class="s1">Routine</span></a> using the supplied function. And Routine is a function which can return in the moddle and resume where it left off later on. Why do we need this? In the fork block, we first define our synth with <a href="SC://SynthDef"><span class="s1">SynthDef</span></a>.memStore, and this operation is asynchronous. Before we create the synth instance with Synth(...) we need to make sure that our SynthDef is compiled, sent to server and ready to be used. For this to happen, we need to issue "<a href="SC://Server"><span class="s1">Server</span></a>.default.sync;" which pauses the routine until the server finishes the tasks it has on its hands. This pause-continue operation is only possible in a Routine, so we are using a fork { } here. If you are not going to initiate your synth right away, you don't need to worry about this.</p>
+<p class="p2"><br></p>
+<p class="p4">We give the name ("hrDoNothing"++uniqueID) to our synth, append the uniqueID to avoid possible name clashes between synths defined in plugins supplied by different people. This is just a convention for making sure Synth names between different plugins don't clash.</p>
+<p class="p2"><br></p>
+<p class="p4">In the SynthDef, we read from the input bus arguments with <a href="SC://InFeedback"><span class="s1">InFeedback</span></a>, and out to the output busses with <a href="SC://Out"><span class="s1">Out</span></a>. The synthInstance variable is not a standard variable provided by HadronPlugin, so we need to define it at the top of our class source, above the *new method:</p>
+<p class="p2"><br></p>
+<p class="p7">HrDoNothing<span class="s2"> : </span>HadronPlugin</p>
+<p class="p8">{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s10">var</span> synthInstance;</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>*new</p>
+<p class="p8"><span class="Apple-tab-span">	</span>{....</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p4">Be sure to send the bus arguments when instantiating your synth, and set the target as the "group" that is supplied for you by HadronPlugin. You can also use your own <a href="SC://Group"><span class="s1">Group</span></a> but then, its target should be the group.</p>
+<p class="p2"><br></p>
+<p class="p4">Now if you save your class and recompile the lang, when you run Hadron and add your plugin to the system, you can observe in your Server window that Synths will show 1 as count, and a new group will be added. When you kill your instance, they will be freed automatically for you. The HadronPlugin interface frees the supplied group automatically when the instance is killed.</p>
+<p class="p2"><br></p>
+<p class="p4">There is one more step you need to take, to make this a complete plugin.</p>
+<p class="p2"><br></p>
+<p class="p4">When you connect your instance to another plugin, your bus mappings change, so you need to update your running synth with the new bus mappings. To do this, you need to override a method called "updateBusConnections" inside your plugin. Here is what it looks like:</p>
+<p class="p2"><br></p>
+<p class="p8">updateBusConnections</p>
+<p class="p8">{</p>
+<p class="p8"><span class="Apple-tab-span">	</span>synthInstance.set</p>
+<p class="p8"><span class="Apple-tab-span">	</span>(</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\inBus0</span>, inBusses[0],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\inBus1</span>, inBusses[1],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\outBus0</span>, outBusses[0],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\outBus1</span>, outBusses[1]</p>
+<p class="p8"><span class="Apple-tab-span">	</span>);</p>
+<p class="p8">}</p>
+<p class="p2"><br></p>
+<p class="p4">This method is called whenever there is a connection change relevant to your plugin occurs, so you need to update your synth(s) about the change.</p>
+<p class="p2"><br></p>
+<p class="p4">Now your plugin is fully functional, here is the complete source:</p>
+<p class="p2"><br></p>
+<p class="p12">HrDoNothing<span class="s2"> : </span>HadronPlugin</p>
+<p class="p8">{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s14">var</span> synthInstance;</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>*initClass</p>
+<p class="p8"><span class="Apple-tab-span">	</span>{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">this</span>.addHadronPlugin;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>}</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>*new</p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span>{</span>|argParentApp, argIdent, argUniqueID, argExtraArgs, argCanvasXY|</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">var</span> numIns = 2;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">var</span> numOuts = 2;</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">var</span> bounds = <span class="s14">Rect</span>(200, 200, 350, 50);</p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s14">var</span><span class="s2"> name = </span>"HrDoNothing"<span class="s2">;</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>^<span class="s14">super</span>.new(argParentApp, name, argIdent, argUniqueID, argExtraArgs, bounds, numIns, numOuts, argCanvasXY).init;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>}</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>init</p>
+<p class="p8"><span class="Apple-tab-span">	</span>{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>window.background_(<span class="s14">Color</span>.gray(0.8));</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fork</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">SynthDef</span>(<span class="s11">"hrDoNothing"</span>++uniqueID,</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">arg</span> inBus0, inBus1, outBus0, outBus1;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">var</span> sound = [<span class="s14">InFeedback</span>.ar(inBus0), <span class="s14">InFeedback</span>.ar(inBus1)];</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">Out</span>.ar(outBus0, sound[0]);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">Out</span>.ar(outBus1, sound[1]);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).memStore;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">Server</span>.default.sync;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>synthInstance =<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">Synth</span>(<span class="s11">"hrDoNothing"</span>++uniqueID,</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\inBus0</span>, inBusses[0],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\inBus1</span>, inBusses[1],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\outBus0</span>, outBusses[0],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\outBus1</span>, outBusses[1]</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>], target: group);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p8"><span class="Apple-tab-span">	</span>}</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>updateBusConnections</p>
+<p class="p8"><span class="Apple-tab-span">	</span>{</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>synthInstance.set</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\inBus0</span>, inBusses[0],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\inBus1</span>, inBusses[1],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\outBus0</span>, outBusses[0],</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\outBus1</span>, outBusses[1]</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p8"><span class="Apple-tab-span">	</span>}</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p8">}</p>
+<p class="p2"><br></p>
+<p class="p4">Save your plugin, recompile and:</p>
+<p class="p13"><br></p>
+<p class="p12">Hadron<span class="s2">.new;</span></p>
+<p class="p3"><br></p>
+<p class="p4">You can now use your plugin and it will just pass its inputs to its outputs. You will want more functionality, a custom GUI etc. and there are some other methods supplied by HadronPlugin interface for you to help you get what you need, which you can read about in the <a href="HadronPlugin.html"><span class="s1">HadronPlugin</span></a> help.</p>
+</body>
+</html>

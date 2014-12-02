@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #d5100d}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #d5100d}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #132bc3}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #1b39f5}
+span.s3 {color: #132bc3}
+span.s4 {color: #008326}
+span.s5 {color: #000000}
+span.s6 {color: #d5100d}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>EaseOverview<span class="Apple-tab-span">	</span></b></span><b>easing equations for sclang and scserver</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">Easing and tweening classes for scserver and sclang. Ported from the Cinder C++ framework - original equations by Robert Penner.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE:</b> All these expects an input 0-1 as first argument to <b>.value</b>. If you give it out-of-range values the behavior is undefined.</p>
+<p class="p2"><br></p>
+<p class="p1">see <a href="EaseGallery.html"><span class="s2">EaseGallery</span></a> helpfile for a graphical overview.</p>
+<p class="p1">see below for examples.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s3">EaseNone</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a simple linear tweening with no easing</p>
+<p class="p2"><br></p>
+<p class="p3">//--Quadratic</p>
+<p class="p1"><span class="s3">EaseInQuad</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a quadratic (t^2) ease-in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating from zero velocity</p>
+<p class="p1"><span class="s3">EaseOutQuad</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a quadratic (t^2) ease-out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating to zero velocity</p>
+<p class="p1"><span class="s3">EaseInOutQuad</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a quadratic (t^2) ease-in/out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating until halfway, then decelerating</p>
+<p class="p1"><span class="s3">EaseOutInQuad</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a quadratic (t^2) ease-out/in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating until halfway, then accelerating</p>
+<p class="p2"><br></p>
+<p class="p3">//--Cubic</p>
+<p class="p1"><span class="s3">EaseInCubic</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation function for a cubic (t^3) ease-in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating from zero velocity</p>
+<p class="p1"><span class="s3">EaseOutCubic</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a cubic (t^3) ease-out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating to zero velocity</p>
+<p class="p1"><span class="s3">EaseInOutCubic</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a cubic (t^3) ease-in/out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating until halfway, then decelerating</p>
+<p class="p1"><span class="s3">EaseOutInCubic</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a cubic (t^3) ease-out/in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating until halfway, then accelerating</p>
+<p class="p2"><br></p>
+<p class="p3">//--Quartic</p>
+<p class="p1"><span class="s3">EaseInQuart</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a quartic (t^4) ease-in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating from zero velocity</p>
+<p class="p1"><span class="s3">EaseOutQuart</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a quartic (t^4) ease-out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating to zero velocity</p>
+<p class="p1"><span class="s3">EaseInOutQuart</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a quartic (t^4) ease-in/out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating until halfway, then decelerating</p>
+<p class="p1"><span class="s3">EaseOutInQuart</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a quartic (t^4) ease-out/in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating until halfway, then accelerating</p>
+<p class="p2"><br></p>
+<p class="p3">//--Quintic</p>
+<p class="p1"><span class="s3">EaseInQuint</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation function for a quintic (t^5) ease-in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating from zero velocity</p>
+<p class="p1"><span class="s3">EaseOutQuint</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a quintic (t^5) ease-out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating to zero velocity</p>
+<p class="p1"><span class="s3">EaseInOutQuint</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a quintic (t^5) ease-in/out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating until halfway, then decelerating</p>
+<p class="p1"><span class="s3">EaseOutInQuint</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a quintic (t^5) ease-out/in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating until halfway, then accelerating</p>
+<p class="p2"><br></p>
+<p class="p3">//--Sine</p>
+<p class="p1"><span class="s3">EaseInSine</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a sinusoidal (sin(t)) ease-in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating from zero velocity</p>
+<p class="p1"><span class="s3">EaseOutSine</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a sinusoidal (sin(t)) ease-out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating from zero velocity</p>
+<p class="p1"><span class="s3">EaseInOutSine</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a sinusoidal (sin(t)) ease-in/out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating until halfway, then decelerating</p>
+<p class="p1"><span class="s3">EaseOutInSine</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a sinusoidal (sin(t)) ease-out/in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating until halfway, then accelerating</p>
+<p class="p2"><br></p>
+<p class="p3">//--Exponential</p>
+<p class="p1"><span class="s3">EaseInExpo</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for an exponential (2^t) ease-in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating from zero velocity</p>
+<p class="p1"><span class="s3">EaseOutExpo</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for an exponential (2^t) ease-out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating from zero velocity</p>
+<p class="p1"><span class="s3">EaseInOutExpo</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for an exponential (2^t) ease-in/out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating until halfway, then decelerating</p>
+<p class="p1"><span class="s3">EaseOutInExpo</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for an exponential (2^t) ease-out/in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating until halfway, then accelerating</p>
+<p class="p2"><br></p>
+<p class="p3">//--Circular</p>
+<p class="p1"><span class="s3">EaseInCirc</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a circular (sqrt(1-t^2)) ease-in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating from zero velocity</p>
+<p class="p1"><span class="s3">EaseOutCirc</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a circular (sqrt(1-t^2)) ease-out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating from zero velocity</p>
+<p class="p1"><span class="s3">EaseInOutCirc<span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a circular (sqrt(1-t^2)) ease-in/out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating until halfway, then decelerating</p>
+<p class="p1"><span class="s3">EaseOutInCirc</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a circular (sqrt(1-t^2)) ease-out/in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating until halfway, then accelerating</p>
+<p class="p2"><br></p>
+<p class="p3">//--Bounce</p>
+<p class="p1"><span class="s3">EaseInBounce</span>(a)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a bounce (exponentially decaying parabolic bounce) ease-in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating from zero velocity.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter controls overshoot, the default producing a 10% overshoot</p>
+<p class="p1"><span class="s3">EaseOutBounce</span>(a)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a bounce (exponentially decaying parabolic bounce) ease-out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating from zero velocity.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter controls overshoot, the default producing a 10% overshoot</p>
+<p class="p1"><span class="s3">EaseInOutBounce</span>(a)<span class="Apple-tab-span">	</span>easing equation for a bounce (exponentially decaying parabolic bounce) ease-in/out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating until halfway, then decelerating.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter controls overshoot, the default producing a 10% overshoot</p>
+<p class="p1"><span class="s3">EaseOutInBounce</span>(a)<span class="Apple-tab-span">	</span>easing equation for a bounce (exponentially decaying parabolic bounce) ease-out/in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating until halfway, then accelerating.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter controls overshoot, the default producing a 10% overshoot</p>
+<p class="p2"><br></p>
+<p class="p3">//--Back</p>
+<p class="p1"><span class="s3">EaseInBack</span>(a)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a back (overshooting cubic easing: (a+1)*t^3 - a*t^2) ease-in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating from zero velocity.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter controls overshoot, the default producing a 10% overshoot</p>
+<p class="p1"><span class="s3">EaseOutBack</span>(a)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a back (overshooting cubic easing: (a+1)*t^3 - a*t^2) ease-out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating from zero velocity.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter controls overshoot, the default producing a 10% overshoot</p>
+<p class="p1"><span class="s3">EaseInOutBack</span>(a)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a back (overshooting cubic easing: (a+1)*t^3 - a*t^2) ease-in/out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating until halfway, then decelerating.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter controls overshoot, the default producing a 10% overshoot</p>
+<p class="p1"><span class="s3">EaseOutInBack</span>(a)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for a back (overshooting cubic easing: (a+1)*t^3 - a*t^2) ease-out/in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating until halfway, then accelerating.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter controls overshoot, the default producing a 10% overshoot</p>
+<p class="p2"><br></p>
+<p class="p3">//--Elastic</p>
+<p class="p1"><span class="s3">EaseInElastic</span>(a, p)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for an elastic (exponentially decaying sine wave) ease-in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating from zero velocity.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter is amplitude and <span class="s4">\p</span> is period.</p>
+<p class="p1"><span class="s3">EaseOutElastic</span>(a, p)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for an elastic (exponentially decaying sine wave) ease-out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating from zero velocity.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter is amplitude and <span class="s4">\p</span> is period.</p>
+<p class="p1"><span class="s3">EaseInOutElastic</span>(a, p)<span class="Apple-tab-span">	</span>easing equation for an elastic (exponentially decaying sine wave) ease-in/out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating until halfway, then decelerating.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter is amplitude and <span class="s4">\p</span> is period.</p>
+<p class="p1"><span class="s3">EaseOutInElastic</span>(a, p)<span class="Apple-tab-span">	</span>easing equation for an elastic (exponentially decaying sine wave) ease-out/in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating until halfway, then accelerating.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter is amplitude and <span class="s4">\p</span> is period.</p>
+<p class="p2"><br></p>
+<p class="p3">//Atan</p>
+<p class="p1"><span class="s3">EaseInAtan</span>(a)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for an atan ease-in,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating from zero velocity.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter is curvature.</p>
+<p class="p1"><span class="s3">EaseOutAtan</span>(a)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for an atan ease-out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>decelerating from zero velocity.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter is curvature.</p>
+<p class="p1"><span class="s3">EaseInOutAtan</span>(a)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>easing equation for an atan ease-in/out,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>accelerating until halfway, then decelerating.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the <span class="s4">\a</span> parameter is curvature.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">//--</p>
+<p class="p5"><span class="s5">e= </span>EaseInAtan<span class="s5">(15);</span></p>
+<p class="p4"><span class="s5">e.value(0)<span class="Apple-tab-span">	</span></span>//0 at the start</p>
+<p class="p4"><span class="s5">e.value(0.5)<span class="Apple-tab-span">	</span></span>//what is the value in the middle of the curve</p>
+<p class="p4"><span class="s5">e.value(1)<span class="Apple-tab-span">	</span></span>//1 at the end</p>
+<p class="p6"><br></p>
+<p class="p4">//this can also be written like this to save us from storing the ease object in a variable</p>
+<p class="p7"><span class="s3">EaseInAtan</span>.value(0.5)</p>
+<p class="p6"><br></p>
+<p class="p4">//or shorter</p>
+<p class="p5">EaseInAtan<span class="s5">.(0.5)</span></p>
+<p class="p6"><br></p>
+<p class="p4">//to set the curvature you give a second argument</p>
+<p class="p7"><span class="s3">EaseInAtan</span>.(0.5, 10)</p>
+<p class="p6"><br></p>
+<p class="p4">//or in the other notation</p>
+<p class="p5"><span class="s5">e= </span>EaseInAtan<span class="s5">(10)</span></p>
+<p class="p7">e.value(0.5)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">//--ramping</p>
+<p class="p4"><span class="s5">a= (0..100)/100;<span class="Apple-tab-span">	</span></span>//an array with 100 values 0.0-1.0</p>
+<p class="p7">a.collect{<span class="s3">|t|</span> <span class="s3">EaseInQuad</span>.(t)}.plot;</p>
+<p class="p7">a.collect{<span class="s3">|t|</span> <span class="s3">EaseOutQuad</span>.(t)}.plot;</p>
+<p class="p7">a.collect{<span class="s3">|t|</span> <span class="s3">EaseInOutQuad</span>.(t)}.plot;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">//--similar in sclang and inside synthdefs</p>
+<p class="p7">s.boot</p>
+<p class="p7">{<span class="s3">SinOsc</span>.ar(<span class="s3">EaseInOutExpo</span>.kr(<span class="s3">MouseX</span>.kr)*500+500, 0, 0.1)}.play</p>
+<p class="p7">a.collect{<span class="s3">|x|</span> <span class="s3">EaseInOutExpo.</span>(x)}.plot</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">//--rates are flexibe when used inside synthdefs</p>
+<p class="p7">{<span class="s3">SinOsc</span>.ar(<span class="s3">EaseInAtan.</span>(<span class="s3">SinOsc</span>.kr(1)).linlin(0, 1, 500, 5000), 0, 0.1)}.play<span class="Apple-tab-span">	</span><span class="s6">//becomes kr</span></p>
+<p class="p7">{<span class="s3">SinOsc</span>.ar(<span class="s3">EaseInAtan</span>.kr(<span class="s3">SinOsc</span>.ar(1)).linlin(0, 1, 500, 5000), 0, 0.1)}.play<span class="Apple-tab-span">	</span><span class="s6">//kr with ar arg</span></p>
+<p class="p7">{<span class="s3">SinOsc</span>.ar(<span class="s3">EaseInAtan</span>.ar(<span class="s3">SinOsc</span>.kr(1)).linlin(0, 1, 500, 5000), 0, 0.1)}.play<span class="Apple-tab-span">	</span><span class="s6">//ar with kr arg</span></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">//--nesting</p>
+<p class="p4"><span class="s5">a= (0..100)/100;<span class="Apple-tab-span">	</span></span>//an array with 100 values 0.0-1.0</p>
+<p class="p5"><span class="s5">a.collect{</span>|t|<span class="s5"> </span>EaseInAtan.<span class="s5">(</span>EaseInAtan.<span class="s5">(t))}.plot</span></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">//--creating an object style</p>
+<p class="p4"><span class="s5">a= (0..100)/100;<span class="Apple-tab-span">	</span></span>//an array with 100 values 0.0-1.0</p>
+<p class="p5"><span class="s5">e= </span>EaseInAtan<span class="s5">(3);</span></p>
+<p class="p7">f= EaseInAtan(30);</p>
+<p class="p7">a.collect{<span class="s3">|t|</span> [e.(t), f.(t)]}.plot</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">//even this works...</p>
+<p class="p7">e.(a).plot</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p4">//--use mouse to test</p>
+<p class="p7">s.boot</p>
+<p class="p7">a= {<span class="s3">SinOsc</span>.ar(<span class="s3">EaseInOutQuint</span>.ar(<span class="s3">LFSaw</span>.ar(<span class="s3">MouseX</span>.kr(1, 9, 1)).range(0, 1)).linexp(0, 1, 400, 800), 0, 0.1)}.play</p>
+<p class="p7">a.free</p>
+<p class="p7">a= {<span class="s3">SinOsc</span>.ar(<span class="s3">EaseOutInExpo</span>.ar(<span class="s3">LFSaw</span>.ar(<span class="s3">MouseX</span>.kr(1, 9, 1)).range(0, 1)).linexp(0, 1, 400, 800), 0, 0.1)}.play</p>
+<p class="p7">a.free</p>
+<p class="p7">a= {<span class="s3">SinOsc</span>.ar(<span class="s3">EaseInAtan</span>.ar(<span class="s3">LFSaw</span>.ar(<span class="s3">MouseX</span>.kr(1, 9, 1)).range(0, 1)).linexp(0, 1, 400, 800), 0, 0.1)}.play</p>
+<p class="p7">a.free</p>
+<p class="p7">a= {<span class="s3">SinOsc</span>.ar(<span class="s3">EaseOutInElastic</span>.ar(<span class="s3">LFSaw</span>.ar(<span class="s3">MouseX</span>.kr(1, 9, 1)).range(0, 1), <span class="s3">MouseY</span>.kr(1, 9, 1)).linexp(0, 1, 400, 800), 0, 0.1)}.play</p>
+<p class="p7">a.free</p>
+<p class="p7">a= {<span class="s3">SinOsc</span>.ar(<span class="s3">EaseInBounce</span>.ar(<span class="s3">LFSaw</span>.ar(<span class="s3">MouseX</span>.kr(1, 9, 1)).range(0, 1), <span class="s3">MouseY</span>.kr(1, 9, 1)).linexp(0, 1, 400, 800), 0, 0.1)}.play</p>
+<p class="p7">a.free</p>
+</body>
+</html>

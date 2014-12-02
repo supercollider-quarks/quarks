@@ -1,0 +1,63 @@
+title::Chordtris
+categories::Quarks>Chordtris
+summary::A musical Tetris clone written in SuperCollider
+
+section::Idea
+Chord Tetris is a Tetris clone which adds musical aspects to the classic game concept. The bricks falling from above are associated with a random chord and can be controlled with a MIDI keyboard.
+
+section::Starting, stopping and pausing the game
+
+On Mac OS X, a Cocoa menu is integrated into the SuperCollider application menu at the top of the screen.
+When using other operating systems, the following commands can be used:
+
+code::
+Chordtris.help // open the Chordtris help file
+Chordtris.newGame // start new game
+Chordtris.pause // pause game
+Chordtris.resume // resume game
+Chordtris.openPreferences // open preferences dialog
+::
+
+On Mac OS X the Game can be started using the Cocoa menu (Chordtris -> New Game). While the game is running, it can be paused and resumed in the same menu. Alternatively, you can use the following shortcuts:
+
+table::
+  ## strong::Action:: || strong::Shortcut::
+  ## Pause / Resume || P
+  ## Cancel Game || ESC
+::
+
+section::Control
+A MIDI Keyboard can be used to control the chords as follows:
+
+image::Chordtris.png::
+
+If you have no MIDI keyboard available, you can also play Chord Tetris with a regular computer keyboard (but it's not as much fun!).
+
+table::
+  ## strong::Action:: || strong::MIDI Keyboard:: || strong::Keyboard::
+  ## Rotate Right || play chord inversion (up) || Cursor up
+  ## Rotate Left || play chord inversion (down) || -
+  ## Move Right || play scale (up) || Cursor right
+  ## Move Left || play scale (down) || Cursor left
+  ## Let brick fall down || play low key tone || Cursor down 
+::
+
+Chord Tetris listens to all MIDI Input interfaces available. If your MIDI Controller was not detected, you should try restarting Chord Tetris. If this doesn't help, you should check your MIDI System Settings (e.g. with the Application Audio/MIDI-Setup on Mac OS X).
+
+section::Preferences
+
+You can access the game preferences from the Cocoa menu on Mac OS X (Chordtris -> Preferences) or with the command Chordtris.openPreferences on other operating systems.
+The following parameters can be adjusted:
+
+table::
+  ## strong::Parameter:: || strong::Description:: || strong::Default Value::
+  ## Music Volume || Sound volume of the background music || 0.4
+  ## Sound Volume || Volume of the game sounds || 0.3
+  ## Keyboard Volume || Volume of the MIDI Keyboard notes || 0.5
+  ## Chord Name Language || Note language to display chord names on bricks. This is adjustable because in different languages the note names are different. || English
+::
+
+
+section::Contact
+
+If you have questions, comments or bug reports, feel free to contact me at david.hofmann@gmail.com.

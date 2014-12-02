@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #de0000}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #de0000}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #000000}
+span.s4 {text-decoration: underline}
+span.s5 {font: 14.0px Helvetica; color: #000000}
+span.s6 {font: 12.0px Helvetica; text-decoration: underline}
+span.s7 {font: 12.0px Helvetica; color: #0922ad}
+span.s8 {color: #2700ce}
+span.s9 {color: #008a00}
+span.s10 {color: #de0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>CCIn</b></span><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>CC-Responder MIDI-In wrapper for easy plugging into Synths</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>CCIn.kr(chan, num, spec, lag);</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>chan</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>midi channel</b> - 0 .. 15</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>num</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>cc number</b> 0 .. 127</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>spec</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>a Spec</b> - i.e. \freq, \amp, [5, 50], [1, 100, \exp]</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>lag<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>lag3 time</b> - 0..., default is 0.05</p>
+<p class="p4"><br></p>
+<p class="p1">This class makes it quick to send MIDI control values to UGen arguments. It initialises a CCResponder and maps the received data onto control busses. Those can be read out by the class itself.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s3"><b>See also: </b><a href="SC://UsingMIDI"><span class="s4">UsingMIDI</span></a>, <a href="SC://CCResponder"><span class="s4">CCResponder</span></a>, <a href="SC://MIDIIn"><span class="s4">MIDIIn</span></a></span><span class="s5">, <a href="SC://ControlSpec"><span class="s6">ControlSpec</span></a>, <a href="SC://Spec"><span class="s7">Spec</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new(server, source) </b>create a CCIn object, start the MIDI initialization</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>server</b> - busses will be created on this server (default nil uses Server.default)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>source</b> - id of midi controller (default nil uses all controlles)<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><b>Class Variables</b></p>
+<p class="p10"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*verbose(bool)</b> post source, channel and number <span class="Apple-converted-space"> </span></p>
+<p class="p11"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*softWithin(range)</b> input withinin range is allowed to set bus (useful if controller has multiple scenes)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>range</b> - defaul is 0.05, 1 always sets bus</p>
+<p class="p10"><br></p>
+<p class="p9"><b>Instance Variables</b></p>
+<p class="p10"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>source(int)</b> make binding to one device, if you have more hardware plugged into the system</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>int</b> - default nil allows all sources</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><br></p>
+<p class="p7">Examples:</p>
+<p class="p8"><br></p>
+<p class="p12">// simple example</p>
+<p class="p12"><span class="s3">m = </span><span class="s8">CCIn</span><span class="s3">.new;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// listen to all midi in ports and all midichannels</p>
+<p class="p12"><span class="s3">x = {</span><span class="s8">SinOsc</span><span class="s3">.ar(m.kr(0, 0, </span><span class="s9">\freq</span><span class="s3">), 0, 0.2)}.play <span class="Apple-tab-span">	</span></span>// MIDI Chan = 0, CC = 0, Range 20-20000 Hz</p>
+<p class="p13">m.free; <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">// loosing control</span></p>
+<p class="p13">x.free;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s10">// free synth</span></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p12">// using two CCIns for different Controllers</p>
+<p class="p13">m = <span class="s8">CCIn</span>.new;</p>
+<p class="p13">m.source_(enterYourDeviceOneID); <span class="s10">// controller 1 eg.(945434460)</span></p>
+<p class="p13">x = {<span class="s8">SinOsc</span>.ar(m.kr(0, 0, <span class="s9">\freq</span>), 0, 0.2)}.play;</p>
+<p class="p8"><br></p>
+<p class="p13">n = <span class="s8">CCIn</span>.new;</p>
+<p class="p13">n.source_(enterYourDeviceTwoID); <span class="s10">// controller 2</span></p>
+<p class="p13"><span class="s8">y = {Saw</span>.ar(m.kr(0,0,<span class="s9">\freq</span>), m.kr(0,1))}.play(outbus:1);</p>
+<p class="p8"><br></p>
+<p class="p13">x.free;</p>
+<p class="p13">y.free;</p>
+<p class="p13">m.free;</p>
+<p class="p13">n.free;</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p12">// using specific range/spec for frequency</p>
+<p class="p13">m = <span class="s8">CCIn</span>.new;</p>
+<p class="p13">v = [300, 700, <span class="s9">\exp</span>].asSpec;</p>
+<p class="p13">x = {<span class="s8">Saw</span>.ar(m.kr(0, 0, v), m.kr(0, 1, <span class="s3">[0,0.7].asSpec</span><span class="s9"> </span>))}.play; <span class="s10">// CC00 = freq, CC01 = amp</span></p>
+<p class="p13">x.free;</p>
+<p class="p13">m.free;</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p12">// using it in Proxies: Ch=0, CC00 = freq, CC01 = amp</p>
+<p class="p13">m = <span class="s8">CCIn</span>();</p>
+<p class="p14"><span class="s8">Ndef</span>(<span class="s9">\o</span>, { <span class="s8">Saw</span>.ar(m.kr(0, 0, <span class="s9">\freq</span>), m.kr(0, 1) )<span class="Apple-converted-space">  </span>}).play(1);</p>
+<p class="p14"><span class="s8">Ndef</span>(<span class="s9">\o</span>).fadeTime=1;</p>
+<p class="p14"><span class="s8">Ndef</span>(<span class="s9">\o</span>, { <span class="s8">RLPF</span>.ar(<span class="s8">Pulse</span>.ar(m.kr(0, 0, <span class="s9">\freq</span>), 0.3 ,m.kr(0, 1)), 300, 0.2 )<span class="Apple-converted-space">  </span>}).play(1);</p>
+<p class="p15">// add CC02 to control filter frequency</p>
+<p class="p14"><span class="s8">Ndef</span>(<span class="s9">\o</span>, { <span class="s8">RLPF</span>.ar(<span class="s8">Pulse</span>.ar(m.kr(0, 0, <span class="s9">\freq</span>), 0.3 ,m.kr(0, 1)), m.kr(0, 2, <span class="s9">\freq</span>), 0.2 )<span class="Apple-converted-space">  </span>}).play(1);</p>
+<p class="p14"><span class="s8">Ndef</span>(<span class="s9">\o</span>).clear(1);</p>
+<p class="p14">m.free;</p>
+<p class="p4"><br></p>
+<p class="p15">// wohoo: mutichannel expansion thankes alberto &amp; fredrik</p>
+<p class="p16"><span class="s8">Ndef</span>(<span class="s9">\p</span> { <span class="s8">SinOsc</span>.ar( m.kr(0, [0,1,2], <span class="s9">\freq</span>), 0, m.kr(0,3) ) }).play <span class="s10">//controlling three sine-freqs with three CC's</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+</body>
+</html>

@@ -1,0 +1,118 @@
+CLASS:: RedGIF
+SUMMARY:: gif image decoder
+CATEGORIES:: Red>redTools
+RELATED:: Classes/RedBMP, Classes/RedGIFImage, Classes/RedGIFControl
+
+DESCRIPTION::
+Read and decodes a .gif file from disk. Includes a simple link::#-makeWindow:: method to display the pixels (but you should really write your own).
+
+See
+LIST::
+## http://www.onicos.com/staff/iz/formats/gif.html
+## http://local.wasp.uwa.edu.au/~pbourke/dataformats/gif/
+## http://www.daubnet.com/formats/GIF.html
+## http://www.cis.udel.edu/%7Eamer/CISC651/lzw.and.gif.explained.html
+::
+
+CLASSMETHODS::
+
+METHOD:: read
+Create a RedGIF by reading and decoding a .gif file from disk. Might take a long time to decode.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prReadHeader, prReadLogicalScreenDescriptor, prDecode, prReadExtensionBlock, prReadImageDescriptor, prReadData, prInitDict, prRead
+
+METHOD:: makeWindow
+As simple as possible.
+
+METHOD:: type
+A string. Either "GIF87a" or "GIF89a".
+
+METHOD:: width, height
+Image dimensions in pixels.
+
+METHOD:: background
+A link::Classes/Color::. Can be code::nil:: if no link::#-globalColorMap::.
+
+METHOD:: aspectRatio
+Usually 0.
+
+METHOD:: depth
+Colour depth.
+
+METHOD:: globalColorMap
+Array of colours.
+
+METHOD:: controls
+Array of link::Classes/RedGIFControl:: objects. Corresponding control also saved in each link::Classes/RedGIFImage::. See below.
+
+METHOD:: comments
+Array of strings.
+
+METHOD:: appId, appCode
+Optional strings.
+
+METHOD:: appData
+Optional data as an array.
+
+METHOD:: images
+Array of link::Classes/RedGIFImage:: objects.
+
+EXAMPLES::
+
+CODE::
+a= RedGIF.read("/Library/Application Support/Apple/iChat Icons/Funk Animals/RedDog.gif");
+a.dump;
+a.makeWindow;
+
+
+//--template for custom code to manipulate and display
+(
+	var scale= 10;
+	var a= RedGIF.read("/Library/Application Support/Apple/iChat Icons/Funk Animals/RedDog.gif");
+	var win= Window("gif", Rect(300, 300, a.width*scale, a.height*scale), false);
+	a.background= Color.blue;					//overwrite background colour
+	a.images[0].data= a.images[0].data.reverse;	//mess with the image pixel data
+	win.view.background= a.background;
+	win.drawFunc= {
+		Pen.smoothing= false;
+		a.images[0].data.do{|col, i|
+			if(a.controls[0].transparentFlag.not or:{a.controls[0].transparent!=col}, {
+				Pen.fillColor= col;
+				Pen.fillOval(Rect(i%a.width*scale, i.div(a.width)*scale, scale, scale));
+			});
+		};
+	};
+	win.front;
+)
+
+//--download example animated gif to desktop
+"cd ~/Desktop; curl -o dog-03.gif http://www.gifanimations.com/GA/image/animations/animals/dogs/dog-03.gif".unixCmd;
+
+//--template for animation (load an animated gif)
+(
+	var scale= 2;
+	var a= RedGIF.read("~/Desktop/dog-03.gif");
+	var win= Window("gif", Rect(300, 300, a.width*scale, a.height*scale), false);
+	var index= 0, img;
+	win.drawFunc= {
+		Pen.smoothing= false;
+		img= a.images.wrapAt(index);
+		img.data.do{|col, i|
+			if(img.control.transparentFlag.not or:{img.control.transparent!=col}, {
+				Pen.fillColor= col;
+				Pen.fillRect(Rect(i%a.width*scale, i.div(a.width)*scale, scale, scale));
+			});
+		};
+	};
+	win.front;
+	Routine({
+		while({win.isClosed.not}, {
+			win.refresh;
+			(img.control.duration*0.01).max(0.01).wait;
+			index= index+1;
+		});
+	}).play(AppClock);
+)
+::

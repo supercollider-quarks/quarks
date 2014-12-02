@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; min-height: 22.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000; min-height: 12.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; color: #000000}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; color: #000000; min-height: 17.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {text-decoration: underline ; color: #002fe0}
+span.s2 {color: #0000ff}
+span.s3 {text-decoration: underline}
+span.s4 {color: #0000bf}
+span.s5 {color: #000000}
+span.s6 {color: #007300}
+span.s7 {color: #bf0000}
+span.s8 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>web<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><b>Color extensions</b></p>
+<p class="p3"><br></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p4"><br></p>
+<p class="p2">Methods for <a href="SC://Color"><span class="s2">Color</span></a> processing, conversion and naming.</p>
+<p class="p2">Used by <a href="SVG/SVG.html"><span class="s2">SVG</span></a></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b><span class="s3">Color name libraries</span></b></p>
+<p class="p6"><b><span class="s3"></span></b><br></p>
+<p class="p2"><b>*web ( name, alpha )</b></p>
+<p class="p7">the web method creates a table with 151 standard web color names, as found at</p>
+<p class="p7"><span class="s3">http://www.w3schools.com/html/html_colornames.asp</span></p>
+<p class="p8"><span class="s3"></span><br></p>
+<p class="p7">This method can be used in various ways:</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s4">Color</span><span class="s5">.web; <span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span>// returns the table (an <a href="SC://Event">Event</a>)</p>
+<p class="p9"><span class="s4">Color</span><span class="s5">.web( </span><span class="s6">\maroon</span><span class="s5"> ); <span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span></span>// returns a color named "maroon"</p>
+<p class="p9"><span class="s4">Color</span><span class="s5">.web[ </span><span class="s6">\maroon</span><span class="s5"> ];<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// also returns a color named "maroon"</p>
+<p class="p9"><span class="s4">Color</span><span class="s5">.web.maroon;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// and again returns a color named "maroon"</p>
+<p class="p10"><br></p>
+<p class="p11"><span class="s4">Color</span>.web.keys.asArray.sort.dopostln; <span class="s7">// post all names</span></p>
+<p class="p12"><br></p>
+<p class="p12"><br></p>
+<p class="p2"><b>*web16 ( name, alpha )</b></p>
+<p class="p2">the web method creates a table with the 16 most common web color names, supported by the W3C HTML 4.0 standard. Works the same way as <b>*web</b>.</p>
+<p class="p4"><br></p>
+<p class="p13"><span class="s4">Color</span>.web16.keys.asArray.sort.dopostln; <span class="s7">// post all names</span></p>
+<p class="p12"><br></p>
+<p class="p12"><br></p>
+<p class="p2"><b>*xwindows ( name, alpha, includeGrayShades )</b></p>
+<p class="p2">the web method creates a table with the X-windows colors as found in the Color code file in the ClassLibrary. Works the same way as <b>*web</b>. It is advisable to get the table into a variable once when using more then once for saving speed. The full table when <b>includeGrayShades</b> is true (default : false ) has 650 entries.</p>
+<p class="p4"><br></p>
+<p class="p13"><span class="s4">Color</span>.xwindows( includeGrayShades: true ).keys.asArray.sort.dopostln; <span class="s7">// post all names</span></p>
+<p class="p10"><br></p>
+<p class="p11">(</p>
+<p class="p11"><span class="s4">var</span> table, window, button, text, key;</p>
+<p class="p11">table = <span class="s4">Color</span>.xwindows;</p>
+<p class="p11">window = <span class="s4">GUI</span>.window.new( <span class="s8">"colors"</span> ).front;</p>
+<p class="p11">text = <span class="s4">GUI</span>.staticText.new( window, <span class="s4">Rect</span>( 120, 10, 150, 20 ) );</p>
+<p class="p11">button = <span class="s4">GUI</span>.button.new( window, <span class="s4">Rect</span>( 10, 10, 100, 20 ) )</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.states_( [[ <span class="s8">"new color"</span> ]] )</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.action_( {</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>key = table.keys.choose;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>window.view.background = table[ key ];</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>text.string = key.asString;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>} );</p>
+<p class="p11">button.doAction;</p>
+<p class="p11">)</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p15"><b><span class="s3">Creation methods</span></b></p>
+<p class="p16"><b></b><br></p>
+<p class="p7"><b>*newHex ( hexName, alpha )</b></p>
+<p class="p7">Creates a color from a web standard hex String or<span class="Apple-converted-space">  </span>Symbol ( like "#FFAA00" ). The hexName can also be a decimal number, for example produced using 16xFFAA00.</p>
+<p class="p8"><br></p>
+<p class="p11"><span class="s4">Color</span>.newHex( <span class="s8">"FFAA00"</span> );</p>
+<p class="p11"><span class="s4">Color</span>.newHex( <span class="s8">"#FFAA00"</span> );</p>
+<p class="p11"><span class="s4">Color</span>.newHex( 16xFFAA00 );</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p2"><b>*newName ( name, table, includeXWindows )</b></p>
+<p class="p2">Creates a color from a web name. If the name is a number or a hex String / Symbol, it works as <b>*newHex</b>. If the name is a color name which is in the <b>*web</b> color table, the associated color will be returned. You can also provide your own color table with the <b>table</b> argument. By default the web table is used, but if <b>includeXWindows</b> is true (default : false ) the web and xwindows tables are combined, including the grayshades. There is also name conversion going on, providing compatibility with various naming conventions:</p>
+<p class="p8"><br></p>
+<p class="p11"><span class="s4">Color</span>.newName( <span class="s8">"EEE8AA"</span> );</p>
+<p class="p17"><span class="s4">Color</span><span class="s5">.newName( </span>"PaleGoldenrod"<span class="s5"> );</span></p>
+<p class="p17"><span class="s4">Color</span><span class="s5">.newName( </span>"pale_goldenrod"<span class="s5"> );<span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="s4">Color</span>.newName( 16xEEE8AA );</p>
+<p class="p9"><span class="s4">Color</span><span class="s5">.newName( </span><span class="s8">"none"</span><span class="s5"> );<span class="Apple-converted-space">    </span></span>// same as Color.clear</p>
+<p class="p12"><br></p>
+<p class="p12"><br></p>
+<p class="p12"><br></p>
+<p class="p5"><b><span class="s3">Accessing and conversion methods</span></b></p>
+<p class="p6"><b><span class="s3"></span></b><br></p>
+<p class="p2"><b><span class="s3">*web related</span></b></p>
+<p class="p6"><b><span class="s3"></span></b><br></p>
+<p class="p2"><b>hex</b></p>
+<p class="p2">convert the color to a hex string</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s4">Color</span>.newName( <span class="s8">"EEE8AA"</span> ).hex;<span class="Apple-converted-space">  </span><span class="s7">// proof of concept</span></p>
+<p class="p8"><br></p>
+<p class="p2"><b>webHex</b></p>
+<p class="p2">convert the color to a hex string with a "#" char at the start</p>
+<p class="p4"><br></p>
+<p class="p2"><b>hexValue</b></p>
+<p class="p2">convert the color to a decimal value derrived from the hex string</p>
+<p class="p4"><br></p>
+<p class="p13"><span class="s4">Color</span>.newName( <span class="s8">"EEE8AA"</span> ).hexValue;</p>
+<p class="p4"><br></p>
+<p class="p2"><b>asWebColorString</b></p>
+<p class="p2">convert the color to webcolor name if found or else a webHex string</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s4">Color</span>.newName( <span class="s8">"EEE8AA"</span> ).asWebColorString;<span class="Apple-converted-space">  </span><span class="s7">// pale_golenrod</span></p>
+<p class="p11"><span class="s4">Color</span>.newName( <span class="s8">"FFAA00"</span> ).asWebColorString;<span class="Apple-converted-space">  </span><span class="s7">// #FFAA00</span></p>
+<p class="p12"><br></p>
+<p class="p2">asWebColorString can also be called on other objects:</p>
+<p class="p2"><b>Nil:asWebColorString ( default )<span class="Apple-converted-space"> </span></b> : returns default</p>
+<p class="p2"><b>String:asWebColorString ( default )<span class="Apple-converted-space"> </span></b> : returns default if not compatible</p>
+<p class="p2"><b>Symbol:asWebColorString ( default )<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><b>Number:asWebColorString ( default )<span class="Apple-converted-space"> </span></b></p>
+<p class="p4"><b></b><br></p>
+<p class="p2"><b>asColor</b></p>
+<p class="p2">returns itself when called upon a Color, but returns a color when called upon a:</p>
+<p class="p2">Number, String, Symbol or nil</p>
+<p class="p2">asColor uses Color.newName internally</p>
+<p class="p12"><br></p>
+<p class="p12"><br></p>
+<p class="p2"><b>roundHex</b></p>
+<p class="p2">returns a color rounded to the 24bit web color standard</p>
+<p class="p8"><br></p>
+<p class="p11"><span class="s4">Color</span>(0.12345, 0.23456, 0.34567 ).asArray * 255;</p>
+<p class="p11"><span class="s4">Color</span>(0.12345, 0.23456, 0.34567 ).roundHex.asArray * 255;</p>
+<p class="p8"><br></p>
+<p class="p2"><b>findWebColor ( table )</b></p>
+<p class="p2">returns an alphabetically sorted array of web color names found with this color</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s4">Color</span><span class="s5">.newName( </span><span class="s8">"FF00FF"</span><span class="s5"> ).findWebColor;<span class="Apple-converted-space">  </span></span>// returns 2 web color names with identical hex values</p>
+<p class="p12"><br></p>
+<p class="p2"><b>findSameHueNames ( table )</b></p>
+<p class="p2">returns an alphabetically sorted array of web color names with the same hue as this color</p>
+<p class="p8"><b></b><br></p>
+<p class="p11">(</p>
+<p class="p11"><span class="s4">var</span> window, table;</p>
+<p class="p9"><span class="s5">table = </span><span class="s4">Color</span><span class="s5">.web; </span>// make table once for optimized speed</p>
+<p class="p11">window = <span class="s4">GUI</span>.window.new( <span class="s8">"purple shades"</span> ).front;</p>
+<p class="p11">window.view.decorator = <span class="s4">FlowLayout</span>( window.view.bounds );</p>
+<p class="p11"><span class="s4">Color</span>.newName( <span class="s8">"purple"</span>, table ).findSameHueNames( table )</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.sort({ <span class="s4">|a,b|</span> <span class="s4">Color</span>.newName( a, table).lightness &lt;= <span class="s4">Color</span>.newName( b, table ).lightness })<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s4">|name|</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">GUI</span>.compositeView.new( window, 50@380 )</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.background_( <span class="s4">Color</span>.newName( name, table ) );</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p11">)</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p2"><b><span class="s3">processing methods</span></b></p>
+<p class="p4"><b><span class="s3"></span></b><br></p>
+<p class="p2"><b>hue, sat, val</b></p>
+<p class="p2">gets and sets HSV values for colors as if they were instance variables</p>
+<p class="p4"><br></p>
+<p class="p2"><b>lightness</b></p>
+<p class="p2">returns the mean of red, green and blue</p>
+<p class="p4"><br></p>
+<p class="p2"><b>desaturate</b></p>
+<p class="p2">desaturates the color<i> in place</i></p>
+<p class="p4"><br></p>
+<p class="p2"><b>clip ( min, max )</b></p>
+<p class="p2">clips the red, green and blue values<i> in place</i></p>
+<p class="p4"><i></i><br></p>
+<p class="p2"><b>round ( quant )</b></p>
+<p class="p2">rounds the red, green and blue values<i> in place</i></p>
+<p class="p4"><i></i><br></p>
+<p class="p2"><b>saturate ( amount )</b></p>
+<p class="p2">returns a saturated or desaturated version of the color ( <b>amount </b>: -1 to 1 )</p>
+<p class="p4"><br></p>
+<p class="p2"><b>hueAdd ( amount )</b></p>
+<p class="p2">returns a hue-shifted version of the color ( <b>amount </b>: -1 to 1 )</p>
+<p class="p4"><br></p>
+<p class="p2"><b>blendVal ( amount, toVal )</b></p>
+<p class="p2">returns a val-changed version of the color ( <b>amount </b>: -1 to 1, <b>toVal </b>: 0 to 1, default 0.5 )</p>
+<p class="p2">This changes the lightness to an average value, thus decreases/increases lightness differences between<span class="Apple-converted-space">  </span>colors. Similar to contrast, but inversed and keeps color (doesn't fade to gray)</p>
+<p class="p4"><br></p>
+<p class="p2"><b>contrast ( amount )</b></p>
+<p class="p2">returns a contrast changed version of the color ( <b>amount </b>: -1 to 1 )</p>
+<p class="p4"><br></p>
+<p class="p2"><b>brightness ( amount )</b></p>
+<p class="p2">returns a brightness changed version of the color ( <b>amount </b>: -1 to 1 )</p>
+<p class="p4"><br></p>
+<p class="p13">(</p>
+<p class="p11"><span class="s4">var</span> window, button, comps, comps2, process, sliders;</p>
+<p class="p11">window = <span class="s4">GUI</span>.window.new( <span class="s8">"color processing"</span>, <span class="s4">Rect</span>(300, 100, 400, 282) ).front;</p>
+<p class="p11">window.view.background_( <span class="s4">Color</span>.black );</p>
+<p class="p11">window.view.decorator = <span class="s4">FlowLayout</span>( window.view.bounds );</p>
+<p class="p11">comps = { <span class="s4">GUI</span>.compositeView.new( window, 40@25 ) } ! 9;</p>
+<p class="p11">comps2 = { <span class="s4">GUI</span>.compositeView.new( window, 40@100 ) } ! 9;</p>
+<p class="p10"><br></p>
+<p class="p11">process = { comps2.do({ <span class="s4">|comp, i|</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">var</span> newColor;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>newColor = comps[i].background ?? { <span class="s4">Color</span>.clear };</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sliders.do({ <span class="s4">|sl, ii|</span><span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>newColor = newColor.perform( sl[0], sl[1].value.linlin(0,1,-1,1) );</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>comp.background = newColor;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});<span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p10"><br></p>
+<p class="p18"><span class="s5">sliders = [ </span>\saturate<span class="s5">, </span>\hueAdd<span class="s5">, </span>\blendVal<span class="s5">, </span>\contrast<span class="s5">, </span>\brightness<span class="s5"> ].collect({ </span><span class="s4">|item, i|</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>[ <span class="Apple-tab-span">	</span>item,</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">GUI</span>.slider.new( window, 280@20 )</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.value_( 0.5 )</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.background_( <span class="s4">Color</span>.gray(0.5) )</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_({ process.value }),</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">GUI</span>.staticText.new( window, 100@20 )</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.string_( item.asString )</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.stringColor_( <span class="s4">Color</span>.gray(0.5) )</p>
+<p class="p11"><span class="Apple-tab-span">	</span>] });</p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p11">button = <span class="s4">GUI</span>.button.new( window, 80@20 ).states_( [[ <span class="s8">"new colors"</span> ]] )</p>
+<p class="p11"><span class="Apple-tab-span">	</span>.action_({<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>({ <span class="s4">|i|</span> <span class="s4">Color</span>.rand(0.0,1.0); } ! 9)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.sort({ <span class="s4">|a,b|</span> a.hue &lt;= b.hue })</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.do({ <span class="s4">|color, i|</span> comps[i].background_( color ) });</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>process.value;</p>
+<p class="p11"><span class="Apple-tab-span">	</span>});</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11">button.doAction;</p>
+<p class="p10"><br></p>
+<p class="p11"><span class="s4">GUI</span>.button.new( window, 80@20 ).states_( [[ <span class="s8">"reset sliders"</span> ]] )</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.action_({ sliders.do({ <span class="s4">|sl|</span> sl[1].value = 0.5; }); process.value });</p>
+<p class="p13">)</p>
+</body>
+</html>

@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Based on /usr/bin/open-x11 , part of the Mac OSX distribution.
+# This version ensures the launch is not indirect.
+
+
+# this will often work (always, if X11 is already running)
+x11_app=X11
+# but try to find the real location just in case..
+if [ -d /Applications/Utilities/X11.app ]; then
+  x11_app=/Applications/Utilities/X11.app
+elif [ -d /Applications/X11.app ]; then
+  x11_app=/Applications/X11.app
+fi
+
+# Make sure X11 is running first
+lsof | grep X11 > /dev/null
+if [ "$?" != "0" ]; then
+        /usr/bin/open "$x11_app"
+fi
+
+# Script to run a program with the X path and display configured correctly
+
+if [ "x$DISPLAY" = "x" ]; then
+  DISPLAY=":0"
+  export DISPLAY
+fi
+
+for d in /usr/X11R6/bin /usr/bin/X11 /usr/local/bin/X11; do
+  if [ -d $d ]; then
+    case $PATH in
+      '')
+        PATH=$d
+        ;;
+      $d|$d:*|*:$d|*:$d:*)
+        : do nothing
+        ;;
+      *)
+        PATH=$PATH:$d
+        ;;
+    esac
+  fi
+done
+export PATH
+
+# this next bit is different from main "open-x11" - we need to launch directly 
+#  rather than via "open" or suchlike
+prog=$1; shift
+"$prog" "$@" 

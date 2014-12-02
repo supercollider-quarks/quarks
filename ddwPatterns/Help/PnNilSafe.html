@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.42">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    span.s1 {color: #0000bf}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>PnNilSafe : Pn</b></p>
+<p class="p2"><br></p>
+<p class="p3">It is possible to hang SuperCollider by using Pn and Plazy together, under the following conditions:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>The number of repeats for Pn is inf.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>Plazy infinitely returns nil for any reason.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3">For instance,</p>
+<p class="p2"><br></p>
+<p class="p4">// do not execute this! Unless you want to force quit SuperCollider</p>
+<p class="p5">p = <span class="s1">Pn</span>(<span class="s1">Plazy</span>({ <span class="s1">nil</span> }), <span class="s1">inf</span>).asStream;</p>
+<p class="p5">p.next;</p>
+<p class="p2"><br></p>
+<p class="p3">Obviously, in a perfect world, Plazy should never return nil, but we make mistakes and the risk of error here requires a complete restart of SuperCollider, which naturally we want to avoid.</p>
+<p class="p2"><br></p>
+<p class="p3">For event patterns, PnNilSafe behaves identically to Pn except that it terminates immediately in the above case.</p>
+<p class="p2"><br></p>
+<p class="p4">// you may execute this</p>
+<p class="p5">p = <span class="s1">PnNilSafe</span>(<span class="s1">Plazy</span>({ <span class="s1">nil</span> }), <span class="s1">inf</span>).asStream;</p>
+<p class="p5">p.next;</p>
+<p class="p2"><br></p>
+<p class="p3">It does this by checking the logical time when it embeds the repeated pattern into the stream. If it's the same time as the previous embedding, this means that the child stream yielded no values and the stream terminates. (The problem with Pn is that if the pattern to be repeated returns without yielding a value, it will keep repeating the empty stream instead of returning.)</p>
+<p class="p2"><br></p>
+<p class="p3">This is intended for streams that will be scheduled on a clock -- any event pattern or stream, or a value pattern used within a Pbind. Be aware, though, that the stream may terminate prematurely if the event pattern returns a zero delta. Exercise caution when using PnNilSafe with Ppar or Ptpar, for instance, or to play chords using zero deltas.</p>
+<p class="p2"><br></p>
+<p class="p4">// early termination example</p>
+<p class="p5">p = <span class="s1">Pn</span>(<span class="s1">Plazy</span>({ <span class="s1">Pshuf</span>((1..4), 1) }), <span class="s1">inf</span>).asStream;</p>
+<p class="p5">p.nextN(10);</p>
+<p class="p5">[ 3, 1, 4, 2, 2, 3, 1, 4, 4, 3 ]</p>
+<p class="p6"><br></p>
+<p class="p5">p = <span class="s1">PnNilSafe</span>(<span class="s1">Plazy</span>({ <span class="s1">Pshuf</span>((1..4), 1) }), <span class="s1">inf</span>).asStream;</p>
+<p class="p5">p.nextN(10);</p>
+<p class="p5">[ 2, 3, 4, 1, <span class="s1">nil</span>, <span class="s1">nil</span>, <span class="s1">nil</span>, <span class="s1">nil</span>, <span class="s1">nil</span>, <span class="s1">nil</span> ]</p>
+<p class="p2"><br></p>
+<p class="p3">Because nextN requests all of its values at the same logical time, PnNilSafe exits to prevent the dangerous infinite loop.</p>
+</body>
+</html>

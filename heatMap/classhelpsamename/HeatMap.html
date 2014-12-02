@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #0000ff}
+span.s3 {color: #0000bf}
+span.s4 {color: #007300}
+span.s5 {color: #000000}
+span.s6 {color: #bf0000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>HeatMap</b></span><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a 2D map of values as coloured patches</b></p>
+<p class="p2"><br></p>
+<p class="p3">See the help file for <a href="../heatMap.html"><span class="s2">heatMap</span></a> for how to generate heatmaps.</p>
+<p class="p2"><br></p>
+<p class="p3">Once generated, there are a few things you can do with the HeatMap object:</p>
+<p class="p2"><br></p>
+<p class="p3"><b>patches</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Allows you to access the patches as a 2D array of GUI.textView objects.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>highlight(x, y, colour)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Allows you to highlight a single point of interest, as follows:</p>
+<p class="p2"><br></p>
+<p class="p4">// Some random data</p>
+<p class="p5">a = (0..9).scramble.blendAt((0.1, 0.2 .. 9));</p>
+<p class="p6"><br></p>
+<p class="p5">h = a.heatMap(10, <span class="s3">Rect</span>(0, 0, 300, 200), xLabels: <span class="s3">true</span>, yLabels: <span class="s3">true</span>, colscheme: <span class="s4">\bw</span>);</p>
+<p class="p6"><br></p>
+<p class="p5">h.highlight(9.rand, 10.rand)</p>
+<p class="p7"><br></p>
+<p class="p3"><b>monitorBus(bus, rate, colour)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>uses the <b>highlight</b> feature to create a Task reading the highlight location from a 2-channel control-rate <a href="SC://Bus"><span class="s2">Bus</span></a>, as follows:</p>
+<p class="p2"><br></p>
+<p class="p4">// Using the "h" created in the above example...</p>
+<p class="p6"><br></p>
+<p class="p5">s.boot;</p>
+<p class="p5">b = <span class="s3">Bus</span>.control(s, 2);</p>
+<p class="p5">(</p>
+<p class="p5">x = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> pos = {<span class="s3">LFNoise2</span>.kr(2).range(0,8).round}.dup;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.kr(b, pos);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(0, <span class="s3">Pan2</span>.ar(<span class="s3">SinOsc</span>.ar(pos[1].linexp(8,0,220,440), 0, 0.1), pos[0].linlin(0,8,-1,1)));</p>
+<p class="p5">}.play(s);</p>
+<p class="p5">)</p>
+<p class="p4"><span class="s5">t = h.monitorBus(b); </span>// Returns a running Task</p>
+<p class="p6"><br></p>
+<p class="p5">t.stop; x.free; b.free; <span class="s6">// tidy up</span></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p3"><b>*plot2DfileData(path, title, labels, rowlen=3, picsize=90, colscheme=\bw)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>This convenience reads a file from <b>path</b> (in a format such as AIFF/WAV/etc) and plots a 2D heatmap for each channel, on the assumption that the file represents a <b><i>SQUARE</i></b> heatmap, having (edgelength * edgelength) frames in the datafile. This is the format used by <a href="../../../../../../backups/_mysvn_/mcldsc/ExtensionsByDan/MCLD_UGens/Help/SOMTrain.html"><span class="s2">SOMTrain</span></a> and <a href="../../../../../../backups/_mysvn_/mcldsc/ExtensionsByDan/MCLD_UGens/Help/SOMRd.html"><span class="s2">SOMRd</span></a>, among others. The window prints out pretty nicely, on Mac at least.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>The method returns an array containing two things: the parent window, and an array of the HeatMap objects.</p>
+<p class="p2"><br></p>
+<p class="p4">// Note: this time "h" is going to be our array of heatmaps</p>
+<p class="p8"><span class="s5">#w, h = </span><span class="s3">HeatMap</span><span class="s5">.plot2DfileData(</span><span class="s3">Local</span><span class="s5">.datapath +/+ </span>"MatchEQ/a11wlk01-features-SOMcoords.aiff"<span class="s5">, </span>"Look at these data"<span class="s5">);</span></p>
+<p class="p5">~location = 9.rand @ 10.rand; h.do{<span class="s3">|hm|</span> hm.highlight(~location.x, ~location.y)}; w.refresh</p>
+</body>
+</html>

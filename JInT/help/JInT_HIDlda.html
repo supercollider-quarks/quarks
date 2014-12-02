@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 22.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+span.s1 {color: #0000bf}
+span.s2 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>JInT_HIDlda</b></p>
+<p class="p2"><b>superclass: JInT</b></p>
+<p class="p3">/**</p>
+<p class="p3"><span class="Apple-tab-span">	</span>2006<span class="Apple-converted-space">  </span>Till Bovermann (IEM)</p>
+<p class="p3">*/</p>
+<p class="p4"><b></b><br></p>
+<p class="p2">implements JustInTerface for a Logitech Dual Action device.</p>
+<p class="p5"><br></p>
+<p class="p6">s.boot;</p>
+<p class="p6">(</p>
+<p class="p3">// plug in a HID device and start HIDDeviceService</p>
+<p class="p6">q = q ? ();</p>
+<p class="p6"><span class="s1">HIDDeviceService</span>.buildDeviceList;</p>
+<p class="p5"><br></p>
+<p class="p3">// get first responding device</p>
+<p class="p6">q.device = <span class="s1">HIDDeviceService</span>.devices.first</p>
+<p class="p6">)</p>
+<p class="p5"><br></p>
+<p class="p7">HIDresponder<span class="s2">.load;</span></p>
+<p class="p5"><br></p>
+<p class="p6">j = <span class="s1">JInT_HIDlda</span>.new(s, q.device.locID)</p>
+<p class="p6">j.start</p>
+<p class="p5"><br></p>
+<p class="p6">j.info</p>
+<p class="p5"><br></p>
+<p class="p6">j.inspect</p>
+<p class="p5"><br></p>
+<p class="p6">p = p ? <span class="s1">ProxySpace</span>.push(s)</p>
+<p class="p5"><br></p>
+<p class="p6">~y = {<span class="s1">SinOsc</span>.ar(j[\lj].kr[0].lag(0.25) * 400 + 400) * j[\b1].kr.lag(0.3) * 0.5}</p>
+<p class="p6">~y.play</p>
+<p class="p6">~y.free</p>
+<p class="p5"><br></p>
+<p class="p6">j.stop</p>
+<p class="p5"><br></p>
+<p class="p7">HIDresponder<span class="s2">.releaseAll</span></p>
+</body>
+</html>

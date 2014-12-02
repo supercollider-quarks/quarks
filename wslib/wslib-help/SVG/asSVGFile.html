@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000202; min-height: 12.0px}
+span.s1 {color: #0054d9}
+span.s2 {text-decoration: underline ; color: #0041d5}
+span.s3 {color: #0047e5}
+span.s4 {color: #0000ff}
+span.s5 {color: #000000}
+span.s6 {color: #0000bf}
+span.s7 {color: #007300}
+span.s8 {color: #bf0000}
+span.s9 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>asSVGFile</b></p>
+<p class="p2">Part of <a href="../wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">see also: <a href="SVG.html"><span class="s2">SVG</span></a>, <a href="SVGFile.html"><span class="s3">SVGFile</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">There are a few SC objects responding to asSVGFile:</p>
+<p class="p3"><br></p>
+<p class="p2"><i>work in progress</i></p>
+<p class="p3"><br></p>
+<p class="p2"><b>Function:asSVGFile</b></p>
+<p class="p2"><b>Env:asSVGFile</b></p>
+<p class="p3"><b></b><br></p>
+<p class="p3"><b></b><br></p>
+<p class="p2"><b>Function:asSVGFile ( path )</b></p>
+<p class="p2">this method can create a valid SVG file from a function containing <a href="SC://GUI"><span class="s4">GUI</span></a>.pen instructions.<span class="Apple-converted-space"> </span></p>
+<p class="p2">They are collected by ColPen (no documentation yet). The example below should demonstrate the use of this method:</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p5">d = {<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span><span class="s6">GUI</span><span class="s5">.pen.use({ </span>// creates an SVGGroup</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">GUI</span>.pen.translate( 100, 50 );</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if( </span><span class="s6">GUI</span><span class="s5">.pen.respondsTo( </span><span class="s7">\color_</span><span class="s5"> ) ) </span>// means SwingOSC is installed</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s6">GUI</span>.pen.color = <span class="s6">Color</span>.blue; }<span class="Apple-converted-space">  </span><span class="s8">// GUI style color setting</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s6">Color</span>.blue.set };<span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">GUI</span>.pen.width = 5;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">GUI</span>.pen.moveTo( 10@10 );</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">GUI</span>.pen.lineTo( 100@20 );</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">GUI</span>.pen.stroke</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});<span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span>if( </span><span class="s6">GUI</span><span class="s5">.pen.respondsTo( </span><span class="s7">\color_</span><span class="s5"> ) ) </span>// means SwingOSC is installed</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s6">GUI</span>.pen.color = <span class="s6">Color</span>.red; }<span class="Apple-converted-space">  </span><span class="s8">// GUI style color setting</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s6">Color</span>.red.set };</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">GUI</span>.pen.strokeOval( <span class="s6">Rect</span>(10,10,380,280 ) );</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p5">w = <span class="s6">GUI</span>.window.new( <span class="s9">"testplot"</span> ).front.drawHook_( d );</p>
+<p class="p5">)</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s5">f = d.asSVGFile( </span><span class="s9">"~/Desktop/test asSVGFile"</span><span class="s5"> ); </span>// creates a file (doesn't write)</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s5">f.plot; </span>// check if it looks the same</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s5">f.postTree; </span>// view the contents of the SVGFile</p>
+<p class="p7"><br></p>
+<p class="p5">f[0][0][0].segments.collect({ <span class="s6">|seg|</span> [ seg.type ] ++ seg.propertyArray });</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s5">f.write; </span>// write to file (open in graphic application to see if it works)</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p9"><i>Notes:</i></p>
+<p class="p9"><i>- there are a few problems due to lack of standardization for GUI style coding. This is why String.draw and Color.set are not supported. GUI.pen.color_ does work, but is not comatible with SC versions which have no SwingOSC installed. Hence the split trick in the above example. GUI.pen.stringAtPoint and alike methods will be implemented in the future.</i></p>
+<p class="p9"><i>- addArc, addWedge and addAnnularWedge are not yet implemented. Requires study.. (the arc drawing options in the SVG file format are quite different from those in SC)</i></p>
+<p class="p9"><i>- curveTo and quadCurveTo are implemented, even though SVGFile doesn't plot qCurves in SC. They will display correctly in graphic applications</i></p>
+<p class="p4"><i></i><br></p>
+<p class="p10"><br></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+</body>
+</html>

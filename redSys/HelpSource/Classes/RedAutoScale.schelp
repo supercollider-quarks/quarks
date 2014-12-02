@@ -1,0 +1,58 @@
+CLASS:: RedAutoScale
+SUMMARY:: scales an unknown signal to a known range
+CATEGORIES:: Red>redUGens
+RELATED:: Classes/RedDirection
+
+DESCRIPTION::
+Uses link::Classes/RunningMin:: and link::Classes/RunningMax:: as scaling range and can scale signals automatically to a specified range.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: in
+Input signal.
+
+ARGUMENT:: lo
+Desired output range minimum.
+
+ARGUMENT:: hi
+Desired output range maximum.
+
+ARGUMENT:: inLo
+Predefined minimum input range.
+
+ARGUMENT:: inHi
+Predefined maximum input range.
+
+ARGUMENT:: reset
+A trigger that reset range.
+
+INSTANCEMETHODS::
+
+METHOD:: autoScale
+Language side implementation.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+
+//basic usage
+a= {SinOsc.ar(RedAutoScale.kr(MouseX.kr, 200, 400).round(50))}.play
+a.free
+
+//mouse button reset range
+a= {SinOsc.ar(RedAutoScale.kr(MouseX.kr, 200, 400, reset:MouseButton.kr).round(50))}.play
+a.free
+
+//predefined minimum input range
+a= {SinOsc.ar(RedAutoScale.kr(MouseX.kr(-10, 10), 200, 400, -5, 5, MouseButton.kr).round(50))}.play
+a.free
+
+//--
+a= RedAutoScale(-10, 10);
+a.autoScale(100.rand.postln)	//repeat.  eventually 0 will be -10 and 99 will be 10
+a.min
+a.max
+::

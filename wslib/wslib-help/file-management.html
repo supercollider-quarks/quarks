@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #1845cd; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #4d4d4d}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #651c14; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #651c14}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #8d1614; min-height: 12.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #8d1614}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #9f1414}
+span.s1 {color: #1845cd}
+span.s2 {text-decoration: underline}
+span.s3 {color: #0d3bdb}
+span.s4 {font: 12.0px Helvetica; color: #000000}
+span.s5 {color: #000000}
+span.s6 {color: #651c14}
+span.s7 {font: 9.0px Monaco}
+span.s8 {font: 9.0px Monaco; color: #651c14}
+span.s9 {color: #4d4d4d}
+span.s10 {color: #8d1614}
+span.s11 {font: 9.0px Monaco; color: #8d1614}
+span.s12 {color: #0019a9}
+span.s13 {font: 12.0px Helvetica}
+span.s14 {color: #0012b0}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>file management</b></p>
+<p class="p2">a number of file management extensions featured in <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">features:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>- moving, copying, renaming and deleting files using unix cmds</p>
+<p class="p2"><span class="Apple-tab-span">	</span>- compressing files with tar, gz, zip and flac (if available)</p>
+<p class="p2"><span class="Apple-tab-span">	</span>- opening files with other apps and show in Finder</p>
+<p class="p2"><span class="Apple-tab-span">	</span>- extensive file name processing and testing</p>
+<p class="p3"><br></p>
+<p class="p4"><b><span class="s2">general testing</span></b></p>
+<p class="p2">extensions on <a href="SC://String"><span class="s3">String</span></a></p>
+<p class="p5"><br></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>isFile, isFolder</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>same as Pathname:isFile / Pathname:isFolder</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>isBundle</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>test if it is a bundle</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"SuperCollider.app"<span class="s5">.isBundle; </span><span class="s6">// true</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s7"><span class="Apple-tab-span">	</span></span><b>isSoundFile</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>test if path is a valid soundfile which can be read by SC</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"sounds/a11wlk01.wav"<span class="s5">.isSoundFile; </span><span class="s6">// true</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s8"><span class="Apple-tab-span">	</span></span><b>pathExists ( showType )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>check if path exists, and if so, return its type as a Symbol (if showType is true)</p>
+<p class="p2"><span class="Apple-tab-span">	</span>Doesn't check if it's a soundfile though</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"sounds/a11wlk01.wav"<span class="s5">.pathExists; </span><span class="s6">// \file</span></p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span></span><span class="s9">"~/scwork"</span><span class="s5">.pathExists; </span>// \folder (or false if it doesn't exist)</p>
+<p class="p8"><br></p>
+<p class="p3"><br></p>
+<p class="p4"><b><span class="s2">unix command wrappers</span></b></p>
+<p class="p2">extensions on <a href="SC://String"><span class="s3">String</span></a></p>
+<p class="p5"><br></p>
+<p class="p2"><b><span class="s2">basic file management</span></b></p>
+<p class="p5"><br></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>makeDir ( silent )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>creates a dir if it is not there yet.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Posts a message if a dir is created and <b>silent </b>== false (default)</p>
+<p class="p2"><span class="Apple-tab-span">	</span><i>Careful: also makes parent dirs if their not there</i></p>
+<p class="p5"><i><span class="Apple-tab-span">	</span></i></p>
+<p class="p6"><span class="s4"><i><span class="Apple-tab-span">	</span></i></span>"~/Desktop/testDir/subDir"<span class="s5">.makeDir;</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>renameTo ( newName )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>renames a file or folder</p>
+<p class="p2"><span class="Apple-tab-span">	</span><i>Carefull: overwrites existing files or folders by that name without notice</i></p>
+<p class="p5"><i><span class="Apple-tab-span">	</span></i></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"~/Desktop/testDir/subDir"<span class="s5">.renameTo( </span>"renamed"<span class="s5"> );</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s7"><span class="Apple-tab-span">	</span></span><b>copyTo ( newDir, newName, overwrite, createIfNotThere, silent )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>copies a file or folder to a new location. If <b>overwrite</b> == false (default) it doesn't overwrite any existing files.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>if<span class="Apple-converted-space">  </span><b>createIfNotThere </b>is true ( default ) the <b>newDir </b>is created using <b>makeDir</b>.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Retrns true at succes</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"~/Desktop/testDir"<span class="s5">.copyTo( </span>"~/Desktop/testCopy"<span class="s5"> );</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s7"><span class="Apple-tab-span">	</span></span><b>moveTo ( newDir, newName, createIfNotThere, silent )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>moves a file or folder to a new location. Fails and returns false if the file / folder already exists</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"~/Desktop/testCopy/testDir/renamed"<span class="s5">.moveTo( </span>"~/Desktop/testCopy"<span class="s5"> );<span class="Apple-converted-space"> </span></span><span class="s10"><span class="Apple-tab-span">	</span></span></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s11"><span class="Apple-tab-span">	</span></span><b>removeFile ( toTrash, ask, silent )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>removes a file or folder.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>By default <b>toTrash </b>== true, which moves the file to the trash.</p>
+<p class="p2"><span class="Apple-tab-span">	</span>If <b>toTrash </b>== false, the file is permanently deleted.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>If <b>ask </b>== true ( default ) &amp;&amp; <b>toTrash</b> == false a dialog comes up before anything gets deleted</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"~/Desktop/testCopy/testDir"<span class="s5">.removeFile( </span><span class="s12">false</span><span class="s5"> );</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"~/Desktop/testCopy/testDir"<span class="s5">.removeFile; </span><span class="s10">// check the trashcan</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s11"><span class="Apple-tab-span">	</span></span><b>copyRename ( newDir, newName, createIfNotThere, silent )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>moveRename ( newDir, newName, createIfNotThere, silent )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>copies or moves a file or folder to a new location, but automatically renames the file if it already exists</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"~/Desktop/testCopy/renamed"<span class="s5">.copyRename( </span>"~/Desktop/testCopy"<span class="s5"> ); </span><span class="s10">// copy to same folder</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s11"><span class="Apple-tab-span">	</span></span><b>copyReplace ( newDir, newName, createIfNotThere, toTrash, ask, silent )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>moveReplace ( newDir, newName, createIfNotThere, toTrash, ask, silent )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>copies or moves a file or folder to a new location, but automatically moves any file that was already<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>there to the trash or deletes it, using <b>removeFile</b>.</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"~/Desktop/testDir/renamed"<span class="s5">.copyReplace( </span>"~/Desktop/testCopy"<span class="s5">, toTrash: </span><span class="s12">false</span><span class="s5"> );</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b><span class="s2">compression</span></b></p>
+<p class="p5"><br></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>zip ( newPath, includeInvisible, tmp )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>unzip ( to )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>creates and unpacks zip files</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>if <b>newPath<span class="Apple-converted-space"> </span></b> and <b>to<span class="Apple-converted-space"> </span></b> are not specified, they will be automatically created</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s13"><span class="Apple-tab-span">	</span></span>(</p>
+<p class="p12"><span class="s5"><span class="Apple-tab-span">	</span></span>// make a zip file from the plugins folder, after copying it to the desktop</p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"plugins"<span class="s5">.copyTo( </span>"~/Desktop/"<span class="s5">, </span>"plugins copy"<span class="s5"> );</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"~/Desktop/plugins copy"<span class="s5">.zip;</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"~/Desktop/plugins copy"<span class="s5">.removeFile( </span><span class="s12">false</span><span class="s5">, </span><span class="s12">false</span><span class="s5"> ); </span><span class="s10">// remove original</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"plugins"<span class="s5">.zip( </span>"~/Desktop/plugins archive"<span class="s5"> ); </span><span class="s10">// or shortly</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"~/Desktop/plugins archive.zip"<span class="s5">.unzip; </span><span class="s10">// and there they are again</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s11"><span class="Apple-tab-span">	</span></span><b>tar ( newPath )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>untar</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>creates and unpacks tar archives</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>(</p>
+<p class="p12"><span class="s5"><span class="Apple-tab-span">	</span></span>// make a tar file from the plugins folder, after copying it to the desktop</p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"plugins"<span class="s5">.copyTo( </span>"~/Desktop/"<span class="s5">, </span>"plugins copy"<span class="s5"> );</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"~/Desktop/plugins copy"<span class="s5">.tar;</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"~/Desktop/plugins copy"<span class="s5">.removeFile( </span><span class="s12">false</span><span class="s5">, </span><span class="s12">false</span><span class="s5"> ); </span><span class="s10">// remove original</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>)</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"plugins"<span class="s5">.tar( </span>"~/Desktop/plugins archive"<span class="s5"> ); </span><span class="s10">// or shortly</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s10"><span class="Apple-tab-span">	</span></span>"~/Desktop/plugins archive.tar"<span class="s5">.untar; </span><span class="s10">// and there they are again</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s7"><span class="Apple-tab-span">	</span></span><b>gz ( speed )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>ungz</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>creates and unpacks gz files. Originals are deleted automatically.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>gz can only compress files, not folders. For folders use <b>tar</b> first.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>speed</b> ranges from 1 to 9 (default 6), resembling fast to best</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"~/Desktop/plugins archive.tar"<span class="s5">.gz;</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"~/Desktop/plugins archive.tar.gz"<span class="s5">.ungz;</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s7"><span class="Apple-tab-span">	</span></span><b>targz ( newPath, speed ), tgz ( newPath, speed )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>untgz ( deleteTar )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>creates and unpacks tar.gz and tgz files.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>if <b>deleteTar </b>== true the tar file is automatically deleted by moving to trash. By default it is left where it is</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s4"><span class="Apple-tab-span">	</span></span>"plugins"<span class="s5">.targz( </span>"~/Desktop/plugins archive"<span class="s5"> );</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"~/Desktop/plugins archive.tar.gz"<span class="s5">.untgz( </span><span class="s12">true</span><span class="s5"> );</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b><span class="s2">other operations</span></b></p>
+<p class="p5"><br></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>openWith ( appName )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>openWithID ( id )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>opens a file with another application, using an <b>appName </b>or <b>id </b>(e.g. "com.apple.safari" )</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s13"><span class="Apple-tab-span">	</span></span><span class="s12">Document</span>.current.path.openWith( <span class="s9">"Safari"</span> );</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s7"><span class="Apple-tab-span">	</span></span><b>openInFinder, showInFinder</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>opens or shows a file or folder with the finder</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s13"><span class="Apple-tab-span">	</span></span><span class="s12">Document</span>.current.path.dirname.openInFinder;</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s7"><span class="Apple-tab-span">	</span></span><b>revealInFinder</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>opens and selects a file or folder with the finder</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s13"><span class="Apple-tab-span">	</span></span><span class="s12">Document</span>.current.path.revealInFinder;</p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><br></p>
+<p class="p8"><br></p>
+<p class="p4"><b><span class="s2">file name processing</span></b></p>
+<p class="p8"><br></p>
+<p class="p2"><b>extension</b></p>
+<p class="p2">returns the extension of a path or filename. If no valid extension is found it returns <a href="SC://Nil"><span class="s3">nil</span></a>.</p>
+<p class="p2">The String doesn't need to be a path to an existing file.</p>
+<p class="p5"><br></p>
+<p class="p6">"sounds/a11wlk01.wav"<span class="s5">.extension; </span><span class="s6">// "wav"</span></p>
+<p class="p6">"SuperCollider.app/"<span class="s5">.extension; </span><span class="s6">// "app"</span></p>
+<p class="p11"><span class="s9">"someFile"</span>.extension; <span class="s6">// nil</span></p>
+<p class="p9"><span class="s9">"My brilliant app v1.0"</span><span class="s5">.extension; </span>// nil ('.0' is not a valid extension)</p>
+<p class="p6">"My brilliant app v1.0.rtf"<span class="s5">.extension; </span><span class="s6">// "rtf"</span></p>
+<p class="p9"><span class="s9">"My brilliant app v1.0.r tf"</span><span class="s5">.extension; </span>// nil (extension contains space)</p>
+<p class="p8"><br></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>hasExtension</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><span class="s4"><b><span class="Apple-tab-span">	</span></b></span>"sounds/a11wlk01.wav"<span class="s5">.hasExtension; </span><span class="s6">// true</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s8"><span class="Apple-tab-span">	</span></span><b>isValidExtension</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s9">"wav"</span>.isValidExtension; <span class="s6">// true</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s9">"0"</span>.isValidExtension; <span class="s6">// false</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s9">""</span>.isValidExtension; <span class="s6">// false</span></p>
+<p class="p9"><span class="s5"><span class="Apple-tab-span">	</span></span><span class="s9">"blaht"</span><span class="s5">.isValidExtension; </span>// true (no size limit)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s9">"a bc"</span>.isValidExtension; <span class="s6">// no spaces allowed</span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>removeExtension, replaceExtension ( newExt )</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><span class="s4"><b><span class="Apple-tab-span">	</span></b></span>"sounds/a11wlk01.wav"<span class="s5">.removeExtension; </span><span class="s6">// "sounds/a11wlk01"</span></p>
+<p class="p6"><span class="s5"><span class="Apple-tab-span">	</span></span>"sounds/a11wlk01.wav"<span class="s5">.replaceExtension( </span>"aif"<span class="s5"> ); </span><span class="s6">// "sounds/a11wlk01.aif"</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>capsToSpaces ( space, toLower )</b></p>
+<p class="p2"><b>spacesToCaps ( space )</b></p>
+<p class="p2">converts "wordAndAnotherWord" to "word and another word" and vice versa</p>
+<p class="p5"><br></p>
+<p class="p12"><span class="s9">"aWordAndAnotherWord"</span><span class="s5">.capsToSpaces( </span><span class="s9">"_"</span><span class="s5"> ); </span>// -&gt; "a_word_and_another_word"</p>
+<p class="p12"><span class="s9">"a word and another word"</span><span class="s5">.spacesToCaps; </span>// -&gt; "aWordAndAnotherWord"</p>
+<p class="p10"><br></p>
+<p class="p2"><b>firstToUpper</b></p>
+<p class="p2"><b>firstToLower</b></p>
+<p class="p2">makes the first char of a string an upper or lower case</p>
+<p class="p5"><br></p>
+<p class="p11"><span class="s9">"hi"</span>.firstToUpper; <span class="s10">// -&gt; "Hi"</span></p>
+<p class="p10"><br></p>
+<p class="p2"><b>splitNumbers ( convert )</b></p>
+<p class="p2">breaks a string up into an array with separate items for the numbers</p>
+<p class="p2">If <b>convert </b>== true (default) the numbers are interpreted right away</p>
+<p class="p5"><br></p>
+<p class="p12"><span class="s9">"a50b10.3c-11"</span><span class="s5">.splitNumbers; </span>// -&gt; [ "a", 50, "b", 10.3, "c", -11 ]</p>
+<p class="p10"><br></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>extractNumbers</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>removeNumbers</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>doToNumbers( func )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>these methods all use <b>splitNumbers</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p12"><span class="s4"><b><span class="Apple-tab-span">	</span></b></span><span class="s9">"a50b10.3c-11"</span><span class="s5">.extractNumbers; </span>// -&gt; [ 50, 10.3, -11 ]</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s9">"a50b10.3c-11"</span>.removeNumbers; <span class="s10">// -&gt;"abc"</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s9">"a50b10.3c-11"</span>.doToNumbers( <span class="s12">_</span> + 1 ); <span class="s10">// -&gt; a51b11.3c-10</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s11"><span class="Apple-tab-span">	</span></span><b>numbersToAlpha ( offset, toUpper, prepend, append )</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b>converts all numbers in a string to alpha chars.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span>Works only with whole numbers from 0 to 25. Higher or lower numbers stay unchanged</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s13"><span class="Apple-tab-span">	</span></span><span class="s9">"file12-4"</span>.numbersToAlpha; <span class="s10">// -&gt; "fileM-4"</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><b>trimLeft ( whatToTrim )</b></p>
+<p class="p2"><b>trimRight ( whatToTrim )</b></p>
+<p class="p2"><b>trim ( whatToTrim )</b></p>
+<p class="p2">trim spaces (default) or other characters from a string.</p>
+<p class="p5"><br></p>
+<p class="p6">" <span class="Apple-converted-space">  </span>hi there__"<span class="s5">.trim( </span>"_ "<span class="s5"> );</span></p>
+<p class="p10"><br></p>
+<p class="p2"><b>realEndNumber</b></p>
+<p class="p2">better version of PathName:endNumber, with correct handling of file extensions</p>
+<p class="p5"><br></p>
+<p class="p6"><span class="s12">PathName</span><span class="s5">(</span>"sounds/a11wlk01.wav"<span class="s5">).realEndNumber;</span></p>
+<p class="p12"><span class="s12">PathName</span><span class="s5">(</span><span class="s9">"sounds/a11wlk01.wav"</span><span class="s5">).endNumber; </span>// distro version - returns wrong number</p>
+<p class="p10"><br></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>realEndNumber_</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>sets the realEndNumber of a PathName</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s13"><span class="Apple-tab-span">	</span></span><span class="s12">PathName</span>(<span class="s9">"sounds/a11wlk01.wav"</span>).realEndNumber = 342;<span class="Apple-converted-space">  </span><span class="s10">// -&gt; sounds/a11wlk342.wav</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="s11"><span class="Apple-tab-span">	</span></span><b>realNextName</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span>better version of PathName:nextName. Also works on Strings</p>
+<p class="p5"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="s13"><span class="Apple-tab-span">	</span></span><span class="s9">"sounds/a11wlk01.wav"</span>.realNextName; <span class="Apple-converted-space">        </span><span class="s10">// -&gt; sounds/a11wlk2.wav</span></p>
+<p class="p12"><span class="s4"><span class="Apple-tab-span">	</span></span><span class="s12">PathName</span><span class="s5">( </span><span class="s9">"sounds/a11wlk01.wav"</span><span class="s5"> ).nextName; </span>// -&gt; sounds/a11wlk01.wav1</p>
+<p class="p5"><br></p>
+<p class="p8"><br></p>
+<p class="p2"><b>deStandardizePath</b></p>
+<p class="p2">make a user relative path from a standardized path</p>
+<p class="p5"><br></p>
+<p class="p11"><span class="s9">"~/Desktop/some file"</span>.standardizePath.postln.deStandardizePath; <span class="s10">// proof of concept</span></p>
+<p class="p7"><br></p>
+<p class="p5"><br></p>
+<p class="p8"><br></p>
+<p class="p4"><b><span class="s2">graphic file processing</span></b></p>
+<p class="p13"><br></p>
+<p class="p2">various image operations using the sips libary, built into MaxOSX. Might be useful to somebody :-)</p>
+<p class="p13"><br></p>
+<p class="p2"><b>resampleImage ( newMaxSize, newName )</b></p>
+<p class="p2">resamples an image to the given <b>newMaxSize</b> (default 600). If <b>newName</b> == 'auto' (default) a new name is generated from the input path.</p>
+<p class="p5"><br></p>
+<p class="p6">"/Library/Desktop Pictures/Black &amp; White/Mojave.jpg"<span class="s5">.resampleImage( 200,</span>"~/Desktop/resampled.jpg"<span class="s5">);</span></p>
+<p class="p7"><br></p>
+<p class="p14"><span class="s5">( </span>// batch conversion</p>
+<p class="p6">"~/Desktop/resized/"<span class="s5">.makeDir;</span></p>
+<p class="p6">"/Library/Desktop Pictures/Black &amp; White/"<span class="s5">.getPathsInDirectory( </span>"jpg"<span class="s5">, 1, </span><span class="s14">true</span><span class="s5"> ).do({ </span><span class="s14">|path|</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>path.resampleImage( 200, <span class="s9">"~/Desktop/resized/"</span> ++ path.basename );</p>
+<p class="p11"><span class="Apple-tab-span">	</span>});</p>
+<p class="p11">)</p>
+<p class="p7"><br></p>
+<p class="p2"><b>convertImage ( newFormat, newName )</b></p>
+<p class="p2">converts an image to the given <b>newFormat</b> (default "jpg").<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p6">"~/Desktop/resampled.jpg"<span class="s5">.convertImage( </span>"tiff"<span class="s5"> );</span></p>
+<p class="p7"><br></p>
+<p class="p2"><b>rotateImage ( degreesCW, newName )</b></p>
+<p class="p2">rotates an image to the given <b>degreesCW</b> (default90).<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p6">"~/Desktop/resampled.jpg"<span class="s5">.rotateImage( 45 );</span></p>
+<p class="p7"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+</body>
+</html>

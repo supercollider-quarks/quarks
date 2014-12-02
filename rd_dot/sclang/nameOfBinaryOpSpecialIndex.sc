@@ -1,0 +1,61 @@
+// nameOfBinaryOpSpecialIndex.sc - (c) rohan drape, 2004-2007
+
+// Return the <Symbol> naming the binary operator given by an
+// <Integer> specialIndex value.
+
++ Integer {
+  
+  nameOfBinaryOpSpecialIndex { 
+	^['+',
+	'-',
+	'*',
+	'IDiv',
+	'/',
+	'%',
+	'==',
+	'!=',
+	'<',
+	'>',
+	'<=',
+	'>=',
+	//Identical,
+	//NotIdentical,
+	\Min,
+	\Max,
+	'&',
+	'|',
+	\BitXor,
+	\LCM,
+	\GCD,
+	\Round,
+	\RoundUp,
+	\Trunc,
+	\Atan2,
+	\Hypot,
+	\Hypotx,
+	\Pow,
+	\ShiftLeft,
+	\ShiftRight,
+	\UnsignedShift,
+	\Fill,
+	\Ring1,
+	\Ring2,
+	\Ring3,
+	\Ring4,
+	\DifSqr,
+	\SumSqr,
+	\SqrSum,
+	\SqrDif,
+	\AbsDif,
+	\Thresh,
+	\AMClip,
+	\ScaleNeg,
+	\Clip2,
+	\Excess,
+	\Fold2,
+	\Wrap2,
+	\FirstArg,
+	\RandRange,
+	\ExpRandRange].at(this);
+	}
+}

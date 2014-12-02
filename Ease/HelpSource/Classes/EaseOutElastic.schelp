@@ -1,0 +1,51 @@
+CLASS:: EaseOutElastic
+SUMMARY:: Elastic ease-out
+CATEGORIES:: Ease
+RELATED:: Overviews/EaseOverview
+
+DESCRIPTION::
+Easing equation for an elastic (exponentially decaying sine wave) ease-out, decelerating from zero velocity. The strong::a:: parameter is amplitude and strong::p:: is period.
+
+Use strong::value::, strong::*value::, strong::*kr:: or strong::*ar::, all with a link::Classes/Float:: argument strong::t:: between 0.0 and 1.0. If strong::t:: is below or above this range the output will be undefined.
+
+CLASSMETHODS::
+
+PRIVATE:: prKr, prAr
+
+METHOD:: ar, kr
+
+ARGUMENT:: t
+signal in the range 0.0 to 1.0.
+
+ARGUMENT:: a
+amplitude.
+
+ARGUMENT:: p
+period.
+
+INSTANCEMETHODS::
+
+PRIVATE:: prValue
+
+METHOD:: value
+
+ARGUMENT:: t
+a link::Classes/Float:: between 0.0 and 1.0.
+
+ARGUMENT:: a
+amplitude. The default is 1.
+
+ARGUMENT:: p
+period. The default is 1.
+
+EXAMPLES::
+
+CODE::
+a= EaseOutElastic.new(1, 1)
+a.value(0.5)
+
+{|t| EaseOutElastic.(t/99, 1, 1)}.dup(100).plot2
+
+s.boot
+{SinOsc.ar(EaseOutElastic.kr(Line.kr(0, 1, 2, doneAction:2), 1, 1).exprange(500, 1000), 0, 0.1)}.play
+::

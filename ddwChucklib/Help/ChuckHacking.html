@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 36.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0020b7}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #366f1f}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a81a1a}
+span.s1 {color: #0000ff}
+span.s2 {color: #0020b7}
+span.s3 {color: #000000}
+span.s4 {color: #366f1f}
+span.s5 {text-decoration: underline}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Hacking chucklib</b></p>
+<p class="p2"><br></p>
+<p class="p3">Please see the <a href="ChuckPrototypes.html"><span class="s1">ChuckPrototypes</span></a> help file for a list of the provided process and prototypes, and how to use them.</p>
+<p class="p2"><br></p>
+<p class="p3">Users are encouraged to write new components and new process structures. This document provides advice on hooking into the framework for your own evil purposes.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>API fundamentals:</b></p>
+<p class="p2"><br></p>
+<p class="p3">A process prototype is a Proto. Hard-coded classes are not permitted. Protos define variables and methods using environment variables:</p>
+<p class="p2"><br></p>
+<p class="p5">a = <span class="s2">Proto</span>({</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~aVariable = 10;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~aMethod = #{ <span class="s2">|num|</span> ~aVariable * num };</p>
+<p class="p5">});</p>
+<p class="p6"><br></p>
+<p class="p5">a.aMethod(5);</p>
+<p class="p5">50<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p7"><b>Note:</b> I tend to use closed functions for methods (indicated by the #). The functions are not required to be closed. Also, when you call a pseudo-method in a Proto, you will enter the Proto's environment. This is different from the behavior of functions in environments whose know variable has been set to true.</p>
+<p class="p2"><br></p>
+<p class="p3">Only one method is required in a process prototype: <i>asPattern</i>. The job of a process is to render itself as an event pattern to be played by the bound process (BP) container. Thus, a simple, single-purpose process prototype could be written as briefly as:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p8">Proto<span class="s3">({</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>~event = (eventKey: <span class="s4">\default</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~asPattern = #{</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pbind</span>(<span class="s4">\degree</span>, <span class="s2">Pn</span>(<span class="s2">Pseries</span>(0, 1, 8), <span class="s2">inf</span>), <span class="s4">\delta</span>, 0.25, <span class="s4">\instrument</span>, <span class="s4">\default</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">}) =&gt; <span class="s2">PR</span>(<span class="s4">\cscale</span>);</p>
+<p class="p6"><br></p>
+<p class="p9"><span class="s2">PR</span><span class="s3">(</span>\cscale<span class="s3">) =&gt; </span><span class="s2">BP</span><span class="s3">(</span>\cscale<span class="s3">);</span></p>
+<p class="p5"><span class="s2">SynthDescLib</span>.global.read;</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s2">BP</span>(<span class="s4">\cscale</span>).play;</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s2">BP</span>(<span class="s4">\cscale</span>).stop;<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">The prototype must also contain a key to a ProtoEvent in the ~event variable. This process uses the default event (see <a href="SC://Streams-Patterns-Events1"><span class="s1">Streams-Patterns-Events1</span></a> and help files 2-6 for a full description). As part of normal startup, Event.default is saved into ProtoEvent(\default), where it is accessed by <b>eventKey: \default</b>.</p>
+<p class="p2"><br></p>
+<p class="p3">This is, of course, a silly example because you gain little in functionality over a regular Pbind. (You do gain some interface building features doing it this way.) The real flexibility of process prototypes is that the pattern can be defined using a variety of methods and objects contained within the Proto. If defined correctly, the behavior of the process can change while the process is playing (something difficult to do with the out of the box pattern classes).<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p8">Proto<span class="s3">({</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>~event = (eventKey: <span class="s4">\default</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~startRand = 10;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~lengthLow = 3;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~lengthHi = 12;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~step = #[1];</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~scaleSeg = #{</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pseries</span>(~startRand.rand, ~step.choose, rrand(~lengthLow, ~lengthHi));</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~asPattern = #{</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pbind</span>(<span class="s4">\degree</span>, <span class="s2">Pn</span>(<span class="s2">Plazy</span>({ ~scaleSeg.value }), <span class="s2">inf</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">\delta</span>, 0.25,</p>
+<p class="p9"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\instrument<span class="s3">, </span>\default<span class="s3">);</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p9"><span class="s3">}) =&gt; </span><span class="s2">PR</span><span class="s3">(</span>\cscalemix<span class="s3">);</span></p>
+<p class="p6"><br></p>
+<p class="p9"><span class="s2">PR</span><span class="s3">(</span>\cscalemix<span class="s3">) =&gt; </span><span class="s2">BP</span><span class="s3">(</span>\cmix<span class="s3">);</span></p>
+<p class="p5"><span class="s2">BP</span>(<span class="s4">\cmix</span>).play;</p>
+<p class="p10"><span class="s2">BP</span><span class="s3">(</span><span class="s4">\cmix</span><span class="s3">)[</span><span class="s4">\step</span><span class="s3">] = #[-1, 1];<span class="Apple-tab-span">	</span></span>// both directions!</p>
+<p class="p10"><span class="s2">BP</span><span class="s3">(</span><span class="s4">\cmix</span><span class="s3">)[</span><span class="s4">\startRand</span><span class="s3">] = 20;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// widen range of starting notes</p>
+<p class="p10"><span class="s2">BP</span><span class="s3">(</span><span class="s4">\cmix</span><span class="s3">)[</span><span class="s4">\step</span><span class="s3">] = #[-1, 1, 2];<span class="Apple-tab-span">	</span></span>// allow upward thirds as well</p>
+<p class="p10">// etc.</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s4">\cmix</span>).stop;</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s4">\cmix</span>).free;</p>
+<p class="p2"><br></p>
+<p class="p3">Because the pattern definition is more modular, it's easy to change the behavior of the pattern just by changing its components in the environment.</p>
+<p class="p2"><br></p>
+<p class="p3">To sum up: BP calls ~asPattern to get the process's behavior. ~asPattern can do anything it wants to make the pattern, as long as the output is an event pattern. There is no limit to the complexity of the pattern's back-end construction (though you should not make it so complex that performance suffers).</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Changeable component patterns:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Most of the processes allow you to change material while the process is playing. The technique is to maintain a stream in an environment variable. When asPattern builds the event pattern, it doesn't use the stream directly. It uses a routine that grabs the next value from the stream in the environment variable.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">The result is that if you replace the stream in the environment variable, the values will come from the new stream.</p>
+<p class="p2"><br></p>
+<p class="p3">In a BP environment, assigning a pattern to any environment variable automatically creates a stream for the pattern in a variable named ~[originalName]Stream, where [originalName] is the variable name to which the pattern is assigned. For instance, "~delta = Pwhite(1, 8, inf) * 0.25" assigns the stream to the environment variable ~deltaStream.</p>
+<p class="p2"><br></p>
+<p class="p3">In asPattern, use BPStream to access the changeable streams as below. (You may assign constants and other non-pattern values initially and BPStream will retrieve them, but you may replace the stream only by using a Pattern. If you want to replace a stream with a new constant, use Pn(constant, inf) or constant.asPattern.)</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Example:</b></p>
+<p class="p2"><br></p>
+<p class="p9"><span class="s2">PR</span><span class="s3">(</span>\abstractProcess<span class="s3">).clone({</span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// component patterns</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~degree = <span class="s2">Pn</span>(<span class="s2">Pseries</span>(0, 1, 8), <span class="s2">inf</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~delta = 0.25;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~legato = 1.2;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>~asPattern = {</p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Pbind<span class="s3">(</span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// makeProut renders the pattern into a changeable stream</p>
+<p class="p9"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\degree<span class="s3">, </span><span class="s2">BPStream</span><span class="s3">(</span>\degree<span class="s3">),</span></p>
+<p class="p9"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\delta<span class="s3">, </span><span class="s2">BPStream</span><span class="s3">(</span>\delta<span class="s3">),</span></p>
+<p class="p9"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\legato<span class="s3">, </span><span class="s2">BPStream</span><span class="s3">(</span>\legato<span class="s3">)</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p9"><span class="s3">}) =&gt; </span><span class="s2">PR</span><span class="s3">(</span>\flexscale<span class="s3">);</span></p>
+<p class="p6"><br></p>
+<p class="p9"><span class="s2">PR</span><span class="s3">(</span>\flexscale<span class="s3">) =&gt; </span><span class="s2">BP</span><span class="s3">(</span>\flexscale<span class="s3">);</span></p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s2">SynthDescLib</span>.global.read;</p>
+<p class="p9"><span class="s2">BP</span><span class="s3">(</span>\flexscale<span class="s3">).play;</span></p>
+<p class="p6"><br></p>
+<p class="p10">// chuck new patterns into the variables</p>
+<p class="p5"><span class="s2">Pxrand</span>((0..7), <span class="s2">inf</span>) =&gt;.degree <span class="s2">BP</span>(<span class="s4">\flexscale</span>);</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s2">Pwrand</span>([0.25, <span class="s2">Pseq</span>([0.25, 0.125], 1)], [2, 1].normalizeSum, <span class="s2">inf</span>) =&gt;.delta <span class="s2">BP</span>(<span class="s4">\flexscale</span>);</p>
+<p class="p6"><br></p>
+<p class="p10">// assignment syntax also works</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s4">\flexscale</span>).legato = <span class="s2">Pn</span>(<span class="s2">Pgeom</span>(0.1, 1.2, 15), <span class="s2">inf</span>);</p>
+<p class="p6"><br></p>
+<p class="p10">// try writing your own</p>
+<p class="p6"><br></p>
+<p class="p10">// when done:</p>
+<p class="p9"><span class="s2">BP</span><span class="s3">(</span>\flexscale<span class="s3">).stop;</span></p>
+<p class="p6"><br></p>
+<p class="p9"><span class="s2">BP</span><span class="s3">(</span>\flexscale<span class="s3">).free;</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Inheritance:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">You can inherit methods and variables from existing processes (make your own custom subclass) using the following syntax:<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p9"><span class="s2">PR</span><span class="s3">(</span>\baseProcessName<span class="s3">).clone({</span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span></span>// write your new methods and variables here</p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span></span>// if you don't touch a variable from the base process, it will be inherited intact</p>
+<p class="p9"><span class="s3">}) =&gt; </span><span class="s2">PR</span><span class="s3">(</span>\subclassName<span class="s3">);</span></p>
+<p class="p2"><br></p>
+<p class="p3">PR(\abstractProcess) includes a number of pseudo-methods you will probably want, so you will likely write your prototypes as:</p>
+<p class="p2"><br></p>
+<p class="p9"><span class="s2">PR</span><span class="s3">(</span>\abstractProcess<span class="s3">).clone({</span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span></span>// my stuff here</p>
+<p class="p9"><span class="s3">}) =&gt; </span><span class="s2">PR</span><span class="s3">(</span>\myProcess<span class="s3">);</span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Safety checking:<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3">Most processes will require certain information to be in place before they can be rendered into a pattern. Whenever you play a bound process, the environment will run through a list of a symbolic keys, stored in the environment variable ~requiredKeys.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p5">~requiredKeys = #[<span class="s4">\mel</span>];<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">If even one of the environment variables referenced in the required keys array is nil, the process will not begin. It will fail silently.</p>
+<p class="p3">_________________________<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">I'm sure this document by itself is not enough, but I'm not sure what questions people are going to have. If you want to know something not covered here, please contact me through my website (<span class="s5">http://www.dewdrop-world.net</span>) or ask on the SuperCollider mailing list.</p>
+</body>
+</html>

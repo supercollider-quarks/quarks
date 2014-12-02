@@ -1,0 +1,44 @@
+CLASS:: ServerTreeGui
+summary:: displays the groups and synths currently on the Server
+categories:: Debugging, External Control>OSC 
+
+related:: Classes/Server, Classes/ServerLog
+
+DESCRIPTION::
+This shows the current state of the Server using the same integrated color coding and linking system as ServerLog.
+
+
+CLASSMETHODS::
+
+METHOD:: makeWindow
+Creates a window and displays the ServerTreeGui on it.
+Note this method is asynchronous and returns only the class.
+
+argument:: server
+
+
+returns:: ServerTreeGui class
+
+
+INSTANCEMETHODS::
+
+METHOD:: gui
+Essentially private, though you could place one on another window if you wanted.
+
+argument:: layout
+the parent view, FlowView or window
+
+argument:: bounds
+
+
+argument:: root
+
+
+returns:: (returnvalue)
+
+
+EXAMPLES::
+
+code::
+ServerTreeGui.makeWindow(s)
+::

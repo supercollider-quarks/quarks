@@ -1,0 +1,545 @@
+CLASS:: OSCSched
+summary:: scheduling utility for just-in-time scheduling of OSC bundles
+categories:: Scheduling, Libraries>crucial>Scheduling
+related:: Classes/BeatSched
+
+DESCRIPTION::
+The bundle is kept on the client until the last possible moment, and then actually sent to the server in a time stamped bundle, just before it is due to be executed.
+
+Bundles can be scheduled for precise execution using relative seconds, relative beats, absolute seconds or absolute beats.  Bundles can be scheduled on multiple servers, with exact simultaneous execution times.
+
+Bundles can be easily cancelled up until the time they are sent to the server.  They are sent to the server just before execution.
+
+The Tempo class is used to specify what the tempo is, and is used for all beat <-> second calculations. A default global Tempo object is used, or you can create a specific Tempo instance.
+
+There is a default global OSCSched that can be addressed through class methods.  It uses the SystemClock and the default global Tempo.  You may also create individual instances that maintain their own scheduling queues, tempii, and time epochs.
+
+The default clock used is the SystemClock, but you may also specify to use the AppClock.
+
+An optional clientSideFunction can also be supplied that will be evaluated on the client at the exact time as the OSC bundle is scheduled to happen.  This could be used to show a change in the gui or to update some setting on a client side object.
+
+All of these methods exist as both
+
+	class (the default global scheduler)
+		OSCSched.tsched(seconds,server,bundle,clientSideFunction)
+
+	and instance methods (a specific scheduler).
+		oscSched = OSCSched.new;
+		oscSched.tsched(seconds,server,bundle,clientSideFunction)
+
+
+All of the x-methods establish a block such that a subsequent schedule using another x-method will cause the previous one to be cancelled.  This is particularily useful when you are controlling something from a gui or process, and change your mind before the event you have triggered comes due.  Another example is a pattern that returns delta beat values, repeatedly scheduling its next note at the time of playing the current one.  To switch the pattern with another or abruptly start it over, simply do so: if you used xsched, then the previously scheduled event will be cancelled.
+In most cases, you will wish to create a private instance of OSCSched when using this technique.
+
+
+CLASSMETHODS::
+
+METHOD:: global
+
+
+
+METHOD:: initClass
+
+
+
+METHOD:: tsched
+       time based scheduling
+        delta specified in seconds
+
+argument:: seconds
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: xtsched
+	exclusive time based schedule
+	any previous bundles scheduled using xtsched, xsched or xqsched will
+	be cancelled. this is incredibly useful in situations where several bundles
+	might be sent and you only want the last one to be used as the final answer.
+	example:  a monkey is hitting many buttons, changing his mind about which
+	sound to play next. this would result in many bundles being stacked up all
+	at the same time, and the server would choke trying to execute them all.
+	so this forces a kind of monophony of bundles.
+	another example:  a sequence plays successive notes, scheduling each one
+	when it plays the previous one.
+	you then switch to a different sequence.  	you don't want the note that was
+	scheduled from the previous sequence to happen.  	using one of the
+	x-methods, you don't have to worry about it, it will just be cancelled.
+
+argument:: seconds
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: sched
+ delta specified in beats
+
+argument:: beats
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: xsched
+exclusive beat based scheduling
+
+argument:: beats
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: qsched
+will happen at the next even division ( 4.0 means on the downbeat of a 4/4 bar ),
+        or immediately if you happen to be exactly on a division.
+
+argument:: quantize
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: xqsched
+exclusive quantized beat based scheduling
+
+argument:: quantize
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: tschedAbs
+will happen at the time specified in seconds
+
+argument:: time
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: schedAbs
+will happen at the beat specified.  this uses TempoClock for scheduling
+
+argument:: beat
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: tsched
+
+
+argument:: seconds
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: xtsched
+
+
+argument:: seconds
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: xtschedFunc
+
+
+argument:: seconds
+
+
+argument:: function
+
+
+
+METHOD:: sched
+
+
+argument:: beats
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+argument:: onSend
+
+
+
+METHOD:: xsched
+
+
+argument:: beats
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: qsched
+
+
+argument:: quantize
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: xqsched
+
+
+argument:: quantize
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: tschedAbs
+
+
+argument:: time
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: schedAbs
+
+
+argument:: beat
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+argument:: onArrival
+
+
+
+METHOD:: aschedFunc
+execute the function at this absolute beat
+
+argument:: beat
+
+
+argument:: func
+
+
+
+discussion::
+code::
+(
+c = OSCSched.new;
+
+c.beat = 32.0; // beat 32 is now
+c.aschedFunc(36.0,{c.beat.postln}); // in
+c.aschedFunc(39.0,{c.beat.postln});	// out
+c.aschedFunc(41.0,{c.beat.postln}); // out
+c.aschedFunc(40.0,{c.beat.postln}); // but first in
+c.aschedFunc(43.0,{
+	c.beat.postln;
+	c.aschedFunc(42.0,{
+		"this will never happen, its already in the past".postln;
+	});
+	c.aschedFunc(46.0,{
+		c.beat.postln;
+	});
+});
+)
+// nope
+
+::
+
+METHOD:: schedAtTime
+
+
+argument:: atTime
+see link::Guides/atTime::
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+
+METHOD:: xschedAtTime
+
+
+argument:: atTime
+see link::Guides/atTime::
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+
+METHOD:: xschedBundle
+
+
+argument:: beatDelta
+
+
+argument:: server
+
+
+argument:: bundle
+
+
+
+METHOD:: tschedAbsNext
+
+
+
+
+EXAMPLES::
+code::
+s = Server.local;
+s.boot;
+(
+SynthDef("bubbles", {
+	var f, zout;
+	f = LFSaw.kr(0.4, 0, 24, LFSaw.kr([8,7.23], 0, 3, 80)).midicps;
+	zout = CombN.ar(SinOsc.ar(f, 0, 0.04), 0.2, 0.2, 4);
+	Out.ar(0, zout);
+}).send(s);
+
+n = s.nodeAllocator.alloc;
+i = [[ '/s_new', "bubbles", n, 1, 0 ]];
+o = [[ '/n_free', n ]];
+
+c = OSCSched.new;
+)
+
+
+
+// unitialised, the scheduler's time is number of seconds
+// since SC itself started up
+c.time.postln;
+
+// defaults to 1.0 beats per second
+Tempo.tempo.postln;
+
+// number of beats since SC itself started up
+c.beat.postln;
+
+// set the default global Tempo
+Tempo.bpm = 96;
+
+// how many of those beats since time started
+c.beat.postln;
+
+// tell the scheduler what beat we think it is
+c.beat = 0.0;
+
+// how beats since time started
+c.beat.postln;
+
+
+// start in 2.0 beats
+c.sched(2.0,s,i,{
+	"starting".postln;
+});
+
+
+// free the synth on the next even bar
+c.qsched(4.0,s,o,{
+	c.beat.postln; // note the timing imprecision
+});
+
+
+// start in 4.0 seconds
+c.tsched(4.0,s,i,{
+	"starting".postln;
+});
+
+::
+
+section:: Absolute Beat / Time scheduling
+
+continuing with the scheduler and defs created above
+
+code::
+c.clear;
+
+// execute the example below all at once
+// the functions execute at the server event time
+// note the imprecision
+(
+c.beat = 32.0; // beat 32 is now
+c.schedAbs(36.0,s,i,{c.beat.postln}); // in
+c.schedAbs(39.0,s,o,{c.beat.postln});	// out
+c.schedAbs(41.0,s,o,{c.beat.postln}); // out
+c.schedAbs(40.0,s,i,{c.beat.postln}); // but first in
+c.schedAbs(43.0,s,i,{
+	c.beat.postln;
+	c.schedAbs(42.0,s,o,{
+		"this will never happen, its already in the past".postln;
+	});
+	c.schedAbs(46.0,s,o,{
+		c.beat.postln;
+	});
+});
+)
+
+::
+
+scheduling a function
+
+code::
+(
+c = OSCSched.new;
+
+c.beat = 32.0; // beat 32 is now
+c.aschedFunc(36.0,{c.beat.postln}); // in
+c.aschedFunc(39.0,{c.beat.postln});	// out
+c.aschedFunc(41.0,{c.beat.postln}); // out
+c.aschedFunc(40.0,{c.beat.postln}); // but first in
+c.aschedFunc(43.0,{
+	c.beat.postln;
+	c.aschedFunc(42.0,{
+		"this will never happen, its already in the past".postln;
+	});
+	c.aschedFunc(46.0,{
+		c.beat.postln;
+	});
+});
+)
+::
+
+section:: Exclusive x-methods
+
+code::
+
+(
+c.xsched(4.0,s,i,{
+	"4.0".postln;
+});
+c.sched(8.0,s,o); // not affected
+
+// I changed my mind, schedule a new one
+c.xsched(3.0,s,i,{ // the x-methods are exclusive
+	"3.0".postln;	// and the 4.0 was blocked
+});
+)
+
+::

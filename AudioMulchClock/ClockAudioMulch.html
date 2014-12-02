@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #001fe8}
+p.p4 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -29.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -29.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad1d13}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #9d281b}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #1142e6}
+span.s3 {color: #000000}
+span.s4 {text-decoration: underline}
+span.s5 {color: #4a67bc}
+span.s6 {color: #2f58d1}
+span.s7 {color: #0019ba}
+span.s8 {color: #606060}
+span.s9 {color: #2b6f11}
+span.s10 {color: #0024b5}
+span.s11 {color: #9d281b}
+span.s12 {color: #3b6c19}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>ClockAudioMulch</b></span><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>clock that master AudioMulch over network</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>inherits from: </b><a href="SC://TempoClock"><span class="s2"><b>TempoClock</b></span></a></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3"><b>See also: </b><a href="AudioMulchClock.html"><b>AudioMulchClock</b></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">Use this class to <b>send</b> sync and have SuperCollider act as a <b>master</b>.</p>
+<p class="p2"><br></p>
+<p class="p1">AudioMulch is a program written by Ross Bencina. <span class="s4">http://www.audiomulch.com/</span></p>
+<p class="p1">ClockAudioMulch is a SuperCollider class for synchronising playback with this program via network sync.</p>
+<p class="p2"><br></p>
+<p class="p1">This clock is built upon <a href="SC://TempoClock"><span class="s2">TempoClock</span></a> and the only additional feature is that is sends out tick messages via network.</p>
+<p class="p1">It can also be used in combo with the <a href="AudioMulchClock.html"><span class="s2">AudioMulchClock</span></a> class to synchronise to SuperCollider programs.</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s4">Network setup:</span></p>
+<p class="p1">In AudioMulch's preference panel under the <i>Network Sync</i> tab, note which UDP Port is used for receiving sync (default is 7000). Use this number for the <i>addr</i> argument in SuperCollider. Also activate <i>Chace Network Sync</i> under AudioMulch's Control menu.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>*new(tempo, beats, seconds, queueSize, addr)</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span>same as TempoClock.new except that it takes an additional argument addr.</p>
+<p class="p5"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>&lt;&gt;addr</b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>A <a href="SC://NetAddr"><span class="s2">NetAddr</span></a> that specifies IP address and port of the AudioMulch program.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>&lt;&gt;tick</b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>An <a href="SC://Integer"><span class="s5">Integer</span></a> that counts up indefinitely. Can be set to make AudioMulch jump in time.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span></b>&lt;&gt;<b>shift</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>an <a href="SC://Integer"><span class="s6">Integer</span></a> specifying latency compensation in ticks.</p>
+<p class="p2"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">s.latency= 0.05;</p>
+<p class="p7">s.boot</p>
+<p class="p6"><br></p>
+<p class="p8">//--simple test</p>
+<p class="p8">//make sure AudioMulch is running in the background (press play)</p>
+<p class="p8">//and that chase network sync is enabled in the control meny</p>
+<p class="p7">c= <span class="s7">ClockAudioMulch</span>(123/60, addr:<span class="s7">NetAddr</span>(<span class="s8">"127.0.0.1"</span>, 7000));</p>
+<p class="p7">d= <span class="s7">Pbind</span>(<span class="s9">\dur</span>, 1, <span class="s9">\octave</span>, 5, <span class="s9">\degree</span>, <span class="s7">Pseq</span>([0, 1, 2, 4, 3, 2, 1, 1], <span class="s7">inf</span>)).play(c, quant:4);</p>
+<p class="p7">c.shift= -2;</p>
+<p class="p7">c.tempo= 234/60;</p>
+<p class="p7">d.stop;</p>
+<p class="p7">c.stop;</p>
+<p class="p7">c.clear;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p9">//--syncing two supercollider programs over network using this class</p>
+<p class="p7">a= <span class="s10">AudioMulchClock</span>.new;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s11">//slave</span></p>
+<p class="p7">b= <span class="s10">Pbind</span>(<span class="s12">\dur</span>, 1, <span class="s12">\degree</span>, <span class="s10">Pseq</span>([0, 5, 2, 1], <span class="s10">inf</span>)).play(a, quant:4)</p>
+<p class="p6"><br></p>
+<p class="p7">c= <span class="s10">ClockAudioMulch</span>(114/60, addr:<span class="s10">NetAddr</span>(<span class="s8">"127.0.0.1"</span>, 57120))<span class="Apple-tab-span">	</span><span class="s11">//master</span></p>
+<p class="p7">c.tempo= 160/60</p>
+<p class="p7">d= <span class="s10">Pbind</span>(<span class="s12">\dur</span>, 1, <span class="s12">\octave</span>, 6, <span class="s12">\degree</span>, <span class="s10">Pseq</span>([7, 6, 5, 4, 5], <span class="s10">inf</span>)).play(c, quant:4)</p>
+<p class="p7">c.tempo= 190/60</p>
+<p class="p9"><span class="s3">c.shift= 2;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//latency compensation on the sender/master side</p>
+<p class="p6"><br></p>
+<p class="p7">b.stop</p>
+<p class="p7">d.stop</p>
+<p class="p7">a.stop</p>
+<p class="p7">c.stop</p>
+<p class="p7">a.clear</p>
+<p class="p7">c.clear</p>
+</body>
+</html>

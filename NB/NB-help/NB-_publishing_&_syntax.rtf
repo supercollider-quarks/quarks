@@ -1,0 +1,194 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red96\green96\blue96;\red72\green80\blue100;
+\red60\green58\blue55;\red65\green58\blue55;\red67\green80\blue106;\red62\green58\blue55;\red74\green80\blue97;
+\red97\green94\blue87;}
+\deftab560
+\pard\pardeftab560\ql\qnatural
+
+\f0\fs24 \cf0 NB has two general ways to write code to NodeBox-readable/renderable files.\
+\
+
+\b Example 1: publishing = true
+\b0 \
+\
+A 'publishing' instance variable (by default) is initialized during creation of NB objects to true. Each line of code writes by default to a file.\
+\
+
+\f1\fs18 (\
+n = \cf2 NB\cf0 (\cf3 "xample1"\cf0 , 400, 300, \cf2 true\cf0 , \cf3 "mov"\cf0 , 5, 10);	\
+n.background(0.1, 0, 1);\
+n.fill(0.84, 1, 1);				\
+n.oval(100, 64, 100, 200);			\
+n.fill(0, 0, 1);\
+n.oval(200, 64, 100, 200);\
+n.fill(1, 0.5, 1, 0.84);\
+n.skew(33.04);\
+n.rect(100, 40, 200, 125);\
+n.fill(1, 0.3, 1);\
+n.text(\cf3 "sc3 ++ nodebox"\cf0 , 10, 26);\
+n.fontsize(43);\
+n.rotate(34);\
+n.fill(0, 0, 0.6, 0.5);\
+n.text(\cf3 "SinOsc.ar(440)"\cf0 , 170, 228);\
+n.fill(1, 0, 0.1, 0.07);\
+n.rect(0, 0, 50, 300);\
+n.oval(0, 267, \cf3 "HEIGHT"\cf0 , 200);\
+n.finishMovieCode;\
+n.displayCode;\
+)\
+\
+
+\f0\b\fs24 Example 2: publishing = false
+\b0 \
+\
+The 'publishing' instance variable is set explicity to false during instance creation. Consequently, NodeBox code is collected in an array that, in turn, is written to a file.\
+\
+
+\f1\fs18 (\
+n = \cf4 NB\cf0 (\cf3 "xample2"\cf0 , 400, 300, \cf4 false\cf0 );\
+\pard\pardeftab560\ql\qnatural
+\cf5 // collect code for NodeBox in an array\
+\pard\pardeftab560\ql\qnatural
+\cf0 c = [												\
+	n.fill(0, 1, 0),	\
+	n.background(0.8, 0.9, 0.9),				\
+	n.oval(100, 64, 100, 200),\
+	n.fill(1, 0, 0),\
+	n.oval(200, 64, 100, 200),\
+	n.fill(1, 0.5, 1, 0.24),\
+	n.rect(100, 40, 200, 125),\
+	n.fill(1, 0, 1),\
+	n.text(\cf3 "sc3 ++ nodebox"\cf0 , 10, 26),\
+	n.fontsize(16),\
+	n.text(\cf3 "SinOsc.ar(440)"\cf0 , 282, 289),\
+	n.fill(1, 1, 1, 0.05),\
+	n.rect(0, 0, 50, 300),\
+	n.oval(0, 267, \cf3 "HEIGHT"\cf0 , 200)\
+];\
+\pard\pardeftab560\ql\qnatural
+\cf5 // write the array to a file\
+\pard\pardeftab560\ql\qnatural
+\cf0 n.write(c);\
+n.render;\
+n.displayImage(2)\
+)\
+\
+\pard\pardeftab560\ql\qnatural
+\cf6 /* ----- ----- ----- ----- */ \
+/* ----- ----- ----- ----- */\
+\pard\pardeftab560\ql\qnatural
+\cf5 \
+\pard\pardeftab560\ql\qnatural
+
+\f0\fs24 \cf0 NB has three syntaxes.\
+\
+
+\b Example 1:  "classic" SuperCollider style
+\b0 \
+\
+Send messages to objects.\
+\
+
+\f1\fs18 (\
+n = \cf7 NB\cf0 (\cf3 "Classical"\cf0 , 400, 300, \cf7 false\cf0 );\
+\pard\pardeftab560\ql\qnatural
+\cf8 // collect code for NodeBox in an array\
+\pard\pardeftab560\ql\qnatural
+\cf0 c = [	\
+	n.background(0.91, 0.82, 0.73),											\
+	n.fill(0, 1, 0),					\
+	n.oval(100, 64, 100, 200),\
+	n.fill(0, 0, 1),\
+	n.oval(200, 64, 100, 200),\
+	n.fill(1, 0.5, 1, 0.24),\
+	n.rect(100, 40, 200, 125),\
+	n.fill(0, 0, 0),\
+	n.fontsize(15),\
+	n.text(\cf3 "The Classical Style (a classic book about classical style)"\cf0 , 10, 26),\cf3 \
+\cf0 	n.fill(1, 1, 1, 0.05),\
+	n.rect(0, 0, 50, 300),\
+	n.oval(0, 267, \cf3 "HEIGHT"\cf0 , 200),\
+	n.fill(0, 0, 0),\
+	n.fontsize(13),\
+	n.rotate(4),\
+	n.fill(1, 0, 0),\
+	n.text(\cf3 "The Classical Style, a book by Charles Rosen"\cf0 , 0, 288)\cf3 \
+\cf0 ];\
+\pard\pardeftab560\ql\qnatural
+\cf8 // write the array to a file\
+\pard\pardeftab560\ql\qnatural
+\cf0 n.write(c);\
+n.render;\
+n.displayImage\
+)\
+\
+
+\f0\b\fs24 Example 2: the cmd message
+\b0 \
+\
+Send a 'cmd' message (with optional arguments) to a string.\
+\
+
+\f1\fs18 (\
+n = \cf9 NB\cf0 .new(\cf3 "linesOfCode"\cf0 , 400, 300);\
+n.publishCode(\
+	\cf3 "fill"\cf0 .cmd(0.25, 1.0.rand, 1.0.rand),\
+	\cf3 "rect"\cf0 .cmd(0, 0, \cf10 \\WIDTH\cf0 , \cf10 \\HEIGHT\cf0 ),\
+	\cf3 "fill"\cf0 .cmd(1, 1, 1),\
+	\cf3 "fontsize"\cf0 .cmd(30),\
+	\cf3 "text"\cf0 .cmd(\cf3 "lines of code : lines of code"\cf0 , 10, 32),\cf3 \
+\cf0 	\cf3 "fill"\cf0 .cmd(1, 1, 0),\
+	[\cf3 "oval"\cf0 , \cf3 "rect"\cf0 ].choose.cmd(0, 64, 200, 100),\
+	\cf3 "fill"\cf0 .cmd(0, 0, 1),\
+	[\cf3 "oval"\cf0 , \cf3 "rect"\cf0 ].choose.cmd(200, 120, 200,100),\
+	\cf3 "fill"\cf0 .cmd(1, 1, 1),\
+	\cf3 "rotate"\cf0 .cmd(34),\
+	\cf3 "skew"\cf0 .cmd(-45.rrand(45)),\
+	\cf3 "fontsize"\cf0 .cmd(32),\
+	\cf3 "text"\cf0 .cmd(\cf3 "lines of code : lines of code"\cf0 , 10, 150),\cf3 \
+\cf0 	\cf3 "fill"\cf0 .cmd(0.7, 0.5, 1),\
+	\cf3 "text"\cf0 .cmd(\cf3 "lines of code : lines of code"\cf0 , 13, 155),\cf3 \
+\cf0 	\cf3 "rotate"\cf0 .cmd(-39),\
+	\cf3 "fill"\cf0 .cmd(1, 1, 1),\
+	\cf3 "fontsize"\cf0 .cmd(20),\
+	[\cf3 "skew"\cf0 , \cf3 "rotate"\cf0 ].choose.cmd(-45.rrand(45)),\
+	\cf3 "text"\cf0 .cmd(\cf3 "lines of code : lines of code"\cf0 , 55, 270)\cf3 \
+\cf0 \
+);\
+n.render;\
+n.displayImage\
+)\
+	\
+
+\f0\b\fs24 Example 3: write directly in Python
+\b0 \
+\
+
+\f1\fs18 (\
+n = \cf7 NB\cf0 .new(\cf3 "more______lines_of_code"\cf0 , 400, 300);\cf3 \
+\cf0 n.publishCode(\
+	\cf3 "background(0.960, 0.773, 0.93, 0.803)"\cf0 ,\cf3 \
+\cf0 	\cf3 "fontsize(20)"\cf0 ,\cf3 \
+\cf0 	\cf3 "fill(1, 0, 0)"\cf0 ,\cf3 \
+\cf0 	\cf3 "text(\\"\cf0 lines of code: lines of code: lines of code\\\cf3 ", 20, 150)"\cf0 ,\
+	\cf3 "text(\\"\cf0 lines of code: lines of code: lines of code\\\cf3 ", 21, 153)"\cf0 ,\
+	\cf3 "fill(random(), random(), random(), 0.52)"\cf0 ,\cf3 \
+\cf0 	\cf3 "skew(321)"\cf0 ,\cf3 \
+\cf0 	\cf3 "rect(0, 0, WIDTH, HEIGHT)"\cf0 ,\cf3 \
+\cf0 	\cf3 "fill(0, 1, 0, 0.1)"\cf0 ,\cf3 \
+\cf0 	\cf3 "skew(-321)"\cf0 ,\cf3 \
+\cf0 	\cf3 "oval(100, 64, 100, 200)"\cf0 ,\cf3 \
+\cf0 	\cf3 "fill(0, 0, 1, 0.2)"\cf0 ,\cf3 \
+\cf0 	\cf3 "oval(200, 64, 100, 200)"\cf0 ,\cf3 \
+\cf0 	\cf3 "rotate((random() * 56) + 22)"\cf0 ,\cf3 \
+\cf0 	\cf3 "fontsize(24)"\cf0 ,\cf3 \
+\cf0 	\cf3 "fill(0, 0, 0, 0.72)"\cf0 ,\cf3 \
+\cf0 	\cf3 "text(\\"\cf0 lines of code : lines of code\\\cf3 ", 10, 150)"\cf0 ,\
+	\cf3 "text(\\"\cf0 lines of code : lines of code\\\cf3 ", 11, 154)"\cf0 \
+\
+);\
+n.render;\
+n.openWith("Safari");\
+)\
+}

@@ -1,0 +1,49 @@
+TITLE:: KtlLoopGui
+summary:: a gui for playing with KtlLoop
+categories:: Libraries>JITLib, Modality
+related:: Classes/KtlLoop, Classes/EventLoop
+
+DESCRIPTION::
+KtlLoopGui inherits most of its functions from EventLoop, it just adds gesture rescaling on playback. Among other uses, it is intended as a more flexible replacement for CtLoop (in the GamePad quark).
+
+code::
+// just some gui update tests, 
+// see KtlLoop for full examples.
+
+k = KtlLoop(\xyz);
+e = KtlLoopGui(k, bounds: 250@180);
+e.getState;
+
+	// play modes
+k.toggleLooped; 
+k.looped; 
+k.reverse; 
+k.forward; 
+	// play params
+k.tempo = 1.5
+k.lpStart = 0.25;
+k.range = 0.5;
+k.jitter = 0.1;
+
+	// list count should go up when recordings are made
+k.startRec  
+k.recordEvent(());
+k.stopRec  
+k.startRec  
+k.recordEvent(());
+k.stopRec  
+	// can switch between lists now
+k.setList(0); 
+k.setList(1);
+
+	// rescaling control values: 
+k.scaler = 1.5 
+k.shift = 0.2; 
+k.rescaled = true 
+k.rescaled = false 
+k.flipInv; 
+::
+
+INSTANCEMETHODS::
+
+private:: makeViews, addScaleItems, getState, checkUpdate

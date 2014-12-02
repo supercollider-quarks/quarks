@@ -1,0 +1,407 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bd0007}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bb000a}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000b9}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 14.0px Helvetica}
+span.s3 {color: #0000bc}
+span.s4 {color: #606060}
+span.s5 {color: #13740e}
+span.s6 {color: #0000b9}
+span.s7 {color: #1c7515}
+span.s8 {color: #bb000a}
+span.s9 {color: #bd0007}
+span.s10 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>SCDrawServer </b><span class="Apple-converted-space">  </span></span><span class="Apple-converted-space">                  </span><span class="s2"><b>realtime animation</b></span></p>
+<p class="p2"><br></p>
+<p class="p1">SCDrawServer is intended for realtime control of procedural animation (as opposed to SCDraw,</p>
+<p class="p1">which intended more for non-realtime uses). Drawing functions are triggered by incoming OSC</p>
+<p class="p1">messages.</p>
+<p class="p2"><br></p>
+<p class="p1">There are two styles of messages to send to SCDrawServer. One is very like what is sent</p>
+<p class="p1">to a synth, for example:</p>
+<p class="p2"><br></p>
+<p class="p1">addr.sendMsg(\draw, \spot, 3.0, \x, 300.0, \y, 100.0, \r, 10.0);</p>
+<p class="p2"><br></p>
+<p class="p1">\draw identifies it as a SCDrawServer command, \spot is a key in a dictionary that specifies</p>
+<p class="p1">the drawing function. The following float is the duration of the event. The succeeding symbol</p>
+<p class="p1">and value pairs are placed into a Dictionary that is passed to the drawing function. They can</p>
+<p class="p1">be whatever appropriate to te function in question.</p>
+<p class="p2"><br></p>
+<p class="p1">The other style of message is what comes a SendReply ugen. So, something like the following:</p>
+<p class="p2"><br></p>
+<p class="p1">\drawTrig, nodeID, replyID, and some number of floats as args to the drawing function</p>
+<p class="p2"><br></p>
+<p class="p1">The replyID is what is used as the key in the Dictionary. The nodeID is ignored. The floats</p>
+<p class="p1">are put into an array that is passed to the drawing function. The first float after the replyID</p>
+<p class="p1">represents either the duration of the event (when using <b>*run</b>) or the percentage value that is</p>
+<p class="p1">passed to the drawing function. This latter is the case when using the <b>*onDemand</b> method. In this</p>
+<p class="p1">case It is probably best to set this to 0.0 unless you have a reason not to. <span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Both kinds of messages can be used at the same time. Study the examples to see the different</p>
+<p class="p1">styles in action.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Class Methods</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>*run(dict, addr, rate, width, height, color, fullscreen, hideCursor, refresh)</b> -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>dict</b> is a Dictionary of drawing functions. <b>addr</b> is a NetAddr that determines where</p>
+<p class="p1"><span class="Apple-tab-span">	</span>to listen. The default is nil. <b>width</b> and <b>height</b> default to 500. <b>color</b> defaults to</p>
+<p class="p1"><span class="Apple-tab-span">	</span>Color.black. If <b>fullscreen</b> is true, <b>hideCursor</b> will determine wether the cursor</p>
+<p class="p1"><span class="Apple-tab-span">	</span>is visible. if <b>refresh</b> is true, the view is cleared every frame before drawing.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>Otherwise, the drawing continually draws on top of what's already there. An incoming</p>
+<p class="p1"><span class="Apple-tab-span">	</span>\clear (or a 0) message will clear the view.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>*onDemand(dict, addr, rate, width, height, color, fullscreen, hideCursor, refresh)</b> -</p>
+<p class="p1"><span class="Apple-tab-span">	</span>This method draws only one frame when a message comes in. This is intended for</p>
+<p class="p1"><span class="Apple-tab-span">	</span>things like graphic scores where you do not need to continually redraw the image.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>The arguments are the same as <b>*run</b>.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Examples</b></p>
+<p class="p2"><br></p>
+<p class="p4">//boot the local server!</p>
+<p class="p5">(</p>
+<p class="p5"><span class="s3">var</span> win, table;</p>
+<p class="p5"><span class="s3">var</span> server, circle, spot, orch=<span class="s3">Dictionary</span>.new();</p>
+<p class="p5"><span class="s3">var</span> addr = <span class="s3">NetAddr</span>.localAddr;</p>
+<p class="p6"><br></p>
+<p class="p5">server = <span class="s3">Server</span>.local;</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s3">SynthDef</span>(<span class="s4">"pluck"</span>, { <span class="s3">arg</span> dur, amp, freq, pan;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> sig, env;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>env = <span class="s3">EnvGen</span>.kr(<span class="s3">Env</span>([ 1, 0 ], [ dur ], <span class="s5">'linear'</span>), 1, amp, 0, 1, 2);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>sig = <span class="s3">Pluck</span>.ar(<span class="s3">WhiteNoise</span>.ar(1.0), <span class="s3">Impulse</span>.kr(0), freq.reciprocal, freq.reciprocal, dur, 0.25);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>sig = <span class="s3">Pan2</span>.ar(sig, pan);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Out</span>.ar(0, sig*env);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>}).load(server);</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5">spot = { <span class="s6">arg</span> perc, dict;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> x, y, r;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>x = dict.at(<span class="s7">\x</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>y = dict.at(<span class="s7">\y</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>r = dict.at(<span class="s7">\r</span>)*(1.0-perc);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.fillColor = <span class="s6">Color</span>.blue;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.strokeColor = <span class="s6">Color</span>.red;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.addArc(x@y, r, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.fill;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><br></p>
+<p class="p5">circle = { <span class="s6">arg</span> perc, dict;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> x, y, r;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>x = dict.at(<span class="s7">\x</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>y = dict.at(<span class="s7">\y</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>r = dict.at(<span class="s7">\r</span>)*(1.0-perc);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.fillColor = <span class="s6">Color</span>.blue;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.strokeColor = <span class="s6">Color</span>.red;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.addArc(x@y, r, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.stroke;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5">orch.put(<span class="s7">'spot'</span>, spot);</p>
+<p class="p5">orch.put(<span class="s7">'circle'</span>, circle);</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s6">SCDrawServer</span>.run(orch, refresh: <span class="s6">true</span>); <span class="s8">//compare with false</span></p>
+<p class="p7">//SCDrawServer.onDemand(orch, refresh: false); //compare onDemand</p>
+<p class="p6"><br></p>
+<p class="p5">win = <span class="s6">SCWindow</span>.new(<span class="s4">"controller"</span>,<span class="s6">Rect</span>(40,40,540,540));</p>
+<p class="p5">table = <span class="s6">SCTabletView</span>(win, <span class="s6">Rect</span>(20,20,500,500));</p>
+<p class="p5">table.background = <span class="s6">Color</span>.white;</p>
+<p class="p5">win.front;</p>
+<p class="p6"><br></p>
+<p class="p5">table.action = { <span class="s6">arg</span><span class="Apple-converted-space">  </span>view, x, y;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> ndur, z;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>ndur = 3.0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>z = 0.5;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>server.sendMsg(<span class="s7">\s_new</span>, <span class="s7">\pluck</span>, -1, 0, 1, <span class="s7">\dur</span>, ndur, <span class="s7">\amp</span>, z, <span class="s7">\freq</span>, (((500.0-y)/500.0)*24+48).midicps, <span class="s7">\pan</span>, (x-250.0)/250.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>addr.sendMsg(<span class="s4">"draw"</span>, <span class="s7">\spot</span>, ndur, <span class="s7">\x</span>, x, <span class="s7">\y</span>, y, <span class="s7">\r</span>, z*10.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><br></p>
+<p class="p5">table.mouseDownAction = { <span class="s6">arg</span><span class="Apple-converted-space">  </span>view, x, y;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> ndur, z;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>ndur = 1.0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>z = 1.0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>server.sendMsg(<span class="s7">\s_new</span>, <span class="s7">\pluck</span>, -1, 0, 1, <span class="s7">\dur</span>, ndur, <span class="s7">\amp</span>, z, <span class="s7">\freq</span>, (((500.0-y)/500.0)*24+36).midicps, <span class="s7">\pan</span>, (x-250.0)/250.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>addr.sendMsg(<span class="s4">"draw"</span>, <span class="s7">\spot</span>, ndur, <span class="s7">\x</span>, x, <span class="s7">\y</span>, y, <span class="s7">\r</span>, z*25.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><br></p>
+<p class="p5">table.mouseUpAction = { <span class="s6">arg</span><span class="Apple-converted-space">  </span>view, x, y;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> ndur, z;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>ndur = 3.0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>z = 1.0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>server.sendMsg(<span class="s7">\s_new</span>, <span class="s7">\pluck</span>, -1, 0, 1, <span class="s7">\dur</span>, ndur, <span class="s7">\amp</span>, z, <span class="s7">\freq</span>, (((500.0-y)/500.0)*24+60).midicps, <span class="s7">\pan</span>, (x-250.0)/250.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>addr.sendMsg(<span class="s4">"draw"</span>, <span class="s7">\circle</span>, ndur, <span class="s7">\x</span>, x, <span class="s7">\y</span>, y, <span class="s7">\r</span>, z*25.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><br></p>
+<p class="p7">//send a \clear message to clear the view</p>
+<p class="p5">table.keyDownAction = { <span class="s6">arg</span> view, char, mod, uni, key;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>if(key == 8, { addr.sendMsg(<span class="s4">"draw"</span>, <span class="s7">\clear</span>); });</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};<span class="Apple-tab-span">	</span></p>
+<p class="p6"><br></p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p7">//use of SendReply, tracking mouse x and y<span class="Apple-converted-space"> </span></p>
+<p class="p5">(</p>
+<p class="p5"><span class="s3">var</span> circle, spot, orch=<span class="s3">Dictionary</span>.new();</p>
+<p class="p5"><span class="s3">var</span> rect, width, height;</p>
+<p class="p5"><span class="s3">var</span> server = <span class="s3">Server</span>.local;</p>
+<p class="p5"><span class="s3">var</span> addr = <span class="s3">NetAddr</span>.localAddr;</p>
+<p class="p5"><span class="s3">var</span> ndur, x, y, z;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">rect = <span class="s3">Window</span>.screenBounds();</p>
+<p class="p5">width = rect.width;</p>
+<p class="p5">height = rect.height;</p>
+<p class="p6"><br></p>
+<p class="p5">{</p>
+<p class="p5"><span class="s3">SendReply</span>.kr(<span class="s3">Impulse</span>.kr(10.0), <span class="s5">'drawTrig'</span>, [ 1.0, <span class="s3">MouseX</span>.kr(0.0, 1.0), <span class="s3">MouseY</span>.kr(0.0, 1.0), 50.0], 1905); <span class="s9">//run: first in array is event duration</span></p>
+<p class="p5"><span class="s3">SendReply</span>.kr(<span class="s3">Impulse</span>.kr(11.0), <span class="s5">'drawTrig'</span>, [ 1.0, <span class="s3">MouseX</span>.kr(0.0, 1.0), <span class="s3">MouseY</span>.kr(0.0, 1.0), 100.0], 1906); <span class="s9">//run: first in array is event duration</span></p>
+<p class="p4">//SendReply.kr(Impulse.kr(10.0), 'drawTrig', [ 0.0, MouseX.kr(0.0, 1.0), MouseY.kr(0.0, 1.0), 50.0], 1905); //onDemand: use 0.0 first in array</p>
+<p class="p4">//SendReply.kr(Impulse.kr(11.0), 'drawTrig', [ 0.0, MouseX.kr(0.0, 1.0), MouseY.kr(0.0, 1.0), 100.0], 1906); //onDemand: use 0.0 first in array</p>
+<p class="p4"><span class="s3">SendReply</span><span class="s10">.kr(</span><span class="s3">Impulse</span><span class="s10">.kr(0.1), </span><span class="s5">'drawTrig'</span><span class="s10">, [ 0.0 ], 0); </span>//replyID of 0 work as a \clear message, only really useful for refresh == false</p>
+<p class="p5">}.play(server);</p>
+<p class="p6"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5">spot = { <span class="s3">arg</span> perc, dict;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> x, y, r;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>x = dict.at(0) * width;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>y = dict.at(1) * height;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>r = dict.at(2)*(1.0-perc);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.fillColor = <span class="s3">Color</span>.blue;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.strokeColor = <span class="s3">Color</span>.red;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.addArc(x@y, r, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.fill;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><br></p>
+<p class="p5">circle = { <span class="s3">arg</span> perc, dict;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> x, y, r;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>x = dict.at(0) * width;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>y = dict.at(1) * height;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>r = dict.at(2)*(1.0-perc);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.fillColor = <span class="s3">Color</span>.blue;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.strokeColor = <span class="s3">Color</span>.red;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.addArc(x@y, r, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.stroke;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s10">orch.put(1905, spot); </span>//use replyID as key for function</p>
+<p class="p4"><span class="s10">orch.put(1906, circle); </span>//use replyID as key for function</p>
+<p class="p6"><br></p>
+<p class="p4">//use escape key to exit fullscreen</p>
+<p class="p5"><span class="s3">SCDrawServer</span>.run(orch, <span class="s3">nil</span>, rate: 10.0, fullscreen: <span class="s3">true</span>, hideCursor: <span class="s3">false</span>, refresh: <span class="s3">false</span>);</p>
+<p class="p4">//SCDrawServer.onDemand(orch, nil, fullscreen: true, hideCursor: false, refresh: false);</p>
+<p class="p6"><br></p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p7">//using Amplitude</p>
+<p class="p7">//use headphones to avoid feedback</p>
+<p class="p5">(</p>
+<p class="p5"><span class="s3">var</span> circle, spot, orch=<span class="s3">Dictionary</span>.new();</p>
+<p class="p5"><span class="s3">var</span> rect, width, height;</p>
+<p class="p5"><span class="s3">var</span> server = <span class="s3">Server</span>.local;</p>
+<p class="p5"><span class="s3">var</span> addr = <span class="s3">NetAddr</span>.localAddr;</p>
+<p class="p5"><span class="s3">var</span> ndur, x, y, z;</p>
+<p class="p5"><span class="s3">var</span> lofreq=200.0, hifreq=1000.0;</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">rect = <span class="s3">Window</span>.screenBounds();</p>
+<p class="p5">width = rect.width;</p>
+<p class="p5">height = rect.height;</p>
+<p class="p6"><br></p>
+<p class="p5">{</p>
+<p class="p5"><span class="s3">var</span> sig, amp;</p>
+<p class="p4">//sig = Mix.new(SoundIn.ar([0,1]));</p>
+<p class="p5">sig = <span class="s3">SinOsc</span>.ar(440.0, 0, <span class="s3">LFNoise1</span>.kr(2.0, 0.5, 0.5));</p>
+<p class="p5">amp = <span class="s3">Amplitude</span>.kr(sig);</p>
+<p class="p5"><span class="s3">SendReply</span>.kr(amp - 0.5, <span class="s5">'drawTrig'</span>, [ 1.0, <span class="s3">SinOsc</span>.ar(0.2, 0, 0.4, 0.5), <span class="s3">SinOsc</span>.ar(0.51, 0, 0.4, 0.5), 100.0 ], 1906);</p>
+<p class="p5"><span class="s3">Out</span>.ar(0, sig*amp);</p>
+<p class="p5">}.play(server);</p>
+<p class="p6"><br></p>
+<p class="p5">circle = { <span class="s3">arg</span> perc, dict;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> x, y, r, pos;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>pos = (1.0-perc).max(0.0).min(1.0);</p>
+<p class="p4"><span class="s10"><span class="Apple-tab-span">	</span></span>//pos = perc;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>x = dict.at(0) * width;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>y = dict.at(1) * height;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>r = dict.at(2);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.strokeColor = <span class="s3">Color</span>.red;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.addArc(x@y, r*pos, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.stroke;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.strokeColor = <span class="s3">Color</span>.green;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.addArc(x@y, r*pos*pos, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.stroke;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.strokeColor = <span class="s3">Color</span>.yellow;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.addArc(x@y, r*pos*pos*pos, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.stroke;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="s10">orch.put(1906, circle); </span>//use replyID as key for function</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s3">SCDrawServer</span>.run(orch, <span class="s3">nil</span>, rate: 10.0, fullscreen: <span class="s3">true</span>, hideCursor: <span class="s3">true</span>, refresh: <span class="s3">true</span>);</p>
+<p class="p4">//SCDrawServer.onDemand(orch, nil, fullscreen: true, hideCursor: false, refresh: false);</p>
+<p class="p6"><br></p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p7">//using Amplitude and Pitch -- Sing!!</p>
+<p class="p7">//use headphones to avoid feedback</p>
+<p class="p5">(</p>
+<p class="p5"><span class="s3">var</span> circle, orch=<span class="s3">Dictionary</span>.new();</p>
+<p class="p5"><span class="s3">var</span> rect, width, height;</p>
+<p class="p5"><span class="s3">var</span> server = <span class="s3">Server</span>.local;</p>
+<p class="p5"><span class="s3">var</span> addr = <span class="s3">NetAddr</span>.localAddr;</p>
+<p class="p5"><span class="s3">var</span> ndur, x, y, z;</p>
+<p class="p5"><span class="s3">var</span> lofreq=200.0, hifreq=1000.0;//adjust these to suit your voice or instrument</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">rect = <span class="s3">Window</span>.screenBounds();</p>
+<p class="p5">width = rect.width;</p>
+<p class="p5">height = rect.height;</p>
+<p class="p6"><br></p>
+<p class="p5">{</p>
+<p class="p5"><span class="s3">var</span> sig, amp, freq, has;</p>
+<p class="p4">//sig = Mix.new(SoundIn.ar([0,1]));</p>
+<p class="p5">sig = <span class="s3">SinOsc</span>.ar(<span class="s3">LFNoise1</span>.kr(0.21, 400.0, 600.0), 0, <span class="s3">LFNoise1</span>.kr(1.17, 0.5, 0.5));</p>
+<p class="p5">amp = <span class="s3">Amplitude</span>.kr(sig);</p>
+<p class="p5">#freq, has = <span class="s3">Pitch</span>.kr(sig);</p>
+<p class="p5"><span class="s3">SendReply</span>.kr(amp - 0.25, <span class="s5">'drawTrig'</span>, [ 1.0, (amp-0.25) * 0.75.reciprocal, 1.0 - ((freq-lofreq)/(hifreq-lofreq)), 100.0 ], 1906);</p>
+<p class="p5"><span class="s3">Out</span>.ar(0, <span class="s3">SinOsc</span>.ar(freq, 0, amp));</p>
+<p class="p5">}.play(server);</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p5">circle = { <span class="s3">arg</span> perc, dict;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">var</span> x, y, r, pos;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>//pos = (1.0-perc).max(0.0).min(1.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>pos = (1.0-perc);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>if((perc &lt; 0.0) || (perc &gt; 1.0), { perc.postln; }); <span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>x = dict.at(0) * width;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>y = dict.at(1) * height;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>r = dict.at(2);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.strokeColor = <span class="s3">Color</span>.red;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.addArc(x@y, r*pos, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.stroke;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.strokeColor = <span class="s3">Color</span>.green;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.addArc(x@y, r*pos*pos, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.stroke;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.strokeColor = <span class="s3">Color</span>.yellow;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.addArc(x@y, r*pos*pos*pos, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s3">Pen</span>.stroke;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><br></p>
+<p class="p4"><span class="s10">orch.put(1906, circle); </span>//use replyID as key for function</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s3">SCDrawServer</span>.run(orch, <span class="s3">nil</span>, rate: 10.0, fullscreen: <span class="s3">true</span>, hideCursor: <span class="s3">true</span>, refresh: <span class="s3">true</span>);</p>
+<p class="p4">//SCDrawServer.onDemand(orch, nil, fullscreen: true, hideCursor: false, refresh: false);</p>
+<p class="p6"><br></p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p8">//first example split if you want to use two computers</p>
+<p class="p8">//boot the local server!</p>
+<p class="p5">(</p>
+<p class="p5"><span class="s6">var</span> win, table, server;</p>
+<p class="p5"><span class="s6">//var</span> addr = <span class="s6">NetAddr</span>.localAddr; //change to address of other computer</p>
+<p class="p5"><span class="s6">var</span> addr = <span class="s6">NetAddr</span>("128.95.92.166", 57120);</p>
+<p class="p6"><br></p>
+<p class="p5">//server = <span class="s6">Server</span>.local;<span class="Apple-converted-space">  </span>//change to server address of other computer</p>
+<p class="p5">server = <span class="s6">NetAddr</span>("128.95.92.166", 57110);</p>
+<p class="p6"><br></p>
+<p class="p5">win = <span class="s6">SCWindow</span>.new(<span class="s4">"controller"</span>,<span class="s6">Rect</span>(40,40,540,540));</p>
+<p class="p5">table = <span class="s6">SCTabletView</span>(win, <span class="s6">Rect</span>(20,20,500,500));</p>
+<p class="p5">table.background = <span class="s6">Color</span>.white;</p>
+<p class="p5">win.front;</p>
+<p class="p6"><br></p>
+<p class="p5">table.action = { <span class="s6">arg</span><span class="Apple-converted-space">  </span>view, x, y;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> ndur, z;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>ndur = 3.0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>z = 0.5;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>server.sendMsg(<span class="s7">\s_new</span>, <span class="s7">\pluck</span>, -1, 0, 1, <span class="s7">\dur</span>, ndur, <span class="s7">\amp</span>, z, <span class="s7">\freq</span>, (((500.0-y)/500.0)*24+48).midicps, <span class="s7">\pan</span>, (x-250.0)/250.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>addr.sendMsg(<span class="s4">"draw"</span>, <span class="s7">\spot</span>, ndur, <span class="s7">\x</span>, x/500.0, <span class="s7">\y</span>, y/500.0, <span class="s7">\r</span>, z*10.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><br></p>
+<p class="p5">table.mouseDownAction = { <span class="s6">arg</span><span class="Apple-converted-space">  </span>view, x, y;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> ndur, z;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>ndur = 1.0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>z = 1.0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>server.sendMsg(<span class="s7">\s_new</span>, <span class="s7">\pluck</span>, -1, 0, 1, <span class="s7">\dur</span>, ndur, <span class="s7">\amp</span>, z, <span class="s7">\freq</span>, (((500.0-y)/500.0)*24+36).midicps, <span class="s7">\pan</span>, (x-250.0)/250.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>addr.sendMsg(<span class="s4">"draw"</span>, <span class="s7">\spot</span>, ndur, <span class="s7">\x</span>, x/500.0, <span class="s7">\y</span>, y/500.0, <span class="s7">\r</span>, z*25.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><br></p>
+<p class="p5">table.mouseUpAction = { <span class="s6">arg</span><span class="Apple-converted-space">  </span>view, x, y;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> ndur, z;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>ndur = 3.0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>z = 1.0;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>server.sendMsg(<span class="s7">\s_new</span>, <span class="s7">\pluck</span>, -1, 0, 1, <span class="s7">\dur</span>, ndur, <span class="s7">\amp</span>, z, <span class="s7">\freq</span>, (((500.0-y)/500.0)*24+60).midicps, <span class="s7">\pan</span>, (x-250.0)/250.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>addr.sendMsg(<span class="s4">"draw"</span>, <span class="s7">\circle</span>, ndur, <span class="s7">\x</span>, x/500.0, <span class="s7">\y</span>, y/500.0, <span class="s7">\r</span>, z*25.0);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><br></p>
+<p class="p7">//send a \clear message to clear the view</p>
+<p class="p5">table.keyDownAction = { <span class="s6">arg</span> view, char, mod, uni, key;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>if(key == 8, { addr.sendMsg(<span class="s4">"draw"</span>, <span class="s7">\clear</span>); });</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};<span class="Apple-tab-span">	</span></p>
+<p class="p6"><br></p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p7">//boot the local server!</p>
+<p class="p5">(</p>
+<p class="p5"><span class="s6">var</span> server, circle, spot, orch=<span class="s6">Dictionary</span>.new();</p>
+<p class="p5">var rect = <span class="s3">Window</span>.screenBounds();</p>
+<p class="p5">server = <span class="s6">Server</span>.local;</p>
+<p class="p6"><br></p>
+<p class="p5"><span class="s6">SynthDef</span>(<span class="s4">"pluck"</span>, { <span class="s6">arg</span> dur, amp, freq, pan;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> sig, env;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>env = <span class="s6">EnvGen</span>.kr(<span class="s6">Env</span>([ 1, 0 ], [ dur ], <span class="s7">'linear'</span>), 1, amp, 0, 1, 2);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>sig = <span class="s6">Pluck</span>.ar(<span class="s6">WhiteNoise</span>.ar(1.0), <span class="s6">Impulse</span>.kr(0), freq.reciprocal, freq.reciprocal, dur, 0.25);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>sig = <span class="s6">Pan2</span>.ar(sig, pan);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Out</span>.ar(0, sig*env);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>}).load(server);</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5">spot = { <span class="s6">arg</span> perc, dict;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> x, y, r;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>x = dict.at(<span class="s7">\x</span>) * rect.width;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>y = dict.at(<span class="s7">\y</span>) * rect.height;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>r = dict.at(<span class="s7">\r</span>)*(1.0-perc);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.fillColor = <span class="s6">Color</span>.blue;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.strokeColor = <span class="s6">Color</span>.red;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.addArc(x@y, r, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.fill;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><br></p>
+<p class="p5">circle = { <span class="s6">arg</span> perc, dict;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">var</span> x, y, r;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>x = dict.at(<span class="s7">\x</span>) * rect.width;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>y = dict.at(<span class="s7">\y</span>) * rect.height;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>r = dict.at(<span class="s7">\r</span>)*(1.0-perc);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.fillColor = <span class="s6">Color</span>.blue;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.strokeColor = <span class="s6">Color</span>.red;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.addArc(x@y, r, 0.0, 2pi);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Pen</span>.stroke;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5">orch.put(<span class="s7">'spot'</span>, spot);</p>
+<p class="p5">orch.put(<span class="s7">'circle'</span>, circle);</p>
+<p class="p6"><br></p>
+<p class="p9">SCDrawServer<span class="s10">.run(orch, refresh: </span>true, fullscreen: false, hideCursor: true<span class="s10">);</span></p>
+<p class="p7">//SCDrawServer.onDemand(orch, refresh: false); //compare onDemand</p>
+<p class="p6"><br></p>
+<p class="p5">)</p>
+</body>
+</html>

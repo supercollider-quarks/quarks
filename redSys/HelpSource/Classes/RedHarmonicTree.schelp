@@ -1,0 +1,35 @@
+CLASS:: RedHarmonicTree
+SUMMARY:: sorted harmonic tree
+CATEGORIES:: Red>redTools
+
+DESCRIPTION::
+After http://www.csounds.com/ezine/trees/
+
+CLASSMETHODS::
+
+METHOD:: sorted
+
+ARGUMENT:: base
+Base frequency.
+
+ARGUMENT:: num
+Number of partials.
+
+ARGUMENT:: range
+1 and 2 will only produce unison and octaves.
+
+EXAMPLES::
+
+CODE::
+RedHarmonicTree.sorted(110, 8, 3);
+RedHarmonicTree.sorted(110, 8, 3);
+
+s.boot
+Pbind(\freq, Pseq(RedHarmonicTree.sorted(110, 8, 3).postln), \dur, 0.125).play
+Pbind(\freq, Pseq(RedHarmonicTree.sorted(110, 8, 3).postln), \dur, 0.125).play
+
+
+Pbind(\freq, Pseq(RedHarmonicTree.sorted(110, 8, 2).postln), \dur, 0.125).play
+Pbind(\freq, Pseq(RedHarmonicTree.sorted(110, 8, 4).postln), \dur, 0.125).play
+Pbind(\freq, Pseq(RedHarmonicTree.sorted(110, 8, 6).postln), \dur, 0.125).play
+::

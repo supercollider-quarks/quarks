@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; color: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #c91505}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0024b9}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0024b9; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #006f1a}
+span.s1 {text-decoration: underline}
+span.s2 {color: #0024b9}
+span.s3 {color: #000000}
+span.s4 {color: #006f1a}
+span.s5 {color: #5b6060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>ReimFilter</b></p>
+<p class="p2"><br></p>
+<p class="p3">Stores and handles filter presets to be used by an Auditory Augmentation setup.</p>
+<p class="p3">See also <span class="s1">(ReimData)</span>.</p>
+<p class="p4"><br></p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p6"><span class="s2">ReimFilter</span><span class="s3">.presets[</span><span class="s4">\myReson</span><span class="s3">] = {</span><span class="s2">|in, sreim|</span><span class="s3"> </span>// soundin (one channel), dataIn (n channels)</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// multichannel controls</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> freqs, amps, rings;</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> ringtime, highFreq, baseFreq;</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// controls (rebuild for 3.2 compatibility)</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// creates a control called ringTime with default value 0.1</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// ringtime = \ringtime.kr(0.1);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ringtime = <span class="s2">Control</span>.names([<span class="s4">\ringtime</span>]).kr(#[0.1]);</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// highFreq = \highFreq.kr(1000);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>highFreq = <span class="s2">Control</span>.names([<span class="s4">\highFreq</span>]).kr(#[1000]);</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// baseFreq = \baseFreq.kr(523);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>baseFreq = <span class="s2">Control</span>.names([<span class="s4">\baseFreq</span>]).kr(#[523]);</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freqs = (sreim.collect{<span class="s2">|reim, i|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(i + reim) * 24</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>} + baseFreq.cpsmidi).midicps;</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freqs = <span class="s2">Select</span>.kr(sreim.abs &gt; 0, [1, freqs]);</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amps = sreim &gt; 0;</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rings = sreim;</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//rings = sreim &gt; 0;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// input HF damping</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>in = (in + <span class="s2">HPF</span>.ar(in, highFreq)) * 0.5;</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>DynKlank<span class="s3">.ar(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>`[freqs.lag(0.1), <span class="s2">DelayN</span>.kr(amps, 0.1, 0.1), rings * ringtime],<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>in * 0.25</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>).tanh;</p>
+<p class="p2"><br></p>
+<p class="p5">}</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p6">/*</p>
+<p class="p6">ReimFilter.at(\myReson).postcs // */</p>
+<p class="p2"><br></p>
+<p class="p6">// ReimFilter assumes normalized Data</p>
+<p class="p5">(</p>
+<p class="p5">q = q ? ();</p>
+<p class="p5">q.data = <span class="s2">CSVFileReader</span>.readInterpret(<span class="s5">"%/resources/glass.csv"</span>.format(<span class="s2">Document</span>.current.dir));</p>
+<p class="p5">q.data = q.data.flop[0..8].flop;</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p5"><span class="s2">Server</span>.default = s = <span class="s2">Server</span>.internal</p>
+<p class="p2"><br></p>
+<p class="p5">s.options.blockSize = 32;</p>
+<p class="p5">s.options.hardwareBufferSize = 32;</p>
+<p class="p5">s.options.numWireBufs = 64;</p>
+<p class="p2"><br></p>
+<p class="p5">s.boot</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">q.reim = <span class="s2">ReimData</span>(s, 9);</p>
+<p class="p6"><span class="s3">q.reim.data = q.data.choose; </span>// choose one item of the dataset</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6">// the input</p>
+<p class="p5">q.sourceChannel = 0;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p7">Ndef<span class="s3">(</span><span class="s4">\reims</span><span class="s3">, {</span>|amp = 1|</p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span>//</span>var in = SoundIn.ar(q.sourceChannel);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>var in = Impulse.ar(1);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s2">ReimFilter</span>.ar(<span class="s4">\myReson</span>, in*amp, q.reim);</p>
+<p class="p5">}).playN([0, 1]);</p>
+<p class="p5">)</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="s2">Ndef</span><span class="s3">(</span>\reims<span class="s3">).set(</span>\ringtime<span class="s3">, 0.3)</span></p>
+<p class="p2"><br></p>
+<p class="p7">NdefMixer<span class="s3">(s)</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6">// write your newly instantiated presets to a file</p>
+<p class="p7">ReimFilter<span class="s3">.write</span></p>
+<p class="p5"><span class="s2">ReimFilter</span>.presets.asCompileString</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2">ReimFilter</span>.presetpath.openInFinder</p>
+</body>
+</html>

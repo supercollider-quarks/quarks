@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.42">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+span.s1 {color: #000000}
+span.s2 {color: #0000bf}
+span.s3 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Sensitivity</b></p>
+<p class="p2"><br></p>
+<p class="p3">A macro UGen that emulates the sensitivity control on many hardware synthesizers.</p>
+<p class="p2"><br></p>
+<p class="p3">The input control is assumes to fall in the range 0..1. If the sensitivity is 1, the control value is passed unchanged. If 0, the output value is always 1 -- that is, the output has become completely insensitive to the input value. Other sensitivity values scale the input value, and adjust so that the top of the output range is always 1.</p>
+<p class="p2"><br></p>
+<p class="p3">Sensitivity == 1.0, input range 0..1 --&gt; output range 0..1</p>
+<p class="p3">Sensitivity == 0.0, input range 0..1 --&gt; output range 1..1</p>
+<p class="p3">Sensitivity == 0.2, input range 0..1 --&gt; output range 0.8..1</p>
+<p class="p2"><br></p>
+<p class="p3">The formula is (input - 1) * sensitivity + 1</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Sensitivity.ar(scaler, value, sense)</b></p>
+<p class="p3"><b>Sensitivity.kr(scaler, value, sense)</b></p>
+<p class="p2"><br></p>
+<p class="p3">scaler = value by which to multiply the output after sensitivity adjustment</p>
+<p class="p3">value = input value to be adjusted for sensitivity</p>
+<p class="p3">sense = sensitivity factor</p>
+<p class="p2"><br></p>
+<p class="p4"><b>Example:</b></p>
+<p class="p2"><br></p>
+<p class="p5">// sensitivity-controlled amplitude</p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s1">a = { </span>|sense = 0.2|</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">var</span><span class="Apple-tab-span">	</span>amp = <span class="s2">Sensitivity</span>.kr(1, <span class="s2">MouseY</span>.kr(0, 1), sense);</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s2">SinOsc</span>.ar(440, 0, amp) ! 2</p>
+<p class="p8">};</p>
+<p class="p6"><br></p>
+<p class="p8">a.set(<span class="s3">\sense</span>, 0);</p>
+<p class="p5"><span class="s1">a.set(</span><span class="s3">\sense</span><span class="s1">, 1);<span class="Apple-tab-span">	</span></span>// you can make the sound silent by taking mouseY to 0</p>
+<p class="p5"><span class="s1">a.set(</span><span class="s3">\sense</span><span class="s1">, 0.4);<span class="Apple-tab-span">	</span></span>// now you can't make it silent anymore</p>
+<p class="p6"><br></p>
+<p class="p8">a.free;</p>
+</body>
+</html>

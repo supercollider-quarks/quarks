@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.29">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #5a2e2e}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #483131}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #213ba1}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #213ba1}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #000000}
+span.s4 {text-decoration: underline}
+span.s5 {color: #213ba1}
+span.s6 {color: #606060}
+span.s7 {color: #2024c7}
+span.s8 {color: #1433aa}
+span.s9 {color: #616822}
+span.s10 {color: #65652c}
+span.s11 {color: #65652b}
+span.s12 {color: #008417}
+span.s13 {font: 12.0px Helvetica}
+span.s14 {font: 12.0px Helvetica; color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>NanoKtl</b></span><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>a class for handling mappings of the Korg nanoKontrol</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: MIDIKtl</b></p>
+<p class="p2"><br></p>
+<p class="p1">The Korg <b>nanoKontrol</b> produces only MIDI controller events. It has 4 switchable scenes,<span class="Apple-converted-space"> </span></p>
+<p class="p1">in which all controllers (sliders, knobs, upper and lower buttons) have different cc numbers.<span class="Apple-converted-space"> </span></p>
+<p class="p1">The 6 transport controls remain the same in all scenes.</p>
+<p class="p1">NanoKtl keeps a dictionary of actions for all mapped controllers.</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s3"><b>See also: </b><a href="SC://UsingMIDI"><span class="s4">UsingMIDI</span></a>, <a href="SC://CCResponder"><span class="s4">CCResponder</span></a>, <a href="SC://MIDIIn"><span class="s4">MIDIIn</span></a></span></p>
+<p class="p3"><br></p>
+<p class="p1"><b>First example</b></p>
+<p class="p3"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>// make a ProxySpace and a mixer for it, map the NanoKtl to it</p>
+<p class="p5">p = <span class="s5">ProxySpace</span>.push(s.boot);</p>
+<p class="p6">m = <span class="s5">ProxyMixer</span>(p, 16);</p>
+<p class="p6"><span class="Apple-tab-span">	</span>// put some proxies in it<span class="Apple-converted-space"> </span></p>
+<p class="p6">(</p>
+<p class="p6">12.do { <span class="s5">|i|</span> p[(<span class="s6">"test_bla"</span> ++ i).asSymbol] = { |ring = 0.02|</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s5">Pan2</span>.ar(<span class="s5">Ringz</span>.ar(<span class="s5">Impulse</span>.ar(exprand(0.5, 4)), exprand(300, 3000), ring), 1.0.rand2, 0.2) };<span class="Apple-converted-space"> </span></p>
+<p class="p6">};</p>
+<p class="p6">Spec.add(\ring, [0.0001, 1, \exp]);</p>
+<p class="p6">)</p>
+<p class="p6"><span class="Apple-tab-span">	</span>// make a nanoKtl, and map it to the mixer:</p>
+<p class="p6"><span class="Apple-tab-span">	</span>// the sliders control the first 8 volumes,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>// the lower buttons play the proxy,</p>
+<p class="p6"><span class="Apple-tab-span">	</span>// the upper buttons send to the editor,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>// the knobs control the editor parameters,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>// and the last slider controls server volume!</p>
+<p class="p6">(</p>
+<p class="p6">g = <span class="s7">NanoKtl</span>.new;</p>
+<p class="p6">g.mapToMixer(m, 1);</p>
+<p class="p6">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p7"><b>Creation / Class Methods</b></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>*new (srcID, dict)</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>create a NanoKtl object.</p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>srcID </b>- every MIDI port (e.g. from a USB plug) gets a unique ID.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This can be used to distinguish multiple controller which may have<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>overlapping MIDI channel/controller numbers.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dict </b>- a dictionary of the actions that are mapped to controllers.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// simple example</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = </span><span class="s8">NanoKtl</span><span class="s3">.new;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// listen to all midi in ports</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span></span>// <span class="Apple-tab-span">	</span>g = NanoKtl(1643926019);<span class="Apple-tab-span">	</span>// only listen to the left USB input on my laptop</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccDict; <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a dict where the maps will live</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccresp;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// a midi CCResponder listing to that MIDI port</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// map transport buttons 'play' and 'rec' to simple actions:<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(0, <span class="s9">'play'</span>, { <span class="s8">|ch, cc, val|</span> <span class="s6">" 'play': %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(0, <span class="s9">'rec'</span>, { <span class="s8">|ch, cc, val|</span> <span class="s6">" 'rec': %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p12"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the actions are now in the dict:</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccDict.postcs;</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// clean up<span class="Apple-tab-span">	</span></p>
+<p class="p5">//<span class="Apple-tab-span">	</span>(<span class="Apple-tab-span">	</span>g.free;<span class="Apple-tab-span">	</span>)</p>
+<p class="p2"><br></p>
+<p class="p13"><b>Class Variables</b></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>verbose</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span>can be set to true to post info for debugging.</p>
+<p class="p8"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">NanoKtl</span>.verbose = <span class="s5">true</span>;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">NanoKtl</span>.verbose = <span class="s5">false</span>;</p>
+<p class="p2"><br></p>
+<p class="p13"><b>Instance Variables</b></p>
+<p class="p8"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>ctlSceneNames</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span>a dictionary of names such as \sl1 to controller keys as used for lookup.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the keys are symbols like<span class="Apple-converted-space">  </span>'0_42' meaning midichannel 0, ctl num 42.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the transport controls remain the same in all scenes:</p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>g.ctlNames<span class="s3">[0];</span></p>
+<p class="p14"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// the names in scene 1<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>g.ctlNames<span class="s3">[1]</span></p>
+<p class="p10"><br></p>
+<p class="p14"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// add some more mapped actions</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'sl1'</span>, { <span class="s5">|ch, cc, val|</span> <span class="s6">" scene 1, slider1: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'kn2'</span>, { <span class="s5">|ch, cc, val|</span> <span class="s6">" scene 1, knob2: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'bu3'</span>, { <span class="s5">|ch, cc, val|</span> <span class="s6">" scene 1, button up 3: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s10">'bd3'</span>, { <span class="s5">|ch, cc, val|</span> <span class="s6">" scene 1, button down 3: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p8"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccDict;</p>
+<p class="p2"><br></p>
+<p class="p13"><b>Instance Methods</b></p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>mapCCS (editor, scene)</b></p>
+<p class="p10"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>map one of the controls in a scene to a general function.</p>
+<p class="p10"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s5">NanoKtl</span>.new;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// listen to all midi in ports</p>
+<p class="p8"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s11">'sl1'</span>, { <span class="s5">|ch, cc, val|</span> <span class="s6">" scene 1, slider1: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s11">'kn2'</span>, { <span class="s5">|ch, cc, val|</span> <span class="s6">" scene 1, knob2: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s11">'bu3'</span>, { <span class="s5">|ch, cc, val|</span> <span class="s6">" scene 1, button up 3: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapCCS(1, <span class="s11">'bd3'</span>, { <span class="s5">|ch, cc, val|</span> <span class="s6">" scene 1, button down 3: %.\n"</span>.postf([ch, cc, val]) });</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.ccDict;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Mapping to JITGuis</b></p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>mapToEnvirGui(gui, scene, indices) </b>- map to an EnvirGui.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>gui</b> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the gui</p>
+<p class="p1"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>scene <span class="Apple-tab-span">	</span></b>in which scene to map map the gui</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>indices</b><span class="Apple-tab-span">	</span>which controls to map to. default is [1, 2 .. 8], which is kn01 .. kn08.</p>
+<p class="p3"><br></p>
+<p class="p6">(</p>
+<p class="p6"><span class="s7">Spec</span>.add(<span class="s12">\harm</span>, [1, 100]);</p>
+<p class="p6">e = <span class="s7">EnvirGui</span>.new( (freq: 120, amp: 0.2, harm: 12, otto: 10), 4);</p>
+<p class="p6">g.mapToEnvirGui(e, 1, (1..4));</p>
+<p class="p6">)</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>mapToNdefGui(gui, scene)</b></p>
+<p class="p10"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>map the knobs in a scene to a NodeproxyEditor or Ndef.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The first 8 knobs go to the parameters of the proxy, the 9th control the proxy's volume.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p5"><span class="s13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>p = <span class="s5">ProxySpace</span>.push;</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="s14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s3">~test = { </span>|freq=250, intv=19, timescale=1, curve=0, loopnode=0, formfact=2, widfact=0.5, spread=1, amp=0.1|<span class="s3"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span><span class="s5">var</span> env = <span class="s5">EnvGen</span>.kr(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Env</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ 1.0.rand2 }!11,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{1.0.rand}!10 * timescale,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>curve,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>releaseNode: 9,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>loopNode: loopnode)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">var</span> pitch = (env * [1, 0.33, -1] * intv).midiratio * freq;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Splay</span>.ar(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Formant</span>.ar(pitch, pitch.scramble * <span class="s5">formfact</span>, pitch.scramble * <span class="s5">widfact</span>), spread) * amp;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// add specs for all the parameter ranges - required!</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s10">\intv</span>, [0, 36, <span class="s10">\lin</span>]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s10">\timescale</span>, [0.001, 10, <span class="s10">\exp</span>]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s10">\curve</span>, [-10, 10]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s10">\loopnode</span>, [0, 7, <span class="s10">\lin</span>, 1]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s10">\</span><span class="s5">formfact</span>, [0.1, 10, \exp]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s10">\</span><span class="s5">widfact</span>, [0.1, 10, \exp]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s10">\</span><span class="s5">spread</span>, \unipolar);</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n = NdefGui(~test, 8);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s5">NanoKtl</span>.new;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// make a new NanoKtl</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapToNdefGui(n, 1);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// and map its scene 1 to the editor n</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// shift by hand which params are mapped</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.paramShift(0);<span class="Apple-tab-span">	</span>// show which params are mapped</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.paramShift(1);<span class="Apple-tab-span">	</span>// shift by one; when hitting the end, jumps back.</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// test using a second proxy, NanoKtl scene 2:</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~test2 = ~test.source;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>o = NodeProxyEditor(~test2);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapToPxEdit(o, 2); // scene 2!</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>mapToMixer (mixer, scene)</b></p>
+<p class="p10"><br></p>
+<p class="p6">(</p>
+<p class="p6">m = <span class="s5">ProxyMixer</span>(p, 16);</p>
+<p class="p2"><br></p>
+<p class="p6">12.do { <span class="s5">|i|</span> p[(<span class="s6">"test_bla"</span> ++ i).asSymbol] = { |ring = 0.02|</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s5">Pan2</span>.ar(<span class="s5">Ringz</span>.ar(<span class="s5">Impulse</span>.ar(exprand(0.5, 4)), exprand(300, 3000), ring), 1.0.rand2, 0.2) };<span class="Apple-converted-space"> </span></p>
+<p class="p6">};</p>
+<p class="p6">Spec.add(\ring, [0.0001, 1, \exp]);</p>
+<p class="p6">)</p>
+<p class="p6"><span class="Apple-tab-span">	</span>// make a nanoKtl, and map it to the ProxyMixer:</p>
+<p class="p6"><span class="Apple-tab-span">	</span>// the sliders control the first 8 volumes,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>// the lower buttons play the proxy,</p>
+<p class="p6"><span class="Apple-tab-span">	</span>// the upper buttons send to the editor,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>// the knobs control the editor parameters,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>// and the last slider controls server volume!</p>
+<p class="p6">(</p>
+<p class="p6">g = <span class="s7">NanoKtl</span>.new;</p>
+<p class="p6">g.mapToMixer(m, 1);</p>
+<p class="p6">)</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>mapToPxEdit (editor, scene)</b></p>
+<p class="p10"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>map the knobs in a scene to a NodeproxyEditor or Ndef.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The first 8 knobs go to the parameters of the proxy, the 9th control the proxy's volume.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p5"><span class="s13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>p = <span class="s5">ProxySpace</span>.push;</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="s14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s3">~test = { </span>|freq=250, intv=19, timescale=1, curve=0, loopnode=0, formfact=2, widfact=0.5, spread=1, amp=0.1|<span class="s3"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="Apple-tab-span">	</span><span class="s5">var</span> env = <span class="s5">EnvGen</span>.kr(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Env</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ 1.0.rand2 }!11,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{1.0.rand}!10 * timescale,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>curve,</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>releaseNode: 9,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>loopNode: loopnode)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">var</span> pitch = (env * [1, 0.33, -1] * intv).midiratio * freq;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Splay</span>.ar(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Formant</span>.ar(pitch, pitch.scramble * <span class="s5">formfact</span>, pitch.scramble * <span class="s5">widfact</span>), spread) * amp;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// add specs for all the parameter ranges - required!</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s11">\intv</span>, [0, 36, <span class="s11">\lin</span>]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s11">\timescale</span>, [0.001, 10, <span class="s11">\exp</span>]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s11">\curve</span>, [-10, 10]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s11">\loopnode</span>, [0, 7, <span class="s11">\lin</span>, 1]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s11">\</span><span class="s5">formfact</span>, [0.1, 10, \exp]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s11">\</span><span class="s5">widfact</span>, [0.1, 10, \exp]);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Spec</span>.add(<span class="s11">\</span><span class="s5">spread</span>, \unipolar);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n = NodeProxyEditor(~test);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g = <span class="s5">NanoKtl</span>.new;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// make a new NanoKtl</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapToPxEdit(n, 1);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// and map its scene 1 to the editor n</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// shift by hand which params are mapped</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.paramShift(0);<span class="Apple-tab-span">	</span>// show which params are mapped</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.paramShift(1);<span class="Apple-tab-span">	</span>// shift by one; when hitting the end, jumps back.</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// test using a second proxy, NanoKtl scene 2:</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~test2 = ~test.source;</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>o = NodeProxyEditor(~test2);</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>g.mapToPxEdit(o, 2); // scene</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span>mapToPxMix (mixer, scene)</b></p>
+<p class="p2"><br></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Maps one scene of the NanoKtl to a proxymixer.<span class="Apple-converted-space"> </span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The first 8 sliders control individual proxy volumes; these can be shifted.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The rightmost slider controls server volume.</p>
+<p class="p10"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>The knobs in the scene are mapped to the proxymixer's editor:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The first 8 knobs go to the parameters of the proxy, the 9th control the proxy's volume.</p>
+<p class="p10"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The upper buttons send the corresponding proxy to the editor,<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the lower buttons toggle play/stop of the respective proxy.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>upper button 9 - shifts the mapped proxy volumes,</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lower button 9 - shifts the mapped editor's params.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>slider9 controls server volume.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span>make a proxymixer and some more proxies to test</p>
+<p class="p2"><br></p>
+<p class="p5">p = <span class="s5">ProxySpace</span>.push(s.boot);</p>
+<p class="p6">(</p>
+<p class="p16"><span class="s3">m = </span>ProxyMixerOld<span class="s3">(p, 16);</span></p>
+<p class="p2"><br></p>
+<p class="p6">20.do { <span class="s5">|i|</span> p[(<span class="s6">"test_bla"</span> ++ i).asSymbol] = { |ring = 0.02|</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s5">Pan2</span>.ar(<span class="s5">Ringz</span>.ar(<span class="s5">Impulse</span>.ar(exprand(0.5, 4)), exprand(300, 3000), ring), 1.0.rand2, 0.2) };<span class="Apple-converted-space"> </span></p>
+<p class="p6">};</p>
+<p class="p6">Spec.add(\ring, [0.0001, 1, \exp]);</p>
+<p class="p6">)</p>
+<p class="p6">g = NanoKtl.new;</p>
+<p class="p6">g.mapToPxMix(m, 1);</p>
+<p class="p2"><br></p>
+<p class="p6">~test.filter(5, { |in, dt = 0.1, decay = 10| CombL.ar(in, 0.2, dt, decay) });</p>
+<p class="p2"><br></p>
+<p class="p6">q = ProxySpace.new;</p>
+<p class="p6">(</p>
+<p class="p6">n = <span class="s5">ProxyMixer</span>(q, 16);</p>
+<p class="p2"><br></p>
+<p class="p6">10.do { <span class="s5">|i|</span> q[(<span class="s6">"test"</span> ++ i).asSymbol] = { |ring = 0.02, freqx=0.5|</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s5">Pan2</span>.ar(<span class="s5">Ringz</span>.ar(<span class="s5">Impulse</span>.ar(exprand(0.5, 4)), exprand(300, 3000) * freqx, ring), 1.0.rand2, 0.2) };<span class="Apple-converted-space"> </span></p>
+<p class="p6">};</p>
+<p class="p6">Spec.add(\ring, [0.0001, 1, \exp]);</p>
+<p class="p6">)</p>
+<p class="p2"><br></p>
+<p class="p6">g.mapToPxMix(n, 2);</p>
+<p class="p2"><br></p>
+</body>
+</html>

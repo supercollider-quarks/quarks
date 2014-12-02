@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.35">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica; color: #070707}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #070707; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #070707}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>CVPreset</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>related classes: CVinterpolator, CV, Conductor, ConductorGUI</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>CVPreset</b> saves 'presets' for an array of CVs or other objects that respond to <b>input </b>and <b>input_.</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>[CVInterpolator] </b>is a CVPreset also able to interpolate between settings.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>Instance Variables</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>items<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the items to be saved/restored</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>presets<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the actual collections of different presets</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>presetCV<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>CV determines which preset to load</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>Instance Methods</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>note: </b>Selecting presets is done by changing the value of <b>presetCV</b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>value <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>returns the contents of presets</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>value_(v)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>sets preset to v</p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>input<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>returns an array of input values for each of the elements of <b>items</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>input_(ins)<span class="Apple-tab-span">	</span></b>iterates over ins, setting the input of corresponding cvs</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>add<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>add this.input as a new preset</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>remove<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>remove the current preset (identified by presetCV)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>set(index)<span class="Apple-tab-span">	</span></b>recall the preset at index</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>draw(win, name, preset) </b><span class="Apple-tab-span">	</span>draw the received using the function found at ~presetGUI</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span></b>Comment: all control of preset selection and interpolation is done through presetCV, targetCV, and</p>
+<p class="p3"><span class="Apple-tab-span">	</span>interpCV.</p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+</body>
+</html>

@@ -1,0 +1,35 @@
+CLASS:: RedEffectModule
+SUMMARY:: abstract class
+CATEGORIES:: Red>redModule
+RELATED:: Classes/RedAbstractModule, Classes/RedEffectModuleGUI, Classes/RedInstrumentModule
+
+DESCRIPTION::
+WARNING::
+Do not instantiate. Use its subclasses.
+::
+NOTE::
+Requires link::Classes/Conductor:: quark.
+::
+
+INSTANCEMETHODS::
+
+METHOD:: prepareForPlay
+
+ARGUMENT:: server
+Defaults to code::Server.default::.
+
+METHOD:: free
+Remove module from code::RedAbstractModule.all::. Free the synth and (if created) the internal group.
+
+METHOD:: gui
+Create a link::Classes/RedEffectModuleGUI::.
+
+EXAMPLES::
+
+CODE::
+a= RedEfxDist(0);
+b= {SinOsc.ar([400, 404], 0, 0.5)}.play
+a.gui
+a.free
+b.free
+::

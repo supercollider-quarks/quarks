@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0033f1; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001bb9}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001bb9; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #001bb9}
+span.s1 {color: #0033f1}
+span.s2 {text-decoration: underline}
+span.s3 {color: #000000}
+span.s4 {color: #606060}
+span.s5 {color: #001bb9}
+span.s6 {color: #2c7014}
+span.s7 {font: 9.0px Monaco}
+span.s8 {font: 9.0px Monaco; color: #2c7014}
+span.s9 {font: 12.0px Helvetica}
+span.s10 {font: 12.0px Helvetica; color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SynthTracker</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">Synthtracker is a tracking and bookkeeping system for synths based on SynthDef names. It keeps track of all running Synths by name and order of execution.</p>
+<p class="p4"><br></p>
+<p class="p2">!! SYNTHTRACKER ONLY WORKS WITH ONE SERVER RUNNING !!</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p2"><b><span class="s2">Usage</span></b></p>
+<p class="p4"><br></p>
+<p class="p2">Use like Synth:</p>
+<p class="p4"><br></p>
+<p class="p5">SynthTracker<span class="s3">(</span><span class="s4">"default"</span><span class="s3">);</span></p>
+<p class="p6"><br></p>
+<p class="p7"><span class="s5">SynthTracker</span>(<span class="s4">"default"</span>, [<span class="s6">'freq'</span>, 550]);</p>
+<p class="p6"><br></p>
+<p class="p2">Free the first running synth:</p>
+<p class="p4"><br></p>
+<p class="p5">SynthTracker<span class="s3">.free(</span><span class="s4">"default"</span><span class="s3">);</span></p>
+<p class="p6"><br></p>
+<p class="p2">Evaluate the line above again to free the second one.</p>
+<p class="p4"><br></p>
+<p class="p2">Releasable synths can be released instead of free-d by giving them a flag:</p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s5">SynthTracker</span>(<span class="s4">"default"</span>, canRelease: <span class="s5">true</span>);</p>
+<p class="p8"><br></p>
+<p class="p5">SynthTracker<span class="s3">.release(</span><span class="s4">"default"</span><span class="s3">);</span></p>
+<p class="p6"><br></p>
+<p class="p2">If a Synth's canRelease flag is false the Synth will be free-d instead.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p2"><b><span class="s2">Methods for running new Synths</span></b></p>
+<p class="p4"><br></p>
+<p class="p2"><span class="Apple-tab-span">	</span><b>*new( defName, args: [arg1, value1,...argN, valueN], canRelease, maxCount, addAction)</b></p>
+<p class="p4"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Create and return a new Synth object, and immediately start the corresponding synth node<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>on the server. Similar to Meta_Synth-new, but the synth is also added to SynthTracker's global<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>synth library.</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>defName </b>- A <b>String</b> or <b>Symbol</b> specifying the name of the <b>SynthDef</b> to use in creating the Synth.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>args </b>- An optional array specifying initial values for the SynthDef's arguments (controls). These are specified in pairs of control name or index and value. If names are used they can be specified with Symbols. e.g. <span class="s7">[</span><span class="s8">\frequency</span><span class="s7">, 440, </span><span class="s8">\amplitude</span><span class="s7">, 1, ...]</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>argsArray can also be an Event or Dictionary with Symbols as arg names.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>e.g. </span>(frequency: 440, amplitude: 1, ...)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><b>canRelease </b>- A <b>Boolean </b>to tell <b>SynthTracker</b> if the <b>Synth</b> created from this defName can be released using Synth.release. This means it should be able to be free-ed internally by setting a 'gate' argument to 0. This flag is stored in the global SynthTracker library for the defName, so it only needs to be specified once per boot. Note that for the <i>"default" </i>defName this flag is set to <i>true</i> by default.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>maxCount </b>- A <b>Number </b>stating the maximum number of Synths with the specified defName should be running at once after this one is created. If this number of Synths with this name is already running no new Synth will be created. The default for this argument is <b>inf</b>.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>addAction</b> - one of the following Symbols:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\addToHead <span class="Apple-tab-span">	</span></span>- (the default) add at the head of the group specified by <b>target</b></p>
+<p class="p13"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\addToTail <span class="Apple-tab-span">	</span></span>- add at the tail of the group specified by <b>target</b></p>
+<p class="p13"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\addAfter</span> <span class="Apple-tab-span">	</span>- add immediately after <b>target </b>in its server's node order</p>
+<p class="p13"><span class="s7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\addBefore</span> <span class="Apple-tab-span">	</span>- add immediately before <b>target </b>in its server's node order</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\addReplace</span> <span class="Apple-tab-span">	</span>- replace <b>target</b> and take its place in its server's node order</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><b>*replace( defName, args: [arg1, value1,...argN, valueN], canRelease, maxCount, addAction)</b></p>
+<p class="p14"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p13"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Same as above but here the last already running synth will be released and a new one will be started in place. If <b>maxCount</b> is greater than 1 (default) no synth is replaced until the maxCount is reached. The first synth to be replaced is always the one which started first</p>
+<p class="p14"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><b>*toggle( defName, args: [arg1, value1,...argN, valueN], canRelease, maxCount, addAction)</b></p>
+<p class="p14"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p13"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Same as above but if <b>maxCount </b>Synths are running already one will be released and no new one will be started. Use this to turn synths on and off sequentially. e.g:</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="s10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Routine<span class="s3">({</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>6.do({<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">SynthTracker</span>.toggle(<span class="s4">"default"</span>, (freq: 440 + 220.rand2), maxCount: 2);</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1.wait; });</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">SynthTracker</span>.releaseAll;</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}).play;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>.<span class="Apple-tab-span">	</span></p>
+</body>
+</html>

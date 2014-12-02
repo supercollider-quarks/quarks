@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.43">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0018e6}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #9f1414}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #001afb}
+span.s3 {color: #000000}
+span.s4 {text-decoration: underline}
+span.s5 {color: #285e08}
+span.s6 {color: #0012b0}
+span.s7 {color: #535353}
+span.s8 {text-decoration: underline ; color: #0018e6}
+span.s9 {color: #741584}
+span.s10 {font: 12.0px Helvetica; color: #000000}
+span.s11 {color: #0000bf}
+span.s12 {color: #666666}
+span.s13 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>OneShotController<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>... hard to explain but very useful ...</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p1">part of <a href="wslib.html"><span class="s2">wslib</span></a></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: SimpleController</b></p>
+<p class="p3"><br></p>
+<p class="p1">OneShotController performs an action only once at a change message from its Model. It is used to create the option of actions performed at a change of an object, such as a Synth being started or freed. This helpfile will not explain how this works, but instead show a number of wslib methods that use it.</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s3">see also: <a href="SC://Server-Command-Reference"><span class="s4">Server-Command-Reference</span></a>, <a href="SC://NodeWatcher"><span class="s4">NodeWatcher</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Synth:startAction_ ( action )</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span>Listens to the Server and reacts by evaluating the function when the synth is really started</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>action </b>- a Function to be evaluated. The arguments are: synth, change message (<span class="s5">\n_go</span>)</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span>a = <span class="s6">Synth</span>( <span class="s7">"default"</span> ).startAction_( { <span class="s6">|...args|</span> (<span class="s7">"started"</span> + args).postln; } );</p>
+<p class="p3"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span>a.free;</p>
+<p class="p3"><br></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span></span>// Synth.sched is a method from <a href="wslib-shortcuts.html"><span class="s8">wslib-shortcuts</span></a></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s6">Synth</span>.sched( <span class="s9">0.5</span>, <span class="s7">"default"</span> ).startAction_( { <span class="s6">|synth, msg|</span> { <span class="s9">2</span>.wait; synth.release; }.fork } );</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p5"><b>Synth:freeAction_ ( action )</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span>Listens to the Server and reacts by evaluating the function when the synth is really started</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>action </b>- a Function to be evaluated. The arguments are: synth, change message (<span class="s5">\n_end</span>)</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span>a = <span class="s6">Synth</span>( <span class="s7">"default"</span> ).freeAction_( { <span class="s6">|...args|</span> (<span class="s7">"freed"</span> + args).postln; } );</p>
+<p class="p3"><br></p>
+<p class="p7"><span class="s3"><span class="Apple-tab-span">	</span>a.free; </span>// or press cmd-period</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p5"><b>Synth:pauseAction_ ( action, oneShot ), Synth:runAction_ ( action, oneShot )</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span>Evaluates the action when a synth is paused or unpaused.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>action </b>- a <a href="SC://Function"><span class="s2">Function</span></a> to be evaluated. The arguments are: synth, change message (<span class="s5">\n_on</span>, <span class="s5">\n_off</span>)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>oneShot</b> - a <a href="SC://Boolean"><span class="s2">Boolean</span></a><span class="s2"> </span>for setting wether the function should only be evaluated once or multiple times<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>default : false</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p3"><br></p>
+<p class="p5"><b>Object:doOnChange ( what, action, oneShot )</b></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span></b>all methods provided above make use of this internally. I'm not sure what SuperCollider objects currently make use of the Model/dependants interface, but this method will work for all of those.<span class="Apple-converted-space"> </span></p>
+<p class="p5"><b><span class="Apple-tab-span">	</span>what</b> - the change message. The type of message call the function for</p>
+<p class="p5"><span class="Apple-tab-span">	</span><b>action </b>- a <a href="SC://Function"><span class="s2">Function</span></a> to be evaluated. The arguments are: object, change message</p>
+<p class="p1"><span class="Apple-tab-span">	</span><b>oneShot</b> - a <a href="SC://Boolean"><span class="s2">Boolean</span></a><span class="s2"> </span>for setting wether the function should only be evaluated once or multiple times<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>default : true</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="s10"><span class="Apple-tab-span">	</span></span>(</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a = <span class="s11">Synth</span>( <span class="s12">"default"</span> );</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.register;</p>
+<p class="p8"><span class="Apple-tab-span">	</span>a.doOnChange( <span class="s13">\n_end</span>, { <span class="s11">|object, msg|</span> [ object, msg ].postln }, <span class="s11">true</span> );</p>
+<p class="p8"><span class="Apple-tab-span">	</span>)</p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span>a.free; </span>// performs the action after NodeWatcher called .changed( \n_end )</p>
+</body>
+</html>

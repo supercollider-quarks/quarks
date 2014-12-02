@@ -1,0 +1,280 @@
+TITLE:: BufEnvir
+summary:: referentially transparent buffer environment
+categories:: JITLib
+related:: Classes/Buffer, Reference/JITLib
+
+DESCRIPTION::
+an environment for keeping buffers by name.
+
+code::
+q = q ? (); // a general storage place
+q.b = BufEnvir(s.boot); // add a buf envir
+
+q.b[\x] = [0, 2, 3.2, 5, 7, 8, 10];
+q.b[\x].bufnum
+
+
+// buffers are created transparently (wherever you look there are buffers..)
+q.b[\y];
+q.b[\y].bufnum;
+q.b[\y].numChannels;
+q.b[\z].bufnum;
+q.b[\c] = [1, 2, 3];
+q.b[\c].bufnum;
+q.b[\y].numChannels;
+q.b[\y] = nil; // deallocate
+q.b[\c] = nil;
+q.b[\z] = nil;
+q.b[[\y, \c, \z]]; // equivalent
+q.b[[\y, \c, \z]] = [nil];// equivalent
+
+
+// example with a soundfile:
+(
+SynthDef("help_PlayBuf", { arg out=0, bufnum=0, sustain=1, amp=0.1, rate=1, offset=0;
+    Out.ar(out,
+        EnvGen.kr(Env.linen(0, sustain, 0.02), doneAction:2) *
+        PlayBuf.ar(1, bufnum, rate * BufRateScale.kr(bufnum),
+            startPos: offset * BufFrames.kr(bufnum)
+        ) * (10 * amp)
+    )
+}).store
+);
+)
+
+// start a process
+(
+q.rout = Routine {
+    var dt;
+    loop {
+        dt = exprand(0.01, 1.2);
+        Synth(\help_PlayBuf, [
+            \bufnum, q.b[\apollo],
+            \rate, 0.06 * [1, 2, 3, -1, -2, -3].choose + 1,
+            \offset, 1.0.rand,
+            \sustain, dt * rrand(1.0, 1.3);
+        ]);
+        dt.wait;
+    }
+}.play;
+)
+
+// read a sample later
+q.b.read(\apollo, "sounds/a11wlk01.wav");
+q.b.zero(\apollo); // make empty.
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+return a new instance.
+server has to be running.
+
+INSTANCEMETHODS::
+
+METHOD:: put
+put an object into the environment that can be converted to buffer values.
+The buffer on the server is updated immediately, the buffer number is kept.
+Currently supported are Arrays and Nil (nil deallocates the buffer).
+
+METHOD:: at
+return the buffer at a certain key. If none exist, allocate a buffer number.
+
+METHOD:: putAll
+put the objects into the environment at the given keys.
+
+METHOD:: putSeries
+put a series of objects in the bufenvir.
+to be tested.
+
+METHOD:: atAll, getAll
+return the buffers at the given keys. If none exist, allocate buffer numbers.
+
+METHOD:: alloc
+allocate a buffer at the given key. If a bufnum exists for that key, it is kept.
+
+METHOD:: read, cue
+read or cue a file to buffer
+
+METHOD:: readAll, cueAll
+reads or cues all files within a given path. The key is the difference between commonPath and filePath, e.g. if the common path is "/sounds/" and the file is "/sounds/samp1.aif", the key will be 'samp1'.
+
+METHOD:: fft
+create a buffer for FFT use.
+
+METHOD:: fftsize
+get and set the default size for fft buffers
+
+METHOD:: zero
+overwrite the buffer at key with zeroes.
+
+METHOD:: bufnum
+return the buffer number at the given key
+
+METHOD:: bufDur
+return the duration of the buffer at the given key
+
+METHOD:: bufFrames
+return the numFrames of the buffer at the given key
+
+METHOD:: bufFrames
+return the numFrames of the buffer at the given key
+
+METHOD:: rateScale
+return the rateScale factor of the buffer at the given key
+
+METHOD:: server
+the server on which the buffers live
+
+METHOD:: clear
+clear all buffers.
+
+PRIVATE:: initServer, makeBuffer, updateInfo, doPathKeys
+
+METHOD:: doWithUpdate
+eval function with buffer at key and call updateInfo on buffer.
+
+METHOD:: playBuf
+return a PlayBuf ugen wired up for the buffer at key.
+
+METHOD:: rec
+return a RecordBuf ugen wired up for the buffer at key.
+
+
+
+
+EXAMPLES::
+
+code::
+// examples
+
+q = q ? (); // a general storage place
+q.b = q.b ?? { BufEnvir(s.boot) }; // add a buf envir
+
+// proxyspace examples:
+
+p = ProxySpace.push(s);
+~out.play;
+
+
+q.b[\x] = [0, 2, 3.2, 5, 7, 8, 10];
+
+//____
+(
+~out = {
+	SinOsc.ar(
+		DegreeToKey.kr(q.b[\x], MouseX.kr(0, 15), 12, 1, 72).midicps
+		*
+		LFNoise1.kr([4,4], 0.01, 0.5)
+) * 0.1 ! 2
+};
+)
+
+
+//____
+(
+~out = {
+	var index = Duty.kr(0.16, 0, Dbufrd(q.b[\z], Dseries(0, 1, inf)));
+	RLPF.ar(
+		LFTri.ar(
+			DegreeToKey.kr(q.b[\x], index, 12, 1, 60).midicps
+		),
+		[1000, 9000]
+	).sum
+	* 0.1 ! 2
+};
+)
+
+q.b[\z] = [0, 3, 2, 8, 2, 2];
+q.b[\z] = [0, 3, 2, 8, 2, 2].curdle(0.5).scramble.flat;
+q.b[\z] = [0, 3, 2, 7, 2, 2] ++ [0, 3, 2, 8, 2, 2].curdle(0.5).scramble.flat;
+
+q.b[\x] = [0, 1, 4, 5, 7, 9, 10];
+q.b[\z] = nil;
+q.b[\z] = Pseq([Prand([3, 4, 5], 3), Pseq([1, 2, 5, 1, 3], 3)], inf).asStream.nextN(128);
+
+
+//____
+~out.fadeTime = 30;
+(
+~out = {
+	var dt = 0.16;
+	var index = Duty.kr(dt, 0, Dbufrd(q.b[\z], Dseries(0, -1, inf)));
+	RLPF.ar(
+		LFTri.ar(
+			DegreeToKey.kr(q.b[\x], index, 12, 1, 42).midicps
+		),
+		[1000, 9000],
+		0.1
+	).sum * Decay.kr(Impulse.kr(1 / dt), 0.5)
+	* 0.3 ! 2
+};
+)
+
+
+// play an empty buffer
+(
+~out = {
+	var n = q.b[\y];
+	PlayBuf.ar(q.b[\y].numChannels ? 1, n, BufRateScale.kr(n), loop:1)
+};
+
+)
+
+// read a sample later
+q.b.read(\y, "sounds/a11wlk01.wav");
+
+(
+~out = {
+	var n = q.b[\y];
+	var rate = DegreeToKey.kr(q.b[\x], MouseX.kr(0, 15), 12).midicps;
+	PlayBuf.ar(1, n, BufRateScale.kr(n) * (rate * 0.1), loop:1) * 0.1 ! 2
+};
+
+)
+
+
+// fft buffers
+(
+~out = { arg out=0,bufnum=0;
+	var in, chain;
+	in = SinOsc.ar(SinOsc.kr(SinOsc.kr(0.08,0,6,6.2).squared, 0, 100,800));
+	//in = WhiteNoise.ar(0.2);
+	chain = FFT(q.b.fft(\fft1), in, in.numChannels);
+	chain = PV_MagAbove(chain, 310);
+	Out.ar(out, 0.5 * IFFT(chain));
+};
+)
+
+
+// read all sounds in the sounds folder
+(
+var i = 0, path;
+path = "sounds";
+pathMatch(path ++ "/*").do {|p| protect { q.b.read(i, p) } { i = i + 1; i.postln } }
+)
+
+
+q.b.envir.collect(_.numChannels)
+q.b.envir.do(_.updateInfo)
+
+// play them
+(
+~out = {
+	var i = 2;
+	var n = q.b[i];
+	PlayBuf.ar(q.b[i].numChannels ? 1, n, BufRateScale.kr(n), loop:1)
+};
+)
+
+~out.play;
+
+~out.stop;
+
+
+
+// clear all, free memory.
+
+q.b.clear;
+
+::

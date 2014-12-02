@@ -1,0 +1,87 @@
+CLASS:: MxIOletsApp
+summary:: accesses a units inlets or outlets
+categories:: Mx
+related:: Classes/MxUnitApp
+
+DESCRIPTION::
+These object holds the inlets or outlets as returned by a unit:
+
+code::
+unit.inlets
+unit.outlets
+::
+
+or
+
+code::
+unit.i
+unit.o
+::
+
+A specific inlet or outlet can be then accessed by name:
+
+code::
+unit.inlets.freq
+::
+
+INSTANCEMETHODS::
+
+METHOD:: unit
+returns the unit this inlet or outlet set is for
+
+returns:: an link::Classes/MxUnitApp::
+
+METHOD:: at
+access a specific iolet by name.  eg. this is useful when the iolet name is "1" and cannot use the shorthand, or if your code creates the name dynamically
+
+argument:: key
+inlet or outlet name as defined in the driver file for the object.  This is where the MxInlet or MxOutlet objects are created and named.
+
+returns:: an link::Classes/MxInletApp:: or MxOuletApp
+
+METHOD:: first
+returns first iolet
+
+returns:: an link::Classes/MxInletApp:: or MxOuletApp
+
+METHOD:: out
+usually returns the first outlet if there is one. This is a useful shorthand if you are working with objects that you dont know what name was used for the output, and you dont much care, you just want to connect the thing.
+
+returns:: an link::Classes/MxInletApp:: or MxOuletApp
+
+METHOD:: >>
+Connect this.out to that
+
+argument:: inlet
+An link::Classes/MxInletApp:: or link::Classes/MxQuery::.  If it is a query then it will attempt to connect to each item in the query.
+
+returns:: the link::Classes/MxInletApp:: or link::Classes/MxQuery:: for further chaining
+
+METHOD:: do
+Iterate over the inlets
+
+argument:: function
+like collection.do
+
+returns:: this
+
+METHOD:: doesNotUnderstand
+Used by the accessor shorthand to find the iolet by name
+
+argument:: selector
+The iolet name.
+
+argument::  ... args
+In case the method call was a mistake, and the iolet is not found, this raises the error and displays the originally supplied args.
+
+returns:: the link::Classes/MxInletApp:: or link::Classes/MxOutletApp:: or raise an error
+
+METHOD:: disconnect
+Disconnect all iolets
+
+returns:: this
+
+
+
+
+

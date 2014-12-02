@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>SuperCollider helpfile: DimpleConstraint</title>
+	<meta name="Generator" content="SC HelpFile Writer">
+
+    <style type="text/css">
+    <!--
+      body {
+        color: #000000;
+        background-color: #ffffff;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #b22222;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #b22222;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #5f9ea0;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #bc8f8f;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #228b22;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #b8860b;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+
+	</head>
+
+<h1>DimpleConstraint</h1>
+<h2>Represents a constraint between two objects in the dimple world.</h2>
+<p><em>Inherits from:</em>: <strong>Object</strong> : <strong><a href="DimpleThing.html">DimpleThing</a></strong> </p>
+
+
+<p>The property 'response/spring' (stiffness, damping) is valid for hinge, hinge2, universal, slide and piston.
+</p>
+
+<p>Linear constraints (piston, slide) can have the property 'force' (x,y,z).</p>
+
+<p>Rotational constraints (with one axis, i.e. piston, hinge, ball) support also 'torque'.
+</p>
+
+<p>The constraints 'universal' and 'hinge2' can have two torques (properties 'torque1' and 'torque2').</p>
+
+<h3>Creation / Class Methods</h3>
+<DL>
+
+<DT><STRONG>*lastid_</STRONG></DT>
+<DD>  </DD>
+
+<DT><STRONG>*lastid</STRONG></DT>
+<DD>Internal counter to create unique names for each object</DD>
+
+<DT><STRONG>*new(dimple,type,a,b,argVector)</STRONG></DT>
+<DD>Create a new instance of a DimpleConstraint.<DL>
+<DT><EM>a</EM></DT>
+<DD>Object 1</DD>
+<DT><EM>dimple</EM></DT>
+<DD>The instance of Dimple that this constraint belongs to</DD>
+<DT><EM>b</EM></DT>
+<DD>Object 2</DD>
+<DT><EM>argVector</EM></DT>
+<DD>Vector with arguments for the constraint.</DD>
+<DT><EM>type</EM></DT>
+<DD>The type of constraint ('fixed','slide','piston','universal','hinge','hinge2','ball')</DD>
+</DL>
+
+</DD>
+
+</DL>
+
+<h3>Accessing Instance and Class Variables</h3>
+<DL>
+
+<DT><STRONG>spring_(a,b)</STRONG></DT>
+<DD>Set the spring response.<DL>
+<DT><EM>a</EM></DT>
+<DD>Stiffness</DD>
+<DT><EM>b</EM></DT>
+<DD>Damping</DD>
+</DL>
+
+</DD>
+
+
+<DT><STRONG>destroy(osc)</STRONG></DT>
+<DD>Destroy this object.<DL>
+<DT><EM>osc</EM></DT>
+<DD>Whether or not to send the osc message to dimple (default true)</DD>
+</DL>
+
+</DD>
+
+<DT><STRONG>objectA</STRONG></DT>
+<DD>Object one.</DD>
+
+
+<DT><STRONG>objectB</STRONG></DT>
+<DD>Object two (can also be the DimpleWorld).</DD>
+
+<DT><STRONG>argVector</STRONG></DT>
+<DD>  </DD>
+
+<DT><STRONG>argVector_</STRONG></DT>
+<DD>The argument vector with which this constraint is created.</DD>
+
+<DT><STRONG>type</STRONG></DT>
+<DD>  </DD>
+
+<DT><STRONG>type_</STRONG></DT>
+<DD>Type of constraint.</DD>
+
+
+</DL>
+
+<hr><p>This helpfile was created with the class HelpFile2</p>
+ </body></html>

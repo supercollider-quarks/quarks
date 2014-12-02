@@ -1,0 +1,236 @@
+CLASS:: Tempo
+summary:: for control of tempo and for use in tempo based calculations
+categories:: Libraries>crucial>Scheduling
+related:: Classes/TempoClock, Classes/TempoBus, Classes/BeatClockPlayer
+
+DESCRIPTION:: This class represents the concept of tempo.  It can be used for translations between seconds, beats and bars.  It holds an instance of TempoClock which it keeps set to its own tempo.
+
+It can be used to convert beats <-> seconds, but this value is only accurate at the time you make the computation.  If the tempo is changed the value is no longer valid.
+
+link::Classes/TempoBus:: adds itself as a dependant to the Tempo object, so when the tempo changes, it is informed, and it updates the value on the bus.
+
+code::
+Tempo.bpm = 170;
+Tempo.tempo = 2.3;  // in beats per second
+
+Tempo.gui; // there is a gui class
+
+Tempo.bpm = 170;
+Tempo.beats2secs(4.0).postln;
+
+Tempo.bpm = 10;
+Tempo.beats2secs(4.0).postln;
+::
+
+All class methods refer to the default global tempo.
+You can create an instance of Tempo if you need individual, separate tempii.
+
+code::
+t = Tempo.new;
+u = Tempo.new;
+
+t.bpm = 170;
+u.tempo = 1.3;  // in beats per second
+t.gui;
+::
+
+
+
+CLASSMETHODS::
+
+METHOD:: default
+
+
+
+METHOD:: new
+
+
+argument:: tempo
+tempo in beats per second
+
+argument:: tempoClock
+The TempoClock that this Tempo object will control
+
+
+METHOD:: initClass
+
+
+
+METHOD:: bpm
+beats per minute
+
+argument:: bpm
+
+
+
+METHOD:: next
+
+
+
+METHOD:: beats2secs
+convert beats to seconds
+
+argument:: beats
+
+
+
+METHOD:: secs2beats
+convert seconds to beats
+
+argument:: secs
+
+
+
+METHOD:: tempo
+tempo in beats per second
+
+argument:: tempo
+
+
+
+METHOD:: kr
+when used in an Instr in a Patch this will insert a control rate UGen that will emit the tempo.  changing the tempo in the language will change this tempo on the server.
+
+
+discussion::
+code::
+(
+	Instr(\helpTempoPlayer,{
+		Impulse.ar( Tempo.kr )
+	});
+
+	Patch(\helpTempoPlayer).play(atTime:1)
+)
+Tempo.bpm = 100;
+
+Tempo.bpm = 180;
+::
+
+METHOD:: beats2secsKr
+when used in an Instr in a Patch this will convert beats to seconds, inserting a control rate UGen with the result.
+
+argument:: beats
+
+
+
+METHOD:: makeClock
+
+
+argument:: owner
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: tempo
+
+
+argument:: t
+
+
+
+METHOD:: beatsPerBar
+Bored with the old 4/4 ?
+Tempo.beatsPerBar = 7.0;
+
+argument:: b
+
+
+
+METHOD:: init
+
+
+argument:: t
+
+
+
+METHOD:: bpm
+
+
+argument:: bpm
+
+
+
+METHOD:: next
+
+
+
+METHOD:: beats2secs
+
+
+argument:: beats
+
+
+
+METHOD:: secs2beats
+
+
+argument:: secs
+
+
+
+METHOD:: bars2secs
+
+
+argument:: bars
+
+
+
+METHOD:: secs2bars
+
+
+argument:: secs
+
+
+
+METHOD:: guiClass
+
+
+
+METHOD:: kr
+
+
+
+METHOD:: destroy
+
+
+
+METHOD:: makeClock
+
+
+argument:: owner
+
+
+
+METHOD:: cmdPeriod
+
+
+
+METHOD:: clearClocks
+
+
+
+METHOD:: clockDidClear
+
+
+
+
+EXAMPLES::
+
+Tempo.kr
+
+code::
+(
+	Instr(\helpTempoPlayer,{
+		Impulse.ar( Tempo.kr )
+	});
+
+	Patch(\helpTempoPlayer).play(atTime:1)
+)
+Tempo.bpm = 100;
+
+Tempo.bpm = 180;
+::
+
+

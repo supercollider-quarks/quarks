@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="824.44">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; min-height: 14.0px}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+    span.s1 {color: #0000bf}
+    span.s2 {color: #000000}
+    span.s3 {color: #007300}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><b>CUBE</b></p>
+<p class="p2"><br></p>
+<p class="p3">This helpfile is especially made for the IEM CUBE and for its 24 speaker setup.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p5">p = p ?? <span class="s1">ProxySpace</span>.new;</p>
+<p class="p5">p.push;</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s2">b = </span><span class="s1">Buffer</span><span class="s2">.read(s,</span>"sounds/a11wlk01.wav"<span class="s2">);</span></p>
+<p class="p2"><br></p>
+<p class="p5">~test = { <span class="s1">| amp = 0.2|</span> <span class="s1">PlayBuf</span>.ar(1, b.bufnum, <span class="s1">BufRateScale</span>.kr(b.bufnum), loop: 1)*amp; };</p>
+<p class="p2"><br></p>
+<p class="p7">// the sphere is projected onto your screen and you may move the mouse to<span class="Apple-converted-space"> </span></p>
+<p class="p7">// control the source location</p>
+<p class="p7">// middle of the screen = top, top/middle of the screen = front,<span class="Apple-converted-space"> </span></p>
+<p class="p7">// top-bottom of the screen = back etc.</p>
+<p class="p5">(</p>
+<p class="p5">~mouse = { [<span class="s1">MouseX</span>.kr(-1,1), <span class="s1">MouseY</span>.kr(1, -1)] };</p>
+<p class="p5">~azi = { atan2(~mouse.kr(1,1), ~mouse.kr(1,0)) - (pi/2)};</p>
+<p class="p5">~elev = {<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s1">var</span> plane, z;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>plane = hypot(~mouse.kr(1,0), ~mouse.kr(1,1)).min(1);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>z = (1 - plane.squared).sqrt;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>pi/2 - atan2(plane, z);</p>
+<p class="p5">};</p>
+<p class="p5">)</p>
+<p class="p2"><br></p>
+<p class="p5">~enc = { <span class="s1">PanAmbi3O</span>.ar(~test.ar, ~azi.kr, ~elev.kr) };</p>
+<p class="p5">~dec = { <span class="s1">DecodeAmbi3O</span>.ar(~enc.ar, <span class="s3">'CUBE_basic'</span>) };</p>
+<p class="p2"><br></p>
+<p class="p7">// split the 25th channel between the last 4 real speakers (21-24)</p>
+<p class="p5">~out = { ~dec.ar(20, 0) ++ (~dec.ar(1, 24)*0.25 + ~dec.ar(4, 20)) };</p>
+<p class="p2"><br></p>
+<p class="p5">~out.play</p>
+<p class="p2"><br></p>
+<p class="p7">// the other settings<span class="Apple-converted-space"> </span></p>
+<p class="p5">~dec = { <span class="s1">DecodeAmbi3O</span>.ar(~enc.ar, <span class="s3">'CUBE_strong'</span>) };</p>
+<p class="p5">~dec = { <span class="s1">DecodeAmbi3O</span>.ar(~enc.ar, <span class="s3">'CUBE_weak'</span>) };</p>
+</body>
+</html>

@@ -1,0 +1,202 @@
+title:: Mx scripting interface
+summary:: Controlling and connecting units
+categories:: Mx
+
+
+In order to show things in the simplest way possible, I'll define a few Instr here with some simple sounds. Execute the code below to save them in the Instr library.
+
+code::
+(
+Instr("pulse",{ arg freq=440,width=0.5,amp=1.0;
+	Pulse.ar(freq,width,amp)
+});
+
+Instr("rlpf",{  arg audio=0.0,ffreq=6000;
+	RLPF.ar(audio,ffreq,0.5)
+});
+
+Instr("GVerb",{ arg audio, roomsize=10, revtime=3, damping=0.5, inputbw=0.5, spread=15, drylevel= 0, earlyreflevel= -3.0, taillevel= -6, maxroomsize=300, mul=1, add=0;
+
+	GVerb.ar(audio, roomsize, revtime, damping, inputbw, spread, drylevel.dbamp, earlyreflevel.dbamp, taillevel.dbamp, maxroomsize, mul, add);
+
+},[
+	AudioSpec(),
+	// note: roomsize not modulatable due to bug
+	StaticSpec(0.1, 1000, 'linear', 0.0, 10, "meters"),
+	ControlSpec(0, 30, 'linear', 0.0, 3, "seconds"),
+	ControlSpec(0.0, 1.0, 'linear', 0.0, 0.0, ""),
+	ControlSpec(0.0, 1.0, 'linear', 0.0, 0.0, ""),
+	ControlSpec(0, 15, 'linear', 0.0, 15, ""), // unknown units
+	\db,
+	\db,
+	\db,
+	StaticSpec(0, 1000, 'linear', 0.0, 300, ""),
+	ControlSpec(0.0, 1.0, 'linear', 0, 1.0, ""),
+	ControlSpec(0.0, 1.0, 'linear', 0.0, 0.0, "")
+],
+	'audio'
+);
+
+
+Instr("FBSineC",{ arg freq=22050, im=1, fb=0.1, a=1.1, c=0.5, xi=0.1, yi=0.1, mul=1, add=0;
+/*
+	freq - iteration frequency in Hertz
+	im - index multiplier amount
+	fb - feedback amount
+	a  - phase multiplier amount
+	c - phase increment amount
+	xi - initial value of x
+	yi - initial value of y
+*/
+	FBSineC.ar(freq, im, fb, a, c, xi, yi, mul, add);
+
+},[
+	ControlSpec(20, 20000, 'exp', 0, 440, " Hz"),
+	ControlSpec(0.0, 33, 'linear', 0.0, 0.0, ""),
+	ControlSpec(0.0, 0.9, 'linear', 0.0, 0.0, ""),
+	ControlSpec(0.05, 2.0, 'linear', 0.0, 1.1, ""),
+	ControlSpec(0.0, 1.0, 'linear', 0.0, 0.0, ""),
+
+	ControlSpec(0.0, 1.0, 'linear', 0.0, 0.0, ""),
+	ControlSpec(0.0, 1.0, 'linear', 0.0, 0.0, ""),
+
+	ControlSpec(0.0, 1.0, 'linear', 0, 1.0, ""),
+	ControlSpec(0.0, 1.0, 'linear', 0.0, 0.0, "")
+],
+	'audio'
+);
+)
+::
+
+
+Time to play
+
+code::
+
+// Create an Mx
+
+x = Mx.new.app;
+
+// you can see the results of scripting reflected in the gui
+// but the gui is optional
+x.gui;
+
+x.play;
+::
+
+When you add an object to the Mx it locates the driver for that object and creates an MxUnit to hold it.  It starts the object playing or activates it right away.
+
+code::
+// p is now an MxUnit holding an Instr
+p = x.add( Instr("pulse") );
+::
+
+It placed the sound into the first free channel.
+
+code::
+// get a reference to the channel
+c = x.channel(0);
+c.db = -20; // turn the volume down !
+c.mute;
+c.unmute;
+::
+
+Every object you add will by default get its own channel, or in order to keep things clean you can add new items to the channel.
+
+code::
+// execute these lines and watch what the post window puts out
+p
+// these are the inlets to the pulse
+p.inlets
+// shorthand
+p.i
+// the freq inlet
+p.inlets.freq
+p.i.freq
+// these are the outlets
+p.outlets
+// shorthand
+p.o
+// out is a helper accessor that refers to the first and possibly only output
+p.out
+::
+
+If you have the gui open then double-click on the pulse to open it in a little window.  Move the faders to change the parameters.
+
+code::
+// another way to open the gui
+p.gui
+::
+
+section:: Some Magic
+
+code::
+p.i.freq.set(300);
+p.i.freq.set(900);
+::
+
+I hate it when people don't tell me what's inside something or why it worked.  "It just works!"  Ok, then tell me what happened please !
+
+Short story: The mx driver for Instr adds adapters for each inlet and outlet. Those support .get and .set and this enables the magic.
+
+For the long story see the bottom of this document.
+
+
+section:: Add a filter
+
+
+code::
+c = x.channel(0);
+f = c.add( Instr("rlpf") );
+::
+
+Look at the gui and you will notice that the Pulse is connected to the fader and the newly added RLPF is also connected to the fader.  But the Pulse is not wired to the RLPF.
+
+code::
+// disconnect everything the Pulse is connected to
+p.disconnect;
+// or you could just disconnect the out
+p.outlets.out.disconnect;
+::
+
+And now the moment you've all been waiting for
+
+code::
+// verbose connect
+p.outlets.out >> f.inlets.audio;
+// or in shorthand that would be:
+p >> f
+
+// and connect the filter to the fader
+f >> c.fader
+::
+
+Logically if you want to connect Pulse to RLPF then you want the audio out to the audio in. It just works, yada yada.
+
+c.fader is a reference to the channel's MxChannelFader which does the volume control, mute/solo and also protects the channel audio from blowing up and frightening the children (and polluting the rest of your audio chain with NaNs which will render your concert totally silent).
+
+
+section:: So enough with the simple stuff already
+
+code::
+b = x.add( Instr("FBSineC") );
+
+g = x.add( Instr("GVerb") );
+
+// a slider
+n = x.add( NumberEditor.new );
+n.gui;
+::
+
+
+
+
+
+section:: Long story
+
+In this case an Instr, when added to Mx, will create a Patch internally which is held in the MxUnit. This Patch is the thing that actually plays an Instr. [an Instr is a function, a Patch is an AbstractPlayer subclass that can play that function ]
+
+The Patch has KrNumberEditors for each modulatable input (those that have a ControlSpec).  When faders are wiggled then changes are sent to the synth which is playing on the server. [Ok, I glossed over that part, but at this point you can go read the entrails of Patch and KrNumberEditor to see the whole system]
+
+The adapters defined in the mx driver for Instr know how to set values on the NumberEditors.
+

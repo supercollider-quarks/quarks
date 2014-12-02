@@ -1,0 +1,62 @@
+CLASS:: RedOverdub
+SUMMARY:: overdub recording
+CATEGORIES:: Red>redUGens
+RELATED:: Classes/RedTapeRecorder, Classes/RedLive
+
+DESCRIPTION::
+Overdub recording into a link::Classes/Buffer::
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: buffer
+Some buffer.
+
+ARGUMENT:: in
+Input signal.
+
+NOTE::
+The number of channels must match the buffer's number of channels.
+::
+
+ARGUMENT:: gate
+1 starts recording sound into the buffer. 0 stops.
+
+ARGUMENT:: fb
+Scales the previous sound in the buffer. 1.0 will just add the new sound to what is previously there, 0.5 will scale the previous sound down 50% and 0.0 will completely erase any sound previously recorded.
+
+ARGUMENT:: atk
+Recording envelop attacktime in seconds.
+
+ARGUMENT:: rel
+Recording envelop releasetime in seconds.
+
+ARGUMENT:: rate
+Playback rate.
+
+EXAMPLES::
+
+CODE::
+s.boot;
+b= Buffer.alloc(s, 44100*3, 2);
+//click button to overdub sound
+a= {RedOverdub.ar(b, SoundIn.ar([0, 1]), MouseButton.kr)}.play;
+a.free;
+
+//setting feedback and rate - click mouse to overdub
+a= {|fb= 1, rate= 1| RedOverdub.ar(b, SoundIn.ar([0, 1]), MouseButton.kr, fb, rate:rate)}.play;
+a.set(\fb, 0.7)	//leave 70% of the sound in the buffer
+a.set(\fb, 0)		//completely erase what is in the buffer
+a.set(\rate, 0.9)
+a.set(\rate, -0.8)
+a.free
+b.free
+
+//also works in control rate
+b= Buffer.alloc(s, 1000, 1);
+a= {|fb= 1, rate= 1| SinOsc.ar(RedOverdub.kr(b, SinOsc.kr(0.1).exprange(100, 1000), MouseButton.kr, fb, rate:rate), 0, 0.2)!2}.play;
+a.set(\fb, 0.8)
+a.free
+b.free
+::

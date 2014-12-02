@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.25">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #6d00ff}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ad1a17}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #003ca9}
+span.s1 {color: #000000}
+span.s2 {color: #003ca9}
+span.s3 {color: #4d4d4d}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>SETOIDistance</b></p>
+<p class="p2"><span class="s1">superclass: <a href="SETOInteraction.html">SETOInteraction</a></span></p>
+<p class="p3">/*</p>
+<p class="p3">Author:<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>2004, 2005, 2006</p>
+<p class="p3"><span class="Apple-tab-span">	</span>Till Bovermann<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Neuroinformatics Group<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Faculty of Technology<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>Bielefeld University</p>
+<p class="p3"><span class="Apple-tab-span">	</span>Germany</p>
+<p class="p3">*/</p>
+<p class="p4"><br></p>
+<p class="p5">computes the distance between the interactands and evaluates a class-wide user-definable function.</p>
+<p class="p4"><br></p>
+<p class="p5"><b>*distfunc_(function)</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span>function might have<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6"><span class="s2">SETOIDistance</span>.distFunc = {<span class="s2">|distance, isValid, parts|</span> postf("%&lt;-&gt;% : %\n", parts[0].id, parts[1].id, distance)}</p>
+<p class="p4"><br></p>
+<p class="p6">(</p>
+<p class="p6">e = e ? ();</p>
+<p class="p7"><br></p>
+<p class="p3">//e.t = SETO_OSCServer("_ixya", nil, SETObject, SETOIDistance);</p>
+<p class="p8"><span class="s1">e.t = </span>SETOServer<span class="s1">(</span><span class="s3">"_ixya"</span><span class="s1">, </span>SETObject<span class="s1">, </span>SETOIDistance<span class="s1">);</span></p>
+<p class="p6">e.t.start;</p>
+<p class="p6">e.t.gui</p>
+<p class="p6">)</p>
+<p class="p6">e.t.stop</p>
+</body>
+</html>

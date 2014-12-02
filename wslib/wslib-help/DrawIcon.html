@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0021e7}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #9d1c12}
+span.s1 {text-decoration: underline ; color: #002fe0}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {color: #0000bf}
+span.s5 {color: #606060}
+span.s6 {color: #0026b4}
+span.s7 {color: #3d6d1d}
+span.s8 {color: #007300}
+span.s9 {color: #bf0000}
+span.s10 {color: #0033f1}
+span.s11 {color: #0024f8}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>DrawIcon</b></p>
+<p class="p2">part of <a href="wslib.html"><span class="s1">wslib</span></a></p>
+<p class="p3"><br></p>
+<p class="p2">a <a href="SC://Pen"><span class="s1">Pen</span></a>-based library system for drawing iconographic pictures.</p>
+<p class="p3"><br></p>
+<p class="p2"><i>Note : DrawIcon is partially compatible with GUI-style coding. Colors and text are not supported</i></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p2">DrawIcon contains a global library with pen functions. It draws the icon in a <a href="SC://Rect"><span class="s1">Rect</span></a> you specify.</p>
+<p class="p2">DrawIcon returns a Pen function.</p>
+<p class="p3"><br></p>
+<p class="p4"><span class="s2">Used by <a href="RoundButton.html"><span class="s3">RoundButton</span></a> an <a href="SCAlert.html"><span class="s3">SCAlert</span></a></span></p>
+<p class="p3"><br></p>
+<p class="p2"><b>DrawIcon( iconName, rect ... extra args )</b></p>
+<p class="p3"><br></p>
+<p class="p5">(</p>
+<p class="p5">w = <span class="s4">GUI</span>.window.new( <span class="s5">"DrawIcon"</span> ).front;</p>
+<p class="p5">w.drawHook = { <span class="s6">|window|</span> <span class="s6">DrawIcon</span>( <span class="s7">\speaker</span>, window.view.bounds.insetBy(10,10) ) };</p>
+<p class="p5">w.refresh;</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p5">w.drawHook = { <span class="s6">|window|</span><span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">Color</span>.red(0.5).alpha_(0.5).set;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">DrawIcon</span>( <span class="s7">\speaker</span>, window.view.bounds.insetBy(10,10) ) };</p>
+<p class="p5">w.refresh;</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p3"><br></p>
+<p class="p2">The library of Pen functions is stored in <b>drawFuncs</b></p>
+<p class="p3"><br></p>
+<p class="p7"><span class="s4">DrawIcon</span>.names.dopostln; // post all available iconNames</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p8">w = <span class="s4">GUI</span>.window.new( <span class="s5">"drawFuncs"</span> ).front;</p>
+<p class="p8">k = <span class="s4">DrawIcon</span>.drawFuncs.keys.asArray</p>
+<p class="p8"><span class="Apple-tab-span">	</span>.select({ <span class="s4">|item|</span> [<span class="s8">'-'</span>, <span class="s8">'!'</span>].includes(item).not }) <span class="s9">//SCPopUpMenu doesn't like '-' and '!'</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span>.sort;</p>
+<p class="p8">n = <span class="s8">'+'</span>;</p>
+<p class="p8">w.drawHook = { <span class="s4">|window|</span><span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="s4">DrawIcon</span>( n, window.view.bounds.insetBy(10,10) ) };</p>
+<p class="p8">m = <span class="s4">GUI</span>.popUpMenu.new( w, <span class="s4">Rect</span>(5,5,80,20) )</p>
+<p class="p8"><span class="Apple-tab-span">	</span>.items_( k )</p>
+<p class="p8"><span class="Apple-tab-span">	</span>.action_({ <span class="s4">|popUp|</span><span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>n = k.at( popUp.value );</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>w.refresh; });</p>
+<p class="p8">w.refresh;</p>
+<p class="p5">)</p>
+<p class="p3"><br></p>
+<p class="p2">Some of the drawFuncs have optional extra arguments. These can be added after the Rect in DrawIcon</p>
+<p class="p3"><br></p>
+<p class="p5">(</p>
+<p class="p9">// arrow has arguments 'direction' and 'mode'</p>
+<p class="p5">w = <span class="s6">SCWindow</span>( <span class="s5">"DrawIcon"</span> ).front.decorate;</p>
+<p class="p5">a = 0;</p>
+<p class="p5">m = 'fill';</p>
+<p class="p5">w.drawHook = { <span class="s6">|window|</span> <span class="s6">DrawIcon</span>( <span class="s7">\arrow</span>, window.view.bounds.insetBy(10,10), a, m ) };</p>
+<p class="p5">b = <span class="s6">SmoothSlider</span>( w, 80@20)</p>
+<p class="p5"><span class="Apple-tab-span">	</span>.action_({ <span class="s6">|sl|</span> a = sl.value.linlin(0,1,0,2pi); w.refresh; });</p>
+<p class="p5">c = <span class="s6">RoundButton</span>( w, 80@20 )</p>
+<p class="p5"><span class="Apple-tab-span">	</span>.states_([[ <span class="s5">"fill"</span> ], [<span class="s5">"stroke"</span>]])</p>
+<p class="p5"><span class="Apple-tab-span">	</span>.action_({ <span class="s6">|bt|</span> m = [<span class="s7">\fill</span>, <span class="s7">\stroke</span>][ bt.value]; w.refresh });</p>
+<p class="p5">w.refresh;</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p9">// clock has arguments 'h', 'm' and 'secs'</p>
+<p class="p5">w = <span class="s6">SCWindow</span>( <span class="s5">"DrawIcon"</span> ).front;</p>
+<p class="p5">d = <span class="s6">Date</span>.localtime;</p>
+<p class="p5">w.drawHook = { <span class="s6">|window|</span> <span class="s6">DrawIcon</span>( <span class="s7">\clock</span>, window.view.bounds.insetBy(10,10),<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>d.hour, d.minute, d.second ) };</p>
+<p class="p5">t = <span class="s6">Task</span>({ loop { d.localtime;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ if( w.notNil &amp;&amp; { w.dataptr.notNil }) { w.refresh; } }.defer;<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1.0.wait }<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>}).start;</p>
+<p class="p5">w.onClose_({ t.stop; });</p>
+<p class="p5">w.refresh;</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p9">// post all keyFuncs with extra argNames, with their default values</p>
+<p class="p5"><span class="s6">DrawIcon</span>.drawFuncs.keys</p>
+<p class="p5"><span class="Apple-tab-span">	</span>.collect({ <span class="s6">|key|</span> [ key, <span class="s6">DrawIcon</span>.drawFuncs[ key ]] })</p>
+<p class="p5"><span class="Apple-tab-span">	</span>.select({ <span class="s6">|item|</span> item[1].def.argNames.size &gt; 1 })</p>
+<p class="p5"><span class="Apple-tab-span">	</span>.do({ <span class="s6">|item|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">var</span> argNames, argValues;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argNames = item[1].def.argNames[1..];</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argValues = item[1].def.prototypeFrame[1..];</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>argNames = argNames.collect({ <span class="s6">|name,i|</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if( argValues[ i ].notNil )</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ name ++ <span class="s5">" = "</span> ++ argValues[ i ].asCompileString }</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ name }</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">"'%' ( % )\n"</span>.postf( item[0], argNames.join( <span class="s5">", "</span>) )</p>
+<p class="p5"><span class="Apple-tab-span">	</span>}); <span class="s5">""</span>;</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p2"><b>*symbolArgs</b></p>
+<p class="p2">The symbolArgs creation method is a special creation mode where extra arguments</p>
+<p class="p2">are encoded in the name of the drawFunc. This is used by <a href="RoundButton.html"><span class="s10">RoundButton</span></a> and <a href="SCAlert.html"><span class="s11">SCAlert</span></a></p>
+<p class="p2">The encoding goes as follows:</p>
+<p class="p3"><br></p>
+<p class="p2"><b><span class="Apple-tab-span">	</span>'iconName_firstArg_secondArg_etc'</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p2">The args are interpreted before they are used, so they can be expressions</p>
+<p class="p3"><br></p>
+<p class="p5">(</p>
+<p class="p8">w = <span class="s4">GUI</span>.window.new( <span class="s5">"DrawIcon"</span> ).front;</p>
+<p class="p8">w.drawHook = { <span class="s4">|window|</span> <span class="s4">DrawIcon</span>.symbolArgs( <span class="s8">'arrow_0.5pi'</span>, window.view.bounds.insetBy(10,10) ) };</p>
+<p class="p8">w.refresh;</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p5">(</p>
+<p class="p5">w.drawHook = { <span class="s6">|window|</span> <span class="s6">DrawIcon</span>.symbolArgs( <span class="s7">'led_250'</span>, window.view.bounds.insetBy(10,10) ) };</p>
+<p class="p5">w.refresh;</p>
+<p class="p5">)</p>
+<p class="p6"><br></p>
+<p class="p2">When args are symbols themselves you need to add<span class="Apple-converted-space">  </span>\' signs</p>
+<p class="p3"><br></p>
+<p class="p5">(</p>
+<p class="p5">w.drawHook = { <span class="s6">|window|</span> <span class="s6">DrawIcon</span>.symbolArgs( <span class="s7">'play_\'</span>stroke\<span class="s7">''</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>window.view.bounds.insetBy(10,10) ) };</p>
+<p class="p5">w.refresh;</p>
+<p class="p5">)</p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

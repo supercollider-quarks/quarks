@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cf0c0c}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #162bc4}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #162bc4}
+span.s3 {color: #000000}
+span.s4 {color: #737373}
+span.s5 {color: #008323}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>GamePad</b></span><b> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>add your own controllers/classes</b></p>
+<p class="p2"><b></b><br></p>
+<p class="p1"><b>For some GamePad models, classe have been written already.</b></p>
+<p class="p1"><b>For other models, you will have to make your own map of<span class="Apple-converted-space"> </span></b></p>
+<p class="p1"><b>which button uses which ID number or 'cookie'.</b></p>
+<p class="p3"><br></p>
+<p class="p4">(</p>
+<p class="p4"><span class="s2">GamePad</span>.startHID(0);<span class="Apple-tab-span">	</span>// read all USB devices</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// post everything the connected HIDs know about themselves:</p>
+<p class="p6">HIDDeviceService<span class="s3">.devices.do({</span>arg<span class="s3"> dev;</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">""</span>.postln;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>[dev.manufacturer, dev.product, dev.vendorID, dev.productID, dev.locID].postln;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>dev.elements.do({<span class="s2">arg</span> ele;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s4">"<span class="Apple-tab-span">	</span>"</span>.post; [ele.type, ele.usage, ele.cookie, ele.min, ele.max].postln;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>});</p>
+<p class="p4">});</p>
+<p class="p4">)</p>
+<p class="p3"><br></p>
+<p class="p4">e.g. for a (<span class="s2">Chinese</span>) <span class="s2">DragonRise</span> <span class="s2">Joystick</span>, the vendorID is 121,<span class="Apple-converted-space"> </span></p>
+<p class="p4">and following the posted element descriptions, the maps are something like:<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p4">[ <span class="s2">DragonRise</span> <span class="s2">Inc</span>.<span class="Apple-converted-space">  </span>, <span class="s2">Generic</span> <span class="Apple-converted-space">  </span><span class="s2">USB</span><span class="Apple-converted-space">  </span><span class="s2">Joystick</span><span class="Apple-converted-space">  </span>, 121, 6, 990904320 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #1, 4, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #2, 5, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #3, 6, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #4, 7, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #5, 8, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #6, 9, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #7, 10, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #8, 11, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #9, 12, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #10, 13, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #11, 14, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, <span class="s2">Button</span> #12, 15, 0, 1 ]</p>
+<p class="p4">[ <span class="s2">Button</span> <span class="s2">Input</span>, Page: 0xff00, Usage: 0x1, 16, 0, 1 ]</p>
+<p class="p6"><span class="s3">[ </span>Miscellaneous<span class="s3"> </span>Input<span class="s3">, </span>X<span class="s3">-</span>Axis<span class="s3">, 17, 0, 255 ]</span></p>
+<p class="p6"><span class="s3">[ </span>Miscellaneous<span class="s3"> </span>Input<span class="s3">, </span>Y<span class="s3">-</span>Axis<span class="s3">, 18, 0, 255 ]</span></p>
+<p class="p6"><span class="s3">[ </span>Miscellaneous<span class="s3"> </span>Input<span class="s3">, </span>Z<span class="s3">-</span>Axis<span class="s3">, 19, 0, 255 ]</span></p>
+<p class="p6"><span class="s3">[ </span>Miscellaneous<span class="s3"> </span>Input<span class="s3">, </span>Z<span class="s3">-</span>Axis<span class="s3">, 20, 0, 255 ]</span></p>
+<p class="p6"><span class="s3">[ </span>Miscellaneous<span class="s3"> </span>Input<span class="s3">, </span>Z<span class="s3">-</span>Rotation<span class="s3">, 21, 0, 255 ]</span></p>
+<p class="p6"><span class="s3">[ </span>Miscellaneous<span class="s3"> </span>Input<span class="s3">, </span>Hatswitch<span class="s3">, 22, 0, 7 ]</span></p>
+<p class="p3"><br></p>
+<p class="p4">(</p>
+<p class="p6">GamePad<span class="s3">.cookieMaps[121] = </span>TwoWayIdentityDictionary<span class="s3">[<span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><br></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s5">\bt1</span><span class="s3"> -&gt; 4, <span class="Apple-tab-span">	</span></span>// 4 buttons, righthand; up is 1, pressed is 0.</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s5">\bt2</span> -&gt; 5,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s5">\bt3</span> -&gt; 6,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s5">\bt4</span> -&gt; 7,<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s5">\lfTop</span><span class="s3"> -&gt; 10, <span class="Apple-tab-span">	</span></span>// 4 fire buttons, up 1, down 0</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s5">\lfBot</span> -&gt; 8,<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s5">\rfTop</span> -&gt; 11,<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s5">\rfBot</span> -&gt; 9,</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s5">\midL</span><span class="s3"> -&gt; 12, <span class="Apple-tab-span">	</span></span>// middle shift buttons</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s5">\midR</span> -&gt; 13,<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s5">\lHat</span><span class="s3"> -&gt; 14, <span class="Apple-tab-span">	</span></span>// hat switches on joysticks</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s5">\rHat</span> -&gt; 15,<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p3"><br></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s5">\joyLX</span><span class="s3"> -&gt; 19, </span>// joystick left x-axis (horizontal) left is 255, right 0!</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s5">\joyLY</span><span class="s3"> -&gt; 18, </span>// joy left y-axis, up is 255.</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s5">\joyRX</span><span class="s3"> -&gt; 20, </span>// joystick right x-axis (horizontal) left is 255, right 0!</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s5">\joyRY</span><span class="s3"> -&gt; 21, </span>// joy right x-axis, up is 255.</p>
+<p class="p3"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s5">\compass</span><span class="s3"> -&gt; 22 </span>// west is 1, south is 3, east is 5, north is 7, center is -8</p>
+<p class="p4">];</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// put in normalizing functions for the joysticks and the compass:</p>
+<p class="p4"><span class="s2">GamePad</span>.normMaps[121] =<span class="Apple-converted-space"> </span></p>
+<p class="p4">( <span class="Apple-tab-span">	</span>joyLX: { <span class="s2">|val|</span> 255 - val / 255 },<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>joyLY: { <span class="s2">|val|</span> val /<span class="Apple-converted-space">  </span>255 },</p>
+<p class="p4"><span class="Apple-tab-span">	</span>joyRX: { <span class="s2">|val|</span> 255 - val / 255 },<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>joyRY: { <span class="s2">|val|</span> val /<span class="Apple-converted-space">  </span>255 },</p>
+<p class="p4"><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>compass: { <span class="s2">|val|</span> (1: 0, 3: 1, 5: 2, 7: 3, -8: -1)[val] }<span class="Apple-converted-space"> </span></p>
+<p class="p4">);</p>
+<p class="p5"><span class="s3"><span class="Apple-tab-span">	</span></span>// you must store the maps in the locIDs also, or do</p>
+<p class="p4"><span class="s2">GamePad</span>.startHID;</p>
+<p class="p5">/*</p>
+<p class="p5"><span class="Apple-tab-span">	</span>GamePad.cookieMaps[990904320] = GamePad.cookieMaps[121];</p>
+<p class="p5"><span class="Apple-tab-span">	</span>GamePad.normMaps[990904320] = GamePad.normMaps[121];</p>
+<p class="p5">*/</p>
+<p class="p4">)</p>
+<p class="p4"><span class="s2">GamePad</span>.stop;<span class="Apple-converted-space"> </span></p>
+<p class="p3"><br></p>
+<p class="p3"><br></p>
+</body>
+</html>

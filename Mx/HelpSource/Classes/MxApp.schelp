@@ -1,0 +1,166 @@
+CLASS:: MxApp
+summary:: Scripting and interacting with an Mx
+categories:: Mx
+
+
+DESCRIPTION::
+The Mx class itself implements the patching and updating.  Normal interaction with an Mx is done through the gui (MxGui) and the scripting objects such as MxApp.
+
+The scripting objects (MxApp etc) are designed for efficiency, clarity and convienience.  The implementation classes like Mx, MxChannel, MxUnit etc. are designed for efficiency of internal implementation.
+
+Most internal commands for units or channels go through the Mx object which notes all changes like adding or removing of objects or cables in its removing and adding arrays and then performs all these changes on .update.  When using the gui or the scripting objects the .update is called automatically.
+
+The entire suite of scripting objects is only about 500 lines of code, so it should be fairly easy to learn the whole thing quite quickly.  There are almost no private methods.
+
+code::
+x = Mx.new.app;
+x.play;
+
+// while scripting you can see objects and cables updating on the gui
+x.gui;
+::
+
+
+INSTANCEMETHODS::
+
+METHOD:: at
+Units are stored in the Mx on a grid.  Each column is an link::Classes/MxChannel::, like a channel strip on a mixer.  Each MxChannel has multiple (unlimited) units.  These are the rows.
+
+Visually this is like a mixer with channels @ rack units, or like the colored squares in Ableton Live.
+
+For units that create synths it is important to know that each channel is contained in a group and each unit is in a group.
+Therefore any unit may cable its outlet(s) to any other units (as many as it wants to) as long as the unit is below or to the right of it.
+
+This means when the gui is opened it is very easy to keep track of order of operation.  If you move a unit to the left of what its plugged into it will go silent because it is before what is supposed to be after it.  Move it back and it works again.
+
+Sliders, splines, midi and osc inputs may cable "upstream".
+
+argument:: point
+channel-number@slot-number  The master channel is channel inf.
+
+returns:: an link::Classes/MxUnitApp:: or nil if unoccupied
+
+METHOD:: put
+Place an object on the Mx grid at channel@slot.  If the object is not yet supported it will post an error that there is no driver file found.
+
+argument:: point
+channel@slot
+
+argument:: object
+Instr, NDef, Bus, Document etc
+
+returns:: an link::Classes/MxUnitApp::
+
+METHOD:: units
+an link::Classes/MxQuery:: of all units in the Mx.  This can be used for performing searches, selecting items and performing actions in bulk.
+
+returns:: an link::Classes/MxQuery::
+
+METHOD:: channels
+an link::Classes/MxQuery:: of all channels in the Mx, not including the master channel.  This query can be filtered
+
+returns:: an link::Classes/MxQuery::
+
+METHOD:: channel
+Get a single channel by number.  You can mute, solo and set its volume.  If it does not yet exist it will be created. Commonly you get a channel and then add multiple related objects to it. You may also use newChan to create a new one at the end without supplying a channel number.
+
+argument:: i
+0 indexed channel number
+
+returns:: an link::Classes/MxChannelApp::
+
+METHOD:: master
+The master channel on the right side.  Channel number is inf.  Each channel is cabled to the top right input of the master channel.  These cables are invisible on the gui because it makes things look cluttered.
+
+Mastering effects may be inserted on the mastering channel.  An Mx can have multiple outlets (not quite yet implemented) and channels and individual units are free to cable directly to those outlets and are free to not cable themselves to their channels, and channels are even free to uncable themselves from the master channel.
+
+returns:: an link::Classes/MxChannelApp::
+
+METHOD:: newChan
+Create a new channel, adding it to the end.
+
+returns:: an link::Classes/MxChannelApp::
+
+METHOD:: add
+Creates a new channel and adds the object or objects to the Mx.
+
+argument::  ... sources
+If a single object is supplied then it return an link::Classes/MxUnitApp::
+If multiple are supplied then it returns the newly created link::Classes/MxChannelApp::
+
+returns:: link::Classes/MxUnitApp:: or link::Classes/MxChannelApp::
+
+METHOD:: play
+Starts playing it isn't already playing
+
+argument:: then
+A callback, executed after play has started
+
+returns:: this
+
+METHOD:: stop
+Stop if not already stopped
+
+argument:: then
+A callback, executed after play has stopped
+
+returns:: this
+
+METHOD:: relocate
+Goto a beat in the timeline.  Not all objects will support relocating in time.
+
+argument:: beat
+beat to goto
+
+argument:: q
+Quantize, default is 4 (on the next bar).
+
+returns:: this
+
+METHOD:: save
+Save the Mx as a document (initiating a file dialog if there is no path yet) which should reproduce the current state of the Mx and all of its objects.  Not all objects may support saving and loading, and any objects like Busses would fix their bus numbers in the document.   This can also be done from the gui.
+
+
+
+METHOD:: gui
+Make a gui for the Mx
+
+argument:: parent
+Parent view or nil
+
+argument:: bounds
+bounds or nil
+
+returns:: this
+
+METHOD:: transaction
+Usually when scripting with the MxApp object or any of the link::Classes/MxUnitApp::, link::Classes/MxChannelApp:: objects all changes are enacted immediately.  You see and hear changes right away.  A transaction is a function that lets you do many changes and then enacts them all when the function is complete.
+
+argument:: function
+
+returns:: this
+
+METHOD:: commit
+Internal usage: commits all changes, updates the Mx (which sends changes to the server) and sends .changed to the Mx which updates all guis.
+
+returns:: this
+
+METHOD:: mx
+The Mx object for which this is an interface.
+
+returns:: an Mx
+
+
+METHOD:: prFind
+For any MxUnit this gets or creates an link::Classes/MxUnitApp::.
+
+argument:: obj
+MxUnit, link::Classes/MxChannel::, MxInlet, MxOutlet
+
+returns:: an AbsApp subclass
+
+EXAMPLES::
+
+code::
+x = Mx.new.app;
+::

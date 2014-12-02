@@ -1,0 +1,87 @@
+CLASS:: UpdatingScalarPatchOut
+summary:: utility for connecting NumberEditor > Synth
+categories:: Libraries>crucial>internals
+related:: Classes/ScalarPatchOut
+
+DESCRIPTION:: Patch (indirectly) uses this to make a connection between a KrNumberEditor and a NodeControl.  When the KrNumberEditor changes its value, the NodeControl has its value set and sends that to the synth on the server.
+
+The Mx system has a better approach to establishing disparate connections.
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: source
+
+
+argument:: bus
+
+
+argument:: enabled
+
+
+
+METHOD:: prNew
+
+
+argument:: source
+
+
+argument:: enabled
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: init
+
+
+argument:: enabled
+
+
+
+METHOD:: audio
+
+
+argument:: audioPatchIn
+
+
+argument:: needsValueSetNow
+
+
+
+METHOD:: control
+
+
+argument:: controlPatchIn
+
+
+argument:: needsValueSetNow
+
+
+
+METHOD:: scalar
+
+
+argument:: scalarPatchIn
+
+
+
+METHOD:: enable
+
+
+
+METHOD:: update
+
+
+
+METHOD:: free
+
+
+
+
+

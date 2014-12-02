@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.32">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #2024c7}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd0b0b}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd0b0b; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a91616}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 9.0px Monaco}
+span.s3 {color: #2b30fa}
+span.s4 {color: #000000}
+span.s5 {color: #008417}
+span.s6 {color: #2024c7}
+span.s7 {color: #737373}
+span.s8 {color: #008423}
+span.s9 {color: #0014bc}
+span.s10 {color: #307109}
+span.s11 {color: #307113}
+span.s12 {color: #a91616}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>TdefPreset</b></span><span class="s2"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>storing and morphing between presets for Tdefs.</p>
+<p class="p2"><br></p>
+<p class="p1">superclass: ProxyPreset.</p>
+<p class="p1">see also <a href="NdefPreset.html"><span class="s3">NdefPreset</span></a>, and soon, PdefPreset</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// just raw examples, not fully tested yet!</p>
+<p class="p3">(</p>
+<p class="p3">Tdef(\a).set(\dt, 0.5, \plong, [12, 24]);</p>
+<p class="p3">Tdef(\a, { |envir|<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span>loop {<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>envir.postcs;</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>envir.dt.wait;</p>
+<p class="p3"><span class="Apple-tab-span">	</span>}</p>
+<p class="p3">}).play;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">Tdef(\a).stop</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s4">z = </span>TdefPreset<span class="s4">(</span>Tdef<span class="s4">(</span><span class="s5">\a)</span><span class="s4">).dump;</span></p>
+<p class="p3"><span class="s6">TdefPreset</span>.all[\a].dump.settings;</p>
+<p class="p3">z.getFromProxy</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s4">(<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// add 3 sets to the list</p>
+<p class="p3">z.setProxy(<span class="s5">\curr</span>);</p>
+<p class="p3">Tdef(\a).set(<span class="s5">\freq</span>, 1000, <span class="s5">\amp</span>, 0.15, \plong, [12, 24] * 3);</p>
+<p class="p3">z.addSet(<span class="s5">\ada</span>);</p>
+<p class="p3">Tdef(\a).set(<span class="s5">\freq</span>, 1500, <span class="s5">\amp</span>, 0.25, \plong, [12, 24] * 5);</p>
+<p class="p3">z.addSet(<span class="s5">\bebe</span>);</p>
+<p class="p3">Tdef(\a).set(<span class="s5">\freq</span>, 2500, <span class="s5">\amp</span>, 0.2, \plong, [12, 24]);</p>
+<p class="p3">z.addSet(<span class="s5">\coco</span>);</p>
+<p class="p3">z.settings.printcsAll; <span class="s7">""</span>;</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">z.getSet(<span class="s8">\coco</span>);</p>
+<p class="p3">z.getSet(<span class="s8">\ada</span>);</p>
+<p class="p3">z.getSet(<span class="s8">\bebe</span>);</p>
+<p class="p2"><br></p>
+<p class="p3">z.currSet;</p>
+<p class="p3">z.targSet;</p>
+<p class="p3">z.keys;</p>
+<p class="p2"><br></p>
+<p class="p3">Tdef(\a).envir</p>
+<p class="p2"><br></p>
+<p class="p3">z.setCurr(<span class="s8">\coco</span>);<span class="Apple-tab-span">	</span></p>
+<p class="p3">Tdef(\a).envir</p>
+<p class="p2"><br></p>
+<p class="p3">z.setCurr(<span class="s8">\bebe</span>);</p>
+<p class="p3">Tdef(\a).envir</p>
+<p class="p2"><br></p>
+<p class="p3">z.setTarg(<span class="s8">\ada</span>);</p>
+<p class="p3">Tdef(\a).envir</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">(</p>
+<p class="p5">// morphing and randomizing settings require specs to exist!</p>
+<p class="p6"><br></p>
+<p class="p3">Spec.add(\plong, [0, 100]);</p>
+<p class="p3">Spec.add(\dt, [0.01, 100, \exp]);</p>
+<p class="p2"><br></p>
+<p class="p3">w = Window("TdefPreset test", Rect(20, 300, 420, 400)).front;</p>
+<p class="p3">w.addFlowLayout;</p>
+<p class="p3">g = <span class="s6">ProxyPresetGui</span>(z, 8, w);</p>
+<p class="p3">t = TdefGui(Tdef(\a), 8, w, 400@0);</p>
+<p class="p3">)</p>
+<p class="p2"><br></p>
+<p class="p3">z.morph(0.5, \ada, \bebe);</p>
+<p class="p2"><br></p>
+<p class="p3">z.setProxy(<span class="s5">\ada</span>);</p>
+<p class="p3">z.setProxy(<span class="s5">\bebe</span>);</p>
+<p class="p2"><br></p>
+<p class="p3">z.setProxy(<span class="s8">\bebe</span>);</p>
+<p class="p3">z.getSet(<span class="s8">\coco</span>);</p>
+<p class="p3">z.getSet(<span class="s8">\bebe</span>);</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">z.currSet;</p>
+<p class="p3">z.targSet;</p>
+<p class="p2"><br></p>
+<p class="p3">z.getSet(\curr);</p>
+<p class="p3">z.stepCurr(1);<span class="Apple-converted-space"> </span></p>
+<p class="p3">z.stepCurr(-1);<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3">// random settings require specs to exist:<span class="Apple-converted-space"> </span></p>
+<p class="p3">Spec.add(\dens, [1, 1000, \exp]);</p>
+<p class="p3">Spec.add(\ring, [0.0001, 100, \exp]);</p>
+<p class="p3">z.randSet(0.1, \ada)</p>
+<p class="p3">z.setRand(0.03);</p>
+<p class="p2"><br></p>
+<p class="p3">z.prepMorph;</p>
+<p class="p3">z.targSet;</p>
+<p class="p2"><br></p>
+<p class="p3">z.morphVal = 0.8;</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>// morph from one to the other:</p>
+<p class="p3">fork { 20.do { <span class="s9">|i|</span> 0.1.wait; z.morph(i + 1/ 20, <span class="s10">\curr</span>, <span class="s10">\ada</span>) } };</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">z.removeSet(<span class="s10">\set1</span>);<span class="Apple-converted-space"> </span></p>
+<p class="p3">z.removeSettings([<span class="s11">\ada]</span>);<span class="Apple-converted-space"> </span></p>
+<p class="p3">z.settings;</p>
+<p class="p2"><br></p>
+<p class="p3">z.storeDialog;</p>
+<p class="p3">z.deleteDialog;</p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s4">z.randSet(rand: 0.01);<span class="Apple-tab-span">	</span></span>// make a randomized setting</p>
+<p class="p3">z.setRand(rand: 0.1, startSet: <span class="s10">\curr</span>);<span class="Apple-tab-span">	</span><span class="s12">// vary based on a given set;</span></p>
+<p class="p3">z.setRand(rand: 0.1, startSet: <span class="s10">\set1, </span>except: [<span class="s10">\amp</span>]);<span class="Apple-tab-span">	</span><span class="s12">// dont change amp</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">/* interpolation tests:</p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span></span>// unmap a set</p>
+<p class="p3">x = z.unmapSet(z.getSet(<span class="s10">\bebe</span>).value);</p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span></span>// unmap a second set</p>
+<p class="p3">y = z.unmapSet(z.getSet(<span class="s10">\coco</span>).value);</p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span></span>// does not check for names yet!</p>
+<p class="p3">z.blendSets(0.5, x, y);</p>
+<p class="p2"><br></p>
+<p class="p3">z.blend(0.2, <span class="s10">\bebe</span>, <span class="s10">\coco</span>);</p>
+<p class="p3">a.set(*z.blend(1.0.rand, <span class="s11">\bebe</span>, <span class="s11">\coco</span>).flat);</p>
+<p class="p2"><br></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span></span>// interpolate</p>
+<p class="p3">fork { 20.do { <span class="s9">|i|</span> 0.1.wait; a.set(*z.blend(i + 1/ 20, <span class="s10">\</span><span class="s11">bebe</span>, <span class="s10">\</span><span class="s11">coco</span>).flat) } };</p>
+<p class="p2"><br></p>
+<p class="p3">fork { 20.do { <span class="s9">|i|</span> 0.1.wait; z.morph(i + 1/ 20, <span class="s10">\</span><span class="s11">coco</span>, <span class="s10">\</span><span class="s11">bebe</span>) } };</p>
+<p class="p2"><br></p>
+<p class="p3">*/</p>
+</body>
+</html>

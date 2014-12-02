@@ -1,0 +1,134 @@
+TITLE:: ParamGui
+summary:: sketch for a better EnvirGui - e.g. for use with TdefGui/PdefGui.
+categories:: Libraries>JITLib
+related:: Classes/EnvirGui, Classes/TdefGui, Classes/PdefGui
+
+DESCRIPTION::
+Only a sketch a the moment, some of the features may move to EnvirGui eventually.
+
+ParamGui has the following advances over EnvirGui:
+list::
+##it can have an ordered list of param names: orderedNames
+##it can use the Tdef's Halo to access Tdef's own specs and orderedNames if there.
+##it can sync the specs and orderedNames with its object's halo.
+##it also has a little window for reordering param names.
+::
+
+code::
+
+// Much of the code examples are not intended to be used directly as code, they will rather be available as buttons, shortcuts etc. from a later incarnation of ParamGui.
+
+(
+	// make a Tdef and a ParamGui for it:
+
+a = Tdef(\adc).set(\alf, 11, \zwalf, 12);
+b = ParamGui(Tdef(\adc).envir, 8).moveTo(10, 400);
+
+	// add specs to the Tdef object (requires Halo class):
+	// this is recommended future usage style.
+a.addSpec(\alf, [1, 11, \lin, 1]);
+a.addSpec(\zwalf, [1, 12, \exp, 0.01, 3.5]);
+
+	// tell paramgui to use the Tdefs halo:
+b.useHalo(a);
+)
+
+	// where spec lookup happens
+b.specs;
+b.getSpec(\alf);
+a.getHalo(\orderedNames); 
+a.getSpec;
+a.getHalo;
+
+
+	// more params, show and hide:
+
+b.showNewNames = false;
+
+a.set(\droi, 3, \fia, 4, \fuempf, 5);
+a.addSpec(\droi, [3, 300, \exp, 0.01, 30]);
+a.addSpec(\fia, [4, 400, \exp, 0.01, 40]);
+
+b.showNewNames = true;
+
+b.filterNames = [\zwalf];
+b.showNewNames = true;
+b.showNewNames = false;
+b.filterNames = nil;
+
+	// ordering names: 
+b.orderedNames
+a.set(\oans, 1, \zwoa, 2);
+
+b.orderedNames;
+b.grabOrdered; // take all keys from envir;
+b.useHalo(a, myNames: true); // true forces them back into the Halo
+b.orderedNames;
+b.moveName(\oans, 0);
+b.moveName(\zwoa, 1);
+b.moveName(\droi, 2);
+
+b.hideName(\alf);
+b.hideName(\zwalf);
+b.showName(\alf);
+b.filterNames = nil;
+
+	// utility window to order by drag and drop
+b.reorderWindow;
+
+	// Test reordering with TdefGui in a full window
+(
+
+a = Tdef(\ab).set(\alf, 11, \zwalf, 12);
+
+a.addSpec(\alf, [1, 11, \lin, 1]);
+a.addSpec(\zwalf, [1, 12, \exp, 0.01, 3.5]);
+a.set(\droi, 3, \fia, 4);
+a.addSpec(\droi, [3, 300, \exp, 0.01, 30]);
+a.addSpec(\fia, [4, 400, \exp, 0.01, 40]);
+
+b = TdefPresetGui(TdefPreset(Tdef(\ab)), 8, w);
+b.moveTo(10, 300);
+c = b.proxyGui;
+d = c.envirGui;
+
+)
+
+d.reorderWindow;
+
+::
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: orderedNames
+list of the param names to show in their desired order.
+
+METHOD:: filterNames
+list of param names that will not be shown
+
+METHOD:: showNewNames
+get and set flag whether to show new names when added to the envir.
+
+METHOD:: grabOrdered
+grab names from envir, sorted alphabetically.
+
+METHOD:: moveName
+move name to index in orderedNames.
+
+METHOD:: useHalo
+use the Halo of the object passed in for sharing param specs and orderedNames. 
+
+METHOD:: updateSliderSpecs
+set the controlspecs on the sliders to current specs.
+
+METHOD:: reorderWindow
+open a window to bring orderedNames into the desired order by drag and drop.
+
+METHOD:: hideName, showName
+hide or show param with this name (add to / remove from filterNames)
+
+private:: makeNameView, getState
+

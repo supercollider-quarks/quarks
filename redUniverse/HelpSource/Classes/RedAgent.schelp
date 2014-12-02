@@ -1,0 +1,34 @@
+CLASS:: RedAgent
+SUMMARY:: an object that can sense and act
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview
+
+DESCRIPTION::
+Note::
+The size is used as radius for this object. So size only works in 1-2D for now.
+::
+
+INSTANCEMETHODS::
+
+METHOD:: state
+Whatever one like to save.
+
+METHOD:: sense
+A link::Classes/Function::. Called as the emphasis::first:: thing in the agent's update method.
+
+METHOD:: act
+A link::Classes/Function::. Called as the emphasis::second:: thing in the agent's update method.
+
+EXAMPLES::
+
+CODE::
+a= RedWorld.new
+b= RedAgent(a)
+
+a.objects
+b.dump
+
+b.sense= {"agent sensing".postln}
+b.act= {"agent acting".postln}
+b.update
+::

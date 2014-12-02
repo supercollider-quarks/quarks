@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {color: #0000ff}
+span.s2 {color: #0000bf}
+span.s3 {color: #000000}
+span.s4 {color: #bf0000}
+span.s5 {color: #007300}
+span.s6 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Getting Started with chucklib</b></p>
+<p class="p2"><br></p>
+<p class="p3">Chucklib has grown into a fairly large body of code, like the crucial library, and it might be difficult to know where to begin. The actual entry point is fairly simple, however. If you stick to the basic idea of doing simple things first and growing gradually into more complex usages, it will be a lot easier to learn your way around it.</p>
+<p class="p2"><br></p>
+<p class="p3">This tutorial divides into four sections.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>1. Prototype-based programming:</b> The ability to change behaviors on the fly with a minimum of disruption is the main point of chucklib. Prototype-based programming assists by providing an alternative to hard coded classes that is capable of object-oriented design without requiring you to recompile the library for every change.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>2. Processes:</b> In chucklib, a musical behavior (defined as a Pattern or Routine) exists in a <i>process object</i> along with all the other resources it needs to produce its result. Instead of manually manipulating dozens of objects for one component of a piece, you deal mainly with the process objects and they take care of the resources they need.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>3. Stream or function replacement:</b> Moving some components of a musical behavior outside the main Pattern/Routine definition allows you to replace those components while the process is playing, so that you can play with the process interactively.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>4. Automatic initialization and clean-up:</b> Most of the time, writing a Pattern or Routine is not enough. You might have to load support objects on the server and create data structures in the client to do the work effectively. Chucklib lets you manage this automatically.</p>
+<p class="p2"><br></p>
+<p class="p3">Keep in mind, as you review the examples in each section, that each case starts with a "standard" usage, and adds functionality/convenience through a fairly simple change in the code. The distance between "standard" code and chucklib code does not have to be that great, at least not at first.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>1. Prototype-based programming</b></p>
+<p class="p2"><br></p>
+<p class="p3">This tutorial cannot pretend to be a complete introduction to prototype-based programming. In brief, prototype-based programming uses <i>prototypes</i>, instead of classes and instances, to encapsulate object behavior.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Object-oriented programming:</b> Classes are compiled into fixed object code. At runtime, instances of the classes are made, and the instances do the actual work.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>Prototype-based programming:</b> Prototypes cover the concepts of both classes and instances. A prototype defines behavior and the data required to execute that behavior. When a new "instance" is needed, we make a copy of the prototype and work with the new copy.</p>
+<p class="p2"><br></p>
+<p class="p3">The advantage of prototype-based programming for composition is that you can redefine a prototype any time (whereas changing a class requires recompiling the class library, and thereby destroying all the runtime objects existing up to that point). Since it takes less work to change a prototype, it takes less work to move a prototype toward the desired musical result.</p>
+<p class="p2"><br></p>
+<p class="p3">Musical processes in chucklib are implemented as prototypes. Since writing prototypes is a lot like writing classes, this might be scary if you feel that writing classes is intimidating. Don't worry -- the minimum that you need to write a chucklib process is small and straightforward. In this context, prototypes provide the opportunity to grow into highly complex algorithms while keeping the code clear. But you don't need to write complex code to use prototypes!</p>
+<p class="p2"><br></p>
+<p class="p3">The <a href="../../ddwPrototype/Help/Proto.html"><span class="s1">Proto</span></a> class implements prototypes for chucklib -- see its help file for details. It's just like an <a href="SC://Environment"><span class="s1">Environment</span></a>, with some additional features that simplify prototype usage. The basics work like this:</p>
+<p class="p2"><br></p>
+<p class="p5">~myProto = <span class="s2">Proto</span>.new({</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// use ~environmentVariables inside the Proto</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~aVariable = 10;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~anotherVariable = 20;</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// store a function in the Environment</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~aMethod = {</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~aVariable.rand;<span class="Apple-tab-span">	</span></span>// the function's return value is the method's result</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~anotherMethod = {</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// you can call this Proto's methods by value-ing the function</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rrand(~aMethod.value, ~anotherVariable);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">});</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s3">~myProto.aVariable;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// access variables by dot-syntax, like normal objects</p>
+<p class="p5">~myProto.anotherVariable = 30;<span class="Apple-tab-span">	</span><span class="s4">// change variables</span></p>
+<p class="p6"><span class="s3">~myProto.aMethod;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// enters the Proto environment and runs the function</p>
+<p class="p5">~myProto.anotherMethod;</p>
+<p class="p2"><br></p>
+<p class="p3">That's it... not too complicated! You can make a new "instance" of a Proto by calling <b>copy</b> on it. If you want a new prototype that inherits from an existing Proto, use <b>clone</b>:</p>
+<p class="p2"><br></p>
+<p class="p5">~childProto = ~myProto.clone({</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~anotherMethod = { ~anotherVariable / ~aVariable };</p>
+<p class="p5">});</p>
+<p class="p7"><br></p>
+<p class="p6">// no need to restate the variables from ~myProto - they are inherited</p>
+<p class="p5">~childProto.anotherMethod;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>2. Processes</b></p>
+<p class="p2"><br></p>
+<p class="p3">A chucklib process uses a Proto object to hold a behavioral definition (a Pattern or Routine) along with data the Pattern needs to do its work.</p>
+<p class="p2"><br></p>
+<p class="p3">Not much is needed to create a process. In fact, all you have to do is write a function to return the desired Pattern, and save that function into the Proto under the name <b>~asPattern</b>. (For convenience, I will stop saying "Pattern or Routine" and just say "Pattern." This is actually more technically accurate -- the ~asPattern function is expected to return some kind of playable Pattern. But, if you're more accustomed to writing Routines or Tasks, you can use the <a href="SC://Prout"><span class="s1">Prout</span></a> Pattern, which, for playing purposes, behaves just like a Task.)</p>
+<p class="p2"><br></p>
+<p class="p8">Proto<span class="s3">({</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>~asPattern = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pbind</span>(<span class="s5">\degree</span>, <span class="s2">Pn</span>(<span class="s2">Pseries</span>(0, 1, 8), <span class="s2">inf</span>), <span class="s5">\dur</span>, 0.125)</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">});</p>
+<p class="p2"><br></p>
+<p class="p3">That's just a generic Proto that happens to conform to the specifications for a chucklib process. It isn't really a process yet. To make it one, you have to chuck the Proto into one of the process classes, BP or PR. After that, you can play, stop and otherwise manipulate the process.</p>
+<p class="p2"><br></p>
+<p class="p8">Proto<span class="s3">({</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>~asPattern = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Pbind</span>(<span class="s5">\degree</span>, <span class="s2">Pn</span>(<span class="s2">Pseries</span>(0, 1, 8), <span class="s2">inf</span>), <span class="s5">\dur</span>, 0.125)</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">}) =&gt; <span class="s2">BP</span>(<span class="s5">\cmaj</span>);</p>
+<p class="p7"><br></p>
+<p class="p6"><span class="s2">BP</span><span class="s3">(</span><span class="s5">\cmaj</span><span class="s3">).play(1);<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// (1) says to start on the next beat</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\cmaj</span>).stop(1);</p>
+<p class="p6"><span class="s2">BP</span><span class="s3">(</span><span class="s5">\cmaj</span><span class="s3">).free;<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// destroy the BP and all its contents</p>
+<p class="p2"><br></p>
+<p class="p3"><b>BP</b> stands for "Bound Process"; in a bound process, the behavioral definition (~asPattern) is bound to specific data to achieve a particular result. You might also want to define behavior without insisting on specific data. That's the idea of a "process prototype," or <b>PR</b>. In very general terms, you could say that PR is to BP as class is to instance.</p>
+<p class="p2"><br></p>
+<p class="p3">A PR is meant to be relatively stable; it exists to be copied for specific uses, but for no other reason. Consequently PR cannot play, stop or do anything musical. It's just a storage device. When you chuck a PR into a BP, it becomes a playable instance. The importance of that comes in the next two sections.</p>
+<p class="p2"><br></p>
+<p class="p3">In the meantime, this is the simplest entry point into chucklib. Write your Pattern, Routine or Task, wrap it in a Proto under the ~asPattern method, and you can immediately benefit from chucklib's scheduling strategies and other organizational devices.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>3. Stream or function replacement</b></p>
+<p class="p2"><br></p>
+<p class="p3">The previous example created a process that can do only one thing: play an ascending C major scale in 32nd notes. What if you want use the same basic format of the Pattern, but have it play arbitrary pitches in any rhythm?</p>
+<p class="p2"><br></p>
+<p class="p3">Since the goal is to reuse the same Pattern structure, that suggests PR should hold the basic structure. But, since we want to change the content of the Pbind, instead of hardwiring Patterns for the keys, we should use placeholders that will look to Proto variables for the real Patterns to use. In chucklib, the placeholder is BPStream.</p>
+<p class="p2"><br></p>
+<p class="p8">Proto<span class="s3">({</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>~asPattern = {</p>
+<p class="p9"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">Pbind</span><span class="s3">(</span>\degree<span class="s3">, </span><span class="s2">BPStream</span><span class="s3">(</span>\degree<span class="s3">), </span>\dur<span class="s3">, </span><span class="s2">BPStream</span><span class="s3">(</span>\dur<span class="s3">));</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~degree = <span class="s2">Pn</span>(<span class="s2">Pseries</span>(0, 1, 8), <span class="s2">inf</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~dur = 0.125;</p>
+<p class="p5">}) =&gt; <span class="s2">PR</span>(<span class="s5">\pitches</span>);</p>
+<p class="p7"><br></p>
+<p class="p6">// make the playable instance</p>
+<p class="p9"><span class="s2">PR</span><span class="s3">(</span>\pitches<span class="s3">) =&gt; </span><span class="s2">BP</span><span class="s3">(</span>\p<span class="s3">);</span></p>
+<p class="p2"><br></p>
+<p class="p3">Now, when you play BP(\p), it sounds the same as the hard coded example above. But you can now change the stream references just by assigning new Patterns to the corresponding Proto variables. If you do this while the process is playing, the change takes effect immediately.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\p</span>).play(1);</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\p</span>).degree = <span class="s2">Pbrown</span>(0, 14, 4, <span class="s2">inf</span>).round;</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\p</span>).dur = <span class="s2">Prand</span>([<span class="s2">Pn</span>(0.0625, 4), <span class="s2">Pn</span>(0.125, 2), 0.25, 0.5], <span class="s2">inf</span>);</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\p</span>).stop(1);</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\p</span>).free;</p>
+<p class="p2"><br></p>
+<p class="p3">Why go through the extra layer of the PR? You could just chuck the Proto directly into a BP. That's fine if you only need one BP. What if you want several BPs that do basically the same thing, but use different child Patterns? Your choices are, rerun the Proto definition for every BP, or run it once and save it in a PR, whereupon you can use just one short line -- <b>PR(\name) =&gt; BP(\copy)</b> -- to make as new copies, as many times as you need. So, you can use a complex behavior without having to restate the behavior every time.</p>
+<p class="p2"><br></p>
+<p class="p3">If you prefer to use Routines or Tasks instead of Patterns, you can still split code out into Proto methods. Since those "methods" are just functions stored in the environment, you can replace them any time and the Routine will pick up the change next time it calls the method.</p>
+<p class="p2"><br></p>
+<p class="p8">SynthDef<span class="s3">(</span><span class="s5">\sinGrain</span><span class="s3">, { </span>|freq = 440, amp = 0.1|</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s2">var</span><span class="Apple-tab-span">	</span>sig = <span class="s2">SinOsc</span>.ar(freq, 0, amp) * <span class="s2">EnvGen</span>.kr(<span class="s2">Env</span>.perc(0.01, 0.1), doneAction: 2);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s2">Out</span>.ar(0, sig ! 2);</p>
+<p class="p5">}).send(s);</p>
+<p class="p7"><br></p>
+<p class="p8">Proto<span class="s3">({</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>~calcPitch = { (rrand(0, 7).degreeToKey(#[0, 2, 4, 5, 7, 9, 11], 12) + 60).midicps };</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~calcDur = { #[0.125, 0.25, 0.5].choose };</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~asPattern = {</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">Prout</span><span class="s3">({<span class="Apple-tab-span">	</span></span>// note Prout - NOT Routine or Task - here</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>loop {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>s.makeBundle(0.2, {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">Synth</span>(<span class="s5">\sinGrain</span>, [freq: ~calcPitch.value]);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>});</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~calcDur.value.wait;</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>})</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">}) =&gt; <span class="s2">PR</span>(<span class="s5">\routine</span>);</p>
+<p class="p7"><br></p>
+<p class="p9"><span class="s2">PR</span><span class="s3">(</span>\routine<span class="s3">) =&gt; </span><span class="s2">BP</span><span class="s3">(</span>\r<span class="s3">);</span></p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\r</span>).play(1);</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\r</span>).calcPitch = { exprand(200, 1200) };</p>
+<p class="p7"><br></p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\r</span>).stop(1);</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\r</span>).free;</p>
+<p class="p2"><br></p>
+<p class="p3">At this point, someone could say, "Why do you need the extra weight of PR and BP, when you can do the same thing with a couple of variables and a freestanding Routine?" That's just because this is a trivially simple Routine. If the Routine spanned several dozen lines and depended on 30 or 40 other functions, it would be a nightmare to keep track of all those objects individually, not to mention the trouble if you wanted to make an independent copy of that process. (How would you be sure variable names would not collide?) Making a chucklib process out of it, as shown here, lets you address the whole object group as a single object... which, in terms of performance, it really is. The implementation involves several objects, but as a musical or compositional unit, it's just that -- one unit.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>4. Automatic initialization and clean-up</b></p>
+<p class="p2"><br></p>
+<p class="p3">Suppose you write a Pattern that plays bits of a sound file. If you use it in performance, you have to remember to load the file into a server buffer before playing the Pattern (easily forgotten).</p>
+<p class="p10"><br></p>
+<p class="p6">// Here, we use a standard synthdef installed by chucklib.</p>
+<p class="p7"><br></p>
+<p class="p11"><span class="s3">b = </span><span class="s2">Buffer</span><span class="s3">.read(s, </span>"sounds/a11wlk01.wav"<span class="s3">);</span></p>
+<p class="p7"><br></p>
+<p class="p5">p = <span class="s2">Pbind</span>(</p>
+<p class="p9"><span class="s3"><span class="Apple-tab-span">	</span></span>\instrument<span class="s3">, </span>\bufGrainPan<span class="s3">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\start</span>, <span class="s2">Pwhite</span>(0, 0.7, <span class="s2">inf</span>) * b.numFrames,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\time</span>, <span class="s2">Pwhite</span>(1, 5, <span class="s2">inf</span>) * 0.1,</p>
+<p class="p9"><span class="s3"><span class="Apple-tab-span">	</span></span>\delta<span class="s3">, </span><span class="s2">Pkey</span><span class="s3">(</span>\time<span class="s3">),</span></p>
+<p class="p9"><span class="s3"><span class="Apple-tab-span">	</span></span>\bufnum<span class="s3">, b,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\pan</span>, <span class="s2">Pwhite</span>(-1.0, 1.0, <span class="s2">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">\amp</span>, 0.5</p>
+<p class="p5">).play;</p>
+<p class="p7"><br></p>
+<p class="p5">p.stop;</p>
+<p class="p5">b.free;</p>
+<p class="p2"><br></p>
+<p class="p3">Wouldn't it be nice if you could associate the buffer with the Pattern, so that the buffer would load automatically when you need the Pattern and would be released when the Pattern is no longer needed? Chucklib makes it simple. When you chuck a PR into a BP, it calls the <b>~prep</b> function. Whatever initialization you need should go in this function. Later, when you free the BP, <b>~freeCleanup</b> can remove anything you created.</p>
+<p class="p2"><br></p>
+<p class="p5">(</p>
+<p class="p6">// hide this code away in a separate file that you load at the start of a piece</p>
+<p class="p8">Proto<span class="s3">({</span></p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// we could also use some placeholders here</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// for simplicity, not here -- "exercise for the reader"</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~asPattern = {</p>
+<p class="p8"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Pbind<span class="s3">(</span></p>
+<p class="p9"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\instrument<span class="s3">, </span>\bufGrainPan<span class="s3">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\start</span>, <span class="s2">Pwhite</span>(0, 0.7, <span class="s2">inf</span>) * ~buf.numFrames,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\time</span>, <span class="s2">Pwhite</span>(1, 5, <span class="s2">inf</span>) * 0.1,</p>
+<p class="p9"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\delta<span class="s3">, </span><span class="s2">Pkey</span><span class="s3">(</span>\time<span class="s3">),</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\bufnum</span>, ~buf,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\pan</span>, <span class="s2">Pwhite</span>(-1.0, 1.0, <span class="s2">inf</span>),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">\amp</span>, 0.5</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// initialization</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// by using ~variables for the soundfile to load,</p>
+<p class="p6"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// you can use this process with any soundfile</p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span>~path = </span>"sounds/a11wlk01.wav"<span class="s3">;</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span>~prep = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~buf = <span class="s2">Buffer</span>.read(s, ~path);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5"><span class="Apple-tab-span">	</span>~freeCleanup = {</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~buf.free;</p>
+<p class="p5"><span class="Apple-tab-span">	</span>};</p>
+<p class="p5">}) =&gt; <span class="s2">PR</span>(<span class="s5">\bufSlice</span>);</p>
+<p class="p5">)</p>
+<p class="p7"><br></p>
+<p class="p6">// then when it's time to play, all you need is this</p>
+<p class="p9"><span class="s2">PR</span><span class="s3">(</span>\bufSlice<span class="s3">) =&gt; </span><span class="s2">BP</span><span class="s3">(</span>\buf<span class="s3">);</span></p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\buf</span>).play;</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\buf</span>).stop;</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\buf</span>).free;</p>
+<p class="p2"><br></p>
+<p class="p3">That's all well and good, but you might want it to work on a different sound file. It isn't as obvious as it sounds at first. If you do this:</p>
+<p class="p2"><br></p>
+<p class="p6">// Doesn't work - buffer is loaded before you give it the right path</p>
+<p class="p5"><span class="s2">PR</span>(<span class="s5">\bufSlice</span>) =&gt; <span class="s2">BP</span>(<span class="s5">\buf</span>); <span class="s2">BP</span>(<span class="s5">\buf</span>).path = <span class="s6">"newpath"</span>;</p>
+<p class="p2"><br></p>
+<p class="p3">-- it's already too late to change the path, because the buffer loads immediately. Chucklib's answer is to let you add arbitrary parameters to a chuck operation. These parameters go into the process object before initialization, so you can change the path, and then the buffer loads.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2">PR</span>(<span class="s5">\bufSlice</span>).chuck(<span class="s2">BP</span>(<span class="s5">\buf</span>), <span class="s2">nil</span>, parms: (path: <span class="s6">"sounds/a11wlk01-44_1.aiff"</span>));</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\buf</span>).play;</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\buf</span>).stop;</p>
+<p class="p5"><span class="s2">BP</span>(<span class="s5">\buf</span>).free;</p>
+<p class="p2"><br></p>
+<p class="p3">Initially, you might not use the parameter list much, but the more complicated the processes are, the more useful it becomes. Some of the built-in process prototypes, especially the drum machine processes (<b>\bufPerc</b>, <b>\defPerc</b> and <b>\break</b>), use the parameter list for almost all initialization.</p>
+<p class="p2"><br></p>
+<p class="p3">Again, the most important point here is -- use what is approachable at first, and don't worry about the whole picture. Once you get comfortable with the basic techniques, there's plenty of room to grow, but there's no need to get anxious about features you might not need yet.</p>
+</body>
+</html>

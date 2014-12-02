@@ -1,0 +1,90 @@
+TITLE:: HarmonicMetric
+SUMMARY:: Abstracts different harmonic metrics.
+CATEGORIES:: DissonanceLib
+RELATED:: Classes/Dissonance, Classes/PitchSet, Classes/HarmonicVector 
+Switches between harmonic measures in link::Classes/SequenceableCollection#-rationalize:: and in classes such as link::Classes/Dissonance:: and link::Classes/PitchSet::.
+
+DESCRIPTION::This class is used in Dissonance and PitchSet in order to classify and analyze the generated intervals according to different harmonic metrics. The ones included are the most useful (Tenney's Harmonic Distance, Barlow's Harmonicity and Euler's Gradus Suavitatis) but others can be added to the class. 
+See link::Overviews/numberExtras:: for more info on the definition of the metrics.
+
+CLASSMETHODS::
+
+method:: new
+metric - A symbol. Can be code::\harmonicity::, code::\harmonicDistance:: or code::\gradusSuavitatis::. Default is code::\harmonicity::.  
+
+code::
+g = HarmonicMetric.new;	// posts harmonicity
+g.value([5,4]);	// the harmonic intensity of 5/4
+::
+
+INSTANCEMETHODS::
+
+method::	type
+
+Instance Variable. The current type of harmonic metric. Can be changed. 
+		
+code::		
+g = HarmonicMetric(\gradusSuavitatis);
+g.type = \harmonicDistance;
+::
+				
+
+	
+method:: value
+Give the values of the harmonic metric for an array of [p, q] ratios.
+ratios - A collection of ratios or a single [p,q] ratio.
+		
+code::		
+r = [ [1,1], [1,2], [3,2], [5,6], [11,8], [13,12] ];
+g = HarmonicMetric.new(\harmonicDistance); 	
+g.value(r).round(0.001); 
+g.type = \harmonicity;
+g.value(r).round(0.001); // as can be seen, harmonicity decreases with harmonic dissonance
+						// while gradusSuavitatis and harmonicDistance increase
+g.type = \gradusSuavitatis
+g.value(r); 			// the gradus function returns integer values
+::
+
+method::	mostHarmonic
+Returns the most harmonic ratio from the collection according to the current type of metric. 
+ratios - A collection of ratios.
+		
+code::
+g = HarmonicMetric.new;
+g.mostHarmonic([ [3,2], [4,3]]); // a fifth is more harmonic than a fourth
+::
+
+method:: leastHarmonic
+Same as above but for the least harmonic of a ratio collection. 
+ratios - A collection of ratios.
+		
+code::		
+g = HarmonicMetric(\gradusSuavitatis);
+g.leastHarmonic([ [7,4], [16,9]]); 	// a harmonic seventh is less harmonic than a minor 
+									// seventh according to gradusSuavitatis
+g.type = \harmonicDistance;
+g.leastHarmonic([ [7,4], [16,9]]); 	// but according to harmonic distance, 
+									// 16/9 is less harmonic than 7/4
+::										
+
+method:: order
+Order the collection of ratios according to the current harmonic metric type. 
+		
+code::		
+// compare the 3 different results: 
+g = HarmonicMetric.new; 	// default is harmonicity
+g.order([[1,1],[9,8],[5,4],[4,3],[3,2],[5,3],[15,8],[2,1]])
+g.type = \gradusSuavitatis; // change type and reorder
+g.order([[1,1],[9,8],[5,4],[4,3],[3,2],[5,3],[15,8],[2,1]])
+g.type = \harmonicDistance; // change type and reorder 
+g.order([[1,1],[9,8],[5,4],[4,3],[3,2],[5,3],[15,8],[2,1]])
+::
+
+
+method:: asString
+Allows the representation of an instance object printout its type. It is not used on its own.
+		
+code::
+g = HarmonicMetric.new; 	// prints out its type
+g.type = \gradusSuavitatis;
+::

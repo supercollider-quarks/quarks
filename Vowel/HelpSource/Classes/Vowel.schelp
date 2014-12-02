@@ -1,0 +1,559 @@
+CLASS:: Vowel
+summary:: convenience class to store and manipulate formant information 
+categories:: Convenience
+related:: Classes/Formlet, Classes/Formant
+
+DESCRIPTION::
+A Vowel contains and handles data to describe formants that allow to distinguish the vowel sounds \a, \e, \i, \o, \u for the registers \bass, \tenor, \counterTenor, \alto and \soprano. The current implementation uses formant data that originally appeared in the C-sound Manual: 
+http://www.csounds.com/manual/html/MiscFormants.html
+
+
+2011 -- Florian Grond, Till Bovermann
+
+Supported by:
+the Ambient Intelligence Group, CITEC ( http://www.techfak.uni-bielefeld.de/ags/ami )  Bielefeld University, and
+the TAI Studio ( http://TAI-Studio.org ), Department of Media, Aalto University, Helsinki.
+Many thanks go to Alberto de Campo and and Julian Rohrhuber.
+
+
+CLASSMETHODS::
+
+METHOD:: formLib
+holds formant information
+
+code::
+Vowel.formLib.at(\a)
+Vowel.formLib.at(\a, \bass)
+Vowel.formLib.at(\a, \bass, \freq)
+Vowel.formLib.postTree;
+::
+
+returns:: a Dictionary
+
+METHOD:: new
+creates a new instance of Vowel
+
+argument:: vowel
+select a vowel by the symbols \a, \e, \i, \o, \u. default value is 'a'.
+
+argument:: register
+select a register by the symbols \bass, \tenor, \counterTenor, \alto, \soprano. Default value is 'bass'.
+
+returns:: a Vowel
+
+discussion::
+code::
+Vowel(); // defaults to A bass
+Vowel(\a, \bass); 
+Vowel(\e, \tenor); 
+Vowel(\i, \counterTenor); 
+Vowel(\o, \alto); 
+Vowel(\u, \soprano); 
+
+{Formants.ar(100, Vowel(\e, \bass)) * 0.1 }.play
+{Formants.ar(200, Vowel(\o, \alto)) * 0.1 }.play
+{Formants.ar(300, Vowel(\i, \soprano)) * 0.1 }.play
+::
+
+The class exhibits multichannel expansion behaviour
+
+code::
+{Formants.ar(100, Vowel([\e, \o], [\bass])) * 0.1 }.play
+{Formants.ar(100, Vowel(\e, [\bass,\alto])) * 0.1 }.play
+{Formants.ar(100, Vowel([\e, \o], [\bass,\alto])) * 0.1 }.play
+::
+
+METHOD:: basicNew
+You can also explicitly set the formants
+
+code::
+Vowel.basicNew([ 300, 400, 2700, 3800, 4950 ], [ 0, -16, -35, -40, -6 ], [ 50, 10, 170, 180, 200 ])
+::
+
+argument:: freqs
+an array of freqs
+
+argument:: dBs
+an array of dBs
+
+argument:: widths
+an array of widths in Hz
+
+returns:: a Vowel
+
+METHOD:: compose
+compose your own vowel based on the ones defined in formTable. Wraps when argument lengths differ (as in channel expansion).
+
+argument:: vowelNames
+an array describing the vowels' character: \a, \e, \i, \o, \u.
+
+argument:: registers
+an array describing the vowels' voice:  \bass, \tenor, \counter, \alt, \sopran.
+
+argument:: weights
+an array describing the vowels' weight relative to the others. Should be a normalized sum.
+
+returns:: a Vowel
+
+discussion::
+code::
+Vowel.compose([\a,\e,\i], [\bass,\soprano,\alto], [0.2, 0.3, 0.5]);
+Vowel.compose([\a,\e], [\soprano], [9, 4].normalizeSum);
+Vowel.compose([\a], [\tenor, \counterTenor, \soprano], [1, 4, 2].normalizeSum);
+
+(
+{ var v = Vowel.compose(
+	[\a, \e, \i], 
+	[\soprano, \bass, \tenor, \counterTenor, \alto], 
+	({10.rand}!5).normalizeSum
+);
+Formants.ar(50 + 300.rand, v) * 0.1; 
+}.play;
+)
+::
+
+INSTANCEMETHODS::
+
+METHOD:: freqs
+Array of freqs, one for each formant.
+
+code::
+v = Vowel(\e, \tenor)
+v.freqs
+v.freqs_({|i| 100 * (i+1) }!5)
+v.freqs
+::
+
+METHOD:: dBs
+Array of dBs, 
+
+code::
+v = Vowel(\u, \counterTenor)
+v.dBs
+v.dBs_({|i| -10 * (i) }!5)
+v.dBs
+::
+
+METHOD:: widths
+array of widths in Hz, one for each formant.
+
+code::
+v = Vowel(\o, \soprano)
+v.widths
+v.widths_({ 500.rand }!5)
+v.widths
+::
+
+
+METHOD:: amps
+array of amps in dB, one for each formant.
+
+METHOD:: rqs
+array of rQ values, one for each formant.
+
+
+METHOD:: midinotes
+array of midinotes, one for each formant.
+
+
+
+
+
+METHOD:: addFormants
+
+code::
+v = Vowel()
+v.addFormants([3000,4000], -6, [200, 200])
+
+{Formants.ar(100, v) * 0.1 }.play
+{Formants.ar(100, Vowel()) * 0.1}.play
+		
+{[Formants.ar(100, Vowel()) * 0.1, Formants.ar(100, v) * 0.1 ]}.play
+
+v.removeFormants([5,6])
+::
+
+argument:: freq
+
+argument:: db
+
+argument:: width
+
+
+METHOD:: removeFormants
+
+
+argument:: index
+index of the formant to remove
+
+
+
+METHOD:: ampAt
+get amp value for freq according to order of filter
+
+code::
+Vowel(\u).ampAt(100);	
+	
+~range = {|i|i*2}!2000;	
+Vowel(\u).ampAt(~range  ).plot;
+Vowel(\u).ampAt(~range  ).ampdb.plot(minval: -100, maxval: 0);	
+
+Vowel(\u).ampAt(~range, 0.5  ).plot;
+Vowel(\u).ampAt(~range, 0.5  ).ampdb.plot(minval: -100, maxval: 0);
+
+Vowel(\u).ampAt(~range, 3  ).plot;
+Vowel(\u).ampAt(~range,  3 ).ampdb.plot(minval: -100, maxval: 0);
+
+Vowel(\u).ampAt(~range, [3,1,0.5,2]  ).plot
+Vowel(\u).ampAt(~range,  [3,1,0.5,2]  ).ampdb.plot(minval: -100, maxval: 0)
+::
+
+argument:: freq
+argument:: filterOrder
+
+
+
+METHOD:: plot
+plot the frequency spectrum of the vowel.
+
+argument:: fmin
+argument:: fmax
+argument:: fstep
+argument:: order
+
+METHOD:: asArray
+serialise the vowel into an array
+
+returns::
+an arrays of [ freqs, dBs, widths ]
+
+METHOD:: asEvent
+convert into an Event
+
+METHOD:: asKeyValuePairs
+convert into an array of key value pairs
+
+argument:: id
+optional argument added to each key
+
+
+METHOD:: addControls
+creates controls in the wrapping synth such that the vowel's parameters can be controlled seamlessly from the language.
+
+argument:: id
+Optional. If more than one vowel need to be controlled inside one Synth, this id can be used to differentiate them from each other. 
+
+argument:: rate
+either \kr or \ar
+
+argument:: lag
+array of lag times
+
+discussion::
+code::
+(
+x = SynthDef(\vowel, {|freq = 420|
+	Out.ar(0, 
+		Formants.ar(freq.lag(0.1), Vowel(\a).addControls(lag: 1)) * 0.01
+	)
+}).play
+)
+		
+x.setn(*([\freq, exprand(100, 1000)] ++ Vowel(\u, \soprano).asKeyValuePairs));
+x.setn(*([\freq, exprand(100, 500)] ++ Vowel(\e, \bass).asKeyValuePairs));
+x.setn(*([\freq, exprand(400, 1000)] ++ Vowel(\a, \soprano).asKeyValuePairs));
+::
+
+METHOD:: +
+plus
+
+argument:: that
+argument:: adverb
+
+
+METHOD:: -
+minus
+
+argument:: that
+argument:: adverb
+
+METHOD:: *
+multiply
+
+argument:: that
+argument:: adverb
+
+METHOD:: /
+divide
+argument:: that
+argument:: adverb
+
+METHOD:: blend
+blends two vowels by linear interpolation between of midinotes, widths and dBs.
+
+argument:: that
+a Vowel
+
+argument:: blendFrac
+coefficient. Range from 0.0 (this) to 1.0 (that). 
+
+returns:: a new instance of Vowel
+
+METHOD:: brightenRel
+lift the upper formants by multiplying their dBs with a factor. 
+The sum of all dBs remains fixed.
+
+argument:: bright
+coefficient to brighten the vowel. Typical ranges are from 1 (no change) to 3.
+
+argument:: refFormant
+reference  formant, whose amplitude remains unchanged. Default value is 0 (first formant)
+
+discussion::
+NOTE: If the coefficient bright is > 1 and the refFormant is > 0, the resulting signal may raise to a very big amplitude.
+
+code::
+Vowel().brightenRel(1  ).dBs.postln; 
+Vowel().brightenRel(0.1).dBs.postln;
+Vowel().brightenRel(1.5).dBs.postln;
+
+// refFormant = 0 loud on the left
+{Formants.ar(100, Vowel().brightenRel(MouseX.kr(0, 2), 0 )) * 0.1}.play
+// refFormant = 1
+{Formants.ar(100, Vowel().brightenRel(MouseX.kr(0, 2), 1 )) * 0.1}.play
+// refFormant = 2
+{Formants.ar(100, Vowel().brightenRel(MouseX.kr(0, 2), 2 )) * 0.1}.play
+// refFormant = 3
+{Formants.ar(100, Vowel().brightenRel(MouseX.kr(0, 2), 3 )) * 0.1}.play
+// refFormant = 4 loud on the right
+{Formants.ar(100, Vowel().brightenRel(MouseX.kr(0, 2), 4 )) * 0.1}.play
+::
+
+METHOD:: brightenLin
+allows to lift the upper formants by multiplying their dBs. the sum of all dBs remains constant.
+
+argument:: bright
+coefficient to brighten the vowel. Typical ranges are from 1 (no change) to 3.
+
+argument:: refFormant
+reference  formant, whose amplitude remains unchanged. Default value is 0 (first formant)
+
+discussion::
+code::
+Vowel().brightenLin(-1).dBs.postln; 
+Vowel().brightenLin( 0).dBs.postln;
+Vowel().brightenLin( 1).dBs.postln;
+
+// refFormant = 0 loud on the left
+{Formants.ar(100, Vowel().brightenLin(MouseX.kr(0, 20), 0 )) * 0.1}.play
+// refFormant = 1
+{Formants.ar(100, Vowel().brightenLin(MouseX.kr(0, 20), 1 )) * 0.1}.play
+// refFormant = 2
+{Formants.ar(100, Vowel().brightenLin(MouseX.kr(0, 20), 2 )) * 0.1}.play
+// refFormant = 3
+{Formants.ar(100, Vowel().brightenLin(MouseX.kr(0, 20), 3 )) * 0.1}.play
+// refFormant = 4 loud on the right
+{Formants.ar(100, Vowel().brightenLin(MouseX.kr(0, 20), 4 )) * 0.1}.play
+::
+
+
+METHOD:: brightenExp
+allows to relatively lift the upper formants by keeping the sum of gains of all formants constant.
+
+
+argument:: bright
+coefficient to brighten the vowel. Typical ranges are from 1 (no change) to 3.
+
+discussion::
+code::
+Vowel().brightenExp(1).dBs.postln; 
+Vowel().brightenExp(0.1).dBs.postln;
+Vowel().brightenExp(1.5).dBs.postln;
+
+{Formants.ar(100, Vowel(\a, \bass).brightenExp(MouseX.kr(0,5)))  * 0.1 }.play;
+::
+
+METHOD:: asKlankRef
+(describe method here)
+
+argument:: baseFreq
+undocumented
+argument:: numPartials
+argument:: ring
+
+METHOD:: printOn
+prettyprint support
+argument:: stream
+
+METHOD:: storeArgs
+archival support
+
+
+EXAMPLES::
+
+In SynthDefs:
+
+code::
+(
+SynthDef(\vowblend,{|freq = 100, b1 = 0.5, b2 = 0.5, b3 = 0.5, b4 = 0.5 bright = 0, pan = 0|
+	var va = Vowel(\a, \bass),
+	    ve = Vowel(\e, \tenor),
+	    vi = Vowel(\i, \counterTenor),
+	    vo = Vowel(\o, \alto),
+	    vu = Vowel(\u, \soprano),
+	    sig;
+	   
+	    sig =  Formants.ar(
+	    	freq, 
+	    	va
+	    		.blend(ve, b1)
+			.blend(vi, b2)
+			.blend(vo, b3)
+			.blend(vu, b4)
+			.brightenExp(bright, 1) 
+		) 
+		* EnvGen.kr(Env.perc, 3.0, doneAction: 2);
+
+	Out.ar(0,  Pan2.ar(sig, pan, 0.1));
+}).add
+)
+
+
+(
+Task({  32.do({ arg i; 
+	Synth(\vowblend, [	
+		\pan, i.linlin(0,32, -1, 1 ),
+		\freq, i.linlin(0,32, 30, 66 ).midicps,
+		\b1, 2.rand,
+		\b2, 2.rand, 
+		\b3, 2.rand,
+		\b4, 2.rand, 
+		\bright,  1.5.rand
+	]); 
+	0.25.wait
+
+});}).play
+)
+::
+
+using addControls to create buses 
+
+code::
+(
+x = SynthDef(\test, {
+	Out.ar(0, 
+		Formants.ar(420, Vowel(\a).addControls(3)) * 0.01
+	)
+}).play
+)
+
+x.inspect
+
+x.setn(*Vowel(\i).asKeyValuePairs(3));
+::
+
+JITLib style:
+
+code::
+NdefMixer(s);
+
+Ndef(\vowel, {Formants.ar(200, Vowel(\a, \soprano))  * 0.01 }).play
+
+(
+Ndef(\vowel, {
+	Formants.ar(200, 
+		Vowel(\o, \soprano)
+			.blend(Vowel(\i, \tenor), SinOsc.kr(10).range(0,1))) * 0.01
+}).play
+)
+
+
+(
+Ndef(\vowel, {
+	Formants.ar(LFNoise0.kr(10).exprange(100, 400), 
+		Vowel(\o, \soprano)
+			.brightenExp(SinOsc.kr(2).range(0,1), 1),
+		unfold: true
+	).mean * 0.01
+}).play
+)
+
+
+Ndef(\vowel, {
+	Formants.ar(200, Vowel(\a, \soprano).addControls(4)) * 0.01
+}).play
+
+Ndef(\vowel).setn(*Vowel(\e, \bass).asKeyValuePairs(4).flatten)
+Ndef(\vowel).setn(*Vowel(\u).asKeyValuePairs(4).flatten)
+
+
+Ndef(\vowel, {
+	Formants.ar(200, Vowel(\a, \soprano), unfold: true).scramble.keep(2) * 0.1
+}).play
+
+Ndef(\vowel).free(2)
+
+Ndef(\vowel).fadeTime = 4;
+
+(
+Ndef(\vowel, {
+	Formants.ar([1, 2, 4] * 240 * {LFNoise1.kr(5, 0.003, 1)}!3, Vowel(\a, [\bass, \tenor, \soprano]), 
+		freqMods: LFNoise1.ar(4*[0.1, 0.2, 0.3, 0.4, 0.5].scramble, 0.1, 		ampMods: [1, 1, 1, 0]
+)).sum * 0.1
+}).play
+)
+::
+
+
+Fun.
+
+code::
+( // CPU demanding 
+~freqs = {|i| 50 * 1.5.pow(i) }!9;
+~numChan = 2;
+r = Routine{
+	var sustain = 8, transition = 3, overlap = 4;
+	var period = 1.5 * 2.sqrt;
+	var harms, amps;
+	0.5.wait;
+	inf.do{
+		harms = {|i| (i+1) * ~freqs.choose }!60;
+		amps  = Vowel([\a,\e,\i,\o,\u].choose,[\bass,\tenor,\counterTenor,\alto,\soprano].choose).ampAt(harms);
+		{ PanAz.ar(~numChan, DynKlank.ar( `[~freqs,amps,amps],
+			Decay.ar(Impulse.ar( exp(1)/5.0 ), SinOsc.kr( pi/9.0, 1.0.rand ).range(0.05,0.7) )   ) *
+			EnvGen.kr(Env.new([-40,-20, -30,-40].dbamp, [2/5.0, 1/5.0,2/5.0],'exponential'), 1.0, timeScale: 35, levelScale: 0.1, doneAction: 2) ,SinOsc.kr(0.5, 1.0.rand) )}.play;
+		period.wait;
+	}
+};
+r.play;
+)
+r.stop;	//stop spawning new synths
+
+
+(
+Ndef(\vowel).fadeTime = 5;
+Ndef(\vowel, {
+	var freqs, dBs, widths, out;
+	var baseFreq = LFNoise0.kr([5, 10] * 0.1).round(0.1).exprange(50, 200) * [2, 1.01];
+	#freqs, dBs, widths =  (Vowel(\i, \soprano).blend(Vowel(\o, \bass), LFNoise1.kr(0.1265))).blend(Vowel(\e, \bass), LFNoise1.kr(10)).asArray;
+	
+	//freqs = freqs * SinOsc.ar([0.1, 0.2, 0.3, 0.4].scramble, Rand(), 0.1, 1);
+	freqs = freqs * LFNoise1.ar([0.1, 0.2, 0.3, 0.4].scramble, 0.1, 1);
+	
+	out = [freqs, widths, dBs.dbamp].flop.collect{ |args| 
+		Formant.ar(baseFreq, *args); 
+	}.flop;
+
+	out = out.collect{|vocal|
+		Splay.ar(vocal)
+	}.sum.postln;
+
+	out
+		* LFPulse.ar([9, 9.01], 0, 0.4).range(0, 1).lag(0.01, 0.5) 
+		* LFPulse.ar(0.1, [0, 0.35], [0.9, 0.8]).lag(0.01)
+
+ * 0.1
+
+}).play
+)
+::

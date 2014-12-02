@@ -1,0 +1,28 @@
+CLASS:: RedParticle
+SUMMARY:: an object that ages with time
+CATEGORIES:: Red>redUniverse
+RELATED:: Overviews/redUniverseExamplesOverview
+
+INSTANCEMETHODS::
+
+METHOD:: alive
+
+RETURNS::
+A link::Classes/Boolean::. true if age is greater than zero, else false.
+
+METHOD:: age
+Scalar that decrease by 1 for every update. The default is 1000.
+
+EXAMPLES::
+
+CODE::
+a= RedWorld.new
+b= RedParticle(a)
+
+a.objects
+b.dump
+
+300.do{b.update}
+b.age				//should now be 700
+b.alive				//yes!
+::

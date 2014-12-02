@@ -1,0 +1,221 @@
+TITLE:: MView
+summary:: a JITView for numbers
+categories:: Libraries>JITLib
+related:: Classes/JITView, Classes/MFunc
+
+DESCRIPTION::
+A view for displaying and editing objects in general und numbers in particular.
+MView will display numbers as sliders or multislider fields.
+Intended for guis which have to show very different objects at different times.
+
+code::
+
+// make a JITView: value, parent, bounds
+m = MView(123, nil, Rect(10, Window.screenBounds.height - 100, 300, 40));
+// needs a spec to display proper number range
+m.putDict(\myspec, \freq.asSpec.copy.step_(0.01)).refresh;
+m.label_(\freq);
+
+// now set its mode:
+m.mode_(\number);
+m.mode_(\code);
+m.mode_(\number);
+
+// \number mode works as follows:
+// value can be a single number, or an array of numbers.
+m.value_(30.0);
+m.value_([30, 300]);
+m.value_([30, 300, 3000]);
+
+m.action.add(\boing, { |mv| [\boing, mv.value].postcs });
+
+/* single number behavior:
+*	grabbing slider and moving it sets value and does action
+*	x sets to minval,
+	m to maxval,
+	c to center,
+	r to random value
+*/
+m.valueAction_(666);
+m.uv.keyDown($r);
+m.uv.keyDown($c);
+
+
+// multi-number behavior:
+m.valueAction = [60, 600, 6000];
+m.uv.keyDown($r);
+m.uv.keyDown($c);
+m.uv.keyDown($R);
+m.uv.keyDown($C);
+
+/*
+*	one can change values in one of these modes:
+*	click-dragging onto a single dot moves just that number within in the array
+* 	click-dragging on the right margin area rescales values by maxval
+* 	click-dragging on the left margin area rescales values by minval
+* 	click-dragging anywhere else shifts range of entire array of values
+
+* key actions:
+	x = shift all vals so that minItem is minval
+	m = shift all vals so that maxItem becomes maxval
+	c = shift range so mean(minItem, maxItem) becomes center of range (norm 0.5)
+	r = move range of values as is by a random amount
+
+	X = set all vals to minval
+	M = set all vals to maxval
+	C = set all vals to center of range (norm. 0.5)
+	R = randomize all values
+
+*/
+//
+m.putDict(\shiftMode, \clip);
+m.putDict(\shiftMode, \stop);
+
+
+m.putDict(\knobCol, Color.grey(0.0, 0.2));
+
+
+*/
+::
+
+CLASSMETHODS::
+
+private:: initClass
+
+INSTANCEMETHODS::
+
+PRIVATE:: init
+
+PRIVATE:: makeKeyDownActions, makeMouseActions, makeDrawFunc
+
+METHOD:: number
+shortcut to switch to number mode
+
+METHOD:: doEnter
+run enterAction
+
+  ARGUMENT:: uv
+the user view
+  ARGUMENT:: mod
+any modifier keys held while activating
+
+METHOD:: getUni
+get current value, unmapped into unipolar range.
+
+METHOD:: setUni
+set current value to unmapped unipolar value,
+using dict[\myspec] to map input value into spec range.
+
+METHOD:: mouseDownNumber
+the action performed on mouseDown - determines how value will be changed:
+if value is a single number, set value directly;
+if single point in array is clicked on, set that single value only;
+if left/right border is clicked, move that border and scale inner values;
+if clicked somewhere else in value block display, move all values.
+
+METHOD:: mouseMoveNumber
+changes value by one of the four methods set in mouseDownNumber.
+
+METHOD:: scaleMin
+scale all values in list by moving (normalized) minval
+
+METHOD:: scaleMax
+scale all values in list by moving (normalized) maxval
+
+METHOD:: setNormNumByIndex
+when value is an array of numbers, change value at index only.
+
+METHOD:: drawNumber
+the method that draws numerical display on the userview.
+
+EXAMPLES::
+
+code::
+Pdef(\test, Pbind(\dur, 0.25)).play;
+
+// try the different click-drag modes,
+// and try typing in different values
+m.action.add(\setPdef, { |mv| Pdef(\test).set(\freq, mv.value) });
+
+
+/* MView can show ghost values.
+	this is helpful when using controllers whose physical position
+	may differ from the param they are controlling.
+	(e.g. after switching presets, etc etc)
+*/
+
+(
+// make an MView
+m = MView(123, nil, Rect(10, Window.screenBounds.height - 100, 300, 40));
+m.putDict(\myspec, \freq.asSpec.copy.step_(0.01)).refresh;
+m.label_(\freq);
+m.action.add(\boing, { |mv| [\boing, mv.value].postcs });
+)
+
+// use MView to control an Ndef:
+
+// make an Ndef
+Ndef(\x, { VarSaw.ar(\freq.kr(100).lag(0.1) + [-0.1, 0.1]) * 0.2 }).play;
+// test setting directly:
+Ndef(\x).set(\freq, exprand(100, 500));
+// use MView to set Ndef freq param
+m.action.add(\set_x, { Ndef(\x).set(\freq, m.value.postln) });
+// make a skipjack to set MView to ndefs freq value
+z = SkipJack({ m.value = Ndef(\x).get(\freq); }, 0.1);
+
+// try setting Ndef freq -> mview gets updated
+Ndef(\x).set(\freq, exprand(100, 500));
+
+/*
+   When using a controller like a faderbox,
+   physical slider controls may be far away from the
+   current value of the process param they control.
+   In this case, one can use Softset to approach the proper
+   physical position and only take over control then.
+SoftSet.openHelpFile
+*/
+
+
+// use an EZSlider as a fake physical slider -
+// when used directly, it will introduce jumps:
+e = EZSlider(nil, nil, \slider1, \freq, { |sl| Ndef(\x).set(\freq, sl.value); });
+
+// better - use SoftSet to only take over when close enough
+e.action = { |sl| SoftSet(Ndef(\x), \freq, sl.value); };
+
+(
+// even better - use lastVals too, see SoftSet for explanations
+e.action = { |sl|
+	var lastFreq = e.getHalo(\lastFreq);
+	SoftSet(Ndef(\x), \freq, sl.value, lastVal: lastFreq);
+	e.addHalo(\lastFreq, sl.value);
+};
+)
+
+// would be nice to see the failing softsets value on the MView...
+
+	// enable ghost slider to appear, but nothing to show yet:
+m.drawFunc.enable(\ghost); m.refresh;
+	// show just the label
+m.putDict(\ghostLabel, 'sl1').refresh;
+	// label + ghost slider (value for ghostPos between 0.0 and 1.0)
+m.putDict(\ghostPos, 0.3).refresh;
+	// show just the slider
+m.putDict(\ghostLabel, nil).refresh;
+m.putDict(\ghostLabel, 'sl1').refresh;
+
+(
+// Now, show the sliders physical value on mview as ghost,
+// so as to know where to move to connect:
+
+e.action = { |sl|
+	var lastFreq = e.getHalo(\lastFreq);
+	m.putDict(\ghostPos, e.sliderView.value);
+	SoftSet(Ndef(\x), \freq, sl.value, lastVal: lastFreq);
+	e.addHalo(\lastFreq, sl.value);
+};
+)
+
+::
+
+

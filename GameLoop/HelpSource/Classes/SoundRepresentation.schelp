@@ -1,0 +1,31 @@
+TITLE:: SoundRepresentation
+summary:: A basic sound representation.
+categories:: Class
+related:: Overviews/Gameloop_Overview
+
+DESCRIPTION::
+This class can be used to create a basic sound representation with variable sound input.
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: repManager
+an instance of RepresentationManager
+
+ARGUMENT:: collisionFunc
+a function to be evaluated when a collision is detected. The function is passed the representation, entity and an array with the colliding entities
+
+ARGUMENT:: input
+a sound input in the form of a function. This is really defining the source of a NodeProxy. The input is defined as a function with a speed variable passsed in as the first argument. See link::Guides/QuickStart:: for an example
+
+ARGUMENT:: release
+the release time when the representation is removed
+
+INSTANCEMETHODS::
+
+METHOD:: remove
+This should not be called directly. Use .detach on the entity instead.
+
+METHOD:: add
+This should not be called directly. Use .attach on the entity instead.

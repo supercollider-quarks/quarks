@@ -1,0 +1,55 @@
+CLASS:: GlobalsGui
+summary:: shows the global variables in the interpreter.
+categories:: JITGui
+related:: Classes/Interpreter, Classes/AllGui, Classes/JITGui
+
+DESCRIPTION::
+GlobalsGui shows which global variables in the interpreter ae in use.
+
+code:: 
+
+	// make a GlobalsGui
+g = GlobalsGui.new; // sized for 12 items by default
+
+g.close
+
+	// make one for 8 items
+g = GlobalsGui(8);
+
+	// set some global variables - they should show up:
+a = 12;
+z = 8768768;
+q = (a: 123, b: 234);
+b = 1
+c = 2
+d = 4
+f = 1234
+	// when they become too many, a little scroller appears.
+
+// * try changing the window size - the textviews should adjust. //
+// * try writing into a textfield and evaluating - this sets the global variables. 
+// To check, do:
+this.dump
+
+::
+
+CLASSMETHODS::
+
+METHOD:: names
+all the variable names being shown, a-z, cmdLine, codeDump.
+
+METHOD:: new
+make a GlobalsGui
+
+argument:: numItems
+the number of slots for items in a-z
+
+argument:: parent
+a parent (window or view) in which to display the GlobalsGui
+
+argument:: bounds
+the bounds within which to display it.
+
+INSTANCEMETHODS::
+
+private::setDefaults, textViews, cmdLineView, codeDumpView, editKeys, winName, getName, makeViews, getState, checkUpdate 

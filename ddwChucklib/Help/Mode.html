@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.44">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p4 {margin: 0.0px 0.0px 0.0px 29.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #36701f}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #a41919}
+span.s1 {font: 14.0px Helvetica}
+span.s2 {color: #0000ff}
+span.s3 {color: #001ab2}
+span.s4 {color: #36701f}
+span.s5 {color: #a41919}
+span.s6 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Mode(\symbol)</b></span> -- automatic<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Holds a <a href="../../ddwTemperament/Help/ModalSpec.html"><span class="s2">ModalSpec</span></a> object. ModalSpec describes an arrangement of intervals within the octave and maps a flat semitone representation (e.g., MIDI note number) to and from a modal representation.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3">ModalSpec</span>(#[0, 2, 3, 5, 7, 9, 10], 12, 2) =&gt; <span class="s3">Mode</span>(<span class="s4">\default</span>);<span class="Apple-converted-space">  </span><span class="s5">// D dorian<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><br></p>
+<p class="p1">Once you have placed a ModalSpec into the mode collection, its symbolic name can stand in for the ModalSpec in many places.</p>
+<p class="p2"><br></p>
+<p class="p1">• mapMode / unmapMode calls:</p>
+<p class="p2"><br></p>
+<p class="p3">69.mapMode(<span class="s4">\default</span>) == 40</p>
+<p class="p2"><br></p>
+<p class="p1">• MIDIRecBuf properties: MIDIRecBuf(..., properties: (mode: \default))</p>
+<p class="p4">When this MIDI buffer is used in one of the built-in melodic or chord arpeggiator processes, it will be interpreted with reference to that mode.</p>
+<p class="p2"><br></p>
+<p class="p1">More interesting modal analysis is possible by referencing several modes within the same, composite mode.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s6">[</span>\cminor<span class="s6">, </span>\cmixolydian<span class="s6">] =&gt; </span><span class="s3">Mode</span><span class="s6">(</span>\cComposite<span class="s6">);</span></p>
+<p class="p6">// or (I like this syntax better)</p>
+<p class="p3">#[cminor, cmixolydian] =&gt; <span class="s3">Mode</span>(<span class="s4">\cComposite</span>);</p>
+<p class="p2"><br></p>
+<p class="p1">By default, conversion between modal and chromatic representations will use the first mode specified in the array. More important is the fact that the built-in melody and harmony processes divide input MIDI buffers into segments (phrases for melodies and chords for harmonies). Each segment is tested against each given mode and the best fitting mode is associated with the segment. This affects the consonance or dissonance level of further manipulations -- wholly musically relevant.</p>
+<p class="p2"><br></p>
+<p class="p1">The asMode method will return a Mode() object for the given Symbol, Mode() or nil. Note data should be converted using the mapMode and unmapMode methods.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3">nil</span>.asMode<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>--&gt; <span class="s3">Mode</span>(<span class="s4">\default</span>)</p>
+<p class="p3"><span class="s3">ModalSpec</span>.new.asMode<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>--&gt; the same <span class="s3">ModalSpec</span></p>
+<p class="p3"><span class="s4">\default</span>.asMode<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>--&gt; <span class="s3">Mode</span>(<span class="s4">\default</span>)</p>
+<p class="p3"><span class="s3">Mode</span>(<span class="s4">\default</span>).asMode<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>--&gt; <span class="s3">Mode</span>(<span class="s4">\default</span>)</p>
+<p class="p2"><br></p>
+</body>
+</html>

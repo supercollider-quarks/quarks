@@ -1,0 +1,79 @@
+TITLE:: SolarSystem
+summary:: a Solar System representation
+categories:: Libraries>Astronomy
+related:: Classes/Planet
+
+DESCRIPTION::
+This class provides a representation of a Solar System, where the planets can be found.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a solar system with all its 8 planets (sorry, Pluto)
+
+
+INSTANCEMETHODS::
+
+private:: init
+
+METHOD:: planets
+A Dictionary with all the planets
+
+
+
+EXAMPLES::
+
+code::
+// SOLAR SYSTEM SONIFICATION
+// it depends on SpatialRender and SSWorld classes
+(
+r = SpatialRender.new(s).verbose_(false);
+
+s.options.numOutputBusChannels_(20);
+~numAudioOutputs=2;
+~synths = Dictionary.new;
+
+w=SSWorld([60,60,5]).showView;
+w.setSweetSpotSize(0.0046491); // sun radius in AU
+
+SynthDef(\planet,{ |out=0, freq=200, modAmp=1, modFreq=1|
+
+	var sig = SinOsc.ar(freq+(modAmp*freq/2*SinOsc.kr(modFreq)));
+	Out.ar(out,sig*0.2);
+}).add
+)
+(
+y=SolarSystem.new;
+
+y.planets.do{|p,i|
+	var freq, modAmp,modFreq;
+
+	var o = SSObject.new(w,name:p.name.postln,channel:i,size:i).locSph_([p.perihelion,2pi.rand,0]);
+	o.setMotion(\orbit,2pi*p.orbitalPeriod.reciprocal.postln); // 1 earth year -> 2pi rad/s
+
+	// sound mapping: the bigger the lower, the faster the rotation period the faster and bigger the LFO
+	freq = p.mass.expexp(0.055,317.8,2000,100);
+	modFreq= p.rotationPeriod.linlin(0,243.0185,10,0,1);
+	modAmp = p.rotationPeriod.linlin(0,243.0185,0.5,0,1);
+	~synths.add(p.name -> Synth(\planet,[\out,~numAudioOutputs+i,\freq,freq,\modFreq,modFreq,\modAmp,modAmp]));
+
+	("jack_connect SuperCollider:out_"++(~numAudioOutputs+i+1)++" SuperCollider:in_"++(i+1)).systemCmd;
+
+	}
+
+
+)
+
+~synths.do(_.run(false))
+~synths[\mercury].run(true)
+~synths[\venus].run(true)
+~synths[\earth].run(true)
+~synths[\mars].run(true)
+~synths[\jupiter].run(true)
+~synths[\saturn].run(true)
+~synths[\uranus].run(true)
+~synths[\neptune].run(true)
+
+
+::
