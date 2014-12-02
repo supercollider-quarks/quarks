@@ -65,9 +65,9 @@ def update(match):
         if child.returncode:
             raise Exception("Failed to checkout %s %s" % (url, refspec))
     # stage any changes
-    err = subprocess.call(["git", "add", name])
+    err = subprocess.call(["git", "add", "%s/*" % name])
     if err:
-        raise Exception("Failed to git add %s" % name)
+        raise Exception("Failed to git add %s/*" % name)
 
 
 d = open('directory.txt', 'r')
