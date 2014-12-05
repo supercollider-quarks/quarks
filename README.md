@@ -1,5 +1,6 @@
 quarks
 ======
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/supercollider-quarks/quarks?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This repository collects all of the community contributed Super Collider Quarks.
 
