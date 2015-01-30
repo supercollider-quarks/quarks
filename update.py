@@ -46,7 +46,7 @@ def update(match):
     name = match.group('name')
     url = match.group('url')
     refspec = match.group('refspec')
-    print "Updating: ", name, url, refspec
+    print "\nUpdating: ", name, url, refspec
 
     quark_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), name)
     exists = os.path.exists(name)
@@ -59,14 +59,23 @@ def update(match):
             exists = False
     # clone the repo
     if not exists:
+        print "git clone", url, name
         err = subprocess.call(["git", "clone", url, name])
         if err:
             raise Exception("Failed to clone %s" % url)
     # checkout any tag or hash
     if refspec:
-        child = subprocess.Popen(["git", "checkout", refspec], cwd=quark_dir)
-        if child.returncode:
+        print "git checkout", refspec, name
+        err = subprocess.Popen(["git", "checkout", refspec], cwd=quark_dir).wait()
+        if err:
             raise Exception("Failed to checkout %s %s" % (url, refspec))
+    else:
+        # get latest
+        print "git pull", name, url
+        err = subprocess.Popen(["git", "pull"], cwd=quark_dir).wait()
+        if err:
+            # if not on a branch due to a refspec
+            print "WARNING did not pull %s %s" % (name, url)
     # stage any changes
     err = subprocess.call(["git", "add", "%s/*" % name])
     if err:
@@ -90,3 +99,5 @@ for line in d.readlines():
             print "Broken line in directory.txt: %s" % line
             continue
         update(m)
+
+print "Complete"
