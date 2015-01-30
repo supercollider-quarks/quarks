@@ -5,21 +5,24 @@
     Using the directory.txt file,
     clone or update one or all repositories.
 
+    After any updates to the directory.txt file, run this script
+    to update and fetch all the sub repositories.
+
     Usage::
+        # update all
         python update.py
 
-        python update.py cruciallib
+        # update one
+        python update.py quarkname
 
     directory.txt format::
 
-        # master branch
-        cruciallib=git://github.com/crucialfelix/crucial-library
+        # latest commit on default master branch
+        quarkname=git://github.com/author/quarkname
         # tag (recommended for stable releases)
-        cruciallib=git://github.com/crucialfelix/crucial-library@tags/4.1.3
+        quarkname=git://github.com/author/quarkname@tags/4.1.3
         # pin to a specific commit
-        cruciallib=git://github.com/crucialfelix/crucial-library@0214d3a0e805146cfbaded090da1a2aabebcec2c
-
-    Rather than specifying a branch, tag your releases and specify using the tag.
+        quarkname=git://github.com/author/quarkname@0214d3a0e805146cfbaded090da1a2aabebcec2c
 
 """
 import sys

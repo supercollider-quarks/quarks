@@ -4,35 +4,78 @@ quarks
 
 This repository collects all of the community contributed Super Collider Quarks.
 
-It is the successor to the old SVN repository formally used by the Quarks system for package distribution.
+Most importantly it contains the file directory.txt which specifies the location and latest version of all of the community Quarks.
 
-The new Quarks system will be able to install individual Quarks from any git URL, so for most users this combined repo will not be needed.
+This file is fetched when using Quarks in SuperCollider.
 
-Its primary purpose is to provide downloadable releases that match Super Collider releases. Whenever this repo is tagged it will create a downloadable zip.
+It is editable, and this is how authors can add quarks or update them.
 
-The other purpose is to record a central index of community contributions. The new Quarks system can download directory.txt or directory.json and use this to offer a menu with descriptions.
+This repository also includes each Quark as a git subtree. This allows the entire Quarks community library to be downloaded as a single file.
 
-Adding or Updating a Quark
-==========================
+## Using Quarks
 
-Fork this repository and edit the directory.text file
+To use Quarks inside of SuperCollider see the help file `Using Quarks`.
 
-Add or update the URL and refspec for your quark::
+TODO link to online version
 
-    # default is the master branch
-    cruciallib=git://github.com/crucialfelix/crucial-library
+## Adding a Quark to the Directory
 
-    # specify a tag (recommended for stable release pinning)
-    cruciallib=git://github.com/crucialfelix/crucial-library@tags/4.1.3
+Go here:
 
-    # pin to a specific commit
-    cruciallib=git://github.com/crucialfelix/crucial-library@0214d3a0e805146cfbaded090da1a2aabebcec2c
+https://github.com/supercollider-quarks/quarks/blob/master/directory.txt
+
+click edit, make any changes and submit a pull request.
+
+The format is:
+
+    quarkname=git://github.com/you/quarkname
+
+Ideally you should tag your releases with the version number and then specify it in the directory.txt:
+
+    quarkname=git://github.com/you/quarkname@tags/0.1.0
+
+The version is specified as a git refspec. `tags/x.y.z` is the preferred form.
+
+## Tag your releases
+
+Tagged version numbers will allow people to download a .tgz archive of the release and will enable people to switch between different versions.
+
+It will also enable people to specify an exact version of your quark when working on their own projects.
 
 Note that a refspec is either tags/{tagname} or {commit-hash} but not a branch name. A branch is a continually changing, and packages releases need to be pinned.
 
+## Migrated Quarks from SVN
+
+I (@crucialfelix) migrated the old SVN repository to github and preserved all the commits and authorship.
+
+You may find your old work in one of these quarks:
+
+https://github.com/supercollider-quarks
+
+Contact me or the supercollider-quarks org to transfer ownership to your own github account.
+
+You may also just fork any repo here.
+
+If you've already moved your code to github and want to use that version then just edit directory.txt to point to your preferred newer version.
+
+### Backward incompatibilities
+
+Quarks with spaces in the name had to have those spaces removed. Quarks nested inside other quarks (dewdrop_lib) are now un-nested.
+
+
+## Download all quarks
+
+This entire repository can be downloaded for use while offline or if cannot for some reason use git on your machine.
+
+
+## Updating the downloadable version
+
+After any updates to the directory.txt file someone should run the script update.py in this repository.
+This will checkout or update all of the git subtrees for all of the Quarks.
+
 In terminal run the python script passing it your quark's name::
 
-    python update.py cruciallib
+    python update.py quarkname
 
 To update all quarks:
 
@@ -44,6 +87,10 @@ The update script will `git add` the changes but will not commit them.
 
 Commit your changes:
 
-    git commit -m "updated cruciallib to version 4.1.3" -a
+    git commit -m "updated quarkname to version 4.1.3" -a
 
 And submit a pull request.
+
+## Releases of supercollider-quarks
+
+By tagging this repository we will enable a downloadable release. We should do a release every once in a while, especially when SuperCollider itself publishes a release.
