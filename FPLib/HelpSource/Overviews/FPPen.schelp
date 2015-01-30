@@ -1,0 +1,90 @@
+TITLE::Functional Pen Drawing
+summary:: Overview of declarative use of Pen
+categories:: FP
+
+
+Original Pen code is highly imperative:
+code::
+(
+var w = Window("arcTo", Rect(100, 200, 300, 300)).front;
+var r= 15;
+w.drawFunc = { |v|
+    Pen.fillColor = Color.blue;
+    Pen.strokeColor = Color.red;
+    Pen.moveTo(150@150);
+    Pen.arcTo(200@150, 200@225, r);
+    Pen.arcTo(200@225, 100@225, r);
+    Pen.arcTo(100@225, 100@150, r);
+    Pen.arcTo(100@150, 150@150, r);
+    Pen.lineTo(150@150);
+    Pen.fillStroke;
+};
+)
+::
+
+PenDrawing, PenDrawedShapes and subclasses of PenShapeStep are data structures that define a drawing. After a drawing has been composed declarativelly, it can be rendered by calling PenDrawing:render.
+
+PenDrawing:value will call PenDrawing:render so a PenDrawing can be passed to the drawFunc method of a view. QWindow:setDrawing wraps this assignment of the PenDrawing to the drawFunc in an IO.
+
+Declarative version:
+code::
+(
+var w = Window("arcTo", Rect(100, 200, 300, 300)).front;
+var r= 15;
+//declare your drawing
+var shape = PenStepShape(150@150, [
+    PenArcTo(200@150, 200@225, r),
+    PenArcTo(200@225, 100@225, r),
+    PenArcTo(100@225, 100@150, r),
+    PenArcTo(100@150, 150@150, r),
+    PenLineTo(150@150)
+    ]);
+var drawing = PenDrawing( [ PenDrawedShapes([shape], \fillStroke, Color.blue, Color.red) ] );
+//QWindow:setDrawing  PenDrawing -> IO
+w.setDrawing( drawing );
+)
+::
+
+Declarative GUI and Animation:
+code::
+(
+var w = Window("Falling Ball", Rect(100, 200, 300, 300));
+var r= 15;
+//declare your drawing
+var draw = { |p|
+    var shape = PenWedge(p,10,0,2*pi);
+    PenDrawing( [ PenDrawedShapes([shape], \fill, Color.blue, Color.red) ] )
+};
+
+
+//FRP network definition:
+var fallingBall = { |t, y0,v0|
+    var v = Var(-9.8).integral(t).collect(_+v0);
+    v.integral( t ).collect(_+y0)
+};
+
+var timer = ENTimer(0.01);
+var x = Do(
+    t <- timer.asENInput;
+    let tt = t.hold(0.0);
+    let y = fallingBall.(tt,10,10).takeWhile(_>=0);
+    //y.debug("pos");
+    y.collect{ |y| w.setDrawing( draw.(150@(300-(y*10))) ) }.reactimate
+);
+
+var y = EventNetwork( x );
+
+//sequence the 3 IO actions into one IO
+Do(
+    w.frontIO;
+    y.actuate;
+    timer.start;
+)
+//until this Do statement returns an IO value no side effects are performed.
+//if the return statement of an expression is an IO it is automatically executed ( If you have IO.activate in your startup).
+//If uncomment the line below you will see that no window will appear
+//since the return value will then be a string which means the IO returned from the
+//do expression is not executed.
+//;"I'm not an IO"
+)
+::

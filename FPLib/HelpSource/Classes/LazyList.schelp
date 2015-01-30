@@ -1,0 +1,182 @@
+class:: LazyList
+summary:: Implementation of lazy list or stream
+categories:: FP
+
+DESCRIPTION::
+Allows for implementation of infinite lists.
+
+A LazyList has a head and tail. It's expensive to do any operation other then on the head or tail, therefore LazyList is not good for random access. Tipically one goes through the list, discarding the heads until one finds the right value.
+
+Based on Haskell's Data.List
+
+CLASSMETHODS::
+
+instancemethods::
+
+Examples::
+
+Finite lists:
+
+code::
+[1,2,3,4].asLazy
+//this notation is mostly useless due to the lack of right association in sc.
+x = 1 %% (2 %%  LazyListEmpty);
+::
+
+Appending lists:
+code::
+[1,2,3,4].asLazy.append([7,8,9,9].asLazy)
+::
+
+Zipping:
+code::
+[1,2,3,4].asLazy.zip([7,8,9,9].asLazy)
+::
+
+Infinite lists:
+
+Repeat:
+code::
+LazyList.repeat(1);
+//or
+repeat(1)
+//or with a recursive value
+~repeatOne = 1 %% { ~repeatOne };
+::
+
+Iterate from a starting value:
+code::
+LazyList.iterate(0, { |x| x+1 })
+//or
+0.iterate{ |x| x+1 }
+::
+
+
+code::
+0.iterate{ |x| x+1 }.zip( repeat(1) ) 
+::
+
+Get first n primes:
+
+code::
+0.iterate{ |x| x+1 }.select(_.isPrime).take(100).asArray
+::
+
+drop n first elements:
+code::
+0.iterate{ |x| x+1 }.drop(10)
+::
+
+cycle: repeat same list over and over:
+code::
+[1,2,3,4,5,6].asLazy.cycle
+::
+
+Convert to array:
+
+code::
+LazyList.repeat(1).take(20).asArray
+::
+
+Fibonacci numbers:
+code::
+~fib = 0 %% ( 1 %% ( { ~fib.zip( ~fib.tail ).collect{ |t| t.at1 +t.at2 } } ) )
+::
+
+Newton-Raphson Square Roots as is shown in "Why functional programming matters" : 
+
+http://www.cs.utexas.edu/~shmat/courses/cs345/whyfp.pdf
+code::
+(
+//algorithm to approach the square root of n
+~next = { |n| { |x| (x + n/x)/2 } };
+
+//look for a good enough match in the stream
+~within = { |eps, list| 
+	list.match({},
+		{ |a, rest|
+			rest.match({},{ |b, rest2|
+				if( (a-b).abs < eps){ b }{ ~within.(eps, rest) }
+			});
+		})
+};
+
+// A better way is to see how close a/b is to 1,
+// to avoid the rounding errors
+~relative = { |eps, list| 
+	list.match({},
+		{ |a, rest|
+			rest.match({},{ |b, rest2|
+				if( (a/b -1).abs < eps){ b }{ ~relative.(eps, rest) }
+			})
+		})
+};
+
+
+//find the square root of 3 starting from the approximation
+// value 1, until approximations are within 0.01
+~within.(0.01, LazyList.iterate(1, ~next.(3) ) )
+)
+
+~relative.(0.01, LazyList.iterate(1, ~next.(3) ) )
+::
+
+Patterns implemeted with lazy lists:
+
+code::
+(
+~playLists = { |valueList, timeList| 
+	var es = EventSource();
+	var g = { |valueList, timeList, es| 
+	fork{
+		valueList.match({},{ |xhead,xtail|
+			timeList.match({},{ |thead, ttail|
+				es.fire(xhead);
+				thead.wait;
+				g.( xtail, ttail, es)
+			},{
+				es.fire(xhead)
+			})
+		});
+	}};
+	g.(valueList, timeList, es);
+	es	
+}
+)
+
+(
+~playLists.( LazyList.fromArray([1,2,3,4,5,6]), LazyList.fromArray([1,1])).do( postln(_) );
+~playLists.( LazyList.iterate(0,_+1), LazyList.repeat(0.01) ).do( postln(_) )
+)
+//lazy list patterns:
+
+(
+~freqs = LazyList.iterate(400, _+10);
+~deltas = LazyList.iterate(1,_-0.01).take(20);
+~vals = ~freqs.zip(~deltas);
+~vals.take(20).asArray.postln;
+~playLists.( ~vals, ~deltas ).do{ |t| t.postln; (\freq: t.at1, \dur: t.at2).play }
+)
+
+//dynamic change of the pattern while it's playing using FRP
+
+(
+~freqs = LazyList.iterate(400, _+10);
+~deltas = LazyList.iterate(1,_-0.01).take(50);
+~p1 = ~freqs.zip(~deltas);
+~p2 = ~freqs.collect(_+200).zip(~deltas);
+~but  = EventSource();
+~but >>=  { |butValue|
+	if(butValue == 1) {
+		~playLists.( ~p1 , ~deltas )
+	} {
+		~playLists.( ~p2, ~deltas )
+	}
+}.do{ |t| t.postln; (\freq: t.at1, \dur: t.at2).play };
+~but.fire(0);
+)
+//use p1
+~but.fire(0)
+//use p2
+~but.fire(1)
+::

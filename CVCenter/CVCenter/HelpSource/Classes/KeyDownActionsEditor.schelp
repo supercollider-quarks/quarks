@@ -1,0 +1,99 @@
+TITLE:: KeyDownActionsEditor
+summary:: an editor allowing to set keyboard-shortcuts resp. edit the actions connmected to the shortcuts.
+categories:: GUI, External Control>Keyboard
+related:: Classes/KeyDownActions, Classes/KeyCodesEditor
+
+DESCRIPTION::
+KeyDownActionsEditor allows you to define and edit an unlimited number of key-down actions for a given GUI-element. It's based on link::Classes/View#-keyDownAction:: but adds some WYSIWYG functionality within its GUI.
+
+To edit or remove a shortcut you'll have to click the edit-button first. The shortcut-field (next to the label "shortcut:") will get set to whatever key you hit - also during editing the action - it's advisable to first edit the action and to set the key afterwards.
+
+CLASSMETHODS::
+
+private:: cachedScrollViewSC
+private:: initClass
+
+METHOD:: new
+Create a new KeyDownActionsEditor for the given shortcuts in code::shortcutsDict::
+
+argument:: parent
+a link::Classes/View:: - if none is provided it will get created internally
+
+argument:: name
+a link::Classes/String:: or a link::Classes/Symbol::, added to the window's title.
+
+argument:: bounds
+a link::Classes/Rect::, denoting position and size
+
+argument:: shortcutsDict
+a link::Classes/Dictionary:: shortcuts (keys and actions) to be displayed in the editor
+
+argument:: showMods
+whether to expose modifier-keys in the editor (e.g. set to false for editing link::Classes/KeyDownActions#*globalShortcuts::)
+
+returns:: a KeyDownActionsEditor
+
+
+INSTANCEMETHODS::
+
+private:: init
+private:: editAreas
+private:: editButs
+private:: funcFields
+private:: shortcutFields
+private:: tmpShortcuts
+private:: shortcutTexts
+
+METHOD:: result
+Query the values currently set in the editor.
+
+returns:: An link::Classes/IdentityDictionary::
+
+METHOD:: setShortcuts
+Set the link::Classes/View#-keyDownAction#keyDownAction::s of the given link::Classes/View:: to the current values of the editor.
+note:: Though in most cases argument code::view:: will be an object of type link::Classes/View:: this doesn't necessarily have to be the case. At least the following classes do have a method code::keyDownAction:: implemented as well: link::Classes/ViewHolder2::, link::Classes/SplineGui::, link::Classes/ScaledUserView::, link::Classes/SMPTEView:: and possibly others as well well. A KeyDownActionsEditor may be used in connection with these too. Note also the corresponding class-method link::Classes/KeyDownActions#*setShortcuts:: which works independently from a given KeyDownActionsEditor::
+
+returns:: this (a code::KeyDownActionsEditor::)
+
+METHOD:: window
+The editor's link::Classes/Window::
+
+returns:: a link::Classes/Window::
+
+
+EXAMPLES::
+
+code::
+// the editor is a GUI element that can be initialised
+// as part of a composite view or a standalone
+k = KeyDownActionsEditor.new;
+
+(
+// just an example dict
+// you shouldn't need to do this
+// a KeyDownActionsEditor can be initialised without shortcuts as well
+// all shortcuts added via GUI will get stored in an IdentityDictionary
+// like the one below
+// note the mixed keys
+
+t = IdentityDictionary[
+    'alt + i' -> (
+		func: "{ |view| view.background_(Color.red) }",
+        keyCode: KeyDownActions.keyCodes[$i],
+        modifierQt: KeyDownActions.modifiersQt[\alt],
+        modifierCocoa: KeyDownActions.modifiersCocoa[\alt]
+    ),
+    $i -> (
+		func: "{ |view| view.background_(Color.green) }",
+        keyCode: KeyDownActions.keyCodes[$i]
+    )
+];
+
+// create a window and set its shortcuts to what is in k.result
+w = Window("shortcuts test").onClose_({ f.close }).front;
+
+f = Window("Shortcuts Editor", 400@300).front;
+k = KeyDownActionsEditor(f, bounds: f.bounds.width@(f.bounds.height-40), shortcutsDict: t);
+b = Button(f, Rect(f.bounds.width-100, f.bounds.height-30, 90, 20)).states_([["set Shortcuts", Color.white, Color.red]]).action_({ |btn| k.result.postln; k.setShortcuts(w.view) });
+)
+::

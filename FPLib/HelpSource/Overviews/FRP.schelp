@@ -1,0 +1,514 @@
+TITLE::Functional Reactive Programming
+summary:: Overview of Functional Reactive Programming with the FP quark.
+categories:: FP
+
+Functional Reactive Programming (FRP) deals with with Event Processing, data flow and propagation of change.It is a composable/modular way to code event-driven logic. Events come in while the program is running, most often, at unpredictable times and should be processed and routed to multiple destinations. We can describe these dataflow connections as a network, connecting inputs to outputs. The network itself is functional, i.e., it's formed by chaining functions which do not present any visible state to the user and no not cause side-effects (posting, chainging synths, changing outside variables, etc).
+
+IMAGE::network-1.png::
+
+The FP quark implementation of FRP is based on link::http://reactive-web.co.cc##reactive-web::, a scala FRP library, which is in turn inspired by other libraries. Under the hood it uses observers, but it automates the removal of the observer from the observers list, it is therefore an alternative to the Observer pattern. It aims to solve some of the issues of the observer pattern such as lack of composability, inversion of control and messy state management.
+
+The key points to keep in mind regarding FRP are:
+
+list::
+## FPSignals and EventStreams represent events that can happen at any time.
+ Signals are continuous (they have a "now" value) while event streams are discrete (no "now" value).
+## An event network connects inputs (MIDI, GUI, OSC, timer, etc) to outputs (set argument to a synth, draw on screen, etc) via signals and event streams.
+## signals and event streams when placed in an event network are automatically connected to inputs and outputs when the network is compiled or started and are automatically disconnected when the network is stopped. There is no need for explicit registration and de-registration of callbacks.
+::
+
+SECTION:: Event streams and Signals
+
+Thw two main abstractions of this FRP library are event streams and signals.
+
+You can think of EventStreams as Collections of elements tagged with a time value. It is encoded with subclasses of EventStream.
+
+code::
+EventStream[A] ~ [ T(Time, A) ]
+::
+
+IMAGE::eventstream-1.png::
+
+Signals difer from EventStreams in that it's value is know at each moment in time.  Signals are encoded with the FPSignal class hierarchy. In FPLib signals are always step functions, that is they hold a value constant until the next value arrives.
+
+code::
+FPSignal[A] ~ Time -> A
+::
+
+The main use for signals is to keep around the emmited value. This is handy for:
+
+list::
+## letting an event stream use previous values of some other signal,
+## letting an event stream use previous values of itself
+## Applying n-ary functions (which need to remember the last value of the other n-1 arguments whenever they get a value.
+::
+
+image::signals.png::
+
+It's possible to create a signal from an event stream and vice-versa by using the 'changes' and 'hold' methods.
+
+code::
+sig1 = es1.hold(0.0)
+es2 = sig2.changes
+::
+
+SECTION:: Combinators
+
+Complex networks for event processing are created using the combinator methods.
+
+You can think of EventStreams as Collections of elements over time. Therefore the methods of collections will work as you expect.
+
+IMAGE::eventstream-2.png::
+
+SUBSECTION::select
+
+code::eventSource.select(f):: only outputs a value if code::f.(value):: is true.
+
+code::x.select(_<0.04)::
+
+IMAGE::eventstream-3.png::
+
+code::
+[1,2,3,4,5].select(_>3)
+::
+
+code::
+(
+x = EventSource();
+y = x.select(_>3);
+y.do{ |v| postln("I got a "++v) };
+x.fire(1);//will not let through.
+x.fire(4);//will let through.
+)
+::
+
+SUBSECTION::Collect
+
+code::eventSource.collect(f)::  returns a new EventStream, that for every event that this EventStream fires, that one will fire an event that is the result of applying 'f' to this EventStream's event.
+
+
+code::
+x.collect(_*100)
+::
+IMAGE::eventstream-4.png::
+
+code::
+[1,2,3,4,5].collect(_*100)
+::
+
+code::
+(
+x = EventSource();
+y = x.collect(_*100);
+y.do{ |v| postln("I got a "++v) };
+x.fire(1);
+x.fire(4);
+)
+::
+
+SUBSECTION::inject
+
+code::eventSource.inject(initialState,f):: This method can be used to keep state or accumulate values. f must receive two variables, the first is the current state and second is the last value received.
+
+code::
+[1,2,3,4,5].inject(0.0,{ |state,v| state + v })
+::
+
+Sum values:
+code::
+(
+x = EventSource();
+y = x.inject(0.0,{ |state,v| state + v });
+y.do{ |v| postln("I got a "++v) };
+x.fire(1);
+x.fire(4);
+x.fire(7);
+x.fire(12);
+)
+::
+
+Add values to array:
+
+code::
+(
+x = EventSource();
+y = x.inject([],{ |state,v| state ++ [v] });
+y.do{ |v| postln("I got a "++v) };
+x.fire(1);
+x.fire(4);
+x.fire(7);
+x.fire(12);
+)
+::
+
+Keep last two values:
+
+code::
+(
+x = EventSource();
+y = x.inject([0.0,0.0],{ |state,v| [state[1],v] });
+y.do{ |v| postln("I got a "++v) };
+x.fire(1);
+x.fire(4);
+x.fire(7);
+x.fire(12);
+)
+::
+
+SUBSECTION:: flatCollect - Dynamic Event Switching
+
+This is the most important method of EventSource for it It allows selecting which events to output depending on the some other EventStream. code:: eventSource >>= (f)::  creates a new EventStream that consists of the events of the EventStreams returned by f. f is applied on every event of the original EventStream, and its returned EventStream is used until the next event fired by the original EventStream, at which time the previously returned EventStream is no longer used and a new one is used instead.
+
+IMAGE::flatCollect.png::
+
+code::
+(
+~selector = EventSource();
+//two sources
+a = EventSource();
+b = EventSource();
+//the result
+w = ~selector >>= { |v|
+	if(v==0){a}{b}
+};
+w.do(_.postln);
+)
+(
+//will get value from y
+~selector.fire(0);
+a.fire(1);
+b.fire(4);
+)
+(
+//will get value from z
+~selector.fire(1);
+a.fire(1);
+b.fire(4);
+)
+::
+
+It is called flatCollect because it is analogous to using collect on an Array that creates subarrays and then flatten the result:
+
+code::
+[1,2,3].collect(_*[1,2,3]).flatten
+::
+
+In other programming languages it is called flatMap or bind (It is an instance of the famous Monad).
+
+In the same way doing
+
+code::
+(
+x = EventSource();
+y = EventSource();
+z = EventSource();
+x.collect{ |v|
+	if(v==0){y}{z}
+};
+)
+::
+
+creates an EventStream of EventStreams.  Changing the collect to flatCollect will flatten it down again to a EventStream.
+
+Besides switching you can also combine event sources using a function:
+
+code::
+(
+x = EventSource();
+y = EventSource();
+z = x >>= { |xvalue|
+	y.collect{ |yvalue| xvalue + yvalue }
+};
+z.do( postln(_) )
+)
+x.fire(1.0)
+y.fire(2.0) //only this one will cause z to fire
+::
+
+SUBSECTION::Combinining EventStreams
+
+There is a nicer syntax for this, using "Applicative Style":
+
+code::
+(
+x = EventSource();
+y = EventSource();
+w = { |a,b| a+b } <%> x <*> y;
+w.do( postln(_) );
+)
+//run each at a time
+x.fire(1);
+y.fire(2);//only this one causes w to fire
+::
+
+This is analogous to
+
+{ |a,b| a+b } .(1,2)
+
+A function of 3 arguments:
+
+code::
+(
+x = EventSource();
+y = EventSource();
+z = EventSource();
+w = { |x,y,z| x + y + z } <%> x <*> y <*> z;
+w.do( postln(_) );
+)
+//run each at a time
+x.fire(9.0);
+y.fire(3.0);
+z.fire(1.0); //only this one causes w to fire
+::
+
+This is analogous to
+code::
+f = { |x,y,z| x + y + z };
+f.(9.0, 3.0, 1.0)
+::
+
+but we are "lifting" f to act on EventStreams instead of Numbers. The nice thing about using <*> is that it is always the same syntax no matter how many arguments the function has.
+
+Applicative style (<*>) uses a link::Classes/TypeClasses##Type Classes:: implementation for SuperCollider, part of the FP quark.
+
+Signals can also be used in this way, with the added benefit that if any of the signals that are arguments of the function change then the result will change:
+
+code::
+(
+x = Var(1.0);
+y = Var(1.0);
+z = Var(1.0);
+//when you add a side-effecting function w it will fire an initial value
+w = { |x,y,z| x + y + z } <%> x <*> y <*> z; w.do( postln(_) );
+)
+//and then it will fire when you change any x, y or z
+x.value_(9.0);
+y.value_(3.0);
+z.value_(24.0);
+::
+
+SECTION::Acessing last value
+
+In a language such as Haskell it is possible to have mutually recursive values. These are values where they both appear in the definition of each other. This would let us define an event stream that depends on it's own past values by  defining it it terms of the signal obtained from it with hold. The code for an event stream that sums incoming values with it's last value looks like:
+
+code::
+e2 = (+) <$> b <@> e1
+b = stepper 0 e2
+::
+
+Unfortunatelly this cannot be done in SuperCollider since we cannot define mutually recursive variables. To get around this limitation we can directly probe the value of the signal obtained from hold using the 'now' method. The now method is essentially performing an IO operation which usually wouldn't be acceptable inside an event graph, but for this particular case it is very handy and doesn't have drawbacks. The code above then translates in FPLib to:
+
+code::
+sum = { |a| a + sumSig.now } <%> nb1S;
+sumSig = sum.hold(0);
+::
+
+Because the call to now is done inside an anonymous function is delayed and therefore doesn't cause an error at the definition line.
+
+code::
+//sum with last value
+(
+//Setup GUI
+var nb1 = NumberBox();
+var nb2 = NumberBox();
+
+w = Window(bounds:Rect(200,200,200,100)).layout_(
+	HLayout( StaticText().string_("In:"), nb1, StaticText().string_("Out:"), nb2 )
+    );
+
+//Setup Event Network
+//network
+~networkDescription = ENDef({
+	var sumSig, sum, sumSig2;
+	var rate = 0.8;
+
+    //in
+    var nb1S = nb1.enInES;
+
+	sum = { |a| a + sumSig.now } <%> nb1S;
+	sumSig = sum.hold(0);
+
+	//out
+	nb2.enSinkValue( sumSig );
+
+});
+
+//compile network
+~network = EventNetwork(~networkDescription);
+
+//display guis and start network
+~network.start;
+w.front;
+)
+::
+
+
+
+SECTION:: Common workflows
+
+Muting an EventStream based on the value of another EventStream:
+
+code::
+(
+a = EventSource();
+~mute = EventSource();
+~emitNothing = NothingES();
+~result = ~mute >>= { |v|
+	if( v == 0.0 ) {
+		a
+	} {
+		~emitsNothing
+	}
+};
+~result.do{ |v| postln("I got this: "++v) };
+)
+(
+~mute.fire(0.0);
+a.fire(3); //event goes through
+)
+(
+~mute.fire(1.0);
+a.fire(8); //event doesn't go through
+)
+::
+
+Choose the output from a group of EventStreams based on a value of a selector EventStream:
+
+code::
+(
+~streams = 4.collect{ EventSource() };
+~selector = EventSource();
+~result = ~selector >>= { |i|
+	~streams[i]
+};
+~result.do{ |v| postln("I got this: "++v) };
+)
+
+~selector.fire(0);
+~streams[0].fire(1)
+~streams[1].fire(1)
+~streams[2].fire(1)
+~streams[3].fire(1)
+
+~selector.fire(2);
+~streams[0].fire(1)
+~streams[1].fire(1)
+~streams[2].fire(1)
+~streams[3].fire(1)
+
+::
+
+SECTION:: Interacting with GUIs
+
+You can get an EventSource or FPSignal from a GUI (which responds to action_ ) by doing emphasis::myGUI.esFromGUI:: or emphasis::myGUI.signalFromGUI::. You can connect an EventSource or FPSignal to a gui by doing emphasis::es.connect(gui):: or emphasis::signal.connect(gui)::. Whenever the EventStream or FPSignal fires the the value_ method will be called on the GUI with the value fired.
+
+code::
+(
+~guiKnob = Knob();
+~guiResult = Knob();
+~guiButton = Button().states_([
+	["0", Color.white, Color.black],
+	["1", Color.black, Color.red],
+]);
+~knob = ~guiKnob.esFromGUI;
+~button = ~guiButton.esFromGUI;
+w = Window(bounds:Rect(200,200,200,100)).layout_(
+	 VLayout(
+		HLayout( ~guiKnob, ~guiResult  ),
+		HLayout( ~guiButton ),
+	)
+).front;
+//start synth
+~synth = { |freq=400| LFNoise0.ar(freq)*0.2 }.play;
+
+//an event source that emits nothing
+~emitsNothing = NothingES();
+
+~result = ~button >>= { |v|
+		if( v == 1.0 ) {
+		~knob
+	} {
+		~emitsNothing
+	}
+};
+//associate each result EventSource with a synth
+~result.do{ |v| ~synth.set(\freq, v.linlin(0.0,1.0,100.0,4000.0) ) };
+~result.connect(~guiResult);
+)
+::
+
+
+
+SECTION:: Manual connection and diconnection of EventStreams and FPSignals
+
+Usually it is recommended to use EventNetwork for automatic management of connections. In any case it's also possible manage connections explicitelly.
+
+Suppose we have the following network:
+
+IMAGE::remove-1.png::
+
+code::
+(
+x = EventSource();
+y = x.collect(_*100).select(_>300);
+y.do{ |v| postln("I got a "++v) };
+)
+::
+
+We can reset the original EventSource which will remove all the branches that start from it. Those branches will be garbage collected.
+
+image::remove-2.png::
+
+code::
+(
+x = EventSource();
+y = x.collect(_*100).select(_>300);
+y.do{ |v| postln("I got a "++v) };
+x.fire(1);
+x.fire(4);
+//disconnect
+x.reset;
+//this will not be posted:
+x.fire(1);
+x.fire(4);
+)
+::
+
+If you want to disconnect only some branches you can use emphasis::remove:: :
+
+
+ image::remove-4.png::
+
+ code::
+ (
+x = EventSource();
+~y1 = x.collect(_*100).select(_>300);
+~y1.do{ |v| postln("y1 got a "++v) };
+~y2 = x.collect(_*300); //you have to store the first created EventSource after x
+~y3 = ~y2.select(_>600);
+~y3.do{ |v| postln("y3 got a "++v) };
+x.fire(1);
+x.fire(4);
+~y2.remove;
+postln("y2 removed");
+//only y1 will post
+x.fire(4);
+)
+::
+
+We can also disconnect part of the network conditionally on the incoming values:
+
+ image::remove-3.png::
+
+code::
+(
+x = EventSource();
+y = x.collect(_*100).takeWhile(_>300);
+y.do{ |v| postln("I got a "++v) };
+x.fire(4);
+x.fire(1);
+// 100 < 300 so y is disconnected.
+//this will not be posted:
+x.fire(5);
+)
+::

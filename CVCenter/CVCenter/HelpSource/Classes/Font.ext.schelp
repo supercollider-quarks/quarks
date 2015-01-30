@@ -1,0 +1,14 @@
+classmethods::
+
+method:: available
+Return the font defined by code::name:: if available, otherwise return code::nil::
+code::
+Font.available("Arial");
+Font.available("ywrsdstr");
+Font(Font.available("Arial") ? Font.defaultSansFace, 9.5)
+::
+
+argument:: name
+a link::Classes/String::, denoting a font or font-family.
+
+returns:: a link::Classes/String:: or code::nil:: if no match was found

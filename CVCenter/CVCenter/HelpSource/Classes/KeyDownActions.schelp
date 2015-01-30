@@ -1,0 +1,101 @@
+TITLE:: KeyDownActions
+summary:: a class supplying editable platform-specific key-mappings
+categories:: GUI, External Control>Keyboard
+related:: Classes/KeyDownActionsEditor, Classes/KeyCodesEditor
+
+DESCRIPTION::
+KeyDownActions supplies key-mappings for different platforms as classvars. Furthermore it's responsible for handling global shortcuts. Global shortcuts that work independently from SClang or any GUI. The actions connected to the shortcuts can be invoked independently from which application is currently the frontmost.
+
+CLASSMETHODS::
+
+METHOD:: keyCodes
+An link::Classes/IdentityDictionary::, containing key-mappings in key-value pairs: e.g.
+code::
+$e -> 14,
+::
+or
+code::
+\esc -> 53,
+::
+A key can be a single link::Classes/Char:: or a link::Classes/Symbol::, the number is the keycode returned for the key. The snippet creates a window that has a keyDownAction associated which posts key-value pairs for arbitrary keystrokes. You may use this code if the default keyCodes doesn't mtach the ones on your platform. Edit keyCodes by using the link::Classes/KeyCodesEditor::.
+code::
+(
+w = Window("keyDown action");
+w.view.keyDownAction_({ |view, char, mod, unicode, keycode, key|
+	"\t\t\t% -> \t\t\t\t%,\n".postf(char.asCompileString, keycode);
+});
+w.front;
+)
+::
+
+returns:: an link::Classes/IdentityDictionary::
+
+METHOD:: arrowsModifiersQt
+This special classvar turned out to be necessary as the modifiers when using the arrow-keys are different to the ones using other keys. Use the following snippet to determine (arrow) modifiers on your platform (you may use the same code to test the result of the other modifier related classvars as well).
+code::
+(
+w = Window("keyDown (arrow) modifiers");
+w.view.keyDownAction_({ |view, char, mod, unicode, keycode, key|
+	"\t\t\t% (%) -> \t\t\t\t%,\n".postf(char.asCompileString, keycode, mod);
+});
+w.front;
+)
+::
+
+returns:: an link::Classes/IdentityDictionary::
+
+METHOD:: arrowsModifiersCocoa
+Same as arrowsModifiersQt. Even though this variable exists using Linux too it has no relevance there.
+
+returns:: an link::Classes/IdentityDictionary::
+
+METHOD:: modifiersQt
+Normal modifiers using Qt
+
+returns:: an link::Classes/IdentityDictionary::
+
+METHOD:: modifiersCocoa
+Normal modifiers using Cocoa
+
+returns:: an link::Classes/IdentityDictionary::
+
+subsection:: Setting Shortcuts
+
+METHOD:: setShortcuts
+Set the key-down actions of the given link::Classes/View:: according to the shortcuts given in shortcutsDict.
+note:: Though argument view will usually be a link::Classes/View:: or one of its subclasses it can be any object that responds to a method named code::keyDownAction::. Note also the corresponding instance method link::Classes/KeyDownActionsEditor#-setShortcuts::::
+
+argument:: view
+a link::Classes/View:: or any object that responds to code::keyDownAction::
+
+argument:: shortcutsDict
+a link::Classes/Distionary:: or (better) an link::Classes/IdentityDictionary:: defining the key-down actions that shall be added to the given view. The dictionary must be formatted as follows:
+code::
+IdentityDictionary[
+	<Symbol containing a key or key combination> -> (
+		func: <a Function>,
+		keyCode: KeyDownActions.keyCodes[<a Char>],
+		modifierQt: KeyDownActions.<modifiersQt or arrowsModifiersQt>[<modifier key>],
+		modifierCocoa: KeyDownActions.<modifiersCocoa or arrowsModifiersCocoa>[<modifier key>]
+	),
+	/* ... more slots ... */
+]
+::
+
+returns:: this (code::KeyDownActions::)
+
+METHOD:: globalShortcuts
+Set or get global shortcuts. Global shortcuts will independently from the program that is currently the frontmost one. However, they depend on a link::Classes/Synth:: that listen's to the user's keystrokes. The listening link::Classes/Synth:: will use one link::Classes/UGen:: per key. Also note that global shortcuts can only use a single keystroke (no combination of modifier and key).
+
+returns:: an link::Classes/IdentityDictionary::
+
+METHOD:: globalShortcutsEnabled
+Enable or disable global shortcuts.
+
+argument:: bool
+a link::Classes/Boolean::
+
+returns:: a link::Classes/Boolean:: (if used as getter)
+
+private:: globalShortcutsSync
+private:: initClass

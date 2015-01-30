@@ -1,0 +1,24 @@
+title::Writer
+summary:: Writer Monad
+categories::FP
+
+The writer monad allows a program to compute various kinds of auxiliary output which can be "composed" or "accumulated" step-by-step, in addition to the main result of a computation. It is often used for logging or profiling. Given the underlying type T, a value in the writer monad has type W × T, where W is a type endowed with an operation satisfying the monoid laws.
+
+From Wikipedia: http://en.wikipedia.org/wiki/Monad_(functional_programming)#Writer_monad
+
+There is a good explanation here: http://learnyouahaskell.com/for-a-few-monads-more
+
+Examples::
+code::
+
+x = Writer( 1, ["a number 1"] );
+y = Writer( 2, ["a number 2"] );
+
+x >>= { |x| y.collect{ |y| x + y } };
+
+//applicative style
+(_+_) <%> x <*> y
+
+
+x.tell([" and something else "])
+::

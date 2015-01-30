@@ -1,0 +1,586 @@
+title:: Unit Library
+summary:: General description of Unit Library
+categories::UnitLib
+
+
+section::Startup
+
+
+code::
+ULib.startup
+::
+
+This will:
+list::
+## Load all Udefs and FreeUDefs from disk.
+## Send the corresponding synthdefs.
+## Initialize global system variables.
+::
+
+	The basic element of the Library is the unit (link::Classes/U:: ) and corresponding unit def (link::Classes/Udef::), that play a similar role to link::Classes/Synth:: and link::Classes/SynthDef::. 
+
+section::Udef
+
+Udef Represents a synthesis defintion. It holds:
+list::
+## A synth graph func (from which the synthdef is generated)
+## A name.
+## Specs and Default values for each synthdef control.
+::
+
+Declaring a Udef:
+
+code::
+Udef(\sine, { UOut.ar(0, SinOsc.ar(400) ) }) 
+::
+
+Declaring a Udef adds it to the a global Library of Udefs, reachable at code::Udef.all::, .e.g. code::Udef.all[\sine]::.
+
+Udefs can be defined in plain text files containing supercollider code:
+
+code::
+Udef( \sine, { |freq = 440, amp = 0.1|
+	UMixOut.ar( 0, SinOsc.ar( freq, 0, amp ), 0, true ) 
+} ).category_( \synthesis )
+	.setSpecMode( \amp, \normal )
+::
+	
+When starting up the library (ULib.startup) all the Udefs in certain folders are loaded. 
+
+You should add you own Udefs to the folder code::Udef.userDefsFolder::.
+
+By default it is assumed that the SynthDefs are already written to files. If you want the SynthDef to be sent upon 'start' then use a LocalUdef.   
+ 
+
+Subsection::U - Unit
+
+- Represents a single synthesis process instance.
+
+code::
+U(\sine, [\freq, 400])
+::
+
+Given a symbol it will search the Udefs library for a Udef with than name. 
+
+code::
+(
+x = Udef(\aNiceUdef, { 
+	UOut.ar(0, SinOsc.ar(\freq.kr(400) ) ) 
+});
+x.loadSynthDef(s); 
+)
+
+(
+y = U(\aNiceUdef, [\freq,400]); 
+y.prepareAndStart(s)
+)
+//silence... UOut writes to private busses, you need to route the audio to the soundcard explicitely
+(
+y = UChain([\aNiceUdef, [\freq,400]],\stereoOutput); 
+y.prepareAndStart(s);
+y.gui;
+)
+::
+
+Or
+
+code::
+//similar to { }.play will send synthdef everytime
+(
+x = LocalUdef(\aNiceUdef, { 
+	//nice code isn't it ?
+	UOut.ar(0, SinOsc.ar(\freq.kr(400) ) ) 
+});
+y = U(x, [\freq,400]); 
+y.prepareAndStart(s);
+y.gui;
+)
+::
+
+	The arguments of the unit are persistent and can be set and retrieved locally (without contacting the server), even if the unit is not playing in the server(s).
+
+section::UChain
+
+Units can be grouped together in chains using the UChain object. 
+	
+
+Each chain is a rack of units, where the output of each unit can be routed to the following unit. The routing is done using private busses, and is erased after each chain, so the output of a unit of one chain can never interfere with a unit in a different chain. Units in this context can be thought of effects or plugins in a DAW, although (almost) the full flexibility of SuperCollider is available. To get input from and output to other units in the chain the UIn and UOut pseudo-ugens are used. These ugens create automatic names for controls that allow changing the private bus number. This then allows easy re-patching of the units from a gui.
+
+code::
+UChain(\sine, \stereoOutput).gui
+::
+
+code::
+
+UChain([\sine,[\freq,400]], \stereoOutput).gui
+::
+
+section::Arg values
+
+list::
+ ## Arg values are persistent, they are stored in an array of key, value pairs. 
+ ## 'get' does not query the server.
+ ## Observers can register with a Unit to receive updates when a arg is set. 
+ ## All guis in the Unit Lib use model-observer relationship in order to update themselves automatically.
+::
+  	
+code::
+x  = U(\sine);
+ 
+y = SimpleController(x);
+y.put(\freq,{ |a,b,c| postln("look at what I got: "++[a,b,c]) })
+
+x.set(\freq, 400) 
+::
+ 	
+Arg names can  be used as method names:
+
+code::
+x.freq
+x.freq_(500)
+::
+
+section::Smart Arguments
+
+Unit arguments are not restricted to floats, or arrays of floats, they can be instances of any class (as long as the class knows how to turn itself into an acceptable synth argument).
+
+code::
+x = U(\fullEQ).get(\eq);
+x.dump;
+x.setting
+::
+
+code::
+(
+//path, startFrame = 0, endFrame, rate = 1, loop = false
+x = DiskSndFile(Platform.resourceDir +/+ "sounds/a11wlk01.wav", 44100, 44100*2, 1.5, true);
+y = U(\diskSoundFile,[\soundFile, x]);
+UChain(y, \stereoOutput).gui
+)
+::
+
+When creating the Synths the unit will call code::.asControlInputFor( server, startPos ):: on each of the arguments. Classes that respond to code::.asControlInputFor:: properly, are valid argument values for a Unit.
+
+Examples:
+
+Extended classes:
+code::
++ Object : asControlInputFor { |server, startPos| ^this.asControlInput }
+
++ Function : asControlInputFor { |server, startPos| ^this.value( server, startPos ) }
+
++ Rect : asControlInput { ^this.asArray }
+
++ Boolean : asControlInput { ^this.binaryValue }
+
++ Point : asControlInput { ^this.asArray }
+::
+
+Other objects that can behave as Unit arguments:
+
+code::
+EQSetting : asControlInput { ^setting.flat.asControlInput }
+
+AbstractRichBuffer: asControlInputFor { |server| 
+	^this.currentBuffer(server) 
+}
+
+BufSndFile : asControlInputFor { |server, startPos = 0| 
+	^[ this.currentBuffer(server, startPos), rate, loop.binaryValue ] 
+}
+
+DiskSndFile : asControlInputFor { |server, startPos = 0| 
+	^[ this.currentBuffer(server, startPos), rate, loop.binaryValue ] 
+}
+::
+
+section::Specs
+
+Each Unit argument has an ArgSpec. 
+
+code::
+U(\sine).def.argSpecs.dopostln
+::
+
+The ArgSpec class has the following fields:
+
+list::
+	## name: name of the arg.
+	## spec: subclass of Spec.
+	## mode:
+	list::
+		## code::\sync:: - set message with sample accuracy (if possible).
+		## code::\normal:: - set message without time stamp, i.e., as soon as possible.
+		## code::\init:: - only set when the synth is created. Changing the paremeter afterwards will not send a .set message. Usually for init rate controls.
+		## code::\nonsynth:: - not a synth arg, not to be sent to synths. Used in MultiUdef.
+	::
+::
+			
+Ways in which specs are defined:
+
+Explicitely:
+code::
+x = Udef(\test, { SinOsc.ar(\freq.kr(400)) },[ArgSpec(\freq, 600, \freq.asSpec)] ).argSpecs[0];
+x.spec
+::
+
+Automatically:
+code::
+Udef(\test, { SinOsc.ar(\freq.kr(400)) }).argSpecs[0].dump.spec;
+::
+
+setSpec:
+code::
+x = Udef(\test, { SinOsc.ar(\freq.kr(400)) })
+	.setSpec(\freq, \freq.asSpec)
+::
+
+code::
+U(\test).gui
+::
+	
+Current Specs:
+table::
+## Classes 				||	Parameters.
+## ListSpec				||
+## StringSpec			||
+## SMPTESpec			||
+## BoolSpec				||
+## PointSpec			||
+## PolarSpec			||
+## RectSpec				||
+## RangeSpec 			||	minRange, maxRange;
+## RichBufferSpec 		||	numChannels (number), numFrames (ControlSpec) 
+## BufSndFileSpec 		||	numChannels (can be array of numbers), numFrames (ControlSpec)
+## DiskSndFileSpec 		||	numChannels (can be array of numbers), numFrames (ControlSpec)
+## PartConvBufferSpec	||	numChannels (number), numFrames (ControlSpec) 
+## MultiSpec 			||	an ordered and named collection of specs, with the option to re-map to another spec
+## IntegerSpec			||	default = 0, step = 1, minval = -inf, maxval = inf;
+## PositiveRealSpec		||	default = 0, step = 1, minval = 0 (can only vary between 0 and +inf), maxval = inf;
+::
+
+Specs are responsible for creating the guis for the corresponding argument. 
+
+code::
+(
+x = Udef(\test,{ |bus = 0, freq = 500,thing2=1, thing3 =1,thing4,thing5, point = #[0,0]|
+	 Out.ar(bus,UEQ.ar( WhiteNoise.ar*0.001*point, \eq, \default )) },
+	[[\bus,0,IntegerSpec()],
+	[\point, Point(1,2),PointSpec(Rect(0,0,20,20))],
+	[\thing2,1,BoolSpec()],
+	[\thing3,1,ListSpec([1,2,3,4],2)],
+	[\thing4,1,RangeSpec()] ,
+	[\thing5,nil,DiskSndFileSpec()],
+	[\eq, nil, UEQSpec( \default ) ]
+]);
+y = U(\test);
+y.gui;
+)
+::
+
+
+section::UScore
+
+	Chains can be organized in time using a link::Classes/UScore::. 
+
+	
+	
+	Each chain is also an event (inherits from link::Classes/UEvent::) with a start time, duration and fade in and fade out times. Scores are played in real-time, and take care of preparing the events during for play playback (buffer loading, etc). The library provides a  ScoreEditor GUI which works mostly as modern DAW:  the start time can be changed by dragging the event on the timeline and the duration by dragging the end of the event. Many operations are available such as copy/paste, undo/redo, split, trim, duplicate, etc. Scores can have other scores as events, allowing for indefinite nesting of scores inside scores.
+
+
+
+	Before playback both units, chains and scores have to prepared. This is done by calling '.prepare' on either of them (preparing a score prepares all the chains within). All the preparation is then automatically taken care of, since the "smart" arguments, such as link::Classes/BufSndFile::, know how to prepare themselves.
+
+
+code::
+(
+z = UScore(
+	*12.collect{ |i|
+		UChain( 
+			i/2, //startTime
+			i, 	//track
+			rrand(3.0,10.0), //fade times
+			false, //releaseSelf
+			U(\sine,[\freq, rrand(200.0,600.0)]), 
+			\stereoOutput
+		).fadeOut_(1).fadeIn_(1);
+	}
+);
+z.gui
+)
+::
+
+code::
+(
+z = UScore(
+	*12.collect({ |i|
+		var evt;
+		evt = UChain(i/2,i,rrand(3.0,10.0),false,\sine, \stereoOutput).fadeOut_(1).fadeIn_(1);
+		evt.units[0].set(\freq,rrand(200.0,600.0) );
+		evt;
+	})
+);
+z.gui;
+)
+::
+
+When playing a score it takes care of preparing all the resources and freeing them at the end.
+
+code::
+(
+z = UScore(
+	*12.collect({ |i|
+		var evt;
+		evt = UChain(
+			U(\bufSoundFile, [\soundFile, BufSndFile(Platform.resourceDir +/+ "sounds/a11wlk01.wav", 
+				rate: (i-6).midiratio, loop: [true,false].wrapAt(i) )
+			]),
+			\stereoOutput
+		).releaseSelf_(true).startTime_(i/2).track_(i).fadeOut_(1).fadeIn_(1);
+		
+		if( evt.duration == inf ) {
+			evt.duration = 8; // looped events stopped by UScore
+		};
+		evt;
+	})
+).gui
+
+)
+::
+
+UScores can be saved and loaded from files. UScore files are plain text files containing the SuperCollider compile string of the score.
+
+This capability is encoded in the 'UArchivable' class:
+list::	
+## object is saved using .asTextArchive.
+## code::.saveAs(path):: saves file, checks if file exists with that name.
+## code::.save:: detects if the object has been changed since it was saved and saves it if needed to the last saved path.
+## code::UArchivable.read( path ):: reconstructs the object.
+::
+	
+	
+section::MassEdit
+
+MassEditU and MassEditUChain allow simultaneous editing of multiple Us or UChains.
+
+MassEditU:
+code::
+(
+// create 10 similar units
+y = 10.collect({ U( \sine, [ \freq, 220 rrand: 880, \amp, 0.1 rrand: 0.5 ] ) });
+
+// show them all in a window
+w = Window("mass-edit", Rect(571, 101, 264, 381)).front;
+w.addFlowLayout;
+y.do(_.gui(w));
+
+// create a mass editor
+z = MassEditU( y );
+z.gui;
+)
+::
+
+MassEditUChain:
+code::
+// create 10 similar uchains
+(
+y = 10.collect({ 
+	UChain( 
+		[ 
+			[ \sine, [ \freq, 220 rrand: 880, \amp, 0.1 rrand: 0.5 ] ],
+			[ \whiteNoise, [ \amp, 0.1 rrand: 0.5 ] ]
+		].choose,
+		\output
+	)
+	.dur_( 2 rrand: 10 )
+	.setGain( -10 rrand: 10 );
+});
+
+
+)
+
+// show them all in a window
+w = Window("mass-edit", Rect(571, 101, 360, 381), scroll: true).front;
+w.addFlowLayout;
+y.do(_.gui(w));
+
+// create a mass editor
+z = MassEditUChain( y ).gui;
+::
+
+section::USession
+
+Allows using UChains without a timeline and starting and stopping multiple UChains/UScores/UChainGroups at the same time.
+
+
+
+Still work in progress.
+
+code::
+(
+f = { 12.collect({ |i|
+		var evt;
+		evt = UChain(i/2,i+1,rrand(3.0,10.0),false,\sine, \output).fadeOut_(1).fadeIn_(1);
+		evt.units[0].set(\freq,rrand(200.0,600.0) );
+		evt;
+	}) };
+z = UScore(*(12.collect({ |i|
+		var evt;
+		evt = BufSndFile(Platform.resourceDir +/+ "sounds/a11wlk01-44_1.aiff", 
+				rate: (i-6).midiratio, loop: [true,false].wrapAt(i) ).makeUChain
+				.releaseSelf_(true).startTime_(i/2).track_(i).fadeOut_(1).fadeIn_(1);
+		
+		if( evt.duration == inf ) {
+			evt.duration = 8; // looped events stopped by UScore
+		};
+		evt;
+	})++f.()++[
+	UScore(*f.()++[
+		UScore(*f.())
+	]
+)]));
+z.cleanOverlaps;
+x = USession(
+	z,
+	UChain(\sine,\output),
+	UChain(\sine,\output),
+	UChain(\sine,\output),
+	UChain(\sine,\output),
+	UChainGroup(UChain([\sine,[\freq,200]],\output),
+	UChain([\sine,[\freq,400]],\output))
+);
+y = USessionGUI(x);
+)
+::
+
+section::FreeUdef
+
+	For more complex uses, where a Udef does not provide the necessary functionality (e.g. multiple synths per unit per server) a link::Classes/FreeUdef:: class is available. By defining the 'createSynthFunc' function it's possible to have arbitrarily complex logic before instantiating the actual synth(s).
+	
+code:: 
+(
+d = FreeUdef( \testFree, [ \freq, 440, \amp, 0.1 ] )
+	.createSynthFunc_({ |unit, target|
+		Synth( "u_testFree", unit.getArgsFor( target ), target, \addToTail );
+	})
+	//how set values to controls
+	.setSynthFunc_({ |unit ...keyValuePairs|
+		unit.synths.do{ |s|
+			var server = s.server;
+			s.set(*keyValuePairs.clump(2).collect{ |arr| 
+				[arr[0],arr[1].asControlInputFor(server)] }.flatten)
+		};
+	})
+	.addUIO( UOut, \ar, 0, { Silent.ar } )
+	.synthDef_( 
+		SynthDef( "u_testFree", { |freq = 440, amp = 0.1| 
+			UOut.ar( 0, SinOsc.ar( freq, 0, amp ) );
+		})
+	);
+d.synthDef.add;
+)
+
+UChain( \testFree, \output ).gui;
+
+::
+
+section::MultiUdef
+
+Chooses from several synthdefs using chooseFunc. Can be used for instance to create Udefs which need hardcoded number of channels.
+
+Source code of code::diskSoundFile:::
+code::
+(
+var udefs;
+
+udefs = [1,2,3,4,5,6,7,8,10,12,16,24,32].collect({ |numChannels|
+	HiddenUdef( "diskSoundFile_%".format( numChannels ).asSymbol, {
+		UMixOut.ar( 0, DiskSndFilePlayer.ar( numChannels ), 0, true );
+	}, [ [ \soundFile, nil, DiskSndFileSpec(nil) ] ], \soundFile )
+});
+
+//Chooses the actual SynthDef to use according to 'chooseFunc' 
+//great for defs that need hardcoded channel numbers.
+MultiUdef( \diskSoundFile, udefs, \soundFile )
+	.chooseFunc_({ |args|
+		var sf, numChannels;
+		sf = (args ? []).pairsAt( \soundFile );
+		if( sf.notNil ) { 
+			"diskSoundFile_%".format( sf.numChannels ).asSymbol;
+		} {
+			\diskSoundFile_1
+		};
+	});
+
+)
+::
+
+section::Multiple servers
+
+It' easy to use the Unit Lib to control multiple servers at the same time. Starting a Unit will create a synth in each of the servers of the system.
+
+code::
+//recompile library now
+(
+~s1 = Server("Server1", NetAddr("localhost", 57111) ).boot.makeWindow;
+~s2 = Server("Server2", NetAddr("localhost", 57112) ).boot.makeWindow; 
+ULib.servers = [~s1,~s2];
+ULib.startup;
+)
+UChain(\sine, \stereoOutput).prepareAndStart
+::
+
+section::OSC control
+
+Most parameters of U, UChain and UScore can be controlled via OSC.
+
+
+Paremeters can be reached using the address pattern strong::/scoreName/chainIndex/unitIndex/argName.subArg::.
+
+code::
+(
+var chain = UChain(
+		[ 'diskSoundFile', [ 'soundFile', DiskSndFile(Platform.resourceDir +/+ "sounds/a11wlk01.wav", 44100, 44100*2, 1.5, true) ] ],
+		[ 'cutFilter', [ 'freq', [ 23, 805 ] ] ],
+		[ 'tremolo', [ 'speed', 5.3597421208728 ] ],
+		[ 'stereoOutput']);
+UScore(chain).gui;
+chain.gui
+)
+
+x = UOSCsetter( UScore.current );
+
+//just for testing
+y = NetAddr( "127.0.0.1", NetAddr.langPort );
+
+//send osc messages
+y.sendMsg( '/untitled/0/0/soundFile.rate', 2);
+y.sendMsg( '/untitled/0/2/speed' , 2 );
+
+//control chain
+y.sendMsg( '/untitled/0', \stop );
+y.sendMsg( '/untitled/0', \play );
+y.sendMsg( '/untitled/0', \release );
+	
+//control score
+y.sendMsg( '/untitled/prepareAndStart');
+y.sendMsg( '/untitled/stop');
+::
+
+subsection::UnitRack
+
+UnitRack's are just groups of units that have been properly configured or interconnected and can be inserted into other UChains.
+
+
+code::
+UnitRack(\filteredSaws,
+ 	[U(\saw),
+ 	U(\saw).setAudioOut(0,1),
+	U(\cutFilter),
+	U(\cutFilter).setAudioOut(0,1).setAudioIn(0,1),
+	]
+).category_(\synth);
+
+//open the defs window and drag the new UnitRack
+UChain.new.gui
+::

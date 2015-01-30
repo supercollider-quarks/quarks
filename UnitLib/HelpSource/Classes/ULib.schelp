@@ -1,0 +1,46 @@
+TITLE:: ULib
+summary:: Unit Library startup and other convenience methods
+categories:: UnitLib
+related:: Classes/UChain, Classes/Udef, Classes/UScore
+
+DESCRIPTION::
+
+For starting up the library:
+
+code::
+ULib.startup
+::
+
+In order to not to load the all the default synthdefs on every language recompile, the synthefs should be then loaded once with :
+
+code::
+
+ULib.writeDefaultDefs
+
+::
+
+and the then use false in the startup method so that they are not loaded at every startup:
+
+code::
+ULib.startup(false)
+::
+
+CLASSMETHODS::
+
+METHOD:: waitForServersToBoot
+block a routine until all servers have booted.
+
+
+
+METHOD:: startup
+(describe method here)
+
+ARGUMENT:: sendDefsOnInit
+A boolean. If true will send all the default synthdefs to the server.
+
+METHOD:: serversWindow
+Open the server window.
+
+
+METHOD:: writeDefaultSynthDefs
+Write all the default synthdefs to disk.

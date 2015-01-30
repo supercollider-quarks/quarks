@@ -1,0 +1,132 @@
+class:: TypeClasses
+summary:: Haskell style type classes
+categories:: FP
+
+This is an experimental implementation of Haskell style type classes for supercollider. The library relies heavilly on the concepts of
+Monad, Functor, Applicativer Functor, etc, so it is advised to read up on these topics.
+A good source is link::http://learnyouahaskell.com/::.
+The library is also very much inspired by ScalaZ: https://github.com/scalaz/scalaz
+
+SC is a dynamic language, it does not have typed functions, therefore this adaptation of the Haskell type classes, which as the name suggests, rely on types, might not always make sense. The type classes are implemented using dictionary look ups for the correct function to use. This might introduce a bit of overhead, so use with caution, specially for large data structures or when repeating the same function evaluation many time per second.
+
+Note::
+SuperCollider does not curry functions by default, so if a type class instance function requires a curried function this should be done manually. A 'curried' method was introduced for this. For applicative functors, code::<%>:: automatically curries the function.
+
+code::
+//currying
+a = { |x,y,z| x +y +z }
+a.curried.(1).(2).(3)
+::
+
+The type anotations use the scala syntax and are there just so you know what the function should return. It's up to the user to make sure the functions return the correct class, if they do not, an error will be thrown at runtime.
+::
+
+
+section::Functor
+
+requires implementation of:
+list::
+## fmap : F[A] => (A => B) => F[B]
+::
+
+fmap is equivalent to the collect method of the sc collections.
+
+code::
+
+[1,2,3].fmap(_+1)
+Some(3).fmap(_+1)
+
+::
+
+
+section::Applicative Functor
+
+requires implementation of:
+list::
+## apply: F[A=>B] => F[A] => F[B]
+## pure: A => F[A]
+::
+
+Applicative functors essentially generalize Functors for functions of a more than one argument.
+The method name code::<$>:: could not be defined in SuperCollider so we use instead code::<%>::
+
+code::
+
+(_+_) <%> [3] <*> [2]
+
+{ |x,y,z| x + y + y } <%> Some(3) <*> Some(2) <*> Some(4)
+{ |x,y,z| x + y + y } <%> Some(3) <*> Some(2) <*> None()
+
+::
+
+
+Let's say you have 3 objects of the Option class, a,b and c, and you want to run a function f of 3 arguments only if all of the three objets are a Some, then you can do:
+
+code::
+f <%> a <*> b <*> c
+::
+
+if a = Some(a'), b = Some(b') and c = Some(c'), this will return Some(f.(a',b',c')) otherwise it will return None().
+
+section::Monad
+
+requires implementation of:
+list::
+## >>=: F[A] => (A => F[B]) => F[B]
+## pure: A => F[A]
+::
+
+
+The bind operator for arrays acts as performing multi-value computations.
+code::
+[1,2,3] >>= (_*[1,2,3])
+
+//not possible to pick the type from expression in sc, one has to pass it explicitely
+3.pure(Array)
+//no type class for UGen
+3.pure(UGen)
+::
+
+Monads are not so usefull for Arrays, they are quite more interesting for Option and Writer, Reader and State classes (which are not yet implemented).
+
+section::Traverse
+
+requires implementation of:
+list::
+## traverse: T[A] => (A=>F[B]) => F[T[B]]
+::
+makes available:
+list::
+## sequence: F[G[A]] => G[F[A]]
+::
+
+According to this blog post[1] Traverse generalizes a for loop with functional code. It is based on the paper "The Essence of the Iterator Pattern"[2].
+list::
+## [1]:link::http://etorreborre.blogspot.com/2011/06/essence-of-iterator-pattern.html::
+## [2]:link::http://www.cs.ox.ac.uk/jeremy.gibbons/publications/iterator.pdf::
+::
+
+code::
+//If all elements in the list are Some's then you get a Some of the list of values
+[Some(2),Some(4)].sequence;
+//If one of them is a None() you get a None()
+[Some(3),None()].sequence
+::
+
+code::
+[1, 2, 3].traverse({|i| putStrLn("got this "++i) }).unsafePerformIO
+::
+
+Double traversal:
+code::
+[[1,2,4,5],[2,3],[4,5,6]].traverse({|xs|
+	xs.traverse({ |j| ST({ |n| T(n+j, j) }) })
+}).runState(0)
+::
+
+State depends on elements and elements depend on state:
+code::
+[[1,2,4,5],[2,3],[4,5,6]].traverse({|i| ST({ |n| T(n+i.size, n+i.size) }) }).runState(0)
+::
+
+

@@ -1,0 +1,607 @@
+CLASS:: U
+summary:: a basic element in Unit Lib
+categories:: UnitLib
+related:: Classes/UChain, Classes/Udef, Classes/UScore, Classes/Synth
+
+DESCRIPTION::
+An U (short for "unit") represents a single audio or control process. U's are the basic building blocks of the link::Reference/Unit-Lib##Unit Library::. Units can be chained together in a link::Classes/UChain:: to form a series of processes. Each unit can perform it's own little task, analogous to 'plugins' in popular commercial sequencers such as Logic and Pro Tools. Each unit is an instance of a link::Classes/Udef::, which defines what the unit does and what it's parameters are. There is a global library of Udefs, where each Udef is stored by name. An U is created by giving the name of the desired Udef:
+code::
+x = U(\sine); // creates a unit based on the \sine Udef (a system default)
+::
+The U in the example above gets the following parameters from its Udef: \freq, \amp. There are various ways to set these:
+code::
+x.set( \freq, 660 ); // set the \freq to 660
+x.get( \freq ); // request value
+
+x.freq = 550; // alternative way to set
+x.freq; // request value
+::
+This unit can be played individually via .prepareAndStart(s) and .stop. But it will not be audible. In's output is on private link::Classes/Bus##busses::. It can only be made audible when combined with an U from one of the 'io' Udefs, for example \output, in a UChain:
+code::
+x = U(\sine);
+c = UChain( x, U(\output) ); 
+
+c.prepareAndStart(s); // start the chain
+
+x.freq = 880; // changing a parameter
+c[0].freq = 330; // access the U via index
+
+c.release; // release (stop) the chain
+::
+
+subsection:: GUI
+
+Units have extensive graphical editors. The gui below is of the UChain in the code example above.
+image::U-example1.png::
+Each parameter can be edited via a dedicated gui element. Where most of these are sliders, there can also be different kinds of editors, all based on the information stored in the Udef. Changes in parameters will be instantly audible if the U is playing at that moment. Changes made when the U is not playing will be remembered and used when playing. Changing values via code or via other gui instances will change the value visually on this editor as well.
+code::
+c = UChain( U(\sine), U(\output) );
+c.gui; // this shows the same gui as the example picture
+::
+In the gui you can also change the Udef for a unit by dragging it from the link::Classes/UdefListView##defs window::.
+
+image::U-example2.png::
+
+This basically does the same as code::c[0].defName = \saw ::, and it keeps all the corresponding parameter settings. The unit itself is not replaced, it is just based on a new Udef.
+
+subsection:: Synths
+
+U's are usually wrappers for link::Classes/Synth##Synths::. Each unit represents a single Synth in a processing chain. 
+
+CLASSMETHODS::
+
+METHOD:: new
+(describe method here)
+
+argument:: defName
+(describe argument here)
+
+argument:: args
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: defClass
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: formatArgs
+(describe method here)
+
+argument:: inArgs
+(describe argument here)
+
+argument:: server
+(describe argument here)
+
+argument:: startPos
+(describe argument here)
+
+returns:: (returnvalue)
+
+
+INSTANCEMETHODS::
+
+METHOD:: disposeOnFree
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: preparedServers
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: env
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: init
+(describe method here)
+
+argument:: inName
+(describe argument here)
+
+argument:: inArgs
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: allKeys
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: allValues
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: set
+(describe method here)
+
+argument::  ... args
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: prSet
+(describe method here)
+
+argument::  ... args
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: get
+(describe method here)
+
+argument:: key
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: mapSet
+(describe method here)
+
+argument:: key
+(describe argument here)
+
+argument:: value
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: mapGet
+(describe method here)
+
+argument:: key
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: release
+(describe method here)
+
+argument:: releaseTime
+(describe argument here)
+
+argument:: doneAction
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: getArgsFor
+(describe method here)
+
+argument:: server
+(describe argument here)
+
+argument:: startPos
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: getIOKey
+(describe method here)
+
+argument:: mode
+(describe argument here)
+
+argument:: rate
+(describe argument here)
+
+argument:: id
+(describe argument here)
+
+argument:: what
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: setAudioIn
+(describe method here)
+
+argument:: id
+(describe argument here)
+
+argument:: bus
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: setControlIn
+(describe method here)
+
+argument:: id
+(describe argument here)
+
+argument:: bus
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: setAudioOut
+(describe method here)
+
+argument:: id
+(describe argument here)
+
+argument:: bus
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: setControlOut
+(describe method here)
+
+argument:: id
+(describe argument here)
+
+argument:: bus
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: getAudioIn
+(describe method here)
+
+argument:: id
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: getControlIn
+(describe method here)
+
+argument:: id
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: getAudioOut
+(describe method here)
+
+argument:: id
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: getControlOut
+(describe method here)
+
+argument:: id
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: audioIns
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: controlIns
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: audioOuts
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: controlOuts
+(describe method here)
+
+argument:: unit
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: canFreeSynth
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: shouldPlayOn
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: doesNotUnderstand
+(describe method here)
+
+argument:: selector
+(describe argument here)
+
+argument::  ... args
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: rate
+(describe method here)
+
+argument:: new
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: loop
+(describe method here)
+
+argument:: new
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: def
+(describe method here)
+
+argument:: newDef
+(describe argument here)
+
+argument:: keepArgs
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: defName
+(describe method here)
+
+argument:: newName
+(describe argument here)
+
+argument:: keepArgs
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: cutStart
+(describe method here)
+
+argument:: amount
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: synths
+(describe method here)
+
+argument:: synths
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: addSynth
+(describe method here)
+
+argument:: synth
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: removeSynth
+(describe method here)
+
+argument:: synth
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: makeSynth
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+argument:: startPos
+(describe argument here)
+
+argument:: synthAction
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: makeBundle
+(describe method here)
+
+argument:: targets
+(describe argument here)
+
+argument:: startPos
+(describe argument here)
+
+argument:: synthAction
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: start
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+argument:: startPos
+(describe argument here)
+
+argument:: latency
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: free
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: stop
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: resetSynths
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: resetArgs
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: argSpecs
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: getSpec
+(describe method here)
+
+argument:: key
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: isPlaying
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: printOn
+(describe method here)
+
+argument:: stream
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: getInitArgs
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: storeArgs
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: asUnit
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: prSyncCollection
+(describe method here)
+
+argument:: targets
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: waitTime
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: valuesToPrepare
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: needsPrepare
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: apxCPU
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: prepare
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+argument:: startPos
+(describe argument here)
+
+argument:: action
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: prepareAnd
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+argument:: loadDef
+(describe argument here)
+
+argument:: action
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: prepareAndStart
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+argument:: loadDef
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: loadDefAndStart
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: dispose
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: disposeArgsFor
+(describe method here)
+
+argument:: server
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: gui
+(describe method here)
+
+argument:: parent
+(describe argument here)
+
+argument:: bounds
+(describe argument here)
+
+returns:: (returnvalue)
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::

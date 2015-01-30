@@ -1,0 +1,49 @@
+CLASS:: Silence
+summary:: A placeholder audio rate player that makes no sound
+categories:: Libraries>crucial>Players
+
+
+DESCRIPTION::
+
+code::
+Silence.new.play
+::
+
+
+code::
+// this causes an error
+Patch({ arg audio;
+	RLPF.ar(audio,1300)
+},[
+	0.0
+]).play;
+::
+
+code::
+// Silence uses no cpu at all
+Patch({ arg audio;
+	RLPF.ar(audio,1300)
+},[
+	Silence.new
+]).play
+::
+
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+
+argument::  ... args
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: ar
+
+
+
+
+

@@ -1,0 +1,75 @@
+title:: Patch Busses and Groups
+summary:: Playing a patch on a specific Bus or Group
+categories:: Libraries>crucial>Instr
+
+code::
+
+
+s.boot;
+
+a = Group.new;
+
+b = Group.after(a);
+
+c = Bus.audio(s,1);
+
+p=Patch({ arg in,ffreq;
+	// the Bus is passed in as In.ar(bus.index,bus.numChannels)
+	LPF.ar(in,ffreq)
+},[
+	c,
+	KrNumberEditor(3000,[200,8000,\exp])
+]).play(group: b);
+
+// play something onto this bus in a group before that of the filter
+y = Patch({	Saw.ar(400) * 0.1  }).play(group: a, bus: c );
+
+
+z = Patch({	Saw.ar(500) * 0.1  }).play(group: a, bus: c );
+
+z.bus
+z.synth
+z.group
+z.server
+
+z.stop;
+
+y.stop;
+
+
+// z and y are now stopped by p is still playing
+
+// c is a Bus object
+c
+// play c ontto a main audio output
+c.play
+
+//use command-. to stop all
+
+
+
+
+s.boot;
+
+a = Group.new;
+
+b = Group.after(a);
+
+// no index, not yet allocated
+c = Bus(\audio,nil,2);
+
+y = Patch({ arg in,ffreq;
+	LPF.ar(in,ffreq)
+},[
+	c, // a proxy, the bus is yet to be allocated
+	KrNumberEditor(3000,[200,8000,\exp])
+]).play(group: b);
+
+// now that the patch has played, the bus allocated itself
+c.insp
+
+// play onto this bus in a group before that of the filter
+z = Patch({	Saw.ar([400,401]) * 0.1  }).play(group: a, bus: c )
+
+
+::

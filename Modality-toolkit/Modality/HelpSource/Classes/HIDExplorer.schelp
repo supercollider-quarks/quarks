@@ -1,0 +1,89 @@
+TITLE:: HIDExplorer
+summary:: Helper class to explore an HID device for the Modality toolkit
+categories:: Libraries>Modality
+related:: Overviews/Modality, Reference/MKtl_description_files
+
+DESCRIPTION::
+This helper class helps you to create an HID description file.
+
+code::
+// open an HID device
+MKtl( 'rnnd0' );
+
+MKtl( 'rnnd0' ).createDescFromDevice;
+::
+
+
+The file will have lines like this:
+
+code::
+// --------- input elements ----------
+'<element name b1>': ('hidUsage': 1, 'hidUsagePage': 9, 'type': '<type Button>', 'ioType': 'in' ),
+::
+
+Here you need to give a proper name to: code::'<element name b1>':: to e.g. code::'b1'::, based on the number that is written on the button - this is the name that will be used to refer to the element.
+
+Then you also need to edit the type: code::'<type Button>':: to code::'button'::.
+
+The other parts on the lines you should not change.
+
+Check link::Reference/MKtl_description_files:: for the format of the description files.
+
+
+
+CLASSMETHODS::
+
+METHOD:: compileFromDevice
+(describe method here)
+
+ARGUMENT:: dev
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: openDocFromDevice
+(describe method here)
+
+ARGUMENT:: dev
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+
+METHOD:: start
+(describe method here)
+
+ARGUMENT:: srcID
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: openDoc
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: compileFromObservation
+(describe method here)
+
+ARGUMENT:: includeSpecs
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: stop
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: verbose
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::

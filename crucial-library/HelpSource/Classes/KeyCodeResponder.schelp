@@ -1,0 +1,534 @@
+CLASS:: KeyCodeResponder
+summary:: register responder functions for keycode and modifier combinations
+categories:: Libraries>crucial>Keyboard, External Control>Keyboard
+related:: Classes/UnicodeResponder, Classes/KeyResponder
+
+DESCRIPTION::
+Handles multiple registrations for keycode and modifier combinations.
+This object should be used as the keydown or keyup action for a view in place of a function.
+
+KeyCodes are hardware dependant, and change from machine to machine.
+Its a simple way to hook up keys to respond, but it won't transfer to other people's computers.
+
+see also [UnicodeResponder] which matches based on the unicode, though the physical location
+of the key may still vary according zee nationality ov der keyboard.
+Command modifiers cannot be registered using the register method; use registerKeycode instead (see example below).
+
+
+
+
+CLASSMETHODS::
+
+METHOD:: normalModifier
+
+
+
+METHOD:: capsModifier
+
+
+
+METHOD:: shiftModifier
+
+
+
+METHOD:: controlModifier
+
+
+
+METHOD:: optionModifier
+
+
+
+METHOD:: functionKeyModifier
+
+
+
+METHOD:: commandModifier
+
+
+
+METHOD:: register
+	for shift, caps,opt,cntl
+		true indicates a required modifier
+		false indicates an excluded modifier
+		nil  expresses that you really don't care one way or the other
+
+argument:: keycode
+
+
+argument:: shift
+
+
+argument:: caps
+
+
+argument:: opt
+
+
+argument:: cntl
+
+
+argument:: function
+
+
+
+METHOD:: registerAll
+
+
+argument::  ... sets
+
+
+
+METHOD:: clear
+
+
+
+METHOD:: remove
+
+
+
+METHOD:: resetKeycode
+
+
+argument:: keycode
+
+
+
+METHOD:: tester
+
+
+
+METHOD:: new
+
+
+
+METHOD:: registerKeycode
+
+
+argument:: modifier
+
+
+argument:: keycode
+
+
+argument:: function
+
+
+
+METHOD:: registerKeycodeAll
+
+
+argument::  ... sets
+
+
+
+METHOD:: value
+
+
+argument:: view
+
+
+argument:: keycode
+
+
+argument:: modifier
+
+
+argument:: unicode
+
+
+
+METHOD:: global
+
+
+
+METHOD:: at
+
+
+argument:: address
+
+
+
+METHOD:: put
+
+
+argument:: address
+
+
+argument:: val
+
+
+
+METHOD:: pushForKeycode
+
+
+argument:: keycode
+
+
+argument:: requireMask
+
+
+argument:: denyMask
+
+
+argument:: function
+
+
+argument:: description
+
+
+
+METHOD:: maskToString
+
+
+argument:: m
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: dict
+
+
+
+METHOD:: normal
+code::
+k.normal(keycode -> function);
+k.normal(keycode -> fuction, keycode2 -> function2 , ... keycodeN -> functionN );
+::
+
+note the association ( key  -> value )
+
+argument::  ... associations
+
+
+
+METHOD:: shift
+
+
+argument::  ... associations
+
+
+
+METHOD:: control
+
+
+argument::  ... associations
+
+
+
+METHOD:: option
+
+
+argument::  ... associations
+
+
+
+METHOD:: register
+
+
+argument:: keycode
+
+
+argument:: shift
+
+
+argument:: caps
+
+
+argument:: opt
+
+
+argument:: cntl
+
+
+argument:: function
+
+
+argument:: description
+
+
+
+METHOD:: clear
+
+
+
+METHOD:: remove
+
+
+
+METHOD:: ++
+
+
+argument:: that
+
+
+
+METHOD:: registerKeycode
+
+
+argument:: modifier
+
+
+argument:: keycode
+
+
+argument:: function
+
+
+
+METHOD:: registerKeycodeAll
+
+
+argument::  ... sets
+
+
+
+METHOD:: value
+
+
+argument:: view
+
+
+argument:: char
+
+
+argument:: modifier
+
+
+argument:: unicode
+
+
+argument:: keycode
+
+
+
+METHOD:: at
+
+
+argument:: key
+
+
+
+METHOD:: put
+
+
+argument:: key
+
+
+argument:: value
+
+
+
+METHOD:: pushForKeycode
+
+
+argument:: keycode
+
+
+argument:: requireMask
+
+
+argument:: denyMask
+
+
+argument:: function
+
+
+argument:: description
+
+
+
+METHOD:: report
+
+
+
+METHOD:: guiClass
+
+
+
+
+EXAMPLES::
+
+Use this to post the keycodes
+code::
+(
+
+KeyCodeResponder.tester
+
+)
+
+// it prints:
+
+//  shift :
+k.register(   41  ,   true, false, false, false, {
+
+});
+
+// write some code with the variable k as a KeyCodeResponder
+
+(
+
+k = KeyCodeResponder.new;
+
+c = if( GUI.id === \cocoa, 36, 10 ); // keycode : return (36 on CocoaGUI, 10 on SwingOSC)
+// match single modifiers exclusively
+k.normal( c -> {  "return".postln });
+k.option( c -> { "option return".postln });
+k.shift( c -> { "shift return".postln });
+// overwrites previous registration
+k.shift( c -> { "SHIFT RETURN only".postln; });
+
+
+
+// match multiple modifier combinations
+	//        shift caps opt   control
+k.register( c, true,  nil,  true, false, {
+	//         yes   either  yes   no
+	"return: shift-option regardless of CAPS".postln;
+});
+
+
+k.registerKeycode(KeyCodeResponder.normalModifier, 52 , { "enter".postln; });
+
+// arrow keys are considered function keys and must be bit ORd with function key modifier
+k.registerKeycode(KeyCodeResponder.normalModifier | KeyCodeResponder.functionKeyModifier , 123 , { 	"<-".postln;
+});
+
+k.registerKeycode(KeyCodeResponder.controlModifier | KeyCodeResponder.functionKeyModifier , 123 , {
+	"control <-".postln;
+});
+
+k.registerKeycode(KeyCodeResponder.commandModifier , 123 , {
+	"command <-".postln;
+});
+
+w = GUI.window.new.front;
+v = GUI.slider.new(w,Rect(10,10,100,100));
+v.keyDownAction = k;
+v.focus;
+
+)
+
+::
+
+
+
+Any player's gui can have its keyDownAction set
+
+code::
+(
+
+p = Patch({ arg freq=440; SinOsc.ar(freq,mul: 0.1) });
+g = p.gui;
+g.keyDownAction =  {
+	"you touched me".postln;
+};
+
+)
+::
+focus on the slider.  notice that every key stroke is passed,
+the slider does not swallow them.
+
+
+or you can use KeyCodeResponder
+
+code::
+kcr = KeyCodeResponder.new;
+kcr.option( 36 -> { "option 36".postln });
+kcr.shift( 36 -> { "shift 36".postln });
+aPatchGui = aPatch.gui;
+aPatchGui.keyDownAction = kcr;
+::
+
+This means that when ever the player is focused (any of its controls is in focus), these keys will be active providing that the view that is actually in focus doesn't handle the key event (it should have a nil keyDownAction function or pass nil).
+
+
+
+You can concatenate KeyCodeResponders using ++
+
+
+
+
+global keydowns not yet tested....
+code::
+(
+KeyCodeResponder.clear;
+/*
+this will fire on shift-'r'
+	shift must be held down
+	caps must NOT be down
+	cntl or opt status is irrelevant
+*/
+c = if( GUI.id === \cocoa, 15, 82 ); // keycode : 'r' key (15 on CocoaGUI, 82 on SwingOSC)
+KeyCodeResponder.register(c,true,false,nil,nil,{ "shift, no caps".postcln });
+
+/*
+this will fire on shift-'r'
+	shift must be held down
+	caps may or may not be down
+	cntl or opt status is irrelevant
+*/
+KeyCodeResponder.register(c,true,nil,nil,nil,{ "shift, yes/no caps".postcln });
+Sheet({ arg f; ActionButton(f).focus });
+
+
+)
+::
+
+
+
+
+This is very useful when using CAPS-LOCK to switch interface modes etc.
+
+Only one function per deny/require mask combination is possible per keycode:
+code::
+(
+// hit shift - r
+c = if( GUI.id === \cocoa, 15, 82 ); // keycode : 'r' key (15 on CocoaGUI, 82 on SwingOSC)
+KeyCodeResponder.register(c,true,nil,nil,nil,{ "shift r".postcln });
+KeyCodeResponder.register(c,true,nil,nil,nil,{ "overwrote the previous one".postcln });
+Sheet({ arg f; ActionButton(f).focus });
+
+)
+
+::
+
+
+The simpler, older method is :
+
+code::
+	KeyCodeResponder.registerKeycode(2,28,{      });// *
+::
+
+whereby that modifier and only that modifier will fire the funtion.
+see View for modifier values or use this :
+
+code::
+(
+
+	KeyCodeResponder.tester
+
+)
+::
+
+
+
+// using characters
+code::
+KeyCodeResponder.registerChar(0,$q,{  }); // q no modifier
+::
+
+
+Gotcha: it is easy to forget that you registered a function with KeyCodeResponder
+that holds a reference to a large object.  Garbage Collection will not remove the object until
+you have released your reference.
+
+solution:
+
+code::
+// place this at the top of your performance code to start with a clean slate
+KeyCodeResponder.clear;
+::
+

@@ -14,7 +14,7 @@
 	writeZArchive { arg akv;
 		var thing;
 		thing = this.asCompileString;
-		if(thing.size > 127,{
+		if(thing.size > 127, {
 			akv.putChar($X);
 			akv.writeLargeString( thing );
 		} , {
@@ -24,14 +24,14 @@
 	}
 	// this.new, then new.readZArchive
 	*readZArchive { arg ... args;
-		var new,akv;
+		var new, akv, path;
 		new = this.new;
 		akv = args.first;
-		if(akv.isString,{
-			akv = ZArchive.read(Document.standardizePath(akv));
+		if(akv.isString, {
+			akv = ZArchive.read(ZArchive.standardizeDocumentPath(akv));
 			args[0] = akv;
 		 });
-		new.performList(\readZArchive,args);
+		new.performList(\readZArchive, args);
 		^new
 	}
 	// see Help file
@@ -47,14 +47,14 @@
 
 + String {
 	asZArchive {
-		^ZArchive.write(Document.standardizePath(this))
+		^ZArchive.write(ZArchive.standardizeDocumentPath(this))
 	}
 	writeZArchive { arg akv;
-		if(this.size < 128,{
+		if(this.size < 128, {
 			akv.putChar($s);
 			akv.writeString(this);
 			^this
-		},{	// up to 4294967296
+		}, {	// up to 4294967296
 			akv.putChar($S);
 			akv.writeLargeString(this);
 		});
@@ -81,7 +81,7 @@
 }
 
 /* raw arrays could cut in half by not having to repeat the class
-		if(this.isKindOf(RawArray),{ // check the type of this.at(0)
+		if(this.isKindOf(RawArray), { // check the type of this.at(0)
 			akv.putChar($S);
 			classname = this.class.name.asString;
 			akv.putInt8(classname.size);
@@ -99,7 +99,7 @@
 		classname = this.class.name.asString;
 		akv.writeString(classname);
 		akv.putInt32(this.size);
-		this.keysValuesDo({ arg k,v,i;
+		this.keysValuesDo({ arg k, v, i;
 			akv.writeItem(k);
 			akv.writeItem(v)
 		});
@@ -114,5 +114,18 @@
 		akv.writeString(classname);
 		akv.putInt32(this.size);
 		this.do({ arg it; akv.writeItem(it) });
+	}
+}
+
++ ZArchive {
+	*standardizeDocumentPath { arg path;
+		// Document.standardizePath is now broken
+		// and fails to add the Document.dir to standardize
+		// this uses the Crucial fix where available
+		^if(PathName.respondsTo(\standardizeDocumentPath), {
+			PathName.standardizeDocumentPath(path);
+		}, {
+			Document.standardizePath(path);
+		});
 	}
 }

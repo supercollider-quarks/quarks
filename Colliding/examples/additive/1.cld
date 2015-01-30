@@ -1,0 +1,9 @@
+//http://www.phy.mtu.edu/~suits/clarinet.html
+var sum= SinOsc.ar(freq)+
+	0.75*SinOsc.ar(freq*3)+
+	0.5*	SinOsc.ar(freq*5)+
+	0.14*	SinOsc.ar(freq*7)+
+	0.5*	SinOsc.ar(freq*9)+
+	0.12*	SinOsc.ar(freq*11);
+var e = EnvGen.ar(Env.sine(1));
+Out.ar(0,0.1*sum*e!2);

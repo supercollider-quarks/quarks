@@ -1,0 +1,168 @@
+CLASS:: MKtlElement
+summary:: An element of an MKtl.
+categories:: Libraries>Modality
+related:: Overviews/Modality, Classes/MAbstractElement, Classes/MKtl
+
+DESCRIPTION::
+An element of an link::Classes/MKtl::.
+
+
+CLASSMETHODS::
+
+METHOD:: types
+Available types.
+
+private:: initClass
+
+METHOD:: new
+Creates a new instance.
+
+argument:: source
+The link::Classes/MKtl:: it belongs to.
+
+argument:: name
+A name.
+
+INSTANCEMETHODS::
+
+METHOD:: spec
+The element's spec
+
+private:: init
+
+METHOD:: defaultValue
+The element's default value
+
+
+METHOD:: rawValue
+Get the element's value (raw)
+
+argument:: newVal
+Set the element's value (raw)
+
+
+METHOD:: value
+Get and set the element's current value (normed)
+
+argument:: newval
+a Float between 0.0 and 1.0
+
+discussion::
+
+This will not cause the action to be performed.
+
+If the element is of type inout or out then the value will also be sent back to the control. Value should be in 0.0-1.0 range, it will be automatically mapped to the correct range for this device (e.g. 0-127).
+
+Example:
+Control a knob on the Behringer BCF2000
+
+code::
+MKtl('bcf20000').elements.at(\kn_1_1).value_(0.5)
+::
+
+
+METHOD:: rawValue
+
+Set the value to the element.
+
+argument:: newval
+Number in the range expected by the device
+
+returns:: MKtlElement
+
+discussion::
+
+This will not cause the action to be performed and will not send the value back to the device.
+
+METHOD:: addAction
+
+argument:: action
+
+Add the action to a FunctionList, creating the FunctionList if doesn't exist yet.
+
+METHOD:: removeAction
+
+argument:: action
+
+Remove an action from the list of current actions. Has no effect if 'action' is a function or nil, only removes the action if 'action' is a FunctionList.
+
+METHOD:: doAction
+
+Perform any actions related to this element.
+
+argument:: sendValue
+Whether or not to send the value out to the device if this is an output element.
+
+
+METHOD:: reset
+
+Set action to nil.
+
+METHOD:: asStream
+pattern support - convert MKtlElement to a stream
+
+METHOD:: embedInStream
+pattern support - embed MKtlElement in a stream.
+
+code::
+// examples for direct pattern usage:
+n = MKtl(\nk1, 'nanoKONTROL');
+x = n.elementsDict[\play];
+
+// test asStream method - simple endless lookup
+p = Pbind(\test, x).trace.play;
+
+// switch value while playing, pattern gets current value
+x.value = 1;
+x.value = 0;
+
+p.stop;
+
+// test embedInStream method:
+(
+p = Pbind(
+	\test, Pseq([x, 4, 7], 8),
+	\dur, 0.5
+).trace.play;
+)
+// switch value while playing
+x.value = 1;
+x.value = 0;
+
+p.stop;
+::
+
+
+METHOD:: elementDescription
+An Event/dictionary with the description for the element.
+
+METHOD:: gui
+Create a gui for this elements.
+
+
+EXAMPLES::
+
+Sending data back to MIDI device, one should use link::Classes/MAbstractElement#value_:: :
+
+code::
+MKtl('bcf20000').elementAt(\kn,1,1).value_(0.5)
+::
+
+Classic knobs rotating demo for B:
+
+code::
+(
+x = 0;
+fork{
+	loop{
+		0.1.wait;
+		x = x + 0.1;
+		8.do{ |i|
+			MKtl('bcf20000').elementAt(\kn,1,i).value_(
+				(x + (i/7)).mod(1.0)
+			)
+		}
+	}
+}
+)
+::

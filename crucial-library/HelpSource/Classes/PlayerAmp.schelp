@@ -1,0 +1,91 @@
+CLASS:: PlayerAmp
+summary:: adds a simple amplitude control to a Player
+categories:: Libraries>crucial>Players
+
+
+DESCRIPTION:: filters the player through an amplitude control
+
+code::
+(
+
+p = PlayerAmp(
+	Patch({
+		SinOsc.ar
+	}),
+	0.4
+);
+
+p.gui;
+
+)
+
+
+p.amp = 0.2;
+
+p.amp = 1.0;
+
+
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: player
+
+
+argument:: amp
+
+
+argument:: spec
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: amp
+
+
+argument:: v
+
+
+
+METHOD:: spec
+
+
+
+METHOD:: asSynthDef
+
+
+
+METHOD:: defName
+
+
+
+METHOD:: synthDefArgs
+
+
+
+METHOD:: db
+
+
+argument:: db
+
+
+
+METHOD:: value
+
+
+argument:: v
+
+
+
+METHOD:: guiClass
+
+
+
+
+

@@ -1,0 +1,74 @@
+TITLE:: CVMidiEditGroup
+summary:: An embeddedable group of GUI-elements, used to edit MIDI-connections within a CVWidgetMSEditor.
+categories:: GUI, External Control>MIDI
+related:: Classes/CVWidget, Classes/CVWidgetMSEditor, Classes/CCResponder
+
+DESCRIPTION::
+image::CVMidiEditGroup.png::
+A CVMidiEditGroup is a group of link::Classes/Button::s and link::Classes/TextField::s, similar to the MIDI-editing area in a link::Classes/CVWidgetKnob:: or link::Classes/CVWidget2D::. Every CVMidiEditGroup consists of:
+list::
+## a button that opens the link::Classes/CVWidgetEditor:: for the widget.
+## a "learn"-button: if pressed the widget will be connected to the next (hardware-)slider that gets moved by the user.
+## text-fields for the MIDI source-ID (the ID under which external hardware gets registered in SC), the MIDI channel and the MIDI controller. If any of these fields gets filled out ahead from connecting to a physical controller, the resulting connection will be restricted to the values filled into the fields. Also, the learn-button's state will change from "L" (blue background) to "C" (green background).
+:: 
+
+CLASSMETHODS::
+
+METHOD:: new
+create a new CVMidiEditGroup within code::parent::. CVMidiEditGroup is currently used within link::Classes/CVWidgetMSEditor:: only and there shouldn't be any need to call code::new:: directly.
+
+argument:: parent
+a link::Classes/View:: that takes the GUI-elements
+
+argument:: bounds
+a link::Classes/Rect:: or a link::Classes/Point::, determining position and size. 
+
+argument:: widget
+the widget: a link::Classes/CVWidgetKnob::, a link::Classes/CVWidget2D:: or a link::Classes/CVWidgetMS::.
+
+argument:: slot
+the numeric slot within a link::Classes/CVWidgetMS:: (CVMidiEditGroup is currently used only within the context of CVWidgetMS).
+
+returns:: a code::CVMidiEditGroup::
+
+
+INSTANCEMETHODS::
+
+METHOD:: bounds
+Position, width, and height of a CVMidiEditGroup
+
+returns:: a link::Classes/Rect:: 
+
+METHOD:: remove
+remove a CVMidiEditGroup
+
+returns:: this (a code::CVMidiEditGroup::)
+
+METHOD:: midiHead
+A link::Classes/Button:: linking to MIDI-tab within the widget's editor (see also: link::Classes/CVWidgetEditor::)
+
+returns:: a link::Classes/Button::
+
+METHOD:: midiLearn
+A link::Classes/Button:: that, if clicked, either triggers the MIDI-learn functionality (button-label: "L") or creates a link::Classes/CCResponder:: for the values entered in link::#-midiSrc::, link::#-midiChan:: or/and link::#-midiCtrl:: (button-label: "C"). If a link::Classes/CCResponder:: is present the button-label gets changed to "X" - upon clicking the responder gets removed again.
+
+returns:: a link::Classes/Button::
+
+METHOD:: midiSrc
+A link::Classes/TextField:: displaying the ID of a connected MIDI-device. If no link::Classes/CCResponder:: is present one may enter the ID of a device (if known) and when clicking the link::#-midiLearn:: button the widget will create a link::Classes/CCResponder:: listening to that device.
+
+returns:: a link::Classes/TextField::
+
+METHOD:: midiChan
+A link::Classes/TextField:: displaying the channel for an existing link::Classes/CCResponder:: or, if none is present, one may use this field to set the channel for which the link::Classes/CCResponder:: shall be created.
+
+returns:: a link::Classes/TextField::
+
+METHOD:: midiCtrl
+A link::Classes/TextField:: displaying the controller-number of an existing link::Classes/CCResponder:: or, if none is present, one may use this field to set the controller-number for which the link::Classes/CCResponder:: shall be created.
+note:: SuperCollider numbers hardware-controllers internally beginning with code::0:: - if code::0:: gets entered here the controller will be displayed as code::1:: as most devices will probably number their knobs and sliders beginning with code::1::. Also, the way controller-numbers are displayed is related to the code::ctrlButtonBank:: setting which can be set with link::Classes/CVWidget#-setCtrlButtonBank::
+:: 
+
+returns:: a link::Classes/TextField::
+
+private:: init

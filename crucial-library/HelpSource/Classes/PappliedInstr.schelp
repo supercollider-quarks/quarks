@@ -1,0 +1,147 @@
+CLASS:: PappliedInstr
+summary:: partial application for Instr
+categories:: Libraries>crucial>Instr
+related:: Classes/Instr, Classes/CompositeInstr
+
+DESCRIPTION:: In computer science, partial application (or partial function application) refers to the process of fixing a number of arguments to a function, producing another function of smaller arity.
+
+A partially applied Instr produces a PappliedInstr that references the Instr (by name) and which arguments are satisfied.  A PappliedInstr is usable as any normal Instr but it has fewer arguments than the original.
+
+code::
+Instr(\saw, { arg freq=200,amp=0.5,env;
+	EnvGen.kr(env,doneAction:2) * LFSaw.ar(freq,0.0, amp);
+});
+
+p = Instr(\saw).papply((env:Env.perc));
+
+p.gui
+::
+
+The resulting PappliedInstr now has the Envelope hardcoded.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: a
+
+
+argument:: args
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: a
+
+
+
+METHOD:: appliedArgs
+
+
+argument:: args
+
+
+
+METHOD:: argNames
+
+
+
+METHOD:: defArgs
+
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: init
+
+
+
+METHOD:: value
+
+
+argument::  ... args
+
+
+
+METHOD:: valueArray
+
+
+argument:: args
+
+
+
+METHOD:: ar
+
+
+argument::  ... args
+
+
+
+METHOD:: kr
+
+
+argument::  ... args
+
+
+
+METHOD:: outSpec
+
+
+
+METHOD:: maxArgs
+
+
+
+METHOD:: argsSize
+
+
+
+METHOD:: initAt
+
+
+argument:: i
+
+
+
+METHOD:: argNameAt
+
+
+argument:: i
+
+
+
+METHOD:: defArgAt
+
+
+argument:: i
+
+
+
+METHOD:: funcDef
+
+
+
+METHOD:: storeableFuncReference
+
+
+
+METHOD:: asString
+
+
+
+METHOD:: asInstr
+
+
+
+METHOD:: guiClass
+
+
+
+
+

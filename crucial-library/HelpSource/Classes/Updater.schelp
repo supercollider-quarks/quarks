@@ -1,0 +1,171 @@
+CLASS:: Updater
+summary:: simple MVC utility; calls an update handler when the model changes
+categories:: Libraries>crucial>GUI
+related:: Classes/ObjectGui, Classes/SimpleController
+
+DESCRIPTION:: A simple utility object that adds itself as a dependant on a model and calls the handler whenever the model is changed.
+
+An Updater can be used to implement a simple Model-View-Controller architecture
+in situations where a full blown controller class is not needed.
+
+It adds itself as a dependant to the model.  When the model is issued a .changed message (after its state has been changed in some way) all of its dependants, including the Updater are sent the .update message.
+The Updater class then simply evalutes the updateFunction
+
+Note: SimpleController isn't really a full controller.  Its the exact same thing as this (and was written after Updater).  A controller mediates in both directions between view and model, and these classes are simple updaters that just update views.  ObjectGui is more of a proper controller in that it knows the model and the view(s) and mediates between them.
+
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: model
+
+
+argument:: updateFunc
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: model
+
+
+
+METHOD:: updateFunc
+
+
+
+METHOD:: init
+
+
+
+METHOD:: update
+
+
+argument::  ... args
+
+
+
+METHOD:: remove
+
+
+
+METHOD:: removeOnClose
+
+
+argument:: layout
+
+
+
+METHOD:: findWindow
+
+
+argument:: layout
+
+
+
+EXAMPLES::
+
+code::
+(
+Sheet({ arg layout;
+
+	var bpmView, updater;
+
+	bpmView= CXLabel(layout, "tempo:_____");
+
+	updater = Updater(Tempo.default,{ // any change to Tempo
+			bpmView.label_("tempo:" + Tempo.bpm).refresh;
+		});
+
+	// fire the function manually to initially set the bpmView label
+	updater.update;
+
+	// tell the layout to .remove this updater when the layout and windows close
+	layout.removeOnClose( updater );
+});
+
+// every time you set the Tempo it will issue itself a .changed message
+Tempo.tempo = 0.4
+
+Tempo.tempo = 1.3
+
+Tempo.tempo = 1.0
+
+)
+
+::
+
+The updater adds itself as a dependant to the model, so its important to at some point tell the updater to remove itself (as a dependant).  Otherwise it will stay in the model's dependant dictionary and will not get garbage collected.  It will also continue to respond to update messages.  If the window has closed this means it will try to change views that no longer exist and you will get errors.
+
+ tell the layout to .remove this updater when the layout and windows close :
+
+code::
+	layout.removeOnClose( updater );
+::
+
+
+Update the client of messages from server
+
+The commonly used NodeWatcher class watches server notifications and issues .changed messages to the Node objects.  Updater can be used to fire an updateFunction
+
+model - the node which you want to receive server notifications for.
+updateFunction -
+
+code::
+(
+// prep
+s = Server.local;
+
+n = SynthDef("Updater-help", {|out, freq|
+			var sin;
+			sin = SinOsc.ar(freq, 0.5)*EnvGen.kr(Env.triangle(4,1), doneAction:2);
+			Out.ar(out, sin);
+		}).send(s);
+)
+
+(
+//create a new synth node on the server
+n = Synth.new("Updater-help", [\out, 0, \freq, 220]);
+
+//you need to register the synth with a NodeWatcher first
+NodeWatcher.register(n);
+
+//update the client of \n_end messages
+Updater(n, {|node, msg|
+		if(msg==\n_end, {
+			"synth has ended".postln;
+		});
+	});
+)
+
+::
+
+This could also be done using SimpleController, a related class that assumes that the second argument will be a symbol.
+
+code::
+(
+//create a new synth node on the server
+n = Synth.new("Updater-help", [\out, 0, \freq, 220]);
+
+//you need to register the synth with a NodeWatcher first
+NodeWatcher.register(n);
+c = SimpleController(n);
+
+// map \n_end to an updateFunction
+c.put( \n_end,{ arg node;
+	"synth has ended".postln;
+});
+
+)
+
+::
+
+
+
+
+

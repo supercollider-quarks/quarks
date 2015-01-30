@@ -1,0 +1,406 @@
+CLASS:: FPSignal
+summary:: Implementation of Functional Reactive Programming.
+categories:: FP, TimerES
+related:: Classes/EventSource
+
+description::
+
+This is port of the reactive-core library for Scala into SuperCollider.
+
+For more info see:
+
+http://www.reactive-web.co.cc/core/Signal
+
+subsection:: Type Classes
+
+
+Traverse: Because Array is an instance of the Traverse type class you can transform arrays of FPSignals into an FPSignal that emits arrays using 'sequence':
+
+code::
+(
+x = Var(1.0);
+y = Var(2.0);
+z = Var(3.0);
+z = [x,y,z].sequence;
+z.now;
+)
+::
+
+CLASSMETHODS::
+
+PRIVATE:: buildFlatCollect
+
+METHOD:: new
+
+not to be used directly, use instead Var or Val.
+
+instancemethods::
+
+PRIVATE::initFPSignal
+
+method::now
+the current value of the Signal
+
+
+SUBSECTION::Perform Side-Effects
+
+method::do
+When the Signal changes, runs f with new value.
+
+code::
+(
+x = Var(0);
+f = { |x| postln("look what I got:"++x) };
+x.do(f);
+x.value_(3)
+)
+
+//stop the action
+(
+x.stopDoing(f);
+x.value_(4)
+)
+::
+
+method::doDef
+
+Run f every time a new event arrives and save the function using the name given
+
+argument::name
+A key
+argument::f
+The function to call
+returns:: Unit
+
+code::
+(
+x = Var(0);
+x.doDef(\hello,{ |x| postln("look what I got:"++x) });
+x.value_(3)
+)
+(
+x.doDef(\hello,{ |x| postln("And now I print it like this:"++x) });
+x.value_(3)
+)
+(
+//remove the action
+x.doDef(\hello);
+x.value_(3)
+)
+::
+
+method::stopDoing
+
+Stop running function f.
+argument::f
+A function
+returns:: Unit
+
+
+SUBSECTION::Combinators
+
+
+method::changes
+An EventSource which fires events every time the signal changes.
+
+code::
+(
+x = Var(2);
+x.changes;
+)
+::
+
+method::collect
+argument::f
+f: A => B
+discussion::
+code::
+(
+x = Var(2);
+y = x.collect( _*100 );
+y.do(_.postln);
+)
+
+x.value_(100)
+::
+
+method::switchTo
+argument::f
+f: A => FPSignal[B]
+discussion::
+
+Implementes event switching.
+
+code::
+(
+x = Var(1);
+y = Var(2);
+z = x.switchTo{ |x| y.collect{ |y| [x,y] } };
+z.do(_.postln);
+)
+
+x.value_(5);
+y.value_(6);
+::
+
+method::inject
+Allows one, in a functional manner, to respond to an event while taking into account past events. For every event t, f is called with arguments (u, t), where u is initially the value of the 'initial' parameter, and subsequently the result of the previous application of f.
+returns:: A new FPSignal that, for every event t fired by the original FPSignal, fires the result of the application of f (which will also be the next value of u passed to it). Often 'u' will be an object representing some accumulated state.
+discussion::
+An FPSignal that sums all the integer values fired by the parent FPSignal.
+code::
+(
+x = Var(1.0);
+y = x.inject( 0, {|state,b| state + b });
+y.do(_.postln);
+x.value_(1);
+x.value_(4);
+x.value_(7)
+)
+::
+
+method::selfSwitch
+switching based on the the signal itself
+argument:: f
+function A -> FPSignal[ T(A, Option[B]) ]
+returns:: FPSignal[A]
+discussion::
+
+Given an initial signal sigA of type FPSignal[ T(A, Option[B]) ], calling selfSwitch on it with a function f that evaluates to another signal sigB of type FPSignal[ T(A, Option[B]) ] will behave like sigA while the value of sigA is T(x, None()). When a value of type T(x,Some(v)) is received the function f is evaluated with v and sigA is switched out, sigB is switched in taking the role of sigA and repeating the procedure ad infinitum. This is a sort of recursive switching.
+
+If this was a function it would have type
+
+FPSignal[ T(A, Option[B]) ] -> ( A -> FPSignal[ T(A, Option[B]) ] ) -> FPSignal[A]
+
+note::
+If the initial signal can be generated from f given an initial value code::initVal:: then we can use for convenience
+
+code::
+f.selfSwitch(initVal)
+::
+
+which is equivalent to
+
+code::
+f.(initVal).selfSwitch(f)
+::
+::
+
+code::
+//resets a counter
+(
+var timer = ENTimer(0.1);
+x = EventNetwork(ENDef{
+
+	var tSig = timer.enIn.hold(0.0);
+
+	var f = { Var(1.0).integral(tSig).collect{ |x|
+		if(x > 5){ T(x,Some(Unit)) }{ T(x,None() ) }
+	} };
+
+	var x = f.().selfSwitch(f);
+
+	x.enDebug("x: ");
+
+},true);
+
+x.start;
+timer.start.unsafePerformIO
+)
+
+//bouncing ball
+(
+var timer = ENTimer(0.1);
+x = EventNetwork(ENDef{
+
+	var tSig = timer.enIn.hold(0.0);
+
+	var ball = { |y0,v0|
+		var ss  = [y0,v0].postln;
+		var v = Var(-9.8).integral(tSig).collect(_+v0);
+		var y = v.integral(tSig).collect(_+y0);
+
+		T(_,_).lift.(y,v).collect{ |tup|
+			if(tup.at1 < 0){ T(tup.at1,Some(tup)) }{ T(tup.at1,None() ) }
+		}
+	};
+
+	var fall = ball.(10,0).selfSwitch({ |tup| ball.(0, tup.at2.neg) });
+
+	fall.enDebug("y: ");
+
+},true);
+
+x.start;
+timer.start.unsafePerformIO
+)
+::
+
+method::<@>
+Apply a time varying function to incoming events
+
+code::
+(
+var x = Var({ |x| x + 25 });
+var z = EventSource();
+var r = x <@> z;
+r.do( _.postln );
+z.fire(2);
+x.value_({ |x| x + 28 });
+z.fire(2);
+)
+
+
+(
+var x = Var(1.0);
+var y = Var(2.0);
+var z = EventSource();
+var r = { |x,y,z| x + y +z } <%> x <*> y <@> z;
+r.do( _.postln );
+x.value_(20);
+y.value_(40);
+z.fire(2)
+)
+::
+
+
+SUBSECTION::Disconnect from network
+
+method::remove
+
+Disconnects this FPSignal from the parent FPSignal (if it has a parent). If the FPSignal is not assigned to any variable anymore it will be gc'ed.
+
+code::
+(
+x = Var(1.0);
+y = x.collect(_+10);
+y.do(postln(_));
+x.value_(2);
+)
+
+(
+y.remove;
+x.value_(3);
+//nothing is posted
+)
+
+//now the EventSource that was assigned to y can be gc'ed.
+y = nil;
+::
+
+method::reset
+
+Removes all listeners. This will disconnect this EventSource from the rest of the chain that depends on it, and the rest of the chain will be gc'ed.
+
+code::
+(
+x = Var(1.0);
+x.collect(_+10).do(postln(_));
+x.collect(_+100).do(postln(_));
+x.value_(2);
+)
+
+(
+x.reset;
+x.value_(3);
+//nothing is posted
+)
+::
+
+SUBSECTION:: Interaction with Server
+
+method::bus
+
+create a bus and add a function to the event stream that updates the bus.
+
+returns:: Some( Tuple2( Bus, Function ) ). The function is returned to be able to stop updating the Bus in the future. If the server is not running returns None().
+
+code::
+x = { SinOsc.ar( \freq.kr(400) )*0.1 }.play
+
+(
+y = Var(900);
+b = y.bus(s);
+//b might be None() if the server is not running.
+b.do{ |z| x.map(\freq, z.at1) }
+)
+
+//change freq to 200
+y.value_( 200 );
+::
+
+
+SUBSECTION:: Interaction with GUIs
+You can use code::signalFromGUI:: to get an FPSignal from the GUI and the method 'connect' to connect the end of the network to an object that responds to value_
+
+METHOD::connect
+
+Connect this FPSignal to an object. Everytime the FPSignal fires an event the object's value_ method is called with the value.
+ARGUMENT:: object
+An object that responds to value_
+
+Examples::
+
+Combine Signals using a function:
+
+code::
+(
+x = Var(1.0);
+y = Var(1.0);
+z = Var(1.0);
+w = { |x,y,z| x + y + z } <%> x <*> y <*> z; //analogous to { |x,y,z| x + y + z }.(1.0,1.0,1.0)
+w.do( postln(_) );
+x.value_(9.0);
+y.value_(3.0);
+z.value_(1.0);
+)
+::
+
+FPSignal is a Applicative Functor so we can use the apply method <*>. Applicative Functors in essence allow to "lift" a n-ary function from a domain A to a domain B, in this case it lifts functions on any type to functions on FPSignals.
+We could define a lift function for each number of arguments like so:
+code::
+~lift2 = { |f| { |a,b| f <%> a <*> b } };
+~lift3 = { |f| { |a,b,c| f <%> a <*> b <*> c } };
+...
+::
+
+then the above would be equivalent to :
+code::
+(
+x = Var(1.0);
+y = Var(1.0);
+z = Var(1.0);
+f = { |x,y,z| x + y + z };
+//we apply the lifted function on the signals.
+w = ~lift3.(f).(x,y,z);
+w.do( postln(_) );
+x.value_(9.0);
+y.value_(3.0);
+z.value_(1.0);
+)
+::
+
+The applicative functor type class also provides two useful functions  code::a <* b:: and code::a *> b::. The first will ignore the result of b the second will ignore the result of a. This is useful when you want some signal to cause the value of some other signal to be outputed. In the following example the timer causes the the value of f <%> x to be emited by the resulting signal each time t emits a new time:
+
+code::
+(
+x = Var(2.0);
+f = _+1;
+t = TimerES(1.0).hold(0.0);
+z = f <%> x <* t;
+z.do(postln(_))
+)
+::
+
+With GUIs:
+
+Notice that text field automatically has the correct start value. Initialization of the GUIs (or anything else) is automatic when using signals.
+
+code::
+(
+t = QTextField();
+b = Slider().orientation_(\horizontal);
+b.signalFromGUI.collect{ |x| x.linexp(0.0,1.0,300,6000) }.connect(t);
+w = Window(bounds:Rect(200,200,300,50)).layout_( HLayout( b, t ) ).front;
+)
+::

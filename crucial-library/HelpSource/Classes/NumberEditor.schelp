@@ -1,0 +1,387 @@
+CLASS:: NumberEditor
+summary:: holds a float value with a spec, editable with a gui
+categories:: Libraries>crucial>Editors
+related:: Classes/Patch, Classes/KrNumberEditor
+
+DESCRIPTION::
+This is the default control for a StaticSpec.
+
+If used in a Patch, it will return its initial value when the patch starts, but will not be modulateable after that.  See link::Classes/KrNumberEditor:: for modulateable.
+
+NumberEditor can also be used in link::Classes/Pbind::, since it returns its float value in response to .next or .value
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: value
+initial value
+
+argument:: spec
+link::Classes/ControlSpec:: or link::Classes/StaticSpec::
+
+
+METHOD:: bind
+
+
+argument:: model
+
+
+argument:: varname
+
+
+argument:: spec
+
+
+argument:: layout
+
+
+argument:: bounds
+
+
+argument:: labelWidth
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: spec
+
+
+argument:: aspec
+
+
+
+METHOD:: init
+
+
+argument:: val
+
+
+argument:: aspec
+
+
+
+METHOD:: value
+
+
+argument:: v
+
+
+argument:: change
+
+
+
+METHOD:: setUnmappedValue
+
+
+argument:: unipolar
+
+
+argument:: change
+
+
+
+METHOD:: unmappedValue
+
+
+
+METHOD:: rand
+
+
+argument:: standardDeviation
+
+
+argument:: mean
+
+
+
+METHOD:: numChannels
+
+
+
+METHOD:: addToSynthDef
+
+
+argument:: synthDef
+
+
+argument:: name
+
+
+
+METHOD:: instrArgFromControl
+
+
+argument:: control
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: copy
+
+
+
+METHOD:: guiClass
+
+
+
+EXAMPLES::
+
+code::
+// an Editor is not a gui, it is a holder of a value
+(
+n = NumberEditor(2.3,[0,10]);
+n.value = 5.6;
+n.asCompileString.postln;
+5.6
+)
+
+// its gui is separate
+(
+//note that the .gui message returns a NumberEditorGui
+n = NumberEditor(440.0,\freq).gui;
+n.dump;
+)
+
+(
+// so make sure you get the NumberEditor
+n=NumberEditor(440.0,\freq);
+n.gui;
+n.dump;
+)
+
+::
+
+control-drag up/down in the number box scales the value
+shift-control-drag for finer control
+
+option click on the number box to reset the value to the spec's default
+
+code::
+(
+	f=Window.new.front;
+	f.flow({ arg f;
+
+		n=NumberEditor(440.0,\freq);
+		n.gui(f);
+
+		ActionButton(f,"post value",{ n.value.postln });
+		// it compiles as its value
+		ActionButton(f,"post asCompileString",{
+			n.asCompileString.postln
+		});
+	})
+)
+
+
+// programatically set it
+n.value = 100 // onscreen slider does not move yet
+n.changed; // now the slider moves
+::
+
+Note that if this slider is used in a Patch then
+it sends the .set message to the synth on the server only when
+.changed is invoked
+this is because neither the Patch nor the NumberEditor does the sending
+its a separate utility object that is a registered dependent of the NumberEditor
+
+
+code::
+// controlling the display size in various ways
+(
+Sheet({ arg f;
+	f.startRow;
+	NumberEditor(440.0,\freq).gui(f); // default
+	f.startRow;
+	NumberEditor(440.0,\freq).smallGui(f); // smallGui never has slider
+	f.startRow;
+	NumberEditor(440.0,\freq).gui(f,nil, false); //use gui,nil bounds, slider: false
+	f.startRow;
+	NumberEditor(440.0,\freq).gui(f,nil, true,false); //use gui,nil bounds, box: false
+
+	f.startRow;
+	NumberEditor(440.0,\freq).gui(f,60@10,true); // slider 60 by 10
+	f.startRow;
+	NumberEditor(440.0,\freq).gui(f, 200@40, true); // slider+box 200 by 40
+	// it considers 200@40 big enough to do its default size
+
+
+	f.startRow;
+	NumberEditor(440.0,\freq).smallGui(f);
+	NumberEditor(440.0,\freq).smallGui(f);
+	NumberEditor(440.0,\freq).smallGui(f);
+	NumberEditor(440.0,\freq).smallGui(f);
+
+	f.startRow;
+	NumberEditor(440.0,\freq).gui(f,20@100,true);	// verticle, with slider
+	NumberEditor(440.0,\freq).gui(f,20@100,true);	// verticle, with slider
+})
+)
+::
+
+code::
+(
+w = Window.new.front;
+w.flow { |f|
+
+	n = NumberEditor(440,\freq);
+	n.gui(f,nil,true);
+
+
+	NumberEditor(440,\freq).gui(f,100@30);
+
+	NumberEditor(440,\freq).gui(f,30@100);
+
+	NumberEditor(440,\freq).gui(f,150@20);
+
+	NumberEditor(440,\freq).gui(f,20@150);
+
+	NumberEditor(440,\freq).gui(f,10@150);
+
+	NumberEditor(440,\freq).gui(f,40@150);
+
+	NumberEditor(440,\freq).gui(f,30@150);
+
+}
+)
+::
+
+
+Putting them on a Sheet
+code::
+(
+w = Sheet({ arg h;
+	c = Array.fill(10,{ arg i;
+		var n;
+		n = NumberEditor(0,\amp);
+		h.startRow;
+		n.gui(h);
+		n
+	});
+});
+
+)
+::
+
+Putting them on a PageLayout
+code::
+(
+w = PageLayout.new;
+c = Array.fill(10,{ arg i;
+	var n;
+	n = NumberEditor(0,\amp);
+	w.startRow;
+	n.gui(w);
+	n
+});
+w.front;
+)
+::
+
+Putting them on normal windows
+code::
+// broken ! didn't take the incoming bounds origin
+(
+w = GUI.window.new;
+w.front;
+c = Array.fill(10,{ arg i;
+	var n;
+	n = NumberEditor(0,\amp);
+	n.gui(w,Rect(10,25 * i, 150,13));
+	n
+});
+
+)
+::
+
+using a PageLayout on a window
+code::
+(
+
+w = GUI.window.new;
+w.front;
+p = PageLayout.on(w);
+c = Array.fill(10,{ arg i;
+	var n;
+	n = NumberEditor(0,\amp);
+	n.gui(p);
+	p.startRow;
+	n
+});
+
+)
+::
+
+
+put them on a FlowView
+code::
+(
+
+w = GUI.window.new;
+w.front;
+p = FlowView(w,Rect(10,10,500,500));
+c = Array.fill(10,{ arg i;
+	var n;
+	n = NumberEditor(0,\amp);
+	n.gui(p);
+	p.startRow;
+	n
+});
+
+)
+::
+
+
+
+code::
+//verticle not working yet
+(
+w = GUI.window.new;
+w.front;
+c = Array.fill(10,{ arg i;
+	var n;
+	n = NumberEditor(0,\amp);
+	n.gui(w,Rect(10 + (15 * i),25, 13,150));
+	n
+});
+
+)
+
+// in SCVLayout not working yet either
+(
+w = GUI.window.new;
+w.front;
+v = GUI.vLayoutView.new(w,w.view.bounds);
+c = Array.fill(10,{ arg i;
+	var n;
+	n = NumberEditor(0,\amp);
+	n.gui(v,Rect(0,0,100,20));
+	n
+});
+
+)
+
+
+//works with sliders
+(
+w = GUI.window.new;
+w.front;
+v = GUI.vLayoutView.new(w,w.view.bounds);
+c = Array.fill(10,{ arg i;
+	var n;
+	n = GUI.slider.new(v,Rect(0,0,100,20));
+	n
+});
+
+)
+
+::
+

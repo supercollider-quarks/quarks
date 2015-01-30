@@ -1,0 +1,140 @@
+title:: Patch magic tricks
+summary:: Extra capabilities for client-server communication
+categories:: Libraries>crucial>Instr
+
+
+
+Because the Patch manages the creation of the SynthDef and also manages the Synth that is created at the time of play, it is possible to do some tricks that make client-server communication a bit easier.
+
+Keep in mind that when the sc lang code that is inside a SynthDef or an Instr is run when the the SynthDef or InstrSynthDef is compiled.  Its compiled into bytecode that is then sent to the server but then when the synth itself runs there is no sc language.  There are no functions or 'if' statements.
+
+So once you have that concept clear in your head, here's how to violate it.
+
+section:: onTrig
+
+code::
+UGen:onTrig(function,value)
+
+	trigger.onTrig({ |time,value|
+		"did trig".postln
+	})
+::
+
+On receiving a trigger (a non-positive to positive transition) evaluate the function IN THE CLIENT LANGUAGE.  A value may also be passed in which will be polled and passed to the function.
+
+code::
+(
+Patch({ |freq=200|
+	var out;
+
+	out = LFSaw.ar(freq);
+
+	(Dust.kr(0.3)).onTrig({ |time,value|
+		["dusty",time,value].postln
+	},out); // this value will be polled anytime the trig goes
+
+	out * 0.1
+
+}).play
+
+)
+
+(
+p = Patch({ |freq=200|
+
+	(freq >= 300).onTrig({
+		"GREATER !".postln
+	});
+
+	LFSaw.ar(freq) * 0.1
+});
+
+p.play
+
+)
+
+p.freq.value = 400
+
+p.freq.value = 200
+
+
+
+(
+
+p = Patch({ |freq=200|
+
+	var lfo;
+	lfo = LFSaw.kr(0.2);
+	Dust.kr(2.0).onTrig({ |time,value|
+		[time,value].postln
+	},lfo);
+
+	LFSaw.ar(freq)
+});
+
+p.play
+
+)
+::
+
+You could also spawn more synths.
+
+
+What is happening is that a ClientOnTrigResponder is added to the InstrSynthDef's stepchildren.  When a Patch plays it also plays its children (the inputs to the patch) and its stepchildren.  The ClientOnTrigResponder adds an OSCpathResponder when the synth starts and removes it when the synth stops.
+
+section:: Buffers
+
+Samples and BufferProxies can insert kr rate beat calculation UGens into the InstrSynthDef
+
+see link::Classes/Sample::
+
+section:: Tempo
+
+Tempo.kr will insert a UGen with the current Tempo
+
+section:: Players inside Players
+
+Experimental, but can be fun.
+
+code::
+(
+var player;
+player = Patch({ Saw.ar });
+
+Patch({
+
+	RLPF.ar( player.ar, 400 )
+
+}).play
+)
+::
+
+
+The player inside the instr registers itself as a dependent, is prepared and spawned at the same time as the player and inserts an In.ar into the SynthDef to play its output.
+
+
+code::
+	sfp = SFP("path/to/soundfile");
+	Instr('no-can-do',{ arg sfp,amp=1.0;
+		sfp.ar * amp
+	});
+::
+
+The SFP (soundfile player) will require a buffer, a bus, and various stages of preparation.
+
+The better approach is still to use Patch which will manage the preparation process in a more clear fashion.
+
+code::
+	Instr("can-do",{ arg input,amp=1.0;
+	  input * amp
+	});
+
+	Patch("can-do",[
+		SFP("path/to/soundfile")
+	])
+::
+
+
+
+
+

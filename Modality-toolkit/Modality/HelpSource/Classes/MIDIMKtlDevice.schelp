@@ -1,0 +1,154 @@
+CLASS:: MIDIMKtlDevice
+summary:: A class for creating and accessing external midi controllers
+categories:: Libraries>Modality, External Control
+related:: Overviews/Modality, Classes/MKtl, Classes/MKtlDevice, Classes/MKtlElement
+
+DESCRIPTION::
+MIDIMKtlDevice provides an easy to use interface for MIDI devices you can connect to your computer. It can search for controllers connected to your computer, and gives you a list of available devices. Or, if you already know which controller you want to use, it will look through this list and returns you the controller with that name. If it cannot find it, it will replace it with a graphical representation of the controller to simulate it.
+
+For most devices, this requires that someone has already made a description file for the device; if there is none, it is easy to make one following the instructions here:
+link::Tutorials/How_to_create_a_description_file::
+
+More general info can be found in link::Classes/MKtl:: and link::Classes/MKtlDevice:: .
+
+CLASSMETHODS::
+
+PRIVATE:: initialized, sourceDeviceDict, destinationDeviceDict, prepareDeviceDicts
+
+PRIVATE:: makeNoteOnKey, makeNoteOffKey, makeCCKey, makeBendKey, makeProgramKey,  makePolyTouchKey, makeTouchKey, noteKeyToChanNote, ccKeyToChanCtl
+
+METHOD:: find
+Find all currently connected MIDI controllers.
+
+argument:: post
+Whether or not to post about the found MIDI controllers.
+
+
+METHOD:: postPossible
+Post all access code for device that could be used by name.
+
+
+METHOD:: protocol
+protocol name, \midi.
+
+
+METHOD:: initDevices
+Look for available MIDI devices.
+
+argument:: force
+Whether or not to do this again if it was already done before.
+
+METHOD:: getSourceName
+Get the full device name from the short source name.
+
+argument:: shortName
+A Symbol as it shows up in the short names found by MKtl.find.
+
+METHOD:: findSource
+Find a source or destination with a given device name and port.
+
+argument:: rawDeviceName
+The device name to search for.
+
+argument:: rawPortName
+The device port to search for.
+
+
+METHOD:: new
+Creates a new instance of MIDIMKtlDevice.
+
+argument:: name
+The short name of the controller as it shows up in the list of found devices.
+
+argument:: srcUID
+The source uid of the device if present.
+
+argument:: destUID
+The destination uid of the device if present.
+
+argument:: parentMKtl
+The instance of link::Classes/MKtl:: that this MKtlDevice will belong to.
+
+
+
+METHOD:: allMsgTypes
+All midi message types supported by MIDIMKtlDevice.
+
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: elementHashDict, prepareElementHashDict, hashToElNameDict, elNameToMidiDescDict, destination, dstID, srcID, initMIDIMKtl, makeHashKey
+PRIVATE:: makeRespFuncs, makeNoteOff, makeNoteOn, makeBend, makeTouch, makeCC, makePolyTouch, makeProgram
+
+PRIVATE:: makeNoteOnKey, makeNoteOffKey, makeCCKey, makeBendKey, makeProgramKey,  makePolyTouchKey, makeTouchKey, noteKeyToChanNote, ccKeyToChanCtl
+
+PRIVATE::removeRespFuncs
+
+METHOD:: closeDevice
+Close the device and clean up anything that it used.
+
+
+METHOD:: msgTypes
+the midi messages types used by this device
+
+METHOD:: global
+a dict of global response functions for all msgTypes used by this device. This can be used for global responders, e.g. to noteOn/Off messages :
+
+
+
+METHOD:: midiOut
+a MIDIOut for this device if present
+
+METHOD:: midiRawAction
+an action to perform with all incoming midi messages, e.g. for logging.
+
+METHOD:: responders
+All responders built for this device
+
+
+METHOD:: source
+The MIDI source, a MIDIEndPoint.
+
+METHOD:: srcID
+The uid of the source.
+
+
+METHOD:: destination
+The MIDI destination, a MIDIEndPoint.
+
+METHOD:: dstID
+The uid of the destination.
+
+
+METHOD:: explore
+When opening a device that is not known yet by MKtl, you want to explore the device. See for a full tutorial: link::Tutorials/How_to_create_a_description_file::
+
+ARGUMENT:: mode
+a Boolean to turn this on or off.
+
+METHOD:: exploring
+Whether or not the device is currently being explored.
+
+
+METHOD:: createDescriptionFile
+Create and open a description file for this MKtlDevice, after exploring it.
+
+METHOD:: initElements
+Initialize all elements and hook them up to the hardware elements.
+
+
+METHOD:: cleanupElements
+De-initialize all elements.
+
+
+METHOD:: send
+Send the value of the element to the MIDI device; called if you set the value of an MKtlElement that is an output.
+
+argument:: key
+The key of the element.
+
+argument:: val
+The value to which it is set.
+
+

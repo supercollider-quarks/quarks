@@ -1,0 +1,77 @@
+TITLE:: CVWidgetEditor
+summary:: a GUI for editing widgets and their parameters: specs, MIDI, OSC, actions...
+categories:: GUI, Conductor, External Control>MIDI, External Control>OSC
+related:: Classes/AbstractCVWidgetEditor, Classes/CVWidgetMSEditor, Classes/CVCenter, Classes/CV, Classes/CVWidget, Classes/CVWidgetKnob, Classes/CVWidget2D, Classes/CVWidgetMS, Classes/CCResponder, Classes/OSCresponderNode, Classes/SimpleController, Classes/ControlSpec, Classes/OSCCommands
+
+DESCRIPTION::
+The interface defined within link::Classes/CVWidget:: resp. its subclasses link::Classes/CVWidgetKnob::, link::Classes/CVWidget2D:: and link::Classes/CVWidgetMS:: defines a number of methods which can be triggered via their GUI. However these GUIs don't offer enough space to display all options a widget incorporates. Therefore each widget has an inbuilt editor which is defined within CVWidgetEditor.
+note::
+list::
+## Since CVWidgetEditor and link::Classes/CVWidgetMSEditor:: share a number of properties these are implemented within their superclass link::Classes/AbstractCVWidgetEditor::.
+## CVWidgetEditor is not supposed to be used directly. Rather editors should always be instantiated from within the widget it belongs to.
+::
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Opens a new editor for code::widget::
+note:: If widget is a link::Classes/CVWidgetMS:: the tabs "Spec" and "Actions" will be missing as those properties can be edited in the widget's link::Classes/CVWidgetMSEditor::.::
+
+ARGUMENT:: widget
+the widget-object: either a link::Classes/CVWidgetKnob::, a link::Classes/CVWidget2D:: or a link::Classes/CVWidgetMS::.
+
+ARGUMENT:: tab
+an link::Classes/Integer::, specifying which tab of the editor shall be focused opening the editor. Each editor contains 4 tabs ( see also link::Classes/TabbedView2::): "Specs", "MIDI", "OSC" and "Actions", each addressed by an integer value from code::0:: to code::3::
+
+ARGUMENT:: slot
+if the widget is a link::Classes/CVWidget2D:: or a link::Classes/CVWidgetMS:: this parameter is necessary to reflect the widget's slot for which the editor will be created.
+
+returns:: a code::CVWidgetEditor::
+
+INSTANCEMETHODS::
+
+private:: amendActionsList
+
+subsection:: Common GUI properties and methods
+subsection:: The "Spec"-tab
+subsection:: The "MIDI"-tab
+subsection:: The "OSC"-tab
+subsection:: The "Actions"-tab
+
+METHOD:: specConstraintsText
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: calibNumBoxes
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: init
+(describe method here)
+
+ARGUMENT:: widget
+(describe argument here)
+
+ARGUMENT:: tab
+(describe argument here)
+
+ARGUMENT:: slot
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: close
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::

@@ -1,0 +1,49 @@
+CLASS:: ServerErrorGui
+summary:: Listen to a server for /fail messages and display them in a small view.
+categories:: Libraries>crucial>GUI
+related:: Classes/Server, Classes/ServerGui
+
+DESCRIPTION:: Listen to a server for /fail messages and display them in a small view.
+
+code::
+(
+w = Window.new;
+w.front;
+
+ServerErrorGui(Server.default).gui(w)
+
+)
+::
+
+Will not install itself if there is already an exception handler installed.
+It WILL interfere with other handlers.  [this could be fixed]
+
+It is primarily intended for playing live when you are looking at an interface and cannot watch the post window
+
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: writeName
+
+
+
+METHOD:: guiBody
+
+
+argument:: layout
+
+
+
+METHOD:: remove
+
+
+
+METHOD:: isClosed
+
+
+
+
+

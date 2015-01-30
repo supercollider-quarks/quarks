@@ -1,0 +1,73 @@
+TITLE:: CVCenter
+SUMMARY:: a library aiming at the easy use of external hard- and software controllers within SuperCollider
+CATEGORIES:: Conductor, GUI, External Control>MIDI, External Control>OSC
+
+CVCenter is built upon the concept of code::CV::s by Ron Kuivila. Its name-giving class CVCenter holds a collection of CVs and allows the user to easily create widgets that let her/him easily connect external MIDI- or OSC-controllers. CVs, respectively widgets as their graphical representation, can be created from Synth-, Ndef-, NodeProxy-controls as well as CVCenter can be used in connection with slots of a ProxySpace or a Patch created from an Instr.
+As CV inherits from Stream CVs may be used in Patterns as well (just like you would embed a regular Pattern in another).
+
+SECTION:: Classes
+
+LIST::
+## link::Classes/CVCenter::
+::
+
+subsection:: Widgets
+LIST::
+## link::Classes/CVWidget:: - the abstract superclass of all CVWidgets. Implements some useful methods for all CVWidgets
+## link::Classes/CVWidgetKnob:: - a widget, containing a knob, allowing to control one parameter at a time
+## link::Classes/CVWidget2D:: - a widget, containing a 2D-slider, allowing to control two parameters at a time
+## link::Classes/CVWidgetMS:: - a widget, containing a multi-slider, allowing to control an arbitrary number of parameters at a time
+::
+
+subsection:: Utilities
+LIST::
+## link::Classes/CVCenterPreferences:: - edit and save settings for CVCenter resp. CVWidgets to disk: common preferences regarding MIDI and OSC as well as user defined shortcuts for CVCenter, CVWidget and CVWidgetEditor. Also "global" shortcuts that work independantly from any gui can be defined (these shortcuts are bound to ugens. Hence, either supernova or scsynth have to be running).
+## link::Classes/CVCenterShortcutsEditor:: - edit shortcuts for CVCenter, all variants of CVWidget, CVWidget(MS)Editor.
+## link::Classes/CVCenterLoadDialog:: - a special gui (a dialog) for loading setups.
+## link::Classes/OSCCommands:: - scan incoming OSC and save command-names to disk for later re-use
+## link::Classes/KeyDownActions:: - a somewhat experimental approach to make shortcuts within views configurable via gui
+## link::Classes/KeyDownActionsEditor:: - an embeddable editor for shortcuts.
+## link::Classes/KeyCodesEditor:: - key-codes may differ from platform to platform, from keyboard to keyboard. This embeddable editor allows adjusting them.
+## link::Classes/CVCenterControllersMonitor::
+## link::Classes/CVSyncText:: - allow link::Classes/StaticText::s, link::Classes/TextField::s and link::Classes/TextView::s to be hooked up with a link::Classes/CV::.
+::
+
+subsection:: Helpers
+LIST::
+## link::Classes/AbstractCVWidgetEditor:: - the abstract superclass of CVWidgetEditor and CVWidgetMSEditor
+## link::Classes/CVWidgetEditor:: - an editor for a CVWidget
+## link::Classes/CVWidgetMSEditor:: - a special editor for CVWidgetMS
+## link::Classes/CVWidgetSpecsEditor:: - when generating CVWidgets from running synths, NodeProxies, Patches etc. this interface allows adding suitable ControlSpecs before a CVWidget gets instantiated.
+::
+
+subsection:: Extensions to other Classes
+LIST::
+## link::Classes/Synth#-cvcGui::
+## link::Classes/NodeProxy#-cvcGui::
+## link::Classes/Patch#-cvcGui::
+::
+
+EXAMPLES::
+code::
+Ndef(\sawTest, { |damping| SinOsc.ar(damping * VarSaw.ar(\sawFreq.kr([100, 101]))).tanh * \amp.kr(0.5) });
+
+// Ndefs don't have metadata but you may add some specs ahead from creation
+Spec.add(\sawFreq, \freq);
+Spec.add(\damping, #[200, 20000, \exp, 0.0, 1000, " Hz"]);
+
+// create the GUI
+// have a look at the NodeProxy helpfile to see all possible arguments for cvcGui
+Ndef(\sawTest).cvcGui;
+
+// play the Ndef (turn the knobs if you don't hear anything immediately)
+Server.default.waitForBoot{ Ndef(\sawTest).play };
+
+// maybe play around with specs a bit...
+#[lo, hi].do(CVCenter.cvWidgets[\sawFreq].setSpec(#[20, 220, \exp], _);
+CVCenter.cvWidgets[\sawFreq].setSpec(#[17, 170, \exp], \lo);
+
+// clean up
+CVCenter.removeAll;
+Ndef(\sawTest).clear(10);
+::
+

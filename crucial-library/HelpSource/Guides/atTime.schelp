@@ -1,0 +1,82 @@
+title:: atTime
+summary:: argument specifying the desired quantization of the event
+categories:: Libraries>crucial>Scheduling
+
+
+section:: atTime
+
+This is an argument for many methods such as player-play(atTime)
+
+It specifies when the bundle or event or result of the method should occur.
+
+subsection::	Nil :  immediately
+
+	Float : that many seconds from now
+		if time is greater than server latency,
+			it will be scheded in sclang and only sent close to the time
+
+code::
+// start in 4.5 seconds
+(
+
+Patch({ arg tempo;
+	Impulse.ar( tempo )
+},[
+	TempoPlayer.new
+
+]).play(atTime: 4.5)
+
+)
+::
+
+subsection::	Integer : according to TempoClock on the next
+				1 bar
+				2 half bar
+				4 beat
+				8 8th note
+				16 16th note
+				etc.
+
+		execute the following several times.  this will launch multiple patches playing the impulse.
+		they should each start at the start of the next bar.
+
+code::
+(
+
+Patch({ arg tempo;
+	Impulse.ar( tempo )
+},[
+	TempoPlayer.new
+
+]).play(atTime: 1)
+
+)
+::
+
+subsection:: Date : at that time on that date if in the future
+		Date has to have raw seconds set to work !
+		use Date.localtime or Date.getDate to create a Date object with the raw seconds set.
+		and then make relative changes to that date.
+
+		ie. you can't make a Date.new(year,month ....) and expect that to work.
+		note:   a getRawSeconds primitive would solve this problem.
+
+code::
+(
+d = Date.getDate;
+// 10 seconds in the future
+d.rawSeconds = d.rawSeconds + 10;
+Patch({ arg tempo;
+	Impulse.ar( tempo )
+},[
+	TempoPlayer.new
+
+]).play(atTime: d)
+
+)
+::
+
+
+
+See the schedBundle method extensions for the actual implementations of these.
+

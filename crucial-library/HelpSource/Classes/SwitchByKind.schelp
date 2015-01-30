@@ -1,0 +1,76 @@
+CLASS:: SwitchByKind
+summary:: a switch statement that matches by class
+categories:: Libraries>crucial>utils
+
+
+DESCRIPTION::  This can efficiently replace a common and ugly series of if statements.
+
+code::
+	o = YetAnotherClass.new;
+	if(o.isKindOf(SomeClass),{
+		// do something
+	},{
+		if(o.isKindOf(AnotherClass),{
+			// do something
+		},{
+			if(o.isKindOf(YetAnotherClass),{
+				// do something
+			},{
+				// do something
+			})
+		})
+	})
+::
+
+code::
+	k = SwitchByKind(
+			SomeClass , {  },
+			AnotherClass, { },
+			YetAnotherClass, { },
+			Object, { }
+		);
+
+	o = YetAnotherClass.new;
+
+	// finds the handler for YetAnotherClass
+	result = k.value(o);
+
+	// if SomethingDifferent is a subclass of AnotherClass
+	n = SomethingDifferent.new;
+	// it will find the handler for AnotherClass
+	result = k.value(n);
+::
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument::  ... pairs
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: init
+
+
+argument:: pairs
+
+
+
+METHOD:: value
+
+
+argument:: object
+
+
+argument::  ... args
+
+
+
+
+

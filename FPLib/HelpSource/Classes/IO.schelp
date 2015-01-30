@@ -1,0 +1,22 @@
+title::IO
+summary:: Monadic composition of side-effects
+categories::FP
+
+Examples::
+code::
+
+IO{ "did a side effect".postln }.unsafePerformIO
+
+IO{ "did a side effect, but will return 32".postln; 32 }.collect(_*10).unsafePerformIO
+
+// compose two side-effects
+x = IO{ "did a".postln; Unit } >>=| IO{ "did b".postln; Unit }
+
+x.unsafePerformIO
+
+// do 3 side-effects, i.e. fetch values from a file and run a 3-argument functon on the result:
+// IO is an instance of the Monad type class, therefore is also an applicative functor.
+// note, with IO the 3 actions are done sequentially, not in parallel. For that one would use a promise
+x = { |x,y,z| x + y + y } <%> IO{"accessing file1".postln;1} <*> IO{"accessing file2".postln;2} <*> IO{"accessing file3".postln;3};
+x.unsafePerformIO
+::

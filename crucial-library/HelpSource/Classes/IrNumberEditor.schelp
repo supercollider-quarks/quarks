@@ -1,0 +1,84 @@
+CLASS:: IrNumberEditor
+summary:: a number box and slider for editing a float value [\ir rate]
+categories:: Libraries>crucial>Editors
+related:: Classes/Editor, Classes/KrNumberEditor, Classes/Patch
+
+DESCRIPTION:: When used with Patch or InstrSpawner this will result in an .ir rate control.  This means you can only change the value before the synth starts, no 'control' rate modulation.
+
+An InstrSpawner spawns synths.  Here each synth has .ir rate inputs and gets a new value from the IrNumberEditor on each event.
+
+code::
+(
+InstrSpawner({ arg sample,pchRatio=1,start=0,dur=0.2;
+
+   Pan2.ar(
+		PlayBuf.ar(sample.numChannels,
+				sample.bufnumIr,
+				sample.bufRateScaleIr * pchRatio,
+				startPos: start * sample.bufFramesIr,
+				loop: 0
+		),Rand(0,1),0.3)
+	* EnvGen.kr( Env.perc(0.01,1.0,1,3), timeScale: dur, doneAction: 2)
+
+},[
+	Sample("sounds/a11wlk01.wav"),
+	IrNumberEditor(1,[-4,4]),
+	IrNumberEditor(0,[0,1]),
+	IrNumberEditor(0.2,[0.05,0.5])
+],
+	NumberEditor(0.1,[0.05,0.2])
+).gui
+)
+::
+
+INSTANCEMETHODS::
+
+METHOD:: init
+
+
+argument:: val
+
+
+argument:: aspec
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: addToSynthDef
+
+
+argument:: synthDef
+
+
+argument:: name
+
+
+
+METHOD:: instrArgFromControl
+
+
+argument:: control
+
+
+
+METHOD:: makePatchOut
+
+
+
+METHOD:: connectToPatchIn
+
+
+
+METHOD:: addToDefName
+
+
+argument:: stream
+
+
+
+
+
+

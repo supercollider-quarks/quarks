@@ -1,0 +1,96 @@
+CLASS:: MIDIPlayer
+summary:: parent class for Players that receive midi and send control messages to synths
+categories:: External Control>MIDI, Libraries>crucial>MIDI, Libraries>crucial>Players
+
+
+DESCRIPTION:: abstract parent class for Players that receive midi and send control messages to synths
+
+subclasses:
+
+MIDIGatePlayer.new(spec)
+	generates a gate with the level scaled from 0..127 to the requested spec
+	does not release until the last key is released
+CCPlayer.new(controller,spec)
+	controller value is scaled to the requested spec
+MIDIFreqPlayer.new
+	midi note to freq
+	classic analog monophonic style including trills
+
+
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: value
+
+
+
+METHOD:: spec
+
+
+
+METHOD:: topMakePatchOut
+
+
+argument:: group
+
+
+argument:: bundle
+
+
+
+METHOD:: synthArg
+
+
+
+METHOD:: addToSynthDef
+
+
+argument:: synthDef
+
+
+argument:: name
+
+
+
+METHOD:: instrArgFromControl
+
+
+argument:: control
+
+
+
+METHOD:: didSpawn
+
+
+
+METHOD:: removeResponders
+
+
+
+METHOD:: stopToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: freeToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: cmdPeriod
+
+
+
+METHOD:: rate
+
+
+
+
+

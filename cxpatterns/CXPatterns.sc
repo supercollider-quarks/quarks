@@ -6,17 +6,17 @@ CXPatterns {
 		Class.initClassTree(Spec);
 		Class.initClassTree(Crucial);
 		Crucial.initSpecs;
-		
+
 		Spec.specs.addAll([
 
-			\scale -> scale = ArraySpec.new(StaticSpec(-100,100,\linear),12),
+			\scale -> scale = ArraySpec.new(StaticSpec(-100, 100, \linear), 12),
 
 			\freqStream -> StreamSpec(\freq.asSpec.as(StaticIntegerSpec)),
 
-			\cycleLength -> StaticIntegerSpec(2,1024,default:16),
+			\cycleLength -> StaticIntegerSpec(2, 1024, default:16),
 
 			\degreeStream -> StreamSpec.new(\degree.asSpec.as(StaticIntegerSpec)),
-			
+
 			\octaveStream -> StreamSpec.new(\octave.asSpec.as(StaticIntegerSpec)),
 
 			// could use dur but that goes to 0
@@ -43,8 +43,8 @@ CXPatterns {
 	// and easily express infinity by setting it to zero
 
 	*inferCycleLength { arg int;
-		if(int == 0,{ ^inf });
-		if(int == 1,{ ^2 });
+		if(int == 0, { ^inf });
+		if(int == 1, { ^2 });
 		^int
 	}
 

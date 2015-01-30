@@ -1,0 +1,216 @@
+CLASS:: MAbstractElement
+summary:: Base class for MKtl controller elements elements.
+categories:: Libraries>Modality, Control
+related:: Overviews/Modality, Classes/MKtl, Classes/MKtlElement
+
+DESCRIPTION::
+Abstract class for MKtl controller elements.
+
+note::this is an and abstract class that should usually not be accessed directly.::
+
+CLASSMETHODS::
+
+METHOD:: new
+create a new instance.
+
+argument:: source
+the MKtl/Dispatch it belongs to.
+
+argument:: name
+a name.
+
+
+INSTANCEMETHODS::
+
+method:: source
+the MKtl/Dispatch it belongs to.
+
+METHOD:: name
+name
+
+METHOD:: type
+type of the element, e.g. code:: \button, \slider, \knob::.
+See link::Reference/MKtl_description_files:: for a more detailed list.
+
+
+private:: init
+
+METHOD:: reset
+reset element to neutral state, without any functionality.
+
+SUBSECTION:: setting and getting values
+
+METHOD:: value
+Setting does not evaluate any action
+
+argument:: newval
+the new value
+
+returns:: the current value
+
+METHOD:: prevValue
+the previous value
+
+METHOD:: valueAction
+Set value and evaluate the associated action.
+
+argument:: newval
+the new value
+
+METHOD:: doAction
+Evaluate the associated action
+
+
+SUBSECTION:: Adding and removing functionality
+
+METHOD:: action
+
+argument:: action
+a function
+
+Get and set the action to evaluate when element is activated.
+
+SUBSECTION:: UGen support
+
+METHOD:: kr
+Use the value directly on the server.
+
+argument:: server
+optional argument that you only have to set once, and only if the server for the bus is not link::Classes/Server#-default::.
+
+returns:: an link::Classes/In#-kr:: holding the current value of this element. Reflects changes of the value.
+
+private:: updateValueOnServer
+
+METHOD:: initBus
+initialize the bus on the server.
+
+argument:: server
+The server the bus should be instantiated on.
+Default value is link::Classes/Server#-default::.
+
+METHOD:: freeBus
+frees the bus.
+
+METHOD:: bus
+A link::Classes/Bus:: that holds the element's value.
+
+discussion::
+Normally, you should just reference to this bus via the link::#-kr:: which will also take care of creating the bus when needed.
+
+
+SUBSECTION:: Tagging
+
+
+Tagging allows you to add your own tags to controller elements.
+The tagging system is flat, i.e. only elements have tags, link::Classes/MKtlAbstractElementGroup:: (and its derivatites) do not. link::Classes/MKtlAbstractElementGroup:: forwards tagging requests to its child elements.
+
+code::
+m = MKtl(\nnkn20)
+
+// add a tag
+m.elementAt(\sl, 0).addTag(\a);
+m.elementAt(\sl, 0).tags; // retrieve it
+
+// add several tags at once
+m.elementAt(\sl, 0).addTag([\freq, \amp]);
+m.elementAt(\sl, 0).tags; // retrieve it
+
+// remove a tag
+m.elementAt(\sl, 0).removeTag(\a);
+m.elementAt(\sl, 0).tags; // retrieve it
+
+// add tags to specific elements
+m.elementAt(\sl, [0, 1, 2, 4]).do(_.addTag(\vol));
+m.elementAt(\kn, [0, 1, 2, 4]).do(_.addTag(\vol));
+
+// add tag to all elements of a group
+m.elementAt(\sl).addTag(\allSliders);
+
+
+// return tags used in a group, hierarchically
+m.elements.flat.collect(_.tags).select(_.notEmpty).printAll; ""
+
+// return all tags used in that group
+m.elementAt(\sl).tags;
+
+
+// all elements containing the tag \vol
+a = m.elements.elementsForTag(\vol);
+
+// their indices
+a.collect{|el| el.indices};
+
+// create an MKtlElementArray containing a
+MKtlElementArray(
+	m,
+	\myVolumes,
+	m.elements.elementsForTag(\vol)
+).gui;
+
+
+
+// remove a tag from all elements in a group
+m.elementAt(\sl).removeTag(\vol)
+m.elementAt(\sl).collect(_.tags)
+
+// clear all tags
+m.elementAt(\sl, 0).clearTags
+::
+
+
+METHOD:: tags
+all tags of this element.
+returns::
+list of Symbols
+
+discussion::
+If code::this:: is an link::Classes/MKtlAbstractElementGroup::, it returns a combined list of all tags of its child elements.
+
+
+METHOD:: addTag
+add tags to the element
+argument:: ... newTags
+list of Symbols
+
+discussion::
+If code::this:: is an link::Classes/MKtlAbstractElementGroup::, it forwards this call to its child elements.
+
+METHOD:: removeTag
+remove tags from the element
+argument:: ... newTags
+list of Symbols
+
+discussion::
+If code::this:: is an link::Classes/MKtlAbstractElementGroup::, it forwards this call to its child elements.
+
+METHOD:: includesTag
+searches for specific tag
+argument:: ... tag
+list of Symbols
+returns::
+true, if all tags specified in the argument are found, otherwise false.
+
+discussion::
+If code::this:: is an link::Classes/MKtlAbstractElementGroup::, it forwards this call to its child elements.
+
+METHOD:: clearTags
+wipes all tags from the element
+
+discussion::
+If code::this:: is an link::Classes/MKtlAbstractElementGroup::, it forwards this call to its child elements.
+
+METHOD:: groups
+if the element is inside one or more groups, and those groups have an action assigned, they will be returned here.
+
+discussion::
+Groups can be link::Classes/MKtlElementArray:: or link::Classes/MKtlAbstractElementGroup:: instances.
+
+METHOD:: parent
+returns the parent group of the element in the code::MKtl:: elements hierarchical structure.
+
+METHOD:: index
+returns the index (Number) or key (Symbol) of code::this:: inside its parent group
+
+METHOD:: indices
+returns an array of indices that points to code::this:: from the top level of the code::MKtl:: elements hierarchy. These values correspond with link::Classes/MKtl#elementAt::

@@ -1,0 +1,266 @@
+title:: Patch inputs
+summary:: How Patch automagically creates inputs
+categories:: Libraries>crucial>Instr
+
+
+
+Each argument of the Instr function has a Spec.  See Instr for how these specs are determined.
+
+An argument may be nil.  For a nil argument, Patch will ask the spec to create a suitable defaultControl.
+
+list::
+## ControlSpec   :  KrNumberEditor
+## StaticSpec    :  NumberEditor  (for quantities or max delay times etc.)
+				a static spec is a non-modulateable control
+## EnvSpec       : EnvEditor
+## SampleSpec    :   Sample
+## etc.
+::
+
+
+
+The instrument may specify default values in the arg names of its function:
+code::
+(
+Instr(\bubbles, { arg speed = 0.4, amp=0.4;
+	var f, zout;
+	f = LFSaw.kr(speed, 0, 24, LFSaw.kr([8,7.23], 0, 3, 80)).midicps;
+	zout = CombN.ar(SinOsc.ar(f, 0, 0.04), 0.2, 0.2, 4);
+	zout * amp
+});
+
+// the patch specifies the actual values to be used
+p = Patch(\bubbles,
+	[
+		0.01 // speed is a fixed float of 0.01
+		// but amp is not specified, so the default 0.4 from the Instr function is used
+	]);
+
+// but notice that it is a KrNumberEditor that was created, and it inits to the default 0.4
+// from the instr function
+p.gui;
+
+)
+::
+
+If you wanted to build your patch with a KrNumberEditor (a slider) defaulted to 0.01 for the speed:
+
+code::
+(
+Patch(\bubbles,
+	[
+		KrNumberEditor(0.01,\speed)
+	]).gui
+)
+::
+
+
+Args may also be supplied using a dictionary/event expressing args by name as:  (argName: value, ... )
+
+code::
+Patch({ arg freq,amp;
+
+	SinOsc.ar(freq,amp)
+},(
+	amp: 0.4
+)).gui
+::
+
+This is useful for Instr with long arg lists and helps to avoid errors.
+
+
+For any nil arguments, a default control will be created.
+
+This gives the impression that Patch is "an automatic gui for an Instr / SynthDef".
+
+If you do not supply arguments, it will make default ones, simple ones, but the real power of Patch is to supply functions with complex and varied inputs.  Sitting there with 5 sliders on a 1 dimensional Instrument isn't really the height of synthesis.
+
+
+section:: Fixed Arguments
+
+Floats and other scalar values including Envelopes, are transparently dealt with by Patch.  These items are passed to the Instr function, but not to the SynthDef or the Synth.  They are not modulateable.
+
+code::
+(
+// fixing arguments
+
+Instr([\jmcExamples,'moto-rev'],{ arg lfo=0.2,freq=1000,rq=0.1;
+	RLPF.ar(LFPulse.ar(SinOsc.kr(lfo, 0, 10, 21), [0,0.1], 0.1), freq, rq).clip2(0.4);
+});
+
+q = Patch([\jmcExamples,'moto-rev'],[
+	0.2
+]);
+
+q.gui;
+
+)
+::
+
+
+
+
+section:: Talking to the Patch's input objects
+
+As an extra facility, each arg name automagically becomes an attribute of the patch object itself.
+
+code::
+p = Patch({ arg freq=440; SinOsc.ar( freq ) });
+// with no args supplied, a KrNumberEditor was made as input for \freq
+p.args.dump;
+
+p.play;
+
+// each arg name automagically becomes an attribute of the patch object
+p.freq;
+
+// set its value
+p.freq.value = 300
+
+// look for the input for the 'freq' arg
+// and sends it the .set(500) message if it responds to that
+p.set(\freq, 500)
+::
+
+section:: Scaling inputs and outputs
+
+
+First of all, quite apart from Patch, you can use a spec to map a signal from a 0..1 range to the range of the spec :
+
+code::
+(
+var spec;
+spec = [ 100,18000,\exp].asSpec;
+
+{
+	SinOsc.ar(
+		// creates a BinaryOpUGen
+	  spec.map(  SinOsc.kr(0.1).range(0,1) ).dump
+	)
+}.play
+
+)
+::
+
+
+you can also do that with a Patch input, supplying the resulting function as an input to the patch:
+
+code::
+(
+var spec;
+spec = [ 100,18000,\exp].asSpec;
+
+Patch({ arg freq;
+	SinOsc.ar(freq)
+},[
+	// creates a BinaryOpFunction
+    spec.map( { SinOsc.kr(0.1).range(0,1) } ).dump
+]).play
+)
+::
+
+
+A Patch is subclass of link::Classes/AbstractPlayer:: which is a subclass of link::Classes/AbstractFunction::.
+
+Because a Player IS A FUNCTION, a Spec may also be used to map another player's output and then use that as an input to a patch :
+
+code::
+(
+var spec;
+spec = [ 100,18000,\exp].asSpec;
+
+Patch({ arg freq;
+	SinOsc.ar(freq)
+},[
+	// a BinaryOpFunction
+    spec.map( Patch({ SinOsc.kr(0.1).range(0,1) }) ).debug
+]).play
+
+)
+::
+
+
+
+spec.map is taking the player
+and creating a BinaryOpFunction out of it.
+
+if you do math on functions you get another function.
+
+code::
+f = { 3 } * { 4 };
+
+f.value
+::
+
+
+the simplest example is:
+
+code::
+(Patch({ SinOsc.ar(440) }) * 0.1).play
+::
+
+where the output of the Patch is multiplied by 0.1, reducing the amplitude.
+Internal optimization in this case results in using a PlayerAmp
+
+code::
+// true binary op players not yet implemented :(
+(Patch({SinOsc.ar(440) }) % 0.4).play
+::
+
+
+
+
+
+section:: Meta-patches : factory methods and creating Patches with Patches
+
+Patch's auto-input creation is simple and convienient, but to really get interesting results
+I recommend experimenting with factory methods to create your patches, supplying them with inputs useful for what you are working on.
+
+eg. If you often use a certain physical controller then make a factory method:
+
+code::
+buildPatch  = { arg instrName;
+	var i;
+	i = Instr.at(instrName);
+
+	Patch(instrName,[
+		// JoyAxis is a fictional example class
+	  { i.specAt(0).map( JoyAxis.kr(0,1,axis:5) ) },
+	  { i.specAt(1).map( JoyAxis.kr(0,1,axis:5) ) },
+	])
+};
+// this creates a Patch
+buildPatch.value( \boingboing );
+::
+
+You could even interrogate the instr to see which inputs might make good candidates for your JoyAxis.
+
+Remember, Instr are not just for audio functions, so you can even keep your factories themselves in Instrument libraries:
+
+code::
+Instr(\joysticker,{ arg instrName;
+
+	var i;
+	i = Instr.at(instrName);
+
+	Patch(instrName,[
+	  { i.specAt(0).map( JoyAxis.kr(0,1,axis:5) ) },
+	  { i.specAt(1).map( JoyAxis.kr(0,1,axis:5) ) },
+	])
+},PlayerSpec.new);
+
+patch = Instr(\joysticker).value( \simple );
+::
+
+You have just used an Instr function to create and return a Patch.
+This Instr is not used for audio, its just used to build and return a Patch.
+
+Note that the output type is link::Classes/PlayerSpec::
+
+You could choose different controllers for different common inputs,
+you can query the argument name and the spec.
+Keep files in databases,  load other Patches or soundfiles from disk.
+You could flip coins and choose from soundfiles, audio in, other saved
+patches or randomly chosen net radio feeds.
+
+

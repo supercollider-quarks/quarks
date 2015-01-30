@@ -1,0 +1,892 @@
+CLASS:: CVCenter
+summary:: CVCenter is a collection of CVs and provides a GUI for easy use in connection with external hard- and software like MIDI- and OSC-controllers.
+categories:: GUI, Conductor, External Control>MIDI, External Control>OSC
+related:: Classes/CVWidget, Classes/CVWidgetKnob, Classes/CVWidget2D, Classes/CV, Classes/CCResponder, Classes/OSCresponderNode
+
+DESCRIPTION::
+CVCenter lets you collect an arbitrary number of link::Classes/CV::s (you need to have the Conductor-quark installed) and use them to easily create control-widgets for link::Classes/Synth::s, link::Classes/Ndef::s or link::Classes/Pattern::-keys. Or even more basically: any value that can be set at runtime. For each link::Classes/CV:: a widget will be created within the main CVCenter-GUI that combines an arbitrary number of link::Classes/TabbedView2::s, filled with your widgets.
+
+strong:: What's a CV? ::
+
+A link::Classes/CV:: models a value constrained by a link::Classes/ControlSpec::. The value can be a single link::Classes/Float:: or an array of Floats. Whenever the link::Classes/CV::'s value changes, it sends a changed message labeled 'synch'.  This way dependants (such as GUI objects or server value) can be updated with link::Classes/SimpleController::s.
+A link::Classes/CV::'s value can be read with the 'value' message.
+
+CLASSMETHODS::
+
+subsection:: Basic usage
+
+METHOD:: new
+Initializes CVCenter by creating its classvars code::all::, code::cvWidgets:: and more private ones.
+
+note::It shouldn't be necessary to initialize CVCenter with an explicit call to strong::*new::. Rather use strong::*use:: whenever possible as (will call strong::*new:: internally)
+::
+
+argument:: cvs
+an Array, a Dictionary or an Event, containing the widget name(s) and its/their internal CV(s):
+
+argument::  ... setUpArgs
+An arbitrary number of key/value pairs. The following keys are currently supported:
+definitionlist::
+	## strong::midiMode:: ||
+		table::
+			## code::0:: || MIDI-controllers that yield values from 0-127
+			## code::1:: || MIDI-controller that yield de-/incremental values
+		::
+		(for a detailed explanation see: link::#*midiMode::)
+	## strong::midiResolution:: || - only applies when midiMode is set to code::1:: - default: 1 (for a detailed explanation see: link::#*midiResolution::)
+	## strong::midiMean:: || - only applies when midiMode is set to code::1:: - default: 64 (for a detailed explanation see: link::#*midiMean::)
+	## strong::softwithin:: || - only applies when midiMode is set to code::0:: - default: 0.1 (for a detailed explanation see: link::#*softWithin::)
+	## strong::ctrlButtonBank:: || - default: nil (for a detailed explanation see: link::#*ctrlButtonBank::)
+::
+
+For a detailed description of the above listet arguments see the descriptions of the according classvar-methods.
+
+returns:: code::this:: (CVCenter)
+
+
+METHOD:: makeWindow
+Creates and fronts the CVCenter GUI if it's closed or nil. Sends the GUI to front if it's in the background. If CVs are passed in as key/value pairs it adds them as widgets to the GUI under the given tab if given or the one that's currently in front.
+
+argument:: tab
+a String or a Symbol, indicating the label of a tab. If none is provided the widgets will be added to "default" or any other tab that's currently in front. If an event containing the keys code::\hi:: and code::\hi:: gets passed in the widget will be a CVWidget2D.
+
+argument::  ... cvs
+key/value pairs: code::\wdgtName1, a CV, \wdgtName2, (lo: a CV, hi: a CV),  \wdgtNameN, a CV::
+
+returns:: code::this:: (CVCenter)
+
+
+METHOD:: use
+Use an arbitrary name for creating a new link::Classes/CVWidget:: (a link::Classes/CVWidgetKnob:: or a link::Classes/CVWidget2D::, depending on the argument code::slot::).
+note:: strong::This is the recommended way for creating new widgets.:: This method should be convenient in most situations. It simply creates a new link::Classes/CVWidget:: and returns the link::Classes/CV::. As link::Classes/CV:: inherits from code::Stream:: this method may directly be used in code::Pattern::s. Any reevaluation will leave a once created link::Classes/CV:: untouched.
+
+You may omit the arguments code::slot:: and code::tab:: when creating a link::Classes/CVWidget2D:: and its first slot has already been created. However, if the widget is used within patterns you always strong::must:: provide the slot as execution of the pattern depends on the right CV to be returned (if omitted the widget would return an event, composed of the \lo and \hi key).
+::
+
+argument:: key
+a link::Classes/Symbol:: or a link::Classes/String:: - the resulting link::Classes/CV:: will be put into link::#*all#CVCenter.all:: under this name and the widget will be labeled the same. If the given key resembles to the name of an existing link::Classes/ControlSpec:: it can be used automatically for the resulting CV's spec (if 'spec' hasn't been given explictely as the second argument). If the key consists of valid a ControlSpec-name and numeric characters only (e.g. 'freq 1' but not 'my freq') the spec's name will be extracted automatically.
+
+argument:: spec
+a link::Classes/ControlSpec:: - default: code::ControlSpec.new::
+
+argument:: value
+a default value for the link::Classes/CV:: - default: the link::Classes/ControlSpec::'s default value
+
+argument:: tab
+a link::Classes/String:: or a link::Classes/Symbol:: - the tab under which the widget will appear. If not provided the widget will be added under the tab that's currently in front.
+
+argument:: slot
+only needed if a link::Classes/CVWidget2D:: shall be created. Either code::\lo:: or code::\hi::
+
+returns:: a link::Classes/CV::
+
+
+METHOD:: put
+Put new link::Classes/CV::s into CVCenter
+note::It shouldn't be necessary to initialize CVCenter with an explicit call to strong::*new::. Rather use strong::*use:: whenever possible as (strong::*use:: uses strong::*put:: internally)::
+argument::  ... args
+key/value pairs: code::\wdgtName1, a CV, \wdgtName2, (lo: a CV, hi: a CV),  \wdgtNameN, a CV::
+If the number of arguments is odd and the last one is a link::Classes/Boolean:: this will indicate whether already contained values will be overwritten (default: code::false::)
+
+returns:: code::this:: (CVCenter)
+
+subsection:: Connecting Nodes (Groups, Synths) and NodeProxies
+
+It is possible to create GUIs from running Synths, NodeProxies (Ndefs as well as ProxySpaces) with one simple method-call. You can find thes methods documented in link::Classes/Synth#-cvcGui:: resp link::Classes/NodeProxy#-cvcGui::.
+
+code::
+(
+SynthDef(\simpleSine, { |freq=220, amp=0.3|
+	Out.ar(0, SinOsc.ar([freq, freq+1], mul: amp))
+}).add // SynthDefs *must* be 'added' or 'stored'
+)
+
+x = Synth(\simpleSine).cvcGui;
+x.free;
+CVCenter.removeAll; // remove widgets from CVCenter again
+::
+
+For more complex SynthDefs the cvcGui-method will take care for special requirements like arrayed controls and treat them adequately.
+
+If the user has already created widgets in CVCenter and wants to connect controls of a running Synth or a NodeProxy to these the following method might be suitable:
+
+METHOD:: connectToNode
+
+argument:: node
+mandatory - a link::Classes/Group::, a link::Classes/Synth::, a link::Classes/NodeProxy::, an link::Classes/Ndef:: or a slot in a link::Classes/ProxySpace:: (pushed or not) whose controls shall be connected to the widgets in CVCenter. The objects can be given as variables (a, b, c, d...), environment-variables (~mySynth). Also variables can be given as strings/symbols (e.g. a as code::"a":: or code::\a::).
+
+argument:: kvArray
+mandatory - an link::Classes/Array:: consisting of pairs of control-name(s) / widget-name(s):
+definitionlist::
+	## a 1-dimensional control: || control-name: ["widgetName"]
+	## an arrayed control: || control-name: ["widget-name1", "widget-name2",... "widgetNameN"]
+	## 2 controls combined in a link::Classes/CVWidget2D::: || #[control-name1, control-name2]: ["widget2D-name"]
+	## a 2-dimensional control in a single control-name: || 2D-control-name: ["widget2D-name"]
+::
+
+argument:: environment
+optional - if the object is given as slot in an array or dictionary the method will try to look it up in the given environment.
+
+returns:: code::this:: (CVCenter)
+
+
+A simple example
+
+code::
+(
+SynthDef(\connectTest, { |freq=#[220, 222, 227, 238], ampLeft=0.3, ampRight=0.3|
+	var son = SinOsc.ar(freq);
+	Out.ar(0, Splay.ar(son) * [ampLeft, ampRight]);
+}).add
+)
+
+(
+#[lo, hi].do({ |slot| CVCenter.use(\amp, slot: slot) }); // a 2D-widget for 'amp'
+4.do({ |i| CVCenter.use("freq"++(i+1)) }); // 4 single widgets for the freq-control (4 slots)
+)
+
+x = Synth(\connectTest);
+
+(
+CVCenter.connectToNode(x, [
+	freq: ["freq1", "freq2", "freq3", "freq4"],
+	#[ampLeft, ampRight]: ["amp"]
+])
+)
+
+x.free;
+CVCenter.removeAll;
+::
+
+note:: If the user doesn't provide the object in a variable or the variable-name can't be determined fallback-actions will be created ( code:: s.sendBundle(s.latency, [...])::). However, these will address the object's nodeID. If the object gets removed and recreated with a new nodeID the actions will stop working.::
+
+subsection:: Setup options (classvar getters and setters)
+
+METHOD:: midiMode
+Different MIDI-devices may have different output modes: either values from 0-127 or an in-/decremental value (e.g. -1 or +1). These modes may be taken in account as follows:
+
+table::
+## code::0:: || the device outputs a values 0-127
+## code::1:: || the device outputs in-/decremental values
+::
+
+code::midiMode:: can be set at runtime and will be reflected in all widgets, i.e. all currently connectected devices will be switched to the new mode immediately.
+
+default: code::0::
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: midiResolution
+When code::midiMode:: has been set to 1, this method allows to set the resolution (= stepsize) of the connected hardware MIDI-sliders.
+
+standard-value: 1
+lower values -> higher resolution (lower stepsize)
+higher values -> lower resolution (bigger stepsize)
+
+default: code::1::
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: ctrlButtonBank
+Some MIDI-devices provide several banks of sliders. I.e. a device may be equipped with 16 hardware-sliders and 4 banks that can be switched. So, slider 1 in bank 2 is slider nr. 17, slider 3 in bank 3 is slider nr. 35. By default these sliders would have to be addressed in a link::Classes/CCResponder:: as 16 (slider 17) and 34 (slider 35) which makes it hard to immediately get the right slider from what is displayed within the GUI.
+code::ctrlButtonBank:: translates the hardware-layout in a way that makes it easy to see the slider's bank and number: slider 17 becomes 2:1 (bank 2,  nr. 1).
+
+default: code::nil::
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: midiMean
+Devices which output a in-/decremtal may output a standard value + in-/decrement. code::midiMean:: gets automatically subtracted from this value, so in-/decrement remains. Applies only if midiMode is set to code::1::.
+
+default: code::64::
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: softWithin
+If code::midiMode:: has been set to code::0:: moving a widget-slider will set the CV to a new value. However, if a MIDI-slider is connected to that widget, moving the MIDI-slider will set the CV's value immediatly to the value that is stored in the MIDI-slider i.e. a "jump" will happen. code::softWithin:: will ease this behavior by setting the CV's value only if the slider gets within code::softWithin/2::. Applies only if midiMode is set to code::0::.
+
+default: code::0.1::
+
+returns:: code::this:: (CVCenter)
+
+subsection:: Convenience methods
+
+METHOD:: at
+Return the link::Classes/CV:: at the given key. If the key belongs to a link::Classes/CVWidget2D:: an link::Classes/Event:: will rather be returned, containing 2 CVs: code::\lo:: and code::\hi::. If your code relies on a CV being returned by this method, make sure you call the right slot (e.G.: code:: CVCenter.at(\myKey).lo::).
+
+argument:: key
+a link::Classes/Symbol:: or a link::Classes/String::
+
+returns:: a link::Classes/CV:: resp. an link::Classes/Event::
+
+
+METHOD:: removeAt
+Remove a given widget including its link::Classes/CV::(s). . Existing OSC- or MIDI-connections will be resolved automatically.
+
+argument:: key
+a link::Classes/Symbol:: or link::Classes/String::
+
+returns:: code::this:: (CVCenter)
+
+
+METHOD:: removeAll
+Remove given link::Classes/CVWidget::s including their link::Classes/CV::s or all. Existing OSC- or MIDI-connections will be resolved automatically.
+
+argument::  ... keys
+widget-keys, given as link::Classes/String::s or link::Classes/Symbol::s. If no keys are given strong::all:: widgets will be removed.
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: removeAtTab
+Remove link::Classes/CVWidget::s under a given tab and remove the tab.
+
+argument:: label
+The name of the tab as link::Classes/String:: or link::Classes/Symbol::
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: removeTab
+Remove link::Classes/CVWidget::s under a given tab and remove the tab.
+
+argument:: label
+The name of the tab as link::Classes/String:: or link::Classes/Symbol::
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: addActionAt
+Add an action given in code::action:: to a widget's CV given in code::key:: under the name code::name::
+
+argument:: key
+a link::Classes/Symbol:: or link::Classes/String:: - representing a link::Classes/CVWidget:: resp. its link::Classes/CV::
+
+argument:: name
+a link::Classes/Symbol:: or a link::Classes/String:: - the name under which the action will be added. The action may be removed or deactivated again by referring to this name.
+
+argument:: action
+a link::Classes/Function:: or a link::Classes/String:: that compiles to a function - if one or more arguments are added, the first will automatically be a representation of the CV. The function can also be provided as a string that compiles to a function when you call code::interpret:: on it.
+
+argument:: slot
+a link::Classes/String:: or link::Classes/Symbol:: - either code::\hi:: or code::\lo::. Only needed if the widget is a link::Classes/CVWidget2D::
+
+argument:: active
+a link::Classes/Boolean:: - activate or deactivate the action. default: code::true::
+
+returns:: code::this:: (CVCenter)
+
+
+METHOD:: removeActionAt
+Remove an action from a widget's CV given in code::key:: under the name code::name::
+
+argument:: key
+a link::Classes/Symbol:: or link::Classes/String:: - representing a link::Classes/CVWidget:: resp. its link::Classes/CV::s
+
+argument:: name
+a link::Classes/Symbol:: or a link::Classes/String:: - the name under which the action is stored.
+
+argument:: slot
+a link::Classes/String:: or link::Classes/Symbol:: - either code::\hi:: or code::\lo::. Only needed if the widget is a link::Classes/CVWidget2D::
+
+returns:: code::this:: (CVCenter)
+
+
+METHOD:: activateActionAt
+Activates or deactivates an action at code::key:: (representing the widget) and code::name:: (the name under which the action is stored)
+
+argument:: key
+a link::Classes/Symbol:: or link::Classes/String:: - representing a link::Classes/CVWidget:: resp. its link::Classes/CV::s
+
+argument:: name
+a link::Classes/Symbol:: or a link::Classes/String:: - the name under which the action is stored.
+
+argument:: activate
+a link::Classes/Boolean::
+definitionList::
+## true || - activate the action
+## false || - deactivate the action
+::
+
+argument:: slot
+a link::Classes/String:: or link::Classes/Symbol:: - either code::\hi:: or code::\lo::. Only needed if the widget is a link::Classes/CVWidget2D::
+
+returns:: code::this:: (CVCenter)
+
+
+subsection:: Setting GUI-properties
+
+METHOD:: bounds
+Get or set the current bounds of the CVCenter GUI.
+
+argument:: rect
+A code::Rect::.
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: alwaysOnTop
+Determine whether CVCenter resp. its childviews should always be on top of other views.
+
+argument:: bool
+a link::Classes/Boolean::
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: numMsSlotsPerColumn
+A special method that allows the user to determine how many slots a multislider-widget shall display in 1 columns at max (even though this value refers to the maximum number od slots in one column a multislider-widget will always stretch over at least 2 colums). If this number gets exceeded a multislider widget will automatically stretch over 3 columns. default: code::15::.
+
+argument:: value
+an link::Classes/Integer:: indicating how many slots shall be displayed within one column. default: code::15::
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: isClosed
+Returns true if no childviews exists (i.e. link::#*childViews:: is empty) and the main window is closed (closing the main window should automatically close all childviews as well).
+
+returns:: a link::Classes/Boolean::
+
+METHOD:: guiMoveTo
+Moves the GUI to a given position on screen.
+
+argument:: point
+a link::Classes/Point::
+
+returns:: code::this:: (CVCenter)
+
+
+METHOD:: guiMoveTo
+Moves the GUI to a given position on screen.
+
+argument:: point
+a link::Classes/Point::
+
+returns:: code::this:: (CVCenter)
+
+
+METHOD:: guiChangeDimensions
+Set the GUI's dimension to the given value.
+
+argument:: point
+a link::Classes/Point::
+
+returns:: code::this:: (CVCenter)
+
+
+METHOD:: renameTab
+Set a tab-name from code::oldName:: to code::newName::
+
+argument:: oldName
+a link::Classes/String:: or a link::Classes/Symbol::
+
+argument:: newName
+a link::Classes/String:: or a link::Classes/Symbol::
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: widgetsAtTab
+Get an link::Classes/Array:: containing all widgets (names) under the give tab.
+
+argument:: label
+a link::Classes/String:: or a link::Classes/Symbol:: representing the name of the selected tab
+
+returns:: an link::Classes/Array::
+
+subsection:: Saving and loading setups
+
+METHOD:: saveSetup
+Save all widgets and tabs resp. their actions, connected MIDI- and OSC-responders into a setup-file on disk. A once stored setup can be loaded again with code::loadSetup:: and all its responders can get reinitialized automatically.
+
+argument:: path
+optional - expects the full path to the location where the setup shall be stored disk. If given no file-save dialog will be displayed.
+
+returns:: code::this:: (CVCenter)
+
+
+METHOD:: loadSetup
+Loads a saved setup and creates the CVCenter GUI with all widgets stored in the setup. For the user's convenience arguments for this method are defined explicitely, allowing the IDE to automatically list their names when the method's name gets typed. Also one may use the dialog provided by link::Classes/CVCenterLoadDialog:: that allows selecting options by checkboxes and dropdown-lists.
+
+argument:: path
+optional - expects the full path to the location where the setup shall be stored to disk. If given no file-open dialog will be displayed.
+
+argument:: addToExisting
+If CVCenter GUI has already been initialized and contains some widgets and code::addToExisting:: is set to code::true:: the setup will rather add widgets to the already existing ones. strong::default::: code::false::
+
+argument:: autoConnectOSC
+If set to code::true:: OSC-responders will be initialized automatically. strong::default::: code::true::
+
+argument:: oscConnectToIP
+If set to code::true:: OSC-responders will be initialized with a link::Classes/NetAddr:: bound to the IP-address stored with the setup up (if the setup has been saved with an IP-address). If set to code::false:: the OSC-responders will listen to commands coming from any IP-address. However, if responders should listen to an explicit IP-address that is not the same as the one that was saved with the setup the link::Classes/CVCenterLoadDialog:: still allows the user to detect a valid IP-address to be used with all OSC-responders.
+By default code::oscConnectToIP:: is set to code::true::
+
+argument:: oscRestrictToPort
+If set to true all OSC-responders loaded from the setup will listen to the expliciit port stored with the setup (if a port has been saved with the setup). However, it is usually not recommended to restrict listening to a specific port as ports may easily change between sessions. Hence, this argument is set to code::false:: by default.
+
+argument:: activateCalibration
+If set to code::true:: the regarding widget will try to determine the range of incoming (OSC) values and adjust itself to it if necessary. However, this might not be the desired behaviour if the widget has already been calibrated when the setup was first saved. Hence, this argument is set to code::false:: by default.
+
+argument:: resetCalibration
+If set to code::true:: the calibration from invoming (OSC) values will start anew from code::0, 0:: (low constraint, high constraint). default: code::false::.
+
+argument:: autoConnectMIDI
+If set to code::true:: MIDI-responders will be initialized automatically. strong::default::: code::true::
+
+argument:: midiConnectSrc
+If set to true MIDI-responders will only listen to the ID stored with the setup (if an ID has been stored with the setup). default: code::false::.
+
+argument:: midiConnectChannel
+If set to true MIDI-responders will only listen to a channel stored with the setup (if a channel has been stored with the setup). default: code::false::.
+
+argument:: midiConnectCtrl
+If set to true MIDI-responders will only listen to a controller-nr. stored with the setup. default: code::true::.
+
+argument:: loadActions
+If set to code::true:: actions will be initialized automatically. strong::default::: code::true::
+
+argument:: midiSrcID
+Optional - all MIDI-responders will be initialized using this ID as an identification of the MIDI-device that is going to be used. Replaces any ID that has been saved with the setup.
+
+argument:: oscIPAddress
+Optional - all OSC-responders will be initialized using this IP-address. Replaces any IP-address stored with the setup.
+
+argument:: loadShortcuts
+If set to true currently active shortcuts in CVCenter, CVWidgets and CVWidgetEditors will be replaced by the shortcuts saved with the setup. By default saving a setup will always save all currently active shortcuts. default: code::true::
+
+returns:: code::this:: (CVCenter)
+
+subsection:: More classvars and internal values
+
+METHOD:: setup
+returns the current setup:
+list::
+## code::midiMode::
+## code::midiResolution::
+## code::midiMean::
+## code::ctrlButtonBank::
+## code::softWithin::
+::
+
+returns:: an link::Classes/Event::
+
+
+METHOD:: all
+
+returns:: an link::Classes/IdentityDictionary::, containing all CVs added to CVCenter
+
+METHOD:: cvWidgets
+all widgets (currently either link::Classes/CVWidgetKnob::s or link::Classes/CVWidget2D::s) displayed within the main GUI of CVCenter
+
+returns:: an link::Classes/IdentityDictionary::, containing all link::Classes/CVWidget::s
+
+METHOD:: window
+The main window of CVCenter
+
+returns:: an instance of link::Classes/Window::
+
+METHOD:: tabs
+A link::Classes/TabbedView2::, containing the widgets
+
+returns:: a link::Classes/TabbedView2::
+
+METHOD:: childViews
+An link::Classes/IdentityDictionary:: keeping the parent windows of detached tabs: Any tab may be detached in this version of CVCenter as the GUI is now based on link::Classes/TabbedView2:: instead of link::Classes/TabbedView::. Moreover, tabs can be dragged between childviews (or the main window and a childview) by clicking its label and holding cmd (Mac) or ctrl (Linux, Windows).
+The structure of code::childViews:: is the following:
+
+code::
+IdentityDictionary[
+	parent window 1 (a TopView) -> (
+		tabs: (
+			tab 1 (a TabbedViewTab): (
+				widgets: [widget-name 1, widget-name 2, ... widget-name n]
+			),
+			tab 1 (a TabbedViewTab): (
+				widgets: [widget-name 1, widget-name 2, ... widget-name n]
+			),
+			...
+			tab n (a TabbedViewTab): (
+				widgets: [widget-name 1, widget-name 2, ... widget-name n]
+			)
+		)
+	),
+	parent window 2 (a TopView) -> (
+		tabs: (
+			tab 1 (a TabbedViewTab): (
+				widgets: [widget-name 1, widget-name 2, ... widget-name n]
+			),
+			tab 1 (a TabbedViewTab): (
+				widgets: [widget-name 1, widget-name 2, ... widget-name n]
+			),
+			...
+			tab n (a TabbedViewTab): (
+				widgets: [widget-name 1, widget-name 2, ... widget-name n]
+			)
+		)
+	),
+	...
+	parent window n (a TopView) -> (
+		tabs: (
+			tab 1 (a TabbedViewTab): (
+				widgets: [widget-name 1, widget-name 2, ... widget-name n]
+			),
+			tab 1 (a TabbedViewTab): (
+				widgets: [widget-name 1, widget-name 2, ... widget-name n]
+			),
+			...
+			tab n (a TabbedViewTab): (
+				widgets: [widget-name 1, widget-name 2, ... widget-name n]
+			)
+		)
+	)
+]
+::
+
+returns:: a link::Classes/IdentityDictionary::
+
+METHOD:: shortcuts
+An link::Classes/IdentityDictionary:: containing all currently defined shortcuts for CVCenter. Though this is a getter/setter it is recomended to add/remove shortcuts via the GUI within the link::Classes/CVCenterPreferences##preferences-interface:: (changes will become active after recompilation of the class-library) or the link::Classes/CVCenterShortcutsEditor##shortcuts-interface:: (changes become active immediatly but get reset after recompilation of the class-library).
+
+See link::Classes/KeyDownActions:: for more information about the internal structure of the code::shortcuts:: dictionary resp. the workings of shortcuts in general. Also have a look at the list of link::#Shortcuts#default shortcuts:: that can be modified by the user at any time.
+
+returns:: an link::Classes/IdentityDictionary::
+
+METHOD:: scv
+An link::Classes/Event:: containing various objects that do not necessarily belong to CVCenter but are related to it. E.g. when a shortcut opens a window that window may be added to scv so other shortcuts can refer to it later.
+Basically code::scv:: has been introduced as the concept of configurable shortcuts seperate shortcut-actions from CVCenter. Hence, variables in these actions can't get initialized belonging to CVCenter automatically. However, a classvar holding a dictionary that can be filled up later solves the problem.
+
+returns:: an link::Classes/Event::
+
+METHOD:: guix
+The x-position at which the GUI will be created - has no direct effect besides when being set ahead from initializing CVCenter.
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: guiy
+The y-position at which the GUI will be created - has no direct effect besides when being set ahead from initializing CVCenter.
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: guiwidth
+The GUI-width - has no direct effect besides when being set ahead from initializing CVCenter.
+
+returns:: code::this:: (CVCenter)
+
+METHOD:: guiheight
+The GUI-height - has no direct effect besides when being set ahead from initializing CVCenter.
+
+returns:: code::this:: (CVCenter)
+
+
+PRIVATE:: prSetup
+
+PRIVATE:: prAddToGui
+
+PRIVATE:: prRegroupWidgets
+
+PRIVATE:: prRemoveTab
+
+PRIVATE:: finishGui
+
+PRIVATE:: add
+
+PRIVATE:: findSpec
+
+PRIVATE:: prAddTab
+
+PRIVATE:: prAddWidget
+
+PRIVATE:: prefPane
+
+PRIVATE:: tabProperties
+
+PRIVATE:: widgetStates
+
+INSTANCEMETHODS::
+
+SECTION:: Shortcuts
+When CVCenter GUI is sent to front a number of shortcuts apply. Most of these shortcuts will open new windows. However, if the regarding window is already open (and maybe hidden under another window) it will rather be brought to front again than opened in another window.
+NOTE::All shortcuts are configurable by the user. Handling shortcuts is basically handled by a class named link::Classes/KeyDownActions::. They can be altered (actions as well as the action-triggering key-combinations), removed or new shortcuts can be added. This can be done manually by editing link::#*shortcuts:: (not recommended) or using the link::Classes/KeyDownActionsEditor:: in the link::Classes/CVCenterPreferences##preferences-interface:: (persistent) or editing short-term shortcuts in the link::Classes/CVCenterShortcutsEditor##shortcuts-editor:: (shortcuts will be valid until next recompilation of the class-library). However, this is still an experimental feature. Especially in detached tabs shortcuts may not work as expected::
+definitionList::
+## arrow right || Navigate through the tabs of the CVCenter GUI - ascending. If the end has been reached the selection will wrap to the first tab.
+## arrow left || Navigate through the tabs of the CVCenter GUI - descending. If the beginning has been reached the selection will wrap to the last tab.
+## alt arrow right || Select and focus first widget in alphabetical order, activating widget-shortcuts. Repeating the same shortcut will select and focus the next widget in alphabetical order.
+## alt arrow left || Select and focus last widget in alphabetical order, activating widget-shortcuts. Repeating the same shortcut will select and focus the previous widget in alphabetical order.
+## 0-9 || Select tabs and focus them. The numbers represent the order of the tabs.
+## s || Save the current CVCenter setup to disk.
+## l || Load a CVCenter setup from disks.
+## p || Open the CVCenter prferences dialog.
+## d || Detach the tab currently focused tab in the CVCenter GUI.
+## shift c || Activate OSC calibration for all widgets.
+## alt shift c || Deactivate OSC calibration for all widgets.
+## shift r || Reset and restart OSC calibration for all widgets.
+## alt c || Open the link::Classes/OSCCommands:: GUI. This will also trigger link::Classes/OSCCommands#*collect::
+## o || See a list of already connected OSC-controllers (see also: link::Classes/CVCenterControllersMonitor::).
+## m || See a list of already connected MIDI-controllers (see also: link::Classes/CVCenterControllersMonitor::).
+## alt s || Open the shortcuts-editor. Shortcuts edited here will persist until the next library-recompilation (unless the option "write to preferences" is selected).
+## shift esc || Close all open CVWidget(MS)Editors.
+## e || If link::Classes/MasterEQ:: from the link::Classes/Quark:: code::wslib:: is installed, open it.
+## h || Start the link::Classes/History:: and open its GUI.
+## shift h || End the link::Classes/History::, close its GUI a and (if Patform.ideName != "scqt") open a new link::Classes/Document:: containing the recorded link::Classes/History::. note:: code::History.document:: will only work with GUI-systems that support link::Classes/Document::. When using the new SC-IDE consider using link::Classes/History#-saveCS#History.saveCS:: ( code::History.saveCS(path, forward)::)::
+## n || Open an link::Classes/NdefMixer:: for the default link::Classes/Server::
+## shift p || Open a new link::Classes/PdefAllGui::.
+## alt p || Open a new link::Classes/PdefnAllGui::.
+## t || Open a new link::Classes/TdefAllGui::.
+## a || If the link::Classes/Quark:: link::Classes/AllGui:: is installed open a new link::Classes/AllGui::.
+::
+
+EXAMPLES::
+
+code::
+// create a couple of CVWidgets under the tab "test"
+// and add an action
+CVCenter.use(\knobTest, tab: \test);
+CVCenter.addActionAt(\knobTest, \testFunc, { |cv| "knobTest: %\n".postf(cv.value) }, active: false);
+CVCenter.use(\test2D, tab: \test, slot: \lo);
+// arguments 'tab' and 'slot' may be omitted when creating the 'hi' slot as the widget knows under which
+// tab it's living and which slot has already been created. Also the operation doesn't depend
+// on a CV being returned
+CVCenter.use(\test2D);
+CVCenter.addActionAt(\test2D, \testFunc, { |cv| "test2D lo: %\n".postf(cv.value) }, \lo);
+CVCenter.addActionAt(\test2D, \testFunc, { |cv| "test2D hi: %\n".postf(cv.value) }, \hi);
+
+// action activation and deactivation
+// watch the "actions"-button at the bottom of the widget
+// turn the knob to see the effect
+CVCenter.activateActionAt(\knobTest, \testFunc, true);
+CVCenter.activateActionAt(\knobTest, \testFunc, false);
+CVCenter.activateActionAt(\knobTest, \testFunc, true);
+
+// some sound
+Server.default.waitForBoot{ a = { |freq1, freq2, amp| SinOsc.ar([freq1, freq2]) * amp }.play };
+
+// set suitable specs for synth's controls
+CVCenter.cvWidgets[\knobTest].setSpec(\amp);
+#[lo, hi].do({ |slot| CVCenter.cvWidgets[\test2D].setSpec(\freq, slot) });
+
+// add actions that set the controls in a
+CVCenter.addActionAt(\knobTest, \setAmp, { |cv| a !? { a.set(\amp, cv.value) }});
+CVCenter.addActionAt(\test2D, \setFreq1, { |cv| a !? { a.set(\freq1, cv.value) }}, \lo);
+CVCenter.addActionAt(\test2D, \setFreq2, { |cv| a !? { a.set(\freq2, cv.value) }}, \hi);
+
+// CVCenter will not open another gui if one is already present
+// if the GUI is in the background it will be sent to front
+CVCenter.makeWindow;
+
+// close the GUI and open it again
+// all widgets should just work as before
+CVCenter.window.close;
+CVCenter.makeWindow;
+
+// free the synth and remove all widgets
+a.free;
+CVCenter.removeAll;
+::
+
+anchor::cvcGui::
+subsection:: Auto-generating CVWidgets within CVCenter GUI from running Synths, NodeProxies, Ndefs and ProxySpaces and Instr/Patch
+
+code::
+// a SynthDef, including some arrayed controls
+(
+SynthDef('dynKlank', { |impFreq1, impFreq2, freqs1=#[800, 1071, 1153, 1723], freqs2=#[789, 1067, 1150, 1720], ringtimes1=#[1, 1, 1, 1], ringtimes2=#[1, 1, 1, 1]|
+	var signal1, signal2;
+	signal1 = DynKlank.ar(`[freqs1, nil, ringtimes1 ], Impulse.ar(impFreq1, 0, 0.1));
+	signal2 = DynKlank.ar(`[freqs2, nil, ringtimes2 ], Impulse.ar(impFreq2, 0, 0.1));
+	Out.ar(0, [signal1, signal2]);
+},
+// specs, defined within the SynthDef's metadata will be considered when auto-creating the GUI
+metadata: (
+	specs: (
+		freqs1: \freq,
+		freqs2: \freq,
+		impFreq1: [0.1, 5],
+		impFreq2: [0.1, 5],
+		ringtimes1: [1, 20],
+		ringtimes2: [1, 20]
+	)
+)).add; // must use 'add' or 'store' if the GUI shall be auto-generated
+)
+
+(
+Server.default.waitForBoot {
+	a = Synth(\dynKlank);
+	// GUI creation - note that actions within widgets representing arrayed controls will
+	// rather use setn to set the regarding controls
+	// have a look at the Synth helpfile to see all possible arguments for cvcGui
+	a.cvcGui(pairs2D: (impFreqs: #[impFreq1, impFreq2]));
+};
+)
+
+
+/////////////////////////////////// CVCenter and Ndefs /////////////////////////////////////////////////
+
+Ndef(\sawTest, { |damping| SinOsc.ar(damping * VarSaw.ar(\sawFreq.kr([100, 101]))).tanh * \amp.kr(0.5) });
+
+// Ndefs don't have metadata but you may add some specs ahead from creation
+Spec.add(\sawFreq, \freq);
+Spec.add(\damping, #[200, 20000, \exp, 0.0, 1000, " Hz"]);
+
+// create the GUI
+// have a look at the NodeProxy helpfile to see all possible arguments for cvcGui
+Ndef(\sawTest).cvcGui;
+
+// play the Ndef (turn the knobs if you don't hear anything immediately)
+Server.default.waitForBoot{ Ndef(\sawTest).play };
+
+// clean up
+CVCenter.removeAll;
+Ndef(\sawTest).clear(10);
+
+
+/////////////////////////////////// the same thing in NodeProxy-style /////////////////////////////////
+
+a = NodeProxy.new.play; // play to hardware output.
+// set the source
+a.source = { |damping| SinOsc.ar(damping * VarSaw.ar(\sawFreq.kr([100, 101]))).tanh * \amp.kr(0.5) };
+
+// specs should already be declared within the above example
+a.cvcGui
+
+a.clear(10)
+
+CVCenter.removeAll
+
+
+/////////////////////////////////// as ProxySpace, pushed //////////////////////////////////////////////
+
+p = ProxySpace.push(s);
+~sawTest = { |damping| SinOsc.ar(damping * VarSaw.ar(\sawFreq.kr([100, 101]))).tanh * \amp.kr(0.5) };
+
+Server.default.waitForBoot{ ~sawTest.play };
+
+// specs should already be there
+~sawTest.cvcGui;
+
+~sawTest.clear(10);
+p.clean;
+p.pop;
+CVCenter.removeAll;
+
+
+/////////////////////////////////// as ProxySpace, not pushed //////////////////////////////////////////
+
+p = ProxySpace.new;
+
+p[\sawTest] = { |damping| SinOsc.ar(damping * VarSaw.ar(\sawFreq.kr([100, 101]))).tanh * \amp.kr(0.5) };
+
+Server.default.waitForBoot{ p[\sawTest].play };
+
+p[\sawTest].cvcGui;
+
+p[\sawTest].clear(10);
+p.clean;
+p.pop;
+CVCenter.removeAll;
+
+
+/////////////////////////////////// Instr/Patch support ////////////////////////////////////////////////
+
+(
+Instr(\saw, { |amp = 0.5|
+	Splay.ar(LFSaw.ar(NamedControl.kr(\freq, [ 110, 112, 222, 334, 556 ]), 0, amp));
+});
+
+Instr(\rlpf, { |in, ffreq = 1000, famp = 1, rq = 0.1|
+    RLPF.ar(in, ffreq, rq) * famp;
+});
+)
+
+i = Instr(\saw) <>> Instr(\rlpf);
+p = i.play;
+p.cvcGui;
+
+// clean up when done
+p.stop;
+CVCenter.removeAll;
+::
+
+subsection:: CVCenter and Patterns
+code::
+// declare some SynthDef first
+(
+SynthDef(\hihat, { |out=0, atk=0.01, rel=0.1, curve=(-4.0), amp=0.5, freq=300, rq=0.5, pan=0|
+    var env, son;
+    env = Env.perc(atk, rel, curve:curve);
+    son = BPF.ar(WhiteNoise.ar, freq, rq);
+    Out.ar(out, Pan2.ar(son * EnvGen.ar(env, doneAction: 2) * amp, pos:pan));
+}).add;
+)
+
+// something to change the tempo
+t = TempoClock.default;
+t.tempo_(2);
+CVCenter.use(\tempo, #[1.0, 3.0], t.tempo, tab: \hihat);
+CVCenter.addActionAt(\tempo, \setTempo, { |cv| t.tempo_(cv.value) });
+
+// the pattern
+// no .action_ needed here - CVs can be embedded in patterns just like any other pattern
+// you can at any time change the Pdef, add new widgets to CVCenter by calling CVCenter.use(\someKey)
+// NOTE: If you're adding 2D-widgets (CVWidget2D) you *must* explicitly declare their slots ('hi' or 'lo')
+// as the output depends on what is returned by CVCenter:use
+(
+Pdef(\hiHat,
+    Pbind(*[
+        instrument: \hihat,
+        dur: Pwrand([1/4, Pwrand([Pn(1/4, 4), Pn(1/8, 2)], [2, 5].normalizeSum, 1)], [16, 9].normalizeSum, inf),
+        freq: 20000,
+        atk: 0.0001,
+        rel: Pgauss(0.04, Pwhite(0.02, CVCenter.use(\rel, value: 0.2, tab: \hihat))).abs,
+        curve: Pgauss(-4.0, 1.0),
+        amp: CVCenter.use(\amp, \amp, tab: \hihat),
+        rq: Pwhite(0.1, 1.0),
+        pan: Pgauss(0.0, 1.0),
+    ])
+)
+)
+
+Pdef(\hiHat).play;
+Pdef(\hiHat).stop;
+::
+subsection::Using CVWidgetMS in Patterns
+multi-slider widgets can be used in patterns as well. However, their usage differs.
+code::
+// a synth, utilizing an arrayed control
+(
+SynthDef(\poly, { |atk=0.02, level=0.7, rel=1.5, curve=(-4), freqMod=1, gate=1, amp=1.0|
+	var env, son;
+	env = EnvGen.kr(Env.perc(atk, rel, level, curve), gate, doneAction: 2);
+	son = LeakDC.ar(SinOsc.ar(\freq.kr({ |i| i }!5)).cubed.cubed.scaleneg(freqMod) * env);
+	Out.ar(0, Splay.ar(son).tanh);
+}).add;
+)
+
+// for the arrayed control create a CVWidgetMS *ahead* from using it in the pattern
+// otherwise we get a conflict due to the different clocks for GUI related things
+// (AppClock - the widget creation in CVCenter GUI) and the pattern playing on TempoClock
+CVCenter.use(\degree, #[0, 11, \lin, 1, 2]!5); // setting freq - where going to use the 'note'-event. Hence, we're calling the widget degree rather than freq.
+CVCenter.use(\dur, #[0.125, 1.0, \lin, 0.025, 0.25]!5); // durations
+
+// the pattern
+(
+Pdef(\poly,
+	Pbind(*[
+		instrument: \poly,
+		// rather than setting freq in hz we determine the degree in a scale
+		// instead of Prout{} the shortcut p{} can be used
+		note: PdegreeToKey( Prout({ loop {
+			CVCenter.at(\degree).collect([_]).yield
+		}}), Scale.dorian),
+		// the list arg in a ListPattern can't simply be replaced by a Pattern
+		// using a custom key holding a Pfunc that updates the Pseq's internal list
+		dur: d = Pseq(0.125!5, inf),
+		durList: Pfunc({ d.list_(CVCenter.at(\dur).value) }),
+		curve: CVCenter.use(\curve, #[-4.0, 4.0].asSpec),
+		rel: Pwhite(0.8, 2.0),
+		atk: Pwhite(0.01, 0.03),
+		freqMod: Pwhite(
+			CVCenter.use(\freqModLo, \pan, slot: \lo),
+			CVCenter.use(\freqModLo, \pan, slot: \hi)
+		),
+		level: CVCenter.use(\amp),
+	])//.trace
+)
+)
+
+Pdef(\poly).play;
+Pdef(\poly).stop;
+::

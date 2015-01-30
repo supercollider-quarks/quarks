@@ -1,0 +1,193 @@
+CLASS:: BeatClockPlayer
+summary:: 'trig' rate player that plays steady impulse triggers locked to tempo
+categories:: Libraries>crucial>Players, Libraries>crucial>Scheduling
+related:: Classes/Tempo
+
+DESCRIPTION:: A 'trig' rate player that plays steady impulse triggers locked to tempo
+
+The cpu-cheapest ways to get a steady tempo locked trig.
+If it starts precisely on a downbeat, it can be trusted to keep on the beat for a very long time.
+
+code::
+(
+	Instr(\beatClockPlayerTest,{ arg gate=0.0;
+		var a,t;
+
+		t = gate;
+		a = Decay2.kr(t,0.01,0.1).clip2(1.0);
+		a * SinOsc.ar(300);
+	},[
+		\gate
+	]);
+
+	p=Patch.new(\beatClockPlayerTest,
+	[
+		BeatClockPlayer(16) // trig / gate
+	]);
+
+	p.play;
+)
+
+Tempo.bpm = 10;
+Tempo.bpm = 100;
+
+p.stop;
+::
+
+BeatClockPlayers will share Synths if one is already running on the server that has the same tempoFactor.  Only one needs to be created on the server for every time division.  After that, subsequent requests for a BeatClockPlayer to play will resuse the same Bus that the first one is playing on.
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: tempoFactor
+
+tempoFactor is in old-style music terms:
+	16 means a 16th note.
+	8 means an 8th note
+	1 is a whole note.
+	etc.
+
+argument:: mul
+
+
+argument:: tempoBase
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: tempoFactor
+
+
+
+METHOD:: tempoBase
+
+
+
+METHOD:: mul
+
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: makeResourcesToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: asSynthDef
+
+
+
+METHOD:: defName
+
+
+
+METHOD:: synthDefArgs
+
+
+
+METHOD:: spec
+
+
+
+METHOD:: guiClass
+
+
+
+
+
+EXAMPLES::
+
+BeatClockPlayer is actually just an Impulse ugen with its frequency driven by the tempo setting.  When used at the same time as a Stream2Trig, StreamKrDur or other client-side scheduling driven device, it is possible for inaccuracies in the accounting methods to build up to noticeable loss of sync.
+
+Even clicking on different windows is leading to disturbances.  This is TempoClock's inaccuracy, it is lagging.  [note: not tested recently]
+
+Change the tempo using the slider.  At slower tempos its off.
+code::
+(
+	Instr(\beatClockPlayerTest,{ arg gate=0.0,freq=300;
+		var a,t;
+
+		t = gate;
+		a = Decay2.kr(t,0.01,0.1).clip2(1.0);
+		a * SinOsc.ar(freq);
+	},[
+		\gate
+	]);
+
+	PlayerMixer([
+		Patch.new(\beatClockPlayerTest,
+		[
+			BeatClockPlayer(4), // trig / gate
+			300
+		]),
+		Patch.new(\beatClockPlayerTest,
+		[
+			Stream2Trig(1.0,1.0),
+			600
+		])
+	]).play;
+
+	Tempo.default.gui
+)
+
+::
+
+
+code::
+
+/**
+
+( // funk 2001
+	Instr([\shaperSynths1,\decay2,\one],{ arg gate=0.0, freq=440,direction=0.2,
+				envadsr,attack=0.01,decay=0.2,ffreq=4000;
+		var p,a;
+
+		a = Decay2.kr(Trig.kr(gate ,0.05),attack,decay,direction).clip2(1.0);
+		p = SinOsc.ar(freq,0,a);
+
+		p=LPF.ar(p,ffreq);
+		p=Enveloper2.ar(p,gate,envadsr);
+		HPF.ar(p,200)
+
+	},[
+		[\gate],
+		[\freq],
+		[\bipolar]
+	]);
+
+	p=Patch.new([\shaperSynths1,\decay2,\one],
+	[
+		BeatClockPlayer(16), // trig / gate
+		StreamKrDur(
+			Prand(Array.fill(rrand(7,32),{ rrand(20,80).midicps }),inf),
+			 0.25,// a float
+			 0.1),
+			-0.2,
+	  	Env.perc,
+	  	0.07,
+	  	0.7,
+	  	4000
+	  ]);
+
+	 p.topGui;
+)
+
+
+Being a subclass of KrPlayer, the natural rate of a BeatClockPlayer is .kr rate.
+If you .value a BeatClockPlayer you get a .kr rate signal.
+
+
+**/
+
+::

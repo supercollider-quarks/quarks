@@ -1,0 +1,421 @@
+CLASS:: MKtl
+summary:: A class for creating and accessing external controllers
+categories:: Libraries>Modality, External Control
+related:: Overviews/Modality, Classes/MKtlDevice, Classes/MKtlElement
+
+DESCRIPTION::
+MKtl provides an easy to use interface for devices you can connect to your computer through MIDI, HID, OSC, Serial and eventually other protocols. Beyond that, you will be able to use it for GUI based controllers (yet to be implemented).
+
+MKtl searches for controllers connected to your machine, and gives you a list of available devices. Or, if you already know which controller you want to use, it will look through this list and returns you the controller with that name. If it cannot find it, it will replace it with a graphical representation of the controller to simulate it.
+
+For most devices, this requires that someone has already made a description file for the device; if there is none, it is easy to make one following the instructions here:
+link::Tutorials/How_to_create_a_description_file::
+
+CLASSMETHODS::
+PRIVATE:: initClass, flattenDescriptionForIO, prShortNamesToDeviceDescriptions, getMatchingDescsForShortName, findDeviceDescFromDeviceName, findDeviceDescFromShortName, findDeviceDesc
+
+METHOD:: all
+all open MKtl controllers.
+
+METHOD:: find
+Find all currently connected controllers.
+This method calls the find method on all of MKtlDevice's subclasses, and will post a list of available MKtl devices.
+code::
+MKtl.find;
+::
+
+METHOD:: new
+Accesses an existing instance of MKtl with the given name, or creates a new instance of MKtl.
+For devices which have descriptions already, this works by using the shortname given by *find.
+argument:: name
+The name of the controller as you want to refer to it.
+If you supply the short name that was given by MKtl's find method, it will try to open this device.
+If you supply the name of an MKtl that already exists, the method will return that instance, as with e.g. JITLib proxies, oder OSCdef, MIDIdef etc.
+
+argument:: deviceDesc
+The device description that you want to use. This is the file name of the description file (without .desc.scd), or a Dictionary with a valid device description.
+
+argument:: lookForNew
+Boolean flag whether or not to look for newly attached devices or newly added device descriptions. Default is false. It will always look for devices and device descriptions the first time you open an MKtl.
+
+code::
+// use auto-name, assuming you have one nanoKontrol 2 connected.
+// if you have not, a virtual nanoKontrol2 will be generated
+k = MKtl('nnkn20');
+
+// use an explicit device spec name
+k = MKtl('nnkn20', 'nanoKONTROL2' ); // explicitly use a device spec name
+
+// a longer example passing in a dictionary is below
+::
+
+
+METHOD:: newFromDevice
+Accesses an existing instance of MKtl with the given name, or creates a new instance of MKtl.
+
+argument:: name
+The name of the controller as you want to refer to it.
+If you supply the name of an MKtl that already exists, the method will return that instance, as with e.g. JITLib proxies, oder OSCdef, MIDIdef etc.
+
+argument:: deviceInfo
+Either a String or an Array with device information as reported in the comment after the MKtl shortnames.
+
+argument:: deviceDesc
+The device description that you want to use. This is the file name of the description file (without .desc.scd), or a Dictionary with a valid device description.
+
+argument:: lookForNew
+Boolean flag whether or not to look for newly attached devices or newly added device descriptions. Default is false. It will always look for devices and device descriptions the first time you open an MKtl.
+
+code::
+MKtl.find;
+// prints:
+MKtl('rnnd0');  // [ "Run'N' Drive", "Thrustmaster" ]
+
+k = MKtl.newFromDevice('rnnd0', "Run'N' Drive" );
+
+k = MKtl.newFromDevice( deviceInfo: "Run'N' Drive" );
+
+k = MKtl.newFromDevice( deviceInfo: [ "Run'N' Drive", "Thrustmaster" ] );
+
+k = MKtl.newFromDevice( \myGamePad, [ "Run'N' Drive", "Thrustmaster" ], \RunNDrive );
+::
+
+
+METHOD:: addSpec
+add a ControlSpec to MKtl's library of specs.
+
+argument:: key
+Name of the spec
+
+argument:: spec
+The ControlSpec
+
+
+METHOD:: loadMatching
+load device description file(s) by matching to a name.
+
+argument:: name
+local name by which to match; e.g. "RunNDrive" will find
+"RunNDrive_Wireless.desc.scd" and "RunNDrive.desc.scd" in the description folder.
+
+argument:: verbose
+whether or not to post which device descriptions were loaded. Default is true;
+
+code::
+MKtl.loadMatching( "RunNDrive" );
+::
+
+METHOD:: postAllDescriptions
+Posts all descriptions found in the deviceDescriptionFolder.
+
+METHOD:: allDescriptions
+Return a Dictionary with all open loaded device descriptions.
+
+
+SUBSECTION:: Private methods
+
+METHOD:: loadAllDescs
+load all device description files from the default folder. Done automatically when initializing an MKtl
+
+argument:: reload
+flag whether to force a reload of the device description dictionary.
+
+argument:: verbose
+flag whether to post a lot of info about the device descriptions.
+
+code::
+MKtl.loadAllDescs(); // load all descs
+MKtl.loadAllDescs(false, verbose: true ); // warns that you already loaded them
+MKtl.loadAllDescs(true, verbose: true ); // reload them anyways and be verbose about it
+MKtl.loadAllDescs(true, verbose: false ); // reload them anyways, without verbosity
+::
+
+METHOD:: loadSingleDesc
+load a single device description file from full path.
+
+argument:: path
+Full path to the description file to load.
+
+argument:: verbose
+Whether or not to post about having loaded the device description file.
+
+METHOD:: defaultDeviceDescriptionFolder
+This class variable holds the path where the device descriptions are located. It is automatically inferred from the location where the class is residing on your system.
+
+METHOD:: openDescriptionFolder
+Open the description folder in your file browser.
+
+METHOD:: allAvailable
+List of available controllers (by name) per protocol.
+
+
+METHOD:: allDevDescs
+An IdentityDictionary holding all known device specs. These are read files in deviceDescriptionFolder.
+
+
+METHOD:: specs
+A global dictionary of all preset ControlSpecs used by various controller elements.
+
+
+
+METHOD:: makeShortName
+Convenience method to make a short name from a long name given by the controller.
+
+argument:: deviceID
+The long name given by the controller.
+
+returns:: the short name
+
+METHOD:: getDeviceDescription
+Try to find a fitting device description.
+
+argument:: devName
+Name of the device description, or name of the controller name given.
+
+returns:: a device description.
+
+METHOD:: flattenDescription
+flattens a device description based on which platform the code is currently running.
+
+argument:: devDesc
+The description to flatten
+
+returns:: the flattened description.
+
+
+INSTANCEMETHODS::
+
+METHOD:: name
+retrieve the name of the MKtl.
+
+
+METHOD:: gui
+
+Create a gui representation of the device
+
+code::
+MKtl(\test, "nanoKONTROL");
+k = MKtl(\test);
+k.gui;
+::
+
+METHOD:: openDevice
+Open the device for this MKtl if it was not opened already. It will look automatically for an appropriate device.
+
+argument:: deviceName
+Optional argument to be explicit about the device name.
+
+argument:: lookAgain
+Whether or not to use for newly attached hardware devices.
+
+code::
+// while the run'n'drive is not yet attached:
+m = MKtl( 'funky', \RunNDrive ); // just opens the spec
+
+// now I found my run'n'drive and plugged it in:
+m.openDevice; // finds it automatically
+
+// I want to use the device name
+m.openDevice( "Run'N' Drive" ); // works
+::
+
+METHOD:: closeDevice
+Closes the hardware device if it was open.
+
+METHOD:: mktlDevice
+The instance of MKtlDevice that this MKtl uses.
+
+METHOD:: free
+Frees the MKtl again and forgets about its existance. Closes the device if there was one open.
+
+METHOD:: reset
+Remove any actions that may be attaced to this MKtl.
+
+
+SUBSECTION:: The device description
+
+METHOD:: postDeviceDescription
+
+Post device description.
+
+code::
+MKtl( \funky, \RunNDrive ).postDeviceDescription;
+::
+
+METHOD:: deviceDescriptionName
+
+Return the name of the device description that is in use.
+
+METHOD:: openDescriptionFile
+Opens the device description file.
+
+METHOD:: trace
+Post incoming data if the flag is set to true.
+
+METHOD:: traceRunning
+Whether or not we are printing incoming data currently.
+
+
+METHOD::rebuildFrom
+Rebuild the elements from the given device description. The method checks whether the new device description exists and uses the right protocol for your device. If not, then it will not replace the description.
+
+warning:: this will remove any actions you have attached, only use this method when you are really sure that you want to replace the device description.::
+
+argument:: deviceDescriptionNameOrDict
+A device description name, or a dictionary with a valid device description.
+
+SUBSECTION:: Elements of the MKtl
+
+METHOD:: printElementNames
+This prints a nice list of available element names.
+
+
+
+METHOD:: elements
+all control elements (MKtlElement) on the device you may want to listen or talk to. this returns an link::Classes/MKtlElementDict:: containing a hierarchical tree of link::Classes/MKtlElement::s, organised via MKtlElementDicts and link::Classes/MKtlElementArray::s.
+
+
+METHOD:: elementsNotOfType
+
+return all elements that are not of the type given
+code::
+k.elementsNotOfType(\slider)
+::
+
+METHOD:: elementsOfType
+
+return all elements that are of the type given
+
+code::
+k.elementsOfType(\slider)
+::
+
+
+METHOD:: elementAt
+Access an element in the elements hierarchy by passing in the indexes to arrays/dictionaries as arguments of elementAt:
+
+code::
+myKtl.elementAt(\sl,0,0)
+//the same as
+myKtl.elements[\sl][0][0]
+::
+
+
+METHOD:: at
+Access an element in the elements hierarchy by passing in one index.
+
+argument:: index
+Index to get from the elements.
+
+METHOD:: valueAt
+Access an element's value by the element key
+
+argument:: elName
+The key of the element.
+
+code::
+m = MKtl( 'funky', \RunNDrive );
+m.valueAt( \compass );
+m.valueAt( \bt_2 );
+::
+
+METHOD:: rawValueAt
+Access an element's raw value (so unmapped by its Spec) by the element key
+
+argument:: elName
+The key of the element.
+
+code::
+m = MKtl( 'funky', \RunNDrive );
+m.rawValueAt( \compass );
+m.rawValueAt( \bt_2 );
+::
+
+
+SUBSECTION:: Private element methods
+
+METHOD:: setValueAt
+Set an element's value by the element key
+
+argument:: elName
+The key of the element.
+
+argument:: val
+The value to set to it.
+
+
+METHOD:: setRawValueAt
+Set an element's value by the element key
+
+argument:: elName
+The key of the element.
+
+argument:: val
+The value to set to it.
+
+
+METHOD:: send
+Send the value of the element to the device; called if you set the value of an MKtlElement that is an output.
+
+argument:: key
+The key of the element.
+
+argument:: val
+The value to which it is set.
+
+
+
+METHOD:: allElements
+
+returns an array with all the elements
+
+
+METHOD:: inputElements
+
+returns an event/dictionary with all the elements that provide inputs.
+
+
+METHOD:: outputElements
+
+returns an event/dictionary with all the elements that provide outputs
+
+SUBSECTION:: Exploration of a device
+
+See link::Tutorials/How_to_create_a_description_file:: for a full discussion on this.
+
+METHOD:: explore
+
+When a device doesn't have a description file yet, explore can be used to help in creating one.
+
+METHOD:: exploring
+Returns a Boolean whether or not a device is currently being explored.
+
+METHOD:: createDescriptionFile
+When a device doesn't have a description file yet, this method can be used to create a description file.
+
+
+SUBSECTION:: Private methods
+
+
+METHOD:: prLoadDeviceDescription
+Load a device description from either a given device description dictionary.
+Also creates the specs for them.
+
+argument:: deviceInfo
+a given device description name, or a device name.
+
+
+METHOD:: deviceDescriptionArray
+The device description of the MKtl in Array form
+
+METHOD:: deviceDescriptionHierarch
+The device description of the MKtl in a hierarchical Dictionary form
+
+
+METHOD:: makeElements
+Populate the elements with MKtlElements.
+
+
+PRIVATE:: storeArgs, printOn, elementNames, elementDescriptionFor, deviceDescriptionHierarch, defaultValueFor, prUnderscorify, replaceElements, prTraverse, makeElementName, makeFlatDeviceDescription, checkWhetherDeviceIsThere, warnNoDeviceDescriptionFileFound, initFromDeviceName, prArgToElementKey, prInitFromDeviceDescription, prMakeElementsFunc, prMatchDo, prMatchedElements, prTryOpenDevice, elementsDict, init, removeAllFromElems
+
+

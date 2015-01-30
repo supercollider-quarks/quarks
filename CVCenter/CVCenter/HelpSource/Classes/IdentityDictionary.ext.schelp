@@ -1,0 +1,46 @@
+instancemethods::
+
+method:: findKeyForEqualValue
+Same as link::#-findKeyForValue:: but searches for equal elements instead of only identical ones.
+
+argument:: argValue
+the object to search for in the dictionary
+
+returns:: one or more keys for which code::argValue:: is equal to the key's value or code::nil:: if nothing was found
+
+method:: flipKeys
+Replace key code::oldName:: with key code::newName::
+code::
+a = (e: 9, i: 8);
+a.flipKeys(\e, \eee, \i, \iii);
+::
+
+argument:: ... oldNewPairs
+key-value pairs: code::\oldName1, \newName1, \oldName2, \newName2, ..., \oldNameN, \newNameN::
+
+returns:: this (a link::Classes/IdentityDictionary:: or an link::Classes/Event::)
+
+method:: detect
+Answer the first item in the receiver for which function answers code::true::. The function is passed two arguments, the key and a value (the object that is being checked in the function).
+The method is modelled after link::Classes/Collection#-detect::.
+code::
+a = (s: 7, h: 9);
+a.detect({ |val, key| val < 9 });
+::
+
+argument:: function
+a link::Classes/Function::
+
+returns:: the object for which the function returns code::true:: or code::nil:: if no result was found
+
+method:: detectKey
+Like link::#-detect:: but instead of the value (object) the key of the first object for which the function returns code::true:: is returned.
+code::
+a = (s: 7, h: 9);
+a.detectKey({ |val, key| val < 9 });
+::
+
+argument:: function
+a link::Classes/Function::
+
+returns:: the key for which the function returns code::true:: or code::nil:: if no result was found

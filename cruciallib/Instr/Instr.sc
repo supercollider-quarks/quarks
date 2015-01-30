@@ -446,10 +446,15 @@ Instr  {
 	copy { ^this } // unless you change the address its the same instr
 
 	*initClass {
-		Class.initClassTree(Document);
-
-		// default is relative to your doc directory
-		if(dir.isNil,{ dir = Document.dir ++ "Instr/"; });
+		if(dir.isNil,{
+			try{ // Document class not always present
+				Class.initClassTree(Document);
+				// default is relative to your doc directory
+				dir = Document.dir ++ "Instr/";
+			}{
+				dir = "Instr/";
+			};
+		});
 
 		Class.initClassTree(Event);
 		Event.addEventType(\instr,{ arg server;

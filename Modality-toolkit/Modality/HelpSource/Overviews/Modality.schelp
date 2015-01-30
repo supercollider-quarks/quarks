@@ -1,0 +1,156 @@
+title:: Modality
+summary:: Toolkit to simplify the creation of personal (electronic) instruments utilising hardware and software controllers of any kind.
+categories:: Libraries>Modality, External Control
+related:: Overviews/Modality, Classes/MKtl, Tutorials/ModalityTutorial
+
+Section:: Introduction
+
+Modality is a toolkit created by a team of developers and (advanced) users of SuperCollider.
+
+One of its basic ideas is to simplify the creation of your very personal instruments with SuperCollider, using controllers of many different kinds. To this end, a common code interface, MKtl, is used for connecting  controllers from different sources (and protocols) like HID and MIDI, Serial, OSC, GUI, etc.
+
+A second starting point is that the same physical interfaces (sets of sliders, buttons, motion sensors etc etc) can be used for many different purposes, and a highly modal approach to mapping and on-the-fly remapping can help to make a setup much more flexible, powerful, and interesting to play. For example, when improvising with acoustic musicians, highly modal interfaces allow much faster changes of overall (performing) direction.
+
+http://modality.bek.no/
+
+
+section:: Tutorials and further reads
+
+LIST::
+##link::Tutorials/ModalityTutorial::
+##link::Tutorials/How_to_create_a_description_file::
+##link::Reference/SupportedDevices::
+::
+
+There are tutorial files and examples of common usage cases of MKtl available here:
+link::https://github.com/ModalityTeam/ModalityWorkshop::
+
+
+SECTION:: Overview
+
+With code::MKtl:: it is possible to assign functionality to controller elements.
+
+To find your device, evaluate
+code::
+MKtl.find;
+::
+
+NOTE:: You may have to install drivers before code::MKtl.find:: is able to find your device.::
+
+Each code::MKtl:: has elements such as sliders or knobs. It is possible to assign an action to such an element that is evaluated every time the value of that element gets updated.
+
+Below two examples of what you can do with this toolkit. For further explanation, refer to link::Tutorials/ModalityTutorial::.
+
+subsection:: Example NanoKontrol2
+
+code::
+// plug in your NanoKontrol2 and evaluate this line.
+// If there is no such controller connected, it opens a fake gui-based controller for you.
+k = MKtl('nnkn20');
+
+k.gui; // opens a gui representation of the device
+
+s.boot; // boot the server
+
+(
+// play a sound
+x = {
+	Splay.ar(
+		SinOsc.ar([
+			\freq1.kr(700, lag: 0.3),
+			\freq2.kr(150, lag: 0.3),
+			\freq3.kr(100, lag: 0.3)
+	]))/3
+}.play;
+
+// add specs for the controls
+Spec.add(\freq1, [100, 1000, \exp]);
+Spec.add(\freq2, \freq1);
+Spec.add(\freq3, \freq1);
+)
+
+// set actions to the first three sliders
+k.elementAt(\sl, 0).action = {arg el;
+	x.set(\freq1, \freq1.asSpec.map(el.value))
+};
+k.elementAt(\sl, 1).action = {arg el;
+	x.set(\freq2, \freq2.asSpec.map(el.value))
+};
+k.elementAt(\sl, 2).action = {arg el;
+	x.set(\freq3, \freq3.asSpec.map(el.value))
+};
+
+
+// after testing, free sound
+x.free;
+::
+
+subsection:: Example BCR2000
+
+code::
+// plug in your BCR2000 and evaluate this line.
+// If there is no such controller connected, it opens a fake gui-based controller for you.
+k = MKtl('bcr20000');
+
+k.gui;      // open a gui representation of the device
+
+k.elements; // dictionary of controls keys to MKtlElements
+
+// elements can be accessed through their hierarchy:
+k.elementAt(\kn, 0, 0);
+
+// all knobs of the first row
+k.elementAt(\kn, 0); // -> MktElementArray
+
+// elements have a type:
+k.elementAt(\kn, 0, 0).type;
+
+// select elements by their type:
+k.allElements.select{ |x| x.type == \encoder };
+
+// perform an action on turning knob [0,0] (upper left)
+k.elementAt(\kn, 0, 0).action = { |el| el.value.postln };
+
+// simple sound example
+x = { RLPF.ar(Saw.ar(\freq.kr(440, 0.1), mul: 0.1), 1000)}.play;
+
+(
+k.elementAt(\kn, 0, 0).action_({ |el|
+	x.set(\freq, el.value.linlin(0.0, 1, 300.0, 600));
+});
+)
+
+// after testing, free sound
+x.free;
+
+// send data back to the device
+k.elementAt(\kn,0,0).value_(0.5);
+::
+
+
+subsection::Bonus: Knob rotation demo
+code::
+(
+d = 0;
+{
+	loop{
+		0.05.wait;
+		d = d + 0.01;
+		8.do{ |i|
+			k.elementAt(\kn, 0, i).value_(
+				(d + (i/7)).mod(1.0);
+			);
+		};
+	}
+}.fork;
+)
+::
+
+SECTION:: Controllers not yet recognised
+
+Have a controller that is not yet known to the system? You can fix this by yourself!
+To do so, look at link::Tutorials/How_to_create_a_description_file::.
+
+section:: Acknowledgements
+Modality and its research meetings have kindly been supported by BEK in Bergen, Norway, and STEIM, Amsterdam.
+The ModalityTeam is, in no obvious order: Jeff Carey, Bjoernar Habbestad, Marije Baalman, Alberto de Campo, Tijs Ham, Wouter Snoei, Till Bovermann, Miguel Negrao, Robert van Heumen, Hannes Hoelzl, Tim Blechmann, Amelie Hinrichsen, and Dominik Hildebrand Marques Lopes.

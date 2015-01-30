@@ -1,0 +1,624 @@
+CLASS:: EventSource
+summary:: Implementation of Functional Reactive Programming.
+categories:: FP
+related:: Classes/FPSignal
+
+description::
+
+This is a port of the reactive-core library for Scala into SuperCollider.
+
+For more info see:
+
+http://www.reactive-web.co.cc/core/EventStream
+
+An EventStream is a source of events (arbitrary values sent to listener functions). You can fire events from it, you can react to events with any behavior, and you can create derived EventStreams, whose events are based on the original EventStream.
+
+An EventStream is like a collection in the sense that it consists of multiple values. However, unlike actual collections, the values are not available upon request; they occur whenever they occur. Nevertheless, many operations that apply to collections apply to event streams. To react to events, use foreach or foldLeft. To create derived, transformed EventStreams, use map, flatMap, filter, foldLeft, and the | (union) operator. Note that you can of course use for comprehensions as syntactic sugar for many of the above.
+
+There are only two ways to stop an EventSource from continuing to process events:
+list::
+## the functional way is to use takeWhile
+## the imperative way is to call .remove on the event stream.
+::
+
+SUBSECTION::Type Classes
+EventSource is an instance of the Functor Type Class. It does not implement the 'pure' function therefore it is not a Monad or an Applicative Functor. It does implement the 'bind' or '>>=' function.
+
+SUBSECTION::Templates
+
+Templates can be defined by placing a file in a EventStreamTemplates folder in the Extensions folder. The library comes already with some templates.
+
+note:: The names of the templates cannot be identical to method names of Object (including in additions from quarks, etc).::
+
+Example of a template:
+
+code::
+(
+func:{ |eventSource|
+	eventSource.collect([Process.elapsedTime,_])
+},
+desc: "store time when event occured",
+name: "storeWithT"
+)
+::
+
+Templates bundled with the library:
+
+list::
+
+## storeWithT: store time when event occured.
+code::
+(
+x = EventSource();
+x.storeWithT.do( postln(_) );
+x.fire(2)
+)
+::
+
+## storePrevious: store current and previous event in an array. The initial values are assumed to be 0.0.
+code::
+(
+x = EventSource();
+x.storePrevious.do( postln(_) );
+x.fire(2);
+x.fire(3);
+)
+::
+
+## storePreviousWithT: store current and previous event in an array with the event time stamp. The initial valuea are assumed to be [0.0,0.0].
+code::
+(
+x = EventSource();
+x.storePreviousWithT.do( postln(_) );
+x.fire(2);
+x.fire(3);
+)
+::
+
+## changes: Output only if new value different from last value.
+code::
+(
+x = EventSource();
+x.changes.do( postln(_) );
+x.fire(2);
+x.fire(2);
+x.fire(2);
+x.fire(2);
+x.fire(2);
+x.fire(2);
+x.fire(3);
+)
+::
+
+## changedDirection: Output only when going from increasing to decreasing or descreasing to increasing.
+code::
+(
+x = EventSource();
+x.changedDirection.do( postln(_) );
+x.fire(2);
+x.fire(3);
+x.fire(4);
+x.fire(2);
+)
+::
+
+## decreasing: Output only when values are decreasing.
+
+code::
+(
+x = EventSource();
+x.decreasing.do( postln(_) );
+x.fire(2);
+x.fire(3);
+x.fire(4);
+x.fire(2);
+)
+::
+
+## increasing: Output only when values are increasing.
+
+code::
+(
+x = EventSource();
+x.decreasing.do( postln(_) );
+x.fire(2);
+x.fire(3);
+x.fire(4);
+x.fire(2);
+)
+::
+
+## withinRange: Output only values between a and b.
+
+code::
+(
+x = EventSource();
+x.withinRange(2,3).do( postln(_) );
+x.fire(1);
+x.fire(2.5);
+)
+::
+
+## matchVal: Output only if event matches one of the values in the array, in which case the index of the value is returned.
+
+code::
+(
+x = EventSource();
+x.matchVal([1,2,3,4]).do( postln(_) );
+x.fire(1);
+x.fire(2.5);
+)
+::
+
+## threshold: Output when value crosses threshold.
+code::
+(
+x = EventSource();
+x.threshold(0.5).do( postln(_) );
+x.fire(0);
+x.fire(1);
+x.fire(0);
+)
+::
+
+## thresholdUp: Output when value crosses threshold while increasing.
+code::
+(
+x = EventSource();
+x.thresholdUp(0.5).do( postln(_) );
+x.fire(0);
+x.fire(1);
+x.fire(0);
+)
+::
+
+## thresholdDown: Output when value crosses threshold while decreasing.
+code::
+(
+x = EventSource();
+x.thresholdDown(0.5).do( postln(_) );
+x.fire(0);
+x.fire(1);
+x.fire(0);
+)
+::
+
+
+## neventsWithinT: Output a Unit if n consecutive events arrive within a period of waitTime seconds. Can be used for instance to detect double-clicks.
+code::
+(
+x = EventSource();
+x.neventsWithinT(1.0,3).do( postln(_) );
+fork{
+	x.fire(1);
+	x.fire(1);
+	//nothing goes through
+	1.1.wait;
+	x.fire(1);
+	x.fire(1);
+	x.fire(1);
+	//now you get a Unit
+}
+)
+::
+
+## speed: Output speed at which values are arriving.
+code::
+(
+x = EventSource();
+x.speed.do( postln(_) );
+x.fire(1);
+x.fire(2.5);
+)
+::
+
+## route: Returns an array of n event stream where events will be sent according to the values of select.
+
+n: number of event streams to route to
+select: event stream selects to which of the output event streams to send events
+
+This is similar has having a code::Out.ar(\bus.kr(0), ugen)::, it allows to choose where you are routing the input.
+
+code::
+
+(
+var select;
+//original source
+x = EventSource();
+//the event source that selects where the orignal source goes
+select = EventSource();
+x.route(4,select).do{ |es, i|
+	es.do{ |v| postln("outputting to selection "++i++": "++v) }
+};
+select.fire(0);
+x.fire(1);
+select.fire(2);
+x.fire(33);
+)
+::
+
+## slowdown: Only fire if new value arrived at least t seconds after last value. Does not remember values in between.
+
+code::
+(
+x = EventSource();
+x.slowdown(0.1).do( postln(_) );
+fork{
+x.fire(1);
+x.fire(2.5);
+x.fire(3);
+0.2.wait;
+x.fire(22)
+}
+)
+::
+
+## toggle: Iterate amongs n states, i.e. with 4 states goes 0, 1, 2, 3, 0, 1, 2, etc...
+
+code::
+(
+x = EventSource();
+p = postln(_);
+x.toggle(4).do(p);
+x.fire(0);
+x.fire(0);
+x.fire(0);
+x.fire(0);
+x.fire(0);
+x.fire(0);
+x.fire(0);
+)
+::
+
+## behaviour: Run a function of time in between each event received.
+
+This mimics "Behaviours" as formulated in classical FRP.
+A function depending on time and on an initial value is run using a timer (i.e. discretizing time) in between every event received.
+
+code::
+(
+var delta = 0.05;
+var g = 0.1;
+
+f = { |x0,t| (x0 - (g*t.squared)).max(0) };
+
+w !? _.close;
+~guiKnob = Knob();
+
+w = Window(bounds:Rect(200,200,200,100)).layout_( HLayout( ~guiKnob ) ).front;
+~guiKnob.esFromGUI.behaviour(f, delta).changed.connect( ~guiKnob );
+)
+::
+
+::
+
+CLASSMETHODS::
+
+PRIVATE:: availableTemplates, cleanTemplateName, eventStreamTemplateFolders, getEventSourceTemplate,getTemplateFilePaths
+
+METHOD::availableTemplates
+
+Lists available templates.
+
+METHOD::eventStreamTemplateFolders
+
+Folders where to look for templates.
+
+By default the folders are
+
+code::
+[this.filenameSymbol.asString.dirname.dirname +/+ "EventStreamTemplates",
+Platform.userAppSupportDir++"/Extensions/EventStreamTemplates/"]
+::
+
+So the folder included with the quark and a folder in the Extensions folder.
+
+instancemethods::
+
+PRIVATE:: addListener, doesNotUnderstand, initEventSource, listeners, proc, removeListener
+
+method:: new
+
+Create a new EventSource
+
+METHOD:: fire
+
+Emit an event to all registered listeners.
+This will send an event into the event processing network.
+
+SUBSECTION::Perform Side-Effects
+
+method::do
+Run f every time a new event arrives.
+argument::f
+ A function
+returns:: Unit
+
+code::
+(
+x = EventSource();
+f = { |x| postln("look what I got:"++x) };
+x.do(f);
+x.fire(3)
+)
+
+
+//stop the action
+(
+x.stopDoing(f);
+x.fire(4)
+)
+
+::
+
+method::stopDoing
+
+Stop running function f.
+argument::f
+A function
+returns:: Unit
+
+method::doDef
+
+Run f every time a new event arrives and save the function using the name given
+
+argument::name
+A key
+argument::f
+The function to call
+returns:: Unit
+
+code::
+(
+x = EventSource();
+x.doDef(\hello,{ |x| postln("look what I got:"++x) });
+x.fire(3)
+)
+(
+x.doDef(\hello,{ |x| postln("And now I print it like this:"++x) });
+x.fire(3)
+)
+(
+//remove the action
+x.doDef(\hello);
+x.fire(3)
+)
+::
+
+SUBSECTION::Combinators
+
+Methods to combine EventSource's into a network of event processing nodes.
+
+method::hold
+argument::initialValue
+The current ('now') value for the returned FPSignal.
+returns:: An FPSignal that holds the last value of the EventSource
+
+method::collect
+returns::A new EventStream, that for every event that this EventStream fires, that one will fire an event that is the result of applying 'f' to this EventStream's event.
+discussion::
+code::
+(
+x = EventSource();
+y = x.collect( _*100 );
+y.do(_.postln);
+x.fire(2)
+)
+::
+
+method::select
+returns::A new EventStream that propagates a subset of the events that this EventStream fires.
+discussion::
+code::
+(
+x = EventSource();
+y = x.select( _ < 2 );
+y.do(_.postln);
+x.fire(1);
+x.fire(4);
+)
+::
+
+method::inject
+Allows one, in a functional manner, to respond to an event while taking into account past events. For every event t, f is called with arguments (u, t), where u is initially the value of the 'initial' parameter, and subsequently the result of the previous application of f.
+returns:: A new EventStream that, for every event t fired by the original EventStream, fires the result of the application of f (which will also be the next value of u passed to it). Often 'u' will be an object representing some accumulated state.
+discussion::
+An EventStream that sums all the integer values fired by the parent EventStream.
+code::
+(
+x = EventSource();
+y = x.inject( 0, {|state,b| state + b });
+y.do(_.postln);
+x.fire(1);
+x.fire(4);
+x.fire(7)
+)
+::
+
+method::flatCollect
+Create a new EventStream that consists of the events of the EventStreams returned by f. f is applied on every event of the original EventStream, and its returned EventStream is used until the next event fired by the original EventStream, at which time the previously returned EventStream is no longer used and a new one is used instead.
+
+argument::f
+f the function that is applied for every event to produce the next segment of the resulting EventStream.
+discussion::
+code::
+(
+x = EventSource();
+y = EventSource();
+z = EventSource();
+w = x >>= { |v|
+ if(v==0){y}{z}
+};
+w.do(_.postln);
+)
+(
+//will get value from y
+x.fire(0);
+y.fire(1);
+z.fire(4);
+)
+(
+//will get value from z
+x.fire(1);
+y.fire(1);
+z.fire(4);
+)
+
+method::|
+Merges the output of the two EventSources.
+discussion::
+code::
+(
+x = EventSource();
+y = EventSource();
+z = x | y;
+z.do({ |x| ("received: "++x).postln});
+x.fire(1);
+y.fire(4);
+)
+::
+
+
+
+method::merge
+the same as code::|::
+
+method::takeWhile
+returns::An EventSource that will fire the events coming from the parent until f evaluates to false, at which point it will not fire anything else.
+discussion::
+code::
+(
+x = EventSource();
+z = x.takeWhile( _ < 10);
+z.do({ |x| ("received: "++x).postln});
+x.fire(1);
+x.fire(4);
+x.fire(7);
+x.fire(13);
+x.fire(4);
+)
+::
+
+method::apply
+Apply a the funtion contained in the FPSignal to each incoming event
+
+code::
+(
+var e = EventSource();
+var fsig = Var(_+1);
+e.apply(fsig).do(_.postln);
+e.fire(1);
+e.fire(2);
+fsig.value_(_*10);
+e.fire(1);
+e.fire(2);
+)
+
+SUBSECTION::Disconnect from network
+
+method::remove
+
+Disconnects this EventStream from the parent EventStream (if it has a parent). If the EventStream is not assigned to any variable anymore it will be gc'ed.
+
+code::
+(
+x = EventSource();
+y = x.collect(_+10);
+y.do(postln(_));
+x.fire(2);
+)
+
+(
+y.remove;
+x.fire(3);
+//nothing is posted
+)
+
+//now the EventSource that was assigned to y can be gc'ed.
+y = nil;
+::
+
+method::reset
+
+Removes all listeners. This will disconnect this EventSource from the rest of the chain that depends on it, and the rest of the chain will be gc'ed.
+
+code::
+(
+x = EventSource();
+y = x.collect(_+10).do(postln(_));
+y = x.collect(_+100).do(postln(_));
+x.fire(2);
+)
+
+(
+x.reset;
+x.fire(3);
+//nothing is posted
+)
+::
+
+SUBSECTION:: Interaction with Server
+
+method::bus
+
+create a bus and add a function to the event stream that updates the bus.
+
+returns:: Some( Tuple2( Bus, Function ) ). The function is returned to be able to stop updating the Bus in the future. If the server is not running returns None().
+
+code::
+x = { SinOsc.ar( \freq.kr(400) )*0.1 }.play
+
+(
+y = EventSource();
+b = y.bus(s, 900);
+//b might be None() if the server is not running.
+b.do{ |z| x.map(\freq, z.at1) }
+)
+
+//change freq to 200
+y.fire( 200 );
+::
+
+SUBSECTION:: Interaction with GUIs
+You can use code::esFromGUI:: to get an EventSource from the GUI and the method 'connect' to connect the end of the network to an object that responds to value_
+
+METHOD::connect
+
+Connect this EventSource to an object. Everytime the EventSource fires an event the object's value_ method is called with the value.
+ARGUMENT:: object
+An object that responds to value_
+
+Examples::
+
+code::
+//Using a timer
+(
+// args delta (s), maxTime(s)
+// will output every delta seconds until maxTime is reached.
+x = TimerES(1,10);
+x.do({ |x| ("received: "++x).postln});
+)
+
+::
+
+With GUIs:
+
+
+ code::
+(
+t = QTextField();
+b = Button();
+b.esFromGUI.inject(0, { |state, x| state+1 }).connect(t);
+w = Window(bounds:Rect(200,200,130,50)).layout_( HLayout( b, t ) ).front;
+)
+::
+
+code::
+(
+t = QTextField();
+b = Slider().orientation_(\horizontal);
+b.esFromGUI.collect{ |x| x.linexp(0.0,1.0,300,6000) }.connect(t);
+w = Window(bounds:Rect(200,200,300,50)).layout_( HLayout( b, t ) ).front;
+)
+::
+

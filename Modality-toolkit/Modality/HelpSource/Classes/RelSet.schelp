@@ -1,0 +1,97 @@
+TITLE:: RelSet
+summary:: set an objects's param relatively
+categories:: Utilities
+related:: Classes/SoftSet
+
+DESCRIPTION::
+RelSet is intended for encoder-style controllers, such as infinite MIDI knobs that send relative values. RelSet can move a single param of an object by a relative normalized amount. 
+One can choose to provide a spec for unmapping the object's current value, 
+or one can let the object provide the spec. 
+If spec is \none, or none can be found, RelSet will add the offset as is.
+
+Technical Note: 
+as this behavior is useful for many objects, it is implemented as a class that can be wrapped into a method of the object of interest; it will be more efficient to use the RelSet class.
+
+code::
+
+// make an Ndef as a destination objects to use, 
+// and a gui to show its params.
+Ndef(\a);
+Ndef(\a).gui.moveTo(0,400);
+
+// does nothing (no current value yet)
+RelSet(Ndef(\a), \freq, 0.05);
+
+// works when there is a value - 
+// note that \freq has a global spec, 
+// which is being looked up internally here.
+set(Ndef(\a), \freq, 200);  // set to something
+RelSet(Ndef(\a), \freq, 0.025); // step up
+RelSet(Ndef(\a), \freq, 1/127); // midi cc step size
+
+
+// put a sound there, and try the same steps
+Ndef(\a, { Pulse.ar(\freq.kr(100), \pwidth.kr(0.1)) * 0.1 }).play;
+set(Ndef(\a), \freq, 200);
+RelSet(Ndef(\a), \freq, 0.025);
+RelSet(Ndef(\a), \freq, 1/127); 
+
+// set to the middle of range, and do brownian param drift
+Ndef(\a).set( \freq, 600);
+fork { 30.do { RelSet(Ndef(\a), \freq, 0.05.rand2); 0.2.wait }; };
+
+
+// second param, no global or local spec -> uses unipolar
+set(Ndef(\a), \pwidth, 0.5);
+RelSet(Ndef(\a), \pwidth, 0.1.rand2);
+
+// add a global spec - that will be used
+Spec.add(\pwidth, [0.01, 0.99]); // dont go to full [0, 1])
+RelSet(Ndef(\a), \pwidth, 0.1.rand2);
+
+// add a local spec to Ndef(\a) - gui and RelSet will use it
+Ndef(\a).addSpec(\pwidth, [0.5, 0.01, \exp]); // from dark to bright
+
+RelSet(Ndef(\a), \pwidth, 0.1.rand2);
+
+// when a spec is given in the RelSet call, 
+// object need not know a spec for its parameter
+// (first remove the local spec so the gui shows the full range)
+Ndef(\a).addSpec(\pwidth, nil); // from dark to bright
+// then try this repeatedly
+RelSet(Ndef(\a), \pwidth, 0.1.rand2, [0.5, 0.99]);
+
+::
+
+CLASSMETHODS::
+
+METHOD:: new 
+NB: new does not create anything; it is used as is it were a functional method call
+on the first argument: 
+code::
+RelSet(obj, paramName, relVal, spec) // is like
+obj.relSet (paramName, relVal, spec) 
+::
+ 
+ARGUMENT:: obj
+the object whose param to set
+
+ARGUMENT:: paramName
+the name of the param to set
+
+ARGUMENT:: relVal
+the relative value in unipolar [0, 1] range
+
+ARGUMENT:: spec
+an optional spec by which to unmap the objects current value. 
+if none provided, the object is asked for its value with getSpec(paramName)
+
+returns:: true if set succeeded, false if not
+
+METHOD:: getSpec
+
+ARGUMENT:: obj
+the object to ask for the spec
+ARGUMENT:: paramName
+the name of the param for wich to obtain a spec
+returns:: a spec

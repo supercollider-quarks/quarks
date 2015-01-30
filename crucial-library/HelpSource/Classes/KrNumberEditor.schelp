@@ -1,0 +1,133 @@
+CLASS:: KrNumberEditor
+summary:: a number box and slider for editing a float value [\kr rate]
+categories:: Libraries>crucial>Editors
+related:: Classes/Patch, Classes/NumberEditor
+
+DESCRIPTION::A number box and a slider control for editing a float value.
+
+This is the default control for any modulateable control input (ControlSpec).   It is most commonly seen in Patches where it shows up as the default control for many parameters.  When you move the slider, it sends messages to the Patch's Synth.
+
+code::
+k = KrNumberEditor(440,\freq);
+k.gui
+
+k.value = 100
+
+k.rand
+
+// 0..1  mapped to the \freq range
+k.setUnmappedValue(0.5)
+
+::
+
+section:: Internals
+
+if a KrNumberEditor is in a Patch, and that Patch is playing on a server, the message to the server happens when the KrNumberEditor gets the .changed message and sends .update to all its depedants.  This includes any NumberEditorGui and also any UpdatingScalarPatchOut, which is what actually sends the message to the server.
+
+section:: Lag
+
+KrNumberEditors  support lag.  This means that the control messages received by the Synth are smoothed by a Lag.kr  You can set lag to nil for no Lag.
+
+code::
+k = KrNumberEditor(0,\loop);
+k.lag = nil;
+::
+
+Alternatively see link::Classes/NoLagControlSpec::, whose defaultControl sets the lag to nil.
+
+code::
+k = KrNumberEditor(0, NoLagControlSpec(0,1) );
+::
+
+the keys \binary, \loop (as looked up in the Spec dictionary)  are registred as NoLagControlSpec, and thus don't use any lag at all.
+
+code::
+// \loop is defined by default as a no lag control spec
+\loop.asSpec.defaultControl.insp
+::
+
+I would prefer to just have a lag preference in ControlSpec
+(clients that do lag eg. sliders can tell from the spec if they should do lag or not).
+
+You can register others, or use a NoLagControlSpec when writing the Instr.
+
+CLASSMETHODS::
+
+METHOD:: defaultLag
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: lag
+
+
+
+METHOD:: init
+
+
+argument:: val
+
+
+argument:: aspec
+
+
+
+METHOD:: canDoSpec
+
+
+argument:: aspec
+
+
+
+METHOD:: addToSynthDef
+
+
+argument:: synthDef
+
+
+argument:: name
+
+
+
+METHOD:: instrArgFromControl
+
+
+argument:: control
+
+
+
+METHOD:: makePatchOut
+
+
+
+METHOD:: connectToPatchIn
+
+
+argument:: patchIn
+
+
+argument:: needsValueSetNow
+
+
+
+METHOD:: copy
+
+
+
+METHOD:: guiClass
+
+
+
+METHOD:: addToDefName
+
+
+argument:: stream
+
+
+
+
+
+
+

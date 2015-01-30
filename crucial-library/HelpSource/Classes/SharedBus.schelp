@@ -1,0 +1,60 @@
+CLASS:: SharedBus
+summary:: a Bus that is used by several objects and implements reference counting
+categories:: Libraries>crucial>internals
+related:: Classes/BusPool, Classes/Bus
+
+DESCRIPTION:: This simple class solves a problem with sharing busses between players.  When a player is stopped or freed, it frees its Bus, which frees the Bus number for reallocation.
+
+In the case of PlayerMixer, several players are using the same bus.  Only the PlayerMixer itself should be able to free the Bus.
+
+In the case of PlayerSocket, each player that plays in the socket is given the bus, and they will free that Bus when the player is replaced by a new player in the socket.  Again, only the PlayerSocket itself should be able to finally free the Bus.
+
+A SharedBus will not free its bus number until given explicit permission by its owner by calling .releaseBus
+
+If you are writing a class that for instance hosts various Players and you wish them to share busses or to keep ahold of the bus you are playing them on without having the Player free it:
+
+	sbus = bus.as(SharedBus);
+
+	....  use it ....
+
+	sbus.releaseBus; // releases and frees the Bus index
+
+
+
+CLASSMETHODS::
+
+METHOD:: newFrom
+this converts a bus into a SharedBus and declares the actual owner.
+
+argument:: bus
+
+
+argument:: owner
+Principal owner object of the Bus.  Nobody else can free it but owner.
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: owner
+
+
+
+METHOD:: releaseBus
+this will not actually release the bus unless the supposedOwner really is the owner.
+	so the children will try to free it, but only the parent can actually succeed.
+
+argument:: supposedOwner
+
+
+
+METHOD:: free
+
+
+
+METHOD:: realloc
+
+
+
+
+

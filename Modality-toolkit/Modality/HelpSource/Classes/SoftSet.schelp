@@ -1,0 +1,245 @@
+TITLE:: SoftSet
+summary:: set process parameters politely.
+categories:: Undocumented classes
+related:: Classes/RelSet, Classes/Ndef, Classes/Pdef, Classes/Tdef
+
+DESCRIPTION::
+SoftSet is intended for letting a controller set a numerical parameter of an object politely. The common problem is that when a controller is newly assigned to a process parameter, the physical position can differ widely from the current param value in the process/object, which would create undesirable large parameter jumps when moving the controller.
+
+SoftSet solves this by considering whether the new value is acceptable:
+if the new value is close enough to the current value in the object, or if the previous value of the controller is close enough to the current value of the process param (which implies that the object was last set from this controller, so the controller conceptually 'owns' it now), it is considered OK to set.
+
+SoftSet returns a boolean whether the set message was accepted.
+
+code::
+// Some Basic Examples :
+
+// make an Ndef and set values for its parameters.
+	Ndef(\a).clear;
+	Ndef(\a).gui.moveTo(0, 400).skipjack.dt = 0.05;
+
+   s.boot;
+
+	// freq does not have a value yet, so you can set it
+  SoftSet(Ndef(\a), \freq, 200);
+
+	// try to set to a far away value, will not work
+  SoftSet(Ndef(\a), \freq, 200);
+
+	// close enough (within unipolar distance of 0.1) will set
+  SoftSet(Ndef(\a), \freq, 219, within: 0.1);
+
+   Ndef(\a, { Ringz.ar(PinkNoise.ar, \freq.kr(440), 0.3) }).play;
+
+
+// See examples for how to use in controllers,
+// and to try their different behaviors with sliders:
+(
+    var w = Window("SoftSet - compare 4 Variants").front;
+    var lastVal, lastValUni;
+    w.addFlowLayout;
+
+	StaticText(w, 380@32).string_("SoftSet classvar defaultWithin sets range within a destination's parameter will be taken over.");
+   EZSlider(w, 380@20, 'SoftSet-defaultWithin', [0.025, 0.2, \exp], { |sl|
+        SoftSet.defaultWithin = sl.value;
+    }, labelWidth: 150);
+
+
+StaticText(w, 380@32).string_("SoftSet(name, val) only depends on 'within' closeness - can be lost when moving too fast." );
+    EZSlider(w, 380@32, 'SoftSet(...)', \freq, { |sl|
+        SoftSet(Ndef(\a), \freq, sl.value);
+    }, labelWidth: 150);
+
+StaticText(w, 380@32).string_("SoftSet.uni(name, normVal) without a lastVal can also be lost when moving too fast." );
+    EZSlider(w, 380@32, 'SoftSet.uni()', nil, { |sl|
+        SoftSet.uni(Ndef(\a), \freq, sl.value);
+    }, labelWidth: 150);
+
+StaticText(w, 380@32).string_("SoftSet(name, val, ... lastVal) cannot be lost, unless something else sets the param to a value outside 'within range'." );
+   EZSlider(w, 380@32, 'SoftSet with lastVal', \freq, { |sl|
+    [\last, lastVal, \new, sl.value].postln;
+        SoftSet(Ndef(\a), \freq, sl.value, lastVal: lastVal);
+        lastVal = sl.value;
+    }, labelWidth: 150);
+
+StaticText(w, 380@32).string_("SoftSet.uni(name, val, ... lastVal) is e very tight once it is taken over." );
+   EZSlider(w, 380@32, 'Soft.uni with lastVal', nil, { |sl|
+        SoftSet.uni(Ndef(\a), \freq, sl.value, lastVal: lastValUni);
+        lastValUni = sl.value;
+    }, labelWidth: 150);
+)
+::
+
+CLASSMETHODS::
+
+SoftSet only has class methods, to be used as pseudo methods in multiple classes.
+
+METHOD:: uni
+SoftSet an object's parameters from a unipolar value. Convenient with many controllers that use unipolar values. The mapping spec is done by the receiving object's spec for that param name.
+
+ARGUMENT:: obj
+the object whose parameter is to be set
+
+ARGUMENT:: paramName
+the name of the parameter to be set
+
+ARGUMENT:: value
+the unipolar value to set it to, will be mapped by a spec
+
+ARGUMENT:: within
+the range within which the value should match the current parameter value to allow the softset
+
+ARGUMENT:: lastVal
+the last value which the controller has sent; this helps to determine whether the controller has done the last set of the param in question.
+
+returns:: a Boolean whether the set has been accepted.
+
+
+METHOD:: new
+SoftSet an object's parameters from a simple value. Convenient with e.g. sliders that use an appropriate parameter range.
+
+ARGUMENT:: obj
+the object whose parameter is to be set
+
+ARGUMENT:: paramName
+the name of the parameter to be set
+
+ARGUMENT:: value
+the unipolar value to set it to, will be mapped by a spec
+
+ARGUMENT:: within
+the range within which the value should match the current parameter value to allow the softset
+
+ARGUMENT:: lastVal
+the last value which the controller has sent; this helps to determine whether the controller has done the last set of the param in question.
+
+ARGUMENT:: spec
+a spec to use for calculation of the unipolar distance within which values should match.
+
+returns:: a Boolean whether the set has been accepted.
+
+METHOD:: nextPair
+same as *new, but does not do the setting yet. Instead it returns a pair of values if setting would be accepted, or nil if not. This is intended for collecting multiple name value pairs for a single set message.
+
+returns:: a pair of values if setting would be accepted, nil if not
+
+METHOD:: uniNextPair
+
+same as *new, but does not do the setting yet. Instead it returns a pair of values if setting would be accepted, or nil if not. This is intended for collecting multiple name value pairs for a single set message.
+
+returns:: a pair of unipolar values if setting would be accepted, nil if not
+
+METHOD:: defaultWithin
+
+gets and set a default value for unipolar distance within which softset is accepted.
+
+METHOD:: getSpec
+ask an object for its spec for a given param name. this is used when no spec is given explicitly, and expects object to answer to getSpec.
+
+returns:: a spec
+
+EXAMPLES::
+
+code::
+
+	// tests: make an Ndef and set values for its parameters.
+
+	// clear first, so no settings remembered
+	Ndef(\a).clear;
+	Ndef(\a).gui.moveTo(0, 400).skipjack.dt = 0.05;
+
+    s.boot;
+    Ndef(\a, { Ringz.ar(PinkNoise.ar, \freq.kr(440), 0.3) }).play;
+
+	// arguments to SoftSet.new are:
+//// the object to set,
+//// the paramName,
+//// the new value to set it to,
+//// within: the unipolar range within which to take over
+//// lastVal: the last value the controller has sent to the object
+//// spec: the spec to use for mapping
+
+	// freq does not have a value yet, so should be ok
+   SoftSet(Ndef(\a), \freq, 200, 0.025, nil, \freq);
+
+	// try a big jump - too far way, so does not set, and returns false
+	SoftSet(Ndef(\a), \freq, 500, 0.025, nil, \freq);
+
+	// but if I know the lastVal coming from this controller, it does set.
+	// this is useful when the controller creates wide jumps,
+	// e.g. when making wild movements. if one just relies on proximity,
+	// one can 'lose' the control.
+	SoftSet(Ndef(\a), \freq, 500, 0.025, lastVal: 200);
+	SoftSet(Ndef(\a), \freq, 1000, 0.025, lastVal: 2000);
+
+// a within value of 0.025 is 40 steps for the entire controller range.
+// if you want a larger catching area, you can set it in the SoftSet call,
+/// or globally like this:
+    SoftSet.defaultWithin = 0.1;
+
+	// If no spec is given, the object is asked to provide one via obj.getSpec
+
+	Ndef(\a).getSpec(\freq); // this finds the global default for freq;
+
+	SoftSet(Ndef(\a), \freq, 500 + 50.rand2);
+
+    // you can also give an Ndef a spec like this:
+    // this requires the JITLibExtensions quark ATM.
+	Ndef(\a).addSpec(\freq, [200, 2000]);
+    // now the spec is there:
+	Ndef(\a).getSpec(\freq, [200, 2000]);
+
+
+	// set by unipolar value, let object handle the spec
+	// this requires the object to understand getUni and getSpec calls.
+	Ndef(\a).get(\freq);
+	Ndef(\a).getUni(\freq);
+	Ndef(\a).getSpec(\freq);
+	SoftSet.uni(Ndef(\a), \freq, 0.45);
+
+    // as within is 0.025 by default, this is always in range:
+	SoftSet.uni(Ndef(\a), \freq, Ndef(\a).getUni(\freq) + 0.025.rand2);
+
+	Ndef(\a).addSpec(\freq, \freq);  // back to global default
+
+	// Compare how the 4 Variants feel on sliders, 
+	// and how the different calls to SoftSet read in code:
+(
+    var w = Window("SoftSet - compare 4 Variants").front;
+    var lastVal, lastValUni;
+    w.addFlowLayout;
+
+	StaticText(w, 380@32).string_("SoftSet classvar defaultWithin sets range within a destination's parameter will be taken over.");
+   EZSlider(w, 380@20, 'SoftSet-defaultWithin', [0.025, 0.2, \exp], { |sl|
+        SoftSet.defaultWithin = sl.value;
+    }, labelWidth: 150);
+
+
+StaticText(w, 380@32).string_("SoftSet(name, val) only depends on 'within' closeness - can be lost when moving too fast." );
+    EZSlider(w, 380@32, 'SoftSet(...)', \freq, { |sl|
+        SoftSet(Ndef(\a), \freq, sl.value);
+    }, labelWidth: 150);
+
+StaticText(w, 380@32).string_("SoftSet.uni(name, normVal) without a lastVal can also be lost when moving too fast." );
+    EZSlider(w, 380@32, 'SoftSet.uni()', nil, { |sl|
+        SoftSet.uni(Ndef(\a), \freq, sl.value);
+    }, labelWidth: 150);
+
+StaticText(w, 380@32).string_("SoftSet(name, val, ... lastVal) cannot be lost, unless something else sets the param to a value outside 'within range'." );
+   EZSlider(w, 380@32, 'SoftSet with lastVal', \freq, { |sl|
+    [\last, lastVal, \new, sl.value].postln;
+        SoftSet(Ndef(\a), \freq, sl.value, lastVal: lastVal);
+        lastVal = sl.value;
+    }, labelWidth: 150);
+
+StaticText(w, 380@32).string_("SoftSet.uni(name, val, ... lastVal) is equally  tight once it is taken over." );
+   EZSlider(w, 380@32, 'Soft.uni with lastVal', nil, { |sl|
+        SoftSet.uni(Ndef(\a), \freq, sl.value, lastVal: lastValUni);
+        lastValUni = sl.value;
+    }, labelWidth: 150);
+)
+
+
+// Later - implement a SoftSet method that supports multiple name/value pairs.
+
+::

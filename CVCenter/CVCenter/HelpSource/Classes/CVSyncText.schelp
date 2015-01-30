@@ -1,0 +1,60 @@
+TITLE:: CVSyncText
+summary:: A class that makes various text-related GUI-classes CV-comatible
+categories:: GUI, Conductor
+related:: Classes/CV, Classes/CVSync, Classes/TextField, Classes/TextView, Classes/StaticText
+
+DESCRIPTION::
+CVSyncText adds the classes link::Classes/TextField::, link::Classes/TextView::, link::Classes/StaticText:: to link::Classes/CV#*viewDictionary:: so they can be used in combination with link::Classes/CV::s. However, this only makes sense if their strings compile to a numeric array. Compilation here means that on any call for the CV's current value the element's string variable gets interpreted. Hence, expression or function-call that compiles to a numeric array can be used.
+
+CLASSMETHODS::
+
+METHOD:: initDelay
+The class' magic happens on compilation of the class-library. However, this process can only happen after the link::Classes/CV#*viewDictionary:: initialized. I didn't find any other way than adding a small delay (default: 0.2 secs) to the init-process to make sure all goes well.
+
+returns:: the delay (a link::Classes/Float::)
+
+METHOD:: valRound
+The array in the link::Classes/CV::'s value may contain link::Classes/Integer::s and/or link::Classes/Float::s which may have many decimals. For these may be rounded to a reasonable number - by default code::valRound:: is set to 2 decimals (code::0.01::)
+
+returns:: rounding decimals, given as link::Classes/Float::
+
+private:: initClass
+
+INSTANCEMETHODS::
+
+METHOD:: update
+update the view when the model has changed 
+
+argument:: changer
+the model
+
+argument:: what
+the message - here code::\synch::. 
+
+argument::  ... moreArgs
+
+returns:: this (a code::CVSyncText::)
+
+METHOD:: value
+Set the link::Classes/CV#-value:: the element's interpreted string (must be a numeric link::Classes/Array::)
+
+returns:: this (a code::CVSyncText::)
+
+EXAMPLES::
+
+code::
+c = CV([0!5, 10!5].asSpec) 
+
+(
+w = Window("CVSyncText");
+m = MultiSliderView(w, Rect(0, 0, w.bounds.width, w.bounds.height*2/3))
+.size_(5).indexThumbSize_(w.bounds.width/5);
+t = TextView(w, Rect(0, w.bounds.height*2/3, w.bounds.width, w.bounds.height/3));
+w.front;
+)
+
+(
+c.connect(m);
+c.connect(t);
+)
+::

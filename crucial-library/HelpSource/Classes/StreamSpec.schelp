@@ -1,0 +1,82 @@
+CLASS:: StreamSpec
+summary:: datatype specifying that the input or output is stream or pattern
+categories:: Spec, Libraries>crucial>Spec, Streams-Patterns-Events>Patterns>Spec
+related:: Classes/Pattern
+
+DESCRIPTION:: a StreamSpec specifies an input that will be used in a stream or pattern.
+
+It is a link::Classes/HasItemSpec:: subclass and as such the Stream is specified to return items according to the itemSpec.
+
+code::
+StreamSpec( [ 0.01, 8.0,\exp ] )
+	// a stream of values between 0.01 and 8.0
+	// any control should use an exponential fader
+
+StreamSpec( EnvSpec(Env.linen) )
+	// a stream of envelopes.
+	// the default envelope is an Env.linen, though
+	// the stream may return any kind of envelope.
+::
+
+The most common use is for InstrSpawner and InstrGateSpawner.   These spawn single usually short events just like Patterns, so only an initial value is needed, not a continous control input.
+
+The default control is an IrNumberEditor, though usually you will be more
+interested in using Patterns as inputs.  An IrNumberEditor forces a Synth input of rate \ir and then on each iteration  will return the current value of the NumberEditor.
+
+An IrNumberEditor  or a Pattern (any object that returns a rate of \stream) will result in the creation of an .ir rate input to the synth function.  Then on each spawning, the synth is created and on that .ir rate input is passed in the next value of the stream.
+
+
+Note that 4.asStream will return an endless stream of 4, and is thus compatible for use as a StreamSpec input.
+
+
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: constrain
+
+
+argument:: value
+
+
+
+METHOD:: canAccept
+
+
+argument:: ting
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: defaultControl
+
+
+argument:: val
+
+
+
+METHOD:: minval
+
+
+
+METHOD:: maxval
+
+
+
+METHOD:: clipLo
+
+
+
+METHOD:: clipHi
+
+
+
+METHOD:: color
+
+
+

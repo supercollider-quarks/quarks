@@ -1,0 +1,1540 @@
+commit a550baac05b1c1e8ed7deff14f5d7a755d280eca
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Apr 15 18:05:31 2012 +0200
+
+    KeyResponder : enter key code
+
+commit fe2f40181f658b2f1d5724b93cdc76a5f3291208
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Apr 15 18:04:32 2012 +0200
+
+    NumberEditor: smaller font
+
+commit a930693c7bb488cd6db64a1fdd8f99a8533f8938
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Apr 14 21:44:50 2012 +0200
+
+    ToggleButton : support custom colors
+
+commit e8b64e0381d682daf79f0dc7f3fc7f022f4b89f6
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Apr 14 21:43:51 2012 +0200
+
+    add NoteOnBank, just like CCBank
+
+commit 8e0c3a7ace18d081e6a2721fe301c7fabbbfd7c8
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Apr 14 02:48:25 2012 +0200
+
+    add CCBank : continuous midi controllers in a named bank with gui for learn. savable, reditable
+
+commit fca04d4df0a9829e40bb2f2cc62bdf796c0463f3
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Apr 14 02:44:31 2012 +0200
+
+    SelectButtonSet : add alt click action handler
+
+commit 6ae5cb76bd3460572e04943b56d1c0bfd03b791f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Apr 13 18:34:25 2012 +0200
+
+    SFPGui : it is possible to have a soundfile but no file loaded. fixed failure due to that
+
+commit e5827fec236701dfc0ab20abd4891ef4ef625ae1
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Apr 13 18:33:33 2012 +0200
+
+    NumberEditor valueAction_ which is a synonym for the previous activeValue_  ; valueAction is more commonly used in sc now
+
+commit de7de601d6cece451e228ee3ed6bf24dc8d8d8e0
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Tue Apr 10 03:33:01 2012 +0200
+
+    SelectButtonSet : use GUI skin colors, clean up
+
+commit 8dd3ddb4965fc27ba9ee62752aac137e6f870b12
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Apr 9 21:44:52 2012 +0200
+
+    fix dependency check code (Annotations moved to ServerTools)
+
+commit 933d8a22ee8c558aa016e2932c243a0655ce36ee
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Apr 9 16:29:02 2012 +0200
+
+    subGroups support
+
+commit 93b37f560a88a9b45b006a10874f856648f1c7a2
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Apr 9 16:28:40 2012 +0200
+
+    fix: PopUpEditorGui — PopUpMenu is slightly different under Qt, cant use setProperty('value', )
+
+commit 9bf3e4b1416e9aab695080b9c5be0c1b6a9e83c8
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Apr 9 14:29:29 2012 +0200
+
+    buttons for Qt : for consumeKeyDowns it needs to return true, not nil as previously
+
+commit 47811b103958dce1d77074cd12755bce9a5030a1
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Apr 9 14:28:13 2012 +0200
+
+    adds UGen onPoll for running client side functions at regular interval; only works inside a Patch/InstrSynthDef
+
+commit 11eb4106fd5fbb291563fae1069bfd59354480e4
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Apr 9 14:25:39 2012 +0200
+
+    make PlayerInputProxy ar play silently by default; ordinarily it spawns itself and doesn't create a synth, but for PlayerBinop it needs to implement ar
+
+commit 10bbf23d6caeb5c837884af874eac91cd56b5709
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Apr 9 14:23:50 2012 +0200
+
+    implement PlayerBinop ar
+
+commit a1997238370dd1ada2487739b6aeb2854ff7147b
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Apr 9 14:22:43 2012 +0200
+
+    AbstractPlayer: setGroupToBundle
+
+commit c67bebbc84bf6cc2ff53e47c7f1b93eddf37ba99
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Apr 9 14:22:11 2012 +0200
+
+    NumberEditorGui : fixes some auto-sizing issues for certain bounds shapes
+
+commit 29a545c6dc49c97f4198301c49d6a49350550ba1
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 29 15:47:29 2012 +0200
+
+    remove superfluous resizeToFit : .flow does that already if bounds are nil and if not then it shouldn't do it
+
+commit 90a8d3308e50d8b22310e58b6a854626c87d15bc
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 29 15:46:45 2012 +0200
+
+    fix: PatchGui min arg name width
+
+commit 1299ceab82625270ed7a73fa5b5c37ed6eba327a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 22 01:54:01 2012 +0100
+
+    switch KeyResponder to be a KeyCodeResponder subclass ; unicode is somewhat useless as characters are completely different depending on modifiers.
+
+commit 3c6d92b1e14fd36b9c8fd8be42d75f029bdab1bd
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Mar 21 20:35:33 2012 +0100
+
+    KeyCodeResponder.tester : curious, Qt is sending Strings, not Char to keyDownAction; this may be a Qt imp bug, but in any case protecting against it here
+
+commit aa0a7afe8fdc446539e8f78795314970ff0c917c
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Mar 21 20:33:18 2012 +0100
+
+    SampleGui : add a ToggleBuggon to toggle the test patch play/stop
+
+commit 11dd88a92326b4567eaaf226b382aad681224ec1
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 17 01:20:34 2012 +0100
+
+    fix string formatting for version number
+
+commit b28f1b2dbfa14691842b8929ec2233ab5b235870
+Merge: 5bd522c 04a6a56
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 16 13:24:21 2012 +0100
+
+    Merge branch 'release/4.0.0' into develop
+
+commit 04a6a56c7bef8bf4d6445113dff4584b3c29992f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 16 13:17:04 2012 +0100
+
+    adding quark file
+
+commit 5bd522cfb5fda9406b39ee0aef7813e1415df47c
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 16 04:46:30 2012 +0100
+
+    enhance Error message
+
+commit 10e9db3fc98440c41f35804e06be7107a1575527
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 16 03:01:30 2012 +0100
+
+    changes for deprecation of die
+
+commit cb92882ffcd39cd025e746744551c397d5dd3246
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 16 03:00:24 2012 +0100
+
+    BusPool: warn if bus already freed; Bus.free does the same but at this point I have the name and client information to post
+
+commit fa8df9afa8fcbf3d73921ef0cbd363644414717a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Tue Mar 13 04:05:51 2012 +0100
+
+    deprecate die and checkKind
+
+commit 55b75e4354c27f54afa2644c5d02960d1ff7c69d
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Tue Mar 13 04:03:34 2012 +0100
+
+    moved to crucial-graveyard
+
+commit 57ecc7967c7fafb2cc40611342309bf3e2c51d53
+Merge: 5bb00ba d6ccc02
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 23:40:35 2012 +0100
+
+    Merge branch 'feature/deferreds' into develop
+
+commit d6ccc02455b730096eba5527767958a12867200f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 23:40:16 2012 +0100
+
+    onPlay onReady onFree freeOnStop
+
+commit 82d0fa3c0ff7a3c53f9671c219d41ddf5aefd263
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 21:42:26 2012 +0100
+
+    SynthConsole color coded play button showing change of play status
+
+commit 5548a5263f7df43137e2eb2bf9ca9211a2ee6cb6
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 21:12:56 2012 +0100
+
+    players: send notification on any status change
+
+commit 5bb00ba9fe7ca2242ecec3c89661ab296ce83b47
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 19:38:58 2012 +0100
+
+    AudioSpec : cannot constrain, throw error
+
+commit 14e1b84174e8813043cab2daca0dffed04744e79
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 19:37:47 2012 +0100
+
+    NumberEditor *bind
+
+commit e87de3083f3671f254f150f6acc2c48ac5a62c3e
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 19:26:17 2012 +0100
+
+    fft spec is rate \fft
+
+commit 2d41ee14ca9540d9a5ec9a2783faceb319f79349
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 19:22:09 2012 +0100
+
+    removing *menu and library functions; utility functions are moved to ServerTools, the rest were just examples and aren't important
+
+commit 2ce07fcccb2b3b05cd899ad406d5b81a875a5dc4
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 18:55:24 2012 +0100
+
+    NumberEditorGui auto sizing bug; there's still some more with the various sizes to solve; there is a unit test for this commit
+
+commit 26be5171bf4aa0c771932b0fb2f63fd3e78e9fac
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 18:54:26 2012 +0100
+
+    switch to using hashEncode for Instr defName compression
+
+commit 91a0e5d637e6a5afa6ce10c13da0b88b4e20176f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 18:51:27 2012 +0100
+
+    allow dictionary to be used as keyword args for any Instr method
+
+commit 04fdd1fc66e29081a9b94db2bf290ca3093bcbfb
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 15:46:35 2012 +0100
+
+    common fixed guiBody to pass in layout, bounds; this corrects the arg order here as it should have been;
+    also adds DictionaryEditor .onSave
+
+commit ac10c02aeaf8b8dcaee92a01e5712a5ba1433cd1
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Mar 12 01:51:10 2012 +0100
+
+    Gui debugger moved to ServerTools
+
+commit aa0f346315a3389d40feb933ffc789d8c7d9a77a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 10 20:39:09 2012 +0100
+
+    return a boolean so Qt stops bubbling the event
+
+commit b6df9568200a8646bacf809ac26ef35ab1c4c494
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 10 20:38:29 2012 +0100
+
+    somehow the keycodes are now identical on qt and cocoa.  making keycodeMap work for the current reality, leaving the workaround intact incase reality reverses itself again :)
+
+commit df8c418a6328cd69384ca20d8a7717bf9006a4b7
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 10 00:35:14 2012 +0100
+
+    Fix fftScope for new FreqScopeView class
+
+commit 60c9ce8cd6a9b45bfab06aa07ad65c6cfe2c0f6a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 10 00:29:55 2012 +0100
+
+    convert bounds Point to Rect in NumberEditorGui
+
+commit bdefc5010a2493d2f278c3f85d22b9951bea7384
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 9 23:31:16 2012 +0100
+
+    Throw error if trying to make patchOut with numChannels of nil : this is the best place to throw an error
+
+commit 17110694ec858bef9c4235c1bd860e04d9eb9bcf
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 8 18:46:44 2012 +0100
+
+    add "Load all Instr " button to InstrBrowser
+
+commit 27338d4bd4d3c1b8afd95a14630e2738ec407f0e
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 8 18:44:09 2012 +0100
+
+    InstrSynthDef freeDef and freeAll : dynamic synth defs will quickly fill up the server
+
+commit e61ca53a03bc4dad709076518ea0073efeb54e03
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 8 18:43:28 2012 +0100
+
+    InstrSynthDef hashEncode
+
+commit 340d0b6e2cdd50b1fe9e45c84795cb015a48515a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 8 18:43:01 2012 +0100
+
+    fix: store inner insert correctly for PappliedInstr and CompositeInstr : otherwise nested ones were not reloadable
+
+commit 3ac0a1b929dc1d85dc5122f0e908a643d55e58b7
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 8 03:52:31 2012 +0100
+
+    InstrSynthDef: use base36 rather than straight integer hash for shortened def names.  a hIgh3rbA5e would be better still
+
+commit a6c6fc00efd3b7ee535dd165aed1306778f0b99d
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 8 03:51:21 2012 +0100
+
+    CompositeInstr: for duplicated argNames use argName2 argName3 etc rather than ugly hashes
+
+commit e29d0839403bcdfba91b44a479abadad94cc28f9
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Mar 7 14:14:53 2012 +0100
+
+    missing bracket typo ! from b48ad645975e2febb0068b7e60ef2f74cbc6791a
+
+commit ff5b70f4516dce9de7ac5dae793992ca8a32f63f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Mar 7 13:51:46 2012 +0100
+
+    DictionaryEditor: should dereference the sub editors rather than .value them. otherwise if a value was an Instr or similar then it was getting evaluated
+
+commit d8bcf87ea0a103e06923583abc49bfa4e6c35033
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Mar 7 13:50:28 2012 +0100
+
+    instr() func for Instr as well so you can pass String, Instr, PappliedInstr etc. to instr( thing, …args)
+
+commit b48ad645975e2febb0068b7e60ef2f74cbc6791a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Mar 7 13:48:53 2012 +0100
+
+    CompositeInstr : allow other indexes instead of always inserting to the first
+
+commit 9231d2fb66116307f313c6e1499ea612d7ef7fc0
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Tue Mar 6 17:15:01 2012 +0100
+
+    PapplidedInstr: honor the defArg of the instrument if no args or not enough args are supplied to .value
+
+commit 9902abf212607e376cd241368fa1759ac2e49a81
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Tue Mar 6 17:14:20 2012 +0100
+
+    better and faster Instr-findFileInDir
+
+commit f4eccc169ce2bad51be1c8c5e2567e9e70ae630e
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Tue Mar 6 17:13:04 2012 +0100
+
+    remove outdated help docs
+
+commit 7a63e6d82ae6b3f9cab7046bdd537a282028cb3c
+Merge: 38dd408 5e34079
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 4 22:01:23 2012 +0100
+
+    Merge branch 'feature/instr-papply' into develop
+
+commit 5e340797219e9d9e196d43f3cba2c578a1e203a9
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 4 22:00:55 2012 +0100
+
+    add instr("instrname", arg, arg, arg) and remove "instrname".ar and "instrname".kr which are invasive
+
+commit 90f2cdff7b9d5f1c7d9f7039b3280a1564d3aa6a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 4 21:59:55 2012 +0100
+
+    add "test" button to InstrGui
+
+commit 78714e55d4b6965ce4363a03bb60a023544f7890
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 4 21:59:26 2012 +0100
+
+    PappliedInstrGui
+
+commit 9aae4a1c44a20b24bbeba0370dcf75a0c6274e8d
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 4 21:59:09 2012 +0100
+
+    Instr.papply
+
+commit 0793ed24d3198cca9b7757def333fe75db1eda10
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 4 21:58:50 2012 +0100
+
+    PappliedInstr
+
+commit 38dd408c8ddf654fad41edaa1327f91dcf9e0a3c
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 4 03:46:11 2012 +0100
+
+    formatting only : tabs to spaces
+
+commit 6c346455c1c22b1a279fc6051b120e0b7b56b447
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 4 03:44:43 2012 +0100
+
+    InstrBrowser: add filterFunc for custom filtering of displayed results
+
+commit 84e794eb6ce61886d8e811f20a5e1da3178f6168
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 4 03:40:44 2012 +0100
+
+    InstrBrowser: search field wasn't working under Qt
+
+commit 87270cc8c4a8f453cd2ab67b5c269ad5ccdbf438
+Merge: e8fb8d4 dfabc94
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 3 19:01:36 2012 +0100
+
+    Merge branch 'feature/instr-composition' into develop
+
+commit dfabc941c00a41e43f64114adc82a1fb5fd8499c
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 3 18:59:32 2012 +0100
+
+    bandaid for Patch.asEvent : \tempo is often a TempoPlayer for use in Patch, but for Event play it should be a float tempo value
+
+commit 9c1c56b9124afb643f7c637447273104facc2676
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 3 18:58:02 2012 +0100
+
+    for debugging: InstrSynthDef holds onto its instr just while building. this adds accessor method that uses that or looks up by the instrName (which it always keeps)
+
+commit 9fa7e4c0bf20ce0b0d72b6eb853ecc5d2db8660b
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 3 18:56:50 2012 +0100
+
+    use Windows safe isFolder to detect folders
+
+commit db6000664b85534a91fe4fdefb4cab55d9089397
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 3 18:56:23 2012 +0100
+
+    enlarge source code display in Instr
+
+commit ee76479cb6f77b4a7df2d51782839aad124a4a2f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 3 18:54:45 2012 +0100
+
+    custom gui for CompositeInstr
+
+commit 99c76500aaa41fc3b0b6b0b0d8c081c8895667e1
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 3 18:45:55 2012 +0100
+
+    fix: CompositeInstr makeAPatch button
+
+commit 993f380f96c9d85efcc95d244e28096b0f217025
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 3 18:43:39 2012 +0100
+
+    only make a sourceGui if there is source code to gui
+
+commit 01d55d2044cd94bbe762e20d689e32118c2ad2a4
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 3 18:40:47 2012 +0100
+
+    add CompositeInstrument
+
+commit 0b4d9e931e855cdb694001cbda13a20bf0e76434
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Mar 3 18:39:15 2012 +0100
+
+    deprecate Instr-asSingleName
+
+commit e8fb8d4a9e0f800950c5dc8a6f110290fabd7101
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 2 03:30:41 2012 +0100
+
+    remove deprec layRight
+
+commit dbcbc6a1d114d9aecf7dd99dce3d5b9db2d47445
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 2 03:28:14 2012 +0100
+
+    ModalFreq is gone, removing reference
+
+commit 80bd40e9aa4ad16add2670971151201a0b4dc0bc
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 2 03:25:55 2012 +0100
+
+    remove ZArchive, moved to own quark
+
+commit 870b70b0b941f81c2ca10f44a1d17e6d80392bb5
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Feb 29 00:16:06 2012 +0100
+
+    removed a bunch of old classes. they can be found in the crucial-graveyard quark. should anybody be curious about the ancient past.  GridLayout is moved to crucialviews
+
+commit ba98caf66a93094d5a2916b666028c5208e7d449
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 18:48:24 2012 +0100
+
+    moved methods
+
+commit 8bf50aced0f96a75653f738f5d05ee88b6953c20
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 18:48:15 2012 +0100
+
+    class name changes for new ServerTools quark
+
+commit 6584a0741ce68fa7da9d2bf4d54e77cba87d3737
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 18:47:08 2012 +0100
+
+    exporting ServerTools quark
+
+commit e483e007a8ef270ab6a4cbe9b71f7f3b3dfb4301
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 15:43:45 2012 +0100
+
+    rename CxObjectInspector -> ObjectInsp
+
+commit 8ed70e5801bd4a96994df09d3227db032dc50234
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 15:42:23 2012 +0100
+
+    ArgNameLabel -> ArgName
+
+commit 385d8d06cb5d2ff7a84c2499c3923a763878108e
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 15:42:03 2012 +0100
+
+    display references/references to on class browser
+
+commit fa2c06519474c2f95fdf151a4366e9727e5a60eb
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 15:41:06 2012 +0100
+
+    add Class classesReferenced, referencesTo
+
+commit 813b8948f86f18339e6be07cbc301bee556079d0
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 15:39:33 2012 +0100
+
+    KernalButtons: switch superclass to SimpleButton
+
+commit 73821ba267355f9e0894725fc946e381b80f34ea
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 15:38:08 2012 +0100
+
+    remove reference to Sheet, switch to SimpleLabel
+
+commit 10ba1d30232c6ad3c2ad1ce9fd4d226b9b7e3140
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 15:37:24 2012 +0100
+
+    KernalTools and ServerTools : CXLabel -> SimpleLabel
+
+commit e72ddd4d8e02ff78b503a2af461c97d8b0d1dcf6
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 15:33:34 2012 +0100
+
+    add KernalTools/SimpleButton [although it will be moved to a new quark shortly)
+
+commit c3c64f4729ecc2b92c8a69a489ec0c16f9345103
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 15:32:50 2012 +0100
+
+    move VariableNameLabel to KernalTools/KernalButtons.sc
+
+commit 602fd6e151cdb622560fa0df04e198b47231e895
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 15:31:49 2012 +0100
+
+    move Tile to Gui/ActionButton
+
+commit a0bc1a06e1c4e8ed044f97d05fd262cf2d96f8fb
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 00:47:15 2012 +0100
+
+    gui debugger: StartRow no longer exists, removing reference
+
+commit 36fa6cceac09c8a3cd53452f9f1fa01c274b8c73
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 00:30:07 2012 +0100
+
+    fix: StreamSpec for changes in NumberGui that now checks the clipLo/clipHi
+
+commit 76b4888df2bb7c930114d34f8581eaac44972c81
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 00:29:38 2012 +0100
+
+    remove hook/hack for CXSoundFile
+
+commit 8d14a0bf2d77dd62400f0dc3dc54b69872d17a92
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 00:29:16 2012 +0100
+
+    change SCView -> View
+
+commit 956a5fe4029e4cf9698c27ae8bab7ec6843d382f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 00:28:22 2012 +0100
+
+    fix: unicode vs keycode mistype in a very rarely used method
+
+commit 19d3373613cf9dc8fdd9cb68eb759da0e14ec873
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Feb 27 00:27:56 2012 +0100
+
+    add KeyResponder which combines Unicode, KeyCode and special keys support (arrows, backspace etc)
+
+commit 7377047a787e4cafcf4be1ac9b886d902fd59a7d
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Feb 25 21:09:41 2012 +0100
+
+    ServerGui fix for non-mac; thanks jamshark
+
+commit e7b9961ee6c735e53e8a56ca89806d9376742e00
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Feb 25 20:52:21 2012 +0100
+
+    add extra debug information in error
+
+commit 3ef3165e4e67bd12fd0be4dcab6eb95e87e43714
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Feb 25 20:52:06 2012 +0100
+
+    move SCCompositeView resizeToFit deprec method into scide_scapp/deprecated
+
+commit 585592b60683584a0b229513b519a317bf493ead
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Feb 25 20:51:24 2012 +0100
+
+    specs: change from rgb() for colors
+    change color scheme - though they will change again to a configurable set
+
+commit de97e4f6539c1c3dc3a8568114c8405dc9d95526
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Feb 25 20:49:19 2012 +0100
+
+    InstrNameSpec: add default spec of AudioEventSpec
+
+commit 225ae033b1bccf49899dbf00a41d907b857f3fd1
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Feb 25 20:48:13 2012 +0100
+
+    svn r2179 | jamshark70 | NumberEditorGUI: NumberBox's clip limits weren't set by clipLo/Hi from the spec
+
+commit 844242740e71473fd251b54aa4fa4a98e6a5da19
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Jan 16 01:29:19 2012 +0100
+
+    ServerGui : do not set font specifically to Helvetica
+
+commit 2d4a105480b608e07f7fc8d26a60067a19667b70
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Jan 16 01:28:24 2012 +0100
+
+    GetFieldDialog -> File.openDialog
+
+commit 359dc06934b2358ad3efdfa7830daf4589c76c44
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Jan 16 01:28:11 2012 +0100
+
+    Mix.ar -> Mix.new
+
+commit efce590f9122d7c2469dd846722388b06421fa4b
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Jan 16 01:27:36 2012 +0100
+
+    make a Patch printOn work even if there is no instr set
+
+commit 87d7c37676eaad45827fd8e518767b569b6694de
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Jan 16 01:26:45 2012 +0100
+
+    better size estimate for Instr code window
+
+commit aa89ab6209db563f7cfbee92a3904652499aa2e4
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Jan 16 01:26:21 2012 +0100
+
+    Instr-addExcludePaths to exclude compile paths of all Instr folders for 3.5
+
+commit 76067ac53c116b328f74ee20ab9e854025edaf3d
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Jan 16 01:25:49 2012 +0100
+
+    GetFileDialog -> File.openDialog
+    GetStringDialog -> Sheet.getString
+
+commit a6b7fadfe91b282a5f22c6e3d86161b6ac70b299
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Jan 16 01:23:50 2012 +0100
+
+    gui methods clean up for SC 3.5, synchronizes with the changes now in 3.5 beta
+
+commit 329674af122bc0d3a69f4d021d377add1a13b3c9
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Jan 16 01:21:20 2012 +0100
+
+    GridLayout -> GridLayoutCalc (to avoid name clash with GridLayout in 3.5)
+
+commit 6ef81daa1796003b1228b40ea0835665c01d94c7
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:13:04 2011 +0100
+
+    \instr -> InstrNameSpec : important to find an editor when editing an Event (using DictionaryEditor)
+
+commit f31aadb9a650e0692d58b24e47858b5bd6a89571
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:12:23 2011 +0100
+
+    minor help file updates
+
+commit 241acd63f66366ed5f22c6be85f3e29406df3e86
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:12:04 2011 +0100
+
+    add: Dictionary-enpath (esp. for saving protoEvents that have players embedded in them)
+
+commit 00cd66a85e7f08a1bf9efc198758a1c60b956f3f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:11:28 2011 +0100
+
+    minor cleanups
+
+commit 268500105284ec5390ba311c63c56560c111c8a4
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:10:51 2011 +0100
+
+    BeatSched: always create own TempoClock, no reason to use the global
+
+commit ba71fbbe22a914a2e756a06dbaca681ea567d824
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:10:10 2011 +0100
+
+    add: DefNameLabel
+    fix: ServerLog better display, filtering by Bus
+    link to Instr from InstrSynthDef insp
+
+commit 3f9dfd7da27da2d1abaad998006ad51266473442
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:08:27 2011 +0100
+
+    fix: Insp registerHook didn't include initial class
+
+commit d9e1d0c369fe4f7959f0b096ca56fd028e22196d
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:07:50 2011 +0100
+
+    InstrNameSpec: does not constrain
+
+commit fb508ac0f41ca0fea5eb0de9a33628789f26151e
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:07:04 2011 +0100
+
+    Spec: add mapToSpec
+
+commit b811f21ea41186b3109f5d67221eefda823e10f8
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:05:59 2011 +0100
+
+    PatchGui display size cleanup.
+    deprecating the dragSink inputs. code is still there in the comments
+
+commit 3e47e0ff3e302b369d13e6ae823824bb497bc8ae
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:05:20 2011 +0100
+
+    Patch: asEvent (type is \instr) and embedInStream
+
+commit 94b4be24e05777ee0bc808a296ed6b16845787c0
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:04:48 2011 +0100
+
+    Patch: track synth in case it ends, stop children and set self to isStopped
+
+commit 6604f4b311a2f69a8dac660337366c52d2549a30
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:03:52 2011 +0100
+
+    allow Patch to be created with a dict/event for its args (so you can specify by keyword arg)
+
+commit 05f47c4e3f6537576b4c59bca69b510bad78785a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:02:41 2011 +0100
+
+    fix InstrBrowser sizing issues
+    fix AbstractPlayerGui resizing issue
+
+commit 4d03b75652bea77e67abfcf5aa419b5378fc8df5
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:01:42 2011 +0100
+
+    Instr event: allow \instr to be nil and allow it to be an Instr (not always an instr name)
+
+commit 89f722a6f6a886b795b72fb3e469677b5508c5a1
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 02:00:31 2011 +0100
+
+    add Editor.for to convert any object into its corresponding Editor
+    add DictionaryEditor
+
+commit e9bdf41b391af5243af9e4b325af38604f788ba9
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 01:59:47 2011 +0100
+
+    add findRespondingMethodFor library utility func
+
+commit 644ea4fdba58fdf426943289c858e07a73267bec
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 26 01:59:22 2011 +0100
+
+    add BussesTool
+
+commit 7d4e7854702dee1edd243d4f6b144fd779e81e8a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Dec 24 15:52:16 2011 +0100
+
+    rgb => Color.new255
+
+commit 46837f5b81c95540c94fba76e521fb6f352ad239
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Dec 24 15:51:58 2011 +0100
+
+    add ServerQueryTreeGui to show the node tree on the server with all annotations and integration with server log
+    ServerLog : add filtering by nodeID and defName, display filtered results in a micro gui
+    adds two method extensions to Server: async and getQueryTree
+
+commit 46cc8cbe44bd08649ac194e840d92fd0c9a800ff
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Dec 24 15:49:22 2011 +0100
+
+    add Annotations which replaces the previous annotation system.
+    this will be moved to a separate quark as part of ServerTools
+
+commit 53f395aaf2e969151e672868145ab32cb4609bd5
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Dec 24 15:47:41 2011 +0100
+
+    \instr event type for Event patterns
+
+commit 9b67d4ff5b34fddd6635ad0b5451ce0193ee381b
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Dec 24 15:46:28 2011 +0100
+
+    Insp: add Insp hooks for custom displays for any class
+    make InspectorLink buttons automatically front the Insp window
+
+commit 603ec9fe92b2e3527a5c6197e770237d6c533dd0
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Dec 24 15:44:18 2011 +0100
+
+    BeatSched fix: if beat is in future then do not silently skip schedding it
+    fix one typo / wrong method call
+
+commit 27f620c4fdffeb2a995673c6d420684b803607d1
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Dec 24 15:43:14 2011 +0100
+
+    Instr: new defName calc system. its faster, no collisions and can be done without compiling def
+
+commit 70cb4fec5be4bda3a656308af62ac5a2ee83ab5e
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Tue Dec 20 00:22:24 2011 +0100
+
+    fix saving in InstrSpawner; earlier commit did break something with arg order
+
+commit f5d674ab265356af0b2e3426cb5fbd49cddc04b3
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Tue Dec 20 00:19:54 2011 +0100
+
+    fix some display sizing issues in InstrBrowser
+
+commit 7826dcae0ff9e898eeb6c29470ebb7a88750aa0e
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Tue Dec 20 00:18:52 2011 +0100
+
+    Instr: support asSynthDef([\ir,\kr]) to simply specify the rates without supplying dummy objects
+    this also supports patterns the same as SynthDef: .add([\ir,\ir]) and .store
+    note: previously assumed to create \ir for Pattern usage, now defers to the Instr's spec so a control rate input on the Instr will get a control rate input on the SynthDef, and if you want \ir then specify it when making the def
+
+commit d43808affed44ef5d58c758b70da9d0b6beaf73e
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 19 02:25:54 2011 +0100
+
+    minor white space cleanups
+
+commit 6d2a428d8fa1c05e671d1de9427b02a265b3ed7a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 19 02:25:14 2011 +0100
+
+    add: SwitchByKind class
+
+commit 19714acc9c398fbaa1a1024a2168dcc1152e35d8
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 19 02:25:00 2011 +0100
+
+    ServerGui: add inputDevice selection,
+    fix Cocoa issue with ( chars causing menu to be disabled
+
+commit dbe1700ad13af6f4f308800d3fe463ab7df8fd26
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 19 02:22:58 2011 +0100
+
+    Patch, InstrSpawner: fix save compile string with directly supplied raw function
+
+commit e997efd1bd712edd7b54afd2123ceb2c72b13dcc
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 19 02:21:45 2011 +0100
+
+    InstrBrowser: add input and output spec filtering, add new rates
+
+commit ba6df4580ce6fe857c82e95317c56fcbae099ba2
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 19 02:21:19 2011 +0100
+
+    Instr: after before head tail replace
+
+commit 50841bfe347f10c3c956361f067084c1e210756b
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 19 02:20:44 2011 +0100
+
+    NumberEditorGui: fix dims of tall faders
+
+commit ee25e182ac0e0f8530dd655b2b44a3c364e994b4
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Dec 8 20:15:34 2011 +0100
+
+    Throw error if a PatchOut is asked to allocate a bus and the allocation name is already used. this catches double allocation errors
+
+commit fbba4c9089de1e40a8202de0c8a6d76f44436604
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Dec 8 20:14:59 2011 +0100
+
+    protect patchIns from sending messages to nodes that are not playing. this happens for instance when a player stops but its sequencer still has more notes scheduled
+
+commit e8b9861f2251d5f74d3db6cca7a8c20544299af5
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Dec 8 20:13:22 2011 +0100
+
+    Player: throw error if setting bus before the player has been even prepared for play, since it has no patchOut to store the bus in
+    2 other minor changes (no functionality change)
+
+commit 85a0a9553caa58c2811406950f9d725783a97665
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Dec 8 20:12:12 2011 +0100
+
+    Player: politely decline if asked to play while already playing
+
+commit 4e5bf143ba7c4fd4c21f900645aabe1592019f4f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Dec 8 20:10:41 2011 +0100
+
+    SelectButtonSet : use buttonHeight
+
+commit fe5d6988e00359f4bb53ca813372c2e92a060bd3
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Dec 8 20:10:23 2011 +0100
+
+    center Sheet on the computer screen
+
+commit 3d01e5e21ca0ef886be531c1f039ebc33ebfec60
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Dec 8 20:09:59 2011 +0100
+
+    protect NumberEditorGui from the window getting closed while the .defer is busy deferring
+
+commit c3a75fdb17d43878dae23f7ba9e92d42b7d691f5
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Dec 8 20:09:07 2011 +0100
+
+    code formatting updates and comments
+
+commit e39981363ecef1258c5f2dc125bb3b15278d8e50
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Dec 8 20:03:43 2011 +0100
+
+    add PlayerRecorder
+
+commit e3f97c90019302d6f841359f201922f5458b1d83
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Dec 8 20:02:35 2011 +0100
+
+    Insp : adding displayHooks so that classes can add class specific displays and utilities when they are inspected
+    adding hooks for: Function and Dictionary
+
+commit a8e87ee84ce47a4f7cb7ff7779990bc64a4de45f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Dec 5 19:59:18 2011 +0100
+
+    move SynthDef_cxadds.sc to instrSupport.sc
+
+commit 3532d9561a6cc0ffed7eda19d0f5cbd876ae6794
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Dec 4 19:58:04 2011 +0100
+
+    PlayerRecorder : add optional (default true) Limiter to int format recordings
+
+commit 25a3b0a96ba0a662abbf22e5f0b8b2984ca7142b
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Dec 4 19:57:12 2011 +0100
+
+    change: simplify the ServerGui that is on each player's gui; remove ServerErrorGui;  I will make this into a configurable system
+
+commit 7c17ee38f45a433124413d85c4e6492035b107dd
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Dec 4 19:55:31 2011 +0100
+
+    fix: set player's name to nil when didSaveAs a new file
+
+commit 91fefb6ab90ebc6a258065f395df9821aeb4b53c
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Dec 4 19:53:52 2011 +0100
+
+    adding SynthConsole fftScope (os x only)
+
+commit 63df280dbd05aefd57acaf1cd3f559ac55fd8508
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Dec 4 19:51:13 2011 +0100
+
+    fix: if spec of NumberEditor changes then adjust the number view lo/hi
+
+commit ff0488a1bb938c87c184a3f60deea7e867a3efb5
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Dec 4 19:50:39 2011 +0100
+
+    fixing a display size error in NumberEditor and using golden ratio based size ratios
+
+commit 14907d2e6e3a2cae821b00cf248c82ae3bbc96d2
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Dec 4 19:49:29 2011 +0100
+
+    removing ObjectGui-guiBody which is a duplicate of the Common lib method
+
+commit 9a0da9a9d7ec1b45d5bb9b0511b771bc5b9f9e9a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Dec 4 19:48:46 2011 +0100
+
+    clean ups and adjustments to some library tools functions
+
+commit 0d6f17db527356ea9b860249a7b86edf75016fc3
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Tue Nov 8 00:59:08 2011 +0100
+
+    adding: PlayerRecorder, AbstractPlayer-record
+
+commit def0958a06825febfe7311b114ab5feb53ad0067
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:27:05 2011 +0100
+
+    AudioPatchIn : implement value_
+
+commit 58c096c8a90388b8b08d3c7c79e745d8724259f5
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:26:24 2011 +0100
+
+    OSCSched: avoid doing the two stage JIT scheduling if the event is less than a beat from now; add aschedFunc
+
+commit dadc06f8ec1b94ffc2414e5fb7402854e5f177a5
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:25:09 2011 +0100
+
+    BeatSched: fix to schedAbs, code cleanup
+
+commit 19bb58768a37b9e05509eb67c4ddcb1eff8098ad
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:23:53 2011 +0100
+
+    cleanup/fix to CXObjectInspector
+
+commit 0d3201f5015d23452ba380533e15a7fd849d1896
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:23:01 2011 +0100
+
+    AbstractPlayerGui : cleaner "name plate"
+
+commit e219694e3e4b13689d18f294dd99f1d4f71a8b47
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:21:32 2011 +0100
+
+    Patch: fix to the way inputs with patch ins are handled
+
+commit 2bc0460e0098254a4504aecc2fb017909e63861f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:20:12 2011 +0100
+
+    fix Patch : when live updating values do to an input having changed, don't synth.set if there are no values to send
+
+commit 35811d414e51073d3d6b979588c1bed7e574e9ca
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:18:50 2011 +0100
+
+    Patch: allow to set the instr while still keeping all current inputs
+
+commit 2f1d026e35b79b4e420ee17efb3afdbfa374c273
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:17:50 2011 +0100
+
+    fix defaultControl for EnvSpec and NamedIntegerSpec; they were not using the supplied value
+
+commit 983659fae0036ff888930b8b76d1f687a1c2b1ac
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:16:22 2011 +0100
+
+    add InstrSynthDef *loadDefFileToBundle
+
+commit f6a34a3d37c5dc8e770187d0c853013c1f39f1ab
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:16:00 2011 +0100
+
+    fix InstrSynthDef : it was sometimes possible to get the auto generated name to exceed 31 chars
+
+commit c3ffa5766fb02b2283ae66e6111e34ad14f2ecc9
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:14:44 2011 +0100
+
+    Instr *load
+
+commit 5f1b265d689151627461b905c2a7824c62bba3ac
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:14:05 2011 +0100
+
+    misc help file updates
+
+commit 984067f8f95b0cd3a395ae52c941d11f05416500
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:13:47 2011 +0100
+
+    Updater: important fix ! removeOnClose needs to find the window, not the layout; that is what sends the notification on 'didClose'
+
+commit b38f4249ae0054fd48efdb8a2b51950c0cddd366
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 6 22:11:15 2011 +0100
+
+    SynthConsole : remove pauseable record, implement scope, cleanups, using clearer colors and less obscure "text icons"
+
+commit faa2295c5e84370722dd384b1e8802b1de032aa4
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:30:41 2011 +0200
+
+    SFP : update get file dialot to File.openDialog
+
+commit 9f95f948c02638ddb010f7557a02cdbf0d04b2c1
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:30:17 2011 +0200
+
+    SFP gui: add SoundFileView
+
+commit 07c8d66ad8ad9582e125811bca1f749441a6393a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:29:34 2011 +0200
+
+    TempoGui : avoid creating the gnome instr each time
+    enlarge to 160 pixels
+
+commit 7b2e2ff84a7a0226c6fe1dcdcc09da56e382938f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:28:08 2011 +0200
+
+    ServerGui: tune colors, remove a useless warning
+
+commit 342b395c8bd59af060fda7b1fa300fc7950c3045
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:27:34 2011 +0200
+
+    ServerGui add meters
+
+commit 93b01392de713d7c60f3c080c5c423a492395bab
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:26:31 2011 +0200
+
+    AbstractPlayerGui: when window closes if synth is stopped then free the player just in case of hanging stuff. if you are still using it (from a variable reference) then the worst that happens is that you have to prepare player before playing which happens automatically.
+
+commit 097cfa53a4bf8946c99d2aac2197fbcccda24eca
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:25:11 2011 +0200
+
+    AbstractPlayerGui : remove topGuiPlugIns hook
+
+commit 5fedfecb7e66f12364e43ab8871d6d0ee280157c
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:24:35 2011 +0200
+
+    AbstractPlayer: remove stop == the same as free. they are distinct methods
+
+commit 4190ded0e449d2f5792e1f69b67b699d8ce4b3b3
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:23:40 2011 +0200
+
+    AbstractPlayer: allow spawnToBundle to choose where in group to add self (tail, head). its still better to put the whole player in a group since you don't know what a player may spawn or how it changes.
+
+commit 02c4297e9dd90c2a92ec7663ff3d04e213856c9e
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:22:01 2011 +0200
+
+    AbstractPlayer: remove run
+
+commit a24da43080e67a7e19d4afccc2f4d91bd0247b5d
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:20:53 2011 +0200
+
+    misc EditorGuis: use skin buttonHeight, skin colors, font, focusColor
+
+commit 5c8d5336c1708d01d24bc0e35ee715918f3d27cd
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:19:55 2011 +0200
+
+    NumberEditor: a better randomize in case default value is minval
+
+commit 5251e19bb13cd1935cca29bb8937b17df90f1c2e
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:18:43 2011 +0200
+
+    fix up: alphabetize matches in classfinder dialog
+
+commit c1fe05833089fcf4b4b0ecddeef543d34474f001
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:18:13 2011 +0200
+
+    fix: layout of Menu
+
+commit 45205e5c033fb66bf10f3c7a926de4fe6a077824
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Oct 29 21:17:46 2011 +0200
+
+    remove PageLayout extras
+
+commit a3121a3af1f0c318651d617276fb3ae483f1210f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Oct 20 15:22:16 2011 +0200
+
+    library item: better classfinder
+
+commit cfdef98e8f2017ac4cb0ee3c695524f965ab4813
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 13 23:43:13 2011 +0100
+
+    Instr: *kr, plot;
+    avoid parsing classfiles in Instr dirs
+
+commit f1faf2a779976c6056cf1a9f03fe9b447e799bb6
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 13 23:40:14 2011 +0100
+
+    removing some spec defaults that are not general usage
+
+commit f51ddccdc6c7076ef2fb62106161591483d0e2d4
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 13 23:37:45 2011 +0100
+
+    add: NamedIntegersSpec for integers that represent specific fixed choices like [LINEAR, CAUCHY,...]
+    editor/control uses a PopUp menu
+
+commit 3609f0fe0aae8e16dff5719bd345b9ae53fb1f5a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 10 04:40:35 2011 +0100
+
+    ServerGui: even out the button heights
+
+commit 7de133c0f0d42d8605eb667b9d0a58f98c5fe1f2
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 10 04:40:04 2011 +0100
+
+    new spec: BFormatSpec
+
+commit 0a797adda4815e85ed50a18b6ede4640a07ff6a4
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 10 04:39:39 2011 +0100
+
+    InstrBrowser: option to filter out UgenInstr
+
+commit da2561b9a95de8025d696addbcf0b46071ddbf8c
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 10 04:38:35 2011 +0100
+
+    add: alt-click to reset number editor to default (like Logic)
+
+commit 5cff6c86986c99927f85c1fb7c1ee1b893c73f6c
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Mar 10 04:38:00 2011 +0100
+
+    NumChannels help moved to common
+
+commit 9eb22d3dca5311d3a63442bbe379d57fd3b56a12
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Mar 6 17:56:44 2011 +0100
+
+    Instr: change source code display to use string.bounds, not a guestimate
+
+commit 2252aa061b5d86a1e653ec6d2e3bd24f3d95243a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 4 16:26:16 2011 +0100
+
+    Insp interface improvement (List view mouse up hack to make clicking respond on the upstroke)
+    fix for common lib bug/change in superclasses
+
+commit b97184b86fe9c02b9445ebd2aa5579d9c5f1fcfa
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 4 16:24:42 2011 +0100
+
+    ToggleButton:value_
+    SelectButtonSet:selectItem
+    SaveConsole:open
+
+commit 2a95864343f5bb9bde87cfb7b7e3ece60df562a4
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 4 16:23:19 2011 +0100
+
+    Patch/Instr/InstrSynthDef: fix for UGenInstr
+    fix Instr.loadAll problem with subdirectories in quarks
+    sends Instr.changed when a new Instr is created
+    better error messsage and behavior when no spec is defined
+    add: Instr.leaves for InstrBrowser (which I guess is already committed and wouldnt work without this method)
+
+commit 2cb909a17ca1940e79b2974d06929cc62f3fe919
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 4 16:19:51 2011 +0100
+
+    misc. change library func to InstrBrowser
+    "instr.name".kr
+    minor help file updates
+    remove deprec metal: arg to asPageLayout
+
+commit 9554e665d33bb2820ed77ead39828dc022430601
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 4 16:16:45 2011 +0100
+
+    these methods were moved out of common. they were in the svn/quark but missing in the git version
+
+commit c400b8aed450ab5d988dc344c3e063e83560185a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 4 16:15:35 2011 +0100
+
+    OSCSched: let .clear clear the tempo clock as long as it isn't global
+    update help files
+
+commit 0022724a78d0723dc49a269254305441eea4c544
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 4 16:14:56 2011 +0100
+
+    add: ServerGui .tail button and functionality: tail all traffic with server, printing it to post window
+
+commit 0e90a943626543981ee982c256f7fdfac5b5e841
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 4 16:14:17 2011 +0100
+
+    crucial style: nicer colors
+
+commit bac63591b54eac43228c6993794fd2ac2436d64d
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 4 16:12:46 2011 +0100
+
+    add: InstrBrowser, InstrGui, UGenInstrGui
+
+commit 40a0c34ebba6bcc6085157c7c6b34776d803a676
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 4 16:11:29 2011 +0100
+
+    new specs: FFT and Demand
+
+commit cc15722eb7a1415723f728a0a358d120da5bc70a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Mar 4 16:09:44 2011 +0100
+
+    number editor : control move mouse to change value, shift-control for fine tune
+    add: .rand for gaussian randomization around spec's default value
+
+commit af854f0f78a88b7d499b4273f98b094e7b661c9c
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Dec 11 18:53:14 2010 +0100
+
+    add SwitchableKeyDownResponder
+    fix: use KeyCodeResponderGroup for concatenating anything with other responder groups
+
+commit d73e8c11228b2b26aa3d66f89bb3f66b667de12a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Dec 11 18:50:45 2010 +0100
+
+    fix: guiInstrVarsOf is removed
+    minor: object inspector should use gui not old topGui
+
+commit c1a8163846ae46fcbf83d4051ccb4bfaad4e7963
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sat Dec 11 18:50:24 2010 +0100
+
+    ZArchive : fix bug with double nils at start of new archive
+    minor doc update
+
+commit c5d42b1dca0869ac70aacf72f9795860da0599dd
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Dec 1 16:02:59 2010 +0100
+
+    adding keycode items to menuItem
+
+commit 66d548c32f938d6945020ba9f7e5e3516ab6a674
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Dec 1 16:02:46 2010 +0100
+
+    Tempo help file update
+
+commit 56547a46417dd688808844629753ba730c0c7d58
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Dec 1 16:02:34 2010 +0100
+
+    whooops: aade17dab814ff78a5a5292007b843d305ee3444 let in a nasty loop when building a Patch from an Instr that doesn't have an outSpec.
+    .spec would call .asSynthDef which would call .spec
+
+commit 4cec699b5dcebe758fc9623933cd43ffcfb36241
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Sun Nov 28 03:56:29 2010 +0100
+
+    KeyDownResponderGroup : for concatenating KeyCodeResponders and UnicodeResponders
+
+commit 518614519d1c7bf18f29dc3aaf02788c95474e83
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Nov 26 00:46:16 2010 +0100
+
+    ActionButton-background
+    colors for Specs, used to color-code Patch and interface elements
+     (much improved legibility of complex patches)
+    add ServerGui.output to allow switching to different devices
+    ServerLog minor
+
+commit aade17dab814ff78a5a5292007b843d305ee3444
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Nov 26 00:44:17 2010 +0100
+
+    Instr-isFilter
+    InstrSynthDef protect while building in case of building a sub synth def
+    better Patch-rate
+    better Patch-numChannels
+    fix: Player uses its rate, doesnt assume audio and depend on subclass imp
+    add: FixNumChannelsPlayer
+    TempoBus use server default
+
+commit f64b8c23b4e927ce47d08e8af8ef0d0500cb3fc4
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Nov 26 00:35:04 2010 +0100
+
+    more commits for switching to PageLayout
+
+commit 9ba7b0c6862dbcfea05257f84d9739f3abaf891a
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Nov 26 00:28:25 2010 +0100
+
+    adding cocoa menu items
+
+commit dcaf7e9c9ca93922919dc1ec0a365f662ce9704e
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Thu Nov 25 23:51:08 2010 +0100
+
+    switching to PageLayout from MultiPageLayout
+
+commit 87a1d19ee908d99db1b0068fd87b2d671c5d20f7
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Nov 19 15:11:12 2010 +0100
+
+    minor
+
+commit 98eaa850d02608e2f679933d59d772ec2ad304d1
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Nov 19 15:11:05 2010 +0100
+
+    moving in die and checkKind from common
+
+commit c311539c7b29d33d558ed2b518f84fe1983e64c0
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Nov 19 15:10:48 2010 +0100
+
+    moving ServerGui to ServerTools
+
+commit dad1c6d65367f2d186339c48c79917238e4d052b
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Nov 19 15:10:27 2010 +0100
+
+    dead help file
+
+commit 3743bd78fbe3acc914cb308ae18472d4dd73b3a7
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Fri Nov 19 15:10:19 2010 +0100
+
+    moving in the crucial default gui style: instVarsForGui, publicInstVars that by default (if no guiClass exists) displays the object's instance vars
+
+commit 43c17b5af08012da5d37aca722094d2033900202
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Nov 17 22:43:53 2010 +0100
+
+    normalizing arg names for gui classes
+    moving in topGui from Common
+
+commit 00b3b52985ab56e6a2ccfe50120da59b3107d3dd
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Wed Nov 17 22:39:43 2010 +0100
+
+    moving AnnotatedDebugNodeWatcher to ServerTools
+
+commit 46bf63946b32b5ee7b97ad213f8e185c00d03d5c
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Nov 15 21:24:31 2010 +0100
+
+    moving KernalTools related gui methods into crucial where the classes they reference were moved to
+
+commit 5b1d1d3810e710d6bf457565b6f3cc348e8a9262
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Nov 15 21:23:52 2010 +0100
+
+    moving crucial specific topGui, smallGui out of Common
+    also moving various guiBody implementations that use classes only found in crucial
+
+commit f68caaebad8318604e2c10b18f17b8474918cf1f
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Nov 15 21:23:00 2010 +0100
+
+    removing help files for classes that were moved into Common
+
+commit 656f888f865e2fa1ad59796039a60d41b9516a5d
+Author: crucialfelix <crucialfelix@gmail.com>
+Date:   Mon Nov 15 20:45:35 2010 +0100
+
+    initial that is quark svn

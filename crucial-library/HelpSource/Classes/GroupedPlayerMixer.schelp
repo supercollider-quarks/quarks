@@ -1,0 +1,85 @@
+CLASS:: GroupedPlayerMixer
+summary:: Mixes multiple players together, clumping them under Groups
+categories:: Libraries>crucial>Players
+related:: Classes/PlayerMixer
+
+DESCRIPTION::  A very useful tool to mix multiple players together while clumping them into separate Groups to ensure correct Node order.
+
+Like PlayerMixer, this mixes the outputs of multiple players.
+but this class also puts each player into its own group node.
+
+This is an example usage copied from an application.  You cannot run it.  TODO: normal example
+
+code::
+(
+	GroupedPlayerMixer(
+			total // original
+		,
+		// these 3 go into a group together
+		Array.fill(3,{ arg i;
+			Patch("Channel",[
+				total.busses[i],// IrNumberEditors
+				total.vols[i],// KrNumberEditors
+				total.djLPFs[i], // KrNumberEditors
+				total.djHPFs[i], // KrNumberEditors
+
+				// sending to efx
+				total.send1Levels[i],
+				total.send2Levels[i],
+				total.sendBusIndices[0],
+				total.sendBusIndices[1]
+			])
+		}),
+		[ // efx in a group after the sound and sends
+			efx1 = PlayerPool( this.efx( total.sendBusIndices[0] ) ),
+			efx2 = PlayerPool( this.efx( total.sendBusIndices[1] ) )
+		]
+	)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument::  ... players
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: gpminit
+
+
+argument:: pls
+
+
+
+METHOD:: makeResourcesToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: prepareChildrenToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: subGroups
+
+
+
+METHOD:: freeResourcesToBundle
+
+
+argument:: bundle
+
+
+
+
+

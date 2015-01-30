@@ -1,0 +1,68 @@
+TITLE:: MKtlElementGroup
+summary:: A named Array of MKtlElements, MKtlElementDicts or MKtlElementGroups
+categories:: Libraries>Modality
+related:: Overviews/Modality, Classes/MAbstractElement, Classes/MKtl
+
+DESCRIPTION::
+MKtlElementGroup is used in the hierarchical tree structure of link::Classes/MKtl#elements::. It can fire an action when any of the enclosed elements is touched. MKtlElementGroup can also be used to make custom groups of MKtlElements and other MKtlElementGroups. The elements are stored in a fixed order, and can be accessed via either a number or a key (code::Symbol::).
+
+
+INSTANCEMETHODS::
+
+METHOD:: elements
+gets and sets the code::Array:: of enclosed elements
+
+METHOD:: at
+get an element inside the group via an index. The index can always be a number, and if the group has keys per item it can also be a code::Symbol::.
+
+code::
+m = MKtl('nnkn20');
+
+m.elements.at( \bt ); // returns the buttons
+m.elements.at( 0 ); // returns the first object
+::
+
+METHOD:: action
+a code::Function:: that is fired when any of the enclosed elements is touched. The first argument of this function is the code::MKtlElement:: that is touched. The arguments that follow are it's enclosing MKtlElementGroups up until code::this::.
+
+METHOD:: do
+Iterate a function for all enclosed MKtlElements and MKtlGroups
+
+METHOD:: asArray
+
+returns:: a nested code::Array:: structure of the enclosed elements. Any enclosed element that is an code::MKtlElementGroup:: will be converted into a normal code::Array::
+
+METHOD:: flat
+
+returns:: a flat code::Array:: of all enclosed MKtlElements.
+
+METHOD:: gui
+open a GUI window for code::this::
+
+ARGUMENT:: parent
+the parent window (will create one if not specified)
+
+ARGUMENT:: bounds
+the desired bounds of the window
+
+returns:: an code::MKtlElementGroupGUI::
+
+EXAMPLES::
+
+code::
+m = MKtl( 'nnkn20' ); // create a NanoKONTROL2 MKtl
+
+m.elements; // returns the main MKtlElementGroup of the MKtl
+
+m.elementAt( \bt ); // returns the MKtlElementGroup containing the buttons
+
+m.elementAt( \bt, 0 ).flat; // creates and returns an Array with the first row of buttons
+
+// make a group of the upper row of buttons
+a = MKtlElementGroup( 'group', m.elementAt( \bt, 0 ).flat );
+
+// assign an action to be fired when any element in the group is touched
+// the first argument will be the touched MKtlElement, the second argument
+// in this case will be the MKtlElementGroup we just created.
+a.action = { |...args| [ args[0].index, args[0].value ].postln; };
+::

@@ -1,0 +1,467 @@
+CLASS:: UChain
+summary:: a group of U units 
+categories:: UnitLib
+related:: Classes/U, Classes/UScore, Classes/USession
+
+DESCRIPTION::
+
+A Uchain represents a groups of units (link::Classes/U::) that together make up one audio chain where the audio output of one unit can be routed to subsequent units.The routing is done using private busses and the units are played together in one link::Classes/Group::. Units in this context can be thought of as effects or plugins in a DAW, although almost the full flexibility of SuperCollider is still available. To get input from and output to other units in the chain the link::Classes/UIn:: and link::Classes/UOut:: pseudo-ugens are used. These ugens create automatic names for controls that allow changing the private bus number. This then allows easy re-patching of the units from a gui.
+
+There should be only one chain playing per Server at a time, although it is not impossible to play multiple instancesof at once.
+
+subsection::Event
+
+UChain implements the UEvent interface, therefore it has a startTime, track, duration, muted, releaseSelf variables.
+
+The startTime determines when the UChain will start playing in a score, and the duration when it will stop. If the releaseSelf variable is set to True, then UChain will release itself using the doneAction of the envelope of one of the units (It is assumed that one of the units has the capability to free the UChain). If releaseSelf is False, then it will be the task that is playing the score that will free the UChain when it has finished playing. The difference between the two mode is that, if releaseSelf is true, when the score is paused, the chain will continue to play and will be freed, unaffected by the fact that the score is paused, on the other hand if it is false, then while the score is paused the chain will also not be freeed, and will only resume couting the time until the end of the envelope when the score is unpaused.
+
+subsection:: GUI
+
+There is a GUI for the UChain class, implemented by link::Classes/UChainGUI:: which can be invoked using the link::Classes/UChain#-gui:: method. Most parameters of the UChain can be set from the gui:
+
+image::UChain-GUI.png::
+
+CLASSMETHODS::
+private::initClass
+
+METHOD:: verbose
+post debugging messages
+
+METHOD:: groupDict
+Returns the groupDict of type Event[UChain,Array[Group]]. The keys are instances of UChain and the values the corresponding Groups.
+
+returns:: Event[UChain,Array[Group]]
+
+METHOD:: new
+Creates a new UChain from the arguments given.
+
+Syntaxes for UChain creation:
+code::
+	UChain(\defName)
+	UChain(startTime,\defName1,\defName2,...)
+	UChain(startTime,track,\defName1,\defName2,...)
+	UChain(startTime,track,duration,\defName1,\defName2,...)
+	Uchain(startTime,track,duration,releaseSelf,\defName1,\defName2,...)
+::
+
+Example of UChain instantiation:
+code::
+    UChain(\sine,\output)
+::
+
+argument::  ... args
+
+returns:: UChain
+
+INSTANCEMETHODS::
+private::prepareTasks, preparedServers, init, prGetCanFreeSynths, prSetCanFreeSynths, prGetChainsDur, prSetChainsDur, clipFadeIn, getInitArgs, printOn, stream, getInitArgs, storeArgs, makeView, sessionGUI, stopPrepareTasks, resetGroups
+
+METHOD:: units
+Set the units of the UChain
+
+argument:: newUnits
+A collection of link::Classes/U::s.
+
+
+METHOD:: muted
+Determines if event will be played or not in a score.
+
+argument:: bool
+
+METHOD:: name
+Returns a string composed from the units held by the chain.
+
+returns:: String
+
+METHOD:: duplicate
+Create a duplicate of the instance.
+
+returns:: UChain
+
+METHOD:: canFreeSynth
+Returns a boolean indicating if the UChain contains a unit that can free the group due to it's doneAction.
+
+returns:: Boolean
+
+METHOD:: eventSustain
+The time from the begging of the event until the moment when the chain should be released (to start the fade out).
+
+returns:: Float
+
+METHOD:: fadeOut
+Set fade out time.
+
+argument:: fadeOut
+A Float bigger then zero.
+
+METHOD:: fadeIn
+Set fade in time.
+
+argument:: fadeIn
+A Float bigger then zero.
+
+METHOD:: fadeTimes
+returns::Array of type [fadeIn,fadeOut]
+
+METHOD:: useSndFileDur
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: getMaxDurUnit
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: duration
+(describe method here)
+
+argument:: dur
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: releaseSelf
+(describe method here)
+
+argument:: bool
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: dur
+(describe method here)
+
+argument:: x
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: gain
+(describe method here)
+
+argument:: gain
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: mute
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: unmute
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: setGain
+(describe method here)
+
+argument:: gain
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: getGain
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: setDoneAction
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: trimEnd
+(describe method here)
+
+argument:: newEnd
+(describe argument here)
+
+argument:: removeFade
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: cutEnd
+(describe method here)
+
+argument:: newEnd
+(describe argument here)
+
+argument:: removeFade
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: trimStart
+(describe method here)
+
+argument:: newStart
+(describe argument here)
+
+argument:: removeFade
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: cutStart
+(describe method here)
+
+argument:: newStart
+(describe argument here)
+
+argument:: belongsToFolder
+(describe argument here)
+
+argument:: removeFade
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: groups
+(describe method here)
+
+argument:: groups
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: addGroup
+(describe method here)
+
+argument:: group
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: removeGroup
+(describe method here)
+
+argument:: group
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: makeGroupAndSynth
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+argument:: startPos
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: makeBundle
+(describe method here)
+
+argument:: targets
+(describe argument here)
+
+argument:: startPos
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: start
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+argument:: startPos
+(describe argument here)
+
+argument:: latency
+(describe argument here)
+
+returns:: (returnvalue)
+
+
+METHOD:: free
+free synths
+
+METHOD:: stop
+free synths
+
+METHOD:: release
+free synths by releasing the envelope in the duration give by the argument.
+argument:: time
+
+METHOD:: shouldPlayOn
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: apxCPU
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: prepare
+Prepare units.
+
+argument:: target
+A collection of targets.
+
+argument:: startPos
+Offset in seconds from the start of the event.
+
+argument:: action
+Action to perform when preparation is done.
+
+METHOD:: prepareAndStart
+Prepare and start UChain.
+
+argument:: target
+A collection of targets.
+
+argument:: startPos
+Offset in seconds from the start of the event.
+
+METHOD:: waitTime
+Time in seconds needed to prepare this UChain.
+
+METHOD:: prepareWaitAndStart
+Start preparation, then wait during waitTime seconds, and finally start the UChain.
+
+argument:: target
+A collection of targets.
+
+argument:: startPos
+Offset in seconds from the start of the event.
+
+METHOD:: dispose
+Calls .dispose on each unit. This will dispose of Buffers or other resources opened.
+
+METHOD:: at
+Array support for accessing units.
+
+METHOD:: last
+Array support for accessing units.
+
+METHOD:: first
+Array support for accessing units.
+
+METHOD:: add
+Add unit to chian. Unit is added in after other units.
+
+METHOD:: addAll
+Add all units in collection to UChain.
+
+argument:: inUnits
+Collection with units.
+
+METHOD:: put
+Place unit at index.
+
+argument:: index
+Int
+
+argument:: unit
+link::Classes/U::
+
+
+METHOD:: insert
+Insert unit at index.
+
+argument:: index
+Int
+
+argument:: unit
+link::Classes/U::
+
+METHOD:: removeAt
+Remove unit at index.
+
+argument:: index
+Int
+
+METHOD:: <<
+Returns new UChain with the units from 'uchain' added to this UChain.
+
+argument:: uchain
+link::Classes/UChain::
+
+returns:: link::Classes/UChain::
+
+METHOD:: <|
+Returns new UChain containing all the units of this UChain plus the unit passed in the argument.
+
+argument:: unit
+link::Classes/U::
+
+returns:: link::Classes/UChain::
+
+METHOD:: isFolder
+Determine whether this object is a score.
+
+returns:: False
+
+METHOD:: getAllUChains
+Returns this. This method is used to recursivly get all the UChains in a UScore.
+
+returns:: link::Classes/UChain::
+
+METHOD:: gui
+Create a GUI.
+
+argument:: parent
+A view
+
+argument:: bounds
+A Rect
+
+returns:: link::Classes/UChaiGUI::
+
+EXAMPLES::
+
+code::
+(
+// create some Udefs
+
+Udef( \mix2, { |balance = 0.5|
+	var l1, l2;
+	l1 = UIn.ar( 0 ) * (1-balance);
+	l2 = UIn.ar( 1 ) * balance;
+	UOut.ar( 0, l1 + l2 )
+} ).loadSynthDef;
+
+Udef( \vibrato, { |rate = 1, amount = #[0.0,1.0]|
+	UOut.ar( 0, SinOsc.kr( rate ).range(*amount) * UIn.ar( 0 ) )
+} ).loadSynthDef;
+
+)
+
+// \sine and \output are already in the Udef bank
+
+x = UChain( \sine, [ \sine, [ \freq, 550, \u_o_ar_0_bus, 1 ]], \mix2, \vibrato, \output );
+
+y = UChain( [ \sine, [ \freq, 660 ] ], \output );
+
+s.notify; // make sure the server is notified!!
+
+x.prepareAndStart;
+x.release;
+
+x.fadeOut = 0.5;
+x.fadeIn = 0.5;
+
+x.dur_( 5 );
+x.dur_( inf ); // infinite duration (default)
+
+x[1].setAudioOut( 0, 1 ); // 2nd sine output to bus 1, so it goes to second mix input
+
+//you can control all the parameters from the guis
+x.gui;
+y.gui;
+::

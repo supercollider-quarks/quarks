@@ -1,0 +1,51 @@
+TITLE:: KeyCodesEditor
+summary:: an editor allowing to edit platform-specific key-mappings
+categories:: GUI, External Control>Keyboard
+related:: Classes/KeyDownActions, Classes/KeyDownActionsEditor
+
+DESCRIPTION::
+The values currently stored in link::Classes/KeyDownActions#*modifiersQt::, link::Classes/KeyDownActions#*modifiersCocoa::, link::Classes/KeyDownActions#*arrowsModifiersQt:: and link::Classes/KeyDownActions#*arrowsModifiersCocoa:: are the result of empiric studies. However, they may still differ from the configuration on your system. This editor makes mappings fully editable by the user. See link::Classes/KeyDownActions#*keyCodes:: and link::Classes/KeyDownActions#*arrowsModifiersQt:: for code-snippets that let you determine mappings on your system.   
+
+CLASSMETHODS::
+
+METHOD:: new
+Open a new KeyCodesEditor.
+
+argument:: parent
+a link::Classes/View::
+
+argument:: bounds
+a link::Classes/Rect::, determining position and size.  
+
+returns:: a code::KeyCodesEditor::
+
+private:: initClass
+
+INSTANCEMETHODS::
+
+METHOD:: result
+Get the current result from a KeyCodesEditor instance.
+
+argument:: write
+a link::Classes/Boolean::, determining whether the result should be written to disk immediately or not. Default: code::true:: 
+
+returns:: an link::Classes/IdentityDictionary::
+
+METHOD:: window
+The link::Classes/Window:: of a keyCodesEditor instance.
+
+returns:: a link::Classes/Window::
+
+METHOD:: eas
+The strong::editing-areas::: keyCodes, modifiers, arrowsModifiers...
+
+returns:: an link::Classes/Event::
+
+private:: init
+
+EXAMPLES::
+
+code::
+k = KeyCodesEditor.new;
+k.result;
+::

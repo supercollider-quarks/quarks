@@ -1,0 +1,332 @@
+CLASS:: InstrGateSpawner
+summary:: a Pbind-like spawner that plays an Instr with streams supplied to its inputs
+categories:: Libraries>crucial>Instr, Libraries>crucial>Players
+related:: Classes/Instr, Classes/Pbind, Classes/InstrSpawner
+
+DESCRIPTION:: a Pbind-like spawner that plays an Instr with streams supplied to its inputs.
+
+In contrast to InstrSpawner, this schedules in beats.
+
+During iteration, each argument is passed the InstrGateSpawner. Two useful things can be done with this: asking the  .beat and the current .delta
+	till the next event.
+
+code::
+(
+	Tempo.bpm = 140.0;
+	InstrGateSpawner({ arg freq=440,rq=0.1,width=0.5,fenv,fenvmod=1000,envadsr,dur=0.1,tempo;
+		var gate;
+		gate = Trig1.kr(1.0,dur / tempo);
+		RLPF.ar(
+			VarSaw.ar(
+				freq,
+				0.0,
+				width
+			),
+			EnvGen.kr(fenv,gate,levelScale: fenvmod),
+			rq)
+	 		  * EnvGen.kr(envadsr,gate,0.2, doneAction: 2)
+	},[
+		Pseq((70 + [ 0, 1, 5, 6, 10 ]).midicps ,inf) *
+			Prand(2 ** [0,-1,2,-2,-3],inf), // octave shifts
+		0.2,
+		Patch({ LFTri.kr(0.1,[0.0,0.5],0.5,0.5) }),
+		Env.adsr(0.3,sustainLevel: 0.4),
+		Pbrown(2000,10000,100),
+		Env.adsr(releaseTime: 0.5),
+
+		// dur uses a Pfunc to ask the delta till the next event
+		Pfunc({ arg igs;  (igs.delta * 0.9) }),
+
+		TempoPlayer.new
+	],
+		0.25
+	).play
+)
+::
+
+section:: Compared to Pbind
+
+Its a different approach and has plusses and minuses.
+
+Pbind streams each item, whether it is going to change or not (a float will not change, an Env will not change).
+so InstrGateSpawner has much more simple/efficient event handling,
+	not using an environment
+	streamed items are placed directly into the OSC message to be sent
+	only using the features that are needed for the ugenFunc
+		no lag, offsetChannel etc.
+	But as computers and SC get faster, this speed advantage is less significant.
+
+allows easy patching of players into the inputs
+allows easy patching of Samples and allocates them seamlessly.
+beat is passed into each stream item
+	this solves a common 'sync' problem with event stream's note-by-note streaming.
+	but you could use the same solution in a Pfunc and just query the clock to find out the current beat.
+the usual flexibility of players with regards to saving
+
+cons:
+	can't do Pseq([ Pbind, Pbind ] )
+		it isn't a pattern, doesn't end with a nil, so you can't sequence sections with it.
+		but it is possible to use CropPlayer and Pseq or PlayerSeqTrack.
+	can't use pattern filters
+	can't switch ugenFuncs dynamically
+
+
+compare with the first example from Pbind help
+
+code::
+(
+SynthDef(\cfstring1.postln, { arg i_out, freq = 360, gate = 1, pan, amp=0.1;
+	var out, eg, fc, osc, a, b, w;
+	fc = LinExp.kr(LFNoise1.kr(Rand(0.25,0.4)), -1,1,500,2000);
+	osc = Mix.fill(8, { LFSaw.ar(freq * [Rand(0.99,1.01),Rand(0.99,1.01)], 0, amp) }).distort * 0.2;
+	eg = EnvGen.kr(Env.asr(1,1,1), gate, doneAction:2);
+	out = eg * RLPF.ar(osc, fc, 0.1);
+	#a, b = out;
+	Out.ar(i_out, Mix.ar(PanAz.ar(4, [a, b], [pan, pan+0.3])));
+}).load(s);
+
+SynthDescLib.global.read;
+
+)
+
+e = Pbind(\degree, Pwhite(0,12), \dur, 0.2, \instrument, \cfstring1).play; // returns an EventStream
+
+
+(
+InstrGateSpawner({ arg freq = 360,  pan=0, amp=0.1,dur=0.2,tempo;
+	var out, eg, fc, osc, a, b, w,gate;
+	gate = Trig.kr(1.0,dur / tempo);
+	fc = LinExp.kr(LFNoise1.kr(Rand(0.25,0.4)), -1,1,500,2000);
+	osc = Mix.fill(8, { LFSaw.ar(freq * [Rand(0.99,1.01),Rand(0.99,1.01)], 0, amp) }).distort * 0.2;
+	eg = EnvGen.kr(Env.asr(1,1,1), gate, doneAction:2);
+	out = eg * RLPF.ar(osc, fc, 0.1);
+	#a, b = out;
+	Mix.ar(PanAz.ar(4, [a, b], [pan, pan+0.3]))
+},[
+
+	(Pwhite(0,12).degreeToKey([0, 2, 4, 5, 7, 9, 11] + (5*12)) ).midicps,
+	0,
+	0.1,
+	0.2,
+	TempoPlayer.new
+],
+	0.2
+).play
+
+)
+
+::
+
+the server usage is identical as should be expected, but the client side (using top) is about half the cpu.
+on another day, the test shows equal usage !
+and then a minute later Pbind does show more usage.
+top is not really a good measure.
+simply because there is a lot less code running, InstrGateSpawner must be faster.
+they both have advantages in their way of working, and can both be used side by side.
+
+
+
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: beat
+
+
+
+METHOD:: makeTask
+
+
+
+METHOD:: startTask
+
+
+
+EXAMPLES::
+
+(
+	InstrGateSpawner({ arg freq=440,rq=0.1,width=0.5,fenv,fenvmod=1000,envadsr,dur=0.1,tempo;
+		var gate;
+		gate = Trig1.kr(1.0,dur / tempo);
+		RLPF.ar(
+			VarSaw.ar(
+				freq,
+				0.0,
+				width
+			),
+			EnvGen.kr(fenv,gate,levelScale: fenvmod),
+			rq)
+	 		  * EnvGen.kr(envadsr,gate,0.15, doneAction: 2)
+	},[
+		PdurStutter(
+			Pseq(#[1,1,1,1,1,2,2,2,2,2,3,3,3,3,4,4,0,4,4],inf),
+			Pseq((70 + [ 0, 1, 4, 8, 10, 15 ]).midicps ,inf)
+		),
+		0.2,
+		Patch({ LFTri.kr(FSinOsc.kr(1.0).range(0.1,3.0),[0.0,0.5],0.5,0.5) }),
+		Env.adsr(0.3,sustainLevel: 0.1),
+		Pbrown(6000,10000,100),
+		Env.adsr(releaseTime: 0.5),
+
+		// dur uses a Pfunc to ask the delta till the next event
+		Pfunc({ arg igs;  (igs.delta * rrand(0.9,2.0)) }),
+
+		TempoPlayer.new
+	],
+		Prand([
+			Pn(0.125,16),
+			Pn(0.25,8),
+			Prand([0.5,0.25,0.125,0.3],4),
+			0.5,0.75,2.0],inf) // in beats
+	).play
+)
+
+Chord changes
+however crazy the durations get, the current chord and pitch is determined by indexing into
+a chord progression using the current beat: igs.beat
+(
+	InstrGateSpawner({ arg freq,rq,width,fenv,fenvmod,envperc,dur,tempo;
+		var gate;
+		gate = Trig1.kr(1.0,dur / tempo);
+		RLPF.ar(
+			Pulse.ar(
+				freq,
+				width
+			),
+			EnvGen.kr(fenv,gate,levelScale: fenvmod),
+			rq)
+	 		  * EnvGen.kr(envperc,gate,0.3, doneAction: 2)
+	},[
+		// using the beat to index into chord changes
+		Pfunc({  arg igs;
+			(
+				// choose degree convert it via a scale to a note number
+				( [1,3,5].choose.degreeToKey([ 0, 1, 4, 8, 12 ]) )
+				// choose an octave
+				+ 30 + [0,11,23,35].choose
+				// 1 4 5 1 chord progression
+				+ [1,4,5,1].wrapAt(igs.beat div: 16)
+			).midicps
+		}),
+		// rq input is a mono kr rate patch
+		Patch({ LFTri.kr(FSinOsc.kr(0.05).range(0.01,1.0),0.0).range(0.01,0.4) }),
+		//note that the patch has expanded to stereo because the width input is a stereo kr rate Patch :
+		Patch({
+			LFTri.kr(FSinOsc.kr(0.05).range(0.01,1.0),[0.0,0.5],0.5,0.5)
+		}),
+		Env.adsr(0.2,0.01,0.1),
+		12000,
+		Env.adsr(0.01,0.1,0.2, 0.05),
+		Pfunc({ arg igs;  (igs.delta * rrand(0.1,5.0)) }),
+		TempoPlayer.new
+	],
+		PdurStutter(
+			Pseq([1,1,1,1,2,2,2,2,2,2,2,2,4,4,3,3,0,2,1,1,1,1],inf),
+			0.25
+		)
+	).play
+)
+
+anything that returns a rate of \stream (a Pattern or Function) will cause an .ir rate input to be created for the synth.
+
+
+// if you click on the sample's filename, you can select a new sample while playing
+// and it will load it.
+// note that the old tempo settings persist until the end of the bar
+(
+
+InstrGateSpawner({ arg sample,start=0,dur,env;
+	var gate;
+	gate = Trig1.kr(1.0,dur / Tempo.kr);
+
+	PlayBuf.ar(
+		sample.numChannels,
+		sample.bufnumIr,
+		sample.pchRatioKr,
+		1,
+		start * sample.beatsizeIr,
+		1
+	) * EnvGen.kr(env,gate, doneAction: 2)
+},[
+	Sample("a11wlk01.wav"),
+	0,//Pseq([0,1,2,3],inf),
+	4.0,
+	Env.adsr(0.02,releaseTime:0.01)
+
+],4.0).gui
+
+)
+
+// basic time stretching
+// change the (global) tempo using the tempo control at the top
+// you can also change the beats setting on the sample
+(
+var sample;
+InstrGateSpawner({ arg sample,start=0,dur,pchRatio,env;
+	var gate;
+	gate = Trig1.kr(1.0,dur / Tempo.kr);
+
+	PlayBuf.ar(
+		sample.numChannels,
+		sample.bufnumIr,
+		sample.bufRateScaleIr * pchRatio,
+		1,
+		start,
+		1
+	) * EnvGen.kr(env,gate, doneAction: 2)
+},[
+	sample = Sample("a11wlk01.wav"),
+	Pfunc({ arg igs;
+		(igs.beat * sample.beatsize).wrap(0,sample.end) // in samples
+	}),
+	0.125,
+	KrNumberEditor(1.0,[-4.0,4.0]),
+	Env.adsr(0.02,releaseTime:0.1)
+
+],0.125).gui
+
+)
+
+There is also a problem (currently) on the server whereby it can't accept the OSC commands
+while it is dealing with loading the sample.  You can use ScurryableInstrGateSpawner-scurry,
+a subclass of InstrGateSpawner that can scurry ahead of time, sending OSC bundles
+to keep the server's synthesis thread occupied while the thread that does the soundfile
+loading is busy.  This issue will probably be resolved on the server.
+
+See [Interface] so you can design guis with no sample display or interfaces with no gui at all.
+
+
+
+when using your own guis :
+to use a slider:
+	Pfunc({ numberEditor.value })
+	or
+	AsStream( NumberEditor.new )
+or make your own gui and poll the slider:
+	Pfunc({ slider.value })
+
+A metro-gnome
+(
+var nome,layout;
+nome = InstrGateSpawner({ arg freq,amp;
+		Decay2.ar(
+			Impulse.ar(0.0), 0.01,0.11,
+			SinOsc.ar( freq, 0, amp )
+		) * EnvGen.kr(Env.perc,doneAction: 2)
+	},[
+			Pseq([ 750, 500, 300, 500, 750, 500, 400, 500, 750, 500, 400, 500, 750, 500, 400, 500 ],inf),
+			Pseq([1,0.25,0.5,0.25,0.75,0.25,0.5,0.25,0.75,0.25,0.5,0.25,0.75,0.25,0.5,0.25] * 0.1,inf)
+	],1.0);
+
+layout = FlowView.new;
+
+ToggleButton(layout,"Gnome",{
+	if(nome.isPlaying.not,{ nome.play(atTime: 1) })
+},{
+	if(nome.isPlaying,{ nome.stop })
+},minWidth: 250);
+
+)
+

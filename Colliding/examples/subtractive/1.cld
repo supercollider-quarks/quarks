@@ -1,0 +1,4 @@
+var osc = Pulse.ar(freq);
+var env = EnvGen.ar(Env.adsr,gate:gate);
+var filter = RLPF.ar(osc, (500*env)+MouseX.kr(100,2000), MouseY.kr(0,1));
+Out.ar(0,0.5*env*filter!2);

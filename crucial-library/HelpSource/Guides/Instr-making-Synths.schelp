@@ -1,0 +1,90 @@
+title:: Instr making Synths
+summary:: Methods for spawning synths from Instr
+categories:: Libraries>crucial>Instr
+
+section:: Make a SynthDef:
+
+code::
+(
+	// given an Instr
+	Instr(\sin,{ arg freq=440,amp=0.5; SinOsc.ar(freq) * amp });
+
+	// make a SynthDef
+	d = Instr(\sin).asSynthDef( (amp:0.2) )
+)
+::
+
+Arguments to asSynthDef can be a list or an event with argName:value pairs.
+
+see also the following methods in link::Classes/Instr:: which are equivalent to the standard SynthDef methods
+
+method:: asSynthDef
+method:: writeDefFile
+method:: add
+method:: store
+
+section:: Making Synths
+
+code::
+(
+Instr.new("minimoog.two",{ arg freq=440,int1=5,int2 = -5,
+						width1=0.1,width2=0.1,width3=0.1,
+						ffreqInterval=0,rq=0.4;
+	var p;
+
+	p=Pulse.ar([ freq  * int1.midiratio, freq, freq * int2.midiratio],
+			[ width1,width2,width3],0.3);
+
+	RLPF.ar(Mix.ar(p),freq * ffreqInterval.midiratio,rq)
+
+},#[ // specs
+	\freq,
+	[-48,48,\linear,1],
+	[-48,48,\linear,1],
+	\unipolar,
+	\unipolar,
+	\unipolar,
+	[-48,48,\linear,1]
+]);
+
+)
+::
+
+.play will create a Patch and play it
+
+code::
+(
+	Instr("minimoog.two").play
+)
+::
+
+See the following methods in link::Classes/Instr:: which will spawn Synths using the standard syntax for creating Synth nodes.
+
+METHOD:: after
+METHOD:: before
+METHOD:: head
+METHOD:: tail
+METHOD:: replace
+
+
+
+section:: Events
+
+method:: spawnEvent
+
+code::
+(
+	Instr(\sin, { arg freq,amp,dur=0.2;
+		SinOsc.ar(freq,0.0, LFNoise1.kr(0.1,amp))
+			* EnvGen.kr(Env.triangle(dur),doneAction:2)
+	});
+
+	Instr(\sin).spawnEvent( (dur: 4.0.rand) )
+)
+::
+
+
+see also link::Guides/Instr-Patterns::
+
+
+

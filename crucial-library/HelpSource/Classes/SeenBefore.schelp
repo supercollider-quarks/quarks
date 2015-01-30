@@ -1,0 +1,48 @@
+CLASS:: SeenBefore
+summary:: eliminates duplicates by saving a history of objects it has tested
+categories:: Libraries>crucial>Constraints
+related:: Guides/Constraints
+
+DESCRIPTION:: Most constraints do not have any state or internal variables. This one saves each object in a history list and returns false if it has already seen an object.
+
+This can be used to eliminate duplicates.
+
+code::
+b = SeenBefore.new;
+f = { 100.rand }; // or choose a random soundfile path
+
+100.do { arg i;
+	var v;
+	v = f.value;
+	if(b.value(v),{
+		[k,v].postln
+  	})
+};
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+No arguments
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: history
+
+
+
+METHOD:: value
+
+
+argument:: path
+
+
+
+METHOD:: reset
+
+
+
+
+

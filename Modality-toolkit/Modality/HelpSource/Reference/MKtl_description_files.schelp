@@ -1,0 +1,147 @@
+title:: MKtl description files
+summary:: describes the file format for MKtl desc files
+categories:: Libraries>Modality
+related:: Overviews/Modality, Classes/MKtl, Tutorials/How_to_create_a_description_file
+
+Section:: Introduction
+
+A controller is always bound to one protocol. If there is a device that communicates on multiple protocols (e.g. EMPHASIS::ICON i-controls::), this has to be merged later in the processing chain.
+A control element is a part of a controller that does one or more of the following things
+
+list::
+## spits out a one-dimensional stream of events,
+## accepts a one-dimensional stream of events.
+::
+
+A description file gathers information for each element. It consists of a SuperCollider dictionary with a certain structure. Description files are located at
+code::
+MKtl.openDescriptionFolder;
+::
+
+This document gives an overview on
+list::
+##link::#Semantic information::
+##link::#Naming Conventions::
+##link::#Syntax::
+::
+
+section:: Semantic information
+
+DEFINITIONLIST::
+## protocol [required]
+|| The protocol used by the device
+## device | osx | linux
+	|| device name as reported by the HID class. If the reported name is different in osx and linux then use the 'osx' and 'linux' dictionaries.
+## description
+|| A dictionary describing the controls on the device
+## infoMessage [optional]
+|| A message to be displayed when the MKtl is created. This can be used to ask the user to switch to a certain physical preset of the device.
+## <midi|hid|osc>Type
+|| One of code::[ \midiMsgType, \hidElementID, \oscType ]:: has to be present. This also tells about the type of device on which it is implemented (MIDI/HID/OSC).
+##  \spec
+|| The element code::\spec:: has to be present and is a symbol that, if called code::.asSpec:: upon, returns the (global) code::ControlSpec:: suitable for this element.
+## \midiChan, \midiNum
+|| Needed, if code::\midiType:: is part of the config string. The identifiers code::\bend, \touch, \program:: only need code::\midiChan:: to be specified.
+::
+
+	The 'description' field contains a dictionary that can contain other dictionaries or arrays. At the leaves of this data structure must be a dictionary describing an element. An example:
+
+	code::
+\key: [
+	[
+		(\infoKey1: infoVal1, \infoKey2: infoVal2, ...),
+		(\infoKey1: infoVal1, \infoKey2: infoVal2, ...),
+	],[
+		(\infoKey1: infoVal1, \infoKey2: infoVal2, ...),
+		(\infoKey1: infoVal1, \infoKey2: infoVal2, ...),
+	]
+]
+::
+
+section::  Naming Conventions
+
+Naming conventions for identifiers are:
+list::
+## code::kn:: for knobs,
+## code::sl:: for sliders,
+## code::bt:: for buttons,
+## code::key:: for keys,
+## code::pad:: for pads, etc. Elements with names or symbols on them should have that name, e.g. a play button should be called \play, a rewind button \rew, etc.
+::
+
+Naming conventions for type values are:
+list::
+## code::slider:: for sliders,
+## code::knob:: for knobs,
+## code::button:: for buttons,
+## code::key:: for keys,
+## code::pad:: for pads
+::
+
+note::
+The description file for the "nanoKontrol 2" is an example for good element naming. All naming examples in this help are taken from there.
+::
+
+
+Generally, element names should be as clear as possible, and reasonably short to allow for compact code. The main advantage of following the conventions is that similar elements across devices will have identical or at least simlar names, and thus allow substituting one device for a similar one with minimal code changes.
+
+	Unnamed buttons should be called \bt, sliders \sl, knobs \kn, pads \pad, etc., and when they are physically in arrays, they should be given as, e.g.
+code::
+ \kn: (16..23).collect{ |i|
+		(\midiMsgType: \cc, \type: \knob, \midiChan: 0, \midiNum: i, \spec: \midiCC)
+	}.
+::
+	When in rows and columns, these can be nested:
+code::
+	\bt: [(32..39),(48..55),(64..71)].collect{ |xs|
+		xs.collect{ |i|
+			(\midiMsgType: \cc, \type: \button, \midiChan: 0, \midiNum:  i, \spec: \midiCC)
+		}
+	}
+::
+	Elements with names or symbols on them should be given that name,
+	e.g.  a button name "play" or with a > sign on it  should be
+	called \play or \playBt. in the nanoKontrol 2 file, such button names include transport buttons \rew, \fwd, \stop, \play, \rec,
+	\cycle, track buttons \tleft, \tright, and marker buttons \mset, \mleft, \mright.
+
+	When in doubt, consult files of devices with similar elements, and follow the naming schemes there.
+
+section:: Syntax
+
+The syntax for the description file as agreed on by the modalityTeam on April, 7th 2014
+described in Augmented Backus–Naur Form (with code::/:: switched to code::|:: ) (see link::https://en.wikipedia.org/wiki/ABNF::).
+
+NOTE::For an example for the description file syntax, see link::Tutorials/How_to_create_a_description_file::.::
+
+NOTE::
+The actual description files used by Modality often don't conform to this syntax because they use SuperCollider code to algorithmically generate the dictionary. In any case calling code::.asCompileString:: on the dictionary should generate a string which conforms to the syntax above.
+::
+
+TELETYPE::
+descFile                    = "( protocol: " protocol ", device: " string ", description:" description [", infoMessage:" string] ")"
+    protocol                = "\hid" | "\midi"
+    device                  = ("device :" string) | ("osx : (device: "string ") " [", linux: (device: "string ")" ] ) | ("linux: (device: "string ") " [", osx: (device:" string ")" ] )
+    description             = hidDict | midiDict
+    midiDict                = "(" symbol ":" midiNode [", " *(symbol ":" midiNode) ] ")"
+        midiArray           = "[" midiNode [", " *midiNode ] "]"
+        midiNode            = midiDict | midiArray | midiElem
+    hidDict                 = "(" symbol ":" hidNode [", " *(symbol ":" hidNode) ] ")"
+        hidArray            = "[" hidNode [", " *hidNode ] "]"
+        hidNode             = hidDict | hidArray | hidElem
+midiElem                    = midiElemFull | midiElemOnlyChan
+    midiElemFull            = "( midiMsgType:" midiMsgTypeFull ", midiChan:" int ", midiNum:" int ", spec:" symbol ", type:" type [", ioType:" ioType] [", mode:" mode] ")"
+        midiMsgTypeFull     = "\noteOnOff" | "\noteOn" | "\noteOff" | "\cc" | "\polytouch"
+    midiElemOnlyChan        = "( midiMsgType:" midiMsgTypeOnlyChan ", midiChan:" int ", spec:" symbol ", type:" type [", ioType:" ioType] [", mode:" mode] ")"
+        midiMsgTypeOnlyChan = "\bend" | "\touch"  | "\program"
+hidElem                     = "( \hidUsage:" int ", \hidUsagePage: " int ", spec:" symbol ", type:" type [", ioType:" ioType] [", mode:" mode] ")"
+    type                    = "\knob" | "\button" | "\key" | "\slider" | "\chantouch" | "\polytouch" | "\joyaxis" | "\hatswitch" | "\encoder" | "\pad"
+    mode                    = "\one-shot" | "\push" | "\minimum" | "\center" | "\toggle"
+    ioType                  = "\in" | "\out" | "\inout"
+
+int                         = digitFromOne *digitFromZero
+    digitFromZero           = "0" | digitFromOne
+        digitFromOne        = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+string                      = "\"" *char "\""
+char                        = %x01-7F
+
+::

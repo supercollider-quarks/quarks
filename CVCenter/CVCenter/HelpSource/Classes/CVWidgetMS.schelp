@@ -1,0 +1,133 @@
+TITLE:: CVWidgetMS
+summary:: a control-widget that can either be embedded in other views or opened as a standalone-widget, offering easy connections with external MIDI-/OSC-hard- and software.
+categories:: GUI, Conductor, External Control>MIDI, External Control>OSC
+related:: Classes/CVCenter, Classes/CV, Classes/CVWidget, Classes/CVWidgetKnob, Classes/CVWidget2D, Classes/CV, Classes/CCResponder, Classes/OSCresponderNode
+
+DESCRIPTION::
+A CVWidgetMS is widget that can be used to set e.g. emphasis::arrayed:: controls in running link::Classes/Synth::s, link::Classes/Ndef::s, link::Classes/ProxySpace:: slots, link::Classes/NodeProxy::s, link::Classes/Patch::es and other other values that can be set at runtime. Also it may be used in connection with link::Classes/Pattern::s. Typically it uses a link::Classes/ControlSpec:: that has more than one slot for its minval, maxval, default value or step-size.
+
+CLASSMETHODS::
+
+method:: new
+Create a new CVWidgetMS. To display the widget on screen you must call link::Classes/CVWidget#front#front:: on the resulting object.
+
+argument:: parent
+an instance of link::Classes/Window:: or link::Classes/View:: - optional. If none is given the it will be created internally.
+
+argument:: widgetCV
+an link::Classes/Array:: of link::Classes/CV::s - optional. If none is given it will be created internally. The array may hold an arbitrary number of link::Classes/CV::s.
+
+argument:: name
+a link::Classes/String:: or a link::Classes/Symbol:: - optional. If none is given the widget will be named "multislider".
+
+argument:: bounds
+a link::Classes/Rect:: - optional. If none is given the widget will be created with a default size.
+
+argument:: defaultAction
+optional - a link::Classes/Function:: or a link::Classes/String:: that compiles to one when link::Classes/String#-interpret#interpret:: is called on it. If an argument is added to the function it will provide the widget's link::Classes/CV::. E.g.: code::{ arg cv; cv.value.postln }:: 
+
+argument:: setup
+optional - an link::Classes/Event:: containing the following optional keys:
+
+definitionList::
+## midiMode || see link::Classes/CVWidget#-setMidiMode::. default: an link::Classes/Array:: with a size given in argument code::numSliders::, all slots filled with code::0::
+## midiMean || see link::Classes/CVWidget#-setMidiMean::. default: an link::Classes/Array:: with a size given in argument code::numSliders::, all slots filled with code::64::
+## midiResolution || see link::Classes/CVWidget#-setMidiResolution::. default: an link::Classes/Array:: with a size given in argument code::numSliders::, all slots filled with code::1::
+## softWithin || see link::Classes/CVWidget#-setSoftWithin::. default: an link::Classes/Array:: with a size given in argument code::numSliders::, all slots filled with code::0.1::
+## ctrlButtonBank || see link::Classes/CVWidget#-setCtrlButtonBank::. default: an link::Classes/Array:: with a size given in argument code::numSliders::, all slots filled with code::nil::
+## calibrate || see link::Classes/CVWidget#-setCalibrate::. default: an link::Classes/Array:: with a size given in argument code::numSliders::, all slots filled with code::true::
+::
+
+argument:: controllersAndModels
+if a widget wraps a link::Classes/CV:: that has been created within some CVWidget the models and controllers of that other widget can be added here. However, it is emphasis::not:: recommended to do so as there are specific methods that allow you to recreate widgets that have already been closed. See also link::Classes/CVWidget#-wdgtControllersAndModels::
+
+argument:: cvcGui
+a multi-purpose argument: usually you will not set anything here. It is used with the link::#-open:: method resp. link::Classes/CVCenter::. Within these it is used to pass in OSC-/MIDI-responders resp. the widgets MIDI-/OSC-environment. See also link::Classes/CVWidget#-midiOscEnv::
+
+argument:: persistent
+a multi-purpose argument: usually you will not set anything here. It is used with the link::#-open:: method resp. link::Classes/CVCenter::. Within these it is used to pass in OSC-/MIDI-responders resp. the widgets MIDI-/OSC-environment. See also link::Classes/CVWidget#-midiOscEnv::
+
+argument:: numSliders
+an link::Classes/Integer:: determining how many sliders the link::Classes/MultiSliderView:: shall have
+
+argument:: server
+only used for link::Classes/SwingOSC:: compatability (untested)
+
+returns:: this (a code::CVWidgetMS::)
+
+
+INSTANCEMETHODS::
+
+METHOD:: open
+If a widget has been created with the argument code::persistent:: set to true the user may reopen the widget with this method. This is basically a workaround due to the fact that GUIs in SuperCollider usually can't be opened again once they have been closed (even though executing the variable storing the the regarding object still returns the object). However, rather than reopening the old widget this method will create a new one, holding all properties, the CV and MIDI-/OSC-responders. In order to make this work as desired one should apply the following syntax where code::x:: holds the instance of the initially created widget:
+
+code::x = x.open // the old widget was stored in x which will afterwards hold the new widget::
+
+See example in link::Classes/CVWidget#reusable_widgets::
+
+argument:: window
+a link::Classes/Window:: or code::nil:: - if none is provided the window will be created internally
+
+argument:: wdgtBounds
+a link::Classes/Rect:: or code::nil:: - if none is provided the bounds of the old widget will be used.
+
+returns:: a code::CVWidgetMS::
+
+subsection:: GUI-elements
+
+METHOD:: mSlider
+A link::Classes/MultiSliderView::, displaying or setting the current value of the widget's link::Classes/CV::.
+
+returns:: a link::Classes/MultiSliderView::
+
+METHOD:: numVal
+A link::Classes/TextView::, displaying or setting the current value of the widget's link::Classes/CV:: as an link::Classes/Array:: of numbers (truncated to 2 decimal places).
+
+returns:: a link::Classes/TextView::
+
+METHOD:: midiBut
+A link::Classes/Button:: that opens the MIDI-tab of the widget's link::Classes/CVWidgetMSEditor:: (also executed by link::Classes/CVWidget#Shortcuts#shortcut:: 'm')
+
+returns:: a link::Classes/Button::
+
+METHOD:: oscBut
+A link::Classes/Button:: that opens the OSC-tab of the widget's link::Classes/CVWidgetMSEditor:: (also executed by link::Classes/CVWidget#Shortcuts#shortcut:: 'o')
+
+returns:: a link::Classes/Button::
+
+METHOD:: specBut
+A link::Classes/Button:: that opens the Spec-tab of the widget's link::Classes/CVWidgetMSEditor:: (also executed by link::Classes/CVWidget#Shortcuts#shortcut:: 's')
+
+returns:: a link::Classes/Button::
+
+METHOD:: actionsBut
+A link::Classes/Button:: that opens the Actions-tab of the widget's link::Classes/CVWidgetMSEditor:: (also executed by link::Classes/CVWidget#Shortcuts#shortcut:: 'a')
+
+returns:: a link::Classes/Button::
+
+METHOD:: calibViews
+A link::Classes/List:: of link::Classes/View::s, each displaying the current link::Classes/CVWidget#getCalibration#(OSC) calibration::-status of one slider within the multi-slider of the widget: green means calibration is active, red means it's currently off. The views are displayed as a bar beneath the multi-slider of the widget. 
+
+returns:: a link::Classes/List:: of link::Classes/View::s
+
+private:: init
+
+METHOD:: background
+Get or set the background-color of the widget. Tne setter for this method is implemented within CVWidgetMS while the getter is implemented as a global getter for all CVWidgets in link::Classes/CVWidget::. 
+
+argument:: color
+a link::Classes/Color::
+
+returns:: a link::Classes/Color:: (getter) or code::this:: (a code::CVWidgetMS::) (setter)
+
+METHOD:: stringColor
+Get or set the string-color of the widget. Tne setter for this method is implemented within CVWidgetMS while the getter is implemented as a global getter for all CVWidgets in link::Classes/CVWidget::. 
+
+argument:: color
+a link::Classes/Color::
+
+returns:: a link::Classes/Color:: (getter) or code::this:: (a code::CVWidgetMS::) (setter)
+
+EXAMPLES::
+
+See examples in link::Classes/CVWidget#examples::

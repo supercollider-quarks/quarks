@@ -1,0 +1,117 @@
+CLASS:: MassEditU
+summary:: Edit multiple units simultaneously.
+categories:: UnitLib
+related:: Classes/U
+
+DESCRIPTION::
+Mimicks a real U, but in fact edits multiple instances of U.
+
+CLASSMETHODS::
+
+METHOD:: new
+(describe method here)
+
+argument:: units
+(describe argument here)
+
+returns:: (returnvalue)
+
+
+INSTANCEMETHODS::
+
+METHOD:: units
+(describe method here)
+
+argument:: inUnits
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: argSpecs
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: autoUpdate
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: init
+(describe method here)
+
+argument:: inUnits
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: connect
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: disconnect
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: resetArg
+(describe method here)
+
+argument:: key
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: update
+(describe method here)
+
+argument:: obj
+(describe argument here)
+
+argument:: what
+(describe argument here)
+
+argument::  ... args
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: set
+(describe method here)
+
+argument::  ... args
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: defName
+(describe method here)
+
+argument:: newName
+(describe argument here)
+
+argument:: keepArgs
+(describe argument here)
+
+returns:: (returnvalue)
+
+
+EXAMPLES::
+
+code::
+// MassEditU:
+
+// create 10 similar units
+y = 10.collect({ U( \sine, [ \freq, 220 rrand: 880, \amp, 0.1 rrand: 0.5 ] ) });
+
+// show them all in a window
+w = Window("mass-edit", Rect(571, 101, 264, 381)).front;
+w.addFlowLayout;
+y.do(_.gui(w));
+
+// create a mass editor
+z = MassEditU( y );
+z.gui;
+
+::

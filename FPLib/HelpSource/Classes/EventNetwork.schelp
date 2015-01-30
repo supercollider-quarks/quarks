@@ -1,0 +1,340 @@
+CLASS:: EventNetwork
+summary:: Represents a functional event network which can be started and stopped at will.
+categories:: FP
+related:: Classes/EventSource, Classes/FPSignal
+
+description::
+
+A functional event network connects inputs to outputs using only pure functional entities: EventStreams and FPSignals. The bookkeeping of the inputs and outpus is done by a Monad, the EventNetwork description,  with "type"
+
+code::
+Writer( Unit, Tuple3([IO(IO())], [EventStream[IO[Unit]]], [IO] ) )
+                  eventHandlers       reactimates        IOLater
+::
+ The Do statements in the examples below are operating on this monad. Essentially this monad (which is a Writer monad) has only two operations either registering an input or registering an output. The Writer monad contains a tuple with 3 arrays:
+
+-  The first holds functions to register and deregister callback functions to obtain new events.
+
+- The second holds EventStreams that emit IO instances to be executed when the network is activated (i.e. the outputs ).
+
+- The third contains IOs to be executed at the moment the network is activated.
+
+ Inputs can be anything that has a callback function that is called everytime an event happens. Outputs are FPSignals or EventStreams carrying an IO instance. By calling .reactimate on the signal or event stream you get an EventNetwork entity that represents an output e.g. code::anEventStream.collect( putStrLn(_) ).reactimate::.
+
+The EventNetwork code is based on the reactive-banana library for Haskell.
+
+Inputs:
+
+GUIs - Subclasses of VIew -> .asENInput
+
+EventSource:asENInput
+
+FPSignal:asENInput
+
+ENTimer:asENInput
+
+MKtlElement:asENInput
+
+OSCFunc:asENInput
+
+Outputs:
+
+anything that responds to value_ -> es.connectEN(object)
+
+FPSignal:debug(label)
+EventSource:debug(label)
+
+other EventStream[IO[Unit]] or FPSignal[IO[Unit]] -> .reactimate
+
+After the NetworkDescription is assembled it can be compiled into an EventNetwork. This event network can then be activated (i.e. it will start processing incoming events) by calling code::myNetwork.actuate:: and it can be paused (i.e. incoming events are not processed ) by calling code::myNetwork.pause". actuate and pause are just IO instances.
+
+section::Examples
+
+
+
+GUI:
+
+code::
+(
+
+~slider = Slider().value_(0.3).front;
+//network
+~networkDescription = ENDef({
+    //inputs
+    var slSig = ~slider.enIn;
+    var r = slSig.collect(_*100);
+
+    r.collect{ |v| putStrLn(v) }.enOut;
+
+});
+//compile network
+~network = EventNetwork(~networkDescription, true);
+
+//start network
+~network.start;
+
+)
+::
+
+A counter:
+
+code::
+(
+
+~but1 = Button();
+~but2 = Button();
+~text = StaticText();
+
+w = Window(bounds:Rect(200,200,200,200)).layout_(
+        HLayout( ~but1, ~but2, ~text )
+    );
+
+//network
+~networkDescription = ENDef({
+    //inputs
+    var but1E = ~but1.enInES;
+	var but2E = ~but2.enInES;
+
+	var counter = but1E.collect{ { |x|x - 1 } }
+	.merge( but2E.collect{ { |x| x + 1 } } )
+	.injectF(0);
+
+	~text.enSink( counter.collect{ |x| [\string_, x] } );
+
+});
+//compile network
+~network = EventNetwork(~networkDescription, true);
+
+//start network
+~network.start;
+w.front;
+)
+::
+
+code::
+(
+//Setup GUI
+var sl1 = Slider();
+var sl2 = Slider();
+var sl3 = Slider();
+w = Window(bounds:Rect(200,200,200,200)).layout_(
+        HLayout( sl1, sl2 )
+    );
+
+//Setup Event Network
+//network
+~networkDescription = ENDef({
+    //inputs
+    var x = sl1.enIn;
+	var r = x.collect(_*100);
+    r.collect{ |v| putStrLn(v) }.enOut;
+	sl2.enSinkValue( x.collect{ |v| 1-v } );
+    x.collect{ |v| sl3.setPropIO(\moveTo, 100+(v*200), 300) }.enOut;
+});
+
+//compile network
+~network = EventNetwork(~networkDescription);
+
+//display guis and start network
+//move the left slider on the window with two sliders
+Do(
+    ~network.actuate;
+    w.frontIO;
+    sl3.frontIO
+)
+)
+::
+
+
+code::
+//convert Euros to Pounds
+//using signals
+(
+//Setup GUI
+var nb1 = NumberBox();
+var nb2 = NumberBox();
+
+w = Window(bounds:Rect(200,200,200,100)).layout_(
+	HLayout( StaticText().string_("Euro:"), nb1, StaticText().string_("Pound:"), nb2 )
+    );
+
+//Setup Event Network
+//network
+~networkDescription = ENDef({
+	var rate = 0.8;
+
+    //euros
+    var nb1S = nb1.enIn;
+	//pounds
+	var nb2S = nb2.enIn;
+
+	//euros to pounds
+	var to = { |x| x*rate }.lift.( nb1S );
+	//pounds to euros
+	var from = { |x| x/rate }.lift.( nb2S );
+
+	nb1.enSinkValue( from );
+	nb2.enSinkValue( to );
+
+});
+
+//compile network
+~network = EventNetwork(~networkDescription);
+
+//display guis and start network
+//move the left slider on the window with two sliders
+~network.start;
+w.front;
+)
+::
+
+Pure functional style:
+
+Note::You need to run this before running the examples:
+code::
+    IO.activate;
+    DoNotation.activate;
+::
+::
+
+code::
+(
+//inputs
+
+x = EventSource();
+y = Var(1.0);
+//collected all the reactimates
+~networkDescription = Do(
+	x <- x.asENInput;
+	y <- y.asENInput;
+	//outputs
+	x.collect{ |v| putStrLn(" es out : "++v) }.reactimate;
+	y.collect{ |v| putStrLn(" var out : "++v) }.reactimate
+);
+//compile network
+~network = EventNetwork(~networkDescription);
+//start network
+~network.actuate;
+)
+
+
+
+x.fire(1.0)
+y.value_(4.5)
+~network.pauseNow;
+//this is just for demonstration or testing
+//the idea is that you never have to call .fire yourself.
+::
+
+code::
+(
+
+~slider = Slider().value_(0.3).front;
+//network
+~networkDescription =
+	//inputs
+	~slider.asENInput >>= { |x|
+		var r = x.collect(_*100);
+		//outputs
+		r.collect{ |v| putStrLn(v) }.reactimate;
+	};
+//compile network
+~network = EventNetwork(~networkDescription);
+//start network
+~network.actuate;
+)
+
+~network.pause;
+::
+
+
+
+code::
+(
+//Setup GUI
+var sl1 = Slider();
+var sl2 = Slider();
+var sl3 = Slider();
+w = Window(bounds:Rect(200,200,200,200)).layout_(
+	    HLayout( sl1, sl2 )
+    );
+
+//Setup Event Network
+//network
+~networkDescription =
+	//inputs
+	sl1.asENInput >>= { |x|
+		var r = x.collect(_*100);
+		r.collect{ |v| putStrLn(v) }.reactimate >>=|
+		x.collect{ |v| 1-v }.connectEN(sl2) >>=|
+		x.collect{ |v| sl3.setPropIO(\moveTo, 100+(v*200), 300) }.reactimate;
+	};
+
+//compile network
+~network = EventNetwork(~networkDescription);
+
+//display guis and start network
+//move the left slider on the window with two sliders
+Do(
+	~network.actuate;
+	w.frontIO;
+	sl3.frontIO
+)
+)
+::
+
+MIDI:
+
+Using Modality toolkit
+
+code::
+(
+//Guis
+~slider = Slider().front;
+
+//MIDI
+//You need to have a NanoKONTROL connected for this to work
+k = MIDIMKtl('nnkn0');
+
+//network
+~networkDescription = Do(
+	//inputs
+	k.at(\sl_1_1).asENInput;
+	k.at(\sl_2_1).asENInput;
+	k.at(\sl_3_1).asENInput;
+
+	//outputs
+	x.collect{ |v| putStrLn(v*100) }.reactimate;
+	y.collect{ |v| putStrLn(v) }.reactimate;
+	z.collect{ |v| putStrLn(v) }.reactimate;
+	y.connectIO(~slider).reactimate;
+
+);
+
+~network = EventNetwork(~networkDescription);
+~network.actuate;
+)
+
+
+~network.actuate;
+~network.pause;
+::
+
+OSC:
+
+code::
+
+//send a "/slider" osc message to SuperCollider from somewhere else.
+(
+y = EventNetwork(
+    Do(
+        es <- OSCFunc.asENInput("/slider");
+        es.debug
+    )
+)
+)
+
+y.actuate;
+y.pause;
+::
+

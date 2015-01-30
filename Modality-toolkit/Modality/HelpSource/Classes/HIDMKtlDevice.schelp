@@ -1,0 +1,130 @@
+TITLE:: HIDMKtlDevice
+summary:: A class for creating and accessing external hid controllers
+categories:: Libraries>Modality, External Control
+related:: Overviews/Modality, Classes/MKtl, Classes/MKtlDevice, Classes/MKtlElement
+
+DESCRIPTION::
+HIDMKtlDevice provides an easy to use interface for HID devices you can connect to your computer. It can search for controllers connected to your computer, and gives you a list of available devices. Or, if you already know which controller you want to use, it will look through this list and returns you the controller with that name. If it cannot find it, it will replace it with a graphical representation of the controller to simulate it.
+
+For most devices, this requires that someone has already made a description file for the device; if there is none, it is easy to make one following the instructions here:
+link::Tutorials/How_to_create_a_description_file::
+
+More general info can be found in link::Classes/MKtl:: and link::Classes/MKtlDevice:: .
+
+
+
+CLASSMETHODS::
+
+private:: initialized, sourceDeviceDict, prepareDeviceDicts
+
+
+METHOD:: find
+Find all currently connected HID devices.
+
+argument:: post
+Whether or not to post about the found HID devices.
+
+
+METHOD:: postPossible
+Post all access code for device that could be used by name.
+
+
+METHOD:: protocol
+protocol name, \hid.
+
+
+METHOD:: initDevices
+Look for available HID devices.
+
+argument:: force
+Whether or not to do this again if it was already done before.
+
+METHOD:: getSourceName
+Ge the full device name from the short source name.
+
+argument:: shortName
+A Symbol as it shows up in the short names found by MKtl.find.
+
+METHOD:: findSource
+Find a source or destination with a given device product name and vendor name.
+
+argument:: rawDeviceName
+The device product name to search for.
+
+argument:: rawVendorName
+The device vendor name to search for.
+
+
+
+METHOD:: makeDeviceName
+Convenience method to create a device name from the information from link::Classes/HIDInfo:: to put in the device description.
+
+ARGUMENT:: hidinfo
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+
+METHOD::new
+
+Creates a new instance of HIDMKtlDevice.
+
+argument:: name
+The short name of the controller as it shows up in the list of found devices.
+
+argument:: path
+The path of the device to open (optional).
+
+argument:: parentMKtl
+The instance of link::Classes/MKtl:: that this MKtlDevice will belong to.
+
+
+INSTANCEMETHODS::
+
+private:: initHIDMKtl, setHIDActions, removeHIDActions
+
+METHOD:: closeDevice
+Close the device and clean up anything that it used.
+
+
+METHOD:: explore
+When opening a device that is not known yet by MKtl, you want to explore the device. See for a full tutorial: link::Tutorials/How_to_create_a_description_file::
+
+ARGUMENT:: mode
+a Boolean to turn this on or off.
+
+METHOD:: exploring
+Whether or not the device is currently being explored.
+
+
+METHOD:: createDescriptionFile
+Create and open a description file for this MKtlDevice, after exploring it.
+
+METHOD:: initElements
+Initialize all elements and hook them up to the hardware elements.
+
+
+METHOD:: cleanupElements
+De-initialize all elements.
+
+
+METHOD:: send
+Send the value of the element to the MIDI device; called if you set the value of an MKtlElement that is an output.
+
+argument:: key
+The key of the element.
+
+argument:: val
+The value to which it is set.
+
+
+
+METHOD:: srcID
+The uid of the source.
+
+
+METHOD:: srcDevice
+The link::Classes/HID:: device that is the source for this HIDMKtlDevice.
+
+returns:: an instance of link::Classes/HID::
+

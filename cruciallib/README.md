@@ -1,5 +1,13 @@
 # crucial library
 
+Support for this repository will end with 4.1.4
+
+Point any dependencies to the main distribution at:
+
+https://github.com/crucialfelix/crucial-library
+
+This quark was named 'cruciallib' but the up to date (and correctly named) quark is 'crucial-library'
+
 
 Classes for [SuperCollider](http://github.com/supercollider/supercollider)
 
@@ -37,5 +45,3 @@ Classes for [SuperCollider](http://github.com/supercollider/supercollider)
 
 * __InstrSpawner__ — similar to Pbind for Instr
 * __InstrGateSpawner__ — similar to Pbind for Instr
-
-

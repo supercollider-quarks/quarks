@@ -1,0 +1,87 @@
+TITLE:: MIDIExplorer
+summary:: Explore a MIDI device
+categories:: Libraries>Modality
+related::  Overviews/Modality, Reference/MKtl_description_files
+
+DESCRIPTION::
+The functionality of link::Classes/MKtl:: relies on descriptions of the used devices. For some Controllers, and while many descriptions are already available, your device may not yet be among them.
+With MIDIExplorer, it is easy to create such a file for a MIDI device.
+For more info on how to use it, see  link::Tutorials/How_to_create_a_description_file::.
+
+code::
+MKtl.find(\midi);
+
+// to pick a specific device you want to explore:
+MIDIExplorer.postSrcInfo;
+
+// and enter its uid here
+MIDIExplorer.start( paste_uid_here );
+
+// or to get the uid of e.g. the first connected HID:
+MIDIClient.sources[0].uid.postln;
+MIDIExplorer.start(MIDIClient.sources[0].uid);
+
+// if only a single device is connected, you can also just do
+MIDIExplorer.start;
+
+// check we are listening to the intended device only:
+MIDIExplorer.observedSrcID;
+MIDIExplorer.devName;
+
+
+// now play with all elements to generate info for the device.
+// To get info for every incoming control, do:
+MIDIExplorer.verbose = true;
+// to post only an overview/count when a new one comes in:
+MIDIExplorer.verbose = false;
+
+// if no more new controllers are found, do:
+MIDIExplorer.openDoc;
+MIDIExplorer.compile;
+
+// and save here:
+MKtl.deviceDescriptionFolder.openOS;
+
+MKtl.openDescFolder;
+
+(\name
+::
+
+CLASSMETHODS::
+
+METHOD:: postSrcInfo
+post info on currently available sources, mainly to access uid number.
+
+METHOD:: start
+start exploration, i.e. collecting statistics on all incoming MIDI messages.
+
+ARGUMENT:: srcID
+an optional source ID - if not nil, only messages from the identified source will be collected.
+
+METHOD:: postObs
+post info on the current state of observation
+
+METHOD:: stop
+stop exploration.
+
+METHOD:: compile
+compile the discovered elements as an evaluable string, which can be saved as a description file, and then read as a description dict.
+
+ARGUMENT:: includeSpecs
+
+returns:: a String containing a a dict which works as a description, and contains raw list of elements
+
+METHOD:: openDoc
+opens a new document containing a description string made with MIDIExplorer.compile.
+
+
+METHOD:: verbose
+flag whether to print values when collecting.
+
+METHOD:: shutUp
+set verbose to false
+
+METHOD:: allMsgTypes
+list of midi message types to catch
+
+private:: observeDict, observedSrcID, prepareObserve, resps, totalSum, updateRange, results

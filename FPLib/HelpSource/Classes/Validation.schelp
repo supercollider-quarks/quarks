@@ -1,0 +1,21 @@
+title::Validation
+summary:: Applicative error handling
+categories::FP
+
+Examples::
+code::
+
+{ |x,y| x+y } <%> "oops".fail <*> 3.success
+{ |x,y| x+y } <%> 2.success <*> 3.success
+{ |x,y| x+y } <%> "oops".fail <*> "arghh".fail
+{ |x,y| x+y } <%> ["oops"].fail <*> ["arghh"].fail
+{ |x,y| x+y } <%> "oops".failLL <*> "arghh".failLL
+
+[2.success, "ouch".fail, 4.success].sequence
+[2.success, 6.success, 4.success].sequence
+
+
+3.success >>= { |x| if(x < 4) { (x/2).success } { "x is not smaller then 4".fail } }
+3.success >>= { |x| if(x < 1) { (x/2).success } { "x is not smaller then 4".fail } }
+"no value".fail >>= { |x| if(x < 4) { (x/2).success } { "x is not smaller then 4".fail } }
+::

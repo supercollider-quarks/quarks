@@ -1,0 +1,189 @@
+CLASS:: MIDIClockOut
+summary:: a Player that sends MIDI Clock Out
+categories:: External Control>MIDI, Libraries>crucial>MIDI, Libraries>crucial>Scheduling
+
+
+DESCRIPTION::  As a player this produces no audio, but emits MIDI Clock.  It can be simply played and it will start sending.  It can be added to a PlayerMixer and it will play in synch with the other players.
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+The device and port will be looked up by name. see link::Classes/MIDIOut:: *newByName
+If nil, it will default to use the first connected midi destination.
+
+argument:: deviceName
+
+
+argument:: portName
+
+argument:: tempoClock
+defaults to the global default TempoClock
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: sched
+
+
+
+METHOD:: port
+
+
+
+METHOD:: isPlaying
+
+
+
+METHOD:: play
+at the start of the next bar (according to the default TempoClock)
+	send a song position pointer of 0 and start sending MIDI clocks
+
+
+METHOD:: start
+
+
+
+METHOD:: next
+
+
+
+METHOD:: stop
+stop sending MIDI clocks, effective immediately
+
+
+METHOD:: prepareToBundle
+
+
+argument:: group
+
+
+argument:: b
+
+
+
+METHOD:: stopToBundle
+
+
+argument:: b
+
+
+
+METHOD:: synthArg
+
+
+
+METHOD:: cmdPeriod
+
+
+
+METHOD:: destroy
+
+
+
+
+EXAMPLES::
+
+code::
+m = MIDIClockOut.new;
+
+m.play
+
+Tempo.bpm = 140
+
+Tempo.bpm = 100
+
+Tempo.bpm = 80
+
+// change tempo using the slider
+Tempo.default.gui
+
+m.stop
+
+::
+
+
+Command-period will send a midi clock stop and stop sending further clocks.
+
+Changing song position pointer is not yet supported, though its possible.
+
+
+Sending to other applications in OS X
+
+First see MIDIOut regarding IAC busses
+
+code::
+m = MIDIClockOut( "IAC Driver", "IAC Bus 1");
+
+m.play
+
+Tempo.bpm = 140
+
+Tempo.bpm = 60
+
+Tempo.bpm = 20
+
+
+m.stop
+
+::
+
+
+section:: Slaving Ableton
+
+In Ableton Live enable the IAC Bus as an input.
+On that input, enable Sync
+
+In the main arrange page you should see the midi clock light on the left side blinking on the beat.
+Click EXT to slave to that external.
+
+Turn on the Ableton metronome
+
+open the tempo gui:
+
+code::
+Tempo.default.gui
+::
+
+and turn on that metronome too.  You should be able to hear the exact time difference.
+
+In Ableton's preferences you can adjust the MIDI Clock Sync Delay.
+I found 68.0ms to be about right.
+
+
+Note that different approaches to server latency on the SC side might require you to use a different sync value.
+crucial Players aim to always play on the server at the logical time specified by the default TempoClock, without any added latency.  In other words I always make sure that the SC language is scheduling and sending bundles ahead of time with the intention of arriving and executing on time.
+
+
+section:: Song Position Ptr
+
+Currently it starts playing at 0 and keeps on going.  No relocate yet.
+I'm thinking about the best way to handle this in a global SC fashion.
+Something like TempoClock where there is a default global timeline and that can be relocated and will send notifications for interested parties that also need to relocate themselves.  MIDIClockOut would then listen for those notifications.
+The main problem is that TempoClock doesn't like to be relocated to a different beat.
+
+
+section:: Player compatibility
+
+It will behave like a player if placed inside a player structure (it will play when told to, stop when told to)
+
+code::
+(
+p = PlayerMixer([
+		Patch({ arg tempo;
+			Impulse.ar( tempo )
+		}
+		,[
+			TempoPlayer.new
+		]),
+		MIDIClockOut("IAC Driver", "IAC Bus 1")
+	]);
+
+p.play(atTime: 1)
+)
+::
+
+

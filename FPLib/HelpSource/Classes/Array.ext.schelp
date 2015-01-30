@@ -1,0 +1,98 @@
+INSTANCEMETHODS::
+
+subsection:: Extensions from FP Lib
+
+method:: collectAccum
+
+The collectAccum function behaves like a combination of collect and inject; it applies a function to each element of an array, passing an accumulating parameter from left to right, and returning a final value of this accumulator together with the new array.
+
+argument:: init
+Initial state
+
+s
+argument:: f
+A function with first argument the previous value of the state, second argument the value from the array. It should return a Tuple2 with the new value of the state and a new value for the final array.
+
+s -> b -> (s, c)
+
+returns:: T( s, [ c ] )
+
+discussion::
+
+code::
+[x1, x2, ...].collectAccum(z, f) == T( f.( ... f.( f.(z,x1).at1, x2).at1 ... ).at1, [ f.(z,x1).at2, f.( f.(z,x1).at1, x2).at2, ...]
+::
+
+
+
+method:: scan
+
+scanl is similar to inject, but returns a list of successive reduced values.
+
+argument:: init
+initial value
+
+s
+
+argument::f
+function to combine the current state with the element of the array
+s -> a -> s
+
+returns:: [s]
+
+discussion::
+
+code::
+[x1, x2, ...].scan(z, f) == [z,  f.(z,x1), f.( f.(z,x1), x2), ...]
+::
+
+method:: mreduce
+
+Fold a list using the monoidal zero and the monoidal binary operation
+
+discussion::
+
+code::
+["hello"," world"].mreduce
+[[1,2,3],[4,5,6]].mreduce
+[(1:2),(3:4)].mreduce
+::
+
+method:: asLazy
+
+convert to LazyList
+
+method:: atOption
+
+if the index is valid return code::Some(element):: if not return code::None()::
+
+argument:: i
+index
+
+
+method:: catOptions
+
+Transform an array of options into an array of values by dropping the code::None():: values.
+
+discussion::
+
+code::
+[Some(1), Some(2), None()].catOptions
+[None()].catOptions
+::
+
+
+method:: catOptions2
+
+	Transform an array of options into an array of values by dropping the code::None():: values. If the array is empty returns code::None():: otherwise returns code::Some( xs ):: .
+
+discussion::
+
+code::
+[Some(1), Some(2), None()].catOptions2
+[].catOptions2
+::
+
+method:: traverse
+
+traverse an array with effects using applicative functors. see link::http://hackage.haskell.org/package/base-4.7.0.0/docs/Data-Traversable.html#t:Traversable#the haskell documentation::

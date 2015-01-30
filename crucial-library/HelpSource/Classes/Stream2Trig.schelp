@@ -1,0 +1,86 @@
+CLASS:: Stream2Trig
+summary:: a 'control' rate player that takes a stream of durations and emits triggers
+categories:: Libraries>crucial>Players
+related:: Classes/StreamKrDur, Classes/SimpleTrigger
+
+DESCRIPTION:: Take a pattern and use it as a stream of values for a trigger.  This plays the pattern in real time on the client, and sends messages to the server.
+
+
+code::
+(
+Instr(\Stream2Trig, {arg gate=0.0,freq=440,env;
+	p = Pulse.ar(freq,LFNoise1.kr(0.1).abs,0.5);
+	Enveloper2.ar(p,gate,env,2,2);
+},[
+	nil,
+	nil,
+	\envperc
+]);
+
+Patch.new(\Stream2Trig,
+[
+	Stream2Trig(
+		Pseq([
+			Prand([1,1,1,1,1,0,0,0,0],2)],inf),
+		Pseq([0.25,0.25,0.25,0.125,0.125],inf)
+	),
+	StreamKrDur(Pseq( Array.rand(16,30,50).midicps,inf ), 0.25,0.1 )
+]).gui
+
+)
+::
+
+code::
+(
+
+Patch.new(\Stream2Trig,
+[
+	Stream2Trig(
+		Pseq([
+			Pn(Pshuf([1,0,1,0],4),3),
+			Pshuf([0.2,0,0.2,0],4)],inf),
+		Pseq([0.25,0.25,0.25,0.125,0.125],inf)
+	),
+	84
+]).gui
+)
+::
+
+A nice sequel would be to make a class that also takes a gate duration stream
+(in beats or legato), so that the gate will stay open for that long.
+
+CLASSMETHODS::
+
+METHOD:: new
+
+argument::levels
+	A stream of values for the level of each trigger
+	1.0
+	Prand([1,0],inf)
+	{ 1.0.rand }
+	`[ 1,0,1,0,] // Ref converted into Pseq([1,0,1,0],inf)
+
+
+argument:: deltas
+	A stream of values for the delta in beats between each trigger.
+	0.25
+	Prand([0.25,0.5],inf)
+	FuncStream({ rrand(0.125,16.0) })
+	`[1.0,0.25,0.5] // Ref
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: instrArgFromControl
+
+
+argument:: control
+
+
+METHOD:: poll
+
+
+METHOD:: spec
+
+

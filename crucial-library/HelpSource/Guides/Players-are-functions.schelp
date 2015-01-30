@@ -1,0 +1,19 @@
+title:: AbstractPlayers are functions
+summary:: Function support and composition with players
+categories:: Libraries>crucial>Players
+
+AbstractPlayer  is a subclass of AbstractFunction
+therefore you can do math with them:
+
+code::
+//right now this works, but only with simple ugenGraphs, no Samples,Envs etc.
+(Patch({ Saw.ar(400) }).wrap2( 0.5) ).gui
+
+
+// not yet
+(Patch({ Saw.ar(400) }).wrap2( KrNumberEditor(0.5,[0.0,1.0]) ) ).gui
+
+//(somePatch * EnvPlayer.new(Env.newClear(10)) ).topGui
+
+::
+

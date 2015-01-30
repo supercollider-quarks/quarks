@@ -1,0 +1,293 @@
+TITLE:: NNdef
+summary:: NNdef = Ndef + FRP
+categories:: FP, FRP
+related:: Classes/Ndef, Classes/FPSignal, Classes/EventSource, Classes/EventNetwork
+
+DESCRIPTION::
+
+NNdef is a child class of link::Classes/Ndef:: that attaches an FRP event network onto every Ndef source. The event network is reconstructed every time the Ndef source is changed. The connection of the elements of the FRP event network to the audio UGens is done using the link::Classes/FPSignal#enKr:: and  link::Classes/EventSource#enKr:: methods. This method returns a link::Classes/NamedControl:: which the frp element will automatically update.  Using code:: myfpsignal.enKr:: is therefore analogous to code::\freq.kr::.
+
+CLASSMETHODS::
+
+PRIVATE::buildFRPControlNum,buildCurrentNNdefKey,buildControls,eventNetworkBuilder,buildFRPControlIndex,nextControl
+
+
+INSTANCEMETHODS::
+
+
+PRIVATE::eventNetworks, frpControls, clear, put
+
+EXAMPLES::
+
+These examples use the Kork NanoKontrol. If you don't have one available, a gui will be automatically created.
+
+Let's start with normal NNdef without midi controls:
+code::
+(
+NNdef(\test, {
+
+	RLPF.ar( Pulse.ar(400), LFNoise1.ar(1).range(1000,4000), 0.1 ) * 0.1.dup
+
+}).play
+)
+::
+
+We will now control the amplitude with the first slider of the first page of the nanokontrol. First we get the MKtlElement for the slider with code::k[\sl][page][column]::. Then we create an frp signal element with enIn. Finally we connect the FPSignal to a NamedControl using code::.enKr::.
+
+code::
+(
+NNdef(\test, {
+	var k = MIDIMKtl('nnkn0').elements;
+
+	var page = 0;
+	var column = 0;
+	var amp = k[\sl][page][column].enIn.enKr(lag: 0.1);
+
+	RLPF.ar( Pulse.ar(400), LFNoise1.ar(1).range(1000,4000), 0.1 ) * 0.1.dup * amp
+
+}).play
+)
+::
+
+
+
+We can also control the frequency of the oscilator with a second slider. In this case we will specify a spec to be applied to the values.
+
+code::
+(
+NNdef(\test, {
+	var k = MIDIMKtl('nnkn0').elements;
+
+	var page = 0;
+	var amp = k[\sl][page][0].enIn.enKr(lag: 0.1);
+	var freq = k[\sl][page][1].enIn.enKr(lag: 0.1, spec: \freq.asSpec);
+
+	RLPF.ar( Pulse.ar(freq), LFNoise1.ar(1).range(1000,4000), 0.1 ) * 0.1.dup * amp
+
+}).play
+)
+::
+
+We can post values for debugging by supplying a label to link::Clsses/FPSignal#enDebug:: :
+
+code::
+(
+NNdef(\test, {
+	var k = MIDIMKtl('nnkn0').elements;
+
+	var page = 0;
+	var amp = k[\sl][page][0].enIn.enDebug("amp").enKr(lag: 0.1);
+	var freq = k[\sl][page][1].enIn.enDebug("freq").enKr(lag: 0.1, spec: \freq.asSpec);
+
+	RLPF.ar( Pulse.ar(freq), LFNoise1.ar(1).range(1000,4000), 0.1 ) * 0.1.dup * amp
+
+}).play
+)
+::
+
+It's also possible to explicitely set the name of the controls. This is useful for storing presets with link::Classes/NdefMixer::.
+
+code::
+(
+NNdef(\test, {
+	var k = MIDIMKtl('nnkn0').elements;
+
+	var page = 0;
+	var amp = k[\sl][page][0].enIn.enDebug("amp").enKr(lag: 0.1, key:\amp);
+	var freq = k[\sl][page][1].enIn.enDebug("freq").enKr(lag: 0.1, key:\freq, spec: \freq.asSpec);
+
+	RLPF.ar( Pulse.ar(freq), LFNoise1.ar(1).range(1000,4000), 0.1 ) * 0.1.dup * amp
+
+}).play
+)
+//check in NdefMixer
+NdefMixer(s)
+::
+
+Using the buttons as a sequencer:
+
+code::
+(
+NNdef(\test, {
+	var k = MIDIMKtl('nnkn0').elements;
+
+	var page = 0;
+	var amp = k[\sl][page][0].enIn.enDebug("amp").enKr(lag: 0.1);
+	var freq = k[\bt][page].flat.collect{ |mktlElement,i|
+		var freq0 = 440 * (2**(i/12));
+		mktlElement.enInES.collect{ freq0 }
+	}.mreduce.enDebug("freq").enKr(lag: 0.1);
+
+	RLPF.ar( Pulse.ar(freq), LFNoise1.ar(1).range(1000,4000), 0.1 ) * 0.1.dup * amp
+
+}).play
+)
+::
+
+Percussive version using link::Classes/EventSource#enTr:: which creates a link::Classes/TrigControl:::
+
+code::
+(
+NNdef(\test, {
+	var k = MIDIMKtl('nnkn0').elements;
+
+	var page = 0;
+	var amp = k[\sl][page][0].enIn.enDebug("amp").enKr(lag: 0.1);
+	var buttons = k[\bt][page].flat;
+	var freqES = buttons.collect{ |mktlElement,i|
+		var freq0 = 440 * (2**(i/12));
+		mktlElement.enInES.collect{ freq0 }
+	}.mreduce.enDebug("freq");
+	var freq = freqES.enKr(lag: 0.1);
+
+	var env = EnvGen.kr( Env.perc, freqES.enTr );
+
+	RLPF.ar( Pulse.ar(freq), LFNoise1.ar(1).range(1000,4000), 0.1 ) * 0.1.dup * amp * env
+
+}).play
+)
+::
+
+
+Adding sliders for the LFNoise1 range:
+
+code::
+(
+NNdef(\test, {
+	var k = MIDIMKtl('nnkn0').elements;
+
+	var page = 0;
+	var amp = k[\sl][page][0].enIn.enDebug("amp").enKr(lag: 0.1);
+	var freq = k[\bt][page].flat.collect{ |mktlElement,i|
+		var freq0 = 440 * (2**(i/12));
+		mktlElement.enInES.collect{ freq0 }
+	}.mreduce.enDebug("freq").hold(440).postln.enKr(lag: 0.1);
+	var lo = k[\sl][page][1].enIn.enDebug("lo").enKr(lag: 0.1, spec: \freq);
+	var hi = k[\sl][page][2].enIn.enDebug("hi").enKr(lag: 0.1, spec: \freq);
+
+	RLPF.ar( Pulse.ar(freq), LFNoise1.ar(1).range(lo,hi), 0.1 ) * 0.1.dup * amp
+
+}).play
+)
+::
+
+if play button is pressed we use higher octave. code:: { |octave, e| octave*freq0 } <%> octaveSig <@> mktlElement.enInES;:: work such that it only fires an event when code::mktlElement.enInES:: changes.
+
+code::
+(
+NNdef(\test, {
+	var k = MIDIMKtl('nnkn0').elements;
+	var page = 0;
+
+	var octaveSig = k[\play].enIn.collect(_+1);
+
+	var amp = k[\sl][page][0].enIn.enDebug("amp").enKr(lag: 0.1);
+
+	var freq = k[\bt][page].flat.collect{ |mktlElement,i|
+		var freq0 = 100 * (2**(i/12));
+		{ |octave, e| octave*freq0 } <%> octaveSig <@> mktlElement.enInES;
+	}.mreduce.enDebug("freq").hold(100).postln.enKr(lag: 0.1);
+
+	var lo = k[\sl][page][1].enIn.enDebug("lo").enKr(lag: 0.1, spec: \freq);
+	var hi = k[\sl][page][2].enIn.enDebug("hi").enKr(lag: 0.1, spec: \freq);
+
+	RLPF.ar( Pulse.ar(freq), LFNoise1.ar(1).range(lo,hi), 0.1 ) * 0.1.dup * amp
+
+}).play
+)
+::
+
+Use arrow keys to switch octave:
+
+code::
+(
+NNdef(\test, {
+	var k = MIDIMKtl('nnkn0').elements;
+	var page = 0;
+
+	var octaveUpES = k[\fwd].enInES.select(_==1).collect{ {|x| (x+1).min(3) } };
+	var octaveDownES = k[\rew].enInES.select(_==1).collect{ {|x| (x-1).max(-3) } };
+
+	var octaveSig = (octaveUpES | octaveDownES).injectFSig(0).enDebug("octave");
+
+	var amp = k[\sl][page][0].enIn.enDebug("amp").enKr(lag: 0.1);
+
+	var freq = k[\bt][page].flat.collect{ |mktlElement,i|
+		var freq0 = 440 * (2**(i/12));
+		{ |octave, e| (2**octave)*freq0 } <%> octaveSig <@> mktlElement.enInES;
+	}.mreduce.enDebug("freq").hold(100).postln.enKr(lag: 0.1);
+
+	var lo = k[\sl][page][1].enIn.enDebug("lo").enKr(lag: 0.1, spec: \freq);
+	var hi = k[\sl][page][2].enIn.enDebug("hi").enKr(lag: 0.1, spec: \freq);
+
+	RLPF.ar( Pulse.ar(freq), LFNoise1.ar(1).range(lo,hi), 0.1 ) * 0.1.dup * amp
+
+}).play
+)
+::
+
+If play is pressed amp slider is in 'zoom' mode:
+
+code::
+(
+NNdef(\test, {
+	var k = MIDIMKtl('nnkn0').elements;
+	var page = 0;
+
+	var freqSig; //for recursive use
+	var freq, amp;
+
+	var zoom = k[\play].enInES.collect{ |x| x * freqSig.now }.hold(0);
+
+	var freqSliderSig = k[\sl][page][1].enIn;
+
+	freqSig = { |slider, zoom|
+		if(zoom != 0) {
+			zoom * slider.linlin(0.0,1.0,0.9,1.1)
+		} {
+			slider
+		}
+	}.lift.(freqSliderSig,zoom)
+	.enDebug("freq");
+
+	freq = freqSig.enKr(lag: 0.1, spec: \freq.asSpec);
+
+	amp = k[\sl][page][0].enIn.enDebug("amp").enKr(lag: 0.1);
+
+	RLPF.ar( Pulse.ar(freq), LFNoise1.ar(1).range(1000,4000), 0.1 ) * 0.1.dup * amp
+
+}).play
+)
+::
+
+Another way of doing the same using link::Classes/FPSignal#when:: :
+
+code::
+(
+NNdef(\test, {
+	var k = MIDIMKtl('nnkn0').elements;
+	var page = 0;
+
+	var freqSig; //for recursive use
+	var freq, amp;
+
+	var freqSliderES = k[\sl][page][1].enInES;
+
+	var zoomBool = k[\play].enInES.collect(_.booleanValue).enDebug("zoomBool");
+	var zoomBoolSig = zoomBool.hold(false);
+	var lastValue = zoomBool.select(I.d).collect{ freqSig.now }.hold(0.5).enDebug("lastValue");
+	var zoomMode = when(zoomBoolSig, { |a,b|a*b.linlin(0.0,1.0,1/1.01,1.01) } <%> lastValue <@> freqSliderES );
+	var normalMode = when(zoomBoolSig.collect(_.not), freqSliderES);
+
+	freqSig = (zoomMode | normalMode).hold(0.5)
+	.enDebug("freq");
+
+	freq = freqSig.enKr(lag: 0.1, spec: \freq.asSpec);
+
+	amp = k[\sl][page][0].enIn.enDebug("amp").enKr(lag: 0.1);
+
+	RLPF.ar( Pulse.ar(freq), LFNoise1.ar(1).range(1000,4000), 0.1 ) * 0.1.dup * amp
+
+}).play
+)
+::

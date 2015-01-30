@@ -1,0 +1,228 @@
+CLASS:: BufferProxy
+summary:: allocates a Buffer on play
+categories:: Libraries>crucial>Buffers
+related:: Classes/Sample
+
+DESCRIPTION:: Allocates and supplies a buffer for use in Patches.  The buffer is unfilled, suitable for recording, looping, overdubbing or reverbs.
+
+See link::Classes/Sample:: (a subclass of BufferProxy) if you need to load soundfiles.
+
+code::
+(
+
+Instr([\recordPlay,\JemAudioIn], {arg buffer, input, trigRate = 0.5,offOn = 1, pitch = 1, start = 0;
+	var offset,trig;
+	trig = Impulse.kr(trigRate);
+	RecordBuf.ar(input,buffer.bufnumIr, run: offOn,trigger: trig);
+	offset = start * buffer.bufFramesKr;
+	PlayBuf.ar(buffer.numChannels,buffer.bufnumIr,pitch,trig,offset,loop: 1);
+
+},[
+	BufferProxySpec(44100,2),
+	AudioSpec.new(2),
+	[0.25,10,\linear],
+	\unipolar,
+	[-5,5,\linear],
+	\unipolar
+]);
+
+
+Patch([\recordPlay,\JemAudioIn],[
+	BufferProxy(44100 * 4, 2), // 4 secs in stereo
+	AudioInPlayer.new
+]).gui
+
+)
+::
+
+Make sure your audio input and buffer numChannels match.
+
+an argName of spec symbol of \buffer will create a BufferProxySpec with the default 44100 frames (1 second).
+you can place a BufferProxySpec and specify any default size you would like.
+
+this is the DEFAULT that will be used if you DON'T specify an input to a Patch.  Usually you pass in a BufferProxy to the patch that is the size that you wish.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+argument:: numFrames
+
+
+argument:: numChannels
+
+
+argument:: sampleRate
+
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: buffer
+
+
+
+METHOD:: patchOut
+
+
+
+METHOD:: readyForPlay
+
+
+
+METHOD:: server
+
+
+
+METHOD:: size
+
+
+
+METHOD:: numChannels
+
+
+
+METHOD:: sampleRate
+
+
+
+METHOD:: forArgi
+
+
+
+METHOD:: storeArgs
+
+
+
+METHOD:: prepareToBundle
+
+
+argument:: group
+
+
+argument:: bundle
+
+
+
+METHOD:: makePatchOut
+
+
+
+METHOD:: free
+
+
+
+METHOD:: freeToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: freePatchOutToBundle
+
+
+argument:: bundle
+
+
+
+METHOD:: freeHeavyResources
+
+
+
+METHOD:: initForSynthDef
+
+
+argument:: synthDef
+
+
+argument:: argi
+
+
+
+METHOD:: numFrames
+
+
+
+METHOD:: bufnum
+
+
+
+METHOD:: asUgenInput
+
+
+
+METHOD:: synthArg
+
+
+
+METHOD:: bufnumIr
+
+
+
+METHOD:: bufnumKr
+
+
+
+METHOD:: sampleRateIr
+
+
+
+METHOD:: sampleRateKr
+
+
+
+METHOD:: bufRateScaleKr
+
+
+
+METHOD:: bufRateScaleIr
+
+
+
+METHOD:: bufFramesKr
+
+
+
+METHOD:: bufFramesIr
+
+
+
+METHOD:: bufSamplesKr
+
+
+
+METHOD:: bufSamplesIr
+
+
+
+METHOD:: bufDurKr
+
+
+
+METHOD:: bufDurIr
+
+
+
+METHOD:: bufChannelsKr
+
+
+
+METHOD:: bufChannelsIr
+
+
+
+METHOD:: rate
+
+
+
+METHOD:: spec
+
+
+
+
+
+

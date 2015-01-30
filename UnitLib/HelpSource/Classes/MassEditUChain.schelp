@@ -1,0 +1,274 @@
+CLASS:: MassEditUChain
+summary:: Edit multiple UChains simultaneously.
+categories:: UnitLib
+related:: Classes/U, Classes/UChain
+
+DESCRIPTION::
+Mimicks a real UChain, but in fact edits multiple instances of UChain.
+
+
+CLASSMETHODS::
+
+METHOD:: new
+(describe method here)
+
+argument:: uchains
+(describe argument here)
+
+returns:: (returnvalue)
+
+
+INSTANCEMETHODS::
+
+METHOD:: uchains
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: units
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: prepareTasks
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: init
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: connect
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: disconnect
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: groups
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: releaseSelf
+(describe method here)
+
+argument:: bool
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: fadeOut
+(describe method here)
+
+argument:: fadeOut
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: fadeIn
+(describe method here)
+
+argument:: fadeIn
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: useSndFileDur
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: getMaxDurChain
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: dur
+(describe method here)
+
+argument:: dur
+(describe argument here)
+
+argument:: clipFadeIn
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: duration
+(describe method here)
+
+argument:: x
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: startTime
+(describe method here)
+
+argument:: newTime
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: setGain
+(describe method here)
+
+argument:: gain
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: getGain
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: start
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+argument:: latency
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: free
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: stop
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: release
+(describe method here)
+
+argument:: time
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: prepare
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+argument:: loadDef
+(describe argument here)
+
+argument:: action
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: prepareAndStart
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+argument:: loadDef
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: waitTime
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: prepareWaitAndStart
+(describe method here)
+
+argument:: target
+(describe argument here)
+
+argument:: loadDef
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: dispose
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: at
+(describe method here)
+
+argument:: index
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: last
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: first
+(describe method here)
+
+returns:: (returnvalue)
+
+METHOD:: printOn
+(describe method here)
+
+argument:: stream
+(describe argument here)
+
+returns:: (returnvalue)
+
+METHOD:: gui
+(describe method here)
+
+argument:: parent
+(describe argument here)
+
+argument:: bounds
+(describe argument here)
+
+returns:: (returnvalue)
+
+
+EXAMPLES::
+
+code::
+
+// create 10 similar uchains
+(
+y = 10.collect({
+	UChain(
+		[
+			[ \sine, [ \freq, 220 rrand: 880, \amp, 0.1 rrand: 0.5 ] ],
+			[ \whitenoise, [ \amp, 0.1 rrand: 0.5 ] ]
+		].choose,
+		\output
+	)
+	.dur_( 2 rrand: 10 )
+	.setGain( -10 rrand: 10 );
+});
+
+
+)
+
+// show them all in a window
+w = Window("mass-edit", Rect(571, 101, 360, 381), scroll: true).front;
+w.addFlowLayout;
+y.do(_.gui(w));
+
+// create a mass editor
+z = MassEditUChain( y );
+z.gui;
+::

@@ -25,7 +25,7 @@ CODE::
 API("server").mountOSC;
 
 // send OSC message:
-// '/API/server/boot' "default"
+// '/server/boot' "default"
 ::
 
 STRONG::via the duplex OSC interface (call and response)::
@@ -43,7 +43,7 @@ CODE::
 // supercollider
 API.mountDuplexOSC;
 
-// start the webserver
+// start the web and websocket server
 node api_server.js
 
 // point browser at http://localhost:4040
@@ -118,7 +118,7 @@ API 2 always passes in a { arg reply; } callback function while API 1 just used 
 
 API 1 was a bit more confusing to use though for the call and response stuff.
 
-Your old APIs should you have any would take just a few minutes to add in the callback, or you can continue to use the old methods:
+Your old APIs, should you have any, would take just a few minutes to add in the callback, or you can continue to use the old methods:
 
 CODE::
 oldCall
@@ -133,7 +133,7 @@ METHOD:: new
 
 ARGUMENT:: name
 apiname eg. "server" "synthdef"
-Convention is lowercase.  It must match the case of the apis/apiname.api.scd file
+Convention is lowercase.  It must match the case of the apis/{apiname}.api.scd file
 
 returns:: an API
 
@@ -449,6 +449,3 @@ PRIVATE:: oldAdd
 PRIVATE:: oldAddAll
 PRIVATE:: oldCall
 PRIVATE:: prFindHandler
-
-
-

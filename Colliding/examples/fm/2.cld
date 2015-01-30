@@ -1,0 +1,6 @@
+var mi = MouseX.kr(0,20).round;
+var fm = freq*MouseY.kr(1,30).round;
+var fd = mi*fm;
+var osc = SinOsc.ar(freq+(fd*SinOsc.ar(fm)));
+var env = EnvGen.ar(Env.adsr,gate:gate);
+Out.ar(0,0.1*osc*env!2);

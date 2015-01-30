@@ -1,0 +1,171 @@
+title:: How to create a description file
+summary:: How to create a description file to use with the Modality toolkit.
+categories:: Libraries>Modality
+related:: Overviews/Modality, Classes/MKtl, Reference/MKtl_description_files, Classes/MIDIExplorer, Classes/HIDExplorer
+
+Section:: Introduction
+
+The functionality of link::Classes/MKtl:: relies on descriptions of the used devices. For some Controllers, there are already descriptions available, chances are that your device is not among them.
+It is easy to create such a file. So first, attach your device to the computer.
+
+section:: Explore your device
+
+First, find your device in the list posted by the following code and assign the MKtl to a variable.
+code::
+MKtl.find;
+// copy and change 'pcr0' to the shortname of your device
+a = MKtl('pcr0');
+::
+
+Now, turn on the explore mode and move every element on your controller. Make sure to go through all of them and move them in all their degrees of freedom.
+
+code::
+e = a.explore;
+
+// MIDI: if you want more information on what is happening, turn on verbose mode:
+e.verbose = true;
+e.verbose = false; // turn it off again
+::
+
+When done, create a raw description file which you will edit and review in the next step.
+
+code::
+a.createDescriptionFile;
+// and stop the exploring:
+a.explore( false );
+::
+note::If this does not work for you, try: code::e.compile:: and copy the code from the post window manually to a new file.::
+
+section:: Reviewing the exploration
+
+We now have a file that contains all of the raw data that we need for our description file. However, before we can use it in Modality, we will first need to review the data and make sure that the different functions of the controller are properly named.
+
+subsection:: Build a description file from the raw data
+
+The examples below are written for a MIDI device, but the same steps need to be taken for HID or other devices.
+
+So first there is a bit of bookkeeping to be done.
+The file we opened earlier contains lines such as:
+
+code::
+'_elName_0_005_': ('midiType': 'noteOn', 'type': 'pianoKey', 'chan': 0, 'midiNote':  5, 'spec': 'midiNote'),
+::
+
+
+To bring these into a form useable as a description file for Modality, we have to put it into the format specified in link::Reference/MKtl_description_files:::
+
+code::
+(
+\identifier: (key: value, key: value, ... ),
+\identifier: (key: value, key: value, ... ),
+
+\groupIdentifier: [
+	(key: value, key: value, ... ),
+	(key: value, key: value, ... ),
+	(key: value, key: value, ... ),
+]
+)
+::
+
+note::Naming conventions apply. You can find them at link::Reference/MKtl_description_files#Naming Conventions::.
+::
+
+Edit the code::edit and save me.desc.scd:: document to assemble your new description file. Make sure you pay attention to the following points:
+
+Unless it does not make sense from the controller's layout (e.g. for record buttons as opposed to a collection of similar elements such as sliders), elements of the same type should be grouped into a hierarchical description for maximum compatibility.
+
+Also, make sure to fill in appropriate descriptions for code::\type:: fields.
+
+
+We here exemplify the process at hand of the following raw data (as it could possibly fall out from the code::MKtl().explore:: function mentioned above.
+It contains information of a device with three knobs:
+
+code::
+(
+// ------ cc -------------
+'_elName_0_002_': ('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  2,'spec': 'midiCC'),
+'_elName_0_003_': ('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  3,'spec': 'midiCC'),
+'_elName_0_004_': ('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  4,'spec': 'midiCC'),
+);
+::
+
+NOTE::Although the type should be code::\knob::, it registers as code::\slider::. This is because only a cc value is coming in, and it does not state what kind of hardware element is producing it.
+::
+
+Edit the raw data and add it to a group:
+
+code::
+(
+// ------ cc -------------
+'kn': [
+	('midiMsgType': 'cc', 'type': 'knob', 'midiChan': 0, 'midiNum':  2,'spec': 'midiCC'),
+	('midiMsgType': 'cc', 'type': 'knob', 'midiChan': 0, 'midiNum':  3,'spec': 'midiCC'),
+	('midiMsgType': 'cc', 'type': 'knob', 'midiChan': 0, 'midiNum':  4,'spec': 'midiCC')
+]
+)
+::
+
+In case, the controller has banks of groups, the hierarchical structure would look like this:
+
+code::
+	// raw data of two by three sliders
+(
+// ------ cc -------------
+'_elName_0_002_': ('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  2,'spec': 'midiCC'),
+'_elName_0_003_': ('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  3,'spec': 'midiCC'),
+'_elName_0_004_': ('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  4,'spec': 'midiCC'),
+'_elName_0_005_': ('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  5,'spec': 'midiCC'),
+'_elName_0_006_': ('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  6,'spec': 'midiCC'),
+'_elName_0_008_': ('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  8,'spec': 'midiCC'),
+ );
+::
+
+
+
+
+code::
+(
+sl: [
+	[ // bank 0
+		('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  2,'spec': 'midiCC'),
+		('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  3,'spec': 'midiCC'),
+		('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  4,'spec': 'midiCC'),
+	], [ // bank 1
+		('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  5,'spec': 'midiCC'),
+		('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  6,'spec': 'midiCC'),
+		('midiMsgType': 'cc', 'type': 'slider', 'midiChan': 0, 'midiNum':  8,'spec': 'midiCC')
+	]
+]
+);
+::
+
+If a flat description for an element is required, it can be directly copied from the generated description skeleton. However, each element has to have a name that represents its functionality.
+
+note::
+You may want to restart the explore mode for this by evaluating
+	code::e.start.verbose_(true)::::
+
+note::
+Its also possible to create a description file without an actual device being attached. As long as you keep the naming conventions in mind you will be able to create a working GUI version.
+::
+note::
+A proper description on how to combine code::\noteOn, \noteOff, \polyTouch:: is still missing in this tutorial. While the developer team is working on it, have a look at similar description files. You can find them in the folder opening when you evaluate
+code::
+MKtl.openDescriptionFolder;
+::
+
+::
+
+note::
+When exploring a MIDI device only the incoming MIDI is analysed. You will have to add the MIDI output elements manually. You will have to look up in the manual of your device or online to find out which MIDI messages your device responds to.
+::
+
+subsection:: Save description file and test it
+
+If you are happy with the generated document, save it with a meaningful name to the descriptions folder. You can open it with
+code::
+MKtl.openDescriptionFolder;
+::
+The filename should give a meaningful hint to the device it is made for. It further needs to end in code::".desc.scd"::.
+
+To test your description file, restart SuperCollider and follow instructions in link::Tutorials/ModalityTutorial::.

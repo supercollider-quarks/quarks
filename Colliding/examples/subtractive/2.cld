@@ -1,0 +1,12 @@
+var noiseAmnt = 0.2;
+var depth = 1-MouseY.kr(0,1.0);
+var lfo = SinOsc.ar(7).range(-50,50);
+var vco1 = Pulse.ar(freq+ (depth*lfo ));
+var vco2 = Pulse.ar(freq*2);
+var noise = noiseAmnt*WhiteNoise.ar;
+var mix = vco1+vco2 + noise;
+var vcfEg = EnvGen.ar(Env.asr(0.5),gate:gate,doneAction:2);
+var vcaEg = EnvGen.ar(Env.asr(0.001),gate:gate);
+var vcf = MoogFF.ar(mix, (vcfEg*MouseX.kr(100,8000)));
+var vca = vcf*vcaEg;
+Out.ar(0,vca!2);

@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.48">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #0013bb}
+span.s2 {color: #316f11}
+span.s3 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>PMapSpec</b></p>
+<p class="p2"><br></p>
+<p class="p3">maps the output of a stream from one range to another</p>
+<p class="p3">the ranges are supplied in the form of ControlSpecs</p>
+<p class="p2"><br></p>
+<p class="p3"><b>PMapSpec( pattern, fromSpec,toSpec,autoMap=true)</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>fromSpec</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>the range that the pattern is expected to output</p>
+<p class="p3"><b>toSpec</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>the range that you would like to map to</p>
+<p class="p3"><b>autoMap(true,false)</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>this tests the pattern to discover what it is actually outputting.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>it then maps from that range onto the toSpec.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>the default is true</p>
+<p class="p4"><br></p>
+<p class="p3">The gui also presents a range slider to manually adjust the output range mapping.</p>
+<p class="p4"><br></p>
+<p class="p5">a = <span class="s1">Pseq</span>([0,0.05,0.1],<span class="s1">inf</span>);</p>
+<p class="p5">m = <span class="s1">PMapSpec</span>(a, [0,1],<span class="s2">\freq</span>);</p>
+<p class="p2"><br></p>
+<p class="p5">t = m.asStream</p>
+<p class="p2"><br></p>
+<p class="p5">t.next</p>
+<p class="p5">t.next</p>
+<p class="p5">t.next</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">Since this maps onto the entire range of \freq (20,20000) and that might be a bit painful, you should suppply a spec that states the exact range you are interested in.</p>
+<p class="p2"><br></p>
+<p class="p3">one way is the ControlSpec extension method -optimalRange</p>
+<p class="p2"><br></p>
+<p class="p5">f = <span class="s2">\freq</span>.asSpec.optimalRange(0.3);</p>
+<p class="p2"><br></p>
+<p class="p5">a <span class="s1">ControlSpec</span>(55.392718118943, 3495.0442327868, <span class="s2">'exp'</span>, 0, 440, <span class="s3">" Hz"</span>)</p>
+<p class="p2"><br></p>
+<p class="p3">This is 0.3 standardDeviation around the default value of 440.0</p>
+<p class="p3">ControlSpecs with the default low/high at the minval/maxval will simply clip the optimal range to that.</p>
+<p class="p2"><br></p>
+<p class="p5">a = <span class="s1">Pseq</span>([0,0.05,0.1],<span class="s1">inf</span>);</p>
+<p class="p5">m = <span class="s1">PMapSpec</span>(a, [0,1],<span class="s2">\freq</span>.asSpec.optimalRange);</p>
+<p class="p2"><br></p>
+<p class="p5">t = m.asStream</p>
+<p class="p2"><br></p>
+<p class="p5">t.next</p>
+<p class="p5">t.next</p>
+<p class="p5">t.next</p>
+<p class="p2"><br></p>
+<p class="p3">and if you wanted to quantize that to musical chromatic pitches:</p>
+<p class="p2"><br></p>
+<p class="p5">l = m.cpsmidi.round(1.0).midicps</p>
+<p class="p2"><br></p>
+<p class="p5">n = l.asStream</p>
+<p class="p2"><br></p>
+<p class="p5">n.next</p>
+<p class="p5">n.next</p>
+<p class="p5">n.next</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

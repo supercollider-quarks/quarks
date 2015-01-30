@@ -1,0 +1,96 @@
+title:: Instr Library
+summary:: loading Instr from disk, from quarks, bulding up a reusable library of functions
+categories:: Libraries>crucial>Instr
+
+
+Whenever you create an Instr it is stored in the library:
+
+code::
+(
+	Instr(\sin, { arg freq,amp;
+		SinOsc.ar(freq,0.0, amp)
+	});
+)
+::
+
+Retrieving it
+
+code::
+	Instr(\sin)
+::
+
+
+If you use the same symbol again it overwrites it:
+
+code::
+a = Instr('test2',{ WhiteNoise.ar(0.1) });
+
+// redefining the instr at test2
+b = Instr('test2',{ BrownNoise.ar(0.1) });
+
+// returns the same object
+a === b;
+
+a.gui
+::
+
+
+
+section:: Loading from file
+
+If the Instr is not found already loaded into the Library it will search in the Instr.dir and load it from a file.
+
+Each package and each quark can also include an Instr directory and these will be searched.
+
+So you may also store your instruments in text files and build up a large library of resuable functions.
+
+code::
+	Instr("TheArrogator")
+::
+
+will look for a file called "TheArrogator.scd"
+
+It will first look in your Instr directory.  You may set this in your startup file:
+
+code::
+	Instr.dir = "~/Documents/SuperCollider/Instr";
+::
+
+Quarks can also contain Instr, so the loading function will also look through your installed quarks for any folders called Instr.
+
+The cxaudio quark has lots of Instr.
+
+
+Specify by dot notation to look for an Instr named 'oscillators.sin' in a file named 'oscillators' :
+
+code::
+	Instr( "oscillators.sin")
+::
+
+It will look for the files oscillators.scd, oscillators.txt
+
+it expects to find in one of those files an Instr named "oscillators.sin"
+
+
+code::
+	Instr( "folder.subfolder.oscillators.sin")
+::
+
+It will search the following paths in order:
+
+list::
+##	folder/subfolder/oscillators/sin.scd
+##	folder/subfolder/oscillators.scd
+##	folder/subfolder.scd
+##	folder.scd
+::
+
+
+section:: Instr dependency support
+
+Patches can be set to automatically respawn themselves if the Instr changes.
+
+An Instr sends the .changed message to itself whenever it is redefined.  So just executing any of the Instr definitions causes dependents to be sent .update.
+
+Any Patch that is created with the Instr adds itself as a dependant.  Set patch.respawnOnChange = 1 to automaticaly restart the Patch on the next even bar.
+

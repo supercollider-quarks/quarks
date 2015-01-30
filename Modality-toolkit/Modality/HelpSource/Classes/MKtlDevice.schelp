@@ -1,0 +1,187 @@
+TITLE:: MKtlDevice
+summary:: A class to provide a common interface for accessing external controllers
+categories:: Libraries>Modality, External Control
+related:: Classes/MKtl, Overviews/Modality
+
+DESCRIPTION::
+MKtlDevice is an abstract interface to access an external device, e.g. a MIDI device such as a MIDI fader box, an HID device such as a joystick, and so on.
+
+Subclasses of MKtlDevice take care of accessing the device with the proper protocol.
+
+This class is used mainly by link::Classes/MKtl::.
+
+
+CLASSMETHODS::
+private:: basicNew, initClass
+
+
+METHOD:: find
+Find out which devices are attached.
+
+ARGUMENT:: protocols
+Optional argument to specify the protocols to look for, e.g. code::[ 'hid' ]::. If not specified it will look for all protocols that are implemented as subclasses.
+
+
+METHOD:: allAvailable
+Returns a Event/dictionary of all available devices.
+
+code::
+MKtl.find;
+
+MKtlDevice.allAvailable;
+// returns:
+// ( 'midi': List[ sprc0, mdth0, syst0, syst1 ], 'hid': List[ rnnd0, sbpt0 ] )
+::
+
+
+METHOD:: initHardwareDevices
+Look for available hardware devices.
+
+ARGUMENT:: force
+Whether or not to do this again if it was already done before.
+
+ARGUMENT:: protocols
+The protocols to look for.
+
+
+METHOD:: allInitialized
+a Boolean whether or not find or initHardwareDevices has been called already.
+This method is usually called from MKtl.
+
+METHOD:: tryOpenDevice
+Tries to open a device with the given name.
+
+ARGUMENT:: name
+The short name of the device that you want to open.
+
+ARGUMENT:: parentMKtl
+The instance of MKtl that will refer to this device.
+
+returns:: either an instance of MKtlDevice, or nil if no device was found.
+
+
+
+METHOD:: findMatchingProtocols
+find protocols that match the given (short) name.
+
+ARGUMENT:: name
+The name to look for.
+
+returns:: an Array with protocols
+
+code::
+MKtlDevice.findMatchingProtocols( 'sbpt0' );
+// returns [ 'hid' ]
+::
+
+
+METHOD:: getMatchingProtocol
+get the first protocol that matches the name. This class findMatchingProtocols and takes the first one of the list.
+
+ARGUMENT:: name
+The name to look for.
+
+returns:: a Symbol representing the protocol that matches.
+
+code::
+MKtlDevice.getMatchingProtocol( 'sbpt0' );
+// returns 'hid'
+::
+
+METHOD:: matchClass
+Return the class that matches the protocol passed in.
+
+ARGUMENT:: symbol
+The protocol to look for, e.g. code::\midi:: or code::\hid::.
+
+returns:: a subclass of MKtlDevice
+
+code::
+MKtlDevice.matchClass( \hid );
+// returns: HIDMKtlDevice
+::
+
+
+METHOD:: findDeviceShortNameFromLongName
+Convenience function to check all attached devices and see if the name passed in is there, and return the short name of the matching device.
+
+ARGUMENT:: devLongName
+The device name to find.
+
+returns:: a Symbol
+
+
+METHOD:: getDeviceNameFromShortName
+Given the short name, find out the device name as needed for finding the matching device spec.
+
+ARGUMENT:: shortName
+The short name to match.
+
+returns:: a String
+
+
+METHOD:: protocol
+The protocol of this subclass of MKtlDevice
+
+returns:: a Symbol
+
+
+INSTANCEMETHODS::
+
+private:: init
+
+METHOD:: mktl
+The MKtl that this MKtlDevice belongs to.
+
+returns:: an instance of MKtl.
+
+
+METHOD:: name
+The short name of the device.
+
+returns:: a Symbol
+
+METHOD:: deviceName
+The full device name of the device.
+
+returns:: a String
+
+
+
+METHOD:: closeDevice
+Close the device and clean up anything that it used.
+
+
+METHOD:: trace
+Print incoming data from the MKtlDevice.
+
+argument:: mode
+a Boolean whether it should be on or off.
+
+METHOD:: traceRunning
+a Boolean whether or not the MKtlDevice is currently tracing.
+
+
+
+
+METHOD:: explore
+When opening a device that is not known yet by MKtl, you want to explore the device. See for a full tutorial: link::Tutorials/How_to_create_a_description_file::
+
+ARGUMENT:: mode
+a Boolean to turn this on or off.
+
+METHOD:: exploring
+Whether or not the device is currently being explored.
+
+
+METHOD:: createDescriptionFile
+Create and open a description file for this MKtlDevice, after exploring it.
+
+
+
+METHOD:: initElements
+Initialize all elements and hook them up to the hardware elements.
+
+
+METHOD:: cleanupElements
+De-initialize all elements.

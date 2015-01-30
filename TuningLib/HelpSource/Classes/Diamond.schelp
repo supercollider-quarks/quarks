@@ -1,0 +1,274 @@
+TITLE:: Diamond
+summary:: An N-limit tonality diamond
+categories:: Tuning>TuningLib
+related:: Tuning, Scale, http://en.wikipedia.org/wiki/Tonality_diamond
+DESCRIPTION::
+An N-limit tonaility diamond, as used by Harry Partch.
+
+With a 9-limit diamond in base 2, one row looks like:
+code::
+1/1  5/4  3/2  7/4  9/8  // for otonality or
+1/1  8/5  4/3  8/7  19/6 // for utonality
+::
+It also is able to generate and navigate a 2 dimentinal table:
+code::
+1/1  5/4  3/2  7/4  9/8
+8/5  1/1  6/5  7/5  9/5
+4/3  5/3  1/1  7/6  3/2
+8/7  10/7 12/7 1/1  9/7
+16/9 10/9 4/3  14/9 1/1
+::
+It is possible to do chord changes by 'walking' though the table.
+CLASSMETHODS::
+
+METHOD:: new
+Create a new instance
+
+ARGUMENT:: integers
+An array of numbers to use for numerators in otonality. Defaults to [2, 5, 3, 7, 9, 11, 13, 15, 17, 19, 21, 23]
+
+ARGUMENT:: base
+This is 2 for Octave-based systems.
+
+discussion::
+code::
+d = Diamond.new([2, 5, 3, 7, 9]);
+// generates 1/1 5/4 3/2 7/4 9/8 for otonality as described above
+::
+
+
+METHOD:: limit
+Create a new instance
+
+ARGUMENT:: limit
+the limit for the tuning. So 5 for 5-limit, 7-for 7-limit, etc.
+
+ARGUMENT:: base
+This is 2 for Octave-based systems.
+
+discussion::
+code::
+d = Diamond.limit(11, 3); // generates an 11-limit table with 3 as the base
+// The otonality is: [5/3, 3/3, 7/3, 11/9]
+::
+
+
+METHOD:: adjustOctave
+Adjusts the octave of a tuning ratio so that it is between 1/1 and 2/1
+
+ARGUMENT:: ratio
+the ratio to adjust
+
+ARGUMENT:: base
+The base of the tuning system. This is 2 for octave-based systems. The adjusted ratio will be between 1 and the base.
+
+returns:: The adjusted ratio
+
+
+INSTANCEMETHODS::
+
+METHOD:: getOvertoneInterval
+ Returns the fraction at the index
+
+ARGUMENT:: index
+The index of the overtone or undertone
+
+ARGUMENT:: orientation
+true for otonality, false for utonality
+
+returns:: a ratio
+
+discussion::
+code::
+d = Diamond.new([2, 5, 3, 7, 9]);
+d.getOvertoneInterval(2, true); // returns 3/2
+d.getOvertoneInterval(3, false); // returns 8/7
+::
+
+
+
+METHOD:: getInterval
+ For a given x and y index, return a ratio
+
+ARGUMENT:: x
+The index in the diamond row for o[x]/o[y] This wraps if need be.
+
+ARGUMENT:: y
+The index in the diamond column for o[x]/o[y] This wraps if need be.
+
+returns:: a ratio
+
+
+
+METHOD:: d1Pivot
+Find a pivot based on a start point. Finding the new pivot point means picking one of the fractions in a n-iad. Finding the new start means figuring out wether the new pivot is the top, middle, or bottom member of the n-iad and computing a new start index based on that computation
+
+ARGUMENT:: start
+The starting index of the n-iad, in which we wish to pivot
+
+ARGUMENT:: niad
+The number of contigious ratios to return in the chord. This defaults to 3 for a triad
+
+returns:: An array containing the index of the new start and the index of the pivot
+
+
+
+
+
+METHOD:: makeIntervals
+For a given x and y index, return a n-iad of ratios
+
+ARGUMENT:: x
+The index in the diamond row for o[x]/o[y] This wraps if need be.
+
+ARGUMENT:: y
+The index in the diamond column for o[x]/o[y] This wraps if need be.
+
+ARGUMENT:: orientation
+Use true for utonality such that the returned triads will change in the numerator, but not the demonimator.  To change the denominator, use false.
+
+ARGUMENT:: niad
+The number of contigious ratios to return in the chord. This defaults to 3 for a triad
+
+
+
+returns:: an Array of niad ratios
+
+discussion::
+code::
+d = Diamond.new([2, 5, 3, 7, 9]);
+d.makeIntervals(4, 3, true); // returns [9/7, 8/7, 10/7]
+d.makeIntervals(2, 2, false); // returns [1/1, 12/7, 4/3]
+::
+
+
+
+
+METHOD:: makeOvertoneIntervals
+For a given index, return a n-iad of ratios
+
+ARGUMENT:: start
+he index in the lattice row in which to start. This wraps if need be.
+
+ARGUMENT:: orientation
+Use true for utonality or false for otonailty.
+
+ARGUMENT:: niad
+The number of contigious ratios to return in the chord. This defaults to 3 for a triad
+
+returns:: An array of niad ratios
+
+discussion::
+	The n-iad is computed in regards to the base.
+	ex:
+code::
+d = Diamond.new([2, 5, 3, 7, 9]);
+d.makeOvertoneIntervals(4, true); // returns [9/8, 2/2, 5/4]
+d.makeOvertoneIntervals( 2, false); // returns [4/3, 8/7, 16/9]
+::
+
+METHOD:: d2Pivot
+Find a pivot based on a start point, describe by o[x]/o[y].
+	Finding the new pivot point means picking one of the fractions in a n-iad
+	Finding the new start means figuring out whether the new pivot is the top, middle, or bottom
+	member of the triad and computing a new start index based on that computation
+
+ARGUMENT:: x
+The starting index of the numerator of the n-iad in which we wish to pivot
+
+ARGUMENT:: y
+The starting index of the denominator of the n-iad in which we wish to pivot
+
+ARGUMENT:: orientation
+If true, the overtones will change in the pivot. If false, the
+	undertones will change in the pivot.
+
+ARGUMENT:: niad
+The number of contigious ratios to return in the chord. This defaults to 3 for a triad
+
+returns:: An array containing the x of the first interval in the n-iad, the y of the first interval, the x of the pivot, and the y of the pivot
+
+
+
+METHOD:: walk
+Find a pivot based on a start point, describe by o[x]/o[y].
+	Finding the new pivot point means picking one of the fractions in a n-iad
+	Finding the new start means figuring out whether the new pivot is the top, middle, or bottom
+	member of the triad and computing a new start index based on that computation
+
+ARGUMENT:: numerator
+The starting numerator of the n-iad which we will launch from
+
+ARGUMENT:: denominator
+The starting denominator of the n-iad in which we will launch from
+
+ARGUMENT:: orientation
+If true, the overtones will change in the pivot for the first step. If false, the
+	undertones will change in the pivot for the first step. This will alternate for every step.
+
+ARGUMENT:: niad
+The number of contigious ratios to return in the chord. This defaults to 3 for a triad
+
+returns:: An link::Classes/Routine:: which yields a stream of arrays of ratios
+
+
+
+
+
+METHOD:: d2WalkXY
+Find a pivot based on a start point, describe by o[x]/o[y].
+	Finding the new pivot point means picking one of the fractions in a n-iad
+	Finding the new start means figuring out whether the new pivot is the top, middle, or bottom
+	member of the triad and computing a new start index based on that computation
+
+ARGUMENT:: startX
+The starting index of the numerator of the n-iad which we will launch from
+
+ARGUMENT:: y
+The starting index of the denominator of the n-iad in which we will launch from
+
+ARGUMENT:: orientation
+If true, the overtones will change in the pivot for the first step. If false, the
+	undertones will change in the pivot for the first step. This will alternate for every step.
+
+ARGUMENT:: niad
+The number of contigious ratios to return in the chord. This defaults to 3 for a triad
+
+returns:: An link::Classes/Routine:: which yields a stream of arrays of ratios
+
+
+
+
+
+
+
+EXAMPLES::
+
+Using a Diamond with a Pbind:
+code::
+s.boot;
+
+
+(
+SynthDef(\sin, {|out=0, freq=440, dur=1, amp=02, pan=0|
+	var sin, env, panner;
+	sin = SinOsc.ar(freq, 0, amp);
+	env = EnvGen.kr(Env.sine(dur), doneAction:2);
+	panner = Pan2.ar(sin, pan, env);
+	Out.ar(out, panner);
+}).add;
+)
+(
+var diamond, walk;
+diamond = Diamond.limit(11);
+walk = diamond.walk(3, 2, true); // This will give us a stream of ratios
+
+Pbind(
+	\instrument, \sin,
+	\pan, [-1, 0, 1],
+	\freq, walk * 440, // multiply the ratios by a frequency
+	\dur, 2
+).play
+
+)
+::

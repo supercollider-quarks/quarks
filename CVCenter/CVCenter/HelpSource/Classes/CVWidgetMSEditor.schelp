@@ -1,0 +1,203 @@
+TITLE:: CVWidgetMSEditor
+summary:: a GUI for editing widgets and their parameters: specs, MIDI, OSC, actions...
+categories:: GUI, Conductor, External Control>MIDI, External Control>OSC
+related:: Classes/AbstractCVWidgetEditor, Classes/CVWidgetEditor, Classes/CVCenter, Classes/CV, Classes/CVWidget, Classes/CVWidgetKnob, Classes/CVWidget2D, Classes/CVWidgetMS, Classes/CCResponder, Classes/OSCresponderNode, Classes/SimpleController, Classes/ControlSpec, Classes/OSCCommands
+
+DESCRIPTION::
+A special editor for link::Classes/CVWidgetMS::: As this widget allows connecting to an arbitrary number of control-slots at once this editor is designed to allow the user to make batch-connections as well as it provides the possibility to edit each slot individually. MIDI and OSC tabs within the interface are divided into an area that allows batch editing and an area that comprehends links to  link::Classes/CVWidgetEditor::s for each slot. Each slot can be connected to an external OSC- or MIDI-controller individually.
+note::
+list::
+## Since CVWidgetMSEditor and link::Classes/CVWidgetEditor:: share a number of properties these are implemented within their superclass link::Classes/AbstractCVWidgetEditor::.
+## CVWidgetMSEditor is not supposed to be used directly. Rather editors should always be instantiated from within the widget it belongs to.
+::
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Open a new editor for code::widget::
+
+argument:: widget
+the widget-object: must be a link::Classes/CVWidgetMS::.
+
+argument:: tab
+an link::Classes/Integer::, specifying which tab of the editor shall be focused upon opening the editor. Each editor contains 4 tabs ( see also link::Classes/TabbedView2::): "Spec", "MIDI", "OSC" and "Actions", each addressed by an integer value from code::0:: to code::3::
+
+returns:: a code::CVWidgetMSEditor::
+
+INSTANCEMETHODS::
+subsection:: Common GUI properties and methods
+subsection:: The "MIDI"-tab
+
+METHOD:: midiTabs
+Every editor provides the possibility to either batch-edit or edit MIDI-connections individually. For convenience these 2 possibilities are represented within 2 tabs:
+numberedlist::
+## a tab for editing batch-connections.
+## a tab for editing individual MIDI-connections for each slot in the widget's multi-slider. 
+::
+
+returns:: a link::Classes/TabbedView2::
+
+METHOD:: msMidiIndexStartField
+A link::Classes/NumberBox:: in the batch-editing tab, allowing the user to define at which slider of the widget's multi-slider a batch-connection shall begin (indexing starts at code::0::)
+
+returns::  a link::Classes/NumberBox::
+
+METHOD:: midiEditGroups
+A link::Classes/List:: of link::Classes/CVMidiEditGroup::s in the tab representing the individual sliders. Each of the link::Classes/CVMidiEditGroup::s provides an interface to one of the widget's sliders within the multi-slider.
+
+returns:: an link::Classes/List:: of link::Classes/CVMidiEditGroup::s
+
+METHOD:: extMidiCtrlArrayField
+A link::Classes/TextField:: within the batch-editing tab that can be used to enter an link::Classes/Array:: of (external hardware) sliders. 
+
+returns:: a link::Classes/TextField::
+
+METHOD:: midiConnectorBut
+The link::Classes/Button:: within the batch-editing tab that creates the MIDI-respopnders and hence finishes a batch-connection.
+
+returns:: a link::Classes/Button::
+
+METHOD:: midiDisconnectorBut
+The link::Classes/Button:: within the batch-editing tab that removes all MIDI-responders connected to the parent widget.
+
+returns:: a link::Classes/Button::
+
+subsection:: Batch-connecting external MIDI hardware
+CVWidgetMSEditor allows connecting more than one MIDI-controller in one go:
+image::midi_batch_connect.png::
+The numbered fields in the above screenshot provide the following:
+numberedlist::
+## strong::MIDI init-button:: (link::Classes/AbstractCVWidgetEditor#-midiInitBut::) - after MIDI has successfully been initialized the originally red button will turn green and the
+## strong::MIDI-source:: (link::Classes/AbstractCVWidgetEditor#-midiSourceSelect::) - a dropdown-menu that will let the user select among possible MIDI-sources
+## strong::MIDI-source field:: (link::Classes/AbstractCVWidgetEditor#-midiSrcField::) - when a MIDI-source has been selected its numeric ID will be filled into this field. I.e. any connection made within the batch of connection will listen to this particular device. However, this is emphasis::optional:: - if no device has been selected responders will listen to any available device.
+## strong::MIDI-channel:: (link::Classes/AbstractCVWidgetEditor#-midiChanField::) - another optional field. If no value is set responders will listen on any channel.
+## strong::multi-slider offset index:: (link::#-msMidiIndexStartField::) - the index of the slider in the multi-slider at which the batch-connection should begin. This affects the multi-slider in the widget only, strong::not:: the external hardware.
+## strong::array of external controllers to be connected:: (link::#-extMidiCtrlArrayField::) - within this array the external controller numbers get set. That can be a successive range of values (e.g. code::(0..8)::) or even concetenated arrays (e.g. code::(0..3)++[5, 6, 8, 9]::).
+::
+
+Behind the scenes a batch-connection is accomplished by an algorithm like the following:
+code::
+<array of ctrl.-nrs.>.do({ |ctrlNum, sl|
+	<widget>.midiConnect(<MIDI device ID>, <MIDI channel>, ctrlNum, sl+<multi-slider offset index>)
+})
+::
+The above code should guarantee that not only controllers get connected to successive sliders but also an offset is possible.
+
+For further reference: link::Classes/CVWidget#-midiConnect::
+
+subsection:: The "OSC"-tab
+METHOD:: oscTabs
+Like the MIDI-tab the OSC-tab is organized in 2 tabs:
+numberedlist::
+## a tab for editing batch-connections.
+## a tab containing editable MIDI-connections for each slot in the widget's multi-slider. 
+::
+
+returns:: a link::Classes/TabbedView2::
+
+METHOD:: extOscCtrlArrayField
+A link::Classes/TextField:: within the batch-editing tab that allows the input of values that shall supplement the placeholders code::%:: in the command-name field or message-slot field. (see explanation below in section "Batch-connecting external OSC-controllers")
+
+returns:: a link::Classes/TextField::
+
+METHOD:: intStartIndexField
+A link::Classes/NumberBox:: within the batch-editing tab that allows the user to set the index at which batch-connecting the sliders within the widget's multi-slider should start (code::0:: would be the first slider within the multi-slider).
+
+returns:: a link::Classes/NumberBox::
+
+METHOD:: oscDisconnectorBut
+A link::Classes/Button:: in the batch-editing tab that immediatly removes all OSC-responders within the widget.
+
+returns:: a link::Classes/Button::
+
+METHOD:: oscEditBtns
+A link::Classes/List:: of link::Classes/Button::s within the tab for editing individual OSC-connections. Each button displays the current state of the slider it belongs to, and clicking the button opens another editor, allowing to edit all MIDI- and OSC-properties of the parent slider.
+
+returns:: a link::Classes/List:: of link::Classes/Button::s
+
+METHOD:: oscCalibBtns
+A link::Classes/List:: of link::Classes/Button::s within the tab for editing individual OSC-connections. Each button (displayed in red or green in the bottom, right corner of the OSC edit-button) allows to quickly activate or deactivate OSC-calibration for the parent slider. (See also: link::Classes/CVWidget#-oscCalibrate::).
+
+returns:: a link::Classes/List:: of link::Classes/Button::s
+
+subsection:: Batch-connecting external OSC-controllers
+Like MIDI CVWidgetMSEditor allows to connect more than one OSC-controller in one go:
+image::osc_batch_connect.png::
+The numbered fields in the above screenshot provide the following:
+numberedlist::
+## strong::IP-address selection:: (link::Classes/AbstractCVWidgetEditor#-deviceDropDown::) - if sclang is receiving OSC the IP-addresses from which the messages are being sent will be listed here. Selecting one of them will restrict the OSC-responder to listen to that address only.
+## strong::restrict OSC to a specific port:: (link::Classes/AbstractCVWidgetEditor#-portRestrictor::) - if this option is selected an OSC-responder will not listen to the specified IP-address only, it will also restrict listening to the port from which the regarding app/device sends the messages. However, it's probably sufficiant to restrict to an IP-address only.
+## strong::command-list menu:: (link::Classes/AbstractCVWidgetEditor#-cmdListMenu::) - if an IP-address has been set command-names that have arrived from that IP-address will be listed here. Selecting one of them will insert the command-name in the strong::command-name field:: (7).
+## strong::device-list menu:: (link::Classes/AbstractCVWidgetEditor#-deviceListMenu::) - another option to select from a set of predefined commands is selecting a device (can e.g. be an OSC-controller on a mobile phone) which will fill up the strong::command-list menu:: with commands belonging to that device/app. However, one has to first emphasis::record:: commands coming from the app/device - see (5).
+## strong::record OSC-commands:: - this button will open the OSC-commands dialog (link::Classes/OSCCommands#-makeWindow::) and start scanning incoming OSC for command-names. These command-names can then be stored to disk under a unique, user-defined device-name (e.g. "TouchOSC layout 16") that will appear in the strong::device-list menu::. For more information see the link::Classes/OSCCommands:: helpfile.
+## strong::external OSC-controller numbers:: (link::-extOscCtrlArrayField::) - an link::Classes/Array:: of link::Classes/Integer::s which will be used as supplements for the placeholders used in either the strong::command-name field:: (7) or the strong::message-slot field:: (9). Basically OSC-responders for the given numbers will be created sequentially, using one number for one responder. Hence, the size of the array determines how many responders are going to created. See the OSC batch-connection examples below for a better understanding what's happening behind the scenes.
+## strong::command-name field:: (link::Classes/AbstractCVWidgetEditor#-nameField::)- either enter a command-name manually or select one from the strong::command-list menu:: (3) which will be inserted automatically. Optionally a placeholder code::%:: may be used which is going to be replaced by a number from the strong::external OSC-controller numbers:: (6): e.g. code::/my/cmd/name/%:: used on an array code::[1, 2, 3]:: will create 3 OSC-responders for the following command-names: code::/my/cmd/name/1, /my/cmd/name/2, /my/cmd/name/3::. See the OSC batch-connection examples below for a better understanding what's happening behind the scenes.
+## strong::multi-slider start offset:: (link::#-intStartIndexField::) - the index of emphasis::the first slider in the widget's multi-slider:: that's supposed to get connected (numbering of sliders starts with code::0::). Analog to MIDI batch-connections this field allows an offset in connecting sliders of the multislider.
+## strong::the message-slot of of the incoming OSC message:: (link::Classes/AbstractCVWidgetEditor#-indexField::) - OSC messages are seen as arrays by sclang: slot code::0:: will contain the command-name and an arbitrary number of successive slots may contain arbitrary data. E.g. an OSC controller may transmit data from a multi-slider like the following:
+code::
+['/multislider', <value slider 1>, <value slider 2>,..., <value slider n>]
+::
+A multi-dimensional OSC-message like this may be addessed in batch-connections by the placeholder code::%::. Opposite to the possibility of using a number of different OSC command-names - as described in (7) - the command-name here is fixed but successive slots are addresses. Hence, the values in strong::external OSC-controller numbers:: (6) will represent the slots within the OSC-message (starting at code::1::). See the OSC batch-connection examples below for a better understanding what's happening behind the scenes.
+::
+
+As already mentioned there are 2 different scenarios in which batch-connecting a CVWidgetMS may makes sense:
+numberedlist::
+## a number of OSC commands which differ in one number: code::'/name/1', '/name/2', '/name/3',..., '/name/n':: - these may belong e.g. to a multi-slider on a mobile based controller and there's exactly one value sent in slot code::1:: of the OSC-message. The underlying connection mechanism would be the following:
+code::
+(1..n).do({ arg num, i; 
+	<widget>.oscConnect(
+		ip: <IP-address>, 
+		port: <port>, 
+		name: "/name/%".format(num), 
+		oscMsgIndex: 1, 
+		slot: i+<slider offset index>
+	)
+});
+::
+## all values of from e.g. a multi-slider in mobile bsed controller are sent within 1 message code::'/name':: within its slots code::1:: to code::n:::
+code::
+(1..n).do({ arg num, i; 
+	<widget>.oscConnect(
+		ip: <IP-address>, 
+		port: <port>, 
+		name: "/name", 
+		oscMsgIndex: "%".format(num), 
+		slot: i+<slider offset index>
+	)
+})
+::
+::
+For further reference also have a look at link::Classes/CVWidget#-oscConnect::
+
+subsection:: The "Spec"-tab
+This is the place to edit the parent widget's link::Classes/ControlSpec:: (resp. the ControlSpec of the link::Classes/CV:: wrapped by the widget). In the textfield (link::Classes/AbstractCVWidgetEditor#-specField::) you may either edit the current spec or enter a new one. This can be done by either entering a full ControlSpec-definition (e.g. code::ControlSpec(10, 100, \exp)::) or an link::Classes/Array:: that will automatically be expanded to a ControlSpec (e.g. #[10, 100, \exp]) or a link::Classes/Symbol:: symbolising an existing ControlSpec (e.g. code::\freq::).
+note::If a emphasis::one-dimensional:: ControlSpec gets provided (as argued in the previous sentence) the ControlSpec will automatically expand to the size of the widget's multi-slider (see also: link::Classes/CVWidget#-msSize::). I.e. if the multi-slider incorporates 5 sliders a spec like 
+code::
+ControlSpec(10, 100, \exp)
+:: 
+will become 
+code::
+ControlSpec([10, 10, 10, 10, 10], [100, 100, 100, 100, 100], \exp, [0.0, 0.0, 0.0, 0.0, 0.0], [0, 0, 0, 0, 0])
+::
+::
+
+In the drop-down menu below the textfield you may select any of the listed ControlSpecs. If it's a one-dimensional ControlSpec the same mechanism as in the textfield will apply. Also expanded ControlSpecs will be listed under a name that reflects the specs size - e.g. code::\freq:: expanded to size 7 will be listed as code::'freq_7'::  
+
+subsection:: The "Actions"-tab
+Even though a link::Classes/CVWidgetMS:: may have many sliders it has only one link::Classes/CV::. As a consequence all actions apply to all sliders (unlike in a link::Classes/CVWidget2D:: which incorporates 2 CVs). However, a CVWidget2D may still have an arbitrary number of actions assigned to it. Remember that the value of the CV will be an link::Classes/Array:: of values rather than a single value. E.g. an action setting a control of a running synth will rather user a code::setn:: than code::set:::
+code::
+// example action
+{ |cv| mySynth.setn(\freq, cv.value) }
+::
+
+METHOD:: close
+Close the editor.
+
+returns:: this (a code::CVWidgetMSEditor::)
+
+private:: init
+private:: amendActionsList
+private:: oscFlow1
+private:: midiFlow1
