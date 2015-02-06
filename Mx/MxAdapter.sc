@@ -19,20 +19,20 @@ AbsMxAdapter {}
 
 AbsMxFuncAdapter : AbsMxAdapter {
 
-	var <>func,>getServer,>getGroup,>getValue,>setValue;
+    var <>func, >getServer, >getGroup, >getValue, >setValue;
 
-	*new { arg thingGetter,getServer,getGroup,getValue,setValue;
-		^super.newCopyArgs( thingGetter,getServer,getGroup,getValue,setValue )
-	}
-	value { ^func.value }
-	server { ^getServer.value }
-	group { ^getGroup.value }
+    *new { arg thingGetter, getServer, getGroup, getValue, setValue;
+        ^super.newCopyArgs( thingGetter, getServer, getGroup, getValue, setValue )
+    }
+    value { ^func.value }
+    server { ^getServer.value }
+    group { ^getGroup.value }
 
-	// one time get/set for iolets that could support that
-	canGet { ^getValue.notNil }
-	get { ^getValue.value }
-	canSet { ^setValue.notNil }
-	set { arg v; setValue.value(v) }
+    // one time get/set for iolets that could support that
+    canGet { ^getValue.notNil }
+    get { ^getValue.value }
+    canSet { ^setValue.notNil }
+    set { arg v; setValue.value(v) }
 }
 
 MxHasBus : AbsMxFuncAdapter {}
@@ -52,4 +52,3 @@ MxSendsValueOnChanged : AbsMxFuncAdapter {}
 MxSendSelfOnChanged : AbsMxFuncAdapter {}
 MxIsFrameRateDevice : AbsMxFuncAdapter {}
 MxIsStream : AbsMxFuncAdapter {}
-

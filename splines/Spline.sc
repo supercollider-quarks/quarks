@@ -22,10 +22,33 @@ LinearSpline  { // : AbstractFunction
 	}
 	interpolate { arg divisions=128;
 		// along the spline path
-		// actually gives divisions * numPoints
 		var step;
 		step = points.size.asFloat / divisions.asFloat;
 		^Array.fill(divisions,{ arg i; this.value(i * step) })
+	}
+	interpolateValues { arg domainValues, domain=0;
+		var intpd = this.interpolate(this.points.size * 100);
+		^domainValues.collect({ arg t, i;
+			var xi, pa, pb, xfrac;
+			xi = intpd.lastIndexForWhich({ arg p; p[domain] <= t });
+			if(xi.isNil, {
+				nil
+			},{
+				pa = intpd[xi];
+				pb = intpd[xi + 1];
+				if(pa[domain] == t,{
+					pa
+				},{
+					if(pb.isNil, {
+						nil
+					},{
+						xfrac = (t - pb[domain]) / (pa[domain] - pb[domain]);
+						// domain value of this point should equal t
+						blend(pa, pb, xfrac);
+					});
+				});
+			});
+		});
 	}
 	numDimensions {
 		^points.first.size
@@ -398,7 +421,7 @@ BezierSpline : LinearSpline {
 				controlPoints[i][di] = p[ii]
 			}
 		}
-	}	
+	}
 	guiClass { ^BezierSplineGui }
 }
 

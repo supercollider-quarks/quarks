@@ -2,29 +2,29 @@
 /*
 
 inlets
-	db
-	mute
-	solo
+    db
+    mute
+    solo
 
 outlets
-	you don't patch from it directly,
-	you do so from the mx channel
+    you don't patch from it directly,
+    you do so from the mx channel
 */
 
 MxUnit.register('MxChannelFader',
 (
-	make: { arg chan;
-		var inlets,outlets;
+    make: { arg chan;
+        var inlets, outlets;
 
-		inlets  = [ 
-			];
-		
-		outlets = [ 
-			];
+        inlets  = [
+            ];
 
-		MxUnit(chan,inlets,outlets);
-	},
-	draw: { arg pen,bounds,style;
-		~source.draw(pen,bounds,style)
-	}
+        outlets = [
+            ];
+
+        MxUnit(chan, inlets, outlets);
+    },
+    draw: { arg pen, bounds, style;
+        ~source.draw(pen, bounds, style)
+    }
 ));
