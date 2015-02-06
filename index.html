@@ -1,0 +1,213 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Quarks by supercollider-quarks</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Quarks</h1>
+        <p>This repository collects all of the community contributed Super Collider Quarks</p>
+
+        <p class="view"><a href="https://github.com/supercollider-quarks/quarks">View the Project on GitHub <small>supercollider-quarks/quarks</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/supercollider-quarks/quarks/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/supercollider-quarks/quarks/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/supercollider-quarks/quarks">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="quarks" class="anchor" href="#quarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>quarks</h1>
+
+<p>Quarks are packages of <a href="https://github.com/supercollider/supercollider">SuperCollider</a> code containing classes, extension methods, documentation and server UGen plugins. The Quarks class manages downloading these packages and installing or uninstalling them.</p>
+
+<p>This repository collects all of the community contributed Super Collider Quarks.</p>
+
+<hr>
+
+<p><strong><em>Most importantly it contains the file <code>directory.txt</code> which is the index that the Quarks interface fetches.</em></strong></p>
+
+<p><a href="https://github.com/supercollider-quarks/quarks/blob/master/directory.txt">https://github.com/supercollider-quarks/quarks/blob/master/directory.txt</a></p>
+
+<ol>
+<li><p>This specifies the location and latest version of each community Quarks.</p></li>
+<li><p>It is editable. Follow the link above and just click edit.</p></li>
+<li><p>This repository also includes each Quark as a git subtree. This allows the entire Quarks library to be downloaded as a single file for offline usage.
+The update.py script reads the current directory.txt and updates the subtree items.</p></li>
+</ol>
+
+<hr>
+
+<h2>
+<a id="using-quarks" class="anchor" href="#using-quarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using Quarks</h2>
+
+<p>To install Quarks inside see the SuperCollider help file <code>Using Quarks</code>.</p>
+
+<p>You can install Quarks:</p>
+
+<h3>
+<a id="using-the-gui" class="anchor" href="#using-the-gui" aria-hidden="true"><span class="octicon octicon-link"></span></a>using the gui</h3>
+
+<pre lang="supercollider"><code>Quarks.gui
+</code></pre>
+
+<p>This offers many community contributed packages most of which are hosted on github.</p>
+
+<p>You can also add additional folders where you keep your personally developed quarks or those you have forked or manually downloaded.
+These will also be shown on the GUI as options for installing.</p>
+
+<pre lang="supercollider"><code>// put this in your startup.scd
+Quarks.addFolder("~/supercollider/quarks");
+</code></pre>
+
+<h3>
+<a id="by-name" class="anchor" href="#by-name" aria-hidden="true"><span class="octicon octicon-link"></span></a>by name</h3>
+
+<p>You can (un)install a Quark by name:</p>
+
+<pre lang="supercollider"><code>Quarks.install("UnitTesting");
+Quarks.uninstall("UnitTesting");
+</code></pre>
+
+<h3>
+<a id="by-git-url" class="anchor" href="#by-git-url" aria-hidden="true"><span class="octicon octicon-link"></span></a>by git URL</h3>
+
+<pre lang="supercollider"><code>Quarks.install("https://github.com/supercollider-quarks/UnitTesting.git");
+Quarks.uninstall("https://github.com/supercollider-quarks/UnitTesting.git");
+</code></pre>
+
+<h3>
+<a id="from-a-local-folder" class="anchor" href="#from-a-local-folder" aria-hidden="true"><span class="octicon octicon-link"></span></a>from a local folder</h3>
+
+<pre lang="supercollider"><code>// add your own classes
+Quarks.install("~/supercollider/quarks/my-thing");
+// install something that you downloaded and want to try out
+Quarks.install("~/Downloads/something-i-found");
+</code></pre>
+
+<h2>
+<a id="adding-a-quark-to-this-directory" class="anchor" href="#adding-a-quark-to-this-directory" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding a Quark to this Directory</h2>
+
+<p>Go here, click edit and submit a pull request:</p>
+
+<p><a href="https://github.com/supercollider-quarks/quarks/blob/master/directory.txt">https://github.com/supercollider-quarks/quarks/blob/master/directory.txt</a></p>
+
+<p>The format is:</p>
+
+<pre><code>quarkname=git://github.com/you/quarkname
+</code></pre>
+
+<p>Ideally you should tag your releases with the version number and then specify it in the directory.txt:</p>
+
+<pre><code>quarkname=git://github.com/you/quarkname@tags/0.1.0
+</code></pre>
+
+<p>The version is specified as a git refspec. <code>tags/x.y.z</code> is the preferred form.</p>
+
+<h2>
+<a id="tag-your-releases" class="anchor" href="#tag-your-releases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag your releases</h2>
+
+<p>Tagged version numbers will allow people to download a .tgz archive of the release and will enable people to switch between different versions.</p>
+
+<p>Users can see and switch between versions in the interface, but only if they are tagged.</p>
+
+<p>It will also enable people to specify an exact version of your quark when working on their own projects.</p>
+
+<p>Note that a refspec is either tags/{tagname} or {commit-hash} but not a branch name. A branch is a continually changing, and packages releases need to be pinned.</p>
+
+<h2>
+<a id="migrated-quarks-from-svn" class="anchor" href="#migrated-quarks-from-svn" aria-hidden="true"><span class="octicon octicon-link"></span></a>Migrated Quarks from SVN</h2>
+
+<p>I (<a href="https://github.com/crucialfelix" class="user-mention">@crucialfelix</a>) migrated the old SVN repository to github and preserved all the commits, dates and authorship.</p>
+
+<p>You will find your old work here:</p>
+
+<p><a href="https://github.com/supercollider-quarks">https://github.com/supercollider-quarks</a></p>
+
+<p>The easiest thing to do is to just fork your Quark from here into your own account. It will appear as "forked from ..." on your github.</p>
+
+<p>Another option is to git clone your quark from here and then create a fresh repository in your own github/bitbucket account and push it to there. Then it will not say "forked from..." Remember to set your working copy's upstream origin to your own github version.</p>
+
+<p>It is also possible to transfer ownership, but for that you need to have admin access to both the supercollider-quarks group and the account you are transferring it to. Contact us and we can add you as an admin to supercollider-quarks.</p>
+
+<p>If you've already moved your code to github or some other git host and want to use that version then just edit directory.txt to point to your preferred newer version.</p>
+
+<p>After you've moved we can delete the quark from here to reduce any confusion.</p>
+
+<h3>
+<a id="backward-incompatibilities" class="anchor" href="#backward-incompatibilities" aria-hidden="true"><span class="octicon octicon-link"></span></a>Backward incompatibilities</h3>
+
+<p>Quarks with spaces in the name had to have those spaces removed ("SenseWorld MiniBee" -&gt; SWMiniBee).</p>
+
+<p>The 'name' field is no longer required in the quark file, but its nice to have. The official name of the Quark is now the same name as the folder and the name of the git repository.</p>
+
+<p>Quarks nested inside other quarks (dewdrop_lib) are now un-nested.</p>
+
+<p>The 'path' field is now obsolete and ignored.</p>
+
+<h2>
+<a id="download-all-quarks" class="anchor" href="#download-all-quarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download all quarks</h2>
+
+<p>This entire repository can be downloaded for use while offline or if cannot for some reason use git on your machine.</p>
+
+<p>They will be downloadable here:</p>
+
+<p><a href="https://github.com/supercollider-quarks/quarks/releases">https://github.com/supercollider-quarks/quarks/releases</a></p>
+
+<h2>
+<a id="updating-the-subtree" class="anchor" href="#updating-the-subtree" aria-hidden="true"><span class="octicon octicon-link"></span></a>Updating the subtree</h2>
+
+<p>After any updates to the directory.txt file someone should run the script <code>update.py</code> in this repository.
+This will read the directory file and update all of the git subtrees .</p>
+
+<p>In terminal run the python script passing it your quark's name</p>
+
+<div class="highlight highlight-shell"><pre>    python update.py quarkname</pre></div>
+
+<p>To update all quarks:</p>
+
+<div class="highlight highlight-shell"><pre>    python update.py</pre></div>
+
+<p>This will clone, update and/or checkout tags as needed. If the repository URL changes then it will first remove the previous quark and clone the new one in its place.</p>
+
+<p>The update script will <code>git add</code> the changes but will not commit them.</p>
+
+<p>Commit your changes:</p>
+
+<pre><code>git commit -m "updated quarkname to version 4.1.3" -a
+</code></pre>
+
+<p>And submit a pull request.</p>
+
+<h2>
+<a id="releases-of-supercollider-quarks" class="anchor" href="#releases-of-supercollider-quarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Releases of supercollider-quarks</h2>
+
+<p>By tagging this repository we will enable a downloadable release. We should do a release every once in a while, especially when SuperCollider itself publishes a release.</p>
+
+<p>We will worry about that after everybody is using the new Quarks.  Maybe nobody will even need the downloaded version.</p>
+
+<hr>
+
+<p><a href="https://gitter.im/supercollider-quarks/quarks?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter"></a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/supercollider-quarks">supercollider-quarks</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
