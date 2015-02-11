@@ -10,19 +10,18 @@ ___Most importantly it contains the file `directory.txt` which is the index that
 
 https://github.com/supercollider-quarks/quarks/blob/master/directory.txt
 
-1. This specifies the location and latest version of each community Quarks.
+1. This specifies the location and latest version of each community Quark.
 
 2. It is editable. Follow the link above and just click edit.
 
 3. This repository also includes each Quark as a git subtree. This allows the entire Quarks library to be downloaded as a single file for offline usage.
-The update.py script reads the current directory.txt and updates the subtree items.
 
 ---
 
 
 ## Using Quarks
 
-To install Quarks inside see the SuperCollider help file `Using Quarks`.
+See the SuperCollider help file `Using Quarks` for a full tutorial.
 
 You can install Quarks:
 
