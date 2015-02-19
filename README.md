@@ -4,7 +4,7 @@ Quarks are packages of [SuperCollider](https://github.com/supercollider/supercol
 
 This repository collects all of the community contributed Super Collider Quarks.
 
-Do NOT clone or fork this repository. It is only a directory.txt files and an automatically updated compilation of the those Quarks. But the Quarks are all in their own repositories.
+Do NOT clone or fork this repository. It is only a compilation, but the actual Quarks are all in their own separate repositories.
 
 ---
 
