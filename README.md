@@ -1,48 +1,42 @@
 # quarks
 
-Quarks are packages of [SuperCollider](https://github.com/supercollider/supercollider) code containing classes, extension methods, documentation and server UGen plugins. The Quarks class manages downloading these packages and installing or uninstalling them.
+A Quark is a package of [SuperCollider](https://github.com/supercollider/supercollider) code containing classes, extension methods, documentation and server UGen plugins.
 
-This repository collects all of the community contributed Super Collider Quarks.
+SuperCollider comes with a utility called Quarks that lets you browse the index of community contributed packages and install them. This repository contains that index.
 
-Do NOT clone or fork this repository. It is only a compilation, but the actual Quarks are all in their own separate repositories.
+## Installing
 
----
+If you just want to use or install Quarks, then you can do so from inside SuperCollider.
+You do not need to download or clone anything from here. See the SuperCollider help file `Using Quarks` for a full tutorial.
 
-___Most importantly it contains the file `directory.txt` which is the index that the Quarks interface fetches.___
+### git
 
-https://github.com/supercollider-quarks/quarks/blob/master/directory.txt
+You should install git if you do not already have it:
 
-1. This specifies the location and latest version of each community Quarks.  Installing a Quark does so from the repository specified in this directory.txt file
+http://git-scm.com/
 
-2. It is editable. Follow the link above and just click edit.
+If you cannot or do not want to install git then you can still download things you find on the webs and then install them manually:
 
-3. This repository also includes each Quark as a git subtree. This allows the entire Quarks library to be downloaded as a single file for offline usage.
+```supercollider
+Quarks.install("~/Downloads/some-thing-i-found-on-the-internet");
+```
 
----
+And you can also download all of the community contributed Quarks in a single download:
+
+https://github.com/supercollider-quarks/downloaded-quarks
+
+The Quarks interface will let you browse those and install them, just as normal.
 
 
-## Using Quarks
+## Installing a Quark
 
-See the SuperCollider help file `Using Quarks` for a full tutorial.
-
-You can install Quarks:
-
-### using the gui
+### using the gui:
 
 ```supercollider
 Quarks.gui
 ```
 
 This offers many community contributed packages most of which are hosted on github.
-
-You can also add additional folders where you keep your personally developed quarks or those you have forked or manually downloaded.
-These will also be shown on the GUI as options for installing.
-
-```supercollider
-// put this in your startup.scd
-Quarks.addFolder("~/supercollider/quarks");
-```
-
 
 ### by name
 
@@ -69,10 +63,27 @@ Quarks.install("~/supercollider/quarks/my-thing");
 Quarks.install("~/Downloads/something-i-found");
 ```
 
+## Adding additional folders of Quarks
+
+You can also add additional folders where you keep your personally developed quarks or those you have forked or manually downloaded.
+
+These are folders that contain many quarks. Those will then be shown on the GUI as options for installing.
+
+```supercollider
+// put this in your startup.scd
+// so that this folder is always available
+// when you use supercollider
+Quarks.addFolder("~/supercollider/quarks");
+```
+
+
+---
 
 ## Adding a Quark to this Directory
 
-Go here, click edit and submit a pull request:
+Publish your package to github under your own account.
+
+Go here, click edit and then submit a pull request:
 
 https://github.com/supercollider-quarks/quarks/blob/master/directory.txt
 
@@ -96,9 +107,9 @@ It will also enable people to specify an exact version of your quark when workin
 
 Note that a refspec is either tags/{tagname} or {commit-hash} but not a branch name. A branch is a continually changing, and packages releases need to be pinned.
 
-## Migrated Quarks from SVN
+## Claiming one of the migrated Quarks from SVN
 
-I (@crucialfelix) migrated the old SVN repository to github and preserved all the commits, dates and authorship.
+The supercollider-quarks organization has lots of repositories that were migrated from the old SVN repository. Commits, dates and authorship were preserved.
 
 You will find your old work here:
 
@@ -123,47 +134,6 @@ The 'name' field is no longer required in the quark file, but its nice to have. 
 Quarks nested inside other quarks (dewdrop_lib) are now un-nested.
 
 The 'path' field is now obsolete and ignored.
-
-## Download all quarks
-
-This entire repository can be downloaded for use while offline or if cannot for some reason use git on your machine.
-
-They will be downloadable here:
-
-https://github.com/supercollider-quarks/quarks/releases
-
-## Updating the subtree
-
-After any updates to the directory.txt file someone should run the script `update.py` in this repository.
-This will read the directory file and update all of the git subtrees .
-
-In terminal run the python script passing it your quark's name
-
-```shell
-    python update.py quarkname
-```
-
-To update all quarks:
-
-```shell
-    python update.py
-```
-
-This will clone, update and/or checkout tags as needed. If the repository URL changes then it will first remove the previous quark and clone the new one in its place.
-
-The update script will `git add` the changes but will not commit them.
-
-Commit your changes:
-
-    git commit -m "updated quarkname to version 4.1.3" -a
-
-And submit a pull request.
-
-## Releases of supercollider-quarks
-
-By tagging this repository we will enable a downloadable release. We should do a release every once in a while, especially when SuperCollider itself publishes a release.
-
-We will worry about that after everybody is using the new Quarks.  Maybe nobody will even need the downloaded version.
 
 ---
 
