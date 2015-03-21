@@ -4,13 +4,15 @@ Quarks are packages of [SuperCollider](https://github.com/supercollider/supercol
 
 This repository collects all of the community contributed Super Collider Quarks.
 
+Do NOT clone or fork this repository. It is only a compilation, but the actual Quarks are all in their own separate repositories.
+
 ---
 
 ___Most importantly it contains the file `directory.txt` which is the index that the Quarks interface fetches.___
 
 https://github.com/supercollider-quarks/quarks/blob/master/directory.txt
 
-1. This specifies the location and latest version of each community Quark.
+1. This specifies the location and latest version of each community Quarks.  Installing a Quark does so from the repository specified in this directory.txt file
 
 2. It is editable. Follow the link above and just click edit.
 
