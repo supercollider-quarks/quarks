@@ -1,76 +1,77 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Quarks by supercollider-quarks</title>
+    <meta name="description" content="Quarks : Directory of community contributed Quarks for SuperCollider">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Quarks</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Quarks</h1>
-        <p>This repository collects all of the community contributed Super Collider Quarks</p>
 
-        <p class="view"><a href="https://github.com/supercollider-quarks/quarks">View the Project on GitHub <small>supercollider-quarks/quarks</small></a></p>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/supercollider-quarks/quarks">View on GitHub</a>
 
+          <h1 id="project_title">Quarks</h1>
+          <h2 id="project_tagline">Directory of community contributed Quarks for SuperCollider</h2>
 
-        <ul>
-          <li><a href="https://github.com/supercollider-quarks/quarks/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/supercollider-quarks/quarks/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/supercollider-quarks/quarks">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/supercollider-quarks/quarks/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/supercollider-quarks/quarks/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
 <a id="quarks" class="anchor" href="#quarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>quarks</h1>
 
-<p>Quarks are packages of <a href="https://github.com/supercollider/supercollider">SuperCollider</a> code containing classes, extension methods, documentation and server UGen plugins. The Quarks class manages downloading these packages and installing or uninstalling them.</p>
+<p>A Quark is a package of <a href="https://github.com/supercollider/supercollider">SuperCollider</a> code containing classes, extension methods, documentation and server UGen plugins.</p>
 
-<p>This repository collects all of the community contributed Super Collider Quarks.</p>
-
-<hr>
-
-<p><strong><em>Most importantly it contains the file <code>directory.txt</code> which is the index that the Quarks interface fetches.</em></strong></p>
-
-<p><a href="https://github.com/supercollider-quarks/quarks/blob/master/directory.txt">https://github.com/supercollider-quarks/quarks/blob/master/directory.txt</a></p>
-
-<ol>
-<li><p>This specifies the location and latest version of each community Quarks.</p></li>
-<li><p>It is editable. Follow the link above and just click edit.</p></li>
-<li><p>This repository also includes each Quark as a git subtree. This allows the entire Quarks library to be downloaded as a single file for offline usage.
-The update.py script reads the current directory.txt and updates the subtree items.</p></li>
-</ol>
-
-<hr>
+<p>SuperCollider comes with a utility called Quarks that lets you browse the index of community contributed packages and install them. This repository contains that index.</p>
 
 <h2>
-<a id="using-quarks" class="anchor" href="#using-quarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using Quarks</h2>
+<a id="installing" class="anchor" href="#installing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing</h2>
 
-<p>To install Quarks inside see the SuperCollider help file <code>Using Quarks</code>.</p>
-
-<p>You can install Quarks:</p>
+<p>If you just want to use or install Quarks, then you can do so from inside SuperCollider.
+You do not need to download or clone anything from here. See the SuperCollider help file <code>Using Quarks</code> for a full tutorial.</p>
 
 <h3>
-<a id="using-the-gui" class="anchor" href="#using-the-gui" aria-hidden="true"><span class="octicon octicon-link"></span></a>using the gui</h3>
+<a id="git" class="anchor" href="#git" aria-hidden="true"><span class="octicon octicon-link"></span></a>git</h3>
+
+<p>You should install git if you do not already have it:</p>
+
+<p><a href="http://git-scm.com/">http://git-scm.com/</a></p>
+
+<p>If you cannot or do not want to install git then you can still download things you find on the webs and then install them manually:</p>
+
+<pre lang="supercollider"><code>Quarks.install("~/Downloads/some-thing-i-found-on-the-internet");
+</code></pre>
+
+<p>And you can also download all of the community contributed Quarks in a single download:</p>
+
+<p><a href="https://github.com/supercollider-quarks/downloaded-quarks">https://github.com/supercollider-quarks/downloaded-quarks</a></p>
+
+<p>The Quarks interface will let you browse those and install them, just as normal.</p>
+
+<h2>
+<a id="installing-a-quark" class="anchor" href="#installing-a-quark" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing a Quark</h2>
+
+<h3>
+<a id="using-the-gui" class="anchor" href="#using-the-gui" aria-hidden="true"><span class="octicon octicon-link"></span></a>using the gui:</h3>
 
 <pre lang="supercollider"><code>Quarks.gui
 </code></pre>
 
 <p>This offers many community contributed packages most of which are hosted on github.</p>
-
-<p>You can also add additional folders where you keep your personally developed quarks or those you have forked or manually downloaded.
-These will also be shown on the GUI as options for installing.</p>
-
-<pre lang="supercollider"><code>// put this in your startup.scd
-Quarks.addFolder("~/supercollider/quarks");
-</code></pre>
 
 <h3>
 <a id="by-name" class="anchor" href="#by-name" aria-hidden="true"><span class="octicon octicon-link"></span></a>by name</h3>
@@ -98,9 +99,26 @@ Quarks.install("~/Downloads/something-i-found");
 </code></pre>
 
 <h2>
+<a id="adding-additional-folders-of-quarks" class="anchor" href="#adding-additional-folders-of-quarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding additional folders of Quarks</h2>
+
+<p>You can also add additional folders where you keep your personally developed quarks or those you have forked or manually downloaded.</p>
+
+<p>These are folders that contain many quarks. Those will then be shown on the GUI as options for installing.</p>
+
+<pre lang="supercollider"><code>// put this in your startup.scd
+// so that this folder is always available
+// when you use supercollider
+Quarks.addFolder("~/supercollider/quarks");
+</code></pre>
+
+<hr>
+
+<h2>
 <a id="adding-a-quark-to-this-directory" class="anchor" href="#adding-a-quark-to-this-directory" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding a Quark to this Directory</h2>
 
-<p>Go here, click edit and submit a pull request:</p>
+<p>Publish your package to github under your own account.</p>
+
+<p>Go here, click edit and then submit a pull request:</p>
 
 <p><a href="https://github.com/supercollider-quarks/quarks/blob/master/directory.txt">https://github.com/supercollider-quarks/quarks/blob/master/directory.txt</a></p>
 
@@ -128,9 +146,9 @@ Quarks.install("~/Downloads/something-i-found");
 <p>Note that a refspec is either tags/{tagname} or {commit-hash} but not a branch name. A branch is a continually changing, and packages releases need to be pinned.</p>
 
 <h2>
-<a id="migrated-quarks-from-svn" class="anchor" href="#migrated-quarks-from-svn" aria-hidden="true"><span class="octicon octicon-link"></span></a>Migrated Quarks from SVN</h2>
+<a id="claiming-one-of-the-migrated-quarks-from-svn" class="anchor" href="#claiming-one-of-the-migrated-quarks-from-svn" aria-hidden="true"><span class="octicon octicon-link"></span></a>Claiming one of the migrated Quarks from SVN</h2>
 
-<p>I (<a href="https://github.com/crucialfelix" class="user-mention">@crucialfelix</a>) migrated the old SVN repository to github and preserved all the commits, dates and authorship.</p>
+<p>The supercollider-quarks organization has lots of repositories that were migrated from the old SVN repository. Commits, dates and authorship were preserved.</p>
 
 <p>You will find your old work here:</p>
 
@@ -157,57 +175,21 @@ Quarks.install("~/Downloads/something-i-found");
 
 <p>The 'path' field is now obsolete and ignored.</p>
 
-<h2>
-<a id="download-all-quarks" class="anchor" href="#download-all-quarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download all quarks</h2>
-
-<p>This entire repository can be downloaded for use while offline or if cannot for some reason use git on your machine.</p>
-
-<p>They will be downloadable here:</p>
-
-<p><a href="https://github.com/supercollider-quarks/quarks/releases">https://github.com/supercollider-quarks/quarks/releases</a></p>
-
-<h2>
-<a id="updating-the-subtree" class="anchor" href="#updating-the-subtree" aria-hidden="true"><span class="octicon octicon-link"></span></a>Updating the subtree</h2>
-
-<p>After any updates to the directory.txt file someone should run the script <code>update.py</code> in this repository.
-This will read the directory file and update all of the git subtrees .</p>
-
-<p>In terminal run the python script passing it your quark's name</p>
-
-<div class="highlight highlight-shell"><pre>    python update.py quarkname</pre></div>
-
-<p>To update all quarks:</p>
-
-<div class="highlight highlight-shell"><pre>    python update.py</pre></div>
-
-<p>This will clone, update and/or checkout tags as needed. If the repository URL changes then it will first remove the previous quark and clone the new one in its place.</p>
-
-<p>The update script will <code>git add</code> the changes but will not commit them.</p>
-
-<p>Commit your changes:</p>
-
-<pre><code>git commit -m "updated quarkname to version 4.1.3" -a
-</code></pre>
-
-<p>And submit a pull request.</p>
-
-<h2>
-<a id="releases-of-supercollider-quarks" class="anchor" href="#releases-of-supercollider-quarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Releases of supercollider-quarks</h2>
-
-<p>By tagging this repository we will enable a downloadable release. We should do a release every once in a while, especially when SuperCollider itself publishes a release.</p>
-
-<p>We will worry about that after everybody is using the new Quarks.  Maybe nobody will even need the downloaded version.</p>
-
 <hr>
 
 <p><a href="https://gitter.im/supercollider-quarks/quarks?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter"></a></p>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/supercollider-quarks">supercollider-quarks</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Quarks maintained by <a href="https://github.com/supercollider-quarks">supercollider-quarks</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+
     
+
   </body>
 </html>
