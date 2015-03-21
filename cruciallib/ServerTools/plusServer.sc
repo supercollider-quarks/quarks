@@ -1,7 +1,0 @@
-
-+ Server {
-
-	guiClass { ^ServerGui }
-	
-}
-

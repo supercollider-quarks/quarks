@@ -1,3 +1,0 @@
-+ Layout {
-	asView { ^this.parent }
-}

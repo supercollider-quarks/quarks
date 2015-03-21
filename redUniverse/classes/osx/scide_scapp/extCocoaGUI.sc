@@ -1,3 +1,0 @@
-+CocoaGUI {
-	*redWindow {^RedWindow}
-}
