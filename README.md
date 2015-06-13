@@ -2,7 +2,9 @@
 
 A Quark is a package of [SuperCollider](https://github.com/supercollider/supercollider) code containing classes, extension methods, documentation and server UGen plugins.
 
-SuperCollider comes with a utility called Quarks that lets you browse the index of community contributed packages and install them. This repository contains that index.
+SuperCollider 3.7 comes with a utility called Quarks that lets you browse the index of community contributed packages and install them. This repository contains that index.
+
+The version of Quarks in SuperCollider 3.6 and earlier uses SVN (subversion). See the Quarks help file in your version of SuperCollider.
 
 ## Installing
 
