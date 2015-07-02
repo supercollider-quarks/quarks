@@ -91,11 +91,11 @@ https://github.com/supercollider-quarks/quarks/blob/master/directory.txt
 
 The format is:
 
-    quarkname=git://github.com/you/quarkname
+    quarkname=https://github.com/you/quarkname
 
 Ideally you should tag your releases with the version number and then specify it in the directory.txt:
 
-    quarkname=git://github.com/you/quarkname@tags/0.1.0
+    quarkname=https://github.com/you/quarkname@tags/0.1.0
 
 The version is specified as a git refspec. `tags/x.y.z` is the preferred form.
 
@@ -133,7 +133,7 @@ Quarks with spaces in the name had to have those spaces removed ("SenseWorld Min
 
 The 'name' field is no longer required in the quark file, but its nice to have. The official name of the Quark is now the same name as the folder and the name of the git repository.
 
-Quarks nested inside other quarks (dewdrop_lib) are now un-nested.
+Quarks nested inside other quarks (eg. dewdrop_lib) are now un-nested.
 
 The 'path' field is now obsolete and ignored.
 
