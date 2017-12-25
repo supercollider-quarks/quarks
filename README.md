@@ -2,9 +2,9 @@
 
 A Quark is a package of [SuperCollider](https://github.com/supercollider/supercollider) code containing classes, extension methods, documentation and server UGen plugins.
 
-SuperCollider 3.7 comes with a utility called Quarks that lets you browse the index of community contributed packages and install them. This repository contains that index.
+SuperCollider comes with a utility called Quarks that lets you browse the index of community contributed packages and install them. This repository contains that index.
 
-The version of Quarks in SuperCollider 3.6 and earlier uses SVN (subversion). See the Quarks help file in your version of SuperCollider.
+Note: In older SuperCollider versions (3.6), Quarks still uses SVN (subversion). See the Quarks help file in your version of SuperCollider.
 
 ## Installing
 
@@ -107,7 +107,7 @@ Users can see and switch between versions in the interface, but only if they are
 
 It will also enable people to specify an exact version of your quark when working on their own projects.
 
-Note that a refspec is either tags/{tagname} or {commit-hash} but not a branch name. A branch is a continually changing, and packages releases need to be pinned.
+Note that a refspec is either tags/{tagname} or {commit-hash} but not a branch name. A branch is a continually changing, and packages releases need to be pinned. **Don't use branch names for tag names**, because this will cause obscure errors later.
 
 ## Claiming one of the migrated Quarks from SVN
 
