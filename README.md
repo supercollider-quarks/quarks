@@ -78,6 +78,17 @@ These are folders that contain many quarks. Those will then be shown on the GUI 
 Quarks.addFolder("~/supercollider/quarks");
 ```
 
+> [!WARNING]
+> Do not include plugins, extensions, or classes distributed by others directly inside your Quark folder. SuperCollider loads Extensions globally, so placing an external Extension inside a Quark can cause duplicate class errors for users who have already installed that Extension separately, according to that extensionʼs installation instructions.
+>
+> Example:
+> ```supercollider
+> ERROR: duplicate Class found: 'SomeClassName'
+> ~/Library/Application Support/SuperCollider/Extensions/SomeExtension/classes/...
+> ~/Library/Application Support/SuperCollider/downloaded-quarks/YourQuark/classes/...
+> ```
+> 
+> If your Quark depends on an external Extension, declare it as a dependency in your `README` file or in the Quark metadata, rather than bundling the Extension itself.
 
 ---
 
